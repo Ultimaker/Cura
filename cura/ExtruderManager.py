@@ -165,7 +165,7 @@ class ExtruderManager(QObject):
         if not machine_id in self._extruder_trains:
             UM.Logger.log("w", "Tried to get the extruder trains for machine %s, which doesn't exist.", machine_id)
             return
-        for extruder_train_id in self._extruder_trains[machine_id]:
+        for _,extruder_train_id in self._extruder_trains[machine_id].items():
             extruder_train = container_registry.findContainerStacks(id = extruder_train_id)
             if extruder_train:
                 yield extruder_train[0]
