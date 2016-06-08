@@ -93,7 +93,7 @@ UM.ManagementPage
 
         Row {
             id: currentSettingsActions
-            visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
+            visible: currentItem.id == Cura.MachineManager.activeQualityId
 
             anchors.left: parent.left
             anchors.top: profileName.bottom
@@ -128,7 +128,7 @@ UM.ManagementPage
             anchors.bottom: parent.bottom
 
             ListView {
-                model: Cura.ContainerSettingsModel{ containers: [base.currentItem.id, Cura.MachineManager.activeUserProfileId] }
+                model: Cura.ContainerSettingsModel{ containers: (currentItem.id == Cura.MachineManager.activeQualityId) ? [base.currentItem.id, Cura.MachineManager.activeUserProfileId] : [base.currentItem.id] }
                 delegate: Row {
                     property variant setting: model
                     spacing: UM.Theme.getSize("default_margin").width
