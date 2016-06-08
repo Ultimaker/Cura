@@ -58,6 +58,9 @@ class ExtruderManager(QObject):
             cls.__instance = ExtruderManager()
         return cls.__instance
 
+    ##  Changes the active extruder by index.
+    #
+    #   \param index The index of the new active extruder.
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index):
         self._active_extruder_index = index
