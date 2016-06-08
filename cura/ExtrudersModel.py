@@ -9,7 +9,8 @@ import UM.Qt.ListModel
 ##  Model that holds extruders.
 #
 #   This model is designed for use by any list of extruders, but specifically
-#   intended for drop-down lists of extruders in place of settings.
+#   intended for drop-down lists of the current machine's extruders in place of
+#   settings.
 class ExtrudersModel(UM.Qt.ListModel.ListModel):
     ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 1
@@ -37,7 +38,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         #Listen to changes.
         manager = cura.ExtruderManager.ExtruderManager.getInstance()
-        manager.extrudersChanged.connect(self._updateExtruders)
+        manager.extrudersChanged.connect(self._updateExtruders) #When the list of extruders changes in general.
+        UM.Application.globalContainerStackChanged.connect(self._updateExtruders) #When the current machine changes.
         self._updateExtruders()
 
     ##  Update the list of extruders.
@@ -46,7 +48,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def _updateExtruders(self):
         self.clear()
         manager = cura.ExtruderManager.ExtruderManager.getInstance()
-        for index, extruder in enumerate(manager._extruder_trains):
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return #There is no machine to get the extruders of.
+        for index, extruder in manager.getMachineExtruders(global_container_stack.getBottom()):
             item = { #Construct an item with only the relevant information.
                 "name": extruder.name,
                 "colour": extruder.material.getMetaDataEntry("color_code", default = "#FFFF00"),

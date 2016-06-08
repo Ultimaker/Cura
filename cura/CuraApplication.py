@@ -351,6 +351,7 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
+        ExtruderManager.ExtruderManager.getInstance() #Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
