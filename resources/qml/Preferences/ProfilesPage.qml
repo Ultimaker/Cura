@@ -93,7 +93,7 @@ UM.ManagementPage
 
         Row {
             id: currentSettingsActions
-            visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
+            visible: currentItem.id == Cura.MachineManager.activeQualityId
 
             anchors.left: parent.left
             anchors.top: profileName.bottom
@@ -128,16 +128,23 @@ UM.ManagementPage
             anchors.bottom: parent.bottom
 
             ListView {
-                model: base.currentItem ? base.currentItem.settings: null
+                model: Cura.ContainerSettingsModel{ containers: (currentItem.id == Cura.MachineManager.activeQualityId) ? [base.currentItem.id, Cura.MachineManager.activeUserProfileId] : [base.currentItem.id] }
                 delegate: Row {
+                    property variant setting: model
                     spacing: UM.Theme.getSize("default_margin").width
                     Label {
                         text: model.label
                         elide: Text.ElideMiddle
                         width: scrollView.width / 100 * 40
                     }
-                    Label {
-                        text: model.value.toString()
+                    Repeater {
+                        model: setting.values.length
+                        Label {
+                            text: setting.values[index].toString()
+                            width: scrollView.width / 100 * 10
+                            font.strikeout: index < setting.values.length - 1 && setting.values[index + 1] != ""
+                            opacity: font.strikeout ? 0.5 : 1
+                        }
                     }
                     Label {
                         text: model.unit

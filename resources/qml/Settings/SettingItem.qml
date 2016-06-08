@@ -220,6 +220,8 @@ Item {
         {
             id: controlContainer;
 
+            enabled: provider.isValueUsed
+
             anchors.right: parent.right;
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter;

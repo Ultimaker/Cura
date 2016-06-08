@@ -42,6 +42,7 @@ from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import MachineManagerModel
+from . import ContainerSettingsModel
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -399,6 +400,8 @@ class CuraApplication(QtApplication):
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
         qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+
+        qmlRegisterType(ContainerSettingsModel.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 
