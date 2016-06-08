@@ -175,8 +175,17 @@ Item {
                     // This ensures that the value in any of the deeper containers need not be removed, which is
                     // needed for the reset button (which deletes the top value) to correctly go back to profile
                     // defaults.
-                    propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
-                    propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
+                    if(last_entry == 4 && base.stackLevel == 0)
+                    {
+                        // Special case of the inherit reset. If only the definition (4th container) and the first
+                        // entry (user container) are set, we can simply remove the container.
+                        propertyProvider.removeFromContainer(0)
+                    }
+                    else
+                    {
+                        propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
+                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
+                    }
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");
