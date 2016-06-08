@@ -47,6 +47,7 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENU
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+import ast #For literal eval of extruder setting types.
 import platform
 import sys
 import os.path
@@ -92,7 +93,7 @@ class CuraApplication(QtApplication):
 
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
-        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+        SettingDefinition.addSettingType("extruder", str, ast.literal_eval, UM.Settings.Validator)
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
