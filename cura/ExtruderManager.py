@@ -147,12 +147,15 @@ class ExtruderManager(QObject):
             self._container_stack.addContainer(self._quality)
         """
 
-        #Add an empty user profile.
-        user_profile = UM.Settings.InstanceContainer(extruder_train_id + "_current_settings")
-        user_profile.addMetaDataEntry("type", "user")
-        user_profile.setDefinition(machine_definition)
+        user_profile = container_registry.findInstanceContainers(id = extruder_train_id + "_current_settings")
+        if user_profile: #There was already a user profile, loaded from settings.
+            user_profile = user_profile[0]
+        else:
+            user_profile = UM.Settings.InstanceContainer(extruder_train_id + "_current_settings") #Add an empty user profile.
+            user_profile.addMetaDataEntry("type", "user")
+            user_profile.setDefinition(machine_definition)
+            container_registry.addContainer(user_profile)
         container_stack.addContainer(user_profile)
-        container_registry.addContainer(user_profile)
 
         container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
