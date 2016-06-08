@@ -103,7 +103,7 @@ class ProcessSlicedLayersJob(Job):
                 Job.yieldThread()
             Job.yieldThread()
             current_layer += 1
-            progress = (current_layer / layer_count) * 100
+            progress = (current_layer / layer_count) * 99
             # TODO: Rebuild the layer data mesh once the layer has been processed.
             # This needs some work in LayerData so we can add the new layers instead of recreating the entire mesh.
 
