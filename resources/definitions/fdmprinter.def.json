@@ -1393,7 +1393,7 @@
                             "children": {
                                 "jerk_wall_0": {
                                     "label": "Outer Wall Jerk",
-                                    "description": "The jerk with which the outermost walls are printed. Printing the outer wall at a lower jerk improves the final skin quality. However, having a large difference between the inner wall jerk and the outer wall jerk will effect quality in a negative way.",
+                                    "description": "The jerk with which the outermost walls are printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "minimum_value": "0.1",
@@ -1404,7 +1404,7 @@
                                 },
                                 "jerk_wall_x": {
                                     "label": "Inner Wall Jerk",
-                                    "description": "The jerk with which all inner walls are printed Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall jerk and the infill jerk.",
+                                    "description": "The jerk with which all inner walls are printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "minimum_value": "0.1",
@@ -1428,7 +1428,7 @@
                         },
                         "jerk_support": {
                             "label": "Support Jerk",
-                            "description": "The jerk with which the support structure is printed. Printing support at higher jerks can greatly reduce printing time. The surface quality of the support structure is not important since it is removed after printing.",
+                            "description": "The jerk with which the support structure is printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -1439,7 +1439,7 @@
                             "children": {
                                 "jerk_support_infill": {
                                     "label": "Support Infill Jerk",
-                                    "description": "The jerk with which the infill of support is printed. Printing the infill at lower jerks improves stability.",
+                                    "description": "The jerk with which the infill of support is printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "default_value": 20,
@@ -1451,7 +1451,7 @@
                                 },
                                 "jerk_support_roof": {
                                     "label": "Support Roof Jerk",
-                                    "description": "The jerk with which the roofs of support are printed. Printing the support roof at lower jerks can improve overhang quality.",
+                                    "description": "The jerk with which the roofs of support are printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "default_value": 20,
@@ -1493,7 +1493,7 @@
                 },
                 "jerk_layer_0": {
                     "label": "Initial Layer Jerk",
-                    "description": "The print jerk for the initial layer. A lower value is advised to improve adhesion to the build plate.",
+                    "description": "The print jerk for the initial layer.",
                     "unit": "mm/s³",
                     "type": "float",
                     "default_value": 20,
@@ -1504,7 +1504,7 @@
                 },
                 "jerk_skirt": {
                     "label": "Skirt Jerk",
-                    "description": "The jerk with which the skirt and brim are printed. Normally this is done at the initial layer jerk, but sometimes you might want to print the skirt with a different jerk.",
+                    "description": "The jerk with which the skirt and brim are printed.",
                     "unit": "mm/s³",
                     "type": "float",
                     "default_value": 20,
