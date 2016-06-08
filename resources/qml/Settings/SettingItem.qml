@@ -158,9 +158,24 @@ Item {
             {
                 // This button shows when the setting has an inherited function, but is overriden by profile.
                 id: inheritButton;
-
-                //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: base.state == "InstanceState.User" && base.showInheritButton
+                // Inherit button needs to be visible if;
+                // - User made changes that override any loaded settings
+                // - This setting item uses inherit button at all
+                // - The type of the value of any deeper container is an "object" (eg; is a function)
+                visible:
+                 {
+                    var state = base.state == "InstanceState.User";
+                    var has_setting_function = false;
+                    for (var i = 1; i < base.stackLevels.length; i++)
+                    {
+                        has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
+                        if(has_setting_function)
+                        {
+                            break;
+                        }
+                    }
+                    return state && base.showInheritButton && has_setting_function
+                 }
 
                 height: parent.height;
                 width: height;
