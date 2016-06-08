@@ -93,7 +93,9 @@ class ExtruderManager(QObject):
             self.extrudersChanged.emit(machine_definition)
 
     def createExtruderTrain(self, extruder_definition, machine_definition, extruder_train_id, position):
+        #Cache some things.
         container_registry = UM.Settings.ContainerRegistry.getInstance()
+        machine_id = machine_definition.getId()
 
         #Create a container stack for this extruder.
         container_stack = UM.Settings.ContainerStack(extruder_train_id)
@@ -102,50 +104,59 @@ class ExtruderManager(QObject):
         container_stack.addMetaDataEntry("position", position)
         container_stack.addContainer(extruder_definition)
 
-        """
-        Yes, I'm committing this code which needs to be transformed to work later.
         #Find the nozzle to use for this extruder.
         nozzle = container_registry.getEmptyInstanceContainer()
-        if definition.getMetaDataEntry("has_nozzles", default = "False") == "True":
-            if len(self._nozzles) >= 1: #First add any extruder. Later, overwrite with preference if the preference is valid.
-                self._nozzle = self._nozzles[0]
-            preferred_nozzle_id = definition.getMetaDataEntry("preferred_nozzle")
+        if machine_definition.getMetaDataEntry("has_nozzles", default = "False") == "True":
+            #First add any nozzle. Later, overwrite with preference if the preference is valid.
+            nozzles = container_registry.findInstanceContainers(machine = machine_id, type = "nozzle")
+            if len(nozzles) >= 1:
+                nozzle = nozzles[0]
+            preferred_nozzle_id = machine_definition.getMetaDataEntry("preferred_nozzle")
             if preferred_nozzle_id:
-                for nozzle in self._nozzles:
-                    if nozzle.getId() == preferred_nozzle_id:
-                        self._nozzle = nozzle
-                        break
-            self._container_stack.addContainer(self._nozzle)
+                preferred_nozzles = container_registry.findInstanceContainers(id = preferred_nozzle_id, type = "nozzle")
+                if len(preferred_nozzles) >= 1:
+                    nozzle = preferred_nozzles[0]
+                else:
+                    UM.Logger.log("w", "The preferred nozzle \"%s\" of machine %s doesn't exist or is not a nozzle profile.", preferred_nozzle_id, machine_id)
+                    #And leave it at the default nozzle.
+        container_stack.addContainer(nozzle)
 
         #Find a material to use for this nozzle.
-        self._material = container_registry.getEmptyInstanceContainer()
-        if self._definition.getMetaDataEntry("has_materials", default = "False") == "True":
-            if self._definition.getMetaDataEntry("has_nozzle_materials", default = "False") == "True":
-                all_materials = container_registry.findInstanceContainers(type = "material", nozzle = self._nozzle.getId())
+        material = container_registry.getEmptyInstanceContainer()
+        if machine_definition.getMetaDataEntry("has_materials", default = "False") == "True":
+            #First add any material. Later, overwrite with preference if the preference is valid.
+            if machine_definition.getMetaDataEntry("has_nozzle_materials", default = "False") == "True":
+                materials = container_registry.findInstanceContainers(type = "material", machine = machine_id, nozzle = nozzle.getId())
             else:
-                all_materials = container_registry.findInstanceContainers(type = "material")
-            if len(all_materials) >= 1:
-                self._material = all_materials[0]
-            preferred_material_id = self._definition.getMetaDataEntry("preferred_material")
+                materials = container_registry.findInstanceContainers(type = "material", machine = machine_id)
+            if len(materials) >= 1:
+                material = materials[0]
+            preferred_material_id = machine_definition.getMetaDataEntry("preferred_material")
             if preferred_material_id:
-                preferred_material = container_registry.findInstanceContainers(type = "material", id = preferred_material_id.lower())
-                if len(preferred_material) >= 1:
-                    self._material = preferred_material[0]
-            self._container_stack.addContainer(self._material)
+                preferred_materials = container_registry.findInstanceContainers(id = preferred_material_id, type = "material")
+                if len(preferred_materials) >= 1:
+                    material = preferred_materials[0]
+                else:
+                    UM.Logger.log("w", "The preferred material \"%s\" of machine %s doesn't exist or is not a material profile.", preferred_material_id, machine_id)
+                    #And leave it at the default material.
+        container_stack.addContainer(material)
 
         #Find a quality to use for this extruder.
-        self._quality = container_registry.getEmptyInstanceContainer()
-        if self._definition.getMetaDataEntry("has_machine_quality"):
-            all_qualities = container_registry.findInstanceContainers(type = "quality")
-            if len(all_qualities) >= 1:
-                self._quality = all_qualities[0]
-            preferred_quality_id = self._definition.getMetaDataEntry("preferred_quality")
+        quality = container_registry.getEmptyInstanceContainer()
+        if machine_definition.getMetaDataEntry("has_machine_quality"):
+            #First add any quality. Later, overwrite with preference if the preference is valid.
+            qualities = container_registry.findInstanceContainers(type = "quality")
+            if len(qualities) >= 1:
+                quality = qualities[0]
+            preferred_quality_id = machine_definition.getMetaDataEntry("preferred_quality")
             if preferred_quality_id:
-                preferred_quality = container_registry.findInstanceContainers(type = "quality", id = preferred_quality_id.lower())
+                preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id.lower(), type = "quality")
                 if len(preferred_quality) >= 1:
-                    self._quality = preferred_quality[0]
-            self._container_stack.addContainer(self._quality)
-        """
+                    quality = preferred_quality[0]
+                else:
+                    UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality_id, machine_id)
+                    #And leave it at the default quality.
+        container_stack.addContainer(quality)
 
         user_profile = container_registry.findInstanceContainers(id = extruder_train_id + "_current_settings")
         if user_profile: #There was already a user profile, loaded from settings.
