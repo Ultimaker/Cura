@@ -90,21 +90,11 @@ SettingItem
 
             Keys.onReleased:
             {
-//                 text = text.replace(",", ".") // User convenience. We use dots for decimal values
-//                 if(parseFloat(text) != base.parentValue)
-//                 {
-//                     base.valueChanged(parseFloat(text));
-//                 }
-
                 propertyProvider.setPropertyValue("value", text)
             }
 
             onEditingFinished:
             {
-//                 if(parseFloat(text) != base.parentValue)
-//                 {
-//                     base.valueChanged(parseFloat(text));
-//                 }
                 propertyProvider.setPropertyValue("value", text)
             }
 
@@ -121,33 +111,9 @@ SettingItem
             {
                 target: input
                 property: "text"
-                value: control.format(propertyProvider.properties.value)
+                value: propertyProvider.properties.value
                 when: !input.activeFocus
             }
-        }
-
-        //Rounds a floating point number to 4 decimals. This prevents floating
-        //point rounding errors.
-        //
-        //input:    The number to round.
-        //decimals: The number of decimals (digits after the radix) to round to.
-        //return:   The rounded number.
-        function roundFloat(input, decimals)
-        {
-            //First convert to fixed-point notation to round the number to 4 decimals and not introduce new floating point errors.
-            //Then convert to a string (is implicit). The fixed-point notation will be something like "3.200".
-            //Then remove any trailing zeroes and the radix.
-            return input.toFixed(decimals).replace(/\.?0*$/, ""); //Match on periods, if any ( \.? ), followed by any number of zeros ( 0* ), then the end of string ( $ ).
-        }
-
-        //Formats a value for display in the text field.
-        //
-        //This correctly handles formatting of float values.
-        //
-        //input:  The string value to format.
-        //return: The formatted string.
-        function format(inputValue) {
-            return parseFloat(inputValue) ? roundFloat(parseFloat(inputValue), 4) : inputValue //If it's a float, round to four decimals.
         }
     }
 }
