@@ -294,6 +294,7 @@ class CuraApplication(QtApplication):
     #   \sa PluginRegistery
     def _loadPlugins(self):
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
+        self._plugin_registry.addType("profile_writer", self._addProfileWriter)
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
@@ -787,4 +788,7 @@ class CuraApplication(QtApplication):
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
+        pass
+
+    def _addProfileWriter(self, profile_writer):
         pass

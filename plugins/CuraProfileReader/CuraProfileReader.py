@@ -3,7 +3,6 @@
 
 from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Logger import Logger
-from UM.Settings.Profile import Profile
 from UM.Settings.ProfileReader import ProfileReader
 
 
