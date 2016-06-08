@@ -105,7 +105,7 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str, str)
     def addMachine(self, name, definition_id):
-        definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
+        definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
         if definitions:
             definition = definitions[0]
             name = self._createUniqueName("machine", "", name, definition.getName())
@@ -204,6 +204,13 @@ class MachineManagerModel(QObject):
     @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
         return self._global_stack_valid
+
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeUserProfileId(self):
+        if self._global_container_stack:
+            return self._global_container_stack.getTop().getId()
+
+        return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):
