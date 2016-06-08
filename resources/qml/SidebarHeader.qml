@@ -104,7 +104,7 @@ Item
                 anchors.leftMargin: model.index * (extruderSelection.width / machineExtruderCount.properties.value)
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width / machineExtruderCount.properties.value
-                text: model.text
+                text: model.name
                 exclusiveGroup: extruderMenuGroup;
                 checkable: true;
                 checked: base.currentExtruderIndex == index
@@ -138,36 +138,15 @@ Item
             }
         }
         ExclusiveGroup { id: extruderMenuGroup; }
-        ListView{
+        ListView
+        {
             id: extrudersList
             property var index: 0
-            model: extrudersListModel
+            model: Cura.ExtrudersModel {}
             delegate: wizardDelegate
             anchors.top: parent.top
             anchors.left: parent.left
             width: parent.width
-        }
-    }
-
-    ListModel
-    {
-        id: extrudersListModel
-        Component.onCompleted: populateExtruderModel()
-    }
-    Connections
-    {
-        id: machineChange
-        target: Cura.MachineManager
-        onGlobalContainerChanged: populateExtruderModel()
-    }
-
-    function populateExtruderModel()
-    {
-        extrudersListModel.clear();
-        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
-            extrudersListModel.append({
-                text: catalog.i18nc("@label", "Extruder %1").arg(extruder + 1)
-            })
         }
     }
 
