@@ -752,7 +752,7 @@
                 {
                     "label": "Printing Temperature",
                     "description": "The temperature used for printing. Set at 0 to pre-heat the printer manually.",
-                    "unit": "캜",
+                    "unit": "째C",
                     "type": "float",
                     "default_value": 210,
                     "minimum_value": "0",
@@ -773,7 +773,7 @@
                 "material_extrusion_cool_down_speed": {
                     "label": "Extrusion Cool Down Speed Modifier",
                     "description": "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",
-                    "unit": "캜/s",
+                    "unit": "째C/s",
                     "type": "float",
                     "default_value": 0.5,
                     "minimum_value": "0",
@@ -785,7 +785,7 @@
                 "material_bed_temperature": {
                     "label": "Bed Temperature",
                     "description": "The temperature used for the heated bed. Set at 0 to pre-heat the printer manually.",
-                    "unit": "캜",
+                    "unit": "째C",
                     "type": "float",
                     "default_value": 60,
                     "minimum_value": "0",
@@ -923,7 +923,7 @@
                     "label": "Standby Temperature",
                     "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
                     "type": "float",
-                    "unit": "캜",
+                    "unit": "째C",
                     "default_value": 150,
                     "minimum_value": "0",
                     "maximum_value_warning": "260",
