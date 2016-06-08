@@ -3,7 +3,6 @@
 
 import numpy
 from string import Formatter
-import traceback
 from enum import IntEnum
 
 from UM.Job import Job
@@ -52,6 +51,20 @@ class StartSliceJob(Job):
     def getSliceMessage(self):
         return self._slice_message
 
+    ##  Check if a stack has any errors.
+    ##  returns true if it has errors, false otherwise.
+    def _checkStackForErrors(self, stack):
+        if stack is None:
+            return False
+
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+                return True
+            Job.yieldThread()
+        return False
+
     ##  Runs the job that initiates the slicing.
     def run(self):
         stack = Application.getInstance().getGlobalContainerStack()
@@ -59,15 +72,19 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        #Don't slice if there is a setting with an error value.
-        for key in stack.getAllKeys():
-            validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
-                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+        # Don't slice if there is a setting with an error value.
+        if self._checkStackForErrors(stack):
+            self.setResult(StartJobResult.SettingError)
+            return
+
+        # Don't slice if there is a per object setting with an error value.
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if type(node) is not SceneNode or not node.isSelectable():
+                continue
+
+            if self._checkStackForErrors(node.callDecoration("getStack")):
                 self.setResult(StartJobResult.SettingError)
                 return
-
-            Job.yieldThread()
 
         with self._scene.getSceneLock():
             # Remove old layer data.

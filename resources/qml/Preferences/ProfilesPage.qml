@@ -15,18 +15,47 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Profiles");
     addText: catalog.i18nc("@label", "Duplicate")
 
-    model: UM.InstanceContainersModel { filter: { "type": "quality" } }
+    model: UM.InstanceContainersModel
+    {
+        filter:
+        {
+            var result = { "type": "quality" };
+            if(Cura.MachineManager.filterQualityByMachine)
+            {
+                result.definition = Cura.MachineManager.activeDefinitionId;
+                if(Cura.MachineManager.hasMaterials)
+                {
+                    result.material = Cura.MachineManager.activeMaterialId;
+                }
+            }
+            else
+            {
+                result.definition = "fdmprinter"
+            }
+            return result
+        }
+    }
+
+    activeId: Cura.MachineManager.activeQualityId
+    activeIndex: {
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == Cura.MachineManager.activeQualityId) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
     onAddObject: {
-        var selectedProfile;
+        var selectedContainer;
         if (objectList.currentIndex == 0) {
             // Current settings
-            selectedProfile = UM.MachineManager.createProfile();
+            selectedContainer = Cura.MachineManager.convertUserContainerToQuality();
         } else {
-            selectedProfile = UM.MachineManager.duplicateProfile(currentItem.name);
+            selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
         }
-        base.selectProfile(selectedProfile);
+        base.selectContainer(selectedContainer);
 
         renameDialog.removeWhenRejected = true;
         renameDialog.open();
@@ -37,14 +66,17 @@ UM.ManagementPage
 
     activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
     addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
-    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
+    removeEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
+    renameEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
 
-    scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(UM.MachineManager.activeMachineInstance)
+    scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
-    signal selectProfile(string name)
-    onSelectProfile: {
-        objectList.currentIndex = objectList.model.find("name", name);
+    signal showProfileNameDialog()
+    onShowProfileNameDialog: { renameDialog.removeWhenRejected = true; renameDialog.open(); renameDialog.selectText(); }
+
+    signal selectContainer(string id)
+    onSelectContainer: {
+        objectList.currentIndex = objectList.model.find("id", id);
     }
 
     Item {
@@ -59,70 +91,63 @@ UM.ManagementPage
             elide: Text.ElideRight
         }
 
-        ScrollView {
+        Row {
+            id: currentSettingsActions
+            visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
+
             anchors.left: parent.left
             anchors.top: profileName.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+            Button
+            {
+                text: {
+                    var profileName = Cura.MachineManager.activeQualityName;
+                    profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
+                    return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
+                }
+                enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+                onClicked: Cura.MachineManager.updateUserContainerToQuality()
+            }
+
+            Button
+            {
+                text: catalog.i18nc("@action:button", "Discard changes");
+                enabled: Cura.MachineManager.hasUserSettings
+                onClicked: Cura.MachineManager.clearUserSettings();
+            }
+        }
+
+        ScrollView {
+            id: scrollView
+
+            anchors.left: parent.left
+            anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : profileName.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            Column
-            {
-                spacing: UM.Theme.getSize("default_margin").height
-
-                Row
-                {
-                    visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
-                    Button
-                    {
-                        text: {
-                            var profileName = UM.MachineManager.activeProfile;
-                            profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
-                            return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
-                        }
-                        enabled: UM.ActiveProfile.hasCustomisedValues && !UM.ActiveProfile.readOnly
-                        onClicked: UM.ActiveProfile.updateProfile()
+            ListView {
+                model: base.currentItem ? base.currentItem.settings: null
+                delegate: Row {
+                    spacing: UM.Theme.getSize("default_margin").width
+                    Label {
+                        text: model.label
+                        elide: Text.ElideMiddle
+                        width: scrollView.width / 100 * 40
                     }
-
-                    Button
-                    {
-                        text: catalog.i18nc("@action:button", "Discard changes");
-                        enabled: UM.ActiveProfile.hasCustomisedValues
-                        onClicked: UM.ActiveProfile.discardChanges()
+                    Label {
+                        text: model.value.toString()
+                    }
+                    Label {
+                        text: model.unit
                     }
                 }
-
-                Grid
-                {
-                    id: containerGrid
-                    columns: 2
-                    spacing: UM.Theme.getSize("default_margin").width
-
-                    Label {
-                        text: base.currentItem == null ? "" :
-                            base.currentItem.id == -1 ? catalog.i18nc("@label", "Based on") : catalog.i18nc("@label", "Profile type")
-                    }
-                    Label {
-                        text: base.currentItem == null ? "" :
-                            base.currentItem.id == -1 ? UM.MachineManager.activeProfile :
-                            base.currentItem.readOnly ? catalog.i18nc("@label", "Protected profile") : catalog.i18nc("@label", "Custom profile")
-                    }
-
-                    Column {
-                        Repeater {
-                            model: base.currentItem ? base.currentItem.settings : null
-                            Label {
-                                text: modelData.name.toString();
-                                elide: Text.ElideMiddle;
-                            }
-                        }
-                    }
-                    Column {
-                        Repeater {
-                            model: base.currentItem ? base.currentItem.settings : null
-                            Label { text: modelData.value.toString(); }
-                        }
-                    }
+                section.property: "category"
+                section.criteria: ViewSection.FullString
+                section.delegate: Label {
+                    text: section
+                    font.bold: true
                 }
             }
         }
@@ -139,9 +164,10 @@ UM.ManagementPage
 
         Button
         {
-            text: catalog.i18nc("@action:button", "Export");
-            iconName: "document-export";
-            onClicked: exportDialog.open();
+            text: catalog.i18nc("@action:button", "Export")
+            iconName: "document-export"
+            onClicked: exportDialog.open()
+            enabled: currentItem != null
         }
     }
 
@@ -151,19 +177,19 @@ UM.ManagementPage
 
         UM.ConfirmRemoveDialog
         {
-            id: confirmDialog;
-            object: base.currentItem != null ? base.currentItem.name : "";
-            onYes: base.model.removeProfile(base.currentItem.name);
+            id: confirmDialog
+            object: base.currentItem != null ? base.currentItem.name : ""
+            onYes: Cura.MachineManager.removeQualityContainer(base.currentItem.id)
         }
         UM.RenameDialog
         {
             id: renameDialog;
-            object: base.currentItem != null ? base.currentItem.name : "";
-            property bool removeWhenRejected: false;
-            onAccepted: base.model.renameProfile(base.currentItem.name, newName.trim());
+            object: base.currentItem != null ? base.currentItem.name : ""
+            property bool removeWhenRejected: false
+            onAccepted: Cura.MachineManager.renameQualityContainer(base.currentItem.id, newName)
             onRejected: {
                 if(removeWhenRejected) {
-                    base.model.removeProfile(base.currentItem.name)
+                    Cura.MachineManager.removeQualityContainer(base.currentItem.id)
                 }
             }
         }
@@ -211,7 +237,7 @@ UM.ManagementPage
             folder: base.model.getDefaultPath()
             onAccepted:
             {
-                var result =  base.model.exportProfile(base.currentItem.id, base.currentItem.name, fileUrl, selectedNameFilter)
+                var result = base.model.exportProfile(base.currentItem.id, fileUrl)
                 if(result && result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical

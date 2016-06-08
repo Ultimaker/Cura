@@ -18,6 +18,7 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+import UM.Settings.Validator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -30,6 +31,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
+from . import ExtruderManager
+from . import ExtrudersModel
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -42,7 +45,7 @@ from . import MachineManagerModel
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType
+from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import platform
 import sys
@@ -61,9 +64,10 @@ if platform.system() == "Linux": # Needed for platform.linux_distribution, which
         ctypes.CDLL(find_library('GL'), ctypes.RTLD_GLOBAL)
 
 try:
-    from cura.CuraVersion import CuraVersion
+    from cura.CuraVersion import CuraVersion, CuraBuildType
 except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
 
 
 class CuraApplication(QtApplication):
@@ -88,8 +92,9 @@ class CuraApplication(QtApplication):
 
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
+        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
-        super().__init__(name = "cura", version = CuraVersion)
+        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -128,16 +133,33 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
-        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+
+        # Add empty variant, material and quality containers.
+        # Since they are empty, they should never be serialized and instead just programmatically created.
+        # We need them to simplify the switching between materials.
+        empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        empty_variant_container = copy.deepcopy(empty_container)
+        empty_variant_container._id = "empty_variant"
+        empty_variant_container.addMetaDataEntry("type", "variant")
+        ContainerRegistry.getInstance().addContainer(empty_variant_container)
+        empty_material_container = copy.deepcopy(empty_container)
+        empty_material_container._id = "empty_material"
+        empty_material_container.addMetaDataEntry("type", "material")
+        ContainerRegistry.getInstance().addContainer(empty_material_container)
+        empty_quality_container = copy.deepcopy(empty_container)
+        empty_quality_container._id = "empty_quality"
+        empty_quality_container.addMetaDataEntry("type", "quality")
+        ContainerRegistry.getInstance().addContainer(empty_quality_container)
 
         ContainerRegistry.getInstance().load()
 
@@ -248,9 +270,15 @@ class CuraApplication(QtApplication):
                 continue
 
             file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
-            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-            with SaveFile(path, "wt", -1, "utf-8") as f:
-                f.write(data)
+            stack_type = stack.getMetaDataEntry("type", None)
+            path = None
+            if not stack_type or stack_type == "machine":
+                path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+            elif stack_type == "extruder":
+                path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
+            if path:
+                with SaveFile(path, "wt", -1, "utf-8") as f:
+                    f.write(data)
 
 
     @pyqtSlot(result = QUrl)
@@ -356,6 +384,9 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
+    ##  Registers objects for the QML engine to use.
+    #
+    #   \param engine The QML engine.
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
@@ -364,6 +395,19 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
+
+        qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+
+        qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+
+        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.ExtruderManager.getInstance())
+
+        for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
+            type_name = os.path.splitext(os.path.basename(path))[0]
+            if type_name in ("Cura", "Actions"):
+                continue
+
+            qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
@@ -423,21 +467,6 @@ class CuraApplication(QtApplication):
 
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
-
-    @pyqtSlot(str)
-    def setJobName(self, name):
-        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
-        # extension. This cuts the extension off if necessary.
-        name = os.path.splitext(name)[0]
-        if self._job_name != name:
-            self._job_name = name
-            self.jobNameChanged.emit()
-
-    jobNameChanged = pyqtSignal()
-
-    @pyqtProperty(str, notify = jobNameChanged)
-    def jobName(self):
-        return self._job_name
 
     # Remove all selected objects from the scene.
     @pyqtSlot()
@@ -707,16 +736,18 @@ class CuraApplication(QtApplication):
     def _onActiveMachineChanged(self):
         pass
 
+    fileLoaded = pyqtSignal(str)
+
     def _onFileLoaded(self, job):
         node = job.getResult()
         if node != None:
-            self.setJobName(os.path.basename(job.getFileName()))
+            self.fileLoaded.emit(job.getFileName())
             node.setSelectable(True)
             node.setName(os.path.basename(job.getFileName()))
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
 
-            self.getController().getScene().sceneChanged.emit(node) #F orce scene change.
+            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():

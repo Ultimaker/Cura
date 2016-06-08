@@ -108,7 +108,11 @@ Item
                 exclusiveGroup: extruderMenuGroup;
                 checkable: true;
                 checked: base.currentExtruderIndex == index
-                onClicked: base.currentExtruderIndex = index
+                onClicked:
+                {
+                    base.currentExtruderIndex = index
+                    ExtruderManager.setActiveExtruderIndex(index)
+                }
 
                 style: ButtonStyle {
                     background: Rectangle {
@@ -266,7 +270,23 @@ Item
                         id: materialSelectionInstantiator
                         model: UM.InstanceContainersModel
                         {
-                            filter: { "type": "material", "definition": Cura.MachineManager.activeDefinitionId }
+                            filter:
+                            {
+                                var result = { "type": "material" }
+                                if(Cura.MachineManager.filterMaterialsByMachine)
+                                {
+                                    result.definition = Cura.MachineManager.activeDefinitionId
+                                    if(Cura.MachineManager.hasVariants)
+                                    {
+                                        result.variant = Cura.MachineManager.activeVariantId
+                                    }
+                                }
+                                else
+                                {
+                                    result.definition = "fdmprinter"
+                                }
+                                return result
+                            }
                         }
                         MenuItem
                         {

@@ -28,13 +28,13 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100* 35 - UM.Theme.getSize("default_margin").width
+        width: base.width / 100 * 35 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
         Label{
             id: infillLabel
             //: Infill selection label
-            text: catalog.i18nc("@label","Infill:");
+            text: catalog.i18nc("@label", "Infill:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             anchors.top: parent.top
@@ -85,7 +85,7 @@ Item
                         {
                             return UM.Theme.getColor("setting_control_selected")
                         }
-                        else if(mousearea.containsMouse)
+                        else if(infillMouseArea.containsMouse)
                         {
                             return UM.Theme.getColor("setting_control_border_highlight")
                         }
@@ -106,7 +106,7 @@ Item
                     }
 
                     MouseArea {
-                        id: mousearea
+                        id: infillMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
@@ -187,28 +187,29 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: brimCheckBox.verticalCenter
-            width: parent.width/100*35 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
             //: Bed adhesion label
-            text: catalog.i18nc("@label:listbox","Bed Adhesion:");
+            text: catalog.i18nc("@label:listbox", "Bed Adhesion:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
 
         CheckBox{
             id: brimCheckBox
-            property bool hovered_ex: false
+            property alias _hovered: brimMouseArea.containsMouse
 
             anchors.top: parent.top
             anchors.left: adhesionHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check","Print Brim");
+            text: catalog.i18nc("@option:check", "Print Brim");
             style: UM.Theme.styles.checkbox;
 
             checked: platformAdhesionType.properties.value == "brim"
 
             MouseArea {
+                id: brimMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
@@ -217,13 +218,11 @@ Item
                 }
                 onEntered:
                 {
-                    parent.hovered_ex = true
                     base.showTooltip(brimCheckBox, Qt.point(-brimCheckBox.x, 0),
                         catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
                 onExited:
                 {
-                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
@@ -234,9 +233,9 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: supportCheckBox.verticalCenter
-            width: parent.width/100*35 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
             //: Support label
-            text: catalog.i18nc("@label:listbox","Support:");
+            text: catalog.i18nc("@label:listbox", "Support:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -244,7 +243,7 @@ Item
         CheckBox{
             id: supportCheckBox
             visible: machineExtruderCount.properties.value <= 1
-            property bool hovered_ex: false
+            property alias _hovered: supportMouseArea.containsMouse
 
             anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -252,11 +251,12 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable support checkbox
-            text: catalog.i18nc("@option:check","Print Support Structure");
+            text: catalog.i18nc("@option:check", "Print Support Structure");
             style: UM.Theme.styles.checkbox;
 
             checked: supportEnabled.properties.value == "True"
             MouseArea {
+                id: supportMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
@@ -265,13 +265,11 @@ Item
                 }
                 onEntered:
                 {
-                    parent.hovered_ex = true
                     base.showTooltip(supportCheckBox, Qt.point(-supportCheckBox.x, 0),
                         catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
                 {
-                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
@@ -286,10 +284,10 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            width: parent.width/100*45
+            width: parent.width / 100 * 45
 
             style: UM.Theme.styles.combobox
-            property bool hovered_ex: false
+            property alias _hovered: supportExtruderMouseArea.containsMouse
 
             currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
             onActivated: {
@@ -301,18 +299,17 @@ Item
                 }
             }
             MouseArea {
+                id: supportExtruderMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.NoButton
                 onEntered:
                 {
-                    parent.hovered_ex = true
                     base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
                         catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
                 {
-                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
@@ -358,7 +355,7 @@ Item
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             wrapMode: Text.WordWrap
             //: Tips label
-            text: catalog.i18nc("@label","Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
+            text: catalog.i18nc("@label", "Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             linkColor: UM.Theme.getColor("text_link")
@@ -374,8 +371,6 @@ Item
         key: "infill_sparse_density"
         watchedProperties: [ "value" ]
         storeIndex: 0
-
-        onPropertiesChanged: console.log(properties.value)
     }
 
     UM.SettingPropertyProvider

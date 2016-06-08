@@ -12,8 +12,12 @@
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
         "preferred_variant": "ultimaker2_plus_0.4",
-        "preferred_material": "pla",
-        "preferred_quality": "high"
+        "preferred_material": "*pla*",
+        "preferred_quality": "*normal*",
+        "has_variants": true,
+        "has_materials": true,
+        "has_machine_materials": true,
+        "has_machine_quality": true
     },
 
     "overrides": {

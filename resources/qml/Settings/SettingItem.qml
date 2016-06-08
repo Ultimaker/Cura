@@ -18,9 +18,49 @@ Item {
     property alias contents: controlContainer.children;
     property alias hovered: mouse.containsMouse
 
+    property var showRevertButton: true
+    property var showInheritButton: true
+    property var doDepthIdentation: true
+
+    // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
+    property var state: propertyProvider.properties.state
+    property var stackLevel: propertyProvider.stackLevel
+
     signal contextMenuRequested()
     signal showTooltip(string text);
     signal hideTooltip();
+
+    property string tooltipText:
+    {
+            var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
+            var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
+
+            var affected_by_list = ""
+            for(var i in affected_by)
+            {
+                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            }
+
+            var affects_list = ""
+            for(var i in affects)
+            {
+                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            }
+
+            var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
+
+            if(affects_list != "")
+            {
+                tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
+            }
+
+            if(affected_by_list != "")
+            {
+                tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
+            }
+
+            return tooltip
+    }
 
     MouseArea 
     {
@@ -52,34 +92,7 @@ Item {
 
             onTriggered:
             {
-                var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
-                var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
-
-                var affected_by_list = ""
-                for(var i in affected_by)
-                {
-                    affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
-                }
-
-                var affects_list = ""
-                for(var i in affects)
-                {
-                    affects_list += "<li>%1</li>\n".arg(affects[i].label)
-                }
-
-                var tooltip = "<b>%1</b><br/>\n<p>%2</p>".arg(definition.label).arg(definition.description)
-
-                if(affects_list != "")
-                {
-                    tooltip += "<br/><b>%1</b><br/>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
-                }
-
-                if(affected_by_list != "")
-                {
-                    tooltip += "<br/><b>%1</b><br/>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
-                }
-
-                base.showTooltip(tooltip);
+                base.showTooltip(base.tooltipText);
             }
         }
 
@@ -88,7 +101,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)
+            anchors.leftMargin: doDepthIdentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -119,7 +132,7 @@ Item {
             {
                 id: revertButton;
 
-                visible: propertyProvider.stackLevel == 0
+                visible: base.stackLevel == 0 && base.showRevertButton
 
                 height: parent.height;
                 width: height;
@@ -136,8 +149,8 @@ Item {
                     propertyProvider.removeFromContainer(0)
                 }
 
-                onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
-                onExited: base.showTooltip(definition.description);
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
+                onExited: base.showTooltip(base.tooltipText);
             }
 
             UM.SimpleButton
@@ -146,14 +159,14 @@ Item {
                 id: inheritButton;
 
                 //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: propertyProvider.properties.state == "InstanceState.User" && propertyProvider.stackLevel > 0
+                visible: base.state == "InstanceState.User" && base.stackLevel > 0 && base.showInheritButton
 
                 height: parent.height;
                 width: height;
 
                 onClicked: {
                     focus = true;
-                    propertyProvider.removeFromContainer(propertyProvider.stackLevel)
+                    propertyProvider.removeFromContainer(base.stackLevel)
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");
@@ -163,8 +176,8 @@ Item {
 
                 iconSource: UM.Theme.getIcon("notice");
 
-                onEntered: base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
-                onExited: base.showTooltip(definition.description);
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
+                onExited: base.showTooltip(base.tooltipText);
             }
 
         }

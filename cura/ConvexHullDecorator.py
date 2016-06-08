@@ -27,7 +27,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Keep track of the previous parent so we can clear its convex hull when the object is reparented
         self._parent_node = None
 
-        self._profile = None
+        self._global_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._onGlobalStackChanged()
         #Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
         #Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
         #self._onActiveProfileChanged()
@@ -95,28 +97,30 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def setConvexHullNode(self, node):
         self._convex_hull_node = node
 
-    def _onActiveProfileChanged(self):
-        if self._profile:
-            self._profile.settingValueChanged.disconnect(self._onSettingValueChanged)
+    def _onSettingValueChanged(self, key, property_name):
+        if key == "print_sequence" and property_name == "value":
+            self._onChanged()
 
-        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
-
-        if self._profile:
-            self._profile.settingValueChanged.connect(self._onSettingValueChanged)
-
-    def _onActiveMachineInstanceChanged(self):
+    def _onChanged(self, *args):
         if self._convex_hull_job:
             self._convex_hull_job.cancel()
         self.setConvexHull(None)
-
-    def _onSettingValueChanged(self, setting):
-        if setting == "print_sequence":
-            if self._convex_hull_job:
-                self._convex_hull_job.cancel()
-            self.setConvexHull(None)
 
     def _onParentChanged(self, node):
         # Force updating the convex hull of the parent group if the object is in a group
         if self._parent_node and self._parent_node.callDecoration("isGroup"):
             self._parent_node.callDecoration("setConvexHull", None)
         self._parent_node = self.getNode().getParent()
+
+    def _onGlobalStackChanged(self):
+        if self._global_stack:
+            self._global_stack.propertyChanged.disconnect(self._onSettingValueChanged)
+            self._global_stack.containersChanged.disconnect(self._onChanged)
+
+        self._global_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._global_stack:
+            self._global_stack.propertyChanged.connect(self._onSettingValueChanged)
+            self._global_stack.containersChanged.connect(self._onChanged)
+
+            self._onChanged()

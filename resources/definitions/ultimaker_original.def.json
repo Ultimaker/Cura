@@ -11,6 +11,9 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
+        "has_materials": true,
+        "preferred_material": "*pla*",
+        "preferred_quality": "*normal*",
         "pages": [
             "SelectUpgradedParts",
             "UpgradeFirmware",

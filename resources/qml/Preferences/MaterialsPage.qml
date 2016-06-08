@@ -14,13 +14,37 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Materials");
 
-    model: UM.InstanceContainersModel { filter: { "type": "material", "definition": Cura.MachineManager.activeDefinitionId } }
-/*
-    onAddObject: { var selectedMaterial = UM.MaterialManager.createProfile(); base.selectMaterial(selectedMaterial); }
-    onRemoveObject: confirmDialog.open();
-    onRenameObject: { renameDialog.open(); renameDialog.selectText(); }
-*/
-//     activateEnabled: false
+    model: UM.InstanceContainersModel
+    {
+        filter:
+        {
+            var result = { "type": "material" }
+            if(Cura.MachineManager.filterMaterialsByMachine)
+            {
+                result.definition = Cura.MachineManager.activeDefinitionId
+                if(Cura.MachineManager.hasVariants)
+                {
+                    result.variant = Cura.MachineManager.activeVariantId
+                }
+            }
+            else
+            {
+                result.definition = "fdmprinter"
+            }
+            return result
+        }
+    }
+
+    activeId: Cura.MachineManager.activeMaterialId
+    activeIndex: {
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == Cura.MachineManager.activeMaterialId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     addEnabled: false
     removeEnabled: false
     renameEnabled: false
@@ -185,7 +209,7 @@ UM.ManagementPage
 
     onCurrentItemChanged:
     {
-        if(!currentItem == null)
+        if(currentItem == null)
         {
             return
         }

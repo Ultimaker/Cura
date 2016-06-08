@@ -59,7 +59,23 @@ Item{
                     id: profileSelectionInstantiator
                     model: UM.InstanceContainersModel
                     {
-                        filter: {"type": "quality"}
+                        filter:
+                        {
+                            var result = { "type": "quality" };
+                            if(Cura.MachineManager.filterQualityByMachine)
+                            {
+                                result.definition = Cura.MachineManager.activeDefinitionId;
+                                if(Cura.MachineManager.hasMaterials)
+                                {
+                                    result.material = Cura.MachineManager.activeMaterialId;
+                                }
+                            }
+                            else
+                            {
+                                result.definition = "fdmprinter"
+                            }
+                            return result
+                        }
                     }
                     property int separatorIndex: -1
 
@@ -72,13 +88,13 @@ Item{
                     {
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
-                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
+                            if(model.getItem(index-1).metadata.read_only != model.getItem(index).metadata.read_only) {
                                 profileSelectionMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
                         //Because of the separator, custom profiles move one index lower
-                        profileSelectionMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
+                        profileSelectionMenu.insertItem((model.getItem(index).metadata.read_only) ? index : index + 1, object.item);
                     }
                     onObjectRemoved:
                     {
@@ -101,20 +117,10 @@ Item{
                     {
                         id: item
                         text: model_data ? model_data.name : ""
-                        checkable: true;
+                        checkable: true
                         checked: Cura.MachineManager.activeQualityId == model_data.id
                         exclusiveGroup: profileSelectionMenuGroup;
-                        onTriggered:
-                        {
-                            Cura.MachineManager.setActiveQuality(model_data.id);
-                            /*if (!model_data.active) {
-                                //Selecting a profile was canceled; undo menu selection
-                                profileSelectionInstantiator.model.setProperty(model_index, "active", false);
-                                var activeProfileName = UM.MachineManager.activeProfile;
-                                var activeProfileIndex = profileSelectionInstantiator.model.find("name", activeProfileName);
-                                profileSelectionInstantiator.model.setProperty(activeProfileIndex, "active", true);
-                            }*/
-                        }
+                        onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
                     }
                 }
 

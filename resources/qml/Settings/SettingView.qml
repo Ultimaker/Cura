@@ -9,8 +9,6 @@ import QtQuick.Layouts 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import ".."
-
 ScrollView
 {
     id: base;
@@ -26,6 +24,7 @@ ScrollView
     {
         id: contents
         spacing: UM.Theme.getSize("default_lining").height;
+        cacheBuffer: 1000000;   // Set a large cache to effectively just cache every list item.
 
         model: UM.SettingDefinitionsModel {
             id: definitionsModel;
@@ -50,8 +49,9 @@ ScrollView
 
             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-            //causing nasty issues when selecting differnt options. So disable asynchronous loading of enum type completely.
-            asynchronous: model.type != "enum"
+            //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+            asynchronous: model.type != "enum" && model.type != "extruder"
+            active: model.type != undefined
 
             source:
             {
@@ -63,6 +63,8 @@ ScrollView
                         return "SettingTextField.qml"
                     case "enum":
                         return "SettingComboBox.qml"
+                    case "extruder":
+                        return "SettingExtruder.qml"
                     case "bool":
                         return "SettingCheckBox.qml"
                     case "str":
@@ -78,7 +80,7 @@ ScrollView
             {
                 id: provider
 
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: ExtruderManager.activeExtruderStackId ? ExtruderManager.activeExtruderStackId : Cura.MachineManager.activeMachineId
                 key: model.key
                 watchedProperties: [ "value", "enabled", "state", "validationState" ]
                 storeIndex: 0
@@ -134,7 +136,7 @@ ScrollView
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
 
-                onTriggered: Actions.configureSettingVisibility.trigger(contextMenu);
+                onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
             }
         }
     }

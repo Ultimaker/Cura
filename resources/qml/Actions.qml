@@ -6,6 +6,7 @@ pragma Singleton
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -109,23 +110,23 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: UM.ActiveProfile.valid && !UM.ActiveProfile.readOnly && UM.ActiveProfile.hasCustomisedValues
+        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update Current Profile");
-        onTriggered: UM.ActiveProfile.updateProfile();
+        onTriggered: Cura.MachineManager.updateUserContainerToQuality()
     }
 
     Action
     {
         id: resetProfileAction;
-        enabled: UM.ActiveProfile.valid && UM.ActiveProfile.hasCustomisedValues
+        enabled: Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Reload Current Profile");
-        onTriggered: UM.ActiveProfile.discardChanges();
+        onTriggered: Cura.MachineManager.clearUserSettings();
     }
 
     Action
     {
         id: addProfileAction;
-        enabled: UM.ActiveProfile.valid
+        enabled: Cura.MachineManager.isGlobalStackValid
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create New Profile...");
     }
 
