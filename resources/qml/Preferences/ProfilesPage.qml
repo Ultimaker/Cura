@@ -128,16 +128,21 @@ UM.ManagementPage
             anchors.bottom: parent.bottom
 
             ListView {
-                model: base.currentItem ? base.currentItem.settings: null
+                model: Cura.ContainerSettingsModel{ containers: [base.currentItem.id, Cura.MachineManager.activeUserProfileId] }
                 delegate: Row {
+                    property variant setting: model
                     spacing: UM.Theme.getSize("default_margin").width
                     Label {
                         text: model.label
                         elide: Text.ElideMiddle
                         width: scrollView.width / 100 * 40
                     }
-                    Label {
-                        text: model.value.toString()
+                    Repeater {
+                        model: setting.values.length
+                        Label {
+                            text: setting.values[index].toString()
+                            width: scrollView.width / 100 * 10
+                        }
                     }
                     Label {
                         text: model.unit
