@@ -169,6 +169,8 @@ class ExtruderManager(QObject):
             extruder_train = container_registry.findContainerStacks(id = extruder_train_id)
             if extruder_train:
                 yield extruder_train[0]
+            else:
+                UM.Logger.log("w", "Machine %s refers to an extruder train with ID %s, which doesn't exist.", machine_id, extruder_train_id)
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self):
