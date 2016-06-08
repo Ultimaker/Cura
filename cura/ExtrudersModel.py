@@ -52,7 +52,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         if not global_container_stack:
             return #There is no machine to get the extruders of.
         for index, extruder in enumerate(manager.getMachineExtruders(global_container_stack.getBottom())):
-            material = extruder.findContainer(type = "material")
+            material = extruder.findContainer({ "type": "material" })
             colour = material.getMetaDataEntry("color_code", default = "#FFFF00") if material else "#FFFF00"
             item = { #Construct an item with only the relevant information.
                 "name": extruder.getName(),
