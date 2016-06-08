@@ -2264,8 +2264,8 @@
                     {
                         "raft_surface_speed":
                         {
-                            "label": "Raft Surface Print Speed",
-                            "description": "The speed at which the surface raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines.",
+                            "label": "Raft Top Print Speed",
+                            "description": "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines.",
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 30,
@@ -2278,8 +2278,8 @@
                         },
                         "raft_interface_speed":
                         {
-                            "label": "Raft Interface Print Speed",
-                            "description": "The speed at which the interface raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high.",
+                            "label": "Raft Middle Print Speed",
+                            "description": "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high.",
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 15,
@@ -2323,8 +2323,8 @@
                     "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
                     "children": {
                         "raft_surface_acceleration": {
-                            "label": "Raft Surface Print Acceleration",
-                            "description": "The acceleration with which the surface raft layers are printed.",
+                            "label": "Raft Top Print Acceleration",
+                            "description": "The acceleration with which the top raft layers are printed.",
                             "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
@@ -2335,8 +2335,8 @@
                             "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
                         },
                         "raft_interface_acceleration": {
-                            "label": "Raft Interface Print Acceleration",
-                            "description": "The acceleration with which the interface raft layer is printed.",
+                            "label": "Raft Middle Print Acceleration",
+                            "description": "The acceleration with which the middle raft layer is printed.",
                             "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
@@ -2377,8 +2377,8 @@
                     "enabled": "adhesion_type == \"raft\" and jerk_enabled",
                     "children": {
                         "raft_surface_jerk": {
-                            "label": "Raft Surface Print Jerk",
-                            "description": "The jerk with which the surface raft layers are printed.",
+                            "label": "Raft Top Print Jerk",
+                            "description": "The jerk with which the top raft layers are printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "default_value": 20,
@@ -2389,8 +2389,8 @@
                             "enabled": "adhesion_type == \"raft\" and jerk_enabled"
                         },
                         "raft_interface_jerk": {
-                            "label": "Raft Interface Print Jerk",
-                            "description": "The jerk with which the interface raft layer is printed.",
+                            "label": "Raft Middle Print Jerk",
+                            "description": "The jerk with which the middle raft layer is printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "default_value": 20,
@@ -2430,8 +2430,8 @@
                     {
                         "raft_surface_fan_speed":
                         {
-                            "label": "Raft Surface Fan Speed",
-                            "description": "The fan speed for the surface raft layers.",
+                            "label": "Raft Top Fan Speed",
+                            "description": "The fan speed for the top raft layers.",
                             "unit": "%",
                             "type": "float",
                             "minimum_value": "0",
@@ -2443,8 +2443,8 @@
                         },
                         "raft_interface_fan_speed":
                         {
-                            "label": "Raft Interface Fan Speed",
-                            "description": "The fan speed for the interface raft layer.",
+                            "label": "Raft Middle Fan Speed",
+                            "description": "The fan speed for the middle raft layer.",
                             "unit": "%",
                             "type": "float",
                             "minimum_value": "0",
