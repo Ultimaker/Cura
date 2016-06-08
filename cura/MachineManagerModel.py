@@ -427,7 +427,13 @@ class MachineManagerModel(QObject):
     def removeMachine(self, machine_id):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
+
+        current_settings_id = machine_id + "_current_settings"
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = current_settings_id)
+        for container in containers:
+            UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
+
         if activate_new_machine:
             stacks = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "machine")
             if stacks:
