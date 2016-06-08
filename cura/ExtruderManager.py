@@ -36,7 +36,7 @@ class ExtruderManager(QObject):
         if not UM.Application.getInstance().getGlobalContainerStack():
             return None #No active machine, so no active extruder.
         try:
-            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)]
+            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
         except KeyError: #Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
