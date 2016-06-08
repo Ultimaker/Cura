@@ -118,11 +118,35 @@ UM.ManagementPage
             }
         }
 
+        Column {
+            id: profileNotices
+            anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : currentSettingsActions.anchors.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            anchors.right: parent.right
+            spacing: UM.Theme.getSize("default_margin").height
+
+            Label {
+                id: defaultsMessage
+                visible: !currentItem.hasSettings
+                text: catalog.i18nc("@action:label", "This profile has no settings and uses the defaults specified by the printer.")
+                wrapMode: Text.WordWrap
+                width: parent.width
+            }
+            Label {
+                id: noCurrentSettingsMessage
+                visible: currentItem.id == Cura.MachineManager.activeQualityId && !Cura.MachineManager.hasUserSettings
+                text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
+                wrapMode: Text.WordWrap
+                width: parent.width
+            }
+        }
+
         ScrollView {
             id: scrollView
 
             anchors.left: parent.left
-            anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : profileName.bottom
+            anchors.top: profileNotices.visible ? profileNotices.bottom : profileNotices.anchors.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
             anchors.bottom: parent.bottom
