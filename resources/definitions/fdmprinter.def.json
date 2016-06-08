@@ -1860,7 +1860,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "line_width",
+                    "value": "line_width * 2",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
@@ -1898,7 +1898,7 @@
                     "type": "float",
                     "default_value": 1,
                     "minimum_value": "0.0001",
-                    "value": "line_width",
+                    "value": "line_width * 2",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
                     "global_only": "True"
