@@ -91,6 +91,20 @@ class ExtruderManager(QObject):
         if extruder_trains:
             self.extrudersChanged.emit(machine_definition)
 
+    ##  Creates a container stack for an extruder train.
+    #
+    #   The container stack has an extruder definition at the bottom, which is
+    #   linked to a machine definition. Then it has a nozzle profile, a material
+    #   profile, a quality profile and a user profile, in that order.
+    #
+    #   The resulting container stack is added to the registry.
+    #
+    #   \param extruder_definition The extruder to create the extruder train
+    #   for.
+    #   \param machine_definition The machine that the extruder train belongs
+    #   to.
+    #   \param position The position of this extruder train in the extruder
+    #   slots of the machine.
     def createExtruderTrain(self, extruder_definition, machine_definition, position):
         #Cache some things.
         container_registry = UM.Settings.ContainerRegistry.getInstance()
