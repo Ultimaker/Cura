@@ -20,7 +20,7 @@ Item {
 
     property var showRevertButton: true
     property var showInheritButton: true
-    property var doDepthIdentation: true
+    property var doDepthIndentation: true
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
@@ -101,7 +101,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIdentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
+            anchors.leftMargin: doDepthIndentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
