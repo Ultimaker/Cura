@@ -461,7 +461,6 @@
                     "unit": "mm",
                     "default_value": 0.8,
                     "minimum_value": "0",
-                    "maximum_value": "5",
                     "minimum_value_warning": "0.6",
                     "type": "float",
                     "children":
