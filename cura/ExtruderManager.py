@@ -82,8 +82,7 @@ class ExtruderManager(QObject):
             if not position:
                 UM.Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.getId())
             if not container_registry.findContainerStacks(machine = machine_id, position = position): #Doesn't exist yet.
-                name = container_registry.uniqueName(extruder_definition.getId()) #Make a name based on the ID of the definition.
-                self.createExtruderTrain(extruder_definition, machine_definition, name, position)
+                self.createExtruderTrain(extruder_definition, machine_definition, position)
 
         #Gets the extruder trains that we just created as well as any that still existed.
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_definition.getId())
@@ -92,13 +91,15 @@ class ExtruderManager(QObject):
         if extruder_trains:
             self.extrudersChanged.emit(machine_definition)
 
-    def createExtruderTrain(self, extruder_definition, machine_definition, extruder_train_id, position):
+    def createExtruderTrain(self, extruder_definition, machine_definition, position):
         #Cache some things.
         container_registry = UM.Settings.ContainerRegistry.getInstance()
         machine_id = machine_definition.getId()
 
         #Create a container stack for this extruder.
-        container_stack = UM.Settings.ContainerStack(extruder_train_id)
+        extruder_stack_id = container_registry.uniqueName(extruder_definition.getId())
+        container_stack = UM.Settings.ContainerStack(extruder_stack_id)
+        container_stack.setName(extruder_definition.getName()) #Take over the display name to display the stack with.
         container_stack.addMetaDataEntry("type", "extruder_train")
         container_stack.addMetaDataEntry("machine", machine_definition.getId())
         container_stack.addMetaDataEntry("position", position)
@@ -158,11 +159,11 @@ class ExtruderManager(QObject):
                     #And leave it at the default quality.
         container_stack.addContainer(quality)
 
-        user_profile = container_registry.findInstanceContainers(id = extruder_train_id + "_current_settings")
+        user_profile = container_registry.findInstanceContainers(id = extruder_stack_id + "_current_settings")
         if user_profile: #There was already a user profile, loaded from settings.
             user_profile = user_profile[0]
         else:
-            user_profile = UM.Settings.InstanceContainer(extruder_train_id + "_current_settings") #Add an empty user profile.
+            user_profile = UM.Settings.InstanceContainer(extruder_stack_id + "_current_settings") #Add an empty user profile.
             user_profile.addMetaDataEntry("type", "user")
             user_profile.setDefinition(machine_definition)
             container_registry.addContainer(user_profile)
