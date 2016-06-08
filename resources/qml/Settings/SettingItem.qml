@@ -24,7 +24,8 @@ Item {
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var stackLevel: propertyProvider.stackLevels[0]
+    property var stackLevels: propertyProvider.stackLevels
+    property var stackLevel: stackLevels[0]
 
     signal contextMenuRequested()
     signal showTooltip(string text);
@@ -159,7 +160,7 @@ Item {
                 id: inheritButton;
 
                 //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: base.state == "InstanceState.User" && base.stackLevel > 0 && base.showInheritButton
+                visible: base.state == "InstanceState.User" && base.showInheritButton
 
                 height: parent.height;
                 width: height;
@@ -175,6 +176,7 @@ Item {
                     // needed for the reset button (which deletes the top value) to correctly go back to profile
                     // defaults.
                     propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
+                    propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");
