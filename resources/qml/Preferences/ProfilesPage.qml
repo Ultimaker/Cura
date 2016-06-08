@@ -155,7 +155,7 @@ UM.ManagementPage
                 model: Cura.ContainerSettingsModel{ containers: (currentItem.id == Cura.MachineManager.activeQualityId) ? [base.currentItem.id, Cura.MachineManager.activeUserProfileId] : [base.currentItem.id] }
                 delegate: Row {
                     property variant setting: model
-                    spacing: UM.Theme.getSize("default_margin").width
+                    spacing: UM.Theme.getSize("default_margin").width/2
                     Label {
                         text: model.label
                         elide: Text.ElideMiddle
@@ -165,13 +165,29 @@ UM.ManagementPage
                         model: setting.values.length
                         Label {
                             text: setting.values[index].toString()
-                            width: scrollView.width / 100 * 10
+                            width: scrollView.width / 100 * 15
+                            elide: Text.ElideRight
                             font.strikeout: index < setting.values.length - 1 && setting.values[index + 1] != ""
                             opacity: font.strikeout ? 0.5 : 1
                         }
                     }
                     Label {
                         text: model.unit
+                    }
+                }
+                header: Row {
+                    visible: currentItem.id == Cura.MachineManager.activeQualityId
+                    spacing: UM.Theme.getSize("default_margin").width
+                    Label {
+                        text: catalog.i18nc("@action:label", "Profile value")
+                        width: scrollView.width / 100 * 55
+                        horizontalAlignment: Text.AlignRight
+                        font.bold: true
+                    }
+                    Label {
+                        text: catalog.i18nc("@action:label", "Current setting")
+                        visible: currentItem.id == Cura.MachineManager.activeQualityId
+                        font.bold: true
                     }
                 }
                 section.property: "category"
