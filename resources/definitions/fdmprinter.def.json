@@ -1055,7 +1055,7 @@
                                 "speed_wall_x":
                                 {
                                     "label": "Inner Wall Speed",
-                                    "description": "The speed at which all inner walls are printed Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed.",
+                                    "description": "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "minimum_value": "0.1",
