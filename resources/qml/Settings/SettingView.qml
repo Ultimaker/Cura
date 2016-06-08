@@ -29,7 +29,8 @@ ScrollView
         model: UM.SettingDefinitionsModel {
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
-            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+            exclude: ["machine_settings"]
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
         }
 
         delegate: Loader

@@ -2138,6 +2138,7 @@
                     "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value": "machine_extruder_count - 1",
+                    "enabled": "support_enable",
                     "global_only": "True",
                     "children": {
                         "support_infill_extruder_nr":

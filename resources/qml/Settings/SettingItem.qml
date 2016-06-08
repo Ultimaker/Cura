@@ -20,11 +20,11 @@ Item {
 
     property var showRevertButton: true
     property var showInheritButton: true
-    property var doDepthIdentation: true
+    property var doDepthIndentation: true
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var stackLevel: propertyProvider.stackLevel
+    property var stackLevel: propertyProvider.stackLevels[0]
 
     signal contextMenuRequested()
     signal showTooltip(string text);
@@ -101,7 +101,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIdentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
+            anchors.leftMargin: doDepthIndentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -166,7 +166,15 @@ Item {
 
                 onClicked: {
                     focus = true;
-                    propertyProvider.removeFromContainer(base.stackLevel)
+                    // Get the deepest entry of this setting that we can find. TODO: This is a bit naive, in some cases
+                    // there might be multiple profiles saying something about the same setting. There is no strategy
+                    // how to handle this as of yet.
+                    var last_entry = propertyProvider.stackLevels.slice(-1)[0]
+                    // Put that entry into the "top" instance container.
+                    // This ensures that the value in any of the deeper containers need not be removed, which is
+                    // needed for the reset button (which deletes the top value) to correctly go back to profile
+                    // defaults.
+                    propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");

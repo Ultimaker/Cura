@@ -15,6 +15,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
         self._stack = ContainerStack(stack_id = id(self))
+        self._stack.setDirty(False)  # This stack does not need to be saved.
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
 
@@ -28,10 +29,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def __deepcopy__(self, memo):
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
-        ## Copy the stack
-        deep_copy._stack = copy.deepcopy(self._stack, memo)
-        ## Ensure that the id is unique.
-        deep_copy._stack._id = id(deep_copy)
+        ## Copy the instance
+        deep_copy._instance = copy.deepcopy(self._instance, memo)
+        ## Set the copied instance as the first (and only) instance container of the stack.
+        deep_copy._stack.replaceContainer(0, deep_copy._instance)
         return deep_copy
 
     def _onSettingChanged(self, instance, property):

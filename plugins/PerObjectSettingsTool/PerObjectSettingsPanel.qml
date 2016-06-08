@@ -61,7 +61,7 @@ Item {
                     onLoaded: {
                         settingLoader.item.showRevertButton = false
                         settingLoader.item.showInheritButton = false
-                        settingLoader.item.doDepthIdentation = false
+                        settingLoader.item.doDepthIndentation = false
                     }
 
                     sourceComponent:
@@ -120,7 +120,7 @@ Item {
 
                     containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
                     key: model.key
-                    watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                    watchedProperties: [ "value", "enabled", "validationState" ]
                     storeIndex: 0
                 }
             }
