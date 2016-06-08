@@ -1188,7 +1188,7 @@
                 "acceleration_enabled": {
                     "label": "Enable Acceleration Control",
                     "description": "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality.",
-                    "type": "boolean",
+                    "type": "bool",
                     "default_value": false,
                     "global_only": "True"
                 },
@@ -1354,7 +1354,7 @@
                 "jerk_enabled": {
                     "label": "Enable Jerk Control",
                     "description": "Enables adjusting the jerk of print head when the X ar Y axis halts or starts to move. Increasing the jerk can reduce printing time at the cost of print quality.",
-                    "type": "boolean",
+                    "type": "bool",
                     "default_value": false,
                     "global_only": "True"
                 },
