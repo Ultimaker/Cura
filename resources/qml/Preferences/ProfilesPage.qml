@@ -142,6 +142,8 @@ UM.ManagementPage
                         Label {
                             text: setting.values[index].toString()
                             width: scrollView.width / 100 * 10
+                            font.strikeout: index < setting.values.length - 1 && setting.values[index + 1] != ""
+                            opacity: font.strikeout ? 0.5 : 1
                         }
                     }
                     Label {
