@@ -174,7 +174,7 @@ class StartSliceJob(Job):
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
         for key in stack.getAllKeys():
-            setting = message.addRepeatedMessage("settings")
+            setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
