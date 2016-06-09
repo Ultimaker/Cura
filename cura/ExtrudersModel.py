@@ -28,6 +28,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   containers.
     IndexRole = Qt.UserRole + 4
 
+    ##  Colour to display if there is no material or the material has no known
+    #   colour.
+    defaultColour = "#FFFF00"
+
     ##  Initialises the extruders model, defining the roles and listening for
     #   changes in the data.
     #
@@ -71,7 +75,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         if self._add_global:
             material = global_container_stack.findContainer({ "type": "material" })
-            colour = material.getMetaDataEntry("color_code", default = "#FFFF00") if material else "#FFFF00"
+            colour = material.getMetaDataEntry("color_code", default = self.defaultColour) if material else self.defaultColour
             item = {
                 "id": global_container_stack.getId(),
                 "name": "Global",
@@ -80,9 +84,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             }
             self.appendItem(item)
 
-        for extruder in manager.getMachineExtruders(global_container_stack.getBottom()):
+        for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
             material = extruder.findContainer({ "type": "material" })
-            colour = material.getMetaDataEntry("color_code", default = "#FFFF00") if material else "#FFFF00"
+            colour = material.getMetaDataEntry("color_code", default = self.defaultColour) if material else self.defaultColour
             position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
             try:
                 position = int(position)

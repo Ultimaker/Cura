@@ -1,11 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal
 import copy
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
-
+from UM.Signal import Signal, signalemitter
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -15,9 +14,10 @@ from UM.Application import Application
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
 #   the linked node. The Stack in question will refer to the global stack (so that settings that are not defined by
 #   this stack still resolve.
+@signalemitter
 class SettingOverrideDecorator(SceneNodeDecorator):
     ##  Event indicating that the user selected a different extruder.
-    activeExtruderChanged = pyqtSignal()
+    activeExtruderChanged = Signal()
 
     def __init__(self):
         super().__init__()
