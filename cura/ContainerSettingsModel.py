@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QUrl
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingFunction import SettingFunction
 
 class ContainerSettingsModel(ListModel):
     LabelRole = Qt.UserRole + 1
@@ -53,7 +54,11 @@ class ContainerSettingsModel(ListModel):
                     while category.type != "category":
                         category = category.parent
 
-                    values.append(container.getProperty(key, "value"))
+                    value = container.getProperty(key, "value")
+                    if type(value) == SettingFunction:
+                        values.append("=\u0192")
+                    else:
+                        values.append(container.getProperty(key, "value"))
                 else:
                     values.append("")
 
