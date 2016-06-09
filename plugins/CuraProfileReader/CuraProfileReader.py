@@ -1,10 +1,12 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import os.path
+
 from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Logger import Logger
+from UM.Settings.InstanceContainer import InstanceContainer #The new profile to make.
 from cura.ProfileReader import ProfileReader
-
 
 ##  A plugin that reads profile data from Cura profile files.
 #
@@ -24,7 +26,8 @@ class CuraProfileReader(ProfileReader):
     #   returned.
     def read(self, file_name):
         # Create an empty profile.
-        profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
+        profile = InstanceContainer(os.path.basename(os.path.splitext(file_name)[0]))
+        profile.addMetaDataEntry("type", "quality")
         try:
             with open(file_name) as f:  # Open file for reading.
                 serialized = f.read()
