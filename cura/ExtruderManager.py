@@ -191,9 +191,10 @@ class ExtruderManager(QObject):
         container_registry.addContainer(container_stack)
 
     ##  Generates extruders for a specific machine.
+    #
+    #   \param machine_id The machine to get the extruders of.
     def getMachineExtruders(self, machine_id):
-        container_registry = UM.Settings.ContainerRegistry.getInstance()
-        if not machine_id in self._extruder_trains:
+        if machine_id not in self._extruder_trains:
             UM.Logger.log("w", "Tried to get the extruder trains for machine %s, which doesn't exist.", machine_id)
             return
         for name in self._extruder_trains[machine_id]:
