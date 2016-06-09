@@ -351,6 +351,7 @@
                     "default_value": 0.4,
                     "type": "float",
                     "value": "machine_nozzle_size",
+                    "settable_per_mesh": true,
                     "children":
                     {
                         "wall_line_width":
