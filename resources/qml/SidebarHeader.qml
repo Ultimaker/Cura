@@ -128,8 +128,6 @@ Column
                 ExtruderManager.setActiveExtruderIndex(index);
             }
 
-            Component.onCompleted: console.log(model.name);
-
             style: ButtonStyle
             {
                 background: Rectangle
