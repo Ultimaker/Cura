@@ -266,7 +266,7 @@ class MachineManagerModel(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
         if not containers or not self._global_container_stack:
             return True
-        return containers[0].getMetaDataEntry("read_only", False) == "True"
+        return containers[0].isReadOnly()
 
     @pyqtSlot(result = str)
     def convertUserContainerToQuality(self):
@@ -288,7 +288,7 @@ class MachineManagerModel(QObject):
 
         ## Change type / id / name
         new_quality_container.setMetaDataEntry("type", "quality")
-        new_quality_container.setMetaDataEntry("read_only", False)
+        new_quality_container.setReadOnly(False)
         new_quality_container.setName(name)
         new_quality_container._id = name
 
@@ -310,7 +310,7 @@ class MachineManagerModel(QObject):
             ## Copy all values
             new_container.deserialize(containers[0].serialize())
 
-            new_container.setMetaDataEntry("read_only", False)
+            new_container.setReadOnly(False)
             new_container.setName(new_name)
             new_container._id = new_name
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)

@@ -65,8 +65,8 @@ UM.ManagementPage
 
     activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
     addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
-    renameEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
+    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
+    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
