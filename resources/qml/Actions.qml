@@ -54,7 +54,7 @@ Item
 
     Action
     {
-        id:toggleFullScreenAction
+        id:toggleFullScreenAction;
         text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
         iconName: "view-fullscreen";
     }
@@ -110,15 +110,15 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId);
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings");
-        onTriggered: Cura.MachineManager.updateQualityContainerFromUserContainer()
+        onTriggered: Cura.MachineManager.updateQualityContainerFromUserContainer();
     }
 
     Action
     {
         id: resetProfileAction;
-        enabled: Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.hasUserSettings;
         text: catalog.i18nc("@action:inmenu menubar:profile","&Discard current settings");
         onTriggered: Cura.MachineManager.clearUserSettings();
     }
@@ -126,7 +126,7 @@ Item
     Action
     {
         id: addProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings;
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings...");
     }
 
@@ -186,29 +186,29 @@ Item
 
     Action
     {
-        id: groupObjectsAction
+        id: groupObjectsAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Objects");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
-        iconName: "object-group"
+        enabled: UM.Scene.numObjectsSelected > 1 ? true: false;
+        iconName: "object-group";
         shortcut: "Ctrl+G";
         onTriggered: Printer.groupSelected();
     }
 
     Action
     {
-        id: unGroupObjectsAction
+        id: unGroupObjectsAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Objects");
-        enabled: UM.Scene.isGroupSelected
-        iconName: "object-ungroup"
+        enabled: UM.Scene.isGroupSelected;
+        iconName: "object-ungroup";
         shortcut: "Ctrl+Shift+G";
         onTriggered: Printer.ungroupSelected();
     }
 
     Action
     {
-        id: mergeObjectsAction
+        id: mergeObjectsAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Objects");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Scene.numObjectsSelected > 1 ? true: false;
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
         onTriggered: Printer.mergeSelected();
@@ -218,7 +218,7 @@ Item
     {
         id: multiplyObjectAction;
         text: catalog.i18nc("@action:inmenu","&Duplicate Object");
-        iconName: "edit-duplicate"
+        iconName: "edit-duplicate";
     }
 
     Action
@@ -271,7 +271,7 @@ Item
 
     Action
     {
-        id: configureSettingVisibilityAction
+        id: configureSettingVisibilityAction;
         text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
     }
 }
