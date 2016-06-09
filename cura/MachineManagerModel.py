@@ -114,8 +114,8 @@ class MachineManagerModel(QObject):
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition)
-            quality_instance_container = self._updateQualityContainer(definition)
+            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+            quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
