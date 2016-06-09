@@ -97,7 +97,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSettingType("extruder", str, ast.literal_eval, UM.Settings.Validator)
+        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
