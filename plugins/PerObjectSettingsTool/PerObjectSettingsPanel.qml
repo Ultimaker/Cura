@@ -101,7 +101,7 @@ Item {
                     }
                 }
 
-                onActivated: UM.ActiveTool.properties.setValue("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                onActivated: UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
                 onModelChanged: updateCurrentIndex();
 
                 function updateCurrentIndex()
