@@ -5,12 +5,17 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
+from UM.Resources import Resources
+
+import os
+import urllib
 
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerStack import ContainerStack
 from . import ExtruderManager
+import cura.CuraApplication
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -323,8 +328,19 @@ class MachineManagerModel(QObject):
     def renameQualityContainer(self, container_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
+
+            # Remove old container form drive.
+            old_id = containers[0].getId()
+            file_name = urllib.parse.quote_plus(old_id) + ".inst.cfg"
+            path = Resources.getStoragePath(cura.CuraApplication.CuraApplication.ResourceTypes.QualityInstanceContainer,
+                                            file_name)
+            os.remove(path)
+
+            ## Check if the new name is allowed.
             new_name = self._createUniqueName("quality", containers[0].getName(), new_name, catalog.i18nc("@label", "Custom profile"))
+
             containers[0].setName(new_name)
+            containers[0]._id = new_name  # Todo: Fix proper id change function for this.
             self.activeQualityChanged.emit()
 
 
