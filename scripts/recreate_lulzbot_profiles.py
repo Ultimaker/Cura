@@ -434,7 +434,7 @@ material_url = {
 #	"HT": "",
 #	"b-pet": "",
 #	"PC-MAX": "",
-#	"wood-bamboo: " "",
+#	"wood-bamboo": "",
 #	"PLA_poly": "",
 }
 
