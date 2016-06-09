@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2016 Ultimaker B.V.
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -25,6 +25,98 @@ Item {
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height;
+
+        Row
+        {
+            ComboBox
+            {
+                id: extruderSelector
+
+                model: Cura.ExtrudersModel
+                {
+                    id: extruders_model
+                }
+                textRole: "name"
+                width: items.width
+                height: UM.Theme.getSize("section").height
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    onWheel: wheel.accepted = true;
+                }
+
+                style: ComboBoxStyle
+                {
+                    background: Rectangle
+                    {
+                        color:
+                        {
+                            if(extruderSelector.hovered || base.activeFocus)
+                            {
+                                return UM.Theme.getColor("setting_control_highlight");
+                            }
+                            else
+                            {
+                                return extruders_model.getItem(extruderSelector.currentIndex).colour;
+                            }
+                        }
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("setting_control_border")
+                    }
+                    label: Item
+                    {
+                        Label
+                        {
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                            anchors.right: downArrow.left
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: extruderSelector.currentText
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("setting_control_disabled_text")
+
+                            elide: Text.ElideRight
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        UM.RecolorImage
+                        {
+                            id: downArrow
+                            anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            source: UM.Theme.getIcon("arrow_bottom")
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
+                            sourceSize.width: width + 5
+                            sourceSize.height: width + 5
+
+                            color: UM.Theme.getColor("setting_control_text")
+                        }
+                    }
+                }
+
+                onActivated: UM.ActiveTool.properties.setValue("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                onModelChanged: updateCurrentIndex();
+
+                function updateCurrentIndex()
+                {
+                    for(var i = 0; i < extruders_model.rowCount(); ++i)
+                    {
+                        if(extruders_model.getItem(i).id == UM.ActiveTool.properties.getValue("SelectedActiveExtruder"))
+                        {
+                            extruderSelector.currentIndex = i;
+                            return;
+                        }
+                    }
+                    extruderSelector.currentIndex = -1;
+                }
+            }
+        }
 
         Repeater
         {

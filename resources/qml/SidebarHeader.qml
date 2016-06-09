@@ -123,7 +123,7 @@ Column
 
             onClicked:
             {
-                extruderSelection.focus = true; //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                focus = true; //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
                 base.currentExtruderIndex = index;
                 ExtruderManager.setActiveExtruderIndex(index);
             }

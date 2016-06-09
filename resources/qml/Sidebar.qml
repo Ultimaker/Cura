@@ -12,13 +12,6 @@ Rectangle
 {
     id: base;
 
-    property Action addMachineAction;
-    property Action configureMachinesAction;
-    property Action addProfileAction;
-    property Action updateProfileAction;
-    property Action resetProfileAction;
-    property Action manageProfilesAction;
-    property Action configureSettingsAction;
     property int currentModeIndex;
 
     color: UM.Theme.getColor("sidebar");

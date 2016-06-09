@@ -533,13 +533,6 @@ UM.MainWindow
                 }
 
                 width: UM.Theme.getSize("sidebar").width;
-
-                addMachineAction: Cura.Actions.addMachine;
-                configureMachinesAction: Cura.Actions.configureMachines;
-                addProfileAction: Cura.Actions.addProfile;
-                updateProfileAction: Cura.Actions.updateProfile;
-                resetProfileAction: Cura.Actions.resetProfile;
-                manageProfilesAction: Cura.Actions.manageProfiles;
             }
         }
     }
