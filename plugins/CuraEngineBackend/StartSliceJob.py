@@ -37,16 +37,12 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    def __init__(self, slice_message, settings_message):
+    def __init__(self, slice_message):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
         self._slice_message = slice_message
-        self._settings_message = settings_message
         self._is_cancelled = False
-
-    def getSettingsMessage(self):
-        return self._settings_message
 
     def getSliceMessage(self):
         return self._slice_message
@@ -185,7 +181,7 @@ class StartSliceJob(Job):
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
-            setting_message = self._settings_message.addRepeatedMessage("settings")
+            setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
             if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
