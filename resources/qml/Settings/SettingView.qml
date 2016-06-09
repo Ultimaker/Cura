@@ -31,6 +31,15 @@ ScrollView
             containerId: Cura.MachineManager.activeDefinitionId
             exclude: ["machine_settings"]
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+
+            filter:
+            {
+                if(ExtruderManager.activeExtruderStackId)
+                {
+                    return { "settable_per_extruder": true }
+                }
+                return { }
+            }
         }
 
         delegate: Loader
