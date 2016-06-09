@@ -324,7 +324,6 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.8 * machine_nozzle_size",
-                    "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -338,7 +337,6 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.8 * machine_nozzle_size",
-                    "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -366,7 +364,6 @@
                             "value":"line_width",
                             "default_value": 0.4,
                             "type": "float",
-                            "default_value": true,
                             "settable_per_mesh": true,
                             "children":
                             {
