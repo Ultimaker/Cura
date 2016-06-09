@@ -189,21 +189,10 @@ class StartSliceJob(Job):
                 setting_message.value = str(value).encode("utf-8")
 
     def _handlePerObjectSettings(self, node, message):
-        profile = node.callDecoration("getProfile")
-        if profile:
-            for key, value in profile.getAllSettingValues().items():
+        stack = node.callDecoration("getStack")
+        if stack:
+            for key in stack.getAllKeys():
                 setting = message.addRepeatedMessage("settings")
                 setting.name = key
-                setting.value = str(value).encode()
-
+                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
                 Job.yieldThread()
-
-        object_settings = node.callDecoration("getAllSettingValues")
-        if not object_settings:
-            return
-        for key, value in object_settings.items():
-            setting = message.addRepeatedMessage("settings")
-            setting.name = key
-            setting.value = str(value).encode()
-
-            Job.yieldThread()
