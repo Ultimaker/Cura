@@ -5,7 +5,7 @@ from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Application import Application
 from UM.Preferences import Preferences
-
+from cura.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  This tool allows the user to add & change settings per node in the scene.
 #   The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
@@ -55,6 +55,9 @@ class PerObjectSettingsTool(Tool):
     #   selected object with.
     def setSelectedActiveExtruder(self, extruder_stack_id):
         selected_object = Selection.getSelectedObject(0)
+        stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
+        if not stack:
+            selected_object.addDecorator(SettingOverrideDecorator())
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
 
     def _onPreferenceChanged(self, preference):
