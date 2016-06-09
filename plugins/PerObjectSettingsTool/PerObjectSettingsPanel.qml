@@ -36,6 +36,7 @@ Item {
                 {
                     id: extruders_model
                 }
+                visible: extruders_model.rowCount() > 1
                 textRole: "name"
                 width: items.width
                 height: UM.Theme.getSize("section").height
