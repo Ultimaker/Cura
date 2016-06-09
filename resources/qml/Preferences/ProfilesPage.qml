@@ -191,13 +191,13 @@ UM.ManagementPage
                     visible: currentItem.id == Cura.MachineManager.activeQualityId
                     spacing: UM.Theme.getSize("default_margin").width
                     Label {
-                        text: catalog.i18nc("@action:label", "Profile value")
+                        text: catalog.i18nc("@action:label", "Profile:")
                         width: scrollView.width / 100 * 55
                         horizontalAlignment: Text.AlignRight
                         font.bold: true
                     }
                     Label {
-                        text: catalog.i18nc("@action:label", "Current setting")
+                        text: catalog.i18nc("@action:label", "Current:")
                         visible: currentItem.id == Cura.MachineManager.activeQualityId
                         font.bold: true
                     }
