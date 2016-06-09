@@ -36,6 +36,22 @@ UM.ManagementPage
         }
     }
 
+    section.property: "readOnly"
+    section.delegate: Rectangle
+    {
+        width: objectListContainer.viewport.width;
+        height: childrenRect.height;
+        color: palette.light
+
+        Label
+        {
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_lining").width;
+            text: section == "true" ? catalog.i18nc("@label", "Protected profiles") : catalog.i18nc("@label", "Custom profiles")
+            font.bold: true
+        }
+    }
+
     activeId: Cura.MachineManager.activeQualityId
     activeIndex: {
         for(var i = 0; i < model.rowCount(); i++) {
