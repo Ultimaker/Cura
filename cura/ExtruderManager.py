@@ -187,19 +187,18 @@ class ExtruderManager(QObject):
 
         container_registry.addContainer(container_stack)
 
-    ##  Generates extruders for a specific machine.
-    def getMachineExtruders(self, machine_definition):
+    ##  Gets extruders for a specific machine.
+    def getMachineExtruders(self, machine_definition_id):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
-        machine_id = machine_definition.getId()
-        if not machine_id in self._extruder_trains:
-            UM.Logger.log("w", "Tried to get the extruder trains for machine %s, which doesn't exist.", machine_id)
+        if not machine_definition_id in self._extruder_trains:
+            UM.Logger.log("w", "Tried to get the extruder trains for machine %s, which doesn't exist.", machine_definition_id)
             return
-        for _,extruder_train_id in self._extruder_trains[machine_id].items():
+        for _,extruder_train_id in self._extruder_trains[machine_definition_id].items():
             extruder_train = container_registry.findContainerStacks(id = extruder_train_id)
             if extruder_train:
                 yield extruder_train[0]
             else:
-                UM.Logger.log("w", "Machine %s refers to an extruder train with ID %s, which doesn't exist.", machine_id, extruder_train_id)
+                UM.Logger.log("w", "Machine %s refers to an extruder train with ID %s, which doesn't exist.", machine_definition_id, extruder_train_id)
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self):

@@ -15,6 +15,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Validator import ValidatorState
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
+from cura.ExtruderManager import ExtruderManager
 
 class StartJobResult(IntEnum):
     Finished = 1
@@ -127,6 +128,9 @@ class StartSliceJob(Job):
 
             self._buildGlobalSettingsMessage(stack)
 
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
+                self._buildExtruderMessage(extruder_stack)
+
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent().callDecoration("isGroup"):
@@ -165,6 +169,15 @@ class StartSliceJob(Job):
         except:
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
             return str(value).encode("utf-8")
+
+    def _buildExtruderMessage(self, stack):
+        message = self._slice_message.addRepeatedMessage("extruders")
+        message.id = int(stack.getMetaDataEntry("position"))
+        for key in stack.getAllKeys():
+            setting = message.addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            Job.yieldThread()
 
     ##  Sends all global settings to the engine.
     #
