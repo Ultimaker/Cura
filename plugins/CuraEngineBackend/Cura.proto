@@ -12,7 +12,13 @@ message Slice
 {
     repeated ObjectList object_lists = 1;
     SettingList global_settings = 2;
-    repeated SettingList extruder_settings = 3;
+    repeated Extruder extruders = 3;
+}
+
+message Extruder
+{
+    int32 id = 1;
+    SettingList settings = 2;
 }
 
 message Object
