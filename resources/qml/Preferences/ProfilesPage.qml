@@ -65,7 +65,7 @@ UM.ManagementPage
     onAddObject: {
         var selectedContainer;
         if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
-            selectedContainer = Cura.MachineManager.convertUserContainerToQuality();
+            selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
         } else {
             selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
         }
@@ -121,7 +121,7 @@ UM.ManagementPage
                     return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
                 }
                 enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
-                onClicked: Cura.MachineManager.updateUserContainerToQuality()
+                onClicked: Cura.MachineManager.updateQualityContainerFromUserContainer()
             }
 
             Button
