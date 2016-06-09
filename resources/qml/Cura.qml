@@ -258,13 +258,13 @@ UM.MainWindow
                     {
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
-                            if(model.getItem(index-1).metadata.read_only != model.getItem(index).metadata.read_only) {
+                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
                                 profileMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
                         //Because of the separator, custom profiles move one index lower
-                        profileMenu.insertItem((model.getItem(index).metadata.read_only) ? index : index + 1, object.item);
+                        profileMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
                     }
                     onObjectRemoved:
                     {

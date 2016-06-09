@@ -190,11 +190,11 @@ Item {
             {
                 if(text != "")
                 {
-                    listview.model.filter = {"global_only": false, "label": "*" + text}
+                    listview.model.filter = {"settable_per_mesh": true, "label": "*" + text}
                 }
                 else
                 {
-                    listview.model.filter = {"global_only": false}
+                    listview.model.filter = {"settable_per_mesh": true}
                 }
             }
         }
@@ -219,7 +219,7 @@ Item {
                     containerId: Cura.MachineManager.activeDefinitionId
                     filter:
                     {
-                        "global_only": false
+                        "settable_per_mesh": true
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
