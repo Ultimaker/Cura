@@ -401,23 +401,11 @@ Column
                 }
 
                 MenuSeparator { }
-                MenuItem
-                {
-                    action: Cura.Actions.updateProfile;
-                }
-                MenuItem
-                {
-                    action: Cura.Actions.resetProfile;
-                }
-                MenuItem
-                {
-                    action: Cura.Actions.addProfile;
-                }
+                MenuItem { action: Cura.Actions.addProfile }
+                MenuItem { action: Cura.Actions.updateProfile }
+                MenuItem { action: Cura.Actions.resetProfile }
                 MenuSeparator { }
-                MenuItem
-                {
-                    action: Cura.Actions.manageProfiles;
-                }
+                MenuItem { action: Cura.Actions.manageProfiles }
             }
 
             UM.SimpleButton

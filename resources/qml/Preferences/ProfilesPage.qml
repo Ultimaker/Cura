@@ -13,7 +13,7 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Profiles");
-    addText: catalog.i18nc("@label", "Duplicate")
+    addText: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
 
     model: UM.InstanceContainersModel
     {
@@ -116,9 +116,7 @@ UM.ManagementPage
             Button
             {
                 text: {
-                    var profileName = Cura.MachineManager.activeQualityName;
-                    profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
-                    return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
+                    return catalog.i18nc("@action:button", "Update profile with current settings");
                 }
                 enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
                 onClicked: Cura.MachineManager.updateQualityContainerFromUserContainer()
@@ -126,7 +124,7 @@ UM.ManagementPage
 
             Button
             {
-                text: catalog.i18nc("@action:button", "Discard changes");
+                text: catalog.i18nc("@action:button", "Discard current settings");
                 enabled: Cura.MachineManager.hasUserSettings
                 onClicked: Cura.MachineManager.clearUserSettings();
             }
