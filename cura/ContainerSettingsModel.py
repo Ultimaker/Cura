@@ -20,7 +20,7 @@ class ContainerSettingsModel(ListModel):
         self.addRoleName(self.ValuesRole, "values")
 
         self._container_ids = []
-        self._container = None
+        self._containers = []
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
