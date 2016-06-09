@@ -128,8 +128,6 @@ Column
                 ExtruderManager.setActiveExtruderIndex(index);
             }
 
-            Component.onCompleted: console.log(model.name);
-
             style: ButtonStyle
             {
                 background: Rectangle
@@ -365,7 +363,7 @@ Column
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0)
                         {
-                            if(model.getItem(index-1).readOnly != model.getItem(index).metadata.read_only)
+                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly)
                             {
                                 profileSelectionMenu.insertSeparator(index);
                                 separatorIndex = index;
@@ -376,7 +374,7 @@ Column
                     }
                     onObjectRemoved:
                     {
-                        //When adding a profile, the menu is rebuild by removing all items.
+                        //When adding a profile, the menu is rebuilt by removing all items.
                         //If a separator was added, we need to remove that too.
                         if(separatorIndex >= 0)
                         {
