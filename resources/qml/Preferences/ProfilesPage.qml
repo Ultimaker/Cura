@@ -41,7 +41,6 @@ UM.ManagementPage
     {
         width: objectListContainer.viewport.width;
         height: childrenRect.height;
-        color: palette.light
 
         Label
         {
