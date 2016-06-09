@@ -91,7 +91,7 @@ ScrollView
                 id: provider
 
                 containerStackId: ExtruderManager.activeExtruderStackId ? ExtruderManager.activeExtruderStackId : Cura.MachineManager.activeMachineId
-                key: model.key
+                key: model.key ? model.key : ""
                 watchedProperties: [ "value", "enabled", "state", "validationState" ]
                 storeIndex: 0
             }
