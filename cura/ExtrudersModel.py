@@ -54,10 +54,15 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         for index, extruder in enumerate(manager.getMachineExtruders(global_container_stack.getBottom().getId())):
             material = extruder.findContainer({ "type": "material" })
             colour = material.getMetaDataEntry("color_code", default = "#FFFF00") if material else "#FFFF00"
+            position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
+            try:
+                position = int(position)
+            except ValueError: #Not a proper int.
+                position = -1
             item = { #Construct an item with only the relevant information.
                 "name": extruder.getName(),
                 "colour": colour,
-                "index": index
+                "index": position
             }
             self.appendItem(item)
         self.sort(lambda item: item["index"])

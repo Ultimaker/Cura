@@ -49,8 +49,7 @@ UM.ManagementPage
     onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
     onAddObject: {
         var selectedContainer;
-        if (objectList.currentIndex == 0) {
-            // Current settings
+        if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
             selectedContainer = Cura.MachineManager.convertUserContainerToQuality();
         } else {
             selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);

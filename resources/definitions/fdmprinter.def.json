@@ -1043,7 +1043,7 @@
                                 "speed_wall_0":
                                 {
                                     "label": "Outer Wall Speed",
-                                    "description": "The speed at which the outermost walls are printed. Printing the outer wall at a lower speed improves the final skin quality. However, having a large difference between the inner wall speed and the outer wall speed will effect quality in a negative way.",
+                                    "description": "The speed at which the outermost walls are printed. Printing the outer wall at a lower speed improves the final skin quality. However, having a large difference between the inner wall speed and the outer wall speed will affect quality in a negative way.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "minimum_value": "0.1",
