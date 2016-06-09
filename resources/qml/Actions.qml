@@ -112,7 +112,7 @@ Item
         id: updateProfileAction;
         enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update Current Profile");
-        onTriggered: Cura.MachineManager.updateUserContainerToQuality()
+        onTriggered: Cura.MachineManager.updateQualityContainerFromUserContainer()
     }
 
     Action
