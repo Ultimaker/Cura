@@ -110,8 +110,9 @@ Item
                 checked: base.currentExtruderIndex == index
                 onClicked:
                 {
-                    base.currentExtruderIndex = index
-                    ExtruderManager.setActiveExtruderIndex(index)
+                    extruderSelection.focus = true; //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                    base.currentExtruderIndex = index;
+                    ExtruderManager.setActiveExtruderIndex(index);
                 }
 
                 style: ButtonStyle {
