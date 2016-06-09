@@ -296,6 +296,159 @@ Item
         }
     }
 
+    Row
+    {
+        id: globalProfileRow
+        height: UM.Theme.getSize("sidebar_setup").height
+
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+
+        Label
+        {
+            id: globalProfileLabel
+            text: catalog.i18nc("@label","Profile:");
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ToolButton
+        {
+            id: globalProfileSelection
+            text: Cura.MachineManager.activeQualityName
+            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("setting_control").height
+            tooltip: Cura.MachineManager.activeQualityName
+            style: UM.Theme.styles.sidebar_header_button
+
+            menu: Menu
+            {
+                id: profileSelectionMenu
+                Instantiator
+                {
+                    id: profileSelectionInstantiator
+                    model: UM.InstanceContainersModel
+                    {
+                        filter:
+                        {
+                            var result = { "type": "quality" };
+                            if(Cura.MachineManager.filterQualityByMachine)
+                            {
+                                result.definition = Cura.MachineManager.activeDefinitionId;
+                                if(Cura.MachineManager.hasMaterials)
+                                {
+                                    result.material = Cura.MachineManager.activeMaterialId;
+                                }
+                            }
+                            else
+                            {
+                                result.definition = "fdmprinter"
+                            }
+                            return result
+                        }
+                    }
+                    property int separatorIndex: -1
+
+                    Loader {
+                        property QtObject model_data: model
+                        property int model_index: index
+                        sourceComponent: menuItemDelegate
+                    }
+                    onObjectAdded:
+                    {
+                        //Insert a separator between readonly and custom profiles
+                        if(separatorIndex < 0 && index > 0)
+                        {
+                            if(model.getItem(index-1).readOnly != model.getItem(index).metadata.read_only)
+                            {
+                                profileSelectionMenu.insertSeparator(index);
+                                separatorIndex = index;
+                            }
+                        }
+                        //Because of the separator, custom profiles move one index lower
+                        profileSelectionMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
+                    }
+                    onObjectRemoved:
+                    {
+                        //When adding a profile, the menu is rebuild by removing all items.
+                        //If a separator was added, we need to remove that too.
+                        if(separatorIndex >= 0)
+                        {
+                            profileSelectionMenu.removeItem(profileSelectionMenu.items[separatorIndex])
+                            separatorIndex = -1;
+                        }
+                        profileSelectionMenu.removeItem(object.item);
+                    }
+                }
+                ExclusiveGroup { id: profileSelectionMenuGroup; }
+
+                Component
+                {
+                    id: menuItemDelegate
+                    MenuItem
+                    {
+                        id: item
+                        text: model_data ? model_data.name : ""
+                        checkable: true
+                        checked: model_data != null ? Cura.MachineManager.activeQualityId == model_data.id : false
+                        exclusiveGroup: profileSelectionMenuGroup;
+                        onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
+                    }
+                }
+
+                MenuSeparator { }
+                MenuItem
+                {
+                    action: Cura.Actions.updateProfile;
+                }
+                MenuItem
+                {
+                    action: Cura.Actions.resetProfile;
+                }
+                MenuItem
+                {
+                    action: Cura.Actions.addProfile;
+                }
+                MenuSeparator { }
+                MenuItem
+                {
+                    action: Cura.Actions.manageProfiles;
+                }
+            }
+
+            UM.SimpleButton
+            {
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                height: parent.height * 0.6
+                width: parent.height * 0.6
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star");
+
+                onClicked: base.manageProfilesAction.trigger()
+                onEntered:
+                {
+                    var content = catalog.i18nc("@tooltip","Some setting values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(globalProfileRow, Qt.point(0, globalProfileRow.height / 2),  content)
+                }
+                onExited: base.hideTooltip()
+            }
+        }
+    }
+
     UM.SettingPropertyProvider
     {
         id: machineExtruderCount
