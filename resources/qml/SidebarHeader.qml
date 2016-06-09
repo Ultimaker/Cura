@@ -8,53 +8,53 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Item
+Column
 {
     id: base;
-    // Machine Setup
-    property Action addMachineAction;
-    property Action configureMachinesAction;
-    UM.I18nCatalog { id: catalog; name:"cura"}
+
     property int totalHeightHeader: childrenRect.height
     property int currentExtruderIndex;
 
-    Rectangle {
-        id: sidebarTabRow
-        width: base.width
-        height: 0
-        anchors.top: parent.top
-        color: UM.Theme.getColor("sidebar_header_bar")
-    }
+    spacing: UM.Theme.getSize("default_margin").height
 
-    Rectangle {
+    signal showTooltip(Item item, point location, string text)
+    signal hideTooltip()
+
+    Row
+    {
         id: machineSelectionRow
-        width: base.width
         height: UM.Theme.getSize("sidebar_setup").height
-        anchors.top: sidebarTabRow.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.horizontalCenter: parent.horizontalCenter
 
-        Label{
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        Label
+        {
             id: machineSelectionLabel
-            //: Machine selection label
-            text: catalog.i18nc("@label:listbox","Printer:");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label:listbox", "Printer:");
             anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
+
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
         }
 
-        ToolButton {
+        ToolButton
+        {
             id: machineSelection
             text: Cura.MachineManager.activeMachineName;
-            width: parent.width/100*55
+
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeMachineName;
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             style: UM.Theme.styles.sidebar_header_button
+
+            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
 
             menu: Menu
             {
@@ -81,103 +81,116 @@ Item
 
                 MenuSeparator { }
 
-                MenuItem { action: base.addMachineAction; }
-                MenuItem { action: base.configureMachinesAction; }
+                MenuItem { action: Cura.Actions.addMachine; }
+                MenuItem { action: Cura.Actions.configureMachines; }
             }
         }
     }
 
-    Rectangle {
-        id: extruderSelection
-        width: parent.width/100*55
+    ListView
+    {
+        id: extrudersList
+        property var index: 0
+
         visible: machineExtruderCount.properties.value > 1
-        height: visible ? UM.Theme.getSize("sidebar_header_mode_toggle").height : 0
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        anchors.top: machineSelectionRow.bottom
-        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
-        Component{
-            id: wizardDelegate
-            Button {
-                height: extruderSelection.height
-                anchors.left: parent.left
-                anchors.leftMargin: model.index * (extruderSelection.width / machineExtruderCount.properties.value)
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width / machineExtruderCount.properties.value
-                text: model.name
-                exclusiveGroup: extruderMenuGroup;
-                checkable: true;
-                checked: base.currentExtruderIndex == index
-                onClicked:
-                {
-                    extruderSelection.focus = true; //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                    base.currentExtruderIndex = index;
-                    ExtruderManager.setActiveExtruderIndex(index);
-                }
+        height: UM.Theme.getSize("sidebar_header_mode_toggle").height
 
-                style: ButtonStyle {
-                    background: Rectangle {
-                        border.width: UM.Theme.getSize("default_lining").width
-                        border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
-                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
-                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
-                        color: control.checked ? UM.Theme.getColor("toggle_checked") :
-                                   control.pressed ? UM.Theme.getColor("toggle_active") :
-                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
-                        Behavior on color { ColorAnimation { duration: 50; } }
-                        Label {
-                            anchors.centerIn: parent
-                            color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
-                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
-                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
-                            font: UM.Theme.getFont("default")
-                            text: control.text;
-                        }
-                    }
-                    label: Item { }
-                }
-            }
-        }
-        ExclusiveGroup { id: extruderMenuGroup; }
-        ListView
+        boundsBehavior: Flickable.StopAtBounds
+
+        anchors
         {
-            id: extrudersList
-            property var index: 0
-            model: Cura.ExtrudersModel {}
-            delegate: wizardDelegate
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: parent.width
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        ExclusiveGroup { id: extruderMenuGroup; }
+
+        orientation: ListView.Horizontal
+
+        model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: true }
+
+        delegate: Button
+        {
+            height: ListView.view.height
+            width: ListView.view.width / extrudersModel.rowCount()
+
+            text: model.name
+            exclusiveGroup: extruderMenuGroup;
+            checkable: true;
+            checked: base.currentExtruderIndex == index
+
+            onClicked:
+            {
+                extruderSelection.focus = true; //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                base.currentExtruderIndex = index;
+                ExtruderManager.setActiveExtruderIndex(index);
+            }
+
+            Component.onCompleted: console.log(model.name);
+
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
+                                        control.pressed ? UM.Theme.getColor("toggle_active_border") :
+                                        control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
+                    color: control.checked ? UM.Theme.getColor("toggle_checked") :
+                                control.pressed ? UM.Theme.getColor("toggle_active") :
+                                control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
+                    Behavior on color { ColorAnimation { duration: 50; } }
+
+                    Label
+                    {
+                        anchors.centerIn: parent
+                        color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
+                                    control.pressed ? UM.Theme.getColor("toggle_active_text") :
+                                    control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+
+                        font: UM.Theme.getFont("default")
+                        text: control.text;
+                    }
+                }
+                label: Item { }
+            }
         }
     }
 
-    Rectangle {
+    Row
+    {
         id: variantRow
-        anchors.top: extruderSelection.visible ? extruderSelection.bottom : machineSelectionRow.bottom
-        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
-        width: base.width
-        height: visible ? UM.Theme.getSize("sidebar_setup").height : 0
+
+        height: UM.Theme.getSize("sidebar_setup").height
         visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
 
-        Label{
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        Label
+        {
             id: variantLabel
             text: (Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
                     Cura.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*45
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
 
         Rectangle
         {
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
-            width: parent.width/100*55
+            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
 
             ToolButton {
@@ -214,13 +227,6 @@ Item
                             onTriggered:
                             {
                                 Cura.MachineManager.setActiveVariant(model.id);
-                                /*if (typeof(model) !== "undefined" && !model.active) {
-                                    //Selecting a variant was canceled; undo menu selection
-                                    variantSelectionInstantiator.model.setProperty(index, "active", false);
-                                    var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
-                                    var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
-                                    variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
-                                }*/
                             }
                         }
                         onObjectAdded: variantsSelectionMenu.insertItem(index, object)
@@ -277,13 +283,6 @@ Item
                             onTriggered:
                             {
                                 Cura.MachineManager.setActiveMaterial(model.id);
-                                /*if (typeof(model) !== "undefined" && !model.active) {
-                                    //Selecting a material was canceled; undo menu selection
-                                    materialSelectionInstantiator.model.setProperty(index, "active", false);
-                                    var activeMaterialName = Cura.MachineManager.activeMaterialName
-                                    var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
-                                    materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);
-                                }*/
                             }
                         }
                         onObjectAdded: materialSelectionMenu.insertItem(index, object)
@@ -458,4 +457,6 @@ Item
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
+
+    UM.I18nCatalog { id: catalog; name:"cura" }
 }
