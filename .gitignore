@@ -20,4 +20,4 @@ resources/firmware
 .pydevproject
 
 # Debian packaging
-debian/
+debian*
