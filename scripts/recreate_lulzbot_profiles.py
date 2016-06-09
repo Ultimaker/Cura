@@ -121,6 +121,8 @@ material_map = {
 	"b-pet": "b-pet",
 	"PC-MAX": "polymaker-PC-MAX",
 	"wood-bamboo": "woodFill-bambooFill",
+	"PLA_poly": "PLA-polylite",
+	
 }
 
 material_order = {
@@ -200,6 +202,7 @@ material_order = {
 	"b-pet":             5002,
 	"PC-MAX":            5003,
 	"wood-bamboo":       5004,
+	"PLA_poly":          5005,
 }
 
 material_types = {
@@ -353,6 +356,7 @@ material_names = {
 	"b-pet": "B-Pet",
 	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
+	"PLA_poly": "PLA Polylite (Polymaker)",
 }
 
 material_url = {
@@ -431,6 +435,7 @@ material_url = {
 #	"b-pet": "",
 #	"PC-MAX": "",
 #	"wood-bamboo: " "",
+#	"PLA_poly": "",
 }
 
 bed_prep_materials = {
