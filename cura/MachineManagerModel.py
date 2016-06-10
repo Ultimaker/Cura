@@ -38,8 +38,7 @@ class MachineManagerModel(QObject):
 
         if active_machine_id != "":
             # An active machine was saved, so restore it.
-            self.setActiveMachine(active_machine_id)
-            pass
+            Application.getInstance().callLater(self.setActiveMachine, active_machine_id)
 
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
