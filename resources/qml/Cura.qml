@@ -258,13 +258,13 @@ UM.MainWindow
                     {
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
-                            if(model.getItem(index-1).metadata.read_only != model.getItem(index).metadata.read_only) {
+                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
                                 profileMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
                         //Because of the separator, custom profiles move one index lower
-                        profileMenu.insertItem((model.getItem(index).metadata.read_only) ? index : index + 1, object.item);
+                        profileMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
                     }
                     onObjectRemoved:
                     {
@@ -297,11 +297,11 @@ UM.MainWindow
 
                 MenuSeparator { id: profileMenuSeparator }
 
-                MenuItem { action: Cura.Actions.updateProfile; }
-                MenuItem { action: Cura.Actions.resetProfile; }
-                MenuItem { action: Cura.Actions.addProfile; }
+                MenuItem { action: Cura.Actions.addProfile }
+                MenuItem { action: Cura.Actions.updateProfile }
+                MenuItem { action: Cura.Actions.resetProfile }
                 MenuSeparator { }
-                MenuItem { action: Cura.Actions.manageProfiles; }
+                MenuItem { action: Cura.Actions.manageProfiles }
             }
 
             Menu
@@ -533,13 +533,6 @@ UM.MainWindow
                 }
 
                 width: UM.Theme.getSize("sidebar").width;
-
-                addMachineAction: Cura.Actions.addMachine;
-                configureMachinesAction: Cura.Actions.configureMachines;
-                addProfileAction: Cura.Actions.addProfile;
-                updateProfileAction: Cura.Actions.updateProfile;
-                resetProfileAction: Cura.Actions.resetProfile;
-                manageProfilesAction: Cura.Actions.manageProfiles;
             }
         }
     }
@@ -589,7 +582,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.MachineManager.convertUserContainerToQuality();
+            Cura.MachineManager.newQualityContainerFromQualityAndUser();
             preferences.setPage(5);
             preferences.show();
 

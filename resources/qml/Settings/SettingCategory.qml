@@ -56,9 +56,9 @@ Button {
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
 
-        visible: hiddenValuesCount > 0
-        height: parent.height / 2;
-        width: height;
+        visible: false //hiddenValuesCount > 0
+        height: parent.height / 2
+        width: height
 
         onClicked: {
             base.showAllHiddenInheritedSettings()

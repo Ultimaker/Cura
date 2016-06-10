@@ -4,7 +4,6 @@ import re
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
 from UM.Preferences import Preferences
-from UM.Logger import Logger
 
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
@@ -13,6 +12,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from . import ExtruderManager
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
 
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
@@ -40,7 +40,6 @@ class MachineManagerModel(QObject):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
             pass
-
 
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
@@ -114,8 +113,8 @@ class MachineManagerModel(QObject):
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition)
-            quality_instance_container = self._updateQualityContainer(definition)
+            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+            quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
@@ -266,41 +265,21 @@ class MachineManagerModel(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
         if not containers or not self._global_container_stack:
             return True
-        return containers[0].getMetaDataEntry("read_only", False) == "True"
+        return containers[0].isReadOnly()
 
     @pyqtSlot(result = str)
-    def convertUserContainerToQuality(self):
-        if not self._global_container_stack:
+    def newQualityContainerFromQualityAndUser(self):
+        new_container_id = self.duplicateContainer(self.activeQualityId)
+        if new_container_id == "":
             return
+        self.setActiveQuality(new_container_id)
+        self.updateQualityContainerFromUserContainer()
 
-        new_quality_container = InstanceContainer("")
-        name = self._createUniqueName("quality", "", self.activeQualityName, catalog.i18nc("@label", "Custom profile"))
-        user_settings = self._global_container_stack.getTop()
-
-        ## Copy all values
-        new_quality_container.deserialize(user_settings.serialize())
-
-        ## If the currently active machine does not have quality profiles of its own,
-        #  make the new quality profile available for all machines that don't have
-        #  unique quality profiles (including the current machine)
-        if not self.filterQualityByMachine:
-            new_quality_container.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
-
-        ## Change type / id / name
-        new_quality_container.setMetaDataEntry("type", "quality")
-        new_quality_container.setMetaDataEntry("read_only", False)
-        new_quality_container.setName(name)
-        new_quality_container._id = name
-
-        UM.Settings.ContainerRegistry.getInstance().addContainer(new_quality_container)
-        self.clearUserSettings()  # As all users settings are now transfered to the new quality profile, remove them.
-        self.setActiveQuality(name)
-        return name
 
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
         if not self._global_container_stack:
-            return
+            return ""
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
         if containers:
             new_name = self._createUniqueName("quality", "", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
@@ -310,7 +289,7 @@ class MachineManagerModel(QObject):
             ## Copy all values
             new_container.deserialize(containers[0].serialize())
 
-            new_container.setMetaDataEntry("read_only", False)
+            new_container.setReadOnly(False)
             new_container.setName(new_name)
             new_container._id = new_name
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
@@ -318,15 +297,36 @@ class MachineManagerModel(QObject):
 
         return ""
 
-
     @pyqtSlot(str, str)
     def renameQualityContainer(self, container_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
-            new_name = self._createUniqueName("quality", containers[0].getName(), new_name, catalog.i18nc("@label", "Custom profile"))
-            containers[0].setName(new_name)
-            self.activeQualityChanged.emit()
+            new_name = self._createUniqueName("quality", containers[0].getName(), new_name,
+                                              catalog.i18nc("@label", "Custom profile"))
 
+            if containers[0].getName() == new_name:
+                # Nothing to do.
+                return
+
+            # As we also want the id of the container to be changed (so that profile name is the name of the file
+            # on disk. We need to create a new instance and remove it (so the old file of the container is removed)
+            # If we don't do that, we might get duplicates & other weird issues.
+            new_container = InstanceContainer("")
+            new_container.deserialize(containers[0].serialize())
+
+            # Actually set the name
+            new_container.setName(new_name)
+            new_container._id = new_name  # Todo: Fix proper id change function for this.
+
+            # Add the "new" container.
+            UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
+
+            # Ensure that the renamed profile is saved -before- we remove the old profile.
+            Application.getInstance().saveSettings()
+
+            # Actually set & remove new / old quality.
+            self.setActiveQuality(new_name)
+            self.removeQualityContainer(containers[0].getId())
 
     @pyqtSlot(str)
     def removeQualityContainer(self, container_id):
@@ -348,7 +348,7 @@ class MachineManagerModel(QObject):
 
 
     @pyqtSlot()
-    def updateUserContainerToQuality(self):
+    def updateQualityContainerFromUserContainer(self):
         if not self._global_container_stack:
             return
         user_settings = self._global_container_stack.getTop()

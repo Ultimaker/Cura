@@ -93,8 +93,11 @@ class CuraApplication(QtApplication):
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         # Need to do this before ContainerRegistry tries to load the machines
-        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
-        SettingDefinition.addSettingType("extruder", str, ast.literal_eval, UM.Settings.Validator)
+        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
@@ -291,6 +294,7 @@ class CuraApplication(QtApplication):
     #   \sa PluginRegistery
     def _loadPlugins(self):
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
+        self._plugin_registry.addType("profile_writer", self._addProfileWriter)
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
@@ -784,4 +788,7 @@ class CuraApplication(QtApplication):
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
+        pass
+
+    def _addProfileWriter(self, profile_writer):
         pass

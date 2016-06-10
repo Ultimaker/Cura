@@ -174,7 +174,7 @@ Item {
                             break;
                         }
                     }
-                    return state && base.showInheritButton && has_setting_function
+                    return state && base.showInheritButton && has_setting_function && typeof(propertyProvider.getPropertyValue("value", base.stackLevels[0])) != "object"
                  }
 
                 height: parent.height;
@@ -182,22 +182,37 @@ Item {
 
                 onClicked: {
                     focus = true;
-                    // Get the deepest entry of this setting that we can find. TODO: This is a bit naive, in some cases
-                    // there might be multiple profiles saying something about the same setting. There is no strategy
-                    // how to handle this as of yet.
-                    var last_entry = propertyProvider.stackLevels.slice(-1)[0]
-                    // Put that entry into the "top" instance container.
-                    // This ensures that the value in any of the deeper containers need not be removed, which is
-                    // needed for the reset button (which deletes the top value) to correctly go back to profile
-                    // defaults.
-                    if(last_entry == 4 && base.stackLevel == 0)
+
+                    // Get the most shallow function value (eg not a number) that we can find.
+                    var last_entry = propertyProvider.stackLevels[propertyProvider.stackLevels.length]
+                    for (var i = 1; i < base.stackLevels.length; i++)
+                    {
+                        var has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
+                        if(has_setting_function)
+                        {
+                            last_entry = propertyProvider.stackLevels[i]
+                            break;
+                        }
+                    }
+
+                    if(last_entry == 4 && base.stackLevel == 0 && base.stackLevels.length == 2)
                     {
                         // Special case of the inherit reset. If only the definition (4th container) and the first
                         // entry (user container) are set, we can simply remove the container.
                         propertyProvider.removeFromContainer(0)
                     }
+                    else if(last_entry - 1 == base.stackLevel)
+                    {
+                        // Another special case. The setting that is overriden is only 1 instance container deeper,
+                        // so we can remove it.
+                        propertyProvider.removeFromContainer(0)
+                    }
                     else
                     {
+                        // Put that entry into the "top" instance container.
+                        // This ensures that the value in any of the deeper containers need not be removed, which is
+                        // needed for the reset button (which deletes the top value) to correctly go back to profile
+                        // defaults.
                         propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
                         propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
                     }

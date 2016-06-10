@@ -12,6 +12,8 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 
+from cura.ExtruderManager import ExtruderManager
+
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob
 from . import ProcessGCodeJob
@@ -58,6 +60,10 @@ class CuraEngineBackend(Backend):
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
+
+        self._active_extruder_stack = None
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        self._onActiveExtruderChanged()
 
         #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
         #This timer will group them up, and only slice for the last setting changed signal.
@@ -145,8 +151,7 @@ class CuraEngineBackend(Backend):
         self.slicingStarted.emit()
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
-        settings_message = self._socket.createMessage("cura.proto.SettingList")
-        self._start_slice_job = StartSliceJob.StartSliceJob(slice_message, settings_message)
+        self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
 
@@ -205,7 +210,6 @@ class CuraEngineBackend(Backend):
             return
 
         # Preparation completed, send it to the backend.
-        self._socket.sendMessage(job.getSettingsMessage())
         self._socket.sendMessage(job.getSliceMessage())
 
     ##  Listener for when the scene has changed.
@@ -369,4 +373,16 @@ class CuraEngineBackend(Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
+            self._onActiveExtruderChanged()
+            self._onChanged()
+
+    def _onActiveExtruderChanged(self):
+        if self._active_extruder_stack:
+            self._active_extruder_stack.propertyChanged.disconnect(self._onSettingChanged)
+            self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
+
+        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        if self._active_extruder_stack:
+            self._active_extruder_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
+            self._active_extruder_stack.containersChanged.connect(self._onChanged)
             self._onChanged()

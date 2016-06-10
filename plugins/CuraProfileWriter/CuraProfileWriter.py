@@ -4,7 +4,7 @@
 
 from UM.Logger import Logger
 from UM.SaveFile import SaveFile
-from UM.Settings.ProfileWriter import ProfileWriter
+from cura.ProfileWriter import ProfileWriter
 
 
 ##  Writes profiles to Cura's own profile format with config files.
@@ -16,10 +16,10 @@ class CuraProfileWriter(ProfileWriter):
     #   \return \code True \endcode if the writing was successful, or \code
     #   False \endcode if it wasn't.
     def write(self, path, profile):
-        serialised = profile.serialise()
+        serialized = profile.serialize()
         try:
             with SaveFile(path, "wt", -1, "utf-8") as f:  # Open the specified file.
-                f.write(serialised)
+                f.write(serialized)
         except Exception as e:
             Logger.log("e", "Failed to write profile to %s: %s", path, str(e))
             return False

@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QUrl
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingFunction import SettingFunction
 
 class ContainerSettingsModel(ListModel):
     LabelRole = Qt.UserRole + 1
@@ -20,32 +21,11 @@ class ContainerSettingsModel(ListModel):
         self.addRoleName(self.ValuesRole, "values")
 
         self._container_ids = []
-        self._container = None
+        self._containers = []
 
-        self._global_container_stack = None
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        self._update()
-
-    def _onGlobalContainerChanged(self):
-        if self._global_container_stack:
-            self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
-            self._global_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
-
-        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
-
-        if self._global_container_stack:
-            Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
-            self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
-            self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
-
-        self._update()
-
-    def _onGlobalPropertyChanged(self, key, property_name):
+    def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
             self._update()
-
-    def _onInstanceContainersChanged(self, container):
-        self._update()
 
     def _update(self):
         self.clear()
@@ -54,24 +34,17 @@ class ContainerSettingsModel(ListModel):
             return
 
         keys = []
-        containers = []
-        for container_id in self._container_ids:
-            container = ContainerRegistry.getInstance().findContainers(id = container_id)
-            if not container:
-                return
+        for container in self._containers:
+            keys = keys + list(container.getAllKeys())
 
-            keys = keys + list(container[0].getAllKeys())
-            containers.append(container[0])
-
-        keys = list(set(keys))
+        keys = list(set(keys)) # remove duplicate keys
         keys.sort()
 
         for key in keys:
             definition = None
             category = None
             values = []
-            for container in containers:
-
+            for container in self._containers:
                 instance = container.getInstance(key)
                 if instance:
                     definition = instance.definition
@@ -81,7 +54,11 @@ class ContainerSettingsModel(ListModel):
                     while category.type != "category":
                         category = category.parent
 
-                    values.append(container.getProperty(key, "value"))
+                    value = container.getProperty(key, "value")
+                    if type(value) == SettingFunction:
+                        values.append("=\u0192")
+                    else:
+                        values.append(container.getProperty(key, "value"))
                 else:
                     values.append("")
 
@@ -93,9 +70,21 @@ class ContainerSettingsModel(ListModel):
                 "category": category.label
             })
 
-    ##  Set the id of the container which has the settings this model should list.
+    ##  Set the ids of the containers which have the settings this model should list.
+    #   Also makes sure the model updates when the containers have property changes
     def setContainers(self, container_ids):
+        for container in self._containers:
+            container.propertyChanged.disconnect(self._onPropertyChanged)
+
         self._container_ids = container_ids
+        self._containers = []
+
+        for container_id in self._container_ids:
+            containers = ContainerRegistry.getInstance().findContainers(id = container_id)
+            if containers:
+                containers[0].propertyChanged.connect(self._onPropertyChanged)
+                self._containers.append(containers[0])
+
         self._update()
 
     containersChanged = pyqtSignal()

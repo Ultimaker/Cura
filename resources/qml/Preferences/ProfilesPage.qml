@@ -13,7 +13,7 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Profiles");
-    addText: catalog.i18nc("@label", "Duplicate")
+    addText: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
 
     model: UM.InstanceContainersModel
     {
@@ -36,6 +36,21 @@ UM.ManagementPage
         }
     }
 
+    section.property: "readOnly"
+    section.delegate: Rectangle
+    {
+        width: objectListContainer.viewport.width;
+        height: childrenRect.height;
+
+        Label
+        {
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_lining").width;
+            text: section == "true" ? catalog.i18nc("@label", "Protected profiles") : catalog.i18nc("@label", "Custom profiles")
+            font.bold: true
+        }
+    }
+
     activeId: Cura.MachineManager.activeQualityId
     activeIndex: {
         for(var i = 0; i < model.rowCount(); i++) {
@@ -49,9 +64,8 @@ UM.ManagementPage
     onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
     onAddObject: {
         var selectedContainer;
-        if (objectList.currentIndex == 0) {
-            // Current settings
-            selectedContainer = Cura.MachineManager.convertUserContainerToQuality();
+        if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
+            selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
         } else {
             selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
         }
@@ -66,8 +80,8 @@ UM.ManagementPage
 
     activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
     addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
-    renameEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
+    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
+    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
@@ -102,17 +116,15 @@ UM.ManagementPage
             Button
             {
                 text: {
-                    var profileName = Cura.MachineManager.activeQualityName;
-                    profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
-                    return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
+                    return catalog.i18nc("@action:button", "Update profile with current settings");
                 }
                 enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
-                onClicked: Cura.MachineManager.updateUserContainerToQuality()
+                onClicked: Cura.MachineManager.updateQualityContainerFromUserContainer()
             }
 
             Button
             {
-                text: catalog.i18nc("@action:button", "Discard changes");
+                text: catalog.i18nc("@action:button", "Discard current settings");
                 enabled: Cura.MachineManager.hasUserSettings
                 onClicked: Cura.MachineManager.clearUserSettings();
             }
@@ -128,7 +140,7 @@ UM.ManagementPage
 
             Label {
                 id: defaultsMessage
-                visible: !currentItem.hasSettings
+                visible: !currentItem.metadata.has_settings
                 text: catalog.i18nc("@action:label", "This profile has no settings and uses the defaults specified by the printer.")
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -155,7 +167,7 @@ UM.ManagementPage
                 model: Cura.ContainerSettingsModel{ containers: (currentItem.id == Cura.MachineManager.activeQualityId) ? [base.currentItem.id, Cura.MachineManager.activeUserProfileId] : [base.currentItem.id] }
                 delegate: Row {
                     property variant setting: model
-                    spacing: UM.Theme.getSize("default_margin").width
+                    spacing: UM.Theme.getSize("default_margin").width/2
                     Label {
                         text: model.label
                         elide: Text.ElideMiddle
@@ -165,13 +177,29 @@ UM.ManagementPage
                         model: setting.values.length
                         Label {
                             text: setting.values[index].toString()
-                            width: scrollView.width / 100 * 10
+                            width: scrollView.width / 100 * 15
+                            elide: Text.ElideRight
                             font.strikeout: index < setting.values.length - 1 && setting.values[index + 1] != ""
                             opacity: font.strikeout ? 0.5 : 1
                         }
                     }
                     Label {
                         text: model.unit
+                    }
+                }
+                header: Row {
+                    visible: currentItem.id == Cura.MachineManager.activeQualityId
+                    spacing: UM.Theme.getSize("default_margin").width
+                    Label {
+                        text: catalog.i18nc("@action:label", "Profile:")
+                        width: scrollView.width / 100 * 55
+                        horizontalAlignment: Text.AlignRight
+                        font.bold: true
+                    }
+                    Label {
+                        text: catalog.i18nc("@action:label", "Current:")
+                        visible: currentItem.id == Cura.MachineManager.activeQualityId
+                        font.bold: true
                     }
                 }
                 section.property: "category"
@@ -268,7 +296,7 @@ UM.ManagementPage
             folder: base.model.getDefaultPath()
             onAccepted:
             {
-                var result = base.model.exportProfile(base.currentItem.id, fileUrl)
+                var result = base.model.exportProfile(base.currentItem.id, fileUrl, selectedNameFilter)
                 if(result && result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical

@@ -36,7 +36,7 @@ class ExtruderManager(QObject):
         if not UM.Application.getInstance().getGlobalContainerStack():
             return None #No active machine, so no active extruder.
         try:
-            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
+            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)].getId()
         except KeyError: #Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
@@ -58,10 +58,21 @@ class ExtruderManager(QObject):
             cls.__instance = ExtruderManager()
         return cls.__instance
 
+    ##  Changes the active extruder by index.
+    #
+    #   \param index The index of the new active extruder.
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index):
         self._active_extruder_index = index
         self.activeExtruderChanged.emit()
+
+    def getActiveExtruderStack(self):
+        try:
+            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
+        except AttributeError:
+            return None
+        except KeyError:
+            return None
 
     ##  Adds all extruders of a specific machine definition to the extruder
     #   manager.
@@ -87,7 +98,7 @@ class ExtruderManager(QObject):
         #Gets the extruder trains that we just created as well as any that still existed.
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_definition.getId())
         for extruder_train in extruder_trains:
-            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train.getId()
+            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
         if extruder_trains:
             self.extrudersChanged.emit(machine_definition)
 
@@ -188,18 +199,14 @@ class ExtruderManager(QObject):
         container_registry.addContainer(container_stack)
 
     ##  Generates extruders for a specific machine.
-    def getMachineExtruders(self, machine_definition):
-        container_registry = UM.Settings.ContainerRegistry.getInstance()
-        machine_id = machine_definition.getId()
-        if not machine_id in self._extruder_trains:
+    #
+    #   \param machine_id The machine to get the extruders of.
+    def getMachineExtruders(self, machine_id):
+        if machine_id not in self._extruder_trains:
             UM.Logger.log("w", "Tried to get the extruder trains for machine %s, which doesn't exist.", machine_id)
             return
-        for _,extruder_train_id in self._extruder_trains[machine_id].items():
-            extruder_train = container_registry.findContainerStacks(id = extruder_train_id)
-            if extruder_train:
-                yield extruder_train[0]
-            else:
-                UM.Logger.log("w", "Machine %s refers to an extruder train with ID %s, which doesn't exist.", machine_id, extruder_train_id)
+        for name in self._extruder_trains[machine_id]:
+            yield self._extruder_trains[machine_id][name]
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self):
