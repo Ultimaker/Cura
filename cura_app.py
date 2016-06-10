@@ -36,7 +36,6 @@ import Arcus #@UnusedImport
 import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):
-    import os
     dirpath = os.path.expanduser("~/AppData/Local/cura/")
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
