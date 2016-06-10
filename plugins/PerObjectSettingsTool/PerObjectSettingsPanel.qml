@@ -35,6 +35,8 @@ Item {
                 model: Cura.ExtrudersModel
                 {
                     id: extruders_model
+                    onRowsInserted: extruderSelector.visible = extruders_model.rowCount() > 1
+                    onModelReset:   extruderSelector.visible = extruders_model.rowCount() > 1
                 }
                 visible: extruders_model.rowCount() > 1
                 textRole: "name"
