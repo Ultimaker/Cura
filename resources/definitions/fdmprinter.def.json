@@ -461,7 +461,6 @@
                     "unit": "mm",
                     "default_value": 0.8,
                     "minimum_value": "0",
-                    "maximum_value": "5",
                     "minimum_value_warning": "0.6",
                     "type": "float",
                     "children":
@@ -891,7 +890,7 @@
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
                     "description": "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
-                    "default_value": 45,
+                    "default_value": 90,
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "type": "int",
@@ -1861,7 +1860,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "line_width",
+                    "value": "line_width * 2",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
@@ -1899,7 +1898,7 @@
                     "type": "float",
                     "default_value": 1,
                     "minimum_value": "0.0001",
-                    "value": "line_width",
+                    "value": "line_width * 2",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
                     "global_only": "True"

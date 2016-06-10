@@ -61,7 +61,7 @@ Item {
                     onLoaded: {
                         settingLoader.item.showRevertButton = false
                         settingLoader.item.showInheritButton = false
-                        settingLoader.item.doDepthIdentation = false
+                        settingLoader.item.doDepthIndentation = false
                     }
 
                     sourceComponent:

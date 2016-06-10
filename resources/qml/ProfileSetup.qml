@@ -143,7 +143,7 @@ Item{
         UM.SimpleButton {
             id: customisedSettings
 
-            visible: UM.ActiveProfile.hasCustomisedValues
+            visible: Cura.MachineManager.hasUserSettings
             height: parent.height * 0.6
             width: parent.height * 0.6
 

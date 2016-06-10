@@ -36,8 +36,6 @@ class MachineManagerModel(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
-        self._active_extruder_index = 0
-
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -107,7 +105,7 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str, str)
     def addMachine(self, name, definition_id):
-        definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
+        definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
         if definitions:
             definition = definitions[0]
             name = self._createUniqueName("machine", "", name, definition.getName())
@@ -206,6 +204,13 @@ class MachineManagerModel(QObject):
     @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
         return self._global_stack_valid
+
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeUserProfileId(self):
+        if self._global_container_stack:
+            return self._global_container_stack.getTop().getId()
+
+        return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):
@@ -429,7 +434,13 @@ class MachineManagerModel(QObject):
     def removeMachine(self, machine_id):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
+
+        current_settings_id = machine_id + "_current_settings"
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = current_settings_id)
+        for container in containers:
+            UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
+
         if activate_new_machine:
             stacks = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "machine")
             if stacks:

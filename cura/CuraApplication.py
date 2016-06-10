@@ -42,11 +42,13 @@ from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import MachineManagerModel
+from . import ContainerSettingsModel
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+import ast #For literal eval of extruder setting types.
 import platform
 import sys
 import os.path
@@ -92,7 +94,7 @@ class CuraApplication(QtApplication):
 
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
-        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+        SettingDefinition.addSettingType("extruder", str, ast.literal_eval, UM.Settings.Validator)
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
@@ -351,6 +353,7 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
+        ExtruderManager.ExtruderManager.getInstance() #Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
@@ -397,6 +400,8 @@ class CuraApplication(QtApplication):
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
         qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+
+        qmlRegisterType(ContainerSettingsModel.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 

@@ -20,11 +20,12 @@ Item {
 
     property var showRevertButton: true
     property var showInheritButton: true
-    property var doDepthIdentation: true
+    property var doDepthIndentation: true
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var stackLevel: propertyProvider.stackLevel
+    property var stackLevels: propertyProvider.stackLevels
+    property var stackLevel: stackLevels[0]
 
     signal contextMenuRequested()
     signal showTooltip(string text);
@@ -101,7 +102,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: doDepthIdentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
+            anchors.leftMargin: doDepthIndentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -157,16 +158,49 @@ Item {
             {
                 // This button shows when the setting has an inherited function, but is overriden by profile.
                 id: inheritButton;
-
-                //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: base.state == "InstanceState.User" && base.stackLevel > 0 && base.showInheritButton
+                // Inherit button needs to be visible if;
+                // - User made changes that override any loaded settings
+                // - This setting item uses inherit button at all
+                // - The type of the value of any deeper container is an "object" (eg; is a function)
+                visible:
+                 {
+                    var state = base.state == "InstanceState.User";
+                    var has_setting_function = false;
+                    for (var i = 1; i < base.stackLevels.length; i++)
+                    {
+                        has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
+                        if(has_setting_function)
+                        {
+                            break;
+                        }
+                    }
+                    return state && base.showInheritButton && has_setting_function
+                 }
 
                 height: parent.height;
                 width: height;
 
                 onClicked: {
                     focus = true;
-                    propertyProvider.removeFromContainer(base.stackLevel)
+                    // Get the deepest entry of this setting that we can find. TODO: This is a bit naive, in some cases
+                    // there might be multiple profiles saying something about the same setting. There is no strategy
+                    // how to handle this as of yet.
+                    var last_entry = propertyProvider.stackLevels.slice(-1)[0]
+                    // Put that entry into the "top" instance container.
+                    // This ensures that the value in any of the deeper containers need not be removed, which is
+                    // needed for the reset button (which deletes the top value) to correctly go back to profile
+                    // defaults.
+                    if(last_entry == 4 && base.stackLevel == 0)
+                    {
+                        // Special case of the inherit reset. If only the definition (4th container) and the first
+                        // entry (user container) are set, we can simply remove the container.
+                        propertyProvider.removeFromContainer(0)
+                    }
+                    else
+                    {
+                        propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
+                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
+                    }
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");
@@ -185,6 +219,8 @@ Item {
         Item
         {
             id: controlContainer;
+
+            enabled: provider.isValueUsed
 
             anchors.right: parent.right;
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
