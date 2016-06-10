@@ -4,21 +4,15 @@ import re
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
 from UM.Preferences import Preferences
-from UM.Logger import Logger
-from UM.Resources import Resources
-import copy
-
-import os
-import urllib
 
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerStack import ContainerStack
 from . import ExtruderManager
-import cura.CuraApplication
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
 
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
@@ -46,7 +40,6 @@ class MachineManagerModel(QObject):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
             pass
-
 
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
