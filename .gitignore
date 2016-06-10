@@ -16,8 +16,11 @@ resources/firmware
 *~
 *.qm
 .idea
+
+# Eclipse+PyDev
 .project
 .pydevproject
+.settings
 
 # Debian packaging
-debian/
+debian*
