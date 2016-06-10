@@ -26,6 +26,7 @@ class MachineManagerModel(QObject):
         self._onGlobalContainerChanged()
 
         ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
+        self.globalContainerChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
 
         ##  When the global container is changed, active material probably needs to be updated.
