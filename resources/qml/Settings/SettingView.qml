@@ -29,7 +29,7 @@ ScrollView
         model: UM.SettingDefinitionsModel {
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
-            // exclude: ["machine_settings"]
+            // exclude: ["machine_settings"]   ==> make machine settings visible again for now (TODO: this is temporary)
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
 
             filter:
