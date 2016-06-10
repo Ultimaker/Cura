@@ -99,6 +99,10 @@ class ExtruderManager(QObject):
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_definition.getId())
         for extruder_train in extruder_trains:
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
+
+            ## Ensure that the extruder train stacks are linked to global stack.
+            extruder_train.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
+
         if extruder_trains:
             self.extrudersChanged.emit(machine_definition)
 
