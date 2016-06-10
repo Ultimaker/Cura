@@ -5,7 +5,6 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
-import QtQml.Models 2.2
 
 import UM 1.1 as UM
 
@@ -207,10 +206,11 @@ UM.PreferencesPage
             }
         }
 
-        DelegateModel
+        ListView
         {
             id: plugins
             model: UM.PluginsModel { }
+            visible: false
         }
     }
 }

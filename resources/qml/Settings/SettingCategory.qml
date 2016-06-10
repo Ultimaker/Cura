@@ -7,8 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
-
-import ".."
+import Cura 1.0 as Cura
 
 Button {
     id: base;
@@ -45,7 +44,7 @@ Button {
         iconSource: UM.Theme.getIcon("settings");
 
         onClicked: {
-            Actions.configureSettingVisibility.trigger(definition)
+            Cura.Actions.configureSettingVisibility.trigger(definition)
         }
     }
 
@@ -57,9 +56,9 @@ Button {
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
 
-        visible: hiddenValuesCount > 0
-        height: parent.height / 2;
-        width: height;
+        visible: false //hiddenValuesCount > 0
+        height: parent.height / 2
+        width: height
 
         onClicked: {
             base.showAllHiddenInheritedSettings()

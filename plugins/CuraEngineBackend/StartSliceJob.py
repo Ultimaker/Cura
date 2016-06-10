@@ -3,7 +3,6 @@
 
 import numpy
 from string import Formatter
-import traceback
 from enum import IntEnum
 
 from UM.Job import Job
@@ -16,6 +15,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Validator import ValidatorState
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
+from cura.ExtruderManager import ExtruderManager
 
 class StartJobResult(IntEnum):
     Finished = 1
@@ -38,19 +38,29 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    def __init__(self, slice_message, settings_message):
+    def __init__(self, slice_message):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
         self._slice_message = slice_message
-        self._settings_message = settings_message
         self._is_cancelled = False
-
-    def getSettingsMessage(self):
-        return self._settings_message
 
     def getSliceMessage(self):
         return self._slice_message
+
+    ##  Check if a stack has any errors.
+    ##  returns true if it has errors, false otherwise.
+    def _checkStackForErrors(self, stack):
+        if stack is None:
+            return False
+
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+                return True
+            Job.yieldThread()
+        return False
 
     ##  Runs the job that initiates the slicing.
     def run(self):
@@ -59,15 +69,19 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        #Don't slice if there is a setting with an error value.
-        for key in stack.getAllKeys():
-            validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
-                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+        # Don't slice if there is a setting with an error value.
+        if self._checkStackForErrors(stack):
+            self.setResult(StartJobResult.SettingError)
+            return
+
+        # Don't slice if there is a per object setting with an error value.
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if type(node) is not SceneNode or not node.isSelectable():
+                continue
+
+            if self._checkStackForErrors(node.callDecoration("getStack")):
                 self.setResult(StartJobResult.SettingError)
                 return
-
-            Job.yieldThread()
 
         with self._scene.getSceneLock():
             # Remove old layer data.
@@ -114,6 +128,9 @@ class StartSliceJob(Job):
 
             self._buildGlobalSettingsMessage(stack)
 
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
+                self._buildExtruderMessage(extruder_stack)
+
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
                 if group[0].getParent().callDecoration("isGroup"):
@@ -153,6 +170,15 @@ class StartSliceJob(Job):
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
             return str(value).encode("utf-8")
 
+    def _buildExtruderMessage(self, stack):
+        message = self._slice_message.addRepeatedMessage("extruders")
+        message.id = int(stack.getMetaDataEntry("position"))
+        for key in stack.getAllKeys():
+            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            Job.yieldThread()
+
     ##  Sends all global settings to the engine.
     #
     #   The settings are taken from the global stack. This does not include any
@@ -168,7 +194,7 @@ class StartSliceJob(Job):
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
-            setting_message = self._settings_message.addRepeatedMessage("settings")
+            setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
             if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
@@ -176,21 +202,10 @@ class StartSliceJob(Job):
                 setting_message.value = str(value).encode("utf-8")
 
     def _handlePerObjectSettings(self, node, message):
-        profile = node.callDecoration("getProfile")
-        if profile:
-            for key, value in profile.getAllSettingValues().items():
+        stack = node.callDecoration("getStack")
+        if stack:
+            for key in stack.getAllKeys():
                 setting = message.addRepeatedMessage("settings")
                 setting.name = key
-                setting.value = str(value).encode()
-
+                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
                 Job.yieldThread()
-
-        object_settings = node.callDecoration("getAllSettingValues")
-        if not object_settings:
-            return
-        for key, value in object_settings.items():
-            setting = message.addRepeatedMessage("settings")
-            setting.name = key
-            setting.value = str(value).encode()
-
-            Job.yieldThread()

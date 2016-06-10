@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2016 Ultimaker B.V.
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -18,12 +18,6 @@ Item {
     width: childrenRect.width;
     height: childrenRect.height;
 
-
-    function updateContainerID()
-    {
-        console.log("containerid",UM.ActiveTool.properties.getValue("ContainerID"))
-    }
-
     Column
     {
         id: items
@@ -31,6 +25,99 @@ Item {
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height;
+
+        Row
+        {
+            ComboBox
+            {
+                id: extruderSelector
+
+                model: Cura.ExtrudersModel
+                {
+                    id: extruders_model
+                }
+                visible: extruders_model.rowCount() > 1
+                textRole: "name"
+                width: items.width
+                height: UM.Theme.getSize("section").height
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    onWheel: wheel.accepted = true;
+                }
+
+                style: ComboBoxStyle
+                {
+                    background: Rectangle
+                    {
+                        color:
+                        {
+                            if(extruderSelector.hovered || base.activeFocus)
+                            {
+                                return UM.Theme.getColor("setting_control_highlight");
+                            }
+                            else
+                            {
+                                return extruders_model.getItem(extruderSelector.currentIndex).colour;
+                            }
+                        }
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("setting_control_border")
+                    }
+                    label: Item
+                    {
+                        Label
+                        {
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                            anchors.right: downArrow.left
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: extruderSelector.currentText
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("setting_control_disabled_text")
+
+                            elide: Text.ElideRight
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        UM.RecolorImage
+                        {
+                            id: downArrow
+                            anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            source: UM.Theme.getIcon("arrow_bottom")
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
+                            sourceSize.width: width + 5
+                            sourceSize.height: width + 5
+
+                            color: UM.Theme.getColor("setting_control_text")
+                        }
+                    }
+                }
+
+                onActivated: UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                onModelChanged: updateCurrentIndex();
+
+                function updateCurrentIndex()
+                {
+                    for(var i = 0; i < extruders_model.rowCount(); ++i)
+                    {
+                        if(extruders_model.getItem(i).id == UM.ActiveTool.properties.getValue("SelectedActiveExtruder"))
+                        {
+                            extruderSelector.currentIndex = i;
+                            return;
+                        }
+                    }
+                    extruderSelector.currentIndex = -1;
+                }
+            }
+        }
 
         Repeater
         {
@@ -47,53 +134,91 @@ Item {
                 }
             }
 
-            delegate: Loader
+            delegate: Row
             {
-                width: UM.Theme.getSize("setting").width;
-                height: UM.Theme.getSize("setting").height;
-
-                property var definition: model
-                property var settingDefinitionsModel: addedSettingsModel
-                property var propertyProvider: provider
-
-                //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-                //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-                //causing nasty issues when selecting differnt options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum"
-
-                source:
+                Loader
                 {
-                    switch(model.type) // TODO: This needs to be fixed properly. Got frustrated with it not working, so this is the patch job!
+                    id: settingLoader
+                    width: UM.Theme.getSize("setting").width;
+                    height: UM.Theme.getSize("section").height;
+
+                    property var definition: model
+                    property var settingDefinitionsModel: addedSettingsModel
+                    property var propertyProvider: provider
+
+                    //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                    //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                    //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                    asynchronous: model.type != "enum" && model.type != "extruder"
+
+                    onLoaded: {
+                        settingLoader.item.showRevertButton = false
+                        settingLoader.item.showInheritButton = false
+                        settingLoader.item.doDepthIndentation = false
+                    }
+
+                    sourceComponent:
                     {
-                        case "int":
-                            return "../../resources/qml/Settings/SettingTextField.qml"
-                        case "float":
-                            return "../../resources/qml/Settings/SettingTextField.qml"
-                        case "enum":
-                            return "../../resources/qml/Settings/SettingComboBox.qml"
-                        case "bool":
-                            return "../../resources/qml/Settings/SettingCheckBox.qml"
-                        case "str":
-                            return "../../resources/qml/Settings/SettingTextField.qml"
-                        case "category":
-                            return "../../resources/qml/Settings/SettingCategory.qml"
-                        default:
-                            return "../../resources/qml/Settings/SettingUnknown.qml"
+                        switch(model.type)
+                        {
+                            case "int":
+                                return settingTextField
+                            case "float":
+                                return settingTextField
+                            case "enum":
+                                return settingComboBox
+                            case "extruder":
+                                return settingExtruder
+                            case "bool":
+                                return settingCheckBox
+                            case "str":
+                                return settingTextField
+                            case "category":
+                                return settingCategory
+                            default:
+                                return settingUnknown
+                        }
                     }
                 }
 
+                Button
+                {
+                    width: UM.Theme.getSize("setting").height;
+                    height: UM.Theme.getSize("setting").height;
+
+                    onClicked: addedSettingsModel.setVisible(model.key, false);
+
+                    style: ButtonStyle
+                    {
+                        background: Rectangle
+                        {
+                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
+                            UM.RecolorImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width/2
+                                height: parent.height/2
+                                sourceSize.width: width
+                                sourceSize.height: width
+                                color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                source: UM.Theme.getIcon("cross1")
+                            }
+                        }
+                    }
+                }
                 UM.SettingPropertyProvider
                 {
                     id: provider
 
                     containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
                     key: model.key
-                    watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                    watchedProperties: [ "value", "enabled", "validationState" ]
                     storeIndex: 0
                 }
             }
-
         }
+
         Button
         {
             id: customise_settings_button;
@@ -158,11 +283,11 @@ Item {
             {
                 if(text != "")
                 {
-                    listview.model.filter = {"global_only": false, "label": "*" + text}
+                    listview.model.filter = {"settable_per_mesh": true, "label": "*" + text}
                 }
                 else
                 {
-                    listview.model.filter = {"global_only": false}
+                    listview.model.filter = {"settable_per_mesh": true}
                 }
             }
         }
@@ -187,7 +312,7 @@ Item {
                     containerId: Cura.MachineManager.activeDefinitionId
                     filter:
                     {
-                        "global_only": false
+                        "settable_per_mesh": true
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
@@ -227,4 +352,46 @@ Item {
     }
 
     SystemPalette { id: palette; }
+
+    Component
+    {
+        id: settingTextField;
+
+        Cura.SettingTextField { }
+    }
+
+    Component
+    {
+        id: settingComboBox;
+
+        Cura.SettingComboBox { }
+    }
+
+    Component
+    {
+        id: settingExtruder;
+
+        Cura.SettingExtruder { }
+    }
+
+    Component
+    {
+        id: settingCheckBox;
+
+        Cura.SettingCheckBox { }
+    }
+
+    Component
+    {
+        id: settingCategory;
+
+        Cura.SettingCategory { }
+    }
+
+    Component
+    {
+        id: settingUnknown;
+
+        Cura.SettingUnknown { }
+    }
 }

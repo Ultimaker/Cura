@@ -10,6 +10,7 @@ from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 from UM.Mesh.MeshData import MeshData
 from UM.Job import Job
+from UM.Preferences import Preferences
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
@@ -41,7 +42,10 @@ class LayerView(View):
         self._top_layers_job = None
         self._activity = False
 
-        self._solid_layers = 5
+        Preferences.getInstance().addPreference("view/top_layer_count", 1)
+        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+
+        self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
 
         self._top_layer_timer = QTimer()
         self._top_layer_timer.setInterval(50)
@@ -208,6 +212,16 @@ class LayerView(View):
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
 
         self._top_layers_job = None
+
+    def _onPreferencesChanged(self, preference):
+        if preference != "view/top_layer_count":
+            return
+
+        self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
+
+        self._current_layer_mesh = None
+        self._current_layer_jumps = None
+        self._top_layer_timer.start()
 
 class _CreateTopLayersJob(Job):
     def __init__(self, scene, layer_number, solid_layers):

@@ -22,9 +22,13 @@
                 {
                     "label": "Extruder",
                     "description": "The extruder train used for printing. This is used in multi-extrusion.",
-                    "type": "int",
+                    "type": "extruder",
                     "default_value": 0,
-                    "minimum_value": "0"
+                    "minimum_value": "0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_nozzle_offset_x":
                 {
@@ -33,7 +37,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_nozzle_offset_y":
                 {
@@ -42,7 +49,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_start_code":
                 {
@@ -50,7 +60,10 @@
                     "description": "Start g-code to execute whenever turning the extruder on.",
                     "type": "str",
                     "default_value": "",
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_start_pos_abs":
                 {
@@ -58,7 +71,10 @@
                     "description": "Make the extruder starting position absolute rather than relative to the last-known location of the head.",
                     "type": "bool",
                     "default_value": false,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_start_pos_x":
                 {
@@ -67,7 +83,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_start_pos_y":
                 {
@@ -76,7 +95,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_end_code":
                 {
@@ -84,7 +106,10 @@
                     "description": "End g-code to execute whenever turning the extruder off.",
                     "type": "str",
                     "default_value": "",
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_end_pos_abs":
                 {
@@ -92,7 +117,10 @@
                     "description": "Make the extruder ending position absolute rather than relative to the last-known location of the head.",
                     "type": "bool",
                     "default_value": false,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_end_pos_x":
                 {
@@ -101,7 +129,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 },
                 "machine_extruder_end_pos_y":
                 {
@@ -110,7 +141,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
                 }
             }
         }

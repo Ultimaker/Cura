@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": i18n_catalog.i18nc("@info:whatsthis", "Enables ability to generate printable geometry from 2D image files."),
-            "api": 2
+            "api": 3
         },
         "mesh_reader": [
             {

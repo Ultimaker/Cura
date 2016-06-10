@@ -145,8 +145,7 @@ class CuraEngineBackend(Backend):
         self.slicingStarted.emit()
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
-        settings_message = self._socket.createMessage("cura.proto.SettingList")
-        self._start_slice_job = StartSliceJob.StartSliceJob(slice_message, settings_message)
+        self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
 
@@ -205,7 +204,6 @@ class CuraEngineBackend(Backend):
             return
 
         # Preparation completed, send it to the backend.
-        self._socket.sendMessage(job.getSettingsMessage())
         self._socket.sendMessage(job.getSliceMessage())
 
     ##  Listener for when the scene has changed.

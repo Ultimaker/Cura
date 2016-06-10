@@ -19,6 +19,7 @@ UM.PreferencesPage
     {
         UM.Preferences.resetPreference("view/show_overhang");
         UM.Preferences.resetPreference("view/center_on_select");
+        UM.Preferences.resetPreference("view/top_layer_count");
     }
 
     Column
@@ -57,12 +58,38 @@ UM.PreferencesPage
             }
         }
 
+        UM.TooltipArea {
+            width: childrenRect.width;
+            height: childrenRect.height;
+            text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
+
+            CheckBox
+            {
+                id: topLayerCheckbox
+                text: catalog.i18nc("@action:button","Display five top layers in layer view.");
+                checked: UM.Preferences.getValue("view/top_layer_count") == 5
+                onClicked:
+                {
+                    if(UM.Preferences.getValue("view/top_layer_count") == 5)
+                    {
+                        UM.Preferences.setValue("view/top_layer_count", 1)
+                    }
+                    else
+                    {
+                        UM.Preferences.setValue("view/top_layer_count", 5)
+                    }
+                }
+            }
+        }
+
         Connections {
             target: UM.Preferences
             onPreferenceChanged:
             {
                 overhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
                 centerCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
+                topLayerCheckbox = UM.Preferences.getValue("view/top_layer_count") == 5
+
             }
         }
     }

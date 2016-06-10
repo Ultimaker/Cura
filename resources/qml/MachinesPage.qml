@@ -12,11 +12,19 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    property int numInstances: model.rowCount();
     model: UM.ContainerStacksModel
     {
         filter: {"type": "machine"}
-        onDataChanged: numInstances = model.rowCount()
+    }
+
+    activeId: Cura.MachineManager.activeMachineId
+    activeIndex: {
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     onAddObject: Printer.requestAddPrinter()
@@ -24,9 +32,9 @@ UM.ManagementPage
     onRenameObject: renameDialog.open();
     onActivateObject: Cura.MachineManager.setActiveMachine(base.currentItem.id)
 
-    removeEnabled: base.currentItem != null && numInstances > 1
-    renameEnabled: base.currentItem != null && numInstances > 0
-    activateEnabled: base.currentItem != null
+    removeEnabled: base.currentItem != null && model.rowCount() > 1
+    renameEnabled: base.currentItem != null
+    activateEnabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachineId
 
     Flow
     {
