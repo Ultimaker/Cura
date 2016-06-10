@@ -71,6 +71,8 @@ class ExtruderManager(QObject):
             return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
         except AttributeError:
             return None
+        except KeyError:
+            return None
 
     ##  Adds all extruders of a specific machine definition to the extruder
     #   manager.
