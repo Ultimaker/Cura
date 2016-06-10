@@ -3,7 +3,6 @@
     "version": 2,
     "name": "Ultimaker 2+",
     "inherits": "ultimaker2",
-    "visible": "false",
     "metadata": {
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",

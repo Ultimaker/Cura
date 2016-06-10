@@ -5,7 +5,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker"
-        "visible": false,
+        "manufacturer": "Ultimaker",
+        "visible": false
     }
 }
