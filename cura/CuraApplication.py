@@ -198,6 +198,7 @@ class CuraApplication(QtApplication):
                 acceleration_print
                 acceleration_travel
                 jerk_print
+                jerk_travel
             travel
             cooling
                 cool_fan_enabled

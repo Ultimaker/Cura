@@ -1657,7 +1657,6 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "visible": true,
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": false
                 },
