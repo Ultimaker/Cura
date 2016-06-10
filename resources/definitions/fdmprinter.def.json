@@ -1342,6 +1342,7 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
+                            "value": "acceleration_print",
                             "enabled": "acceleration_enabled",
                             "settable_per_mesh": true
                         },
@@ -1354,6 +1355,7 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
+                            "value": "acceleration_print",
                             "enabled": "acceleration_enabled",
                             "settable_per_mesh": true,
                             "children": {
@@ -1366,6 +1368,7 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
+                                    "value": "acceleration_wall",
                                     "enabled": "acceleration_enabled",
                                     "settable_per_mesh": true
                                 },
@@ -1378,6 +1381,7 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
+                                    "value": "acceleration_wall",
                                     "enabled": "acceleration_enabled",
                                     "settable_per_mesh": true
                                 }
@@ -1392,6 +1396,7 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
+                            "value": "acceleration_print",
                             "enabled": "acceleration_enabled",
                             "settable_per_mesh": true
                         },
@@ -1404,6 +1409,7 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
+                            "value": "acceleration_print",
                             "enabled": "acceleration_enabled and support_roof_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1414,6 +1420,7 @@
                                     "unit": "mm/s²",
                                     "type": "float",
                                     "default_value": 3000,
+                                    "value": "acceleration_support",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
@@ -1427,6 +1434,7 @@
                                     "unit": "mm/s²",
                                     "type": "float",
                                     "default_value": 3000,
+                                    "value": "acceleration_support",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
@@ -1445,6 +1453,7 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
+                            "value": "acceleration_print",
                             "enabled": "prime_tower_enable and acceleration_enabled",
                             "settable_per_mesh": false
                         }
@@ -1459,7 +1468,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "default": "acceleration_print if magic_spiralize else 5000",
+                    "value": "acceleration_print if magic_spiralize else 5000",
                     "enabled": "acceleration_enabled",
                     "settable_per_mesh": false
                 },
@@ -1469,6 +1478,7 @@
                     "unit": "mm/s²",
                     "type": "float",
                     "default_value": 3000,
+                    "value": "acceleration_print",
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
@@ -1481,10 +1491,10 @@
                     "unit": "mm/s²",
                     "type": "float",
                     "default_value": 3000,
+                    "value": "acceleration_layer_0",
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "default": "acceleration_layer_0",
                     "enabled": "acceleration_enabled",
                     "settable_per_mesh": false
                 },
@@ -1520,6 +1530,7 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
+                            "value": "jerk_print",
                             "enabled": "jerk_enabled",
                             "settable_per_mesh": true
                         },
@@ -1532,6 +1543,7 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
+                            "value": "jerk_print",
                             "enabled": "jerk_enabled",
                             "settable_per_mesh": true,
                             "children": {
@@ -1544,6 +1556,7 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
+                                    "value": "jerk_wall",
                                     "enabled": "jerk_enabled",
                                     "settable_per_mesh": true
                                 },
@@ -1556,6 +1569,7 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
+                                    "value": "jerk_wall",
                                     "enabled": "jerk_enabled",
                                     "settable_per_mesh": true
                                 }
@@ -1570,6 +1584,7 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
+                            "value": "jerk_print",
                             "enabled": "jerk_enabled",
                             "settable_per_mesh": true
                         },
@@ -1582,6 +1597,7 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
+                            "value": "jerk_print",
                             "enabled": "jerk_enabled and support_roof_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1592,6 +1608,7 @@
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "default_value": 20,
+                                    "value": "jerk_support",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
@@ -1605,6 +1622,7 @@
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "default_value": 20,
+                                    "value": "jerk_support",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
@@ -1623,6 +1641,7 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
+                            "value": "jerk_print",
                             "enabled": "prime_tower_enable and jerk_enabled",
                             "settable_per_mesh": false
                         }
@@ -1637,7 +1656,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "default": "jerk_print if magic_spiralize else 30",
+                    "value": "jerk_print if magic_spiralize else 30",
                     "visible": true,
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": false
@@ -1648,6 +1667,7 @@
                     "unit": "mm/s³",
                     "type": "float",
                     "default_value": 20,
+                    "value": "jerk_print",
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
@@ -1663,7 +1683,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "default": "jerk_layer_0",
+                    "value": "jerk_layer_0",
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": false
                 }
@@ -2529,7 +2549,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "default": "acceleration_print",
+                    "value": "acceleration_print",
                     "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
                     "settable_per_mesh": false,
                     "children": {
@@ -2539,6 +2559,7 @@
                             "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
+                            "value": "raft_acceleration",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
@@ -2551,6 +2572,7 @@
                             "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
+                            "value": "raft_acceleration",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
@@ -2563,6 +2585,7 @@
                             "unit": "mm/s²",
                             "type": "float",
                             "default_value": 3000,
+                            "value": "raft_acceleration",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
@@ -2583,7 +2606,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "default": "jerk_print",
+                    "value": "jerk_print",
                     "enabled": "adhesion_type == \"raft\" and jerk_enabled",
                     "settable_per_mesh": false,
                     "children": {
@@ -2593,6 +2616,7 @@
                             "unit": "mm/s³",
                             "type": "float",
                             "default_value": 20,
+                            "value": "raft_jerk",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
@@ -2605,6 +2629,7 @@
                             "unit": "mm/s³",
                             "type": "float",
                             "default_value": 20,
+                            "value": "raft_jerk",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
@@ -2617,6 +2642,7 @@
                             "unit": "mm/s³",
                             "type": "float",
                             "default_value": 20,
+                            "value": "raft_jerk",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
