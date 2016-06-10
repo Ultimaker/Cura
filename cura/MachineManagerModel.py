@@ -304,6 +304,10 @@ class MachineManagerModel(QObject):
             new_name = self._createUniqueName("quality", containers[0].getName(), new_name,
                                               catalog.i18nc("@label", "Custom profile"))
 
+            if containers[0].getName() == new_name:
+                # Nothing to do.
+                return
+
             # As we also want the id of the container to be changed (so that profile name is the name of the file
             # on disk. We need to create a new instance and remove it (so the old file of the container is removed)
             # If we don't do that, we might get duplicates & other weird issues.
