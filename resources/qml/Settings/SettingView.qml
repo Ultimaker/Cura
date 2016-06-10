@@ -29,7 +29,7 @@ ScrollView
         model: UM.SettingDefinitionsModel {
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
-            exclude: ["machine_settings"]
+            // exclude: ["machine_settings"]
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
 
             filter:
