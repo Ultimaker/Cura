@@ -283,7 +283,7 @@ class CuraApplication(QtApplication):
             path = None
             if not stack_type or stack_type == "machine":
                 path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-            elif stack_type == "extruder":
+            elif stack_type == "extruder_train":
                 path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
             if path:
                 with SaveFile(path, "wt", -1, "utf-8") as f:

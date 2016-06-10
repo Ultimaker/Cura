@@ -18,7 +18,7 @@ class ExtruderManager(QObject):
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
 
-    ##  Registers listeners and such to listen to changes to the extruders.
+    ##  Registers listeners and such to listen to chafnges to the extruders.
     def __init__(self, parent = None):
         super().__init__(parent)
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs.
@@ -99,6 +99,10 @@ class ExtruderManager(QObject):
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_definition.getId())
         for extruder_train in extruder_trains:
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
+
+            ## Ensure that the extruder train stacks are linked to global stack.
+            extruder_train.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
+
         if extruder_trains:
             self.extrudersChanged.emit(machine_definition)
 
@@ -169,19 +173,19 @@ class ExtruderManager(QObject):
 
         #Find a quality to use for this extruder.
         quality = container_registry.getEmptyInstanceContainer()
-        if machine_definition.getMetaDataEntry("has_machine_quality"):
-            #First add any quality. Later, overwrite with preference if the preference is valid.
-            qualities = container_registry.findInstanceContainers(type = "quality")
-            if len(qualities) >= 1:
-                quality = qualities[0]
-            preferred_quality_id = machine_definition.getMetaDataEntry("preferred_quality")
-            if preferred_quality_id:
-                preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id.lower(), type = "quality")
-                if len(preferred_quality) >= 1:
-                    quality = preferred_quality[0]
-                else:
-                    UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality_id, machine_id)
-                    #And leave it at the default quality.
+    
+        #First add any quality. Later, overwrite with preference if the preference is valid.
+        qualities = container_registry.findInstanceContainers(type = "quality")
+        if len(qualities) >= 1:
+            quality = qualities[0]
+        preferred_quality_id = machine_definition.getMetaDataEntry("preferred_quality")
+        if preferred_quality_id:
+            preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id.lower(), type = "quality")
+            if len(preferred_quality) >= 1:
+                quality = preferred_quality[0]
+            else:
+                UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality_id, machine_id)
+                #And leave it at the default quality.
         container_stack.addContainer(quality)
 
         user_profile = container_registry.findInstanceContainers(id = extruder_stack_id + "_current_settings")
