@@ -5,6 +5,8 @@ import webbrowser
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
+
+from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -13,7 +15,10 @@ def show(exception_type, value, tb):
     if QCoreApplication.instance():
         debug_mode = QCoreApplication.instance().getCommandLineOption("debug-mode", False)
 
-    traceback.print_exception(exception_type, value, tb)
+    Logger.log("c", "An uncaught exception has occurred!")
+    for line in traceback.format_exception(exception_type, value, tb):
+        for part in line.rstrip("\n").split("\n"):
+            Logger.log("c", part)
 
     if not debug_mode:
         return
