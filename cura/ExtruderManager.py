@@ -66,6 +66,12 @@ class ExtruderManager(QObject):
         self._active_extruder_index = index
         self.activeExtruderChanged.emit()
 
+    def getActiveExtruderStack(self):
+        try:
+            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
+        except AttributeError:
+            return None
+
     ##  Adds all extruders of a specific machine definition to the extruder
     #   manager.
     #
