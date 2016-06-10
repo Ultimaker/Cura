@@ -6,6 +6,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Resources import Resources
+import copy
 
 import os
 import urllib
@@ -303,26 +304,32 @@ class MachineManagerModel(QObject):
 
         return ""
 
-
     @pyqtSlot(str, str)
     def renameQualityContainer(self, container_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
+            new_name = self._createUniqueName("quality", containers[0].getName(), new_name,
+                                              catalog.i18nc("@label", "Custom profile"))
 
-            # Remove old container form drive.
-            old_id = containers[0].getId()
-            file_name = urllib.parse.quote_plus(old_id) + ".inst.cfg"
-            path = Resources.getStoragePath(cura.CuraApplication.CuraApplication.ResourceTypes.QualityInstanceContainer,
-                                            file_name)
-            os.remove(path)
+            # As we also want the id of the container to be changed (so that profile name is the name of the file
+            # on disk. We need to create a new instance and remove it (so the old file of the container is removed)
+            # If we don't do that, we might get duplicates & other weird issues.
+            new_container = InstanceContainer("")
+            new_container.deserialize(containers[0].serialize())
 
-            ## Check if the new name is allowed.
-            new_name = self._createUniqueName("quality", containers[0].getName(), new_name, catalog.i18nc("@label", "Custom profile"))
+            # Actually set the name
+            new_container.setName(new_name)
+            new_container._id = new_name  # Todo: Fix proper id change function for this.
 
-            containers[0].setName(new_name)
-            containers[0]._id = new_name  # Todo: Fix proper id change function for this.
-            self.activeQualityChanged.emit()
+            # Add the "new" container.
+            UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
 
+            # Ensure that the renamed profile is saved -before- we remove the old profile.
+            Application.getInstance().saveSettings()
+
+            # Actually set & remove new / old quality.
+            self.setActiveQuality(new_name)
+            self.removeQualityContainer(containers[0].getId())
 
     @pyqtSlot(str)
     def removeQualityContainer(self, container_id):
