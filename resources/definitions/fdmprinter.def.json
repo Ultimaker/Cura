@@ -1318,7 +1318,8 @@
                     "description": "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality.",
                     "type": "bool",
                     "default_value": false,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "acceleration_print": {
                     "label": "Print Acceleration",
@@ -1330,6 +1331,7 @@
                     "maximum_value_warning": "10000",
                     "default_value": 3000,
                     "enabled": "acceleration_enabled",
+                    "settable_per_mesh": true,
                     "children": {
                         "acceleration_infill": {
                             "label": "Infill Acceleration",
@@ -1340,7 +1342,8 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "enabled": "acceleration_enabled"
+                            "enabled": "acceleration_enabled",
+                            "settable_per_mesh": true
                         },
                         "acceleration_wall": {
                             "label": "Wall Acceleration",
@@ -1352,6 +1355,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "enabled": "acceleration_enabled",
+                            "settable_per_mesh": true,
                             "children": {
                                 "acceleration_wall_0": {
                                     "label": "Outer Wall Acceleration",
@@ -1362,7 +1366,8 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
-                                    "enabled": "acceleration_enabled"
+                                    "enabled": "acceleration_enabled",
+                                    "settable_per_mesh": true
                                 },
                                 "acceleration_wall_x": {
                                     "label": "Inner Wall Acceleration",
@@ -1373,7 +1378,8 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
-                                    "enabled": "acceleration_enabled"
+                                    "enabled": "acceleration_enabled",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
@@ -1386,7 +1392,8 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "enabled": "acceleration_enabled"
+                            "enabled": "acceleration_enabled",
+                            "settable_per_mesh": true
                         },
                         "acceleration_support": {
                             "label": "Support Acceleration",
@@ -1398,6 +1405,8 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "enabled": "acceleration_enabled and support_roof_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
                             "children": {
                                 "acceleration_support_infill": {
                                     "label": "Support Infill Acceleration",
@@ -1409,7 +1418,8 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "enabled": "acceleration_enabled and support_enable",
-                                    "global_only": true
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": false
                                 },
                                 "acceleration_support_roof": {
                                     "label": "Support Roof Acceleration",
@@ -1421,7 +1431,8 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "enabled": "acceleration_enabled and support_roof_enable",
-                                    "global_only": true
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": false
                                 }
                             }
                         },
@@ -1435,7 +1446,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "enabled": "prime_tower_enable and acceleration_enabled",
-                            "global_only": true
+                            "settable_per_mesh": false
                         }
                     }
                 },
@@ -1449,8 +1460,8 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "default": "acceleration_print if magic_spiralize else 5000",
-                    "global_only": true,
-                    "enabled": "acceleration_enabled"
+                    "enabled": "acceleration_enabled",
+                    "settable_per_mesh": false
                 },
                 "acceleration_layer_0": {
                     "label": "Initial Layer Acceleration",
@@ -1461,7 +1472,8 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "acceleration_enabled"
+                    "enabled": "acceleration_enabled",
+                    "settable_per_mesh": true
                 },
                 "acceleration_skirt": {
                     "label": "Skirt Acceleration",
@@ -1473,8 +1485,8 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "default": "acceleration_layer_0",
-                    "global_only": true,
-                    "enabled": "acceleration_enabled"
+                    "enabled": "acceleration_enabled",
+                    "settable_per_mesh": false
                 },
 
                 
@@ -1484,7 +1496,8 @@
                     "description": "Enables adjusting the jerk of print head when the X or Y axis halts or starts to move. Increasing the jerk can reduce printing time at the cost of print quality.",
                     "type": "bool",
                     "default_value": false,
-                    "global_only": "True"
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "jerk_print": {
                     "label": "Print Jerk",
@@ -1496,6 +1509,7 @@
                     "maximum_value_warning": "50",
                     "default_value": 20,
                     "enabled": "jerk_enabled",
+                    "settable_per_mesh": true,
                     "children": {
                         "jerk_infill": {
                             "label": "Infill Jerk",
@@ -1506,7 +1520,8 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "enabled": "jerk_enabled"
+                            "enabled": "jerk_enabled",
+                            "settable_per_mesh": true
                         },
                         "jerk_wall": {
                             "label": "Wall Jerk",
@@ -1518,6 +1533,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "enabled": "jerk_enabled",
+                            "settable_per_mesh": true,
                             "children": {
                                 "jerk_wall_0": {
                                     "label": "Outer Wall Jerk",
@@ -1528,7 +1544,8 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
-                                    "enabled": "jerk_enabled"
+                                    "enabled": "jerk_enabled",
+                                    "settable_per_mesh": true
                                 },
                                 "jerk_wall_x": {
                                     "label": "Inner Wall Jerk",
@@ -1539,7 +1556,8 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
-                                    "enabled": "jerk_enabled"
+                                    "enabled": "jerk_enabled",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
@@ -1552,7 +1570,8 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "enabled": "jerk_enabled"
+                            "enabled": "jerk_enabled",
+                            "settable_per_mesh": true
                         },
                         "jerk_support": {
                             "label": "Support Jerk",
@@ -1564,6 +1583,8 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "enabled": "jerk_enabled and support_roof_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
                             "children": {
                                 "jerk_support_infill": {
                                     "label": "Support Infill Jerk",
@@ -1575,7 +1596,8 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "enabled": "jerk_enabled and support_enable",
-                                    "global_only": true
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": false
                                 },
                                 "jerk_support_roof": {
                                     "label": "Support Roof Jerk",
@@ -1587,7 +1609,8 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "enabled": "jerk_enabled and support_roof_enable",
-                                    "global_only": true
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": false
                                 }
                             }
                         },
@@ -1601,7 +1624,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "enabled": "prime_tower_enable and jerk_enabled",
-                            "global_only": true
+                            "settable_per_mesh": false
                         }
                     }
                 },
@@ -1615,9 +1638,9 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "default": "jerk_print if magic_spiralize else 30",
-                    "global_only": true,
                     "visible": true,
-                    "enabled": "jerk_enabled"
+                    "enabled": "jerk_enabled",
+                    "settable_per_mesh": false
                 },
                 "jerk_layer_0": {
                     "label": "Initial Layer Jerk",
@@ -1628,7 +1651,8 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "enabled": "jerk_enabled"
+                    "enabled": "jerk_enabled",
+                    "settable_per_mesh": true
                 },
                 "jerk_skirt": {
                     "label": "Skirt Jerk",
@@ -1640,8 +1664,8 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "default": "jerk_layer_0",
-                    "global_only": true,
-                    "enabled": "jerk_enabled"
+                    "enabled": "jerk_enabled",
+                    "settable_per_mesh": false
                 }
             }
         },
@@ -2506,8 +2530,8 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "default": "acceleration_print",
-                    "global_only": "True",
                     "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                    "settable_per_mesh": false,
                     "children": {
                         "raft_surface_acceleration": {
                             "label": "Raft Top Print Acceleration",
@@ -2518,8 +2542,8 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "global_only": "True",
-                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
+                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                            "settable_per_mesh": false
                         },
                         "raft_interface_acceleration": {
                             "label": "Raft Middle Print Acceleration",
@@ -2530,8 +2554,8 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "global_only": "True",
-                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
+                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                            "settable_per_mesh": false
                         },
                         "raft_base_acceleration": {
                             "label": "Raft Base Print Acceleration",
@@ -2542,8 +2566,8 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "global_only": "True",
-                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
+                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                            "settable_per_mesh": false
                         }
                     }
                 },
@@ -2560,8 +2584,8 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "default": "jerk_print",
-                    "global_only": "True",
                     "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                    "settable_per_mesh": false,
                     "children": {
                         "raft_surface_jerk": {
                             "label": "Raft Top Print Jerk",
@@ -2572,8 +2596,8 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
-                            "global_only": "True",
-                            "enabled": "adhesion_type == \"raft\" and jerk_enabled"
+                            "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                            "settable_per_mesh": false
                         },
                         "raft_interface_jerk": {
                             "label": "Raft Middle Print Jerk",
@@ -2584,8 +2608,8 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "global_only": "True",
-                            "enabled": "adhesion_type == \"raft\" and jerk_enabled"
+                            "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                            "settable_per_mesh": false
                         },
                         "raft_base_jerk": {
                             "label": "Raft Base Print Jerk",
@@ -2596,8 +2620,8 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "global_only": "True",
-                            "enabled": "adhesion_type == \"raft\" and jerk_enabled"
+                            "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                            "settable_per_mesh": false
                         }
                     }
                 },
