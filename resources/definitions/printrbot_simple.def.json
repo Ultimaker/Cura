@@ -22,13 +22,13 @@
         "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": {
             "default_value": [
-                [ -3, 3 ],
-                [ -3, -3 ],
-                [ 3, -3 ],
-                [ 3, 3 ]
+                [ -55, 20 ],
+                [ -55, -99999 ],
+                [ 49, -99999 ],
+                [ 49, 20 ]
             ]
         },
-        "gantry_height": { "default_value": 15 },
+        "gantry_height": { "default_value": 99999 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
 
         "machine_start_gcode": {
