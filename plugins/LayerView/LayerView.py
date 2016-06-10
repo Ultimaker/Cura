@@ -129,8 +129,7 @@ class LayerView(View):
             if self._current_layer_num > self._max_layers:
                 self._current_layer_num = self._max_layers
 
-            self._current_layer_mesh = None
-            self._current_layer_jumps = None
+            self.resetLayerData()
 
             self._top_layer_timer.start()
 
@@ -219,8 +218,7 @@ class LayerView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
 
-        self._current_layer_mesh = None
-        self._current_layer_jumps = None
+        self.resetLayerData()
         self._top_layer_timer.start()
 
 class _CreateTopLayersJob(Job):
