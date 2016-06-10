@@ -33,6 +33,9 @@ class MachineManagerModel(QObject):
         self.globalContainerChanged.connect(self.activeMaterialChanged)
         self.globalContainerChanged.connect(self.activeVariantChanged)
         self.globalContainerChanged.connect(self.activeQualityChanged)
+        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeMaterialChanged)
+        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeVariantChanged)
+        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeQualityChanged)
 
         self.globalContainerChanged.connect(self.activeStackChanged)
         self.globalValueChanged.connect(self.activeStackChanged)
@@ -221,7 +224,7 @@ class MachineManagerModel(QObject):
     def isGlobalStackValid(self):
         return self._global_stack_valid
 
-    @pyqtProperty(str, notify = globalContainerChanged)
+    @pyqtProperty(str, notify = activeStackChanged)
     def activeUserProfileId(self):
         if self._active_container_stack:
             return self._active_container_stack.getTop().getId()
