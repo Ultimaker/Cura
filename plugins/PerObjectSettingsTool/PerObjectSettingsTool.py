@@ -47,7 +47,7 @@ class PerObjectSettingsTool(Tool):
     #   \return The active extruder of the currently selected object.
     def getSelectedActiveExtruder(self):
         selected_object = Selection.getSelectedObject(0)
-        selected_object.callDecoration("getActiveExtruder")
+        return selected_object.callDecoration("getActiveExtruder")
 
     ##  Changes the active extruder of the currently selected object.
     #
