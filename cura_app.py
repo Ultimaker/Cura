@@ -4,7 +4,6 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os
-import platform
 import sys
 
 #WORKAROUND: GITHUB-704 GITHUB-708
@@ -34,9 +33,10 @@ sys.excepthook = exceptHook
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
+from UM.Platform import Platform
 import cura.CuraApplication
 
-if platform.system() == "Windows" and hasattr(sys, "frozen"):
+if Platform.isWindows() and hasattr(sys, "frozen"):
     dirpath = os.path.expanduser("~/AppData/Local/cura/")
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
