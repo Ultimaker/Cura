@@ -61,7 +61,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if self._extruder_stack:
             extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_stack)
             if extruder_stack:
-                self._stack.setNextStack(extruder_stack)
+                old_extruder_stack_id = self._stack.getNextStack().getId()
+                self._stack.setNextStack(extruder_stack[0])
+                if self._stack.getNextStack().getId() != old_extruder_stack_id: #Only reslice if the extruder changed.
+                    Application.getInstance().getBackend().forceSlice()
             else:
                 UM.Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
         else:
