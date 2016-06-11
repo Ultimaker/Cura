@@ -4,6 +4,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os
+import platform
 import sys
 
 #WORKAROUND: GITHUB-704 GITHUB-708
@@ -35,7 +36,7 @@ sys.excepthook = exceptHook
 import Arcus #@UnusedImport
 import cura.CuraApplication
 
-if sys.platform == "win32" and hasattr(sys, "frozen"):
+if platform.system() == "Windows" and hasattr(sys, "frozen"):
     dirpath = os.path.expanduser("~/AppData/Local/cura/")
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
