@@ -51,8 +51,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def getActiveExtruder(self):
         return self._extruder_stack
 
-    def _onSettingChanged(self, instance, property):
-        if property == "value":  # Only reslice if the value has changed.
+    def _onSettingChanged(self, instance, attribute): # Reminder: 'property' is a built-in function
+        if attribute == "value":  # Only reslice if the value has changed.
             Application.getInstance().getBackend().forceSlice()
 
     ##  Makes sure that the stack upon which the container stack is placed is
