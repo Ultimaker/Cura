@@ -18,7 +18,7 @@ class ExtruderManager(QObject):
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
 
-    ##  Registers listeners and such to listen to chafnges to the extruders.
+    ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self, parent = None):
         super().__init__(parent)
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs.
@@ -100,7 +100,7 @@ class ExtruderManager(QObject):
         for extruder_train in extruder_trains:
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
 
-            ## Ensure that the extruder train stacks are linked to global stack.
+            #Ensure that the extruder train stacks are linked to global stack.
             extruder_train.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
         if extruder_trains:
