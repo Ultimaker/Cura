@@ -102,8 +102,15 @@ class MachineManagerModel(QObject):
             self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
 
     def _onActiveExtruderStackChanged(self):
+        if self._active_container_stack and self._active_container_stack != self._global_container_stack:
+            self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+            self._active_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
+
         self._active_container_stack = ExtruderManager.ExtruderManager.getInstance().getActiveExtruderStack()
-        if not self._active_container_stack:
+        if self._active_container_stack:
+            self._active_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
+            self._active_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
+        else:
             self._active_container_stack = self._global_container_stack
 
     def _onInstanceContainersChanged(self, container):
