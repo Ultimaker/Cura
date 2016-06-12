@@ -154,7 +154,7 @@ UM.Dialog
 
     Button
     {
-        text:"save"
+        text: catalog.i18nc("@action:button", "Add Printer")
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         onClicked:
