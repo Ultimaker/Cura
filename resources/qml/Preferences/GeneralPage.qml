@@ -39,6 +39,12 @@ UM.PreferencesPage
         scaleTinyCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
         UM.Preferences.resetPreference("cura/jobname_prefix")
         prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+        UM.Preferences.resetPreference("view/show_overhang");
+        showOverhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
+        UM.Preferences.resetPreference("view/center_on_select");
+        centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
+        UM.Preferences.resetPreference("view/top_layer_count");
+        topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
         if (plugins.model.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
@@ -50,17 +56,24 @@ UM.PreferencesPage
         }
     }
 
-    ColumnLayout
+    Column
     {
         //: Language selection label
         UM.I18nCatalog{id: catalog; name:"cura"}
 
-        RowLayout
+        Label
+        {
+            font.bold: true
+            text: catalog.i18nc("@label","Interface")
+        }
+
+        Row
         {
             Label
             {
                 id: languageLabel
                 text: catalog.i18nc("@label","Language:")
+                anchors.verticalCenter: languageComboBox.verticalCenter
             }
 
             ComboBox
@@ -120,6 +133,51 @@ UM.PreferencesPage
             font.italic: true
         }
 
+        Item
+        {
+            //: Spacer
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").width
+        }
+
+        Label
+        {
+            font.bold: true
+            text: catalog.i18nc("@label","Viewport behavior")
+        }
+
+        UM.TooltipArea
+        {
+            width: childrenRect.width;
+            height: childrenRect.height;
+
+            text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
+
+            CheckBox
+            {
+                id: showOverhangCheckbox
+
+                checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
+                onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
+
+                text: catalog.i18nc("@option:check","Display overhang");
+            }
+        }
+
+        UM.TooltipArea {
+            width: childrenRect.width;
+            height: childrenRect.height;
+            text: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
+
+            CheckBox
+            {
+                id: centerOnSelectCheckbox
+                text: catalog.i18nc("@action:button","Center camera when item is selected");
+                checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
+                onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
+            }
+        }
+
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
@@ -135,14 +193,51 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
+            width: childrenRect.width;
+            height: childrenRect.height;
+            text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
+
+            CheckBox
+            {
+                id: topLayerCountCheckbox
+                text: catalog.i18nc("@action:button","Display five top layers in layer view");
+                checked: UM.Preferences.getValue("view/top_layer_count") == 5
+                onClicked:
+                {
+                    if(UM.Preferences.getValue("view/top_layer_count") == 5)
+                    {
+                        UM.Preferences.setValue("view/top_layer_count", 1)
+                    }
+                    else
+                    {
+                        UM.Preferences.setValue("view/top_layer_count", 5)
+                    }
+                }
+            }
+        }
+
+        Item
+        {
+            //: Spacer
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").height
+        }
+
+        Label
+        {
+            font.bold: true
+            text: catalog.i18nc("@label","Opening files")
+        }
+
+        UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","Should opened files be scaled to the build volume if they are too large?")
+            text: catalog.i18nc("@info:tooltip","Should objects be scaled to the build volume if they are too large?")
 
             CheckBox
             {
                 id: scaleToFitCheckbox
-                text: catalog.i18nc("@option:check","Scale large files")
+                text: catalog.i18nc("@option:check","Scale large objects")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_to_fit", checked)
             }
@@ -151,15 +246,43 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","Should opened files be scaled up if they are extremely small?")
+            text: catalog.i18nc("@info:tooltip","Should objects be scaled up if they are extremely small?")
 
             CheckBox
             {
                 id: scaleTinyCheckbox
-                text: catalog.i18nc("@option:check","Scale extremely small files")
+                text: catalog.i18nc("@option:check","Scale extremely small objects")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
             }
+        }
+
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
+
+            CheckBox
+            {
+                id: prefixJobNameCheckbox
+                text: catalog.i18nc("@option:check", "Add machine prefix to job name")
+                checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+                onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
+            }
+        }
+
+        Item
+        {
+            //: Spacer
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").height
+        }
+
+        Label
+        {
+            font.bold: true
+            visible: checkUpdatesCheckbox.visible || sendDataCheckbox.visible
+            text: catalog.i18nc("@label","Privacy")
         }
 
         UM.TooltipArea {
@@ -192,20 +315,7 @@ UM.PreferencesPage
             }
         }
 
-        UM.TooltipArea {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
-
-            CheckBox
-            {
-                id: prefixJobNameCheckbox
-                text: catalog.i18nc("@option:check", "Add machine prefix to job name")
-                checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
-                onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
-            }
-        }
-
+        //: Invisible list used to check if a plugin exists
         ListView
         {
             id: plugins
