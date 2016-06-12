@@ -10,13 +10,7 @@
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "bq_witbox_platform.stl",
-        "platform_offset": {
-            "value": [
-                0,
-                -145,
-                -38
-            ]
-        }
+        "platform_offset": [ 0, -145, -38]
     },
 
     "overrides": {
