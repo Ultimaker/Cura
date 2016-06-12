@@ -1,11 +1,11 @@
 {
     "id": "ultimaker_base",
     "version": 2,
-    "visible": false,
     "name": "Ultimaker",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker"
+        "manufacturer": "Ultimaker",
+        "visible": false
     }
 }
