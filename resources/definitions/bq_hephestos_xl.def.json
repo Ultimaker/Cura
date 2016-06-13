@@ -11,7 +11,6 @@
         "file_formats": "text/x-code",
         "platform": "bq_hephestos_platform.stl",
         "platform_offset": [ 0, -82, 0]
-        }
     },
 
     "overrides": {
