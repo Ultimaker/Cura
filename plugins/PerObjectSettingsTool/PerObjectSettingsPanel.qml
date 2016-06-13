@@ -61,7 +61,7 @@ Item {
                             }
                             else
                             {
-                                return extruders_model.getItem(extruderSelector.currentIndex).colour;
+                                return UM.Theme.getColor("setting_control");
                             }
                         }
                         border.width: UM.Theme.getSize("default_lining").width
@@ -69,9 +69,22 @@ Item {
                     }
                     label: Item
                     {
+                        Rectangle
+                        {
+                            id: swatch
+                            height: UM.Theme.getSize("setting_control").height / 2
+                            width: height
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            color: extruders_model.getItem(extruderSelector.currentIndex).colour
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
+                        }
                         Label
                         {
-                            anchors.left: parent.left
+                            anchors.left: swatch.right
                             anchors.leftMargin: UM.Theme.getSize("default_lining").width
                             anchors.right: downArrow.left
                             anchors.rightMargin: UM.Theme.getSize("default_lining").width
@@ -79,7 +92,7 @@ Item {
 
                             text: extruderSelector.currentText
                             font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("setting_control_disabled_text")
+                            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
 
                             elide: Text.ElideRight
                             verticalAlignment: Text.AlignVCenter
