@@ -2751,6 +2751,7 @@
                             "value": "support_extruder_nr",
                             "minimum_value": "0",
                             "maximum_value": "machine_extruder_count - 1",
+                            "enabled": "support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -2763,6 +2764,7 @@
                             "value": "support_extruder_nr",
                             "minimum_value": "0",
                             "maximum_value": "machine_extruder_count - 1",
+                            "enabled": "support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -2775,6 +2777,7 @@
                             "value": "support_extruder_nr",
                             "minimum_value": "0",
                             "maximum_value": "machine_extruder_count - 1",
+                            "enabled": "support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
