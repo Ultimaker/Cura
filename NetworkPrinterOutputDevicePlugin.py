@@ -18,7 +18,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addPrinterSignal.connect(self.addPrinter)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
 
     addPrinterSignal = Signal()
 
@@ -30,15 +30,14 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def stop(self):
         self._zero_conf.close()
 
-    def _onGlobalContainerStackChanged(self):
-        try:
-            active_machine_key = Application.getInstance().getGlobalContainerStack().getId()
-        except AttributeError:
-            ## Active machine instance changed to None. This can happen upon clean start. Simply ignore.
+    def _onGlobalStackChanged(self):
+
+        active_machine = Application.getInstance().getGlobalContainerStack()
+        if not active_machine:
             return
 
         for key in self._printers:
-            if key == active_machine_key:
+            if key == active_machine.getKey():
                 self._printers[key].connect()
                 self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
@@ -48,8 +47,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def addPrinter(self, name, address, properties):
         printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
         self._printers[printer.getKey()] = printer
-        stack = Application.getInstance().getGlobalContainerStack()
-        if stack and printer.getKey() == stack.getKey():
+        if printer.getKey() == Application.getInstance().getGlobalContainerStack().getKey():
             self._printers[printer.getKey()].connect()
         printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
