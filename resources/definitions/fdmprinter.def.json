@@ -1802,7 +1802,7 @@
                 {
                     "label": "Regular/Maximum Fan Speed Threshold",
                     "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
-                    "unit": "sec",
+                    "unit": "s",
                     "type": "float",
                     "default_value": 10,
                     "minimum_value": "cool_min_layer_time",
@@ -1842,7 +1842,7 @@
                 {
                     "label": "Minimum Layer Time",
                     "description": "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer.",
-                    "unit": "sec",
+                    "unit": "s",
                     "type": "float",
                     "default_value": 5,
                     "minimum_value": "0",
@@ -3395,7 +3395,7 @@
                 {
                     "label": "WP Top Delay",
                     "description": "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing.",
-                    "unit": "sec",
+                    "unit": "s",
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
@@ -3409,7 +3409,7 @@
                 {
                     "label": "WP Bottom Delay",
                     "description": "Delay time after a downward move. Only applies to Wire Printing.",
-                    "unit": "sec",
+                    "unit": "s",
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
@@ -3423,7 +3423,7 @@
                 {
                     "label": "WP Flat Delay",
                     "description": "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing.",
-                    "unit": "sec",
+                    "unit": "s",
                     "type": "float",
                     "default_value": 0.1,
                     "minimum_value": "0",
@@ -3553,7 +3553,7 @@
                     "label": "WP Roof Outer Delay",
                     "description": "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing.",
                     "type": "float",
-                    "unit": "sec",
+                    "unit": "s",
                     "default_value": 0.2,
                     "minimum_value": "0",
                     "maximum_value_warning": "2.0",
