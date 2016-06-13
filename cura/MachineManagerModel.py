@@ -61,7 +61,9 @@ class MachineManagerModel(QObject):
     activeStackChanged = pyqtSignal()
 
     globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
-    globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed.
+    globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed
+
+    blurSettings = pyqtSignal() # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
     @pyqtProperty("QVariantMap", notify = globalContainerChanged)
     def extrudersIds(self):
@@ -212,6 +214,7 @@ class MachineManagerModel(QObject):
         if not self._active_container_stack:
             return
 
+        self.blurSettings.emit()
         user_settings = self._active_container_stack.getTop()
         user_settings.clear()
 
@@ -299,6 +302,7 @@ class MachineManagerModel(QObject):
         new_container_id = self.duplicateContainer(self.activeQualityId)
         if new_container_id == "":
             return
+        self.blurSettings.emit()
         self.setActiveQuality(new_container_id)
         self.updateQualityContainerFromUserContainer()
 
