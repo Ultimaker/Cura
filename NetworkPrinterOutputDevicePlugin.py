@@ -47,9 +47,10 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def addPrinter(self, name, address, properties):
         printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
         self._printers[printer.getKey()] = printer
-        if printer.getKey() == Application.getInstance().getGlobalContainerStack().getMetaDataEntry("key"):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("key"):
             self._printers[printer.getKey()].connect()
-        printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+            printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
     ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
