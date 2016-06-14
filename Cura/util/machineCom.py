@@ -729,7 +729,7 @@ class MachineCom(object):
 			if self._printSection in self._feedRateModifier:
 				line = re.sub('F([0-9]*)', lambda m: 'F' + str(int(int(m.group(1)) * self._feedRateModifier[self._printSection])), line)
 			if ('G0' in line or 'G1' in line) and 'Z' in line:
-				z = float(re.search('Z(-?[0-9\.]*)', line).group(1))
+				z = float(re.search('Z([-+]?[0-9\.]*)', line).group(1))
 				if self._currentZ != z:
 					self._currentZ = z
 					self._callback.mcZChange(z)
