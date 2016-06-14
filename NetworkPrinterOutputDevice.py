@@ -190,7 +190,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     progress = json.loads(bytes(reply.readAll()).decode("utf-8"))["progress"]
                     ## If progress is 0 add a bit so another print can't be sent.
                     if progress == 0:
-                        progress += 0.1
+                        progress += 0.001
                     self.setProgress(progress)
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
