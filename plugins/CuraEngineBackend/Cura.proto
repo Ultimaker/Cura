@@ -44,21 +44,9 @@ message Layer {
 }
 
 message Polygon {
-    enum Type {
-        NoneType = 0;
-        Inset0Type = 1;
-        InsetXType = 2;
-        SkinType = 3;
-        SupportType = 4;
-        SkirtType = 5;
-        InfillType = 6;
-        SupportInfillType = 7;
-        MoveCombingType = 8;
-        MoveRetractionType = 9;
-    }
-    Type type = 1; // Type of move
-    bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
-    float line_width = 3; // The width of the line being laid down
+    bytes line_type = 1;
+    bytes points = 2;
+    bytes line_width = 3;
 }
 
 message GCodeLayer {

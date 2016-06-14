@@ -14,6 +14,7 @@ from UM.Math.Vector import Vector
 
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
+from cura import LayerPolygon
 
 import numpy
 
@@ -38,6 +39,12 @@ class ProcessSlicedLayersJob(Job):
         self._abort_requested = True
 
     def run(self):
+        # This is to prevent small models layer data to be cleared by extra invocation of engine
+        # Possibly adds an extra bug of layerdata not being removed if platform is cleared.
+        #TODO: remove need for this check 
+        if len(self._layers) == 0:
+            return
+
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
@@ -80,15 +87,22 @@ class ProcessSlicedLayersJob(Job):
             abs_layer_number = layer.id + abs(min_layer_number)
 
             layer_data.addLayer(abs_layer_number)
+            this_layer = layer_data.getLayer(abs_layer_number)
             layer_data.setLayerHeight(abs_layer_number, layer.height)
             layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
             for p in range(layer.repeatedMessageCount("polygons")):
                 polygon = layer.getRepeatedMessage("polygons", p)
 
+                line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
+                line_types = line_types.reshape((-1,1))
+
                 points = numpy.fromstring(polygon.points, dtype="i8")  # Convert bytearray to numpy array
                 points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
+                line_widths = numpy.fromstring(polygon.line_width, dtype="i4")  # Convert bytearray to numpy array
+                line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
@@ -99,7 +113,11 @@ class ProcessSlicedLayersJob(Job):
 
                 new_points /= 1000
 
-                layer_data.addPolygon(abs_layer_number, polygon.type, new_points, polygon.line_width)
+                this_poly = LayerPolygon.LayerPolygon(layer_data, line_types, new_points, line_widths)
+                this_poly.build_cache()
+                
+                this_layer.polygons.append(this_poly)
+
                 Job.yieldThread()
             Job.yieldThread()
             current_layer += 1

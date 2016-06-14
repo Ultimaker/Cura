@@ -25,6 +25,8 @@ from . import LayerViewProxy
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+import numpy
+
 ## View used to display g-code paths.
 class LayerView(View):
     def __init__(self):
@@ -42,7 +44,7 @@ class LayerView(View):
         self._top_layers_job = None
         self._activity = False
 
-        Preferences.getInstance().addPreference("view/top_layer_count", 1)
+        Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
@@ -255,12 +257,14 @@ class _CreateTopLayersJob(Job):
             if not layer or layer.getVertices() is None:
                 continue
 
+            layer_mesh.addIndices(layer_mesh._vertex_count+layer.getIndices())
             layer_mesh.addVertices(layer.getVertices())
-
+            
             # Scale layer color by a brightness factor based on the current layer number
             # This will result in a range of 0.5 - 1.0 to multiply colors by.
-            brightness = (2.0 - (i / self._solid_layers)) / 2.0
-            layer_mesh.addColors(layer.getColors() * brightness)
+            brightness = numpy.ones((1,4),dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
+            brightness[0,3] = 1.0;
+            layer_mesh.addColors(layer.getColors() * brightness )
 
             if self._cancel:
                 return
