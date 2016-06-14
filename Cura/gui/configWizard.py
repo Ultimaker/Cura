@@ -1207,11 +1207,11 @@ class LulzbotReadyPage(InfoPage):
 		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ/Mini"))
 		self.AddText(_('Cura is now ready to be used with your LulzBot 3D printer.'))
 		self.AddSeperator()
-		self.AddText(_('For more information about using Cura with your LulzBot'))
-		self.AddTextUrl(_('3D printer, please visit '), 'www.LulzBot.com/cura', 'http://www.lulzbot.com/cura')
+		self.AddText(_('Complete tool head installation and calibration by following'))
+		self.AddTextUrl(_('instructions available here '), 'ohai.LulzBot.com/group/accessories', 'http://ohai.lulzbot.com/group/accessories')
 		self.AddText('')
 		self.AddText(_('Please contact support if you have problems operating'))
-		self.AddTextUrl(_('your LulzBot 3D Printer '), 'www.LulzBot.com/support', 'http://www.lulzbot.com/support')
+		self.AddTextUrl(_('your LulzBot 3D Printer :'), 'www.LulzBot.com/support', 'http://www.lulzbot.com/support')
 		self.AddSeperator()
 
 class LulzbotMiniToolheadSelectPage(InfoPage):
