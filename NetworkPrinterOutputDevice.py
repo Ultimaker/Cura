@@ -9,6 +9,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
 from PyQt5.QtCore import QUrl, QTimer
+from PyQt5.QtGui import QPixmap
 
 import json
 
@@ -52,6 +53,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._print_job_request = None
         self._print_job_reply = None
 
+        self._image_request = None
+        self._image_reply = None
+
         self._post_request = None
         self._post_reply = None
         self._post_multi_part = None
@@ -64,6 +68,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.setInterval(5000)  # TODO; Add preference for update interval
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
+
+        self._camera_image = QPixmap()
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
@@ -80,6 +86,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "print_job")
         self._print_job_request = QNetworkRequest(url)
         self._print_job_reply = self._manager.get(self._print_job_request)
+
+        ## Request new image
+        url = QUrl("http://" + self._address +":8080/?action=snapshot")
+        self._image_request = QNetworkRequest(url)
+        self._image_reply = self._manager.get(self._image_request)
 
     ##  Convenience function that gets information from the received json data and converts it to the right internal
     #   values / variables
@@ -116,7 +127,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.start()
 
     def getCameraImage(self):
-        pass  # TODO: This still needs to be implemented (we don't have a place to show it now anyway)
+        return self._camera_image
 
     def startPrint(self):
         if self._progress != 0:
@@ -183,7 +194,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.setProgress(progress)
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
-
+            elif "snapshot" in reply.url().toString():  # Status update from image:
+                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                    self._camera_image.loadFromData(reply.readAll())
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             reply.uploadProgress.disconnect(self._onUploadProgress)
             self._progress_message.hide()
