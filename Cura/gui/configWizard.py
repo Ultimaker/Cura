@@ -1517,7 +1517,6 @@ class LulzbotHotendSelectPage(InfoPage):
 		self.GetParent().lulzbotTazToolheadPage.SetVersion(1 if self.v1.GetValue() else 2)
 
 class LulzbotTaz5NozzleSelectPage(InfoPage):
-	url2='http://lulzbot.com/printer-identification'
 
 	def __init__(self, parent):
 		super(LulzbotTaz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ Single v2 Nozzle Selection"))
@@ -1530,12 +1529,7 @@ class LulzbotTaz5NozzleSelectPage(InfoPage):
 		self.AddSeperator()
 
 		self.AddText(_('If you are not sure which nozzle diameter you have,'))
-		self.AddText(_('please check this webpage: '))
-		button = self.AddButton(LulzbotTaz5NozzleSelectPage.url2)
-		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
-
-	def OnUrlClick(self, e):
-		webbrowser.open(LulzbotTaz5NozzleSelectPage.url2)
+		self.AddTextUrl(_('please check this webpage: '), 'LulzBot.com/printer-identification', 'http://lulzbot.com/printer-identification')
 
 	def StoreData(self):
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
