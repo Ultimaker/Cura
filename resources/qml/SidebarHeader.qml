@@ -141,6 +141,20 @@ Column
                                 control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
                     Behavior on color { ColorAnimation { duration: 50; } }
 
+                    Rectangle
+                    {
+                        id: swatch
+                        height: UM.Theme.getSize("setting_control").height / 2
+                        width: height
+                        anchors.left: parent.left
+                        anchors.leftMargin: (parent.height - height) / 2
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        color: model.colour
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("toggle_checked")
+                    }
+
                     Label
                     {
                         anchors.centerIn: parent
