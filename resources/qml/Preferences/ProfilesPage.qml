@@ -39,7 +39,6 @@ UM.ManagementPage
     section.property: "readOnly"
     section.delegate: Rectangle
     {
-        width: objectListContainer.viewport.width;
         height: childrenRect.height;
 
         Label
