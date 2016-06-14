@@ -122,7 +122,8 @@ material_map = {
 	"PC-MAX": "polymaker-PC-MAX",
 	"wood-bamboo": "woodFill-bambooFill",
 	"PLA_poly": "PLA-polylite",
-	
+	"polyflex": "polyflex",
+	"armadillo": "armadillo",
 }
 
 material_order = {
@@ -203,6 +204,8 @@ material_order = {
 	"PC-MAX":            5003,
 	"wood-bamboo":       5004,
 	"PLA_poly":          5005,
+	"polyflex":          5006,
+	"armadillo":         5007,
 }
 
 material_types = {
@@ -357,6 +360,8 @@ material_names = {
 	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
 	"PLA_poly": "PLA Polylite (Polymaker)",
+	"polyflex": "Polyflex (Polymaker)",
+	"armadillo": "Armadillo (NinjaTek)",
 }
 
 material_url = {
@@ -436,6 +441,8 @@ material_url = {
 #	"PC-MAX": "",
 #	"wood-bamboo": "",
 #	"PLA_poly": "",
+#	"polyflex": "",
+#	"armadillo": "",
 }
 
 bed_prep_materials = {
