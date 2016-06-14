@@ -1,7 +1,3 @@
-import threading
-import time
-import requests
-
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Logger import Logger
@@ -12,7 +8,9 @@ from UM.Message import Message
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, QTimer
+
+import json
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -27,7 +25,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._info = info
 
         self._gcode = None
-        self._update_thread = None
 
         #   This holds the full JSON file that was received from the last request.
         self._json_printer_state = None
@@ -49,13 +46,24 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._manager.finished.connect(self._onFinished)
 
         ##  Hack to ensure that the qt networking stuff isn't garbage collected (unless we want it to)
-        self._qt_request = None
-        self._qt_reply = None
-        self._qt_multi_part = None
-        self._qt_part = None
+        self._printer_request = None
+        self._printer_reply = None
+
+        self._print_job_request = None
+        self._print_job_reply = None
+
+        self._post_request = None
+        self._post_reply = None
+        self._post_multi_part = None
+        self._post_part = None
 
         self._progress_message = None
         self._error_message = None
+
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(5000)  # TODO; Add preference for update interval
+        self._update_timer.setSingleShot(False)
+        self._update_timer.timeout.connect(self._update)
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
@@ -63,36 +71,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return self._key
 
     def _update(self):
-        Logger.log("d", "Update thread of printer with key %s and ip %s started", self._key, self._address)
-        while self.isConnected():
-            try:
-                printer_reply = self._httpGet("printer")
-                if printer_reply.status_code == 200:
-                    self._json_printer_state = printer_reply.json()
-                    try:
-                        self._spliceJSONData()
-                    except:
-                        # issues with json parsing should not break by definition
-                        # TODO: Check in what cases it should fail.
-                        pass
-                    if self._connection_state == ConnectionState.connecting:
-                        # First successful response, so we are now "connected"
-                        self.setConnectionState(ConnectionState.connected)
-                else:
-                    Logger.log("w", "Got http status code %s while trying to request data.", printer_reply.status_code)
-                    self.setConnectionState(ConnectionState.error)
+        ## Request 'general' printer data
+        url = QUrl("http://" + self._address + self._api_prefix + "printer")
+        self._printer_request = QNetworkRequest(url)
+        self._printer_reply = self._manager.get(self._printer_request)
 
-                print_job_reply = self._httpGet("print_job")
-                if print_job_reply.status_code != 404:
-                    self.setProgress(print_job_reply.json()["progress"])
-                else:
-                    self.setProgress(0)
-                
-            except Exception as e:
-                self.setConnectionState(ConnectionState.error)
-                Logger.log("w", "Exception occured while connecting; %s", str(e))
-            time.sleep(2)  # Poll every 2 seconds for printer state.
-        Logger.log("d", "Update thread of printer with key %s and ip %s stopped with state: %s", self._key, self._address, self._connection_state)
+        ## Request print_job data
+        url = QUrl("http://" + self._address + self._api_prefix + "print_job")
+        self._print_job_request = QNetworkRequest(url)
+        self._print_job_reply = self._manager.get(self._print_job_request)
 
     ##  Convenience function that gets information from the received json data and converts it to the right internal
     #   values / variables
@@ -112,9 +99,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def close(self):
         self._connection_state == ConnectionState.closed
-        if self._update_thread is not None:
-            self._update_thread.join()
-            self._update_thread = None
+        self._update_timer.stop()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -123,13 +108,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
 
-    ##  Start the polling thread.
+    ##  Start requesting data from printer
     def connect(self):
-        if self._update_thread is None:
-            self.setConnectionState(ConnectionState.connecting)
-            self._update_thread = threading.Thread(target = self._update)
-            self._update_thread.daemon = True
-            self._update_thread.start()
+        self.setConnectionState(ConnectionState.connecting)
+        self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
+        Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
+        self._update_timer.start()
 
     def getCameraImage(self):
         pass  # TODO: This still needs to be implemented (we don't have a place to show it now anyway)
@@ -143,6 +127,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
 
+            ## Mash the data into single string
             single_string_file_data = ""
             for line in self._gcode:
                 single_string_file_data += line
@@ -151,23 +136,23 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             file_name = "test.gcode"
 
             ##  Create multi_part request
-            self._qt_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
+            self._post_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
 
             ##  Create part (to be placed inside multipart)
-            self._qt_part = QHttpPart()
-            self._qt_part.setHeader(QNetworkRequest.ContentDispositionHeader,
+            self._post_part = QHttpPart()
+            self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader,
                            "form-data; name=\"file\"; filename=\"%s\"" % file_name)
-            self._qt_part.setBody(single_string_file_data)
-            self._qt_multi_part.append(self._qt_part)
+            self._post_part.setBody(single_string_file_data.encode())
+            self._post_multi_part.append(self._post_part)
 
             url = QUrl("http://" + self._address + self._api_prefix + "print_job")
 
             ##  Create the QT request
-            self._qt_request = QNetworkRequest(url)
+            self._post_request = QNetworkRequest(url)
 
             ##  Post request + data
-            self._qt_reply = self._manager.post(self._qt_request, self._qt_multi_part)
-            self._qt_reply.uploadProgress.connect(self._onUploadProgress)
+            self._post_reply = self._manager.post(self._post_request, self._post_multi_part)
+            self._post_reply.uploadProgress.connect(self._onUploadProgress)
 
         except IOError:
             self._progress_message.hide()
@@ -177,15 +162,32 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message.hide()
             Logger.log("e" , "An exception occured in network connection: %s" % str(e))
 
+    ##  Handler for all requests that have finshed.
     def _onFinished(self, reply):
-        reply.uploadProgress.disconnect(self._onUploadProgress)
-        self._progress_message.hide()
+        if reply.operation() == QNetworkAccessManager.GetOperation:
+            if "printer" in reply.url().toString():  # Status update from printer.
+                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                    if self._connection_state == ConnectionState.connecting:
+                        self.setConnectionState(ConnectionState.connected)
+                    self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                    self._spliceJSONData()
+                else:
+                    pass  # TODO: Handle errors
+            elif "print_job" in reply.url().toString():  # Status update from print_job:
+                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                    self.setProgress(json.loads(bytes(reply.readAll()).decode("utf-8"))["progress"])
+                elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
+                    self.setProgress(0)  # No print job found, so there can't be progress!
+
+        elif reply.operation() == QNetworkAccessManager.PostOperation:
+            reply.uploadProgress.disconnect(self._onUploadProgress)
+            self._progress_message.hide()
+        else:
+            print("got unhandled operation:", reply.operation())
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             self._progress_message.setProgress(bytes_sent / bytes_total * 100)
         else:
             self._progress_message.setProgress(0)
-
-    def _httpGet(self, path):
-        return requests.get("http://" + self._address + self._api_prefix + path, timeout = 5)
