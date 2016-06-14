@@ -102,7 +102,7 @@ SettingItem
             }
         }
 
-        onActivated: provider.setPropertyValue("value", extruders_model.getItem(index).index);
+        onActivated: { forceActiveFocus(); provider.setPropertyValue("value", extruders_model.getItem(index).index) };
         onModelChanged: updateCurrentIndex();
 
         Connections
