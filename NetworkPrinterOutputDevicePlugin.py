@@ -2,14 +2,15 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import NetworkPrinterOutputDevice
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
-from UM.Signal import Signal, SignalEmitter
+from UM.Signal import Signal, signalemitter
 from UM.Application import Application
 
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
-class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
+@signalemitter
+class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def __init__(self):
         super().__init__()
         self._zero_conf = Zeroconf()
@@ -37,17 +38,16 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
             return
 
         for key in self._printers:
-            if key == active_machine.getKey():
+            if key == active_machine.getMetaDataEntry("key"):
                 self._printers[key].connect()
                 self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
-            else:
                 self._printers[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties):
         printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
         self._printers[printer.getKey()] = printer
-        if printer.getKey() == Application.getInstance().getGlobalContainerStack().getKey():
+        if printer.getKey() == Application.getInstance().getGlobalContainerStack().getMetaDataEntry("key"):
             self._printers[printer.getKey()].connect()
         printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 

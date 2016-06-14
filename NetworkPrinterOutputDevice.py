@@ -5,6 +5,7 @@ import requests
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Signal import signalemitter
 
 from UM.Message import Message
 
@@ -17,6 +18,7 @@ i18n_catalog = i18nCatalog("cura")
 
 
 ##  Network connected (wifi / lan) printer that uses the Ultimaker API
+@signalemitter
 class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, key, address, info):
         super().__init__(key)
