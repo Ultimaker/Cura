@@ -13,7 +13,7 @@ from UM.PluginRegistry import PluginRegistry #For getting the possible profile w
 from UM.Util import parseBool
 
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog("uranium")
+catalog = i18nCatalog("cura")
 
 class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
