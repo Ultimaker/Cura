@@ -21,6 +21,9 @@
     "overrides": {
         "machine_heated_bed": {
             "default_value": true
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 30
         }
     }
 }

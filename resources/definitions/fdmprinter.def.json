@@ -303,6 +303,137 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                
+                "machine_max_feedrate_x": {
+                    "label": "Maximum Speed X",
+                    "description": "The maximum speed for the motor of the X-direction.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 500,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_feedrate_y": {
+                    "label": "Maximum Speed Y",
+                    "description": "The maximum speed for the motor of the Y-direction.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 500,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_feedrate_z": {
+                    "label": "Maximum Speed Z",
+                    "description": "The maximum speed for the motor of the Z-direction.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 5,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_feedrate_e": {
+                    "label": "Maximum Feedrate",
+                    "description": "The maximum speed of the filament.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 25,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_acceleration_x": {
+                    "label": "Maximum Acceleration X",
+                    "description": "Maximum acceleration for the motor of the X-direction",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "default_value": 9000,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_acceleration_y": {
+                    "label": "Maximum Acceleration Y",
+                    "description": "Maximum acceleration for the motor of the Y-direction.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "default_value": 9000,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_acceleration_z": {
+                    "label": "Maximum Acceleration Z",
+                    "description": "Maximum acceleration for the motor of the Z-direction.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "default_value": 100,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_acceleration_e": {
+                    "label": "Maximum Filament Acceleration",
+                    "description": "Maximum acceleration for the motor of the filament.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "default_value": 10000,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_acceleration": {
+                    "label": "Default Acceleration",
+                    "description": "The default acceleration of print head movement.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "default_value": 4000,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_jerk_xy": {
+                    "label": "Default X-Y Jerk",
+                    "description": "Default jerk for movement in the horizontal plane.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 20.0,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_jerk_z": {
+                    "label": "Default Z Jerk",
+                    "description": "Default jerk for the motor of the Z-direction.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 0.4,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_max_jerk_e": {
+                    "label": "Default Filament Jerk",
+                    "description": "Default jerk for the motor of the filament.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 5.0,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_minimum_feedrate": {
+                    "label": "Minimum Feedrate",
+                    "description": "The minimal movement speed of the print head.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
