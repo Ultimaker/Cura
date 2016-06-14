@@ -24,19 +24,12 @@ class PerObjectSettingsTool(Tool):
         return False
 
     def getSelectedObjectId(self):
-        try:
-            selected_object = Selection.getSelectedObject(0)
-            if selected_object.getParent().callDecoration("isGroup"):
-                selected_object = selected_object.getParent()
-        except:
-            selected_object = None
+        selected_object = Selection.getSelectedObject(0)
         selected_object_id = id(selected_object)
         return selected_object_id
 
     def getContainerID(self):
         selected_object = Selection.getSelectedObject(0)
-        if selected_object.getParent().callDecoration("isGroup"):
-            selected_object = selected_object.getParent()
         try:
             return selected_object.callDecoration("getStack").getId()
         except AttributeError:
