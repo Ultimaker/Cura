@@ -1607,7 +1607,7 @@
                 "jerk_print": {
                     "label": "Print Jerk",
                     "description": "The maximum instantaneous velocity change of the print head.",
-                    "unit": "mm/s³",
+                    "unit": "mm/s",
                     "type": "float",
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
@@ -1619,7 +1619,7 @@
                         "jerk_infill": {
                             "label": "Infill Jerk",
                             "description": "The maximum instantaneous velocity change with which infill is printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
@@ -1632,7 +1632,7 @@
                         "jerk_wall": {
                             "label": "Wall Jerk",
                             "description": "The maximum instantaneous velocity change with which the walls are printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
@@ -1645,7 +1645,7 @@
                                 "jerk_wall_0": {
                                     "label": "Outer Wall Jerk",
                                     "description": "The maximum instantaneous velocity change with which the outermost walls are printed.",
-                                    "unit": "mm/s³",
+                                    "unit": "mm/s",
                                     "type": "float",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
@@ -1658,7 +1658,7 @@
                                 "jerk_wall_x": {
                                     "label": "Inner Wall Jerk",
                                     "description": "The maximum instantaneous velocity change with which all inner walls are printed.",
-                                    "unit": "mm/s³",
+                                    "unit": "mm/s",
                                     "type": "float",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
@@ -1673,7 +1673,7 @@
                         "jerk_topbottom": {
                             "label": "Top/Bottom Jerk",
                             "description": "The maximum instantaneous velocity change with which top/bottom layers are printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
@@ -1686,7 +1686,7 @@
                         "jerk_support": {
                             "label": "Support Jerk",
                             "description": "The maximum instantaneous velocity change with which the support structure is printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
@@ -1700,7 +1700,7 @@
                                 "jerk_support_infill": {
                                     "label": "Support Infill Jerk",
                                     "description": "The maximum instantaneous velocity change with which the infill of support is printed.",
-                                    "unit": "mm/s³",
+                                    "unit": "mm/s",
                                     "type": "float",
                                     "default_value": 20,
                                     "value": "jerk_support",
@@ -1714,7 +1714,7 @@
                                 "jerk_support_roof": {
                                     "label": "Support Roof Jerk",
                                     "description": "The maximum instantaneous velocity change with which the roofs of support are printed.",
-                                    "unit": "mm/s³",
+                                    "unit": "mm/s",
                                     "type": "float",
                                     "default_value": 20,
                                     "value": "jerk_support",
@@ -1730,7 +1730,7 @@
                         "jerk_prime_tower": {
                             "label": "Prime Tower Jerk",
                             "description": "The maximum instantaneous velocity change with which the prime tower is printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
@@ -1745,7 +1745,7 @@
                 "jerk_travel": {
                     "label": "Travel Jerk",
                     "description": "The maximum instantaneous velocity change with which travel moves are made.",
-                    "unit": "mm/s³",
+                    "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
                     "minimum_value": "0.1",
@@ -1758,7 +1758,7 @@
                 "jerk_layer_0": {
                     "label": "Initial Layer Jerk",
                     "description": "The print maximum instantaneous velocity change for the initial layer.",
-                    "unit": "mm/s³",
+                    "unit": "mm/s",
                     "type": "float",
                     "default_value": 20,
                     "value": "jerk_print",
@@ -1771,7 +1771,7 @@
                 "jerk_skirt": {
                     "label": "Skirt Jerk",
                     "description": "The maximum instantaneous velocity change with which the skirt and brim are printed.",
-                    "unit": "mm/s³",
+                    "unit": "mm/s",
                     "type": "float",
                     "default_value": 20,
                     "minimum_value": "0.1",
@@ -2700,7 +2700,7 @@
                 "raft_jerk": {
                     "label": "Raft Print Jerk",
                     "description": "The jerk with which the raft is printed.",
-                    "unit": "mm/s³",
+                    "unit": "mm/s",
                     "type": "float",
                     "default_value": 20,
                     "minimum_value": "0.1",
@@ -2713,7 +2713,7 @@
                         "raft_surface_jerk": {
                             "label": "Raft Top Print Jerk",
                             "description": "The jerk with which the top raft layers are printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "default_value": 20,
                             "value": "raft_jerk",
@@ -2726,7 +2726,7 @@
                         "raft_interface_jerk": {
                             "label": "Raft Middle Print Jerk",
                             "description": "The jerk with which the middle raft layer is printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "default_value": 20,
                             "value": "raft_jerk",
@@ -2739,7 +2739,7 @@
                         "raft_base_jerk": {
                             "label": "Raft Base Print Jerk",
                             "description": "The jerk with which the base raft layer is printed.",
-                            "unit": "mm/s³",
+                            "unit": "mm/s",
                             "type": "float",
                             "default_value": 20,
                             "value": "raft_jerk",
