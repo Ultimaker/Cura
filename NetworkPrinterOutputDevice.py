@@ -160,9 +160,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message.show()
         except Exception as e:
             self._progress_message.hide()
-            Logger.log("e" , "An exception occured in network connection: %s" % str(e))
+            Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
-    ##  Handler for all requests that have finshed.
+    ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from printer.
@@ -176,7 +176,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     pass  # TODO: Handle errors
             elif "print_job" in reply.url().toString():  # Status update from print_job:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
-                    self.setProgress(json.loads(bytes(reply.readAll()).decode("utf-8"))["progress"])
+                    progress = json.loads(bytes(reply.readAll()).decode("utf-8"))["progress"]
+                    ## If progress is 0 add a bit so another print can't be sent.
+                    if progress == 0:
+                        progress += 0.1
+                    self.setProgress(progress)
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
 
@@ -184,7 +188,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             reply.uploadProgress.disconnect(self._onUploadProgress)
             self._progress_message.hide()
         else:
-            print("got unhandled operation:", reply.operation())
+            Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
