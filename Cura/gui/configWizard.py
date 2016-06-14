@@ -261,6 +261,18 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		self.rowNr += 1
 		return text
 
+	def AddTextUrl(self, info, link, url):
+		text = wx.StaticText(self, -1, info)
+		self.GetSizer().Add(text, pos=(self.rowNr, 0), span=(1, 1), flag=wx.LEFT)
+		text2 = wx.StaticText(self, -1, link)
+		text2.SetForegroundColour(wx.BLUE)
+		def url_clicked(e):
+			webbrowser.open(url)
+		text2.Bind(wx.EVT_LEFT_DOWN, url_clicked)
+		self.GetSizer().Add(text2, pos=(self.rowNr, 1), span=(1, 1), border=0)
+		self.rowNr += 1
+		return text
+
 	def AddSeperator(self):
 		self.GetSizer().Add(wx.StaticLine(self, -1), pos=(self.rowNr, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL)
 		self.rowNr += 1
@@ -1196,10 +1208,10 @@ class LulzbotReadyPage(InfoPage):
 		self.AddText(_('Cura is now ready to be used with your LulzBot 3D printer.'))
 		self.AddSeperator()
 		self.AddText(_('For more information about using Cura with your LulzBot'))
-		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
+		self.AddTextUrl(_('3D printer, please visit '), 'www.LulzBot.com/cura', 'http://www.lulzbot.com/cura')
 		self.AddText('')
 		self.AddText(_('Please contact support if you have problems operating'))
-		self.AddText(_('your LulzBot 3D Printer www.LulzBot.com/support'))
+		self.AddTextUrl(_('your LulzBot 3D Printer '), 'www.LulzBot.com/support', 'http://www.lulzbot.com/support')
 		self.AddSeperator()
 
 class LulzbotMiniToolheadSelectPage(InfoPage):
