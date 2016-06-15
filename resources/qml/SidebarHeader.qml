@@ -157,13 +157,19 @@ Column
 
                     Label
                     {
-                        anchors.centerIn: parent
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: swatch.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+
                         color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
                                     control.pressed ? UM.Theme.getColor("toggle_active_text") :
                                     control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
 
                         font: UM.Theme.getFont("default")
-                        text: control.text;
+                        text: control.text
+                        elide: Text.ElideRight
                     }
                 }
                 label: Item { }
