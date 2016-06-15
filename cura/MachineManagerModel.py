@@ -1,5 +1,5 @@
-
-import re
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
@@ -171,31 +171,7 @@ class MachineManagerModel(QObject):
     #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
     #   \return \type{string} Name that is unique for the specified type and name/id
     def _createUniqueName(self, container_type, current_name, new_name, fallback_name):
-        new_name = new_name.strip()
-        num_check = re.compile("(.*?)\s*#\d+$").match(new_name)
-        if num_check:
-            new_name = num_check.group(1)
-        if new_name == "":
-            new_name = fallback_name
-
-        unique_name = new_name
-        i = 1
-        # In case we are renaming, the current name of the container is also a valid end-result
-        while self._containerExists(container_type, unique_name) and unique_name != current_name:
-            i += 1
-            unique_name = "%s #%d" % (new_name, i)
-
-        return unique_name
-
-    ##  Check if a container with of a certain type and a certain name or id exists
-    #   Both the id and the name are checked, because they may not be the same and it is better if they are both unique
-    #   \param container_type \type{string} Type of the container (machine, quality, ...)
-    #   \param container_name \type{string} Name to check
-    def _containerExists(self, container_type, container_name):
-        container_class = ContainerStack if container_type == "machine" else InstanceContainer
-
-        return UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, id = container_name, type = container_type) or \
-                UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, name = container_name, type = container_type)
+        return UM.Settings.ContainerRegistry.createUniqueName(container_type, current_name, new_name, fallback_name)
 
     ##  Convenience function to check if a stack has errors.
     def _checkStackForErrors(self, stack):

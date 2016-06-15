@@ -1,10 +1,14 @@
 # Copyright (c) 2016 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the AGPLv3 or higher.
 
 import os
+import os.path
+import re
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
@@ -18,6 +22,39 @@ catalog = i18nCatalog("cura")
 class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    ##  Create a name that is not empty and unique
+    #   \param container_type \type{string} Type of the container (machine, quality, ...)
+    #   \param current_name \type{} Current name of the container, which may be an acceptable option
+    #   \param new_name \type{string} Base name, which may not be unique
+    #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
+    #   \return \type{string} Name that is unique for the specified type and name/id
+    def createUniqueName(self, container_type, current_name, new_name, fallback_name):
+        new_name = new_name.strip()
+        num_check = re.compile("(.*?)\s*#\d+$").match(new_name)
+        if num_check:
+            new_name = num_check.group(1)
+        if new_name == "":
+            new_name = fallback_name
+
+        unique_name = new_name
+        i = 1
+        # In case we are renaming, the current name of the container is also a valid end-result
+        while self._containerExists(container_type, unique_name) and unique_name != current_name:
+            i += 1
+            unique_name = "%s #%d" % (new_name, i)
+
+        return unique_name
+
+    ##  Check if a container with of a certain type and a certain name or id exists
+    #   Both the id and the name are checked, because they may not be the same and it is better if they are both unique
+    #   \param container_type \type{string} Type of the container (machine, quality, ...)
+    #   \param container_name \type{string} Name to check
+    def _containerExists(self, container_type, container_name):
+        container_class = ContainerStack if container_type == "machine" else InstanceContainer
+
+        return self.findContainers(container_class, id = container_name, type = container_type) or \
+                self.findContainers(container_class, name = container_name, type = container_type)
 
     ##  Exports an profile to a file
     #
@@ -103,6 +140,10 @@ class CuraContainerRegistry(ContainerRegistry):
                 return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
             if profile: #Success!
                 profile.setReadOnly(False)
+
+                new_name = self.createUniqueName("quality", "", os.path.splitext(os.path.basename(file_name))[0],
+                                                 catalog.i18nc("@label", "Custom profile"))
+                profile.setName(new_name)
 
                 if self._machineHasOwnQualities():
                     profile.setDefinition(self._activeDefinition())
