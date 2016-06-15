@@ -171,7 +171,7 @@ class MachineManagerModel(QObject):
     #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
     #   \return \type{string} Name that is unique for the specified type and name/id
     def _createUniqueName(self, container_type, current_name, new_name, fallback_name):
-        return UM.Settings.ContainerRegistry.createUniqueName(container_type, current_name, new_name, fallback_name)
+        return UM.Settings.ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
     ##  Convenience function to check if a stack has errors.
     def _checkStackForErrors(self, stack):
