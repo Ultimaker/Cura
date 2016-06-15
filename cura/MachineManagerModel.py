@@ -486,13 +486,6 @@ class MachineManagerModel(QObject):
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
-    def hasHeatedBed(self):
-        if self._active_container_stack:
-            return bool(self._global_container_stack.getMetaDataEntry("machine_heated_bed", False))
-
-        return False
-
-    @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self):
         if self._active_container_stack:
             return bool(self._global_container_stack.getMetaDataEntry("has_variants", False))
