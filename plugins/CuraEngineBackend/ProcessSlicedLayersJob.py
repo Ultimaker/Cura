@@ -91,8 +91,8 @@ class ProcessSlicedLayersJob(Job):
             layer_data.setLayerHeight(abs_layer_number, layer.height)
             layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
-            for p in range(layer.repeatedMessageCount("polygons")):
-                polygon = layer.getRepeatedMessage("polygons", p)
+            for p in range(layer.repeatedMessageCount("path_segment")):
+                polygon = layer.getRepeatedMessage("path_segment", p)
 
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
                 line_types = line_types.reshape((-1,1))
