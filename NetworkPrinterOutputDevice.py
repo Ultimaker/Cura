@@ -190,11 +190,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     pass  # TODO: Handle errors
             elif "print_job" in reply.url().toString():  # Status update from print_job:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
-                    progress = json.loads(bytes(reply.readAll()).decode("utf-8"))["progress"]
+                    json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    progress = json_data["progress"]
                     ## If progress is 0 add a bit so another print can't be sent.
                     if progress == 0:
                         progress += 0.001
                     self.setProgress(progress)
+
+                    self.setTimeElapsed(json_data["time_elapsed"])
+                    self.setTimeTotal(json_data["time_total"])
+
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
             elif "snapshot" in reply.url().toString():  # Status update from image:
