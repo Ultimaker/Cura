@@ -1,5 +1,5 @@
-
-import re
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
@@ -8,6 +8,8 @@ from UM.Preferences import Preferences
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.InstanceContainer import InstanceContainer
+
+from cura.PrinterOutputDevice import PrinterOutputDevice
 from UM.Settings.ContainerStack import ContainerStack
 from . import ExtruderManager
 from UM.i18n import i18nCatalog
@@ -49,6 +51,8 @@ class MachineManagerModel(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -65,14 +69,10 @@ class MachineManagerModel(QObject):
 
     blurSettings = pyqtSignal() # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
-    @pyqtProperty("QVariantMap", notify = globalContainerChanged)
-    def extrudersIds(self):
-        ## Find all extruders that reference the new stack
-        extruders = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(**{"machine": self._global_container_stack.getId()})
-        result = {}
-        for extruder in extruders:
-            result[extruder.getMetaDataEntry("position")] = extruder.getId()
-        return result
+    outputDevicesChanged = pyqtSignal()
+
+    def _onOutputDevicesChanged(self):
+        self.outputDevicesChanged.emit()
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
@@ -164,6 +164,10 @@ class MachineManagerModel(QObject):
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
+    @pyqtProperty("QVariantList", notify = outputDevicesChanged)
+    def printerOutputDevices(self):
+        return [printer_output_device for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices() if isinstance(printer_output_device, PrinterOutputDevice)]
+
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
     #   \param current_name \type{} Current name of the container, which may be an acceptable option
@@ -171,31 +175,7 @@ class MachineManagerModel(QObject):
     #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
     #   \return \type{string} Name that is unique for the specified type and name/id
     def _createUniqueName(self, container_type, current_name, new_name, fallback_name):
-        new_name = new_name.strip()
-        num_check = re.compile("(.*?)\s*#\d+$").match(new_name)
-        if num_check:
-            new_name = num_check.group(1)
-        if new_name == "":
-            new_name = fallback_name
-
-        unique_name = new_name
-        i = 1
-        # In case we are renaming, the current name of the container is also a valid end-result
-        while self._containerExists(container_type, unique_name) and unique_name != current_name:
-            i += 1
-            unique_name = "%s #%d" % (new_name, i)
-
-        return unique_name
-
-    ##  Check if a container with of a certain type and a certain name or id exists
-    #   Both the id and the name are checked, because they may not be the same and it is better if they are both unique
-    #   \param container_type \type{string} Type of the container (machine, quality, ...)
-    #   \param container_name \type{string} Name to check
-    def _containerExists(self, container_type, container_name):
-        container_class = ContainerStack if container_type == "machine" else InstanceContainer
-
-        return UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, id = container_name, type = container_type) or \
-                UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, name = container_name, type = container_type)
+        return UM.Settings.ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
     ##  Convenience function to check if a stack has errors.
     def _checkStackForErrors(self, stack):
@@ -446,7 +426,7 @@ class MachineManagerModel(QObject):
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionId(self):
-        if self._active_container_stack:
+        if self._global_container_stack:
             definition = self._global_container_stack.getBottom()
             if definition:
                 return definition.id
@@ -480,14 +460,14 @@ class MachineManagerModel(QObject):
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self):
-        if self._active_container_stack:
+        if self._global_container_stack:
             return bool(self._global_container_stack.getMetaDataEntry("has_materials", False))
 
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self):
-        if self._active_container_stack:
+        if self._global_container_stack:
             return bool(self._global_container_stack.getMetaDataEntry("has_variants", False))
 
         return False
