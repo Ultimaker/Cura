@@ -129,8 +129,13 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         return USBPrinterOutputDeviceManager._instance
 
     def _getDefaultFirmwareName(self):
+        # Detecting id of the current machine
         machine_manager_model = MachineManagerModel()
         machine_id = machine_manager_model.activeDefinitionId
+        
+        # Detecting whether it has a heated bed
+        _active_container_stack = Application.getInstance().getGlobalContainerStack()
+        machine_has_heated_bed = _active_container_stack.getProperty("machine_heated_bed", "value")
 
         if platform.system() == "Linux":
             baudrate = 115200
@@ -156,8 +161,8 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         ##TODO: Add check for multiple extruders
         hex_file = None
         if machine_id in machine_without_extras.keys():  # The machine needs to be defined here!
-            if machine_id in machine_with_heated_bed.keys() and machine_manager_model.hasHeatedBed:
-                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
+            if machine_id in machine_with_heated_bed.keys() and machine_has_heated_bed:
+                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_id)
                 hex_file = machine_with_heated_bed[machine_id]  # Return firmware with heated bed enabled
             else:
                 Logger.log("d", "Choosing basic firmware for machine %s.", machine_id)
