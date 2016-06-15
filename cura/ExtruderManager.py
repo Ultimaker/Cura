@@ -71,9 +71,9 @@ class ExtruderManager(QObject):
         if global_container_stack:
             global_definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
             if global_definition_container:
-                if str(self._active_extruder_index) in self._extruder_trains[global_definition_container.getId()]:
-                    return self._extruder_trains[global_definition_container.getId()][str(self._active_extruder_index)]
-                return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
+                if global_definition_container.getId() in self._extruder_trains:
+                    if str(self._active_extruder_index) in self._extruder_trains[global_definition_container.getId()]:
+                        return self._extruder_trains[global_definition_container.getId()][str(self._active_extruder_index)]
 
 
     ##  Adds all extruders of a specific machine definition to the extruder
