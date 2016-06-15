@@ -182,7 +182,7 @@ class ExtruderManager(QObject):
             quality = qualities[0]
         preferred_quality_id = machine_definition.getMetaDataEntry("preferred_quality")
         if preferred_quality_id:
-            preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id.lower(), type = "quality")
+            preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id, type = "quality")
             if len(preferred_quality) >= 1:
                 quality = preferred_quality[0]
             else:
