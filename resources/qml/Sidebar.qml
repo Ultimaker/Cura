@@ -255,21 +255,63 @@ Rectangle
         columnSpacing: UM.Theme.getSize("default_margin").width
         Label
         {
-            text: "Temperature 1: "
+            text: "Temperature 1:"
         }
         Label
         {
-            text: "" + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[0]
+            text: " " + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[0]
         }
 
 
         Label
         {
-            text: "Temperature 2: "
+            text: "Temperature 2:"
         }
         Label
         {
-            text: "" + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[1]
+            text: " " + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[1]
+        }
+
+        Label
+        {
+            text: "Bed Temperature:"
+        }
+        Label
+        {
+            text: " " + Cura.MachineManager.printerOutputDevices[0].bedTemperature
+        }
+
+
+
+        // Spacers
+        Label { text: " "}
+        Label { text: " "}
+
+        Label
+        {
+            text: "Printing Time:"
+        }
+        Label
+        {
+            text: " "  + Cura.MachineManager.printerOutputDevices[0].timeTotal
+        }
+
+        Label
+        {
+            text: "Estimated time left:"
+        }
+        Label
+        {
+            text: " " + (Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed)
+        }
+
+        Label
+        {
+            text: "Current Layer:"
+        }
+        Label
+        {
+            text: " "
         }
 
     }
