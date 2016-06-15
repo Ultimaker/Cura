@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from enum import IntEnum  # For the connection state tracking.
 from UM.Logger import Logger
 
+from UM.Signal import signalemitter
 
 ##  Printer output device adds extra interface options on top of output device.
 #
@@ -13,7 +14,8 @@ from UM.Logger import Logger
 #   functions to actually have the implementation.
 #
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
-class PrinterOutputDevice(OutputDevice, QObject):
+@signalemitter
+class PrinterOutputDevice(QObject, OutputDevice):
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 

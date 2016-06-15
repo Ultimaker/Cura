@@ -28,9 +28,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   containers.
     IndexRole = Qt.UserRole + 4
 
-    ##  Colour to display if there is no material or the material has no known
+    ##  List of colours to display if there is no material or the material has no known
     #   colour.
-    defaultColour = "#FFFF00"
+    defaultColours = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
 
     ##  Initialises the extruders model, defining the roles and listening for
     #   changes in the data.
@@ -75,7 +75,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         if self._add_global:
             material = global_container_stack.findContainer({ "type": "material" })
-            colour = material.getMetaDataEntry("color_code", default = self.defaultColour) if material else self.defaultColour
+            colour = material.getMetaDataEntry("color_code", default = self.defaultColours[0]) if material else self.defaultColours[0]
             item = {
                 "id": global_container_stack.getId(),
                 "name": "Global",
@@ -86,12 +86,13 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
             material = extruder.findContainer({ "type": "material" })
-            colour = material.getMetaDataEntry("color_code", default = self.defaultColour) if material else self.defaultColour
             position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
             try:
                 position = int(position)
             except ValueError: #Not a proper int.
                 position = -1
+            default_colour = self.defaultColours[position] if position >= 0 and position < len(self.defaultColours) else defaultColours[0]
+            colour = material.getMetaDataEntry("color_code", default = default_colour) if material else default_colour
             item = { #Construct an item with only the relevant information.
                 "id": extruder.getId(),
                 "name": extruder.getName(),

@@ -141,15 +141,35 @@ Column
                                 control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
                     Behavior on color { ColorAnimation { duration: 50; } }
 
+                    Rectangle
+                    {
+                        id: swatch
+                        height: UM.Theme.getSize("setting_control").height / 2
+                        width: height
+                        anchors.left: parent.left
+                        anchors.leftMargin: (parent.height - height) / 2
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        color: model.colour
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("toggle_checked")
+                    }
+
                     Label
                     {
-                        anchors.centerIn: parent
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: swatch.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+
                         color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
                                     control.pressed ? UM.Theme.getColor("toggle_active_text") :
                                     control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
 
                         font: UM.Theme.getFont("default")
-                        text: control.text;
+                        text: control.text
+                        elide: Text.ElideRight
                     }
                 }
                 label: Item { }

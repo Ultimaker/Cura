@@ -7,6 +7,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 import "."
 
@@ -242,6 +243,15 @@ Item {
             anchors.verticalCenter: parent.verticalCenter;
             width: UM.Theme.getSize("setting_control").width;
             height: UM.Theme.getSize("setting_control").height
+        }
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onBlurSettings:
+        {
+            revertButton.focus = true
         }
     }
 

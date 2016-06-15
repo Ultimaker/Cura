@@ -47,7 +47,7 @@ SettingItem
                     }
                     else
                     {
-                        return extruders_model.getItem(index).colour;
+                        return UM.Theme.getColor("setting_control");
                     }
                 }
                 border.width: UM.Theme.getSize("default_lining").width
@@ -55,9 +55,22 @@ SettingItem
             }
             label: Item
             {
+                Rectangle
+                {
+                    id: swatch
+                    height: UM.Theme.getSize("setting_control").height / 2
+                    width: height
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    color: extruders_model.getItem(control.currentIndex).colour
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
+                }
                 Label
                 {
-                    anchors.left: parent.left
+                    anchors.left: swatch.right
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.right: downArrow.left
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width
@@ -65,7 +78,7 @@ SettingItem
 
                     text: control.currentText
                     font: UM.Theme.getFont("default")
-                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : extruders_model.getItem(index).colour
+                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
 
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
@@ -89,7 +102,11 @@ SettingItem
             }
         }
 
-        onActivated: provider.setPropertyValue("value", extruders_model.getItem(index).index);
+        onActivated:
+        {
+            forceActiveFocus();
+            provider.setPropertyValue("value", extruders_model.getItem(index).index)
+        }
         onModelChanged: updateCurrentIndex();
 
         Connections

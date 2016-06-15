@@ -7,12 +7,16 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Rectangle
 {
     id: base;
 
     property int currentModeIndex;
+
+    // Is there an output device for this printer?
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
 
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}

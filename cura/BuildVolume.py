@@ -199,7 +199,6 @@ class BuildVolume(SceneNode):
         disallowed_areas = self._active_container_stack.getProperty("machine_disallowed_areas", "value")
         areas = []
 
-        skirt_size = 0.0
         skirt_size = self._getSkirtSize(self._active_container_stack)
 
         if disallowed_areas:
