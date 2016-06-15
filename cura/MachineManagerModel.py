@@ -74,15 +74,6 @@ class MachineManagerModel(QObject):
     def _onOutputDevicesChanged(self):
         self.outputDevicesChanged.emit()
 
-    @pyqtProperty("QVariantMap", notify = globalContainerChanged)
-    def extrudersIds(self):
-        ## Find all extruders that reference the new stack
-        extruders = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(**{"machine": self._global_container_stack.getId()})
-        result = {}
-        for extruder in extruders:
-            result[extruder.getMetaDataEntry("position")] = extruder.getId()
-        return result
-
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
             self.globalValueChanged.emit()
