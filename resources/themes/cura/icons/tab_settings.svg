@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.2" baseProfile="tiny" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 30"
+	 xml:space="preserve">
+<switch>
+	<foreignObject requiredExtensions="&ns_ai;" x="0" y="0" width="1" height="1">
+		<i:pgfRef  xlink:href="#adobe_illustrator_pgf">
+		</i:pgfRef>
+	</foreignObject>
+	<g i:extraneous="self">
+		<g id="frame_30x30" display="none">
+			<rect display="inline" width="30" height="30"/>
+		</g>
+		<g id="frame_24x24" display="none">
+			<rect x="3" y="3" display="inline" fill="#FFFFFF" width="24" height="24"/>
+		</g>
+		<g id="icon" fill="#FFFFFF">
+			<g>
+				<rect x="2.994" y="26" width="24" height="1"/>
+				<g>
+					<polygon points="22.994,16.137 16.494,16.137 16.494,15.136 21.994,15.136 21.994,12.894 22.994,12.894 					"/>
+					<rect x="6.994" y="18.758" width="16" height="1"/>
+				</g>
+				<rect x="4.994" y="22.379" width="20" height="1"/>
+				<path d="M22.5,1.571L22.5,1.571C22.5,1.571,22.512,1.563,22.5,1.571L22.5,1.571h-0.018c0,0-6.148,0-6.037,0v3.744
+					c0,0,2.982,4.857,5.793,5.124c0.041,0.004,0.08,0.004,0.119,0.01c0.043,0.002,0.084,0.006,0.125,0.006h0.012H22.5
+					c0.047,0,0.086-0.004,0.129-0.006c0.033-0.006,0.082-0.006,0.117-0.01c2.812-0.267,5.797-5.124,5.797-5.124V1.571
+					C28.652,1.571,22.5,1.571,22.5,1.571"/>
+			</g>
+		</g>
+	</g>
+</switch>
+</svg>

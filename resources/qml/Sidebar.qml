@@ -14,6 +14,7 @@ Rectangle
     id: base;
 
     property int currentModeIndex;
+    property bool monitoringPrint: false
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
@@ -44,12 +45,44 @@ Rectangle
         }
     }
 
+    // Mode selection buttons for changing between Setting & Monitor print mode
+    Row
+    {
+        id: settingAndMonitorButtons // Really need a better name for this.
+
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+        anchors.right: parent.right
+        Button
+        {
+            width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
+            height: 50
+            onClicked: monitoringPrint = false
+            iconSource: UM.Theme.getIcon("tab_settings");
+            style:  UM.Theme.styles.tool_button
+            checkable: true
+            checked: true
+            exclusiveGroup: settingAndMonitorButtonsGroup
+        }
+        Button
+        {
+            width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
+            height: 50
+            onClicked: monitoringPrint = true
+            iconSource: UM.Theme.getIcon("tab_monitor");
+            style:  UM.Theme.styles.tool_button
+            checkable: true
+            exclusiveGroup: settingAndMonitorButtonsGroup
+        }
+        ExclusiveGroup { id: settingAndMonitorButtonsGroup }
+    }
+
     SidebarHeader {
         id: header
         width: parent.width
         height: totalHeightHeader
 
-        anchors.top: parent.top
+        anchors.top: settingAndMonitorButtons.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
 
         onShowTooltip: base.showTooltip(item, location, text)
@@ -91,8 +124,9 @@ Rectangle
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width/100*45
-        font: UM.Theme.getFont("large");
+        font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
+        visible: !monitoringPrint
     }
 
     Rectangle {
@@ -103,6 +137,7 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
+        visible: !monitoringPrint
         Component{
             id: wizardDelegate
             Button {
@@ -152,6 +187,19 @@ Rectangle
         }
     }
 
+    Label {
+        id: monitorLabel
+        text: catalog.i18nc("@label","Activity Data");
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+        anchors.top: headerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        width: parent.width/100*45
+        font: UM.Theme.getFont("large")
+        color: UM.Theme.getColor("text")
+        visible: monitoringPrint
+    }
+
     StackView
     {
         id: sidebarContents
@@ -161,6 +209,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right
+        visible: !monitoringPrint
 
         delegate: StackViewDelegate
         {
@@ -189,6 +238,40 @@ Rectangle
                 }
             }
         }
+    }
+
+    // Item that holds all the print monitor properties
+    Grid
+    {
+        id: printMonitor
+        anchors.bottom: footerSeparator.top
+        anchors.top: monitorLabel.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.left: base.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.right: base.right
+        visible: monitoringPrint
+        columns: 2
+        columnSpacing: UM.Theme.getSize("default_margin").width
+        Label
+        {
+            text: "Temperature 1: "
+        }
+        Label
+        {
+            text: "" + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[0]
+        }
+
+
+        Label
+        {
+            text: "Temperature 2: "
+        }
+        Label
+        {
+            text: "" + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[1]
+        }
+
     }
 
     Rectangle {
