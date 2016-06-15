@@ -446,7 +446,7 @@ class MachineManagerModel(QObject):
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionId(self):
-        if self._active_container_stack:
+        if self._global_container_stack:
             definition = self._global_container_stack.getBottom()
             if definition:
                 return definition.id
@@ -480,14 +480,14 @@ class MachineManagerModel(QObject):
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self):
-        if self._active_container_stack:
+        if self._global_container_stack:
             return bool(self._global_container_stack.getMetaDataEntry("has_materials", False))
 
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self):
-        if self._active_container_stack:
+        if self._global_container_stack:
             return bool(self._global_container_stack.getMetaDataEntry("has_variants", False))
 
         return False
