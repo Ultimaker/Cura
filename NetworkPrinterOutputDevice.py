@@ -109,7 +109,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
 
     def close(self):
-        self._connection_state == ConnectionState.closed
+        self.setConnectionState(ConnectionState.closed)
         self._update_timer.stop()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
