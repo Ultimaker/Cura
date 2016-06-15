@@ -133,6 +133,7 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         if not global_container_stack:
             Logger.log("e", "There is no global container stack. Can not update firmware.")
             self._firmware_view.close()
+            return ""
         
         # The bottom of the containerstack is the machine definition
         machine_id = global_container_stack.getBottom().id
