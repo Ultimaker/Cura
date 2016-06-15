@@ -144,6 +144,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 new_name = self.createUniqueName("quality", "", os.path.splitext(os.path.basename(file_name))[0],
                                                  catalog.i18nc("@label", "Custom profile"))
                 profile.setName(new_name)
+                profile._id = new_name
 
                 if self._machineHasOwnQualities():
                     profile.setDefinition(self._activeDefinition())
