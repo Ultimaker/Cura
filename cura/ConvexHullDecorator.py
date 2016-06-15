@@ -2,7 +2,6 @@ from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
 
 from UM.Math.Polygon import Polygon
-from UM.Logger import Logger
 from . import ConvexHullNode
 
 import numpy
@@ -113,7 +112,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
             # Check the cache
             if child_polygon == self._2d_convex_hull_group_child_polygon:
-                # Logger.log('d', 'Cache hit in _compute2DConvexHull group path')
                 return self._2d_convex_hull_group_result
 
             # First, calculate the normal convex hull around the points
@@ -137,7 +135,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
                 # Check the cache
                 if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
-                    # Logger.log('d', 'Cache hit in _compute2DConvexHull mesh path')
                     return self._2d_convex_hull_mesh_result
 
                 vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
