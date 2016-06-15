@@ -29,6 +29,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._head_y = 0
         self._head_z = 0
         self._connection_state = ConnectionState.closed
+        self._time_elapsed = 0
+        self._time_total = 0
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -57,6 +59,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # it also sends it's own device_id (for convenience sake)
     connectionStateChanged = pyqtSignal(str)
 
+    timeElapsedChanged = pyqtSignal()
+
+    timeTotalChanged = pyqtSignal()
+
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
     #   /sa _getBedTemperature implementation function
@@ -73,6 +79,30 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._setTargetBedTemperature(temperature)
         self._target_bed_temperature = temperature
         self.targetBedTemperatureChanged.emit()
+
+    ## Time the print has been printing.
+    #  Note that timeTotal - timeElapsed should give time remaining.
+    @pyqtProperty(float, notify = timeElapsedChanged)
+    def timeElapsed(self):
+        return self._time_elapsed
+
+    ## Total time of the print
+    #  Note that timeTotal - timeElapsed should give time remaining.
+    @pyqtProperty(float, notify=timeTotalChanged)
+    def timeTotal(self):
+        return self._time_total
+
+    @pyqtSlot(float)
+    def setTimeTotal(self, new_total):
+        if self._time_total != new_total:
+            self._time_total = new_total
+            self.timeTotalChanged.emit()
+
+    @pyqtSlot(float)
+    def setTimeElapsed(self, time_elapsed):
+        if self._time_elapsed != time_elapsed:
+            self._time_elapsed = time_elapsed
+            self.timeElapsedChanged.emit()
 
     ##  Home the head of the connected printer
     #   This function is "final" (do not re-implement)
