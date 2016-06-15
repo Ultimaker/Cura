@@ -103,7 +103,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             temperature = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]["current"]
             self._setHotendTemperature(index, temperature)
 
-        bed_temperature = self._json_printer_state["bed"]["temperature"]
+        bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
         self._setBedTemperature(bed_temperature)
 
         head_x = self._json_printer_state["heads"][0]["position"]["x"]
