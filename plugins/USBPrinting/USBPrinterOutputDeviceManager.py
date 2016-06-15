@@ -128,11 +128,18 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         return USBPrinterOutputDeviceManager._instance
 
     def _getDefaultFirmwareName(self):
+        # Check whether getGlobalContainerStack() returns None or not...
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            Logger.log("c", "getGlobalContainerStack() returned None")
+            Logger.log("i", "Closing firmware-updater UI as a consequence")
+            self._firmware_view.close()
+        
         # Detecting id of the current machine
-        machine_id = Application.getInstance().getGlobalContainerStack().getBottom().id
+        machine_id = global_container_stack.getBottom().id
         
         # Detecting whether it has a heated bed
-        machine_has_heated_bed = Application.getInstance().getGlobalContainerStack().getProperty("machine_heated_bed", "value")
+        machine_has_heated_bed = global_container_stack.getProperty("machine_heated_bed", "value")
         
         if platform.system() == "Linux":
             baudrate = 115200
