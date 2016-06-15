@@ -128,7 +128,7 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         return USBPrinterOutputDeviceManager._instance
 
     def _getDefaultFirmwareName(self):
-        # Check whether getGlobalContainerStack() returns None or not...
+        # Check if there is a valid global container stack
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             Logger.log("e", "There is no global container stack. Can not update firmware.")
