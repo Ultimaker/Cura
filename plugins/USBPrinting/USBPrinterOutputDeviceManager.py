@@ -13,7 +13,6 @@ from UM.Qt.ListModel import ListModel
 from UM.Message import Message
 
 from cura.CuraApplication import CuraApplication
-from cura.MachineManagerModel import MachineManagerModel
 
 import threading
 import platform
@@ -130,13 +129,11 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
 
     def _getDefaultFirmwareName(self):
         # Detecting id of the current machine
-        machine_manager_model = MachineManagerModel()
-        machine_id = machine_manager_model.activeDefinitionId
+        machine_id = Application.getInstance().getGlobalContainerStack().getBottom().id
         
         # Detecting whether it has a heated bed
-        _active_container_stack = Application.getInstance().getGlobalContainerStack()
-        machine_has_heated_bed = _active_container_stack.getProperty("machine_heated_bed", "value")
-
+        machine_has_heated_bed = Application.getInstance().getGlobalContainerStack().getProperty("machine_heated_bed", "value")
+        
         if platform.system() == "Linux":
             baudrate = 115200
         else:
