@@ -34,6 +34,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         ##  It's okay to leave this for now, as this plugin is um3 only (and has 2 extruders by definition)
         self._num_extruders = 2
 
+        self._hotend_temperatures = [0] * self._num_extruders
+        self._target_hotend_temperatures = [0] * self._num_extruders
+
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
         self.setName(key)
@@ -96,7 +99,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   values / variables
     def _spliceJSONData(self):
         # Check for hotend temperatures
-        for index in range(0, self._num_extruders - 1):
+        for index in range(0, self._num_extruders):
             temperature = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]["current"]
             self._setHotendTemperature(index, temperature)
 
