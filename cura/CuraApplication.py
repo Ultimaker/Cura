@@ -4,7 +4,7 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform
+from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -341,7 +341,7 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Platform(root)
+        self._platform = Scene_Platform(root)
 
         self._volume = BuildVolume.BuildVolume(root)
 
