@@ -15,7 +15,7 @@ from UM.Signal import signalemitter
 #
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
 @signalemitter
-class PrinterOutputDevice(OutputDevice, QObject):
+class PrinterOutputDevice(QObject, OutputDevice):
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 

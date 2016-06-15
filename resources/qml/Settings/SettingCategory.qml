@@ -24,9 +24,10 @@ Button {
     checkable: true
     checked: definition.expanded
 
-    onClicked: definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key)
+    onClicked: { forceActiveFocus(); definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key) }
 
-    UM.SimpleButton {
+    UM.SimpleButton
+    {
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
@@ -60,7 +61,8 @@ Button {
         height: parent.height / 2
         width: height
 
-        onClicked: {
+        onClicked:
+        {
             base.showAllHiddenInheritedSettings()
         }
 
@@ -68,11 +70,13 @@ Button {
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
         iconSource: UM.Theme.getIcon("notice")
 
-        onEntered: {
+        onEntered:
+        {
             base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
         }
 
-        onExited: {
+        onExited:
+        {
             base.hideTooltip();
         }
 

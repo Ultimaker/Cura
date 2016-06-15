@@ -264,7 +264,7 @@ UM.ManagementPage
             id: importDialog;
             title: catalog.i18nc("@title:window", "Import Profile");
             selectExisting: true;
-            nameFilters: base.model.getFileNameFiltersRead()
+            nameFilters: base.model.getFileNameFilters("profile_reader")
             folder: base.model.getDefaultPath()
             onAccepted:
             {
@@ -291,7 +291,7 @@ UM.ManagementPage
             id: exportDialog;
             title: catalog.i18nc("@title:window", "Export Profile");
             selectExisting: false;
-            nameFilters: base.model.getFileNameFiltersWrite()
+            nameFilters: base.model.getFileNameFilters("profile_writer")
             folder: base.model.getDefaultPath()
             onAccepted:
             {
