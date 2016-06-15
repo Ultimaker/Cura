@@ -8,6 +8,8 @@ from UM.Preferences import Preferences
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.InstanceContainer import InstanceContainer
+
+from cura.PrinterOutputDevice import PrinterOutputDevice
 from UM.Settings.ContainerStack import ContainerStack
 from . import ExtruderManager
 from UM.i18n import i18nCatalog
@@ -49,6 +51,8 @@ class MachineManagerModel(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -64,6 +68,11 @@ class MachineManagerModel(QObject):
     globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed
 
     blurSettings = pyqtSignal() # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
+
+    outputDevicesChanged = pyqtSignal()
+
+    def _onOutputDevicesChanged(self):
+        self.outputDevicesChanged.emit()
 
     @pyqtProperty("QVariantMap", notify = globalContainerChanged)
     def extrudersIds(self):
@@ -163,6 +172,10 @@ class MachineManagerModel(QObject):
             ExtruderManager.ExtruderManager.getInstance().addMachineExtruders(definition)
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
+
+    @pyqtProperty("QVariantList", notify = outputDevicesChanged)
+    def printerOutputDevices(self):
+        return [printer_output_device for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices() if isinstance(printer_output_device, PrinterOutputDevice)]
 
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
