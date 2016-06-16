@@ -8,8 +8,8 @@ from UM.Message import Message
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import QUrl, QTimer
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty
+from PyQt5.QtGui import QPixmap, QImage
 
 import json
 
@@ -72,7 +72,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
-        self._camera_image = QPixmap()
+        self._camera_image_id = 0
+
+        self._camera_image = QImage()
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
@@ -128,6 +130,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
         self._update_timer.start()
+
+    newImage = pyqtSignal()
+
+    @pyqtProperty(QUrl, notify = newImage)
+    def cameraImage(self):
+        self._camera_image_id += 1
+        temp = "image://camera/" + str(self._camera_image_id)
+        return QUrl(temp, QUrl.TolerantMode)
 
     def getCameraImage(self):
         return self._camera_image
@@ -205,6 +215,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             elif "snapshot" in reply.url().toString():  # Status update from image:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                     self._camera_image.loadFromData(reply.readAll())
+                    self.newImage.emit()
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             reply.uploadProgress.disconnect(self._onUploadProgress)
             self._progress_message.hide()
