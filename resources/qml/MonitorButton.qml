@@ -22,7 +22,22 @@ Rectangle
     property string fileBaseName
     property string statusText:
     {
-        return "Printing..."
+        if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+        {
+            return "Printing..."
+        } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+        {
+            return "Paused"
+        }
+        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
+        {
+            return "Preparing..."
+        }
+        else
+        {
+            return " "
+        }
+
     }
 
     Label
@@ -73,7 +88,8 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
         text: catalog.i18nc("@label:", "Abort Job")
-        onClicked: {}
+        onClicked: { Cura.MachineManager.printerOutputDevices[0].setJobState("abort") }
+
 
         style: ButtonStyle
         {
@@ -117,7 +133,7 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
         text: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? catalog.i18nc("@label:", "Resume") : catalog.i18nc("@label:", "Pause")
-        onClicked: { Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? Cura.MachineManager.printerOutputDevices[0].setJobState("printing") : Cura.MachineManager.printerOutputDevices[0].setJobState("paused") }
+        onClicked: { Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? Cura.MachineManager.printerOutputDevices[0].setJobState("print") : Cura.MachineManager.printerOutputDevices[0].setJobState("pause") }
 
         style: ButtonStyle
         {
