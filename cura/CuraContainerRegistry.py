@@ -110,14 +110,14 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \param description
     #   \return The plugin object matching the given extension and description.
     def _findProfileWriter(self, extension, description):
-        pr = PluginRegistry.getInstance()
+        plugin_registry = PluginRegistry.getInstance()
         for plugin_id, meta_data in self._getIOPlugins("profile_writer"):
             for supported_type in meta_data["profile_writer"]:  # All file types this plugin can supposedly write.
                 supported_extension = supported_type.get("extension", None)
                 if supported_extension == extension:  # This plugin supports a file type with the same extension.
                     supported_description = supported_type.get("description", None)
                     if supported_description == description:  # The description is also identical. Assume it's the same file type.
-                        return pr.getPluginObject(plugin_id)
+                        return plugin_registry.getPluginObject(plugin_id)
         return None
 
     ##  Imports a profile from a file
@@ -129,9 +129,9 @@ class CuraContainerRegistry(ContainerRegistry):
         if not file_name:
             return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
 
-        pr = PluginRegistry.getInstance()
+        plugin_registry = PluginRegistry.getInstance()
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
-            profile_reader = pr.getPluginObject(plugin_id)
+            profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile = profile_reader.read(file_name) #Try to open the file with the profile reader.
             except Exception as e:
@@ -162,12 +162,12 @@ class CuraContainerRegistry(ContainerRegistry):
     ##  Gets a list of profile writer plugins
     #   \return List of tuples of (plugin_id, meta_data).
     def _getIOPlugins(self, io_type):
-        pr = PluginRegistry.getInstance()
-        active_plugin_ids = pr.getActivePlugins()
+        plugin_registry = PluginRegistry.getInstance()
+        active_plugin_ids = plugin_registry.getActivePlugins()
 
         result = []
         for plugin_id in active_plugin_ids:
-            meta_data = pr.getMetaData(plugin_id)
+            meta_data = plugin_registry.getMetaData(plugin_id)
             if io_type in meta_data:
                 result.append( (plugin_id, meta_data) )
         return result
