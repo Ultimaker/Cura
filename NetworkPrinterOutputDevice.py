@@ -64,6 +64,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._post_multi_part = None
         self._post_part = None
 
+        self._put_request = None
+        self._put_reply = None
+
         self._progress_message = None
         self._error_message = None
 
@@ -151,6 +154,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def getCameraImage(self):
         return self._camera_image
 
+    def _setJobState(self, job_state):
+        url = QUrl("http://" + self._address + self._api_prefix + "print_job/state")
+        self._put_request = QNetworkRequest(url)
+        self._put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        data = "{\"target\": \"%s\"}" % job_state
+        self._put_reply = self._manager.put(self._put_request, data.encode())
+
     def startPrint(self):
         if self._progress != 0:
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
@@ -215,7 +225,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if progress == 0:
                         progress += 0.001
                     self.setProgress(progress)
-                    self.setJobState(json_data["state"])
+                    self._updateJobState(json_data["state"])
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])
 
@@ -228,6 +238,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             reply.uploadProgress.disconnect(self._onUploadProgress)
             self._progress_message.hide()
+        elif reply.operation() == QNetworkAccessManager.PutOperation:
+            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 204:
+                pass  # Request was sucesfull!
+            else:
+                Logger.log("d","Something went wrong when trying to update data of API. %s", reply.readAll())
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 
