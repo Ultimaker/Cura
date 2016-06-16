@@ -31,6 +31,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._connection_state = ConnectionState.closed
         self._time_elapsed = 0
         self._time_total = 0
+        self._job_state = ""
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -62,6 +63,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
     timeElapsedChanged = pyqtSignal()
 
     timeTotalChanged = pyqtSignal()
+
+    jobStateChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = jobStateChanged)
+    def jobState(self):
+        return self._job_state
+
+    def setJobState(self, job_state):
+        if self._job_state != job_state:
+            self._job_state = job_state
+            self.jobStateChanged.emit()
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
