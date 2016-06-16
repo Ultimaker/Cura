@@ -111,7 +111,7 @@ class ExtruderManager(QObject):
     ##  Creates a container stack for an extruder train.
     #
     #   The container stack has an extruder definition at the bottom, which is
-    #   linked to a machine definition. Then it has a variant profile, a material
+    #   linked to a machine definition. Then it has a nozzle profile, a material
     #   profile, a quality profile and a user profile, in that order.
     #
     #   The resulting container stack is added to the registry.
@@ -136,29 +136,29 @@ class ExtruderManager(QObject):
         container_stack.addMetaDataEntry("position", position)
         container_stack.addContainer(extruder_definition)
 
-        #Find the variant to use for this extruder.
-        variant = container_registry.getEmptyInstanceContainer()
-        if machine_definition.getMetaDataEntry("has_variants", default = "False") == "True":
-            #First add any variant. Later, overwrite with preference if the preference is valid.
-            variants = container_registry.findInstanceContainers(machine = machine_id, type = "variant")
-            if len(variants) >= 1:
-                variant = variants[0]
-            preferred_variant_id = machine_definition.getMetaDataEntry("preferred_variant")
-            if preferred_variant_id:
-                preferred_variants = container_registry.findInstanceContainers(id = preferred_variant_id, type = "variant")
-                if len(preferred_variants) >= 1:
-                    variant = preferred_variants[0]
+        #Find the nozzle to use for this extruder.
+        nozzle = container_registry.getEmptyInstanceContainer()
+        if machine_definition.getMetaDataEntry("has_nozzles", default = "False") == "True":
+            #First add any nozzle. Later, overwrite with preference if the preference is valid.
+            nozzles = container_registry.findInstanceContainers(machine = machine_id, type = "nozzle")
+            if len(nozzles) >= 1:
+                nozzle = nozzles[0]
+            preferred_nozzle_id = machine_definition.getMetaDataEntry("preferred_nozzle")
+            if preferred_nozzle_id:
+                preferred_nozzles = container_registry.findInstanceContainers(id = preferred_nozzle_id, type = "nozzle")
+                if len(preferred_nozzles) >= 1:
+                    nozzle = preferred_nozzles[0]
                 else:
-                    UM.Logger.log("w", "The preferred variant \"%s\" of machine %s doesn't exist or is not a variant profile.", preferred_variant_id, machine_id)
-                    #And leave it at the default variant.
-        container_stack.addContainer(variant)
+                    UM.Logger.log("w", "The preferred nozzle \"%s\" of machine %s doesn't exist or is not a nozzle profile.", preferred_nozzle_id, machine_id)
+                    #And leave it at the default nozzle.
+        container_stack.addContainer(nozzle)
 
-        #Find a material to use for this variant.
+        #Find a material to use for this nozzle.
         material = container_registry.getEmptyInstanceContainer()
         if machine_definition.getMetaDataEntry("has_materials", default = "False") == "True":
             #First add any material. Later, overwrite with preference if the preference is valid.
-            if machine_definition.getMetaDataEntry("has_variant_materials", default = "False") == "True":
-                materials = container_registry.findInstanceContainers(type = "material", machine = machine_id, variant = variant.getId())
+            if machine_definition.getMetaDataEntry("has_nozzle_materials", default = "False") == "True":
+                materials = container_registry.findInstanceContainers(type = "material", machine = machine_id, nozzle = nozzle.getId())
             else:
                 materials = container_registry.findInstanceContainers(type = "material", machine = machine_id)
             if len(materials) >= 1:
@@ -175,7 +175,7 @@ class ExtruderManager(QObject):
 
         #Find a quality to use for this extruder.
         quality = container_registry.getEmptyInstanceContainer()
-
+    
         #First add any quality. Later, overwrite with preference if the preference is valid.
         qualities = container_registry.findInstanceContainers(type = "quality")
         if len(qualities) >= 1:
