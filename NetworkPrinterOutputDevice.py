@@ -215,7 +215,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if progress == 0:
                         progress += 0.001
                     self.setProgress(progress)
-
+                    self.setJobState(json_data["state"])
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])
 
