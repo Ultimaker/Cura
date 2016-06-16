@@ -72,6 +72,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
+        self._camera_timer = QTimer()
+        self._camera_timer.setInterval(2000)  # Todo: Add preference for camera update interval
+        self._camera_timer.setSingleShot(False)
+        self._camera_timer.timeout.connect(self._update_camera)
+
         self._camera_image_id = 0
 
         self._camera_image = QImage()
@@ -80,6 +85,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \return key String containing the key of the machine.
     def getKey(self):
         return self._key
+
+    def _update_camera(self):
+        ## Request new image
+        url = QUrl("http://" + self._address + ":8080/?action=snapshot")
+        self._image_request = QNetworkRequest(url)
+        self._image_reply = self._manager.get(self._image_request)
 
     def _update(self):
         ## Request 'general' printer data
@@ -91,11 +102,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "print_job")
         self._print_job_request = QNetworkRequest(url)
         self._print_job_reply = self._manager.get(self._print_job_request)
-
-        ## Request new image
-        url = QUrl("http://" + self._address +":8080/?action=snapshot")
-        self._image_request = QNetworkRequest(url)
-        self._image_reply = self._manager.get(self._image_request)
 
     ##  Convenience function that gets information from the received json data and converts it to the right internal
     #   values / variables
@@ -116,6 +122,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def close(self):
         self.setConnectionState(ConnectionState.closed)
         self._update_timer.stop()
+        self._camera_timer.stop()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -128,8 +135,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def connect(self):
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
+        self._update_camera()
         Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
         self._update_timer.start()
+        self._camera_timer.start()
 
     newImage = pyqtSignal()
 
