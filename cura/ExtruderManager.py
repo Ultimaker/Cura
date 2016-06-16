@@ -138,7 +138,7 @@ class ExtruderManager(QObject):
 
         #Find the variant to use for this extruder.
         variant = container_registry.getEmptyInstanceContainer()
-        if machine_definition.getMetaDataEntry("has_variants"):
+        if machine_definition.getMetaDataEntry("has_variants", default = "False") == "True":
             #First add any variant. Later, overwrite with preference if the preference is valid.
             variants = container_registry.findInstanceContainers(machine = machine_id, type = "variant")
             if len(variants) >= 1:
@@ -155,7 +155,7 @@ class ExtruderManager(QObject):
 
         #Find a material to use for this variant.
         material = container_registry.getEmptyInstanceContainer()
-        if machine_definition.getMetaDataEntry("has_materials"):
+        if machine_definition.getMetaDataEntry("has_materials", default = "False") == "True":
             #First add any material. Later, overwrite with preference if the preference is valid.
             if machine_definition.getMetaDataEntry("has_variant_materials", default = "False") == "True":
                 materials = container_registry.findInstanceContainers(type = "material", machine = machine_id, variant = variant.getId())
