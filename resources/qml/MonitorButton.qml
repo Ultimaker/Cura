@@ -117,7 +117,7 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
         text: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? catalog.i18nc("@label:", "Resume") : catalog.i18nc("@label:", "Pause")
-        onClicked: { Cura.MachineManager.printerOutputDevices[0].setJobState("printing")}
+        onClicked: { Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? Cura.MachineManager.printerOutputDevices[0].setJobState("printing") : Cura.MachineManager.printerOutputDevices[0].setJobState("paused") }
 
         style: ButtonStyle
         {
