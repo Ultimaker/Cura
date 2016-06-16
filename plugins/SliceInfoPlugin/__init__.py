@@ -11,7 +11,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Submits anonymous slice info. Can be disabled through preferences."),
-            "api": 2
+            "api": 3
         }
     }
 

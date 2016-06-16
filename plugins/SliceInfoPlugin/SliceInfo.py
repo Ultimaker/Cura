@@ -8,6 +8,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 
 import collections
 import json
@@ -25,6 +26,8 @@ catalog = i18nCatalog("cura")
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
+    info_url = "https://stats.youmagine.com/curastats/slice" 
+    
     def __init__(self):
         super().__init__()
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
@@ -114,7 +117,8 @@ class SliceInfo(Extension):
 
         # Submit data
         try:
-            f = urllib.request.urlopen("https://stats.youmagine.com/curastats/slice", data = binary_data, timeout = 1)
+            f = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
+            Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
         except Exception as e:
             print("Exception occured", e)
 
