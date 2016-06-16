@@ -281,8 +281,6 @@ Rectangle
             text: " " + Cura.MachineManager.printerOutputDevices[0].bedTemperature
         }
 
-
-
         // Spacers
         Label { text: " "}
         Label { text: " "}
