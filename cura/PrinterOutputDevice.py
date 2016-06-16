@@ -70,10 +70,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def jobState(self):
         return self._job_state
 
-    def setJobState(self, job_state):
+    def _updateJobState(self, job_state):
         if self._job_state != job_state:
             self._job_state = job_state
             self.jobStateChanged.emit()
+
+    @pyqtSlot(str)
+    def setJobState(self, job_state):
+        self._setJobState(job_state)
+
+    def _setJobState(self, job_state):
+        Logger.log("w", "_setJobState is not implemented by this output device")
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
