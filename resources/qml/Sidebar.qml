@@ -314,7 +314,8 @@ Rectangle
 
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: footerSeparator
         width: parent.width
         height: UM.Theme.getSize("sidebar_lining").height

@@ -16,7 +16,7 @@ UM.MainWindow
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
-
+    property bool monitoringPrint: false
     Item
     {
         id: backgroundItem;
@@ -531,11 +531,39 @@ UM.MainWindow
                     bottom: parent.bottom;
                     right: parent.right;
                 }
-
+                onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
+            }
+            Rectangle
+            {
+                color: "black"
+                anchors
+                {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left:parent.left
+                    right: sidebar.left
+                }
+                visible: base.monitoringPrint
+                opacity: 0.5
+            }
+
+            Image
+            {
+                id: cameraImage
+                width: 800
+                height: 600
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
+                visible: base.monitoringPrint
+                source: Cura.MachineManager.printerOutputDevices[0].cameraImage
             }
         }
     }
+
+
+
 
     UM.PreferencesDialog
     {
