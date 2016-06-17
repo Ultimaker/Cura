@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, pyqtSlot
 from UM.PluginObject import PluginObject
 
 
@@ -16,3 +16,10 @@ class MachineAction(QObject, PluginObject):
 
     def getLabel(self):
         return self._label
+
+    @pyqtSlot()
+    def execute(self):
+        self._execute()
+
+    def _execute(self):
+        raise NotImplementedError("Execute() must be implemented")

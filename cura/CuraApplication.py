@@ -369,6 +369,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
+        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
@@ -384,6 +385,12 @@ class CuraApplication(QtApplication):
             self._started = True
 
             self.exec_()
+
+    ##  Get the machine action manager
+    #   We ignore any **kwargs given to this, as we also register the machine manager as qml singleton.
+    #   It wants to give this function an engine and script engine, but we don't care about that.
+    def getMachineActionManager(self, **kwargs):
+        return self._machine_action_manager
 
     ##   Handle Qt events
     def event(self, event):

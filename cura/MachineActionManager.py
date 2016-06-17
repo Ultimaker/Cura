@@ -1,9 +1,9 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 from UM.Logger import Logger
-
 from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
 
+from PyQt5.QtCore import QObject, pyqtSlot
 
 ##  Raised when trying to add an unknown machine action as a required action
 class UnknownMachineAction(Exception):
@@ -15,55 +15,51 @@ class NotUniqueMachineAction(Exception):
     pass
 
 
-class MachineActionManager:
-    def __init__(self):
-        ##  Dict of all known machine actions
-        self._machine_actions = {}
+class MachineActionManager(QObject):
+    def __init__(self, parent = None):
+        super().__init__(parent)
 
-        ##  Dict of all required actions by machine reference.
-        self._required_actions = {}
+        self._machine_actions = {}  # Dict of all known machine actions
+        self._required_actions = {}  # Dict of all required actions by machine reference.
+        self._supported_actions = {}  # Dict of all supported actions by machine reference
+        self._first_start_actions = {}  # Dict of all actions that need to be done when first added by machine reference
 
-        ##  Dict of all supported actions by machine reference
-        self._supported_actions = {}
-
-        ##  Dict of all actions that need to be done when first added by machine reference.
-        self._first_start_actions = {}
-
+        # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
 
     ##  Add a required action to a machine
     #   Raises an exception when the action is not recognised.
-    def addRequiredAction(self, machine, action_key):
+    def addRequiredAction(self, machine_id, action_key):
         if action_key in self._machine_actions:
-            if machine in self._required_actions:
-                self._required_actions[machine] |= {self._machine_actions[action_key]}
+            if machine_id in self._required_actions:
+                self._required_actions[machine_id] |= {self._machine_actions[action_key]}
             else:
-                self._required_actions[machine] = {self._machine_actions[action_key]}
+                self._required_actions[machine_id] = {self._machine_actions[action_key]}
         else:
-            raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine.getKey()))
+            raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine_id.getKey()))
 
     ##  Add a supported action to a machine.
-    def addSupportedAction(self, machine, action_key):
+    def addSupportedAction(self, machine_id, action_key):
         if action_key in self._machine_actions:
-            if machine in self._supported_actions:
-                self._supported_actions[machine] |= {self._machine_actions[action_key]}
+            if machine_id in self._supported_actions:
+                self._supported_actions[machine_id] |= {self._machine_actions[action_key]}
             else:
-                self._supported_actions[machine] = {self._machine_actions[action_key]}
+                self._supported_actions[machine_id] = {self._machine_actions[action_key]}
         else:
-            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine.getKey())
+            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id.getKey())
 
     ##  Add an action to the first start list of a machine.
-    def addFirstStartAction(self, machine, action_key, index = None):
+    def addFirstStartAction(self, machine_id, action_key, index = None):
         if action_key in self._machine_actions:
-            if machine in self._first_start_actions:
+            if machine_id in self._first_start_actions:
                 if index is not None:
-                    self._first_start_actions[machine].insert(index, self._machine_actions[action_key])
+                    self._first_start_actions[machine_id].insert(index, self._machine_actions[action_key])
                 else:
-                    self._first_start_actions[machine].append(self._machine_actions[action_key])
+                    self._first_start_actions[machine_id].append(self._machine_actions[action_key])
             else:
-                self._first_start_actions[machine] = [self._machine_actions[action_key]]
+                self._first_start_actions[machine_id] = [self._machine_actions[action_key]]
         else:
-            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine.getKey())
+            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id.getKey())
 
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
@@ -76,18 +72,19 @@ class MachineActionManager:
     ##  Get all actions supported by given machine
     #   \param machine The machine you want the supported actions of
     #   \returns set of supported actions.
-    def getSupportedActions(self, machine):
-        if machine in self._supported_actions:
-            return self._supported_actions[machine]
+    @pyqtSlot(str, result = "QVariantList")
+    def getSupportedActions(self, machine_id):
+        if machine_id in self._supported_actions:
+            return self._supported_actions[machine_id]
         else:
             return set()
 
     ##  Get all actions required by given machine
     #   \param machine The machine you want the required actions of
     #   \returns set of required actions.
-    def getRequiredActions(self, machine):
-        if machine in self._required_actions:
-            return self._required_actions[machine]
+    def getRequiredActions(self, machine_id):
+        if machine_id in self._required_actions:
+            return self._required_actions[machine_id]
         else:
             return set()
 
@@ -96,9 +93,9 @@ class MachineActionManager:
     #   action multiple times).
     #   \param machine The machine you want the first start actions of
     #   \returns List of actions.
-    def getFirstStartActions(self, machine):
-        if machine in self._first_start_actions:
-            return self._first_start_actions[machine]
+    def getFirstStartActions(self, machine_id):
+        if machine_id in self._first_start_actions:
+            return self._first_start_actions[machine_id]
         else:
             return []
 
