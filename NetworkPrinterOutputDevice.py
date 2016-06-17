@@ -71,7 +71,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._error_message = None
 
         self._update_timer = QTimer()
-        self._update_timer.setInterval(5000)  # TODO; Add preference for update interval
+        self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
