@@ -53,6 +53,18 @@ Rectangle
         text: statusText;
     }
 
+    Label
+    {
+        id: percentageLabel
+        anchors.top: parent.top
+        anchors.right: progressBar.right
+        //anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+        color: "green"
+        font: UM.Theme.getFont("large")
+        text: Math.round(progress * 100) + "%" ;
+    }
+
     Rectangle
     {
         id: progressBar
