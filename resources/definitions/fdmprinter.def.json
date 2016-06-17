@@ -1024,8 +1024,8 @@
                             "label": "Z Hop Only Over Printed Parts",
                             "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
                             "type": "bool",
-                            "default_value": true,
-                            "enabled": "retraction_hop_enabled and travel_avoid_other_parts",
+                            "default_value": false,
+                            "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
                             "settable_per_mesh": true
                         },
                         "retraction_hop": {
@@ -1033,10 +1033,10 @@
                             "description": "The height difference when performing a Z Hop.",
                             "unit": "mm",
                             "type": "float",
-                            "default_value": 0,
+                            "default_value": 1,
                             "minimum_value_warning": "-0.0001",
                             "maximum_value_warning": "10",
-                            "enabled": "retraction_hop_enabled",
+                            "enabled": "retraction_enable and retraction_hop_enabled",
                             "settable_per_mesh": true
                         }
                     }
