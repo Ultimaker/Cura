@@ -76,7 +76,6 @@ class GCodeProfileReader(ProfileReader):
         profile.addMetaDataEntry("type", "quality")
         try:
             profile.deserialize(serialized)
-            profile.setReadOnly(False)
         except Exception as e:  # Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
