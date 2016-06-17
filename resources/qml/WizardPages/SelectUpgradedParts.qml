@@ -17,9 +17,6 @@ Item
 
     Component.onDestruction:
     {
-        if (extruderCheckBox.checked == true){
-            UM.MachineManager.setMachineSettingValue("machine_extruder_drive_upgrade", true)
-        }
         if (heatedBedCheckBox1.checked == true || heatedBedCheckBox2.checked == true){
             UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
         }
@@ -51,12 +48,6 @@ Item
         anchors.top: pageDescription.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width - UM.Theme.getSize("default_margin").width
-        CheckBox
-        {
-            id: extruderCheckBox
-            text: catalog.i18nc("@option:check","Extruder driver ugrades")
-            checked: true
-        }
         CheckBox
         {
             id: heatedBedCheckBox1

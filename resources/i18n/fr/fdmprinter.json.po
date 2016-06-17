@@ -2414,3 +2414,16 @@ msgid ""
 "which in turn results in less upward connections with the next layer. Only "
 "applies to Wire Printing."
 msgstr "Distance entre la buse et les lignes descendantes horizontalement. Un espacement plus important génère des lignes diagonalement descendantes avec un angle moins abrupt, qui génère alors des connexions moins ascendantes avec la couche suivante. Uniquement applicable à l'impression filaire."
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap label"
+msgid "Initial Layer Z Overlap"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap description"
+msgid ""
+"Make the first and second layer of the object overlap in the Z direction to "
+"compensate for the filament lost in the airgap. All models above the first "
+"model layer will be shifted down by this amount."
+msgstr "La première et la deuxième couche de l'objet se chevauchent dans la direction Z pour compenser le filament perdu dans l'entrefer. Toutes les chouches au-dessus de la première couce du modèle seront décalées de ce montant."

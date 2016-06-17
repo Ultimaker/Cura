@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2016 Ultimaker B.V.
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -6,82 +6,230 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
+import ".."
 
 Item {
     id: base;
-    property int currentIndex: UM.ActiveTool.properties.getValue("SelectedIndex")
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
     width: childrenRect.width;
     height: childrenRect.height;
 
-    Column {
+    Column
+    {
         id: items
         anchors.top: parent.top;
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height;
 
-        Column {
-            id: customisedSettings
-            spacing: UM.Theme.getSize("default_lining").height;
-            width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height/2;
+        Row
+        {
+            ComboBox
+            {
+                id: extruderSelector
 
-            Repeater {
-                id: settings;
+                model: Cura.ExtrudersModel
+                {
+                    id: extruders_model
+                    onRowsInserted: extruderSelector.visible = extruders_model.rowCount() > 1
+                    onModelReset:   extruderSelector.visible = extruders_model.rowCount() > 1
+                }
+                visible: extruders_model.rowCount() > 1
+                textRole: "name"
+                width: items.width
+                height: UM.Theme.getSize("section").height
+                MouseArea
+                {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    onWheel: wheel.accepted = true;
+                }
 
-                model: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).settings
+                style: ComboBoxStyle
+                {
+                    background: Rectangle
+                    {
+                        color:
+                        {
+                            if(extruderSelector.hovered || base.activeFocus)
+                            {
+                                return UM.Theme.getColor("setting_control_highlight");
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("setting_control");
+                            }
+                        }
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("setting_control_border")
+                    }
+                    label: Item
+                    {
+                        Rectangle
+                        {
+                            id: swatch
+                            height: UM.Theme.getSize("setting_control").height / 2
+                            width: height
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                            anchors.verticalCenter: parent.verticalCenter
 
-                UM.SettingItem {
+                            color: extruders_model.getItem(extruderSelector.currentIndex).colour
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
+                        }
+                        Label
+                        {
+                            anchors.left: swatch.right
+                            anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                            anchors.right: downArrow.left
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: extruderSelector.currentText
+                            font: UM.Theme.getFont("default")
+                            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+
+                            elide: Text.ElideRight
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        UM.RecolorImage
+                        {
+                            id: downArrow
+                            anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            source: UM.Theme.getIcon("arrow_bottom")
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
+                            sourceSize.width: width + 5
+                            sourceSize.height: width + 5
+
+                            color: UM.Theme.getColor("setting_control_text")
+                        }
+                    }
+                }
+
+                onActivated: UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                onModelChanged: updateCurrentIndex();
+
+                function updateCurrentIndex()
+                {
+                    for(var i = 0; i < extruders_model.rowCount(); ++i)
+                    {
+                        if(extruders_model.getItem(i).id == UM.ActiveTool.properties.getValue("SelectedActiveExtruder"))
+                        {
+                            extruderSelector.currentIndex = i;
+                            return;
+                        }
+                    }
+                    extruderSelector.currentIndex = -1;
+                }
+            }
+        }
+
+        Repeater
+        {
+            id: contents
+            height: childrenRect.height;
+
+            model: UM.SettingDefinitionsModel
+            {
+                id: addedSettingsModel;
+                containerId: Cura.MachineManager.activeDefinitionId
+                visibilityHandler: Cura.PerObjectSettingVisibilityHandler
+                {
+                    selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
+                }
+            }
+
+            delegate: Row
+            {
+                Loader
+                {
+                    id: settingLoader
                     width: UM.Theme.getSize("setting").width;
-                    height: UM.Theme.getSize("setting").height;
+                    height: UM.Theme.getSize("section").height;
 
-                    name: model.label;
-                    type: model.type;
-                    value: model.value;
-                    description: model.description;
-                    unit: model.unit;
-                    valid: model.valid;
-                    visible: !model.global_only
-                    options: model.options
-                    indent: false
+                    property var definition: model
+                    property var settingDefinitionsModel: addedSettingsModel
+                    property var propertyProvider: provider
 
-                    style: UM.Theme.styles.setting_item;
+                    //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                    //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                    //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                    asynchronous: model.type != "enum" && model.type != "extruder"
 
-                    onItemValueChanged: {
-                        settings.model.setSettingValue(model.key, value)
+                    onLoaded: {
+                        settingLoader.item.showRevertButton = false
+                        settingLoader.item.showInheritButton = false
+                        settingLoader.item.doDepthIndentation = false
                     }
 
-                    Button
+                    sourceComponent:
                     {
-                        anchors.left: parent.right;
-
-                        width: UM.Theme.getSize("setting").height;
-                        height: UM.Theme.getSize("setting").height;
-
-                        onClicked: UM.ActiveTool.properties.getValue("Model").removeSettingOverride(UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id, model.key)
-
-                        style: ButtonStyle
+                        switch(model.type)
                         {
-                            background: Rectangle
+                            case "int":
+                                return settingTextField
+                            case "float":
+                                return settingTextField
+                            case "enum":
+                                return settingComboBox
+                            case "extruder":
+                                return settingExtruder
+                            case "bool":
+                                return settingCheckBox
+                            case "str":
+                                return settingTextField
+                            case "category":
+                                return settingCategory
+                            default:
+                                return settingUnknown
+                        }
+                    }
+                }
+
+                Button
+                {
+                    width: UM.Theme.getSize("setting").height;
+                    height: UM.Theme.getSize("setting").height;
+
+                    onClicked: addedSettingsModel.setVisible(model.key, false);
+
+                    style: ButtonStyle
+                    {
+                        background: Rectangle
+                        {
+                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
+                            UM.RecolorImage
                             {
-                                color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    width: parent.width/2
-                                    height: parent.height/2
-                                    sourceSize.width: width
-                                    sourceSize.height: width
-                                    color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                    source: UM.Theme.getIcon("cross1")
-                                }
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width/2
+                                height: parent.height/2
+                                sourceSize.width: width
+                                sourceSize.height: width
+                                color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                source: UM.Theme.getIcon("cross1")
                             }
                         }
                     }
+                }
+                UM.SettingPropertyProvider
+                {
+                    id: provider
+
+                    containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                    key: model.key
+                    watchedProperties: [ "value", "enabled", "validationState" ]
+                    storeIndex: 0
                 }
             }
         }
@@ -133,6 +281,7 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Pick a Setting to Customize")
+        property string labelFilter: ""
 
         TextField {
             id: filter;
@@ -145,123 +294,62 @@ Item {
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
 
-            onTextChanged: settingCategoriesModel.filter(text);
+            onTextChanged:
+            {
+                if(text != "")
+                {
+                    listview.model.filter = {"settable_per_mesh": true, "label": "*" + text}
+                }
+                else
+                {
+                    listview.model.filter = {"settable_per_mesh": true}
+                }
+            }
         }
 
-        ScrollView {
-            id: view;
-            anchors {
+        ScrollView
+        {
+            id: scrollView
+
+            anchors
+            {
                 top: filter.bottom;
                 left: parent.left;
                 right: parent.right;
                 bottom: parent.bottom;
             }
+            ListView
+            {
+                id:listview
+                model: UM.SettingDefinitionsModel
+                {
+                    id: definitionsModel;
+                    containerId: Cura.MachineManager.activeDefinitionId
+                    filter:
+                    {
+                        "settable_per_mesh": true
+                    }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+                }
+                delegate:Loader
+                {
+                    id: loader
 
-            Column {
-                width: view.width - UM.Theme.getSize("default_margin").width * 2;
-                height: childrenRect.height;
+                    width: parent.width
+                    height: model.type != undefined ? UM.Theme.getSize("section").height : 0;
 
-                Repeater {
-                    id: settingList;
+                    property var definition: model
+                    property var settingDefinitionsModel: definitionsModel
 
-                    model: UM.SettingCategoriesModel { id: settingCategoriesModel; }
-
-                    delegate: Item {
-                        id: delegateItem;
-
-                        width: parent.width;
-                        height: childrenRect.height;
-                        visible: model.visible && settingsColumn.childrenHeight != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
-
-                        ToolButton {
-                            id: categoryHeader;
-                            text: model.name;
-                            checkable: true;
-                            width: parent.width;
-                            onCheckedChanged: settingsColumn.state != "" ? settingsColumn.state = "" : settingsColumn.state = "collapsed";
-
-                            style: ButtonStyle {
-                                background: Rectangle
-                                {
-                                    width: control.width;
-                                    height: control.height;
-                                    color: control.hovered ? palette.highlight : "transparent";
-                                }
-                                label: Row
-                                {
-                                    spacing: UM.Theme.getSize("default_margin").width;
-                                    Image
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter;
-                                        source: control.checked ? UM.Theme.getIcon("arrow_right") : UM.Theme.getIcon("arrow_bottom");
-                                    }
-                                    Label
-                                    {
-                                        text: control.text;
-                                        font.bold: true;
-                                        color: control.hovered ? palette.highlightedText : palette.text;
-                                    }
-                                }
-                            }
-                        }
-
-                        property variant settingsModel: model.settings;
-
-                        Column {
-                            id: settingsColumn;
-
-                            anchors.top: categoryHeader.bottom;
-
-                            property real childrenHeight:
-                            {
-                                var h = 0.0;
-                                for(var i in children)
-                                {
-                                    var item = children[i];
-                                    h += children[i].height;
-                                    if(item.settingVisible)
-                                    {
-                                        if(i > 0)
-                                        {
-                                            h += spacing;
-                                        }
-                                    }
-                                }
-                                return h;
-                            }
-
-                            width: childrenRect.width;
-                            height: childrenHeight;
-                            Repeater {
-                                model: delegateItem.settingsModel;
-
-                                delegate: ToolButton {
-                                    id: button;
-                                    x: model.visible_depth * UM.Theme.getSize("default_margin").width;
-                                    text: model.name;
-                                    tooltip: model.description;
-                                    visible: !model.global_only
-                                    height: model.global_only ? 0 : undefined
-
-                                    onClicked: {
-                                        var object_id = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id;
-                                        UM.ActiveTool.properties.getValue("Model").addSettingOverride(object_id, model.key);
-                                        settingPickDialog.visible = false;
-                                    }
-
-                                    states: State {
-                                        name: "filtered"
-                                        when: model.filtered || !model.visible || !model.enabled
-                                        PropertyChanges { target: button; height: 0; opacity: 0; }
-                                    }
-                                }
-                            }
-
-                            states: State {
-                                name: "collapsed";
-
-                                PropertyChanges { target: settingsColumn; opacity: 0; height: 0; }
-                            }
+                    asynchronous: true
+                    source:
+                    {
+                        switch(model.type)
+                        {
+                            case "category":
+                                return "PerObjectCategory.qml"
+                            default:
+                                return "PerObjectItem.qml"
                         }
                     }
                 }
@@ -279,4 +367,46 @@ Item {
     }
 
     SystemPalette { id: palette; }
+
+    Component
+    {
+        id: settingTextField;
+
+        Cura.SettingTextField { }
+    }
+
+    Component
+    {
+        id: settingComboBox;
+
+        Cura.SettingComboBox { }
+    }
+
+    Component
+    {
+        id: settingExtruder;
+
+        Cura.SettingExtruder { }
+    }
+
+    Component
+    {
+        id: settingCheckBox;
+
+        Cura.SettingCheckBox { }
+    }
+
+    Component
+    {
+        id: settingCategory;
+
+        Cura.SettingCategory { }
+    }
+
+    Component
+    {
+        id: settingUnknown;
+
+        Cura.SettingUnknown { }
+    }
 }

@@ -33,14 +33,18 @@ sys.excepthook = exceptHook
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
+from UM.Platform import Platform
 import cura.CuraApplication
+import cura.CuraContainerRegistry
 
-if sys.platform == "win32" and hasattr(sys, "frozen"):
-    import os
+if Platform.isWindows() and hasattr(sys, "frozen"):
     dirpath = os.path.expanduser("~/AppData/Local/cura/")
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
+
+# Force an instance of CuraContainerRegistry to be created and reused later.
+cura.CuraContainerRegistry.CuraContainerRegistry.getInstance()
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()

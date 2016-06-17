@@ -13,6 +13,7 @@ add_custom_command(TARGET tests POST_BUILD COMMAND "PYTHONPATH=${CMAKE_SOURCE_DI
 
 
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
+set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 # Macro needed to list all sub-directory of a directory.

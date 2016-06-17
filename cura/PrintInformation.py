@@ -1,14 +1,17 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
 from UM.Application import Application
 from UM.Qt.Duration import Duration
+from UM.Preferences import Preferences
 
 import math
+import os.path
+import unicodedata
 
-##  A class for processing and calculating minimum, current and maximum print time.
+##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
 #   This class contains all the logic relating to calculation and slicing for the
 #   time/quality slider concept. It is a rather tricky combination of event handling
@@ -22,6 +25,8 @@ import math
 #   - When that is done, we update the minimum print time and start the final slice pass, the "high quality settings pass".
 #   - When the high quality pass is done, we update the maximum print time.
 #
+#   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
+#   This job name is requested by the JobSpecs qml file.
 class PrintInformation(QObject):
     class SlicePass:
         CurrentSettings = 1
@@ -45,14 +50,20 @@ class PrintInformation(QObject):
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
 
+        self._job_name = ""
+        self._abbr_machine = ""
+
+        Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
+        Application.getInstance().fileLoaded.connect(self.setJobName)
+
     currentPrintTimeChanged = pyqtSignal()
-    
+
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
         return self._current_print_time
 
     materialAmountChanged = pyqtSignal()
-    
+
     @pyqtProperty(float, notify = materialAmountChanged)
     def materialAmount(self):
         return self._material_amount
@@ -63,6 +74,49 @@ class PrintInformation(QObject):
         self.currentPrintTimeChanged.emit()
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
-        r =  Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("material_diameter") / 2
+        r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
         self.materialAmountChanged.emit()
+
+    @pyqtSlot(str)
+    def setJobName(self, name):
+        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
+        # extension. This cuts the extension off if necessary.
+        name = os.path.splitext(name)[0]
+        if self._job_name != name:
+            self._job_name = name
+            self.jobNameChanged.emit()
+
+    jobNameChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = jobNameChanged)
+    def jobName(self):
+        return self._job_name
+
+    @pyqtSlot(str, result = str)
+    def createJobName(self, base_name):
+        base_name = self._stripAccents(base_name)
+        if Preferences.getInstance().getValue("cura/jobname_prefix"):
+            return self._abbr_machine + "_" + base_name
+        else:
+            return base_name
+
+    ##  Created an acronymn-like abbreviated machine name from the currently active machine name
+    #   Called each time the global stack is switched
+    def _setAbbreviatedMachineName(self):
+        global_stack_name = Application.getInstance().getGlobalContainerStack().getName()
+        split_name = global_stack_name.split(" ")
+        abbr_machine = ""
+        for word in split_name:
+            if word.lower() == "ultimaker":
+                abbr_machine += "UM"
+            elif word.isdigit():
+                abbr_machine += word
+            else:
+                abbr_machine += self._stripAccents(word.strip("()[]{}#").upper())[0]
+
+        self._abbr_machine = abbr_machine
+
+    ##  Utility method that strips accents from characters (eg: â -> a)
+    def _stripAccents(self, str):
+       return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')

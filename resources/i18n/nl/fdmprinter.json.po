@@ -2414,3 +2414,16 @@ msgid ""
 "which in turn results in less upward connections with the next layer. Only "
 "applies to Wire Printing."
 msgstr "De afstand tussen de nozzle en horizontaal neergaande lijnen. Een grotere tussenruimte zorgt voor diagonaal neerwaarts gaande lijnen met een minder steile hoek. Hierdoor ontstaan minder opwaartse verbindingen met de volgende laag. Alleen van toepassing op Draadprinten."
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap label"
+msgid "Initial Layer Z Overlap"
+msgstr "Z Overlap Eerste Laag"
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap description"
+msgid ""
+"Make the first and second layer of the object overlap in the Z direction to "
+"compensate for the filament lost in the airgap. All models above the first "
+"model layer will be shifted down by this amount."
+msgstr "Laat de eerste en tweede laag overlappen in de Z-richting om te compenseren voor verloren materiaal in de luchtlaag. Alle stukjes model boven de eerste laag worden met deze hoveelheid naar beneden verschoven."

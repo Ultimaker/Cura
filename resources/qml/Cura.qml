@@ -7,7 +7,8 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 UM.MainWindow
 {
@@ -53,7 +54,7 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
 
                 MenuItem {
-                    action: actions.open;
+                    action: Cura.Actions.open;
                 }
 
                 Menu
@@ -92,7 +93,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName, { "filter_by_machine": false });
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false });
                 }
                 Menu
                 {
@@ -108,18 +109,18 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName, { "filter_by_machine": false });
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, { "filter_by_machine": false });
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
                     }
                 }
 
-                MenuItem { action: actions.reloadAll; }
+                MenuItem { action: Cura.Actions.reloadAll; }
 
                 MenuSeparator { }
 
-                MenuItem { action: actions.quit; }
+                MenuItem { action: Cura.Actions.quit; }
             }
 
             Menu
@@ -127,27 +128,27 @@ UM.MainWindow
                 //: Edit menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Edit");
 
-                MenuItem { action: actions.undo; }
-                MenuItem { action: actions.redo; }
+                MenuItem { action: Cura.Actions.undo; }
+                MenuItem { action: Cura.Actions.redo; }
                 MenuSeparator { }
-                MenuItem { action: actions.deleteSelection; }
-                MenuItem { action: actions.deleteAll; }
-                MenuItem { action: actions.resetAllTranslation; }
-                MenuItem { action: actions.resetAll; }
+                MenuItem { action: Cura.Actions.deleteSelection; }
+                MenuItem { action: Cura.Actions.deleteAll; }
+                MenuItem { action: Cura.Actions.resetAllTranslation; }
+                MenuItem { action: Cura.Actions.resetAll; }
                 MenuSeparator { }
-                MenuItem { action: actions.groupObjects;}
-                MenuItem { action: actions.mergeObjects;}
-                MenuItem { action: actions.unGroupObjects;}
+                MenuItem { action: Cura.Actions.groupObjects;}
+                MenuItem { action: Cura.Actions.mergeObjects;}
+                MenuItem { action: Cura.Actions.unGroupObjects;}
             }
 
             Menu
             {
                 title: catalog.i18nc("@title:menu menubar:toplevel","&View");
                 id: top_view_menu
-                Instantiator 
+                Instantiator
                 {
                     model: UM.ViewModel { }
-                    MenuItem 
+                    MenuItem
                     {
                         text: model.name;
                         checkable: true;
@@ -168,14 +169,17 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.MachineInstancesModel { }
+                    model: UM.ContainerStacksModel
+                    {
+                        filter: {"type": "machine"}
+                    }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
-                        checked: model.active;
+                        checked: Cura.MachineManager.activeMachineId == model.id
                         exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name)
+                        onTriggered: Cura.MachineManager.setActiveMachine(model.id);
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
@@ -187,13 +191,20 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.MachineVariantsModel { }
+                    model: UM.InstanceContainersModel
+                    {
+                        filter:
+                        {
+                            "type": "variant",
+                            "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
+                        }
+                    }
                     MenuItem {
                         text: model.name;
                         checkable: true;
-                        checked: model.active;
+                        checked: model.id == Cura.MachineManager.activeVariantId;
                         exclusiveGroup: machineVariantsGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.name)
+                        onTriggered: Cura.MachineManager.setActiveVariant(model.id)
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
@@ -201,10 +212,10 @@ UM.MainWindow
 
                 ExclusiveGroup { id: machineVariantsGroup; }
 
-                MenuSeparator { visible: UM.MachineManager.hasVariants; }
+                MenuSeparator { visible: Cura.MachineManager.hasVariants; }
 
-                MenuItem { action: actions.addMachine; }
-                MenuItem { action: actions.configureMachines; }
+                MenuItem { action: Cura.Actions.addMachine; }
+                MenuItem { action: Cura.Actions.configureMachines; }
             }
 
             Menu
@@ -215,7 +226,26 @@ UM.MainWindow
                 Instantiator
                 {
                     id: profileMenuInstantiator
-                    model: UM.ProfilesModel {}
+                    model: UM.InstanceContainersModel
+                    {
+                        filter:
+                        {
+                            var result = { "type": "quality" };
+                            if(Cura.MachineManager.filterQualityByMachine)
+                            {
+                                result.definition = Cura.MachineManager.activeDefinitionId;
+                                if(Cura.MachineManager.hasMaterials)
+                                {
+                                    result.material = Cura.MachineManager.activeMaterialId;
+                                }
+                            }
+                            else
+                            {
+                                result.definition = "fdmprinter"
+                            }
+                            return result
+                        }
+                    }
                     property int separatorIndex: -1
 
                     Loader {
@@ -258,30 +288,20 @@ UM.MainWindow
                     {
                         id: item
                         text: model_data ? model_data.name : ""
-                        checkable: true;
-                        checked: model_data ? model_data.active : false;
-                        exclusiveGroup: profileMenuGroup;
-                        onTriggered:
-                        {
-                            UM.MachineManager.setActiveProfile(model_data.name);
-                            if (!model_data.active) {
-                                //Selecting a profile was canceled; undo menu selection
-                                profileMenuInstantiator.model.setProperty(model_index, "active", false);
-                                var activeProfileName = UM.MachineManager.activeProfile;
-                                var activeProfileIndex = profileMenuInstantiator.model.find("name", activeProfileName);
-                                profileMenuInstantiator.model.setProperty(activeProfileIndex, "active", true);
-                            }
-                        }
+                        checkable: true
+                        checked: Cura.MachineManager.activeQualityId == model_data.id
+                        exclusiveGroup: profileMenuGroup
+                        onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
                     }
                 }
 
                 MenuSeparator { id: profileMenuSeparator }
 
-                MenuItem { action: actions.updateProfile; }
-                MenuItem { action: actions.resetProfile; }
-                MenuItem { action: actions.addProfile; }
+                MenuItem { action: Cura.Actions.addProfile }
+                MenuItem { action: Cura.Actions.updateProfile }
+                MenuItem { action: Cura.Actions.resetProfile }
                 MenuSeparator { }
-                MenuItem { action: actions.manageProfiles; }
+                MenuItem { action: Cura.Actions.manageProfiles }
             }
 
             Menu
@@ -292,7 +312,8 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.Models.extensionModel
+                    id: extensions
+                    model: UM.ExtensionModel { }
 
                     Menu
                     {
@@ -306,7 +327,7 @@ UM.MainWindow
                             MenuItem
                             {
                                 text: model.text
-                                onTriggered: UM.Models.extensionModel.subMenuTriggered(name, model.text)
+                                onTriggered: extensions.model.subMenuTriggered(name, model.text)
                             }
                             onObjectAdded: sub_menu.insertItem(index, object)
                             onObjectRemoved: sub_menu.removeItem(object)
@@ -323,7 +344,7 @@ UM.MainWindow
                 //: Settings menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Settings");
 
-                MenuItem { action: actions.preferences; }
+                MenuItem { action: Cura.Actions.preferences; }
             }
 
             Menu
@@ -331,11 +352,11 @@ UM.MainWindow
                 //: Help menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
-                MenuItem { action: actions.showEngineLog; }
-                MenuItem { action: actions.documentation; }
-                MenuItem { action: actions.reportBug; }
+                MenuItem { action: Cura.Actions.showEngineLog; }
+                MenuItem { action: Cura.Actions.documentation; }
+                MenuItem { action: Cura.Actions.reportBug; }
                 MenuSeparator { }
-                MenuItem { action: actions.about; }
+                MenuItem { action: Cura.Actions.about; }
             }
         }
 
@@ -425,7 +446,7 @@ UM.MainWindow
                     left: parent.left;
                     //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
-                action: actions.open;
+                action: Cura.Actions.open;
             }
 
             Image
@@ -512,23 +533,6 @@ UM.MainWindow
                 }
 
                 width: UM.Theme.getSize("sidebar").width;
-
-                addMachineAction: actions.addMachine;
-                configureMachinesAction: actions.configureMachines;
-                addProfileAction: actions.addProfile;
-                updateProfileAction: actions.updateProfile;
-                resetProfileAction: actions.resetProfile;
-                manageProfilesAction: actions.manageProfiles;
-
-                configureSettingsAction: Action
-                {
-                    onTriggered:
-                    {
-                        preferences.visible = true;
-                        preferences.setPage(2);
-                        preferences.getCurrentItem().scrollToSection(source.key);
-                    }
-                }
             }
         }
     }
@@ -541,13 +545,16 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
 
-            //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
+            insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
+
+            insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/MaterialsPage.qml"));
+
+            insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
 
             //Force refresh
-            setPage(0)
+            setPage(0);
         }
 
         onVisibleChanged:
@@ -561,85 +568,64 @@ UM.MainWindow
         }
     }
 
-    Actions
+    Connections
     {
-        id: actions;
+        target: Cura.Actions.preferences
+        onTriggered: preferences.visible = true
+    }
 
-        open.onTriggered: openDialog.open();
-
-        quit.onTriggered: base.visible = false;
-
-        undo.onTriggered: UM.OperationStack.undo();
-        undo.enabled: UM.OperationStack.canUndo;
-        redo.onTriggered: UM.OperationStack.redo();
-        redo.enabled: UM.OperationStack.canRedo;
-
-        deleteSelection.onTriggered:
+    Connections
+    {
+        target: Cura.Actions.addProfile
+        onTriggered:
         {
-            Printer.deleteSelection()
-        }
+            Cura.MachineManager.newQualityContainerFromQualityAndUser();
+            preferences.setPage(4);
+            preferences.show();
 
-        deleteObject.onTriggered:
+            // Show the renameDialog after a very short delay so the preference page has time to initiate
+            showProfileNameDialogTimer.start();
+        }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.configureMachines
+        onTriggered:
         {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.deleteObject(objectContextMenu.objectId);
-                objectContextMenu.objectId = 0;
-            }
+            preferences.visible = true;
+            preferences.setPage(2);
         }
+    }
 
-        multiplyObject.onTriggered:
+    Connections
+    {
+        target: Cura.Actions.manageProfiles
+        onTriggered:
         {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.multiplyObject(objectContextMenu.objectId, 1);
-                objectContextMenu.objectId = 0;
-            }
+            preferences.visible = true;
+            preferences.setPage(4);
         }
+    }
 
-        centerObject.onTriggered:
+    Connections
+    {
+        target: Cura.Actions.configureSettingVisibility
+        onTriggered:
         {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.centerObject(objectContextMenu.objectId);
-                objectContextMenu.objectId = 0;
-            }
+            preferences.visible = true;
+            preferences.setPage(1);
+            preferences.getCurrentItem().scrollToSection(source.key);
         }
-        
-        groupObjects.onTriggered:
-        {
-            Printer.groupSelected()
-        }
-        
-        unGroupObjects.onTriggered:
-        {
-            Printer.ungroupSelected()
-        }
-        
-        mergeObjects.onTriggered:
-        {
-            Printer.mergeSelected()
-        }
+    }
 
-        deleteAll.onTriggered: Printer.deleteAll()
-        resetAllTranslation.onTriggered: Printer.resetAllTranslation()
-        resetAll.onTriggered: Printer.resetAll()
-        reloadAll.onTriggered: Printer.reloadAll()
+    Timer
+    {
+        id: showProfileNameDialogTimer
+        repeat: false
+        interval: 1
 
-        addMachine.onTriggered: addMachineWizard.visible = true;
-        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.setPage(4); preferences.visible = true; preferences.show(); preferences.getCurrentItem().showProfileNameDialog() }
-        updateProfile.onTriggered: { UM.ActiveProfile.updateProfile() }
-        resetProfile.onTriggered: { UM.ActiveProfile.discardChanges() }
-
-        preferences.onTriggered: { preferences.visible = true; }
-        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
-        manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
-
-        documentation.onTriggered: CuraActions.openDocumentation();
-        reportBug.onTriggered: CuraActions.openBugReportPage();
-        showEngineLog.onTriggered: engineLog.visible = true;
-        about.onTriggered: aboutDialog.visible = true;
-        toggleFullScreen.onTriggered: base.toggleFullscreen()
+        onTriggered: preferences.getCurrentItem().showProfileNameDialog()
     }
 
     Menu
@@ -647,29 +633,70 @@ UM.MainWindow
         id: objectContextMenu;
 
         property variant objectId: -1;
-        MenuItem { action: actions.centerObject; }
-        MenuItem { action: actions.deleteObject; }
-        MenuItem { action: actions.multiplyObject; }
+        MenuItem { action: Cura.Actions.centerObject; }
+        MenuItem { action: Cura.Actions.deleteObject; }
+        MenuItem { action: Cura.Actions.multiplyObject; }
         MenuSeparator { }
-        MenuItem { action: actions.deleteAll; }
-        MenuItem { action: actions.reloadAll; }
-        MenuItem { action: actions.resetAllTranslation; }
-        MenuItem { action: actions.resetAll; }
-        MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.mergeObjects;}
-        MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: Cura.Actions.deleteAll; }
+        MenuItem { action: Cura.Actions.reloadAll; }
+        MenuItem { action: Cura.Actions.resetAllTranslation; }
+        MenuItem { action: Cura.Actions.resetAll; }
+        MenuSeparator { }
+        MenuItem { action: Cura.Actions.groupObjects; }
+        MenuItem { action: Cura.Actions.mergeObjects; }
+        MenuItem { action: Cura.Actions.unGroupObjects; }
+
+        Connections
+        {
+            target: Cura.Actions.deleteObject
+            onTriggered:
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.deleteObject(objectContextMenu.objectId);
+                    objectContextMenu.objectId = 0;
+                }
+            }
+        }
+
+        Connections
+        {
+            target: Cura.Actions.multiplyObject
+            onTriggered:
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.multiplyObject(objectContextMenu.objectId, 1);
+                    objectContextMenu.objectId = 0;
+                }
+            }
+        }
+
+        Connections
+        {
+            target: Cura.Actions.centerObject
+            onTriggered:
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.centerObject(objectContextMenu.objectId);
+                    objectContextMenu.objectId = 0;
+                }
+            }
+        }
     }
 
     Menu
     {
         id: contextMenu;
-        MenuItem { action: actions.deleteAll; }
-        MenuItem { action: actions.reloadAll; }
-        MenuItem { action: actions.resetAllTranslation; }
-        MenuItem { action: actions.resetAll; }
-        MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.mergeObjects;}
-        MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: Cura.Actions.deleteAll; }
+        MenuItem { action: Cura.Actions.reloadAll; }
+        MenuItem { action: Cura.Actions.resetAllTranslation; }
+        MenuItem { action: Cura.Actions.resetAll; }
+        MenuSeparator { }
+        MenuItem { action: Cura.Actions.groupObjects; }
+        MenuItem { action: Cura.Actions.mergeObjects; }
+        MenuItem { action: Cura.Actions.unGroupObjects; }
     }
 
     Connections
@@ -686,6 +713,18 @@ UM.MainWindow
                 objectContextMenu.popup();
             }
         }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.quit
+        onTriggered: base.visible = false;
+    }
+
+    Connections
+    {
+        target: Cura.Actions.toggleFullScreen
+        onTriggered: base.toggleFullscreen();
     }
 
     FileDialog
@@ -712,14 +751,32 @@ UM.MainWindow
         }
     }
 
+    Connections
+    {
+        target: Cura.Actions.open
+        onTriggered: openDialog.open()
+    }
+
     EngineLog
     {
         id: engineLog;
     }
 
-    AddMachineWizard
+    Connections
     {
-        id: addMachineWizard
+        target: Cura.Actions.showEngineLog
+        onTriggered: engineLog.visible = true;
+    }
+
+    AddMachineDialog
+    {
+        id: addMachineDialog
+    }
+
+    Connections
+    {
+        target: Cura.Actions.addMachine
+        onTriggered: addMachineDialog.visible = true;
     }
 
     AboutDialog
@@ -729,11 +786,17 @@ UM.MainWindow
 
     Connections
     {
+        target: Cura.Actions.about
+        onTriggered: aboutDialog.visible = true;
+    }
+
+    Connections
+    {
         target: Printer
         onRequestAddPrinter:
         {
-            addMachineWizard.visible = true
-            addMachineWizard.firstRun = false
+            addMachineDialog.visible = true
+            addMachineDialog.firstRun = false
         }
     }
 
@@ -750,10 +813,9 @@ UM.MainWindow
                 base.visible = true;
                 restart();
             }
-            else if(UM.MachineManager.activeMachineInstance == "")
+            else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")
             {
-                addMachineWizard.firstRun = true;
-                addMachineWizard.open();
+                addMachineDialog.open();
             }
         }
     }

@@ -3,7 +3,7 @@
 
 import numpy
 from string import Formatter
-import traceback
+from enum import IntEnum
 
 from UM.Job import Job
 from UM.Application import Application
@@ -12,8 +12,16 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
-from cura.OneAtATimeIterator import OneAtATimeIterator
+from UM.Settings.Validator import ValidatorState
 
+from cura.OneAtATimeIterator import OneAtATimeIterator
+from cura.ExtruderManager import ExtruderManager
+
+class StartJobResult(IntEnum):
+    Finished = 1
+    Error = 2
+    SettingError = 3
+    NothingToSlice = 4
 
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
@@ -28,88 +36,130 @@ class GcodeStartEndFormatter(Formatter):
             Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
             return "{" + str(key) + "}"
 
-
-##  Job that handles sending the current scene data to CuraEngine
+##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    def __init__(self, profile, socket):
+    def __init__(self, slice_message):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
-        self._profile = profile
-        self._socket = socket
+        self._slice_message = slice_message
+        self._is_cancelled = False
 
+    def getSliceMessage(self):
+        return self._slice_message
+
+    ##  Check if a stack has any errors.
+    ##  returns true if it has errors, false otherwise.
+    def _checkStackForErrors(self, stack):
+        if stack is None:
+            return False
+
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+                return True
+            Job.yieldThread()
+        return False
+
+    ##  Runs the job that initiates the slicing.
     def run(self):
-        self._scene.acquireLock()
+        stack = Application.getInstance().getGlobalContainerStack()
+        if not stack:
+            self.setResult(StartJobResult.Error)
+            return
 
+        # Don't slice if there is a setting with an error value.
+        if self._checkStackForErrors(stack):
+            self.setResult(StartJobResult.SettingError)
+            return
+
+        # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if node.callDecoration("getLayerData"):
-                node.getParent().removeChild(node)
-                break
+            if type(node) is not SceneNode or not node.isSelectable():
+                continue
 
-        object_groups = []
-        if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
-            for node in OneAtATimeIterator(self._scene.getRoot()):
+            if self._checkStackForErrors(node.callDecoration("getStack")):
+                self.setResult(StartJobResult.SettingError)
+                return
+
+        with self._scene.getSceneLock():
+            # Remove old layer data.
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                if node.callDecoration("getLayerData"):
+                    node.getParent().removeChild(node)
+                    break
+
+            # Get the objects in their groups to print.
+            object_groups = []
+            if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                for node in OneAtATimeIterator(self._scene.getRoot()):
+                    temp_list = []
+
+                    # Node can't be printed, so don't bother sending it.
+                    if getattr(node, "_outside_buildarea", False):
+                        continue
+
+                    children = node.getAllChildren()
+                    children.append(node)
+                    for child_node in children:
+                        if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                            temp_list.append(child_node)
+
+                    if temp_list:
+                        object_groups.append(temp_list)
+                    Job.yieldThread()
+                if len(object_groups) == 0:
+                    Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
+            else:
                 temp_list = []
-
-                ##  Node can't be printed, so don't bother sending it.
-                if getattr(node, "_outside_buildarea", False):
-                    continue
-
-                children = node.getAllChildren()
-                children.append(node)
-                for child_node in children:
-                    if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
-                        temp_list.append(child_node)
+                for node in DepthFirstIterator(self._scene.getRoot()):
+                    if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                        if not getattr(node, "_outside_buildarea", False):
+                            temp_list.append(node)
+                    Job.yieldThread()
 
                 if temp_list:
                     object_groups.append(temp_list)
-                Job.yieldThread()
-            if len(object_groups) == 0:
-                Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
-        else:
-            temp_list = []
-            for node in DepthFirstIterator(self._scene.getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        temp_list.append(node)
-                Job.yieldThread()
 
-            if temp_list:
-                object_groups.append(temp_list)
+            if not object_groups:
+                self.setResult(StartJobResult.NothingToSlice)
+                return
 
-        self._scene.releaseLock()
+            self._buildGlobalSettingsMessage(stack)
 
-        if not object_groups:
-            return
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
+                self._buildExtruderMessage(extruder_stack)
 
-        self._sendSettings(self._profile)
+            for group in object_groups:
+                group_message = self._slice_message.addRepeatedMessage("object_lists")
+                if group[0].getParent().callDecoration("isGroup"):
+                    self._handlePerObjectSettings(group[0].getParent(), group_message)
+                for object in group:
+                    mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
-        slice_message = self._socket.createMessage("cura.proto.Slice")
+                    obj = group_message.addRepeatedMessage("objects")
+                    obj.id = id(object)
+                    verts = numpy.array(mesh_data.getVertices())
 
-        for group in object_groups:
-            group_message = slice_message.addRepeatedMessage("object_lists")
-            if group[0].getParent().callDecoration("isGroup"):
-                self._handlePerObjectSettings(group[0].getParent(), group_message)
-            for current_object in group:
-                mesh_data = current_object.getMeshData().getTransformed(current_object.getWorldTransformation())
+                    # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
+                    verts[:, [1, 2]] = verts[:, [2, 1]]
+                    verts[:, 1] *= -1
 
-                obj = group_message.addRepeatedMessage("objects")
-                obj.id = id(current_object)
+                    obj.vertices = verts
 
-                verts = numpy.array(mesh_data.getVertices())
-                verts[:,[1,2]] = verts[:,[2,1]]
-                verts[:,1] *= -1
+                    self._handlePerObjectSettings(object, obj)
 
-                obj.vertices = verts
+                    Job.yieldThread()
 
-                self._handlePerObjectSettings(current_object, obj)
+        self.setResult(StartJobResult.Finished)
 
-                Job.yieldThread()
+    def cancel(self):
+        super().cancel()
+        self._is_cancelled = True
 
-        Logger.log("d", "Sending data to engine for slicing.")
-        self._socket.sendMessage(slice_message)
-        Logger.log("d", "Sending data to engine is completed")
-        self.setResult(True)
+    def isCancelled(self):
+        return self._is_cancelled
 
     def _expandGcodeTokens(self, key, value, settings):
         try:
@@ -117,41 +167,45 @@ class StartSliceJob(Job):
             fmt = GcodeStartEndFormatter()
             return str(fmt.format(value, **settings)).encode("utf-8")
         except:
-            Logger.log("w", "Unabled to do token replacement on start/end gcode %s", traceback.format_exc())
+            Logger.logException("w", "Unable to do token replacement on start/end gcode")
             return str(value).encode("utf-8")
 
-    def _sendSettings(self, profile):
-        msg = self._socket.createMessage("cura.proto.SettingList")
-        settings = profile.getAllSettingValues(include_machine = True)
-        start_gcode = settings["machine_start_gcode"]
-        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
-        settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
-        for key, value in settings.items():
-            s = msg.addRepeatedMessage("settings")
-            s.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode":
-                s.value = self._expandGcodeTokens(key, value, settings)
-            else:
-                s.value = str(value).encode("utf-8")
+    def _buildExtruderMessage(self, stack):
+        message = self._slice_message.addRepeatedMessage("extruders")
+        message.id = int(stack.getMetaDataEntry("position"))
+        for key in stack.getAllKeys():
+            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            Job.yieldThread()
 
-        self._socket.sendMessage(msg)
+    ##  Sends all global settings to the engine.
+    #
+    #   The settings are taken from the global stack. This does not include any
+    #   per-extruder settings or per-object settings.
+    def _buildGlobalSettingsMessage(self, stack):
+        keys = stack.getAllKeys()
+        settings = {}
+        for key in keys:
+            settings[key] = stack.getProperty(key, "value")
+
+        start_gcode = settings["machine_start_gcode"]
+        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
+        settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
+
+        for key, value in settings.items(): #Add all submessages for each individual setting.
+            setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
+            setting_message.name = key
+            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
+                setting_message.value = self._expandGcodeTokens(key, value, settings)
+            else:
+                setting_message.value = str(value).encode("utf-8")
 
     def _handlePerObjectSettings(self, node, message):
-        profile = node.callDecoration("getProfile")
-        if profile:
-            for key, value in profile.getAllSettingValues().items():
+        stack = node.callDecoration("getStack")
+        if stack:
+            for key in stack.getAllKeys():
                 setting = message.addRepeatedMessage("settings")
                 setting.name = key
-                setting.value = str(value).encode()
-
+                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
                 Job.yieldThread()
-
-        object_settings = node.callDecoration("getAllSettingValues")
-        if not object_settings:
-            return
-        for key, value in object_settings.items():
-            setting = message.addRepeatedMessage("settings")
-            setting.name = key
-            setting.value = str(value).encode()
-
-            Job.yieldThread()

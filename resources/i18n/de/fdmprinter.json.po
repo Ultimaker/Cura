@@ -2414,3 +2414,16 @@ msgid ""
 "which in turn results in less upward connections with the next layer. Only "
 "applies to Wire Printing."
 msgstr "Der Abstand zwischen der Düse und den horizontalen Abwärtslinien. Bei einem größeren Abstand haben die diagonalen Abwärtslinien einen weniger spitzen Winkel, was wiederum weniger Aufwärtsverbindungen zur nächsten Schicht zur Folge hat. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap label"
+msgid "Initial Layer Z Overlap"
+msgstr "Z Überlappung der ersten Schicht"
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap description"
+msgid ""
+"Make the first and second layer of the object overlap in the Z direction to "
+"compensate for the filament lost in the airgap. All model pieces above the first "
+"model layer will be shifted down by this amount."
+msgstr "Die erste und die zweite Schicht des Objekts überlappen sich in der Z-Richtung, um das verlorene Filament in dem Luftspalt zu kompensieren. Alle Schichten über der ersten Schicht, verschieben sich in der Z-Richtung mit gewähltem Abstand nach unten."

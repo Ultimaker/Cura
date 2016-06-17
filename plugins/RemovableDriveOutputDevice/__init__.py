@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker B.V.",
             "description": catalog.i18nc("@info:whatsthis", "Provides removable drive hotplugging and writing support."),
             "version": "1.0",
-            "api": 2
+            "api": 3
         }
     }
 

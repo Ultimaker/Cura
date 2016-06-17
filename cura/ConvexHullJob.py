@@ -47,10 +47,19 @@ class ConvexHullJob(Job):
             # This is done to greatly speed up further convex hull calculations as the convex hull
             # becomes much less complex when dealing with highly detailed models.
             vertex_data = numpy.round(vertex_data, 1)
-            duplicates = (vertex_data[:,0] == vertex_data[:,1]) | (vertex_data[:,1] == vertex_data[:,2]) | (vertex_data[:,0] == vertex_data[:,2])
-            vertex_data = numpy.delete(vertex_data, numpy.where(duplicates), axis = 0)
 
-            hull = Polygon(vertex_data[:, [0, 2]])
+            vertex_data = vertex_data[:, [0, 2]]    # Drop the Y components to project to 2D.
+
+            # Grab the set of unique points.
+            #
+            # This basically finds the unique rows in the array by treating them as opaque groups of bytes
+            # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
+            # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
+            vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
+            _, idx = numpy.unique(vertex_byte_view, return_index=True)
+            vertex_data = vertex_data[idx]  # Select the unique rows by index.
+
+            hull = Polygon(vertex_data)
 
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
@@ -59,12 +68,12 @@ class ConvexHullJob(Job):
         # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
 
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if global_stack:
+            if global_stack.getProperty("print_sequence", "value")== "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 # Printing one at a time and it's not an object in a group
                 self._node.callDecoration("setConvexHullBoundary", copy.deepcopy(hull))
-                head_and_fans = Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"), numpy.float32))
+                head_and_fans = Polygon(numpy.array(global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
 
                 # Full head hull is used to actually check the order.
                 full_head_hull = hull.getMinkowskiHull(head_and_fans)
@@ -77,7 +86,7 @@ class ConvexHullJob(Job):
                 # Min head hull is used for the push free
                 min_head_hull = hull.getMinkowskiHull(head_and_fans)
                 self._node.callDecoration("setConvexHullHead", min_head_hull)
-                hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"),numpy.float32)))
+                hull = hull.getMinkowskiHull(Polygon(numpy.array(global_stack.getProperty("machine_head_polygon","value"),numpy.float32)))
             else:
                 self._node.callDecoration("setConvexHullHead", None)
         if self._node.getParent() is None:  # Node was already deleted before job is done.

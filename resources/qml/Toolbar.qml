@@ -25,7 +25,7 @@ Item {
         Repeater {
             id: repeat
 
-            model: UM.Models.toolModel
+            model: UM.ToolModel { }
 
             Button {
                 text: model.name
