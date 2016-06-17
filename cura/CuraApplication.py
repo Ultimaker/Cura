@@ -4,7 +4,7 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform
+from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -14,6 +14,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
+from UM.Platform import Platform
 from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
@@ -58,7 +59,7 @@ import urllib
 numpy.seterr(all="ignore")
 
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
-if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
+if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
         import ctypes
@@ -340,7 +341,7 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Platform(root)
+        self._platform = Scene_Platform(root)
 
         self._volume = BuildVolume.BuildVolume(root)
 

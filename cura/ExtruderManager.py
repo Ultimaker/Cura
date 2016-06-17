@@ -67,12 +67,14 @@ class ExtruderManager(QObject):
         self.activeExtruderChanged.emit()
 
     def getActiveExtruderStack(self):
-        try:
-            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getBottom().getId()][str(self._active_extruder_index)]
-        except AttributeError:
-            return None
-        except KeyError:
-            return None
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            global_definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
+            if global_definition_container:
+                if global_definition_container.getId() in self._extruder_trains:
+                    if str(self._active_extruder_index) in self._extruder_trains[global_definition_container.getId()]:
+                        return self._extruder_trains[global_definition_container.getId()][str(self._active_extruder_index)]
+
 
     ##  Adds all extruders of a specific machine definition to the extruder
     #   manager.
@@ -180,7 +182,7 @@ class ExtruderManager(QObject):
             quality = qualities[0]
         preferred_quality_id = machine_definition.getMetaDataEntry("preferred_quality")
         if preferred_quality_id:
-            preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id.lower(), type = "quality")
+            preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id, type = "quality")
             if len(preferred_quality) >= 1:
                 quality = preferred_quality[0]
             else:

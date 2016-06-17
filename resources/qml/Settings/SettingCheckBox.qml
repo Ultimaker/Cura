@@ -31,7 +31,7 @@ SettingItem
             }
         }
 
-        onClicked: propertyProvider.setPropertyValue("value", !checked)
+        onClicked: { forceActiveFocus(); propertyProvider.setPropertyValue("value", !checked) }
 
         Rectangle
         {

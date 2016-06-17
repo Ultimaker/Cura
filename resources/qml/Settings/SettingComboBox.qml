@@ -86,7 +86,7 @@ SettingItem
             }
         }
 
-        onActivated: provider.setPropertyValue("value", definition.options[index].key)
+        onActivated: { forceActiveFocus(); provider.setPropertyValue("value", definition.options[index].key) }
         onModelChanged: updateCurrentIndex();
 
         Connections
