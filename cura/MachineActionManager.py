@@ -87,7 +87,7 @@ class MachineActionManager:
         else:
             return set()
 
-    ##  Get all actions that need to be perfomed upon first start of a given machine.
+    ##  Get all actions that need to be performed upon first start of a given machine.
     #   Note that contrary to required / supported actions a list is returned (as it could be required to run the same
     #   action multiple times).
     #   \param machine The machine you want the first start actions of
