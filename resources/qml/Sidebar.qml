@@ -274,7 +274,7 @@ Rectangle
         }
         Label
         {
-            text: " " + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[0]
+            text: " " + Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[0]) + "°C"
         }
 
 
@@ -284,7 +284,7 @@ Rectangle
         }
         Label
         {
-            text: " " + Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[1]
+            text: " " + Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[1]) + "°C"
         }
 
         Label
@@ -293,7 +293,7 @@ Rectangle
         }
         Label
         {
-            text: " " + Cura.MachineManager.printerOutputDevices[0].bedTemperature
+            text: " " + Math.round(Cura.MachineManager.printerOutputDevices[0].bedTemperature) + "°C"
         }
 
         // Spacers
