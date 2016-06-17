@@ -72,7 +72,7 @@ class GCodeProfileReader(ProfileReader):
         Logger.log("i", "Serialized the following from %s: %s" %(file_name, repr(serialized)))
 
         # Create an empty profile with the name of the G-code file
-        profile = InstanceContainer(os.path.basename(os.path.splitext(file_name)[0]))
+        profile = InstanceContainer("G-code-imported-profile")
         profile.addMetaDataEntry("type", "quality")
         try:
             profile.deserialize(serialized)
