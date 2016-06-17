@@ -46,6 +46,7 @@ class SliceInfo(Extension):
 
     def _onWriteStarted(self, output_device):
         if not Preferences.getInstance().getValue("info/send_slice_info"):
+            Logger.log("d", "'info/send_slice_info' is turned off.")
             return # Do nothing, user does not want to send data
 
         # Load all machine definitions and put them in machine_settings dict
@@ -68,11 +69,11 @@ class SliceInfo(Extension):
                 break
 
 
-        settings = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         # Get total material used (in mm^3)
         print_information = Application.getInstance().getPrintInformation()
-        material_radius = 0.5 * settings.getProperty("material_diameter", "value")
+        material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
         material_used = math.pi * material_radius * material_radius * print_information.materialAmount #Volume of material used
 
         # Get model information (bounding boxes, hashes and transformation matrix)
@@ -119,6 +120,6 @@ class SliceInfo(Extension):
             f = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
             Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
         except Exception as e:
-            print("Exception occured", e)
+            Logger.logException("e", e)
 
         f.close()
