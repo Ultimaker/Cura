@@ -34,6 +34,21 @@ Rectangle
         tooltip.hide();
     }
 
+    function strPadLeft(string, pad, length) {
+        return (new Array(length + 1).join(pad) + string).slice(-length);
+    }
+
+    function getPrettyTime(time)
+    {
+        var hours = Math.floor(time / 3600)
+        time -= hours * 3600
+        var minutes = Math.floor(time / 60);
+        time -= minutes * 60
+        var seconds = Math.floor(time);
+
+        var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
+        return finalTime;
+    }
     MouseArea
     {
         anchors.fill: parent
@@ -289,9 +304,10 @@ Rectangle
         {
             text: "Printing Time:"
         }
+
         Label
         {
-            text: " "  + Cura.MachineManager.printerOutputDevices[0].timeTotal
+            text: " "  + getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal)
         }
 
         Label
@@ -300,7 +316,7 @@ Rectangle
         }
         Label
         {
-            text: " " + (Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed)
+            text: " " + getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed)
         }
 
         Label
