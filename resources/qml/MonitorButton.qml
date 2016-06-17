@@ -48,7 +48,7 @@ Rectangle
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-        color: "green"
+        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "orange": "green"
         font: UM.Theme.getFont("large")
         text: statusText;
     }
@@ -60,7 +60,7 @@ Rectangle
         anchors.right: progressBar.right
         //anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        color: "green"
+        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "orange": "green"
         font: UM.Theme.getFont("large")
         text: Math.round(progress * 100) + "%" ;
     }
@@ -81,9 +81,8 @@ Rectangle
         {
             width: Math.max(parent.width * base.progress)
             height: parent.height
-            color: "green"
+            color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "orange": "green"
             radius: UM.Theme.getSize("progressbar_radius").width
-            //visible: base.backendState == 2 ? true : false
         }
     }
 
