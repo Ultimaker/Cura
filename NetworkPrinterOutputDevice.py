@@ -129,6 +129,19 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
+
+        # TODO: Implement all checks.
+        # Check if cartridges are loaded at all (Error)
+        #self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] != ""
+
+        # Check if there is material loaded at all (Error)
+        #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] != ""
+
+        # Check if there is enough material (Warning)
+        #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["length_remaining"]
+
+        #TODO: Check if the cartridge is the right ID (give warning otherwise)
+
         self.startPrint()
 
     def isConnected(self):
