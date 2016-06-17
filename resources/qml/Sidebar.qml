@@ -22,6 +22,21 @@ Rectangle
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
 
+
+    property string machineMonitorIcon:
+    {
+        if(!printerConnected)
+        {
+            return "tab_monitor"
+        }
+        if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+        {
+            return "tab_monitor_paused"
+        } else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
+        {
+            return "tab_monitor_connected"
+        }
+    }
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
@@ -84,7 +99,7 @@ Rectangle
             width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
             height: 50
             onClicked: monitoringPrint = true
-            iconSource: UM.Theme.getIcon("tab_monitor");
+            iconSource: UM.Theme.getIcon(machineMonitorIcon)
             style:  UM.Theme.styles.tool_button
             checkable: true
             exclusiveGroup: settingAndMonitorButtonsGroup
