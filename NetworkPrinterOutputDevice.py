@@ -231,6 +231,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
+                    self._updateJobState("")
             elif "snapshot" in reply.url().toString():  # Status update from image:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                     self._camera_image.loadFromData(reply.readAll())
