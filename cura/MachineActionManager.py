@@ -2,6 +2,8 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 from UM.Logger import Logger
 
+from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
+
 
 ##  Raised when trying to add an unknown machine action as a required action
 class UnknownMachineAction(Exception):
@@ -26,6 +28,8 @@ class MachineActionManager:
 
         ##  Dict of all actions that need to be done when first added by machine reference.
         self._first_start_actions = {}
+
+        PluginRegistry.addType("machine_action", self.addMachineAction)
 
     ##  Add a required action to a machine
     #   Raises an exception when the action is not recognised.

@@ -44,6 +44,7 @@ from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import MachineManagerModel
 from . import ContainerSettingsModel
+from . import MachineActionManager
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -99,6 +100,8 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+
+        self._machine_action_manager = MachineActionManager.MachineActionManager()
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
