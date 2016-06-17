@@ -7,6 +7,8 @@ import re #Regular expressions for parsing escape characters in the settings.
 from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Logger import Logger
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 from cura.ProfileReader import ProfileReader
 
@@ -71,7 +73,7 @@ class GCodeProfileReader(ProfileReader):
         serialized = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialized)
         Logger.log("i", "Serialized the following from %s: %s" %(file_name, repr(serialized)))
 
-        # Create an empty profile with the name of the G-code file
+        # Create an empty profile - the id will be changed later
         profile = InstanceContainer("G-code-imported-profile")
         profile.addMetaDataEntry("type", "quality")
         try:
@@ -79,5 +81,10 @@ class GCodeProfileReader(ProfileReader):
         except Exception as e:  # Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
+        
+        #Creating a unique name using the filename of the GCode 
+        new_name = catalog.i18nc("@label", "Custom profile (%s)") %(os.path.splitext(os.path.basename(file_name))[0])
+        profile.setName(new_name)
+        profile._id = new_name
         
         return profile
