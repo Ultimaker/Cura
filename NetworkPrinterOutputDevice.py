@@ -256,7 +256,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 204:
                 pass  # Request was sucesfull!
             else:
-                Logger.log("d","Something went wrong when trying to update data of API. %s", reply.readAll())
+                Logger.log("d","Something went wrong when trying to update data of API. %s statuscode: %s", reply.readAll(), reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 
