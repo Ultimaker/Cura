@@ -49,26 +49,6 @@ class SliceInfo(Extension):
             Logger.log("d", "'info/send_slice_info' is turned off.")
             return # Do nothing, user does not want to send data
 
-        # Load all machine definitions and put them in machine_settings dict
-        #setting_file_name = Application.getInstance().getActiveMachineInstance().getMachineSettings()._json_file
-        machine_settings = {}
-        #with open(setting_file_name, "rt", -1, "utf-8") as f:
-        #    data = json.load(f, object_pairs_hook = collections.OrderedDict)
-        #machine_settings[os.path.basename(setting_file_name)] = copy.deepcopy(data)
-        active_machine_definition= Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition()
-        data = active_machine_definition._json_data
-        # Loop through inherited json files
-        setting_file_name = active_machine_definition._path
-        while True:
-            if "inherits" in data:
-                inherited_setting_file_name = os.path.dirname(setting_file_name) + "/" + data["inherits"]
-                with open(inherited_setting_file_name, "rt", -1, "utf-8") as f:
-                    data = json.load(f, object_pairs_hook = collections.OrderedDict)
-                machine_settings[os.path.basename(inherited_setting_file_name)] = copy.deepcopy(data)
-            else:
-                break
-
-
         global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         # Get total material used (in mm^3)
@@ -102,7 +82,7 @@ class SliceInfo(Extension):
             "processor": platform.processor(),
             "machine": platform.machine(),
             "platform": platform.platform(),
-            "machine_settings": json.dumps(machine_settings),
+            "global_settings": global_container_stack.serialize(),
             "version": Application.getInstance().getVersion(),
             "modelhash": "None",
             "printtime": str(print_information.currentPrintTime),
