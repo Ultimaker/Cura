@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.PluginObject import PluginObject
 
 
@@ -11,11 +11,19 @@ class MachineAction(QObject, PluginObject):
         self._key = key
         self._label = label
 
+    labelChanged = pyqtSignal()
+
     def getKey(self):
         return self._key
 
-    def getLabel(self):
+    @pyqtProperty(str, notify = labelChanged)
+    def label(self):
         return self._label
+
+    def setLabel(self, label):
+        if self._label != label:
+            self._label = label
+            self.labelChanged.emit()
 
     @pyqtSlot()
     def execute(self):

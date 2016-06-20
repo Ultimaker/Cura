@@ -61,7 +61,7 @@ class MachineActionManager(QObject):
             else:
                 self._required_actions[machine_id] = {self._machine_actions[action_key]}
         else:
-            raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine_id.getKey()))
+            raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine_id))
 
     ##  Add a supported action to a machine.
     def addSupportedAction(self, machine_id, action_key):
@@ -71,7 +71,7 @@ class MachineActionManager(QObject):
             else:
                 self._supported_actions[machine_id] = {self._machine_actions[action_key]}
         else:
-            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id.getKey())
+            Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id)
 
     ##  Add an action to the first start list of a machine.
     def addFirstStartAction(self, machine_id, action_key, index = None):
@@ -84,7 +84,7 @@ class MachineActionManager(QObject):
             else:
                 self._first_start_actions[machine_id] = [self._machine_actions[action_key]]
         else:
-            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id.getKey())
+            Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id)
 
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
@@ -100,7 +100,7 @@ class MachineActionManager(QObject):
     @pyqtSlot(str, result = "QVariantList")
     def getSupportedActions(self, machine_id):
         if machine_id in self._supported_actions:
-            return self._supported_actions[machine_id]
+            return list(self._supported_actions[machine_id])
         else:
             return set()
 

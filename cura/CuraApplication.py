@@ -387,9 +387,9 @@ class CuraApplication(QtApplication):
             self.exec_()
 
     ##  Get the machine action manager
-    #   We ignore any **kwargs given to this, as we also register the machine manager as qml singleton.
+    #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
     #   It wants to give this function an engine and script engine, but we don't care about that.
-    def getMachineActionManager(self, **kwargs):
+    def getMachineActionManager(self, *args):
         return self._machine_action_manager
 
     ##   Handle Qt events

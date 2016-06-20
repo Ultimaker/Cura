@@ -41,6 +41,19 @@ UM.ManagementPage
         anchors.fill: parent;
         spacing: UM.Theme.getSize("default_margin").height;
 
+        Row
+        {
+            Repeater
+            {
+                id: machineActionRepeater
+                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.activeDefinitionId)
+                Button
+                {
+                    text: machineActionRepeater.model[index].label;
+                }
+            }
+        }
+
         Label
         {
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
