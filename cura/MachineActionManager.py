@@ -3,6 +3,9 @@
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as plugin type
 
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.DefinitionContainer import DefinitionContainer
+
 from PyQt5.QtCore import QObject, pyqtSlot
 
 ##  Raised when trying to add an unknown machine action as a required action
@@ -26,6 +29,28 @@ class MachineActionManager(QObject):
 
         # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
+
+        # Ensure that all containers that were registered before creation of this registry are also handled.
+        # This should not have any effect, but it makes it safer if we ever refactor the order of things.
+        for container in ContainerRegistry.getInstance().findDefinitionContainers():
+            self._onContainerAdded(container)
+
+        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+
+    def _onContainerAdded(self, container):
+        ## Ensure that the actions are added to this manager
+        if isinstance(container, DefinitionContainer):
+            supported_actions = container.getMetaDataEntry("supported_actions", [])
+            for action in supported_actions:
+                self.addSupportedAction(container.getId(), action)
+
+            required_actions = container.getMetaDataEntry("required_actions", [])
+            for action in required_actions:
+                self.addRequiredAction(container.getId(), action)
+
+            first_start_actions = container.getMetaDataEntry("first_start_actions", [])
+            for action in first_start_actions:
+                self.addFirstStartAction(container.getId(), action)
 
     ##  Add a required action to a machine
     #   Raises an exception when the action is not recognised.
