@@ -107,7 +107,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             self.appendItem(item)
 
         for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
+            extruder_name = extruder.getName()
             material = extruder.findContainer({ "type": "material" })
+            if material:
+                extruder_name = "%s (%s)" % (material.getName(), extruder_name)
             position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
             try:
                 position = int(position)
@@ -117,7 +120,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             colour = material.getMetaDataEntry("color_code", default = default_colour) if material else default_colour
             item = { #Construct an item with only the relevant information.
                 "id": extruder.getId(),
-                "name": extruder.getName(),
+                "name": extruder_name,
                 "colour": colour,
                 "index": position
             }
