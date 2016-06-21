@@ -17,7 +17,7 @@ class MachineAction(QObject, PluginObject):
         super().__init__()
         self._key = key
         self._label = label
-        self._qml_url = "" 
+        self._qml_url = ""
 
         self._component = None
         self._context = None
@@ -40,6 +40,18 @@ class MachineAction(QObject, PluginObject):
     @pyqtSlot()
     def execute(self):
         self._execute()
+
+    ##  Reset the action to it's default state.
+    #   This should not be re-implemented by child classes, instead re-implement _reset.
+    #   /sa _reset
+    @pyqtSlot()
+    def reset(self):
+        self._reset()
+
+    ##  Protected implementation of reset.
+    #   /sa reset()
+    def _reset(self):
+        pass
 
     def _execute(self):
         raise NotImplementedError("Execute() must be implemented")

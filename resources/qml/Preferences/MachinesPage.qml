@@ -47,12 +47,15 @@ UM.ManagementPage
             {
                 id: machineActionRepeater
                 model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.activeDefinitionId)
+
                 Button
                 {
                     text: machineActionRepeater.model[index].label;
                 }
             }
         }
+
+
 
         Label
         {
