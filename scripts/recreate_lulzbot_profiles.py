@@ -543,7 +543,7 @@ def create_machine_type(machine_type, path, dir):
 						(material == "nGen" and machine_type.startswith("lulzbot_TAZ_6"))):
 						types = types + "|First Run"
 						order = 0
-				                f.write("default = 1\n")
+						f.write("default = 1\n")
 				if is_experimental(material):
 					types = "Experimental"
 				f.write("material_types = %s\n" % types)
