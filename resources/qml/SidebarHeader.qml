@@ -50,7 +50,7 @@ Column
             text: Cura.MachineManager.activeMachineName;
 
             height: UM.Theme.getSize("setting_control").height
-            tooltip: Cura.MachineManager.activeMachineName;
+            tooltip: Cura.MachineManager.activeMachineName
             anchors.verticalCenter: parent.verticalCenter
             style: UM.Theme.styles.sidebar_header_button
 
@@ -117,8 +117,9 @@ Column
             width: ListView.view.width / extrudersModel.rowCount()
 
             text: model.name
-            exclusiveGroup: extruderMenuGroup;
-            checkable: true;
+            tooltip: model.name
+            exclusiveGroup: extruderMenuGroup
+            checkable: true
             checked: base.currentExtruderIndex == index
 
             onClicked:
