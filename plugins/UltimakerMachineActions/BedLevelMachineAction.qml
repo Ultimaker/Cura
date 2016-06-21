@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2016 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -10,12 +10,11 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 
 
-// The action items always need to be wrapped in a component.
 Cura.MachineAction
 {
     Item
     {
-        id: wizardPage
+        id: bedLevelMachineAction
         anchors.fill: parent;
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

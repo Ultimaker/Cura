@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from . import BedLevelMachineAction
+from . import UpgradeFirmwareMachineAction
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -18,4 +19,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "machine_action": BedLevelMachineAction.BedLevelMachineAction() }
+    return { "machine_action": BedLevelMachineAction.BedLevelMachineAction(), "machine_action": UpgradeFirmwareMachineAction.UpgradeFirmwareMachineAction() }
