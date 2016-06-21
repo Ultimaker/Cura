@@ -53,7 +53,7 @@ UM.ManagementPage
                     text: machineActionRepeater.model[index].label;
                     onClicked:
                     {
-                        actionDialog.sourceComponent = machineActionRepeater.model[index].displayItem
+                        actionDialog.content = machineActionRepeater.model[index].displayItem
                         actionDialog.show()
                     }
                 }
@@ -63,13 +63,11 @@ UM.ManagementPage
         UM.Dialog
         {
             id: actionDialog
-
-            // We need to use a property because a window has it's own context.
-            property var sourceComponent
-
-            Loader
+            property var content
+            onContentChanged:
             {
-                sourceComponent: actionDialog.sourceComponent
+                contents = content;
+                content.onCompleted.connect(hide)
             }
         }
 

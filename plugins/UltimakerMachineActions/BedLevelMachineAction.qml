@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 
 
 // The action items always need to be wrapped in a component.
-Component
+Cura.MachineAction
 {
     Item
     {
@@ -77,6 +77,7 @@ Component
                 text: catalog.i18nc("@action:button","Skip bed leveling");
                 onClicked:
                 {
+                    manager.setFinished()
                 }
             }
         }

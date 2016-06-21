@@ -22,8 +22,10 @@ class MachineAction(QObject, PluginObject):
         self._component = None
         self._context = None
         self._view = None
+        self._finished = False
 
     labelChanged = pyqtSignal()
+    onFinished = pyqtSignal()
 
     def getKey(self):
         return self._key
@@ -46,6 +48,7 @@ class MachineAction(QObject, PluginObject):
     #   /sa _reset
     @pyqtSlot()
     def reset(self):
+        self._finished = False
         self._reset()
 
     ##  Protected implementation of reset.
@@ -53,8 +56,17 @@ class MachineAction(QObject, PluginObject):
     def _reset(self):
         pass
 
+    @pyqtSlot()
+    def setFinished(self):
+        self._finished = True
+        self.onFinished.emit()
+
     def _execute(self):
         raise NotImplementedError("Execute() must be implemented")
+
+    @pyqtProperty(bool, notify = onFinished)
+    def finished(self):
+        return self._finished
 
     def _createViewFromQML(self):
         path = QUrl.fromLocalFile(
