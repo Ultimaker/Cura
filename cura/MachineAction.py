@@ -59,6 +59,7 @@ class MachineAction(QObject, PluginObject):
     @pyqtSlot()
     def setFinished(self):
         self._finished = True
+        self._reset()
         self.onFinished.emit()
 
     def _execute(self):
