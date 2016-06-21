@@ -50,4 +50,4 @@ class BedLevelMachineAction(MachineAction):
                 output_device.moveHead(0, 0, -3)
                 self._bed_level_position += 1
             elif self._bed_level_position >= 3:
-                pass
+                self.setFinished()
