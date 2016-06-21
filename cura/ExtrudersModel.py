@@ -85,6 +85,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         if container.getMetaDataEntry("type") == "material":
             self._updateExtruders()
 
+    modelChanged = pyqtSignal()
+
     ##  Update the list of extruders.
     #
     #   This should be called whenever the list of extruders changes.
@@ -127,3 +129,4 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             self.appendItem(item)
 
         self.sort(lambda item: item["index"])
+        self.modelChanged.emit()
