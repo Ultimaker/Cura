@@ -481,7 +481,7 @@
                     "label": "Compensate Wall Overlaps",
                     "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "visible": false
                 },
                 "xy_offset": {
