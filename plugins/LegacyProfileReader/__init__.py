@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Provides support for importing profiles from legacy Cura versions."),
-            "api": 2
+            "api": 3
         },
         "profile_reader": [
             {

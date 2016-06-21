@@ -7,19 +7,16 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Rectangle
 {
     id: base;
 
-    property Action addMachineAction;
-    property Action configureMachinesAction;
-    property Action addProfileAction;
-    property Action updateProfileAction;
-    property Action resetProfileAction;
-    property Action manageProfilesAction;
-    property Action configureSettingsAction;
     property int currentModeIndex;
+
+    // Is there an output device for this printer?
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
 
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -27,7 +24,7 @@ Rectangle
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y / 2);
+        position = item.mapToItem(base, position.x, position.y);
         tooltip.show(position);
     }
 
@@ -52,8 +49,11 @@ Rectangle
         width: parent.width
         height: totalHeightHeader
 
-        addMachineAction: base.addMachineAction;
-        configureMachinesAction: base.configureMachinesAction;
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
     }
 
     Rectangle {
@@ -63,21 +63,6 @@ Rectangle
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-    }
-
-    ProfileSetup {
-        id: profileItem
-        addProfileAction: base.addProfileAction
-        updateProfileAction: base.updateProfileAction
-        resetProfileAction: base.resetProfileAction
-        manageProfilesAction: base.manageProfilesAction
-        anchors.top: settingsModeSelection.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width
-        height: totalHeightProfileSetup
-
-        onShowTooltip: base.showTooltip(item, location, text)
-        onHideTooltip: base.hideTooltip()
     }
 
     currentModeIndex:
@@ -172,7 +157,7 @@ Rectangle
         id: sidebarContents
 
         anchors.bottom: footerSeparator.top
-        anchors.top: profileItem.bottom
+        anchors.top: settingsModeSelection.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right
@@ -247,7 +232,6 @@ Rectangle
         id: sidebarAdvanced;
         visible: false;
 
-        configureSettings: base.configureSettingsAction;
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }

@@ -15,10 +15,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._convex_hull_node = None
         self._init2DConvexHullCache()
 
-        self._profile = None
-        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
-        self._onActiveProfileChanged()
+        self._global_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._onGlobalStackChanged()
 
     ## Force that a new (empty) object is created upon copy.
     def __deepcopy__(self, memo):
@@ -26,25 +25,31 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##  Get the unmodified 2D projected convex hull of the node
     def getConvexHull(self):
+        if self._node is None:
+            return None
+
         hull = self._compute2DConvexHull()
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
-                hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"), numpy.float32)))
+        if self._global_stack and self._node:
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+                hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon"), numpy.float32)))
         return hull
 
     ##  Get the convex hull of the node with the full head size
     def getConvexHullHeadFull(self):
+        if self._node is None:
+            return None
+
         return self._compute2DConvexHeadFull()
 
     ##  Get convex hull of the object + head size
     #   In case of printing all at once this is the same as the convex hull.
     #   For one at the time this is area with intersection of mirrored head
     def getConvexHullHead(self):
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration(
-                    "isGroup"):
+        if self._node is None:
+            return None
+
+        if self._global_stack:
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 return self._compute2DConvexHeadMin()
         return None
 
@@ -52,15 +57,19 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   In case of printing all at once this is the same as the convex hull.
     #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self):
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration(
-                    "isGroup"):
+        if self._node is None:
+            return None
+
+        if self._global_stack:
+            if self._global_stack("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
 
     def recomputeConvexHull(self):
+        if self._node is None:
+            return None
+
         convex_hull = self.getConvexHull()
         if self._convex_hull_node:
             if self._convex_hull_node.getHull() == convex_hull:
@@ -70,23 +79,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
                                                   Application.getInstance().getController().getScene().getRoot())
         self._convex_hull_node = hull_node
 
-    def _onActiveProfileChanged(self):
-        if self._profile:
-            self._profile.settingValueChanged.disconnect(self._onSettingValueChanged)
-
-        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
-
-        if self._profile:
-            self._profile.settingValueChanged.connect(self._onSettingValueChanged)
-
-    def _onActiveMachineInstanceChanged(self):
-        if self._convex_hull_node:
-            self._convex_hull_node.setParent(None)
-            self._convex_hull_node = None
-
-    def _onSettingValueChanged(self, setting):
-        if setting == "print_sequence":
-            self.recomputeConvexHull()
+    def _onSettingValueChanged(self, key, property_name):
+        if key == "print_sequence" and property_name == "value":
+            self._onChanged()
 
     def _init2DConvexHullCache(self):
         # Cache for the group code path in _compute2DConvexHull()
@@ -178,8 +173,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return rounded_hull
 
     def _getHeadAndFans(self):
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        return Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"), numpy.float32))
+        return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon"), numpy.float32))
 
     def _compute2DConvexHeadFull(self):
         return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans())
@@ -195,3 +189,19 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _roundHull(self, convex_hull):
         return convex_hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
+
+    def _onChanged(self, *args):
+        self.recomputeConvexHull()
+
+    def _onGlobalStackChanged(self):
+        if self._global_stack:
+            self._global_stack.propertyChanged.disconnect(self._onSettingValueChanged)
+            self._global_stack.containersChanged.disconnect(self._onChanged)
+
+        self._global_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._global_stack:
+            self._global_stack.propertyChanged.connect(self._onSettingValueChanged)
+            self._global_stack.containersChanged.connect(self._onChanged)
+
+            self._onChanged()

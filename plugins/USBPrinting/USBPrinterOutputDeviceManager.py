@@ -128,8 +128,18 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         return USBPrinterOutputDeviceManager._instance
 
     def _getDefaultFirmwareName(self):
-        machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
-        machine_type = machine_instance.getMachineDefinition().getId()
+        # Check if there is a valid global container stack
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            Logger.log("e", "There is no global container stack. Can not update firmware.")
+            self._firmware_view.close()
+            return ""
+        
+        # The bottom of the containerstack is the machine definition
+        machine_id = global_container_stack.getBottom().id
+        
+        machine_has_heated_bed = global_container_stack.getProperty("machine_heated_bed", "value")
+        
         if platform.system() == "Linux":
             baudrate = 115200
         else:
@@ -151,23 +161,22 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
                                    }
         machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
                                    }
-
         ##TODO: Add check for multiple extruders
         hex_file = None
-        if machine_type in machine_without_extras.keys():  # The machine needs to be defined here!
-            if machine_type in machine_with_heated_bed.keys() and machine_instance.getMachineSettingValue("machine_heated_bed"):
-                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
-                hex_file = machine_with_heated_bed[machine_type]  # Return firmware with heated bed enabled
+        if machine_id in machine_without_extras.keys():  # The machine needs to be defined here!
+            if machine_id in machine_with_heated_bed.keys() and machine_has_heated_bed:
+                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_id)
+                hex_file = machine_with_heated_bed[machine_id]  # Return firmware with heated bed enabled
             else:
-                Logger.log("d", "Choosing basic firmware for machine %s.", machine_type)
-                hex_file = machine_without_extras[machine_type]  # Return "basic" firmware
+                Logger.log("d", "Choosing basic firmware for machine %s.", machine_id)
+                hex_file = machine_without_extras[machine_id]  # Return "basic" firmware
         else:
-            Logger.log("e", "There is no firmware for machine %s.", machine_type)
+            Logger.log("e", "There is no firmware for machine %s.", machine_id)
 
         if hex_file:
             return hex_file.format(baudrate=baudrate)
         else:
-            Logger.log("e", "Could not find any firmware for machine %s.", machine_type)
+            Logger.log("e", "Could not find any firmware for machine %s.", machine_id)
             raise FileNotFoundError()
 
     ##  Helper to identify serial ports (and scan for them)
@@ -223,7 +232,7 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
     def getSerialPortList(self, only_list_usb = False):
         base_list = []
         if platform.system() == "Windows":
-            import winreg
+            import winreg #@UnresolvedImport
             try:
                 key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
                 i = 0

@@ -2483,3 +2483,16 @@ msgid ""
 "which in turn results in less upward connections with the next layer. Only "
 "applies to Wire Printing."
 msgstr "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in fewer upward connections with the next layer. Only applies to Wire Printing."
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap label"
+msgid "Initial Layer Z Overlap"
+msgstr "Initial Layer Z Overlap"
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap description"
+msgid ""
+"Make the first and second layer of the object overlap in the Z direction to "
+"compensate for the filament lost in the airgap. All models above the first "
+"model layer will be shifted down by this amount."
+msgstr "Make the first and second layer of the object overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."

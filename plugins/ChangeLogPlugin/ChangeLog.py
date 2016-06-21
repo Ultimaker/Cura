@@ -48,7 +48,8 @@ class ChangeLog(Extension, QObject,):
             result += "<h1>" + str(version) + "</h1><br>"
             result += ""
             for change in logs[version]:
-                result += "<b>" + str(change) + "</b><br>"
+                if str(change) != "":
+                    result += "<b>" + str(change) + "</b><br>"
                 for line in logs[version][change]:
                     result += str(line) + "<br>"
                 result += "<br>"
@@ -60,20 +61,21 @@ class ChangeLog(Extension, QObject,):
         self._change_logs = collections.OrderedDict()
         with open(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.txt"), "r",-1, "utf-8") as f:
             open_version = None
-            open_header = None
+            open_header = "" # Initialise to an empty header in case there is no "*" in the first line of the changelog
             for line in f:
                 line = line.replace("\n","")
                 if "[" in line and "]" in line:
                     line = line.replace("[","")
                     line = line.replace("]","")
                     open_version = Version(line)
-                    self._change_logs[Version(line)] = collections.OrderedDict()
+                    self._change_logs[open_version] = collections.OrderedDict()
                 elif line.startswith("*"):
                     open_header = line.replace("*","")
                     self._change_logs[open_version][open_header] = []
-                else:
-                    if line != "":
-                        self._change_logs[open_version][open_header].append(line)
+                elif line != "":
+                    if open_header not in self._change_logs[open_version]:
+                        self._change_logs[open_version][open_header] = []
+                    self._change_logs[open_version][open_header].append(line)
 
     def _onEngineCreated(self):
         if not self._version:
@@ -105,4 +107,3 @@ class ChangeLog(Extension, QObject,):
         self._changelog_context = QQmlContext(Application.getInstance()._engine.rootContext())
         self._changelog_context.setContextProperty("manager", self)
         self._changelog_window = component.create(self._changelog_context)
-        #print(self._changelog_window)

@@ -6,7 +6,8 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -27,13 +28,13 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100* 35 - UM.Theme.getSize("default_margin").width
+        width: base.width / 100 * 35 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
         Label{
             id: infillLabel
             //: Infill selection label
-            text: catalog.i18nc("@label","Infill:");
+            text: catalog.i18nc("@label", "Infill:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             anchors.top: parent.top
@@ -56,12 +57,7 @@ Item
         Repeater {
             id: infillListView
             property int activeIndex: {
-                if(!UM.ActiveProfile.valid)
-                {
-                    return -1;
-                }
-
-                var density = parseInt(UM.ActiveProfile.settingValues.getValue("infill_sparse_density"));
+                var density = parseInt(infillDensity.properties.value)
                 for(var i = 0; i < infillModel.count; ++i)
                 {
                     if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
@@ -89,7 +85,7 @@ Item
                         {
                             return UM.Theme.getColor("setting_control_selected")
                         }
-                        else if(mousearea.containsMouse)
+                        else if(infillMouseArea.containsMouse)
                         {
                             return UM.Theme.getColor("setting_control_border_highlight")
                         }
@@ -110,17 +106,17 @@ Item
                     }
 
                     MouseArea {
-                        id: mousearea
+                        id: infillMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
                             if (infillListView.activeIndex != index)
                             {
-                                UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
+                                infillDensity.setPropertyValue("value", model.percentage)
                             }
                         }
                         onEntered: {
-                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text);
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, 0), model.text);
                         }
                         onExited: {
                             base.hideTooltip();
@@ -179,165 +175,143 @@ Item
     }
 
     Rectangle {
-        id: helpersCellLeft
+        id: helpersCell
         anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
-        width: parent.width/100*35 - UM.Theme.getSize("default_margin").width
+        anchors.right: parent.right
         height: childrenRect.height
 
         Label{
+            id: adhesionHelperLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            //: Helpers selection label
-            text: catalog.i18nc("@label:listbox","Helpers:");
+            anchors.verticalCenter: brimCheckBox.verticalCenter
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            //: Bed adhesion label
+            text: catalog.i18nc("@label:listbox", "Bed Adhesion:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
-    }
-    Rectangle {
-        id: helpersCellRight
-        anchors.top: helpersCellLeft.top
-        anchors.left: helpersCellLeft.right
-        width: parent.width/100*65 - UM.Theme.getSize("default_margin").width
-        height: childrenRect.height
 
         CheckBox{
             id: brimCheckBox
-            property bool hovered_ex: false
+            property alias _hovered: brimMouseArea.containsMouse
 
             anchors.top: parent.top
-            anchors.left: parent.left
+            anchors.left: adhesionHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check","Generate Brim");
+            text: catalog.i18nc("@option:check", "Print Brim");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("adhesion_type") == "brim" : false;
+            checked: platformAdhesionType.properties.value == "brim"
+
             MouseArea {
+                id: brimMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
                 {
-                    UM.MachineManager.setSettingValue("adhesion_type", !parent.checked?"brim":"skirt")
+                    platformAdhesionType.setPropertyValue("value", !parent.checked ? "brim" : "skirt")
                 }
                 onEntered:
                 {
-                    parent.hovered_ex = true
-                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                    base.showTooltip(brimCheckBox, Qt.point(-brimCheckBox.x, 0),
                         catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
                 onExited:
                 {
-                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
         }
+
+        Label{
+            id: supportHelperLabel
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: supportCheckBox.verticalCenter
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            //: Support label
+            text: catalog.i18nc("@label:listbox", "Support:");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
         CheckBox{
             id: supportCheckBox
-            property bool hovered_ex: false
+            visible: machineExtruderCount.properties.value <= 1
+            property alias _hovered: supportMouseArea.containsMouse
 
             anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
+            anchors.left: supportHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable support checkbox
-            text: catalog.i18nc("@option:check","Generate Support Structure");
+            text: catalog.i18nc("@option:check", "Print Support Structure");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_enable") : false;
+            checked: supportEnabled.properties.value == "True"
             MouseArea {
+                id: supportMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
                 {
-                    UM.MachineManager.setSettingValue("support_enable", !parent.checked)
+                    supportEnabled.setPropertyValue("value", !parent.checked)
                 }
                 onEntered:
                 {
-                    parent.hovered_ex = true
-                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                    base.showTooltip(supportCheckBox, Qt.point(-supportCheckBox.x, 0),
                         catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
                 {
-                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
         }
-    }
 
-    function populateExtruderModel()
-    {
-        extruderModel.clear()
-        var extruder_count = UM.MachineManager.getSettingValue("machine_extruder_count");
-        for(var extruder = 0; extruder < extruder_count ; extruder++) {
-            extruderModel.append({
-                name: catalog.i18nc("@label", "Extruder %1").arg(extruder),
-                text: catalog.i18nc("@label", "Extruder %1").arg(extruder),
-                value: extruder
-            })
-        }
-    }
-
-    Rectangle {
-        id: multiExtrusionCell
-        anchors.top: helpersCellRight.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.left: parent.left
-        width: parent.width
-        height: childrenRect.height
-        // Use both UM.ActiveProfile and UM.MachineManager to force UM.MachineManager.getSettingValue() to be reevaluated
-        visible: UM.ActiveProfile.settingValues.getValue("machine_extruder_count") || (UM.MachineManager.getSettingValue("machine_extruder_count") > 1)
-
-        Label {
-            id: mainExtruderLabel
-            text: catalog.i18nc("@label:listbox","Print object with:")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: mainExtruderCombobox.verticalCenter
-        }
-        ComboBox {
-            id: mainExtruderCombobox
-            model: extruderModel
-            anchors.top: parent.top
-            anchors.left: supportExtruderLabel.right
-            style: UM.Theme.styles.combobox
-            currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("extruder_nr") : 0
-            onActivated: {
-                UM.MachineManager.setSettingValue("extruder_nr", index)
-            }
-        }
-
-        Label {
-            id: supportExtruderLabel
-            visible: supportCheckBox.checked
-            text: catalog.i18nc("@label:listbox","Print support with:")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
-            height: visible ? mainExtruderLabel.height : 0
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-        }
         ComboBox {
             id: supportExtruderCombobox
-            visible: supportCheckBox.checked
+            visible: machineExtruderCount.properties.value > 1
             model: extruderModel
-            height: visible ? mainExtruderCombobox.height : 0
-            anchors.top: mainExtruderCombobox.bottom
+
+            anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: supportExtruderLabel.right
+            anchors.left: supportHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 45
+
             style: UM.Theme.styles.combobox
-            currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_extruder_nr") : 0
+            property alias _hovered: supportExtruderMouseArea.containsMouse
+
+            currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
             onActivated: {
-                UM.MachineManager.setSettingValue("support_extruder_nr", index)
+                if(index==0) {
+                    supportEnabled.setPropertyValue("value", false);
+                } else {
+                    supportEnabled.setPropertyValue("value", true);
+                    supportExtruderNr.setPropertyValue("value", index - 1);
+                }
+            }
+            MouseArea {
+                id: supportExtruderMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                acceptedButtons: Qt.NoButton
+                onEntered:
+                {
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
             }
         }
 
@@ -348,14 +322,27 @@ Item
         Connections
         {
             id: machineChange
-            target: UM.MachineManager
-            onActiveMachineInstanceChanged: populateExtruderModel()
+            target: Cura.MachineManager
+            onGlobalContainerChanged: populateExtruderModel()
+        }
+    }
+
+    function populateExtruderModel()
+    {
+        extruderModel.clear();
+        extruderModel.append({
+            text: catalog.i18nc("@label", "Don't print support")
+        })
+        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
+            extruderModel.append({
+                text: catalog.i18nc("@label", "Print using Extruder %1").arg(extruder + 1)
+            })
         }
     }
 
     Rectangle {
         id: tipsCell
-        anchors.top: multiExtrusionCell.visible? multiExtrusionCell.bottom : helpersCellRight.bottom
+        anchors.top: helpersCell.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
         width: parent.width
@@ -368,11 +355,60 @@ Item
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             wrapMode: Text.WordWrap
             //: Tips label
-            text: catalog.i18nc("@label","Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
+            text: catalog.i18nc("@label", "Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             linkColor: UM.Theme.getColor("text_link")
             onLinkActivated: Qt.openUrlExternally(link)
         }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillDensity
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "infill_sparse_density"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: platformAdhesionType
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "adhesion_type"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: supportEnabled
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_enable"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+    UM.SettingPropertyProvider
+    {
+        id: supportExtruderNr
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_extruder_nr"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 }

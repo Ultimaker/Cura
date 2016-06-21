@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Automatically saves Preferences, Machines and Profiles after changes."),
-            "api": 2
+            "api": 3
         },
     }
 

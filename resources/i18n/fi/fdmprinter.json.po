@@ -2414,3 +2414,16 @@ msgid ""
 "which in turn results in less upward connections with the next layer. Only "
 "applies to Wire Printing."
 msgstr "Suuttimen ja vaakasuoraan laskevien linjojen välinen etäisyys. Suurempi väli aiheuttaa vähemmän jyrkän kulman diagonaalisesti laskeviin linjoihin, mikä puolestaan johtaa harvempiin yläliitoksiin seuraavan kerroksen kanssa. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap label"
+msgid "Initial Layer Z Overlap"
+msgstr "Z Päällekkäisyys Alkukerroksen"
+
+#: fdmprinter.json
+msgctxt "layer_0_z_overlap description"
+msgid ""
+"Make the first and second layer of the object overlap in the Z direction to "
+"compensate for the filament lost in the airgap. All models above the first "
+"model layer will be shifted down by this amount."
+msgstr "Tee ensimmäinen ja toinen kerros esineen päällekkäisyys Z-suunnassa kompensoimiseksi filamentti hävisi ilmaväli. Kaikki mallit yläpuolella ensimmäinen malli kerros on siirtynyt alaspäin tämän määrän."

@@ -7,6 +7,7 @@ docs/html
 *.log
 resources/i18n/en
 resources/i18n/x-test
+resources/firmware
 
 # Editors and IDEs.
 *kdev*
@@ -15,3 +16,11 @@ resources/i18n/x-test
 *~
 *.qm
 .idea
+
+# Eclipse+PyDev
+.project
+.pydevproject
+.settings
+
+# Debian packaging
+debian*

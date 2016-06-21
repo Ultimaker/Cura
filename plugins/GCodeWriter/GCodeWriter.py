@@ -1,13 +1,22 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
+from UM.Settings.InstanceContainer import InstanceContainer #To create a complete setting profile to store in the g-code.
 import re #For escaping characters in the settings.
-import copy
 
-
+##  Writes g-code to a file.
+#
+#   While this poses as a mesh writer, what this really does is take the g-code
+#   in the entire scene and write it to an output device. Since the g-code of a
+#   single mesh isn't separable from the rest what with rafts and travel moves
+#   and all, it doesn't make sense to write just a single mesh.
+#
+#   So this plug-in takes the g-code that is stored in the root of the scene
+#   node tree, adds a bit of extra information about the profiles and writes
+#   that to the output device.
 class GCodeWriter(MeshWriter):
     ##  The file format version of the serialised g-code.
     #
@@ -32,7 +41,7 @@ class GCodeWriter(MeshWriter):
 
     def write(self, stream, node, mode = MeshWriter.OutputMode.TextMode):
         if mode != MeshWriter.OutputMode.TextMode:
-            Logger.log("e", "GCode Writer does not support non-text mode")
+            Logger.log("e", "GCode Writer does not support non-text mode.")
             return False
 
         scene = Application.getInstance().getController().getScene()
@@ -40,26 +49,30 @@ class GCodeWriter(MeshWriter):
         if gcode_list:
             for gcode in gcode_list:
                 stream.write(gcode)
-            # Serialise the profile and put them at the end of the file.
-            profile = self._serialiseProfile(Application.getInstance().getMachineManager().getWorkingProfile())
-            stream.write(profile)
+            # Serialise the current container stack and put it at the end of the file.
+            settings = self._serialiseSettings(Application.getInstance().getGlobalContainerStack())
+            stream.write(settings)
             return True
 
         return False
 
-    ##  Serialises the profile to prepare it for saving in the g-code.
+    ##  Serialises a container stack to prepare it for writing at the end of the
+    #   g-code.
     #
-    #   The profile are serialised, and special characters (including newline)
+    #   The settings are serialised, and special characters (including newline)
     #   are escaped.
     #
-    #   \param profile The profile to serialise.
-    #   \return A serialised string of the profile.
-    def _serialiseProfile(self, profile):
+    #   \param settings A container stack to serialise.
+    #   \return A serialised string of the settings.
+    def _serialiseSettings(self, settings):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        # Serialise a deepcopy to remove the defaults from the profile
-        serialised = copy.deepcopy(profile).serialise()
+        all_settings = InstanceContainer("G-code-imported-profile") #Create a new 'profile' with ALL settings so that the slice can be precisely reproduced.
+        all_settings.setDefinition(settings.getBottom())
+        for key in settings.getAllKeys():
+            all_settings.setProperty(key, "value", settings.getProperty(key, "value")) #Just copy everything over to the setting instance.
+        serialised = all_settings.serialize()
 
         # Escape characters that have a special meaning in g-code comments.
         pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
