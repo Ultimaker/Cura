@@ -63,7 +63,7 @@ Component
                 text: catalog.i18nc("@action:button","Move to Next Position");
                 onClicked:
                 {
-
+                    manager.moveToNextLevelPosition()
                 }
             }
 
@@ -75,7 +75,9 @@ Component
                 anchors.left: parent.width < wizardPage.width ? bedlevelingButton.right : parent.left
                 anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
                 text: catalog.i18nc("@action:button","Skip bed leveling");
-                onClicked: {}
+                onClicked:
+                {
+                }
             }
         }
     }

@@ -51,11 +51,27 @@ UM.ManagementPage
                 Button
                 {
                     text: machineActionRepeater.model[index].label;
+                    onClicked:
+                    {
+                        actionDialog.sourceComponent = machineActionRepeater.model[index].displayItem
+                        actionDialog.show()
+                    }
                 }
             }
         }
 
+        UM.Dialog
+        {
+            id: actionDialog
 
+            // We need to use a property because a window has it's own context.
+            property var sourceComponent
+
+            Loader
+            {
+                sourceComponent: actionDialog.sourceComponent
+            }
+        }
 
         Label
         {
