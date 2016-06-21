@@ -1630,7 +1630,7 @@
                     "description": "The speed at which the raft is printed.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default": 30,
+                    "default": 20,
                     "min_value": "0.1",
                     "max_value_warning": "200",
                     "enabled": "adhesion_type == \"raft\"",
@@ -1660,7 +1660,7 @@
                             "min_value": "0.1",
                             "max_value_warning": "150",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "0.5 * parent_value",
+                            "inherit_function": "parent_value",
                             "global_only": "True",
                             "visible": false
                         },
@@ -1673,7 +1673,7 @@
                             "min_value": "0.1",
                             "max_value_warning": "200",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "0.5 * parent_value",
+                            "inherit_function": "0.75 * parent_value",
                             "global_only": "True",
                             "visible": false
                         }
