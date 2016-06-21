@@ -61,21 +61,20 @@ class SolidView(View):
                         extruder_index = 0
                         extruder_id = node.callDecoration("getActiveExtruder")
                         if extruder_id:
-                            extruder_index = self._extruders_model.find("id", extruder_id)
-                        if extruder_index:
-                            extruder_color = self._extruders_model.getItem(extruder_index)["color"]
+                            extruder_index = max(0, self._extruders_model.find("id", extruder_id))
 
-                            try:
-                                # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
-                                # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
-                                uniforms["diffuse_color"] = [
-                                    int(extruder_color[1:3], 16) / 255,
-                                    int(extruder_color[3:5], 16) / 255,
-                                    int(extruder_color[5:7], 16) / 255,
-                                    1.0
-                                ]
-                            except:
-                                pass
+                        extruder_color = self._extruders_model.getItem(extruder_index)["color"]
+                        try:
+                            # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
+                            # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
+                            uniforms["diffuse_color"] = [
+                                int(extruder_color[1:3], 16) / 255,
+                                int(extruder_color[3:5], 16) / 255,
+                                int(extruder_color[5:7], 16) / 255,
+                                1.0
+                            ]
+                        except:
+                            pass
 
                     if hasattr(node, "_outside_buildarea"):
                         if node._outside_buildarea:
