@@ -1,8 +1,15 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
+from PyQt5.QtQml import QQmlComponent, QQmlContext
+
 from UM.PluginObject import PluginObject
+from UM.PluginRegistry import PluginRegistry
+
+from UM.Application import Application
+
+import os
 
 
 class MachineAction(QObject, PluginObject):
@@ -10,6 +17,11 @@ class MachineAction(QObject, PluginObject):
         super().__init__()
         self._key = key
         self._label = label
+        self._qml_url = "" 
+
+        self._component = None
+        self._context = None
+        self._view = None
 
     labelChanged = pyqtSignal()
 
@@ -31,3 +43,18 @@ class MachineAction(QObject, PluginObject):
 
     def _execute(self):
         raise NotImplementedError("Execute() must be implemented")
+
+    def _createViewFromQML(self):
+        path = QUrl.fromLocalFile(
+            os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url))
+        self._component = QQmlComponent(Application.getInstance()._engine, path)
+        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
+        self._context.setContextProperty("manager", self)
+        self._view = self._component.create(self._context)
+
+    @pyqtProperty(QObject, constant = True)
+    def displayItem(self):
+        if not self._component:
+            self._createViewFromQML()
+
+        return self._view
