@@ -85,7 +85,7 @@ class SliceInfo(Extension):
             "global_settings": global_container_stack.serialize(),
             "version": Application.getInstance().getVersion(),
             "modelhash": "None",
-            "printtime": str(print_information.currentPrintTime),
+            "printtime": print_information.currentPrintTime.getDisplayString(),
             "filament": material_used,
             "language": Preferences.getInstance().getValue("general/language"),
             "materials_profiles ": {}
