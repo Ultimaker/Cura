@@ -38,6 +38,7 @@
     "colors": {
         "sidebar": [255, 255, 255, 255],
         "lining": [127, 127, 127, 255],
+        "viewport_overlay": [24, 41, 77, 255],
 
         "primary": [12, 169, 227, 255],
         "primary_hover": [48, 182, 231, 255],

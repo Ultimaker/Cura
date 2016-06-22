@@ -534,9 +534,12 @@ UM.MainWindow
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
             }
+
             Rectangle
             {
-                color: "black"
+                id: viewportOverlay
+
+                color: UM.Theme.getColor("viewport_overlay")
                 anchors
                 {
                     top: parent.top
@@ -544,8 +547,17 @@ UM.MainWindow
                     left:parent.left
                     right: sidebar.left
                 }
-                visible: base.monitoringPrint
-                opacity: 0.5
+                visible: opacity > 0
+                opacity: base.monitoringPrint ? 0.75 : 0
+
+                Behavior on opacity { NumberAnimation { duration: 100; } }
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+
+                    onWheel: wheel.accepted = true
+                }
             }
 
             Image
@@ -555,7 +567,7 @@ UM.MainWindow
                 height: 600
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
+                anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
                 source: Cura.MachineManager.printerOutputDevices[0].cameraImage
             }
