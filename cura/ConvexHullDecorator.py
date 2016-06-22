@@ -17,6 +17,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         self._global_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().getController().toolOperationStarted.connect(self._onChanged)
+        Application.getInstance().getController().toolOperationStopped.connect(self._onChanged)
+
         self._onGlobalStackChanged()
 
     def setNode(self, node):
@@ -80,8 +83,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return None
 
     def recomputeConvexHull(self):
-        root = Application.getInstance().getController().getScene().getRoot()
-        if self._node is None or not self.__isDescendant(root, self._node):
+        controller = Application.getInstance().getController()
+        root = controller.getScene().getRoot()
+        if self._node is None or controller.isToolOperationActive() or not self.__isDescendant(root, self._node):
             if self._convex_hull_node:
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None
