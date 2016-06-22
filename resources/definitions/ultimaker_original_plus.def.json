@@ -11,11 +11,7 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "UltimakerPlusbackplate.png",
-        "pages": [
-            "UpgradeFirmware",
-            "UltimakerCheckup",
-            "BedLeveling"
-        ]
+        "supported_actions":[ "UMOCheckup", "UpgradeFirmware", "BedLevel"]
     },
 
     "overrides": {
