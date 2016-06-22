@@ -13,7 +13,7 @@ Column
     id: base;
 
     property int totalHeightHeader: childrenRect.height
-    property int currentExtruderIndex;
+    property int currentExtruderIndex: -1;
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -110,6 +110,16 @@ Column
         orientation: ListView.Horizontal
 
         model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: true }
+
+        Connections
+        {
+            target: Cura.MachineManager
+            onGlobalContainerChanged:
+            {
+                base.currentExtruderIndex = -1;
+                ExtruderManager.setActiveExtruderIndex(index);
+            }
+        }
 
         delegate: Button
         {
