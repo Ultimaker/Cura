@@ -39,10 +39,6 @@ class MachineAction(QObject, PluginObject):
             self._label = label
             self.labelChanged.emit()
 
-    @pyqtSlot()
-    def execute(self):
-        self._execute()
-
     ##  Reset the action to it's default state.
     #   This should not be re-implemented by child classes, instead re-implement _reset.
     #   /sa _reset
@@ -61,9 +57,6 @@ class MachineAction(QObject, PluginObject):
         self._finished = True
         self._reset()
         self.onFinished.emit()
-
-    def _execute(self):
-        raise NotImplementedError("Execute() must be implemented")
 
     @pyqtProperty(bool, notify = onFinished)
     def finished(self):
