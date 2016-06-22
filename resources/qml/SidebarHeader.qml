@@ -162,7 +162,7 @@ Column
                         anchors.leftMargin: (parent.height - height) / 2
                         anchors.verticalCenter: parent.verticalCenter
 
-                        color: model.color
+                        color: model.colour
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("toggle_checked")
                     }

@@ -63,7 +63,7 @@ class SolidView(View):
                         if extruder_id:
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
 
-                        extruder_color = self._extruders_model.getItem(extruder_index)["color"]
+                        extruder_color = self._extruders_model.getItem(extruder_index)["colour"]
                         try:
                             # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
                             # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])

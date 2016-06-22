@@ -64,7 +64,7 @@ SettingItem
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: extruders_model.getItem(control.currentIndex).color
+                    color: extruders_model.getItem(control.currentIndex).colour
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
                 }

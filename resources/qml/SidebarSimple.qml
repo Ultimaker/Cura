@@ -339,7 +339,7 @@ Item
         for(var extruderNr = 0; extruderNr < extruders.model.rowCount() ; extruderNr++) {
             extruderModel.append({
                 text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNr).name),
-                color: extruders.model.getItem(extruderNr).color
+                color: extruders.model.getItem(extruderNr).colour
             })
         }
     }
