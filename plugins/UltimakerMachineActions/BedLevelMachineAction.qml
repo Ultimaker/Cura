@@ -12,6 +12,7 @@ import Cura 1.0 as Cura
 
 Cura.MachineAction
 {
+    anchors.fill: parent;
     Item
     {
         id: bedLevelMachineAction
