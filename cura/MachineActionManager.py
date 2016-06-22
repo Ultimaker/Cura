@@ -89,6 +89,7 @@ class MachineActionManager(QObject):
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
     def addMachineAction(self, action):
+        print("ADDING ACTIOONNN", action)
         if action.getKey() not in self._machine_actions:
             self._machine_actions[action.getKey()] = action
         else:

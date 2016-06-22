@@ -771,6 +771,41 @@ UM.MainWindow
     AddMachineDialog
     {
         id: addMachineDialog
+        onMachineAdded:
+        {
+            firstRunWizard.start(id)
+        }
+    }
+
+    // Dialog to handle first run machine actions
+    UM.Wizard
+    {
+        id: firstRunWizard;
+
+        title: catalog.i18nc("@title:window", "Add Printer")
+        property var machine;
+
+        function start(id)
+        {
+            var actions =  Cura.MachineActionManager.getFirstStartActions(id)
+            resetPages() // Remove previous pages
+
+            for (var i = 0; i < actions.length; i++)
+            {
+                firstRunWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
+                //firstRunWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title","blarg"));
+                console.log("ZOMGIE", i, actions[i].displayItem)
+                //firstRunWizard.appendPage(test, catalog.i18nc("@title", "Add Printer"));
+            }
+
+            //Only start if there are actions to perform.
+            if (actions.length > 0)
+            {
+                firstRunWizard.currentPage = 0;
+                console.log(firstRunWizard.currentPage)
+                show()
+            }
+        }
     }
 
     Connections

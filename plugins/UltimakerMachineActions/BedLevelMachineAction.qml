@@ -53,7 +53,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             height: skipBedlevelingButton.height
-            width: bedlevelingButton.width + skipBedlevelingButton.width + UM.Theme.getSize("default_margin").height < wizardPage.width ? bedlevelingButton.width + skipBedlevelingButton.width + UM.Theme.getSize("default_margin").height : wizardPage.width
+            width: bedlevelingButton.width + skipBedlevelingButton.width + UM.Theme.getSize("default_margin").height < bedLevelMachineAction.width ? bedlevelingButton.width + skipBedlevelingButton.width + UM.Theme.getSize("default_margin").height : bedLevelMachineAction.width
             Button
             {
                 id: bedlevelingButton
@@ -69,10 +69,10 @@ Cura.MachineAction
             Button
             {
                 id: skipBedlevelingButton
-                anchors.top: parent.width < wizardPage.width ? parent.top : bedlevelingButton.bottom
-                anchors.topMargin: parent.width < wizardPage.width ? 0 : UM.Theme.getSize("default_margin").height/2
-                anchors.left: parent.width < wizardPage.width ? bedlevelingButton.right : parent.left
-                anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
+                anchors.top: parent.width < bedLevelMachineAction.width ? parent.top : bedlevelingButton.bottom
+                anchors.topMargin: parent.width < bedLevelMachineAction.width ? 0 : UM.Theme.getSize("default_margin").height/2
+                anchors.left: parent.width < bedLevelMachineAction.width ? bedlevelingButton.right : parent.left
+                anchors.leftMargin: parent.width < bedLevelMachineAction.width ? UM.Theme.getSize("default_margin").width : 0
                 text: catalog.i18nc("@action:button","Skip bed leveling");
                 onClicked:
                 {
