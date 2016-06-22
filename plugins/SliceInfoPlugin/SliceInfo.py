@@ -91,7 +91,15 @@ class SliceInfo(Extension):
             "materials_profiles ": {}
         }
         for container in global_container_stack.getContainers():
-            submitted_data["settings_%s" %(container.getId())] = container.serialize() # This can be anything, eg. INI, JSON, etc.
+            container_id = container.getId()
+            container_serialized = container.serialize()
+            if container_serialized:
+                submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
+            else:
+                Logger.log("i", "No data found in %s to be serialized!", container_id)
+
+        for key in submitted_data.keys():
+            print("%s -> %s" %(key, submitted_data[key]))
 
         # Convert data to bytes
         submitted_data = urllib.parse.urlencode(submitted_data)
