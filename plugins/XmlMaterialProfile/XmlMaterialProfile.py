@@ -3,9 +3,12 @@
 
 import math
 import copy
+import io
 import xml.etree.ElementTree as ET
 
 from UM.Logger import Logger
+
+import UM.Dictionary
 
 import UM.Settings
 
@@ -20,7 +23,131 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         super().__init__(container_id, *args, **kwargs)
 
     def serialize(self):
-        raise NotImplementedError("Writing material profiles has not yet been implemented")
+        if self.getDefinition().id != "fdmprinter":
+            # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
+            # we should only serialize the "base" material definition, since that can then take care of
+            # serializing the machine/nozzle specific profiles.
+            raise NotImplementedError("Cannot serialize non-root XML materials")
+
+        builder = ET.TreeBuilder()
+
+        root = builder.start("fdmmaterial", { "xmlns": "http://www.ultimaker.com/material"})
+
+        ## Begin Metadata Block
+        builder.start("metadata")
+
+        metadata = copy.deepcopy(self.getMetaData())
+        properties = metadata.pop("properties", {})
+
+        # Metadata properties that should not be serialized.
+        metadata.pop("status", "")
+        metadata.pop("variant", "")
+        metadata.pop("type", "")
+
+        ## Begin Name Block
+        builder.start("name")
+
+        builder.start("brand")
+        builder.data(metadata.pop("brand", ""))
+        builder.end("brand")
+
+        builder.start("material")
+        builder.data(self.getName())
+        metadata.pop("material", "")
+        builder.end("material")
+
+        builder.start("color")
+        builder.data(metadata.pop("color_name", ""))
+        builder.end("color")
+
+        builder.end("name")
+        ## End Name Block
+
+        for key, value in metadata.items():
+            builder.start(key)
+            builder.data(value)
+            builder.end(key)
+
+        builder.end("metadata")
+        ## End Metadata Block
+
+        ## Begin Properties Block
+        builder.start("properties")
+
+        for key, value in properties.items():
+            builder.start(key)
+            builder.data(value)
+            builder.end(key)
+
+        builder.end("properties")
+        ## End Properties Block
+
+        ## Begin Settings Block
+        builder.start("settings")
+
+        for instance in self.findInstances():
+            builder.start("setting", { "key": UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key) })
+            builder.data(str(instance.value))
+            builder.end("setting")
+
+        # Find all machine sub-profiles corresponding to this material and add them to this profile.
+        machines = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = self.getId() + "_*")
+        for machine in machines:
+            if machine.getMetaDataEntry("variant"):
+                # Since the list includes variant-specific containers but we do not yet want to add those, we just skip them.
+                continue
+
+            builder.start("machine")
+
+            definition = machine.getDefinition()
+            builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product": UM.Dictionary.findKey(self.__product_id_map, definition.id) })
+            builder.end("machine_identifier")
+
+            for instance in machine.findInstances():
+                if self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
+                    # If the settings match that of the base profile, just skip since we inherit the base profile.
+                    continue
+
+                builder.start("setting", { "key": UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key) })
+                builder.data(str(instance.value))
+                builder.end("setting")
+
+            # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
+            hotends = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = machine.getId() + "_*")
+            for hotend in hotends:
+                variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = hotend.getMetaDataEntry("variant"))
+                if variant_containers:
+                    builder.start("hotend", { "id": variant_containers[0].getName() })
+
+                    for instance in hotend.findInstances():
+                        if self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
+                            # If the settings match that of the base profile, just skip since we inherit the base profile.
+                            continue
+
+                        if machine.getInstance(instance.definition.key) and machine.getProperty(instance.definition.key, "value") == instance.value:
+                            # If the settings match that of the machine profile, just skip since we inherit the machine profile.
+                            continue
+
+                        builder.start("setting", { "key": UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key) })
+                        builder.data(str(instance.value))
+                        builder.end("setting")
+
+                    builder.end("hotend")
+
+            builder.end("machine")
+
+        builder.end("settings")
+        ## End Settings Block
+
+        builder.end("fdmmaterial")
+
+        root = builder.close()
+        _indent(root)
+        stream = io.StringIO()
+        tree = ET.ElementTree(root)
+        tree.write(stream, "unicode", True)
+
+        return stream.getvalue()
 
     def deserialize(self, serialized):
         data = ET.fromstring(serialized)
@@ -28,7 +155,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         self.addMetaDataEntry("type", "material")
 
         # TODO: Add material verfication
-        self.addMetaDataEntry("status", "Unknown")
+        self.addMetaDataEntry("status", "unknown")
 
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
@@ -39,7 +166,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 material = entry.find("./um:material", self.__namespaces)
                 color = entry.find("./um:color", self.__namespaces)
 
-                self.setName("{0} {1} ({2})".format(brand.text, material.text, color.text))
+                self.setName(material.text)
 
                 self.addMetaDataEntry("brand", brand.text)
                 self.addMetaDataEntry("material", material.text)
@@ -82,6 +209,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 global_setting_values[self.__material_property_setting_map[key]] = entry.text
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
+
+        self._dirty = False
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
@@ -187,3 +316,19 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     __namespaces = {
         "um": "http://www.ultimaker.com/material"
     }
+
+##  Helper function for pretty-printing XML because ETree is stupid
+def _indent(elem, level = 0):
+    i = "\n" + level * "  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            _indent(elem, level + 1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
