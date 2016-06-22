@@ -19,6 +19,19 @@ class ConvexHullDecorator(SceneNodeDecorator):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
+    def setNode(self, node):
+        previous_node = self._node
+        if previous_node is not None and node is not previous_node:
+            previous_node.transformationChanged.connect(self._onChanged)
+            previous_node.parentChanged.connect(self._onChanged)
+
+        super().setNode(node)
+
+        self._node.transformationChanged.connect(self._onChanged)
+        self._node.parentChanged.connect(self._onChanged)
+
+        self._onChanged()
+
     ## Force that a new (empty) object is created upon copy.
     def __deepcopy__(self, memo):
         return ConvexHullDecorator()
@@ -67,16 +80,19 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return None
 
     def recomputeConvexHull(self):
-        if self._node is None:
-            return None
+        root = Application.getInstance().getController().getScene().getRoot()
+        if self._node is None or not self.__isDescendant(root, self._node):
+            if self._convex_hull_node:
+                self._convex_hull_node.setParent(None)
+                self._convex_hull_node = None
+            return
 
         convex_hull = self.getConvexHull()
         if self._convex_hull_node:
             if self._convex_hull_node.getHull() == convex_hull:
                 return
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull,
-                                                  Application.getInstance().getController().getScene().getRoot())
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull, root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key, property_name):
@@ -205,3 +221,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._global_stack.containersChanged.connect(self._onChanged)
 
             self._onChanged()
+
+    ## Returns true if node is a descendent or the same as the root node.
+    def __isDescendant(self, root, node):
+        if node is None:
+            return False
+        if root is node:
+            return True
+        return self.__isDescendant(root, node.getParent())

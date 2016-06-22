@@ -1,7 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
@@ -31,8 +30,6 @@ class ConvexHullNode(SceneNode):
 
         # The node this mesh is "watching"
         self._node = node
-        self._node.transformationChanged.connect(self._onNodePositionChanged)
-        self._node.parentChanged.connect(self._onNodeParentChanged)
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
 
@@ -83,17 +80,6 @@ class ConvexHullNode(SceneNode):
                     renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
-
-    def _onNodePositionChanged(self, node):
-        if Application.getInstance().getController().isToolOperationActive():
-            if node.callDecoration("getConvexHull"):
-                self.setParent(None)  # Garbage collection should delete this node after a while.
-
-    def _onNodeParentChanged(self, node):
-        if node.getParent():
-            self.setParent(self._original_parent)
-        else:
-            self.setParent(None)
 
     def _onNodeDecoratorsChanged(self, node):
         self._color = Color(35, 35, 35, 0.5)

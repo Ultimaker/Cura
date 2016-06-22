@@ -741,7 +741,6 @@ class CuraApplication(QtApplication):
 
                     # Add all individual nodes to the selection
                     Selection.add(child)
-                    child.callDecoration("setConvexHull", None)
 
                 op.push()
                 # Note: The group removes itself from the scene once all its children have left it,
