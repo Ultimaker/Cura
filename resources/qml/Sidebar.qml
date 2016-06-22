@@ -23,20 +23,6 @@ Rectangle
     UM.I18nCatalog { id: catalog; name:"cura"}
 
 
-    property string machineMonitorIcon:
-    {
-        if(!printerConnected)
-        {
-            return "tab_monitor"
-        }
-        if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
-        {
-            return "tab_monitor_paused"
-        } else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
-        {
-            return "tab_monitor_connected"
-        }
-    }
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
@@ -64,6 +50,7 @@ Rectangle
         var finalTime = strPadLeft(hours, "0", 2) + ':' + strPadLeft(minutes,'0',2)+ ':' + strPadLeft(seconds,'0',2);
         return finalTime;
     }
+
     MouseArea
     {
         anchors.fill: parent
@@ -76,35 +63,55 @@ Rectangle
     }
 
     // Mode selection buttons for changing between Setting & Monitor print mode
-    Row
+    Rectangle
     {
-        id: settingAndMonitorButtons // Really need a better name for this.
-
+        id: sidebarHeaderBar
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.right: parent.right
-        Button
+        height: childrenRect.height
+        color: UM.Theme.getColor("sidebar_header_bar")
+
+        Row
         {
-            width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
-            height: 50
-            onClicked: monitoringPrint = false
-            iconSource: UM.Theme.getIcon("tab_settings");
-            style:  UM.Theme.styles.tool_button
-            checkable: true
-            checked: true
-            exclusiveGroup: settingAndMonitorButtonsGroup
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.right: parent.right
+            Button
+            {
+                width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
+                height: UM.Theme.getSize("sidebar_header").height
+                onClicked: monitoringPrint = false
+                iconSource: UM.Theme.getIcon("tab_settings");
+                checkable: true
+                checked: true
+                exclusiveGroup: sidebarHeaderBarGroup
+
+                style:  UM.Theme.styles.sidebar_header_tab
+            }
+            Button
+            {
+                width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
+                height: UM.Theme.getSize("sidebar_header").height
+                onClicked: monitoringPrint = true
+                iconSource: {
+                    if(!printerConnected)
+                    {
+                        return UM.Theme.getIcon("tab_monitor")
+                    } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+                    {
+                        return UM.Theme.getIcon("tab_monitor_paused")
+                    } else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
+                    {
+                        return UM.Theme.getIcon("tab_monitor_connected")
+                    }
+                }
+                checkable: true
+                exclusiveGroup: sidebarHeaderBarGroup
+
+                style:  UM.Theme.styles.sidebar_header_tab
+            }
+            ExclusiveGroup { id: sidebarHeaderBarGroup }
         }
-        Button
-        {
-            width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
-            height: 50
-            onClicked: monitoringPrint = true
-            iconSource: UM.Theme.getIcon(machineMonitorIcon)
-            style:  UM.Theme.styles.tool_button
-            checkable: true
-            exclusiveGroup: settingAndMonitorButtonsGroup
-        }
-        ExclusiveGroup { id: settingAndMonitorButtonsGroup }
     }
 
     SidebarHeader {
@@ -112,7 +119,7 @@ Rectangle
         width: parent.width
         height: totalHeightHeader
 
-        anchors.top: settingAndMonitorButtons.bottom
+        anchors.top: sidebarHeaderBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
 
         onShowTooltip: base.showTooltip(item, location, text)
@@ -352,7 +359,7 @@ Rectangle
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
         anchors.bottom: saveButton.top
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height 
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
     }
 
     SaveButton

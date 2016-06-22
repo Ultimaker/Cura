@@ -1,44 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg [
-	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
-	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
-	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
-	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
-	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
-	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
-	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
-	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
-]>
-<svg version="1.2" baseProfile="tiny" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 30 30"
-	 xml:space="preserve">
-<switch>
-	<foreignObject requiredExtensions="&ns_ai;" x="0" y="0" width="1" height="1">
-		<i:pgfRef  xlink:href="#adobe_illustrator_pgf">
-		</i:pgfRef>
-	</foreignObject>
-	<g i:extraneous="self">
-		<g id="frame_30x30" display="none">
-			<rect display="inline" width="30" height="30"/>
-		</g>
-		<g id="frame_24x24" display="none">
-			<rect x="3" y="3" display="inline" fill="#FFFFFF" width="24" height="24"/>
-		</g>
-		<g id="icon" fill="#FFFFFF">
-			<g>
-				<rect x="2.994" y="26" width="24" height="1"/>
-				<g>
-					<polygon points="22.994,16.137 16.494,16.137 16.494,15.136 21.994,15.136 21.994,12.894 22.994,12.894 					"/>
-					<rect x="6.994" y="18.758" width="16" height="1"/>
-				</g>
-				<rect x="4.994" y="22.379" width="20" height="1"/>
-				<path d="M22.5,1.571L22.5,1.571C22.5,1.571,22.512,1.563,22.5,1.571L22.5,1.571h-0.018c0,0-6.148,0-6.037,0v3.744
-					c0,0,2.982,4.857,5.793,5.124c0.041,0.004,0.08,0.004,0.119,0.01c0.043,0.002,0.084,0.006,0.125,0.006h0.012H22.5
-					c0.047,0,0.086-0.004,0.129-0.006c0.033-0.006,0.082-0.006,0.117-0.01c2.812-0.267,5.797-5.124,5.797-5.124V1.571
-					C28.652,1.571,22.5,1.571,22.5,1.571"/>
-			</g>
-		</g>
-	</g>
-</switch>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="30"
+   height="30"
+   viewBox="0 0 30 30"
+   version="1.1"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="tab_settings.svg">
+  <metadata
+     id="metadata15">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Rectangle 2365 Copy 3</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1052"
+     inkscape:window-height="981"
+     id="namedview13"
+     showgrid="false"
+     inkscape:zoom="12.421053"
+     inkscape:cx="8.5"
+     inkscape:cy="9.5"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title4">Rectangle 2365 Copy 3</title>
+  <desc
+     id="desc6">Created with Sketch.</desc>
+  <defs
+     id="defs8" />
+  <g
+     id="Page-1"
+     sketch:type="MSPage"
+     style="fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1"
+     transform="matrix(1.3157895,0,0,1.3157895,3.816,2.4999995)">
+    <g
+       id="HIG"
+       sketch:type="MSArtboardGroup"
+       transform="translate(-427,-2432)"
+       style="fill:#ffffff">
+      <path
+         d="m 436,2450 8,0 0,1 -8,0 0,-1 z m 0,-2 7,0 0,1 -7,0 0,-1 z m 0,-2 6,0 0,1 -6,0 0,-1 z m 0,-2 5,0 0,1 -5,0 0,-1 z m 0,-2 4,0 0,1 -4,0 0,-1 z m 0,-2 3,0 0,1 -3,0 0,-1 z m 0,-2 2,0 0,1 -2,0 0,-1 z m 0,-2 4,0 0,1 -4,0 0,-1 z m 0,-2 6,0 0,1 -6,0 0,-1 z m 0,-2 8,0 0,1 -8,0 0,-1 z m -9,0 6,6.5 -6,12.5 8,0 0,-19 -8,0 z"
+         id="Rectangle-2365-Copy-3"
+         sketch:type="MSShapeGroup"
+         style="fill:#ffffff"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
 </svg>
