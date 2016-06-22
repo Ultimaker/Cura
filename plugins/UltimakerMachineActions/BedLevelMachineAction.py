@@ -36,17 +36,17 @@ class BedLevelMachineAction(MachineAction):
                 output_device.moveHead(0, 0, 3)
                 output_device.homeHead()
                 output_device.moveHead(0, 0, 3)
-                output_device.moveHead(Application.getInstance().getGlobalContainerStack().getProperty("machine_width") - 10, 0, 0)
+                output_device.moveHead(Application.getInstance().getGlobalContainerStack().getProperty("machine_width", "value") - 10, 0, 0)
                 output_device.moveHead(0, 0, -3)
                 self._bed_level_position += 1
             elif self._bed_level_position == 1:
                 output_device.moveHead(0, 0, 3)
-                output_device.moveHead(-Application.getInstance().getGlobalContainerStack().getProperty("machine_width") / 2, Application.getInstance().getGlobalContainerStack().getProperty("machine_depth") - 10, 0)
+                output_device.moveHead(-Application.getInstance().getGlobalContainerStack().getProperty("machine_width", "value" ) / 2, Application.getInstance().getGlobalContainerStack().getProperty("machine_depth", "value") - 10, 0)
                 output_device.moveHead(0, 0, -3)
                 self._bed_level_position += 1
             elif self._bed_level_position == 2:
                 output_device.moveHead(0, 0, 3)
-                output_device.moveHead(-Application.getInstance().getGlobalContainerStack().getProperty("machine_width") / 2 + 10, -(Application.getInstance().getGlobalContainerStack().getProperty("machine_depth") + 10), 0)
+                output_device.moveHead(-Application.getInstance().getGlobalContainerStack().getProperty("machine_width", "value") / 2 + 10, -(Application.getInstance().getGlobalContainerStack().getProperty("machine_depth", "value") + 10), 0)
                 output_device.moveHead(0, 0, -3)
                 self._bed_level_position += 1
             elif self._bed_level_position >= 3:
