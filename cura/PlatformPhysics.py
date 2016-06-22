@@ -14,7 +14,6 @@ from UM.Preferences import Preferences
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
-from . import ConvexHullJob
 from . import ZOffsetDecorator
 
 import copy
@@ -27,7 +26,6 @@ class PlatformPhysics:
         self._controller.toolOperationStarted.connect(self._onToolOperationStarted)
         self._controller.toolOperationStopped.connect(self._onToolOperationStopped)
         self._build_volume = volume
-
         self._enabled = True
 
         self._change_timer = QTimer()
@@ -46,16 +44,13 @@ class PlatformPhysics:
 
         root = self._controller.getScene().getRoot()
         for node in BreadthFirstIterator(root):
-            if node is root or type(node) is not SceneNode:
+            if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()
-            if not bbox or not bbox.isValid():
-                self._change_timer.start()
-                continue
 
-            build_volume_bounding_box = copy.deepcopy(self._build_volume.getBoundingBox())
-            build_volume_bounding_box.setBottom(-9001) # Ignore intersections with the bottom
+            # Ignore intersections with the bottom
+            build_volume_bounding_box = self._build_volume.getBoundingBox().set(bottom=-9001)
             node._outside_buildarea = False
 
             # Mark the node as outside the build volume if the bounding box test fails.
@@ -67,9 +62,9 @@ class PlatformPhysics:
             if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 if bbox.bottom > 0:
-                    move_vector.setY(-bbox.bottom + z_offset)
+                    move_vector = move_vector.set(y=-bbox.bottom + z_offset)
                 elif bbox.bottom < z_offset:
-                    move_vector.setY((-bbox.bottom) - z_offset)
+                    move_vector = move_vector.set(y=(-bbox.bottom) - z_offset)
 
             #if not Float.fuzzyCompare(bbox.bottom, 0.0):
             #   pass#move_vector.setY(-bbox.bottom)
@@ -77,14 +72,9 @@ class PlatformPhysics:
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
-            
-            if not node.callDecoration("getConvexHull"):
-                if not node.callDecoration("getConvexHullJob"):
-                    job = ConvexHullJob.ConvexHullJob(node)
-                    job.start()
-                    node.callDecoration("setConvexHullJob", job)
-                    
-            elif Preferences.getInstance().getValue("physics/automatic_push_free"):
+            node.callDecoration("recomputeConvexHull")
+
+            if Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
@@ -125,8 +115,7 @@ class PlatformPhysics:
 
                     if overlap is None:
                         continue
-                    move_vector.setX(overlap[0] * 1.1)
-                    move_vector.setZ(overlap[1] * 1.1)
+                    move_vector = move_vector.set(x=overlap[0] * 1.1, z=overlap[1] * 1.1)
             convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
                 if not convex_hull.isValid():
@@ -139,7 +128,7 @@ class PlatformPhysics:
 
                     node._outside_buildarea = True
 
-            if move_vector != Vector():
+            if not Vector.Null.equals(move_vector, epsilon=1e-5):
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
