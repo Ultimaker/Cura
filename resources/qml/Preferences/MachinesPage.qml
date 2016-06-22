@@ -54,6 +54,7 @@ UM.ManagementPage
                     onClicked:
                     {
                         actionDialog.content = machineActionRepeater.model[index].displayItem
+                        machineActionRepeater.model[index].displayItem.reset()
                         actionDialog.show()
                     }
                 }

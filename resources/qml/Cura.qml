@@ -792,17 +792,14 @@ UM.MainWindow
 
             for (var i = 0; i < actions.length; i++)
             {
+                actions[i].displayItem.reset()
                 firstRunWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
-                //firstRunWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title","blarg"));
-                console.log("ZOMGIE", i, actions[i].displayItem)
-                //firstRunWizard.appendPage(test, catalog.i18nc("@title", "Add Printer"));
             }
 
             //Only start if there are actions to perform.
             if (actions.length > 0)
             {
                 firstRunWizard.currentPage = 0;
-                console.log(firstRunWizard.currentPage)
                 show()
             }
         }

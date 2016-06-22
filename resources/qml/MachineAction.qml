@@ -7,4 +7,9 @@ Item
     property var finished: manager.finished
     onFinishedChanged: if(manager.finished) {completed()}
     signal completed()
+
+    function reset()
+    {
+        manager.reset()
+    }
 }
