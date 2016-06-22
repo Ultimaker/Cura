@@ -20,4 +20,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "machine_action": BedLevelMachineAction.BedLevelMachineAction(), "machine_action": UpgradeFirmwareMachineAction.UpgradeFirmwareMachineAction(), "machine_action": UMOCheckupMachineAction.UMOCheckupMachineAction()}
+    return { "machine_action": [BedLevelMachineAction.BedLevelMachineAction(), UpgradeFirmwareMachineAction.UpgradeFirmwareMachineAction(), UMOCheckupMachineAction.UMOCheckupMachineAction()]}
