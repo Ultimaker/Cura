@@ -336,10 +336,10 @@ Item
             text: catalog.i18nc("@label", "Don't print support"),
             color: ""
         })
-        for(var extruderNr = 0; extruderNr < extruders.model.rowCount() ; extruderNr++) {
+        for(var extruderNumber = 0; extruderNumber < extruders.model.rowCount() ; extruderNumber++) {
             extruderModel.append({
-                text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNr).name),
-                color: extruders.model.getItem(extruderNr).colour
+                text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNumber).name),
+                color: extruders.model.getItem(extruderNumber).colour
             })
         }
     }

@@ -73,7 +73,7 @@ class SolidView(View):
                                 int(extruder_color[5:7], 16) / 255,
                                 1.0
                             ]
-                        except:
+                        except ValueError:
                             pass
 
                     if hasattr(node, "_outside_buildarea"):

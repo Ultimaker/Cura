@@ -82,6 +82,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
 
     def _onExtruderStackContainersChanged(self, container):
+        # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
         if container.getMetaDataEntry("type") == "material":
             self._updateExtruders()
 
