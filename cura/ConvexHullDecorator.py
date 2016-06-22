@@ -47,7 +47,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         hull = self._compute2DConvexHull()
         if self._global_stack and self._node:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
-                hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon"), numpy.float32)))
+                hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
         return hull
 
     ##  Get the convex hull of the node with the full head size
@@ -77,7 +77,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         if self._global_stack:
-            if self._global_stack("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
@@ -193,7 +193,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return rounded_hull
 
     def _getHeadAndFans(self):
-        return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon"), numpy.float32))
+        return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
 
     def _compute2DConvexHeadFull(self):
         return self._compute2DConvexHull().getMinkowskiHull(self._getHeadAndFans())
