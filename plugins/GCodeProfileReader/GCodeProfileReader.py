@@ -74,7 +74,7 @@ class GCodeProfileReader(ProfileReader):
         Logger.log("i", "Serialized the following from %s: %s" %(file_name, repr(serialized)))
 
         # Create an empty profile - the id will be changed later
-        profile = InstanceContainer("G-code-imported-profile")
+        profile = InstanceContainer("")
         profile.addMetaDataEntry("type", "quality")
         try:
             profile.deserialize(serialized)
