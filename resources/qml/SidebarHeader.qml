@@ -155,6 +155,7 @@ Column
                     Rectangle
                     {
                         id: swatch
+                        visible: index > -1
                         height: UM.Theme.getSize("setting_control").height / 2
                         width: height
                         anchors.left: parent.left
@@ -169,8 +170,8 @@ Column
                     Label
                     {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: swatch.right
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2
+                        anchors.left: swatch.visible ? swatch.right : parent.left
+                        anchors.leftMargin: swatch.visible ? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("default_margin").width
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
 
@@ -227,6 +228,7 @@ Column
                 text: Cura.MachineManager.activeVariantName
                 tooltip: Cura.MachineManager.activeVariantName;
                 visible: Cura.MachineManager.hasVariants
+                enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
                 width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
@@ -271,6 +273,7 @@ Column
                 text: Cura.MachineManager.activeMaterialName
                 tooltip: Cura.MachineManager.activeMaterialName
                 visible: Cura.MachineManager.hasMaterials
+                enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
                 width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
