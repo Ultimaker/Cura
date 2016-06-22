@@ -251,7 +251,8 @@ class CuraApplication(QtApplication):
                 Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
                 continue
 
-            file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
+            mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
+            file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
             instance_type = instance.getMetaDataEntry("type")
             path = None
             if instance_type == "material":
@@ -279,7 +280,8 @@ class CuraApplication(QtApplication):
                 Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
                 continue
 
-            file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
+            mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
+            file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
             stack_type = stack.getMetaDataEntry("type", None)
             path = None
             if not stack_type or stack_type == "machine":
