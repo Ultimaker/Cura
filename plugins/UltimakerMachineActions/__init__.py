@@ -3,6 +3,7 @@
 
 from . import BedLevelMachineAction
 from . import UpgradeFirmwareMachineAction
+from . import UMOCheckupMachineAction
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -19,4 +20,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "machine_action": BedLevelMachineAction.BedLevelMachineAction(), "machine_action": UpgradeFirmwareMachineAction.UpgradeFirmwareMachineAction() }
+    return { "machine_action": BedLevelMachineAction.BedLevelMachineAction(), "machine_action": UpgradeFirmwareMachineAction.UpgradeFirmwareMachineAction(), "machine_action": UMOCheckupMachineAction.UMOCheckupMachineAction()}
