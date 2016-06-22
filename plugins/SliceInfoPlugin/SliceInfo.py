@@ -98,9 +98,6 @@ class SliceInfo(Extension):
             else:
                 Logger.log("i", "No data found in %s to be serialized!", container_id)
 
-        for key in submitted_data.keys():
-            print("%s -> %s" %(key, submitted_data[key]))
-
         # Convert data to bytes
         submitted_data = urllib.parse.urlencode(submitted_data)
         binary_data = submitted_data.encode("utf-8")
