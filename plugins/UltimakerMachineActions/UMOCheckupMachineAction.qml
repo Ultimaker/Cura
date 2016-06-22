@@ -8,10 +8,13 @@ import QtQuick.Window 2.1
 
 Cura.MachineAction
 {
+    anchors.fill: parent;
     Item
     {
         id: checkupMachineAction
         anchors.fill: parent;
+        property int leftRow: checkupMachineAction.width * 0.40
+        property int rightRow: checkupMachineAction.width * 0.60
         UM.I18nCatalog { id: catalog; name:"cura"}
         Label
         {
@@ -72,6 +75,8 @@ Cura.MachineAction
             anchors.top: startStopButtons.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             visible: false
+            width: parent.width
+            height: 250
             //////////////////////////////////////////////////////////
             Label
             {
@@ -217,7 +222,7 @@ Cura.MachineAction
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempLabel.right
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@info:status","Not checked")
+                text: manager.bedTestCompleted ? catalog.i18nc("@info:status","Not checked"): catalog.i18nc("@info:status","Checked")
             }
             Item
             {
@@ -236,7 +241,6 @@ Cura.MachineAction
                     onClicked:
                     {
                         manager.heatupBed()
-                        bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
                     }
                 }
             }
