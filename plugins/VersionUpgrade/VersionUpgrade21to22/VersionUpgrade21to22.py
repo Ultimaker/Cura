@@ -1,10 +1,24 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import configparser #To get version numbers from config files.
+
 from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 
 from . import MachineInstance # To upgrade machine instances.
 from . import Profile # To upgrade profiles.
+
+##  Gets the version number from a config file.
+#
+#   In all config files that concern this version upgrade, the version
+#   number is stored in general/version, so get the data from that key.
+#
+#   \param serialised The contents of a config file.
+#   \return \type{int} The version number of that config file.
+def getCfgVersion(serialised):
+    parser = configparser.ConfigParser(interpolation = None)
+    parser.read_string(serialised)
+    return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
 
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
