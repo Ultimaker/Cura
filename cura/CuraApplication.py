@@ -809,3 +809,7 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
+
+    @pyqtSlot("QSize")
+    def setMinimumWindowSize(self, size):
+        self.getMainWindow().setMinimumSize(size)
