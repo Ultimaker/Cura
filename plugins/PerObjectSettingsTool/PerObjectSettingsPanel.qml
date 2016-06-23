@@ -153,6 +153,8 @@ Item {
             {
                 id: addedSettingsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
+                expanded: [ "*" ]
+
                 visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                 {
                     selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
@@ -215,9 +217,8 @@ Item {
 
                     style: ButtonStyle
                     {
-                        background: Rectangle
+                        background: Item
                         {
-                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
                             UM.RecolorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
@@ -340,6 +341,8 @@ Item {
                         "settable_per_mesh": true
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+                    expanded: [ "*" ]
+                    exclude: [ "machine_settings" ]
                 }
                 delegate:Loader
                 {
