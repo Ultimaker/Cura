@@ -24,10 +24,20 @@ Item {
         anchors.top: parent.top;
         anchors.left: parent.left;
 
-        spacing: UM.Theme.getSize("default_margin").height;
+        spacing: UM.Theme.getSize("default_margin").height
 
         Row
         {
+            spacing: UM.Theme.getSize("default_margin").width
+            Label
+            {
+                text: catalog.i18nc("@label", "Print object with")
+                anchors.verticalCenter: extruderSelector.verticalCenter
+
+                color: UM.Theme.getColor("setting_control_text")
+                font: UM.Theme.getFont("default")
+                visible: extruderSelector.visible
+            }
             ComboBox
             {
                 id: extruderSelector
@@ -40,7 +50,7 @@ Item {
                 }
                 visible: extruders_model.rowCount() > 1
                 textRole: "name"
-                width: items.width
+                width: UM.Theme.getSize("setting_control").width
                 height: UM.Theme.getSize("section").height
                 MouseArea
                 {
@@ -143,6 +153,8 @@ Item {
             {
                 id: addedSettingsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
+                expanded: [ "*" ]
+
                 visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                 {
                     selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
@@ -205,9 +217,8 @@ Item {
 
                     style: ButtonStyle
                     {
-                        background: Rectangle
+                        background: Item
                         {
-                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
                             UM.RecolorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
@@ -330,6 +341,8 @@ Item {
                         "settable_per_mesh": true
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+                    expanded: [ "*" ]
+                    exclude: [ "machine_settings" ]
                 }
                 delegate:Loader
                 {

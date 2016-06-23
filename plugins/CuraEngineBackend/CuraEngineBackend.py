@@ -11,6 +11,7 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
+from UM.Platform import Platform
 
 from cura.ExtruderManager import ExtruderManager
 
@@ -42,7 +43,7 @@ class CuraEngineBackend(Backend):
         default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", "CuraEngine")
         if hasattr(sys, "frozen"):
             default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "CuraEngine")
-        if sys.platform == "win32":
+        if Platform.isWindows():
             default_engine_location += ".exe"
         default_engine_location = os.path.abspath(default_engine_location)
         Preferences.getInstance().addPreference("backend/location", default_engine_location)

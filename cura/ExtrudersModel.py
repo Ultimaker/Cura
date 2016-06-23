@@ -46,11 +46,16 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         self._add_global = False
 
+        self._active_extruder_stack = None
+
         #Listen to changes.
         manager = cura.ExtruderManager.ExtruderManager.getInstance()
         manager.extrudersChanged.connect(self._updateExtruders) #When the list of extruders changes in general.
-        UM.Application.globalContainerStackChanged.connect(self._updateExtruders) #When the current machine changes.
+        UM.Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders) #When the current machine changes.
         self._updateExtruders()
+
+        manager.activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        self._onActiveExtruderChanged()
 
     def setAddGlobal(self, add):
         if add != self._add_global:
@@ -62,6 +67,26 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     @pyqtProperty(bool, fset = setAddGlobal, notify = addGlobalChanged)
     def addGlobal(self):
         return self._add_global
+
+    def _onActiveExtruderChanged(self):
+        manager = cura.ExtruderManager.ExtruderManager.getInstance()
+        active_extruder_stack = manager.getActiveExtruderStack()
+        if self._active_extruder_stack != active_extruder_stack:
+            if self._active_extruder_stack:
+                self._active_extruder_stack.containersChanged.disconnect(self._onExtruderStackContainersChanged)
+
+            if active_extruder_stack:
+                # Update the model when the material container is changed
+                active_extruder_stack.containersChanged.connect(self._onExtruderStackContainersChanged)
+            self._active_extruder_stack = active_extruder_stack
+
+
+    def _onExtruderStackContainersChanged(self, container):
+        # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
+        if container.getMetaDataEntry("type") == "material":
+            self._updateExtruders()
+
+    modelChanged = pyqtSignal()
 
     ##  Update the list of extruders.
     #
@@ -85,7 +110,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             self.appendItem(item)
 
         for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
+            extruder_name = extruder.getName()
             material = extruder.findContainer({ "type": "material" })
+            if material:
+                extruder_name = "%s (%s)" % (material.getName(), extruder_name)
             position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
             try:
                 position = int(position)
@@ -95,10 +123,11 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             colour = material.getMetaDataEntry("color_code", default = default_colour) if material else default_colour
             item = { #Construct an item with only the relevant information.
                 "id": extruder.getId(),
-                "name": extruder.getName(),
+                "name": extruder_name,
                 "colour": colour,
                 "index": position
             }
             self.appendItem(item)
 
         self.sort(lambda item: item["index"])
+        self.modelChanged.emit()

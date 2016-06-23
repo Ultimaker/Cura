@@ -4,7 +4,7 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform
+from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -14,6 +14,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
+from UM.Platform import Platform
 from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
@@ -44,12 +45,12 @@ from . import CuraSplashScreen
 from . import MachineManagerModel
 from . import ContainerSettingsModel
 from . import CameraImageProvider
+from . import MachineActionManager
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-import ast #For literal eval of extruder setting types.
 import platform
 import sys
 import os.path
@@ -59,7 +60,7 @@ import urllib
 numpy.seterr(all="ignore")
 
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
-if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
+if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
         import ctypes
@@ -100,6 +101,8 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
+        self._machine_action_manager = MachineActionManager.MachineActionManager()
+
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
@@ -122,7 +125,8 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
-        self._scene_bounding_box = AxisAlignedBox()
+        self._scene_bounding_box = AxisAlignedBox.Null
+
         self._job_name = None
         self._center_after_select = False
         self._camera_animation = None
@@ -344,7 +348,7 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Platform(root)
+        self._platform = Scene_Platform(root)
 
         self._volume = BuildVolume.BuildVolume(root)
 
@@ -365,10 +369,12 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        ExtruderManager.ExtruderManager.getInstance() #Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
+        # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
+        ExtruderManager.ExtruderManager.getInstance()
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
+        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
@@ -384,6 +390,12 @@ class CuraApplication(QtApplication):
             self._started = True
 
             self.exec_()
+
+    ##  Get the machine action manager
+    #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
+    #   It wants to give this function an engine and script engine, but we don't care about that.
+    def getMachineActionManager(self, *args):
+        return self._machine_action_manager
 
     ##   Handle Qt events
     def event(self, event):
@@ -471,12 +483,14 @@ class CuraApplication(QtApplication):
 
             count += 1
             if not scene_bounding_box:
-                scene_bounding_box = copy.deepcopy(node.getBoundingBox())
+                scene_bounding_box = node.getBoundingBox()
             else:
-                scene_bounding_box += node.getBoundingBox()
+                other_bb = node.getBoundingBox()
+                if other_bb is not None:
+                    scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
         if not scene_bounding_box:
-            scene_bounding_box = AxisAlignedBox()
+            scene_bounding_box = AxisAlignedBox.Null
 
         if repr(self._scene_bounding_box) != repr(scene_bounding_box):
             self._scene_bounding_box = scene_bounding_box
@@ -741,7 +755,6 @@ class CuraApplication(QtApplication):
 
                     # Add all individual nodes to the selection
                     Selection.add(child)
-                    child.callDecoration("setConvexHull", None)
 
                 op.push()
                 # Note: The group removes itself from the scene once all its children have left it,
