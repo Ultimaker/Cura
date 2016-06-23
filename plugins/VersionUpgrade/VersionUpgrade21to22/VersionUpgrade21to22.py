@@ -35,6 +35,14 @@ class VersionUpgrade21to22(VersionUpgrade):
             return None
         return machine_instance.export()
 
+    ##  Converts preferences from format version 1 to version 2.
+    #
+    #   \param serialised The serialised preferences file in version 1.
+    #   \return The serialised preferences in version 2, or None if the input
+    #   was not of the correct format.
+    def upgradePreferences(self, serialised):
+        return serialised #TODO
+
     ##  Converts profiles from format version 1 to version 2.
     #
     #   \param serialised The serialised profile in version 1.
