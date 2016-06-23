@@ -124,6 +124,7 @@ material_map = {
 	"PLA_poly": "PLA-polylite",
 	"polyflex": "polyflex",
 	"armadillo": "armadillo",
+	"brassfill": "brassfill",
 }
 
 material_order = {
@@ -206,6 +207,7 @@ material_order = {
 	"PLA_poly":          5005,
 	"polyflex":          5006,
 	"armadillo":         5007,
+	"brassfill":         5008,
 }
 
 material_types = {
@@ -362,6 +364,7 @@ material_names = {
 	"PLA_poly": "PLA Polylite (Polymaker)",
 	"polyflex": "Polyflex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
+	"brassfill": "brassFill (colorFabb)",
 }
 
 material_url = {
@@ -443,6 +446,7 @@ material_url = {
 #	"PLA_poly": "",
 #	"polyflex": "",
 #	"armadillo": "",
+#	"brassfill": "",
 }
 
 bed_prep_materials = {
