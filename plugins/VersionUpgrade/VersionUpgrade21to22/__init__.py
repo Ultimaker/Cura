@@ -15,7 +15,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Upgrades configurations from Cura 2.1 to Cura 2.2."),
-            "api": 2
+            "api": 3
         },
         "version_upgrade": {
             # From                     To                      Upgrade function
