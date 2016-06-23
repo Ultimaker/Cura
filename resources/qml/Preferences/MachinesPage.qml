@@ -36,21 +36,68 @@ UM.ManagementPage
     renameEnabled: base.currentItem != null
     activateEnabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachineId
 
-    Flow
+    Item
     {
-        anchors.fill: parent;
-        spacing: UM.Theme.getSize("default_margin").height;
+        visible: base.currentItem != null
+        anchors.fill: parent
 
         Label
         {
+            id: machineName
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
             font: UM.Theme.getFont("large")
             width: parent.width
             elide: Text.ElideRight
         }
 
-        Label { text: catalog.i18nc("@label", "Type"); width: parent.width * 0.2; }
-        Label { text: base.currentItem && base.currentItem.typeName ? base.currentItem.typeName : ""; width: parent.width * 0.7; }
+        Row
+        {
+            id: machineActions
+            anchors.left: parent.left
+            anchors.top: machineName.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+            Repeater
+            {
+                id: machineActionRepeater
+                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.activeDefinitionId)
+
+                Button
+                {
+                    text: machineActionRepeater.model[index].label;
+                    onClicked:
+                    {
+                        actionDialog.content = machineActionRepeater.model[index].displayItem
+                        machineActionRepeater.model[index].displayItem.reset()
+                        actionDialog.show()
+                    }
+                }
+            }
+        }
+
+        UM.Dialog
+        {
+            id: actionDialog
+            property var content
+            onContentChanged:
+            {
+                contents = content;
+                content.onCompleted.connect(hide)
+            }
+        }
+
+        Row
+        {
+            anchors.top: machineActions.visible ? machineActions.bottom : machineActions.anchors.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            spacing: UM.Theme.getSize("default_margin").height
+
+            Label { text: catalog.i18nc("@label", "Type") }
+            Label { text: base.currentItem ? base.currentItem.metadata.definition_name : "" }
+        }
 
         UM.I18nCatalog { id: catalog; name: "uranium"; }
 

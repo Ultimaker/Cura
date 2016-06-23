@@ -19,11 +19,6 @@ SettingItem
         border.width: UM.Theme.getSize("default_lining").width
         border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
 
-        property variant parentValue: value //From parent loader
-        function notifyReset() {
-            input.text = format(parentValue)
-        }
-
         color: {
             if (!enabled)
             {

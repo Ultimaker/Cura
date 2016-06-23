@@ -16,9 +16,16 @@ class PerObjectSettingsTool(Tool):
 
         self.setExposedProperties("SelectedObjectId", "ContainerID", "SelectedActiveExtruder")
 
-        Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
+        self._advanced_mode = False
+        self._multi_extrusion = False
+
         Selection.selectionChanged.connect(self.propertyChanged)
+
+        Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
         self._onPreferenceChanged("cura/active_mode")
+
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self._onGlobalContainerChanged()
 
     def event(self, event):
         return False
@@ -55,5 +62,14 @@ class PerObjectSettingsTool(Tool):
 
     def _onPreferenceChanged(self, preference):
         if preference == "cura/active_mode":
-            enabled = Preferences.getInstance().getValue(preference)==1
-            Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, enabled)
+            self._advanced_mode = Preferences.getInstance().getValue(preference) == 1
+            self._updateEnabled()
+
+    def _onGlobalContainerChanged(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            self._multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+            self._updateEnabled()
+
+    def _updateEnabled(self):
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._advanced_mode or self._multi_extrusion)

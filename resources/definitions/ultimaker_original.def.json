@@ -14,12 +14,7 @@
         "has_materials": true,
         "preferred_material": "*pla*",
         "preferred_quality": "*normal*",
-        "pages": [
-            "SelectUpgradedParts",
-            "UpgradeFirmware",
-            "UltimakerCheckup",
-            "BedLeveling"
-        ]
+        "supported_actions":["UMOCheckup", "UpgradeFirmware", "BedLevel"]
     },
 
     "overrides": {

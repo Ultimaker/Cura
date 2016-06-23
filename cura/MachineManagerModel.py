@@ -376,11 +376,16 @@ class MachineManagerModel(QObject):
             return
 
         old_material = self._active_container_stack.findContainer({"type":"material"})
+        old_quality = self._active_container_stack.findContainer({"type": "quality"})
         if old_material:
             material_index = self._active_container_stack.getContainerIndex(old_material)
             self._active_container_stack.replaceContainer(material_index, containers[0])
 
-            self.setActiveQuality(self._updateQualityContainer(self._active_container_stack.getBottom(), containers[0]).id)
+            preferred_quality_name = None
+            if old_quality:
+                preferred_quality_name = old_quality.getName()
+
+            self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), containers[0], preferred_quality_name).id)
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
@@ -389,11 +394,16 @@ class MachineManagerModel(QObject):
             return
 
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
+        old_material = self._active_container_stack.findContainer({"type": "material"})
         if old_variant:
             variant_index = self._active_container_stack.getContainerIndex(old_variant)
             self._active_container_stack.replaceContainer(variant_index, containers[0])
 
-            self.setActiveMaterial(self._updateMaterialContainer(self._active_container_stack.getBottom(), containers[0]).id)
+            preferred_material = None
+            if old_material:
+                preferred_material = old_material.getId()
+
+            self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material).id)
 
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
@@ -503,7 +513,7 @@ class MachineManagerModel(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, variant_container = None):
+    def _updateMaterialContainer(self, definition, variant_container = None, preferred_material = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
@@ -517,7 +527,8 @@ class MachineManagerModel(QObject):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        preferred_material = definition.getMetaDataEntry("preferred_material")
+        if not preferred_material:
+            preferred_material = definition.getMetaDataEntry("preferred_material")
         if preferred_material:
             search_criteria["id"] = preferred_material
 
@@ -527,7 +538,7 @@ class MachineManagerModel(QObject):
 
         return self._empty_material_container
 
-    def _updateQualityContainer(self, definition, material_container = None):
+    def _updateQualityContainer(self, definition, material_container = None, preferred_quality_name = None):
         search_criteria = { "type": "quality" }
 
         if definition.getMetaDataEntry("has_machine_quality"):
@@ -538,9 +549,12 @@ class MachineManagerModel(QObject):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        preferred_quality = definition.getMetaDataEntry("preferred_quality")
-        if preferred_quality:
-            search_criteria["id"] = preferred_quality
+        if preferred_quality_name:
+            search_criteria["name"] = preferred_quality_name
+        else:
+            preferred_quality = definition.getMetaDataEntry("preferred_quality")
+            if preferred_quality:
+                search_criteria["id"] = preferred_quality
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if containers:
