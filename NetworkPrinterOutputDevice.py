@@ -8,8 +8,8 @@ from UM.Message import Message
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtGui import QImage
 
 import json
 
@@ -89,6 +89,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
+    @pyqtSlot(result = str)
     def getKey(self):
         return self._key
 

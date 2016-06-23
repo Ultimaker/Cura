@@ -145,4 +145,26 @@ Cura.MachineAction
             }
         }
     }
+    Button
+    {
+        text: catalog.i18nc("@action:button", "Ok")
+        anchors.right: cancelButton.left
+        anchors.bottom: parent.bottom
+        onClicked:
+        {
+            manager.setKey(base.selectedPrinter.getKey())
+            completed()
+        }
+    }
+    Button
+    {
+        id: cancelButton
+        text: catalog.i18nc("@action:button", "Cancel")
+        anchors.right: discoverUM3Action.right
+        anchors.bottom: parent.bottom
+        onClicked:
+        {
+            completed()
+        }
+    }
 }

@@ -30,3 +30,12 @@ class DiscoverUM3Action(MachineAction):
             return [printers[printer] for printer in printers]
         else:
             return []
+
+    @pyqtSlot(str)
+    def setKey(self, key):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            if "key" in global_container_stack.getMetaData():
+                global_container_stack.setMetaDataEntry("key", key)
+            else:
+                global_container_stack.addMetaDataEntry("key", key)
