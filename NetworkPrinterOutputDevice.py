@@ -260,7 +260,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self._updateJobState(json_data["state"])
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])
-
+                    self.setJobName(json_data["name"])
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
                     self._updateJobState("")
