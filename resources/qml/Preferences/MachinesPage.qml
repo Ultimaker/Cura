@@ -41,6 +41,37 @@ UM.ManagementPage
         anchors.fill: parent;
         spacing: UM.Theme.getSize("default_margin").height;
 
+        Row
+        {
+            Repeater
+            {
+                id: machineActionRepeater
+                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.activeDefinitionId)
+
+                Button
+                {
+                    text: machineActionRepeater.model[index].label;
+                    onClicked:
+                    {
+                        actionDialog.content = machineActionRepeater.model[index].displayItem
+                        machineActionRepeater.model[index].displayItem.reset()
+                        actionDialog.show()
+                    }
+                }
+            }
+        }
+
+        UM.Dialog
+        {
+            id: actionDialog
+            property var content
+            onContentChanged:
+            {
+                contents = content;
+                content.onCompleted.connect(hide)
+            }
+        }
+
         Label
         {
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""

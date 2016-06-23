@@ -44,6 +44,7 @@ from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import MachineManagerModel
 from . import ContainerSettingsModel
+from . import MachineActionManager
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -98,6 +99,8 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+
+        self._machine_action_manager = MachineActionManager.MachineActionManager()
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
@@ -367,6 +370,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
+        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
@@ -382,6 +386,12 @@ class CuraApplication(QtApplication):
             self._started = True
 
             self.exec_()
+
+    ##  Get the machine action manager
+    #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
+    #   It wants to give this function an engine and script engine, but we don't care about that.
+    def getMachineActionManager(self, *args):
+        return self._machine_action_manager
 
     ##   Handle Qt events
     def event(self, event):
