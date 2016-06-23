@@ -773,14 +773,14 @@ UM.MainWindow
         id: addMachineDialog
         onMachineAdded:
         {
-            firstRunWizard.start(id)
+            machineActionsWizard.start(id)
         }
     }
 
     // Dialog to handle first run machine actions
     UM.Wizard
     {
-        id: firstRunWizard;
+        id: machineActionsWizard;
 
         title: catalog.i18nc("@title:window", "Add Printer")
         property var machine;
@@ -793,13 +793,13 @@ UM.MainWindow
             for (var i = 0; i < actions.length; i++)
             {
                 actions[i].displayItem.reset()
-                firstRunWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
+                machineActionsWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
             }
 
             //Only start if there are actions to perform.
             if (actions.length > 0)
             {
-                firstRunWizard.currentPage = 0;
+                machineActionsWizard.currentPage = 0;
                 show()
             }
         }
