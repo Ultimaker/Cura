@@ -92,7 +92,12 @@ class SliceInfo(Extension):
         }
         for container in global_container_stack.getContainers():
             container_id = container.getId()
-            container_serialized = container.serialize()
+            try:
+                container_serialized = container.serialize()
+            except NotImplementedError:
+                Logger.log("w", "Container %s could not be serialized!", container_id)
+                continue
+
             if container_serialized:
                 submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
             else:
