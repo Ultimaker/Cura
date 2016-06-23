@@ -1,10 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import UM.Settings.SettingsError #To indicate that a file is of incorrect format.
-
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+
+import UM.VersionUpgrade
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
@@ -14,7 +14,7 @@ import io #To write config files to strings as if they were files.
 def importFrom(serialised):
     try:
         return Profile(serialised)
-    except (configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError):
+    except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
 
 ##  A representation of a profile used as intermediary form for conversion from
@@ -29,9 +29,11 @@ class Profile:
 
         # Check correctness.
         if not parser.has_section("general"):
-            raise SettingsError.InvalidFormatError("general")
-        if not parser.has_option("general", "version") or int(parser.get("general", "version")) != 1: # Hard-coded profile version here. If this number changes the entire function needs to change.
-            raise SettingsError.InvalidVersionError("Version upgrade intermediary version 1")
+            raise UM.VersionUpgrade.FormatException("No \"general\" section.")
+        if not parser.has_option("general", "version"):
+            raise UM.VersionUpgrade.FormatException("No \"version\" in the \"general\" section.")
+        if int(parser.get("general", "version")) != 1: # Hard-coded profile version here. If this number changes the entire function needs to change.
+            raise UM.VersionUpgrade.InvalidVersionException("The version of this profile is wrong. It must be 1.")
 
         # Parse the general section.
         self._name = parser.get("general", "name")
@@ -71,7 +73,6 @@ class Profile:
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
     def export(self):
-        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None)
 
         config.add_section("general")
@@ -90,6 +91,7 @@ class Profile:
         if self._material_name and self._type != "material":
             config.set("general", "material", self._material_name)
 
+        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         if self._settings:
             VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
             config.add_section("settings")

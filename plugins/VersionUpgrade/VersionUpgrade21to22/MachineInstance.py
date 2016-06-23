@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import UM.Settings.SettingsError #To indicate that a file is of incorrect format.
+import UM.VersionUpgrade #To indicate that a file is of incorrect format.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
@@ -15,7 +15,7 @@ import io #To write config files to strings as if they were files.
 def importFrom(serialised):
     try:
         return MachineInstance(serialised)
-    except (configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError):
+    except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
 
 ##  A representation of a machine instance used as intermediary form for
@@ -30,15 +30,15 @@ class MachineInstance:
 
         # Checking file correctness.
         if not config.has_section("general"):
-            raise SettingsError.InvalidFormatError("general")
+            raise UM.VersionUpgrade.FormatException("No \"general\" section.")
         if not config.has_option("general", "version"):
-            raise SettingsError.InvalidFormatError("general/version")
+            raise UM.VersionUpgrade.FormatException("No \"version\" in \"general\" section.")
         if not config.has_option("general", "name"):
-            raise SettingsError.InvalidFormatError("general/name")
+            raise UM.VersionUpgrade.FormatException("No \"name\" in \"general\" section.")
         if not config.has_option("general", "type"):
-            raise SettingsError.InvalidFormatError("general/type")
+            raise UM.VersionUpgrade.FormatException("No \"type\" in \"general\" section.")
         if int(config.get("general", "version")) != 1: # Explicitly hard-code version 1, since if this number changes the programmer MUST change this entire function.
-            raise SettingsError.InvalidVersionError("Version upgrade intermediary version 1")
+            raise UM.VersionUpgrade.InvalidVersionException("The version of this machine instance is wrong. It must be 1.")
 
         self._type_name = config.get("general", "type")
         self._variant_name = config.get("general", "variant", fallback = None)
@@ -58,7 +58,6 @@ class MachineInstance:
     #   \return A serialised form of this machine instance, serialised in
     #   version 2 of the file format.
     def export(self):
-        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None) # Build a config file in the form of version 2.
 
         config.add_section("general")
@@ -74,6 +73,7 @@ class MachineInstance:
         if self._active_material_name:
             config.set("general", "material", self._active_material_name)
 
+        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._machine_setting_overrides)
         config.add_section("machine_settings")
         for key, value in self._machine_setting_overrides.items():
