@@ -174,9 +174,10 @@ TabView
                 {
                     containerId: Cura.MachineManager.activeDefinitionId
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    expanded: ["*"]
                 }
 
-                delegate: Cura.SettingDelegate { }
+                delegate: Label { text: model.label }
             }
         }
     }
