@@ -22,5 +22,10 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             font.pointSize: 18;
         }
+        Button
+        {
+            text: "Start looking!"
+            onClicked: manager.startDiscovery()
+        }
     }
 }

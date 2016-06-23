@@ -31,6 +31,9 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def stop(self):
         self._zero_conf.close()
 
+    def getPrinters(self):
+        return self._printers
+
     def _onGlobalStackChanged(self):
         active_machine = Application.getInstance().getGlobalContainerStack()
         if not active_machine:
