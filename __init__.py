@@ -12,10 +12,7 @@ def getMetaData():
             "author": "Ultimaker",
             "description": catalog.i18nc("Wifi connection", "Wifi connection"),
             "api": 3
-        },
-        "profile_reader": [
-            {}
-        ]
+        }
     }
 
 def register(app):
