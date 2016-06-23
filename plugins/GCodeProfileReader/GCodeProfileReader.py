@@ -23,7 +23,7 @@ class GCodeProfileReader(ProfileReader):
     #   written with. If the file format is changed in a way that breaks reverse
     #   compatibility, increment this version number!
     version = 1
-    
+
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
     #
@@ -65,7 +65,7 @@ class GCodeProfileReader(ProfileReader):
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
             return None
-        
+
         # Un-escape the serialized profile.
         pattern = re.compile("|".join(GCodeProfileReader.escape_characters.keys()))
 
@@ -81,10 +81,10 @@ class GCodeProfileReader(ProfileReader):
         except Exception as e:  # Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
-        
-        #Creating a unique name using the filename of the GCode 
+
+        #Creating a unique name using the filename of the GCode
         new_name = catalog.i18nc("@label", "Custom profile (%s)") %(os.path.splitext(os.path.basename(file_name))[0])
         profile.setName(new_name)
         profile._id = new_name
-        
+
         return profile
