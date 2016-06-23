@@ -13,7 +13,7 @@ Column
     id: base;
 
     property int totalHeightHeader: childrenRect.height
-    property int currentExtruderIndex;
+    property int currentExtruderIndex: -1;
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -50,7 +50,7 @@ Column
             text: Cura.MachineManager.activeMachineName;
 
             height: UM.Theme.getSize("setting_control").height
-            tooltip: Cura.MachineManager.activeMachineName;
+            tooltip: Cura.MachineManager.activeMachineName
             anchors.verticalCenter: parent.verticalCenter
             style: UM.Theme.styles.sidebar_header_button
 
@@ -111,14 +111,25 @@ Column
 
         model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: true }
 
+        Connections
+        {
+            target: Cura.MachineManager
+            onGlobalContainerChanged:
+            {
+                base.currentExtruderIndex = -1;
+                ExtruderManager.setActiveExtruderIndex(index);
+            }
+        }
+
         delegate: Button
         {
             height: ListView.view.height
             width: ListView.view.width / extrudersModel.rowCount()
 
             text: model.name
-            exclusiveGroup: extruderMenuGroup;
-            checkable: true;
+            tooltip: model.name
+            exclusiveGroup: extruderMenuGroup
+            checkable: true
             checked: base.currentExtruderIndex == index
 
             onClicked:
@@ -144,6 +155,7 @@ Column
                     Rectangle
                     {
                         id: swatch
+                        visible: index > -1
                         height: UM.Theme.getSize("setting_control").height / 2
                         width: height
                         anchors.left: parent.left
@@ -158,8 +170,8 @@ Column
                     Label
                     {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: swatch.right
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2
+                        anchors.left: swatch.visible ? swatch.right : parent.left
+                        anchors.leftMargin: swatch.visible ? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("default_margin").width
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
 
@@ -216,6 +228,7 @@ Column
                 text: Cura.MachineManager.activeVariantName
                 tooltip: Cura.MachineManager.activeVariantName;
                 visible: Cura.MachineManager.hasVariants
+                enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
                 width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
@@ -260,6 +273,7 @@ Column
                 text: Cura.MachineManager.activeMaterialName
                 tooltip: Cura.MachineManager.activeMaterialName
                 visible: Cura.MachineManager.hasMaterials
+                enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
                 width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width

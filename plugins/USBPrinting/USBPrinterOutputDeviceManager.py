@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Signal import Signal, SignalEmitter
+from UM.Signal import Signal, signalemitter
 from . import USBPrinterOutputDevice
 from UM.Application import Application
 from UM.Resources import Resources
@@ -28,7 +28,8 @@ i18n_catalog = i18nCatalog("cura")
 
 
 ##  Manager class that ensures that a usbPrinteroutput device is created for every connected USB printer.
-class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
+@signalemitter
+class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     def __init__(self, parent = None):
         super().__init__(parent = parent)
         self._serial_port_list = []

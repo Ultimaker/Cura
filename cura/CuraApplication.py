@@ -49,7 +49,6 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENU
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-import ast #For literal eval of extruder setting types.
 import platform
 import sys
 import os.path
@@ -122,7 +121,8 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
-        self._scene_bounding_box = AxisAlignedBox()
+        self._scene_bounding_box = AxisAlignedBox.Null
+
         self._job_name = None
         self._center_after_select = False
         self._camera_animation = None
@@ -362,7 +362,8 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        ExtruderManager.ExtruderManager.getInstance() #Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
+        # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
+        ExtruderManager.ExtruderManager.getInstance()
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
@@ -468,12 +469,14 @@ class CuraApplication(QtApplication):
 
             count += 1
             if not scene_bounding_box:
-                scene_bounding_box = copy.deepcopy(node.getBoundingBox())
+                scene_bounding_box = node.getBoundingBox()
             else:
-                scene_bounding_box += node.getBoundingBox()
+                other_bb = node.getBoundingBox()
+                if other_bb is not None:
+                    scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
         if not scene_bounding_box:
-            scene_bounding_box = AxisAlignedBox()
+            scene_bounding_box = AxisAlignedBox.Null
 
         if repr(self._scene_bounding_box) != repr(scene_bounding_box):
             self._scene_bounding_box = scene_bounding_box
@@ -738,7 +741,6 @@ class CuraApplication(QtApplication):
 
                     # Add all individual nodes to the selection
                     Selection.add(child)
-                    child.callDecoration("setConvexHull", None)
 
                 op.push()
                 # Note: The group removes itself from the scene once all its children have left it,

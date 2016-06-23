@@ -24,10 +24,20 @@ Item {
         anchors.top: parent.top;
         anchors.left: parent.left;
 
-        spacing: UM.Theme.getSize("default_margin").height;
+        spacing: UM.Theme.getSize("default_margin").height
 
         Row
         {
+            spacing: UM.Theme.getSize("default_margin").width
+            Label
+            {
+                text: catalog.i18nc("@label", "Print object with")
+                anchors.verticalCenter: extruderSelector.verticalCenter
+
+                color: UM.Theme.getColor("setting_control_text")
+                font: UM.Theme.getFont("default")
+                visible: extruderSelector.visible
+            }
             ComboBox
             {
                 id: extruderSelector
@@ -40,7 +50,7 @@ Item {
                 }
                 visible: extruders_model.rowCount() > 1
                 textRole: "name"
-                width: items.width
+                width: UM.Theme.getSize("setting_control").width
                 height: UM.Theme.getSize("section").height
                 MouseArea
                 {
