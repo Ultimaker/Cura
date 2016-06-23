@@ -286,7 +286,6 @@ class MachineManagerModel(QObject):
         self.setActiveQuality(new_container_id)
         self.updateQualityContainerFromUserContainer()
 
-
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
         if not self._active_container_stack:
@@ -356,7 +355,6 @@ class MachineManagerModel(QObject):
             if containers:
                 self.setActiveQuality(containers[0].getId())
                 self.activeQualityChanged.emit()
-
 
     @pyqtSlot()
     def updateQualityContainerFromUserContainer(self):
@@ -495,6 +493,12 @@ class MachineManagerModel(QObject):
             return bool(self._global_container_stack.getMetaDataEntry("has_machine_quality", False))
 
         return False
+
+    @pyqtSlot(str, result = str)
+    def getDefinitionByMachineId(self, machine_id):
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=machine_id)
+        if containers:
+            return containers[0].getBottom().getId()
 
     def _updateVariantContainer(self, definition):
         if not definition.getMetaDataEntry("has_variants"):

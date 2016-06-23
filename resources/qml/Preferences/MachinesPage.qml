@@ -46,7 +46,7 @@ UM.ManagementPage
             Repeater
             {
                 id: machineActionRepeater
-                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.activeDefinitionId)
+                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id))
 
                 Button
                 {
