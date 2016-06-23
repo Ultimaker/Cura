@@ -18,6 +18,7 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Add Printer")
     property string activeManufacturer: "Ultimaker";
 
+    signal machineAdded(string id)
     function getMachineName()
     {
         var name = machineList.model.getItem(machineList.currentIndex).name
@@ -162,6 +163,7 @@ UM.Dialog
             base.visible = false
             var item = machineList.model.getItem(machineList.currentIndex);
             Cura.MachineManager.addMachine(machineName.text, item.id)
+            base.machineAdded(item.id) // Emit signal that the user added a machine.
         }
     }
 
