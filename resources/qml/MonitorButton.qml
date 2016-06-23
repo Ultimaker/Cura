@@ -48,7 +48,7 @@ Rectangle
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "orange": "green"
+        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready")
         font: UM.Theme.getFont("large")
         text: statusText;
     }
@@ -60,7 +60,7 @@ Rectangle
         anchors.right: progressBar.right
         //anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "orange": "green"
+        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready")
         font: UM.Theme.getFont("large")
         text: Math.round(progress * 100) + "%" ;
     }
@@ -81,7 +81,7 @@ Rectangle
         {
             width: Math.max(parent.width * base.progress)
             height: parent.height
-            color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "orange": "green"
+            color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready")
             radius: UM.Theme.getSize("progressbar_radius").width
         }
     }
@@ -174,15 +174,5 @@ Rectangle
             }
         label: Item { }
         }
-     }
-
-    Rectangle
-    {
-        id: saveRow
-        width: base.width
-        height: saveToButton.height
-        anchors.top: progressBar.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.left: parent.left
     }
 }

@@ -158,7 +158,13 @@
         "message_text": [32, 166, 219, 255],
         "message_dismiss": [127, 127, 127, 255],
 
-        "tool_panel_background": [255, 255, 255, 255]
+        "tool_panel_background": [255, 255, 255, 255],
+
+        "status_offline": [0, 0, 0, 255],
+        "status_ready": [0, 205, 0, 255],
+        "status_busy": [12, 169, 227, 255],
+        "status_paused": [255, 140, 0, 255],
+        "status_stopped": [236, 82, 80, 255]
     },
 
     "sizes": {

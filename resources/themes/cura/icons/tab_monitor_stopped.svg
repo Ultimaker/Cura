@@ -14,7 +14,7 @@
    version="1.1"
    id="svg2"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="tab_monitor_paused.svg">
+   sodipodi:docname="tab_monitor_stopped.svg">
   <metadata
      id="metadata15">
     <rdf:RDF>
@@ -81,23 +81,14 @@
     </g>
   </g>
   <circle
-     style="fill:#ff8c00;fill-opacity:1"
+     style="fill:#ec5250;fill-opacity:1"
      id="path3337"
      cx="22.5"
      cy="7.5"
      r="7.5" />
-  <rect
+  <path
      style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-     id="rect4713"
-     width="2"
-     height="7"
-     x="19.5"
-     y="4" />
-  <rect
-     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+     d="M 20.02539,3.6113281 18.611328,5.0253907 21.085937,7.5 18.611328,9.9746094 20.02539,11.388672 22.5,8.9140625 24.974609,11.388672 26.388672,9.9746094 23.914062,7.5 26.388672,5.0253907 24.974609,3.6113281 22.5,6.0859375 20.02539,3.6113281 Z"
      id="rect4713-3"
-     width="2"
-     height="7"
-     x="23.5"
-     y="4" />
+     inkscape:connector-curvature="0" />
 </svg>
