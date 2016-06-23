@@ -16,13 +16,23 @@ def getMetaData():
             "api": 2
         },
         "version_upgrade": {
+            # From                   To                        Upgrade function
+            ("profile", 1):          ("instance_container", 2, VersionUpgrade21to22.upgradeProfile),
+            ("machine_instance", 1): ("container_stack", 2,    VersionUpgrade21to22.upgradeMachineInstance),
+            ("preferences", 1):      ("preferences", 2,        VersionUpgrade21to22.upgradePreferences)
+        },
+        "sources": {
             "profile": {
-                "from": 1,
-                "to": 2
+                "get_version": VersionUpgrade21to22.getCfgVersion,
+                "location": {"./profiles"}
             },
             "machine_instance": {
-                "from": 1,
-                "to": 2
+                "get_version": VersionUpgrade21to22.getCfgVersion,
+                "location": {"./machine_instances"}
+            },
+            "preferences": {
+                "get_version": VersionUpgrade21to22.getCfgVersion,
+                "location": {"."}
             }
         }
     }
