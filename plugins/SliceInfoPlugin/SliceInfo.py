@@ -26,8 +26,8 @@ catalog = i18nCatalog("cura")
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
-    info_url = "https://stats.youmagine.com/curastats/slice" 
-    
+    info_url = "https://stats.youmagine.com/curastats/slice"
+
     def __init__(self):
         super().__init__()
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
@@ -82,7 +82,7 @@ class SliceInfo(Extension):
             "processor": platform.processor(),
             "machine": platform.machine(),
             "platform": platform.platform(),
-            "global_settings": global_container_stack.serialize(),
+            "settings": global_container_stack.serialize(), # global_container with references on used containers
             "version": Application.getInstance().getVersion(),
             "modelhash": "None",
             "printtime": print_information.currentPrintTime.getDisplayString(),
@@ -90,6 +90,13 @@ class SliceInfo(Extension):
             "language": Preferences.getInstance().getValue("general/language"),
             "materials_profiles ": {}
         }
+        for container in global_container_stack.getContainers():
+            container_id = container.getId()
+            container_serialized = container.serialize()
+            if container_serialized:
+                submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
+            else:
+                Logger.log("i", "No data found in %s to be serialized!", container_id)
 
         # Convert data to bytes
         submitted_data = urllib.parse.urlencode(submitted_data)
