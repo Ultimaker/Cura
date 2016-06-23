@@ -22,7 +22,7 @@ class GCodeProfileReader(ProfileReader):
     #   It can only read settings with the same version as the version it was
     #   written with. If the file format is changed in a way that breaks reverse
     #   compatibility, increment this version number!
-    version = 1
+    version = 2
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
