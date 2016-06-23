@@ -236,7 +236,7 @@ Item {
         {
             id: controlContainer;
 
-            enabled: provider.isValueUsed
+            enabled: propertyProvider.isValueUsed
 
             anchors.right: parent.right;
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
