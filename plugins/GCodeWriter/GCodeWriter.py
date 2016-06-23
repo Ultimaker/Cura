@@ -23,7 +23,7 @@ class GCodeWriter(MeshWriter):
     #   It can only read settings with the same version as the version it was
     #   written with. If the file format is changed in a way that breaks reverse
     #   compatibility, increment this version number!
-    version = 1
+    version = 2
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -68,23 +68,21 @@ class GCodeWriter(MeshWriter):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        all_settings = InstanceContainer("G-code-imported-profile") #Create a new 'profile' with ALL settings so that the slice can be precisely reproduced.
-        all_settings.setDefinition(settings.getBottom())
-        for key in settings.getAllKeys():
-            all_settings.setProperty(key, "value", settings.getProperty(key, "value")) #Just copy everything over to the setting instance.
-        serialised = all_settings.serialize()
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        container_with_settings = global_stack.getContainers()[1]
+        serialized = container_with_settings.serialize()
 
         # Escape characters that have a special meaning in g-code comments.
         pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
         # Perform the replacement with a regular expression.
-        serialised = pattern.sub(lambda m: GCodeWriter.escape_characters[re.escape(m.group(0))], serialised)
+        serialized = pattern.sub(lambda m: GCodeWriter.escape_characters[re.escape(m.group(0))], serialized)
 
         # Introduce line breaks so that each comment is no longer than 80 characters. Prepend each line with the prefix.
         result = ""
 
         # Lines have 80 characters, so the payload of each line is 80 - prefix.
-        for pos in range(0, len(serialised), 80 - prefix_length):
-            result += prefix + serialised[pos : pos + 80 - prefix_length] + "\n"
-        serialised = result
+        for pos in range(0, len(serialized), 80 - prefix_length):
+            result += prefix + serialized[pos : pos + 80 - prefix_length] + "\n"
+        serialized = result
 
-        return serialised
+        return serialized
