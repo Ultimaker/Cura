@@ -8,22 +8,22 @@ from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 from . import MachineInstance # To upgrade machine instances.
 from . import Profile # To upgrade profiles.
 
-##  Gets the version number from a config file.
-#
-#   In all config files that concern this version upgrade, the version
-#   number is stored in general/version, so get the data from that key.
-#
-#   \param serialised The contents of a config file.
-#   \return \type{int} The version number of that config file.
-def getCfgVersion(serialised):
-    parser = configparser.ConfigParser(interpolation = None)
-    parser.read_string(serialised)
-    return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
 #   It converts the machine instances and profiles.
 class VersionUpgrade21to22(VersionUpgrade):
+    ##  Gets the version number from a config file.
+    #
+    #   In all config files that concern this version upgrade, the version
+    #   number is stored in general/version, so get the data from that key.
+    #
+    #   \param serialised The contents of a config file.
+    #   \return \type{int} The version number of that config file.
+    def getCfgVersion(self, serialised):
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialised)
+        return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+
     ##  Converts machine instances from format version 1 to version 2.
     #
     #   \param serialised The serialised machine instance in version 1.
