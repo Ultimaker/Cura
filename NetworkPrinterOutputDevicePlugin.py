@@ -19,7 +19,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addPrinterSignal.connect(self.addPrinter)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
     addPrinterSignal = Signal()
 
@@ -34,7 +34,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def getPrinters(self):
         return self._printers
 
-    def _onGlobalStackChanged(self):
+    def reCheckConnections(self):
         active_machine = Application.getInstance().getGlobalContainerStack()
         if not active_machine:
             return

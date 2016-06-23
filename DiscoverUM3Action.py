@@ -39,3 +39,7 @@ class DiscoverUM3Action(MachineAction):
                 global_container_stack.setMetaDataEntry("key", key)
             else:
                 global_container_stack.addMetaDataEntry("key", key)
+
+        if self._network_plugin:
+            # Ensure that the connection states are refreshed.
+            self._network_plugin.reCheckConnections()
