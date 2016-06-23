@@ -563,8 +563,8 @@ UM.MainWindow
             Image
             {
                 id: cameraImage
-                width: 800
-                height: 600
+                width: Math.min(viewportOverlay.width, sourceSize.width)
+                height: sourceSize.height * width / sourceSize.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
