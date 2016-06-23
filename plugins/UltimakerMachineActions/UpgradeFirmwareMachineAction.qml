@@ -16,7 +16,7 @@ Cura.MachineAction
     Item
     {
         id: upgradeFirmwareMachineAction
-
+        anchors.fill: parent;
         UM.I18nCatalog { id: catalog; name:"cura"}
 
         Label
