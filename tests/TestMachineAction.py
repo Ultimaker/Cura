@@ -3,7 +3,7 @@
 import pytest
 
 from cura.MachineAction import MachineAction
-from cura.MachineActionManager import MachineActionManager, NotUniqueMachineAction, UnknownMachineAction
+from cura.MachineActionManager import MachineActionManager, NotUniqueMachineActionError, UnknownMachineActionError
 
 class Machine:
     def __init__(self, key = ""):
@@ -26,7 +26,7 @@ def test_addMachineAction():
     assert machine_manager.getMachineAction("key_that_doesnt_exist") is None
 
     # Adding the same machine action is not allowed.
-    with pytest.raises(NotUniqueMachineAction):
+    with pytest.raises(NotUniqueMachineActionError):
         machine_manager.addMachineAction(test_action)
 
     # Check that the machine has no supported actions yet.
@@ -48,7 +48,7 @@ def test_addMachineAction():
     assert machine_manager.getRequiredActions(test_machine) == set()
 
     ## Ensure that only known actions can be added.
-    with pytest.raises(UnknownMachineAction):
+    with pytest.raises(UnknownMachineActionError):
         machine_manager.addRequiredAction(test_machine, "key_that_doesnt_exist")
 
     ## Check if adding single required action works

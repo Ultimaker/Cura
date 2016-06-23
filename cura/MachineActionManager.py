@@ -9,12 +9,12 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from PyQt5.QtCore import QObject, pyqtSlot
 
 ##  Raised when trying to add an unknown machine action as a required action
-class UnknownMachineAction(Exception):
+class UnknownMachineActionError(Exception):
     pass
 
 
 ##  Raised when trying to add a machine action that does not have an unique key.
-class NotUniqueMachineAction(Exception):
+class NotUniqueMachineActionError(Exception):
     pass
 
 
@@ -23,9 +23,9 @@ class MachineActionManager(QObject):
         super().__init__(parent)
 
         self._machine_actions = {}  # Dict of all known machine actions
-        self._required_actions = {}  # Dict of all required actions by machine reference.
-        self._supported_actions = {}  # Dict of all supported actions by machine reference
-        self._first_start_actions = {}  # Dict of all actions that need to be done when first added by machine reference
+        self._required_actions = {}  # Dict of all required actions by definition ID
+        self._supported_actions = {}  # Dict of all supported actions by definition ID
+        self._first_start_actions = {}  # Dict of all actions that need to be done when first added by definition ID
 
         # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
@@ -54,37 +54,37 @@ class MachineActionManager(QObject):
 
     ##  Add a required action to a machine
     #   Raises an exception when the action is not recognised.
-    def addRequiredAction(self, machine_id, action_key):
+    def addRequiredAction(self, definition_id, action_key):
         if action_key in self._machine_actions:
-            if machine_id in self._required_actions:
-                self._required_actions[machine_id] |= {self._machine_actions[action_key]}
+            if definition_id in self._required_actions:
+                self._required_actions[definition_id] |= {self._machine_actions[action_key]}
             else:
-                self._required_actions[machine_id] = {self._machine_actions[action_key]}
+                self._required_actions[definition_id] = {self._machine_actions[action_key]}
         else:
-            raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine_id))
+            raise UnknownMachineActionError("Action %s, which is required for %s is not known." % (action_key, definition_id))
 
     ##  Add a supported action to a machine.
-    def addSupportedAction(self, machine_id, action_key):
+    def addSupportedAction(self, definition_id, action_key):
         if action_key in self._machine_actions:
-            if machine_id in self._supported_actions:
-                self._supported_actions[machine_id] |= {self._machine_actions[action_key]}
+            if definition_id in self._supported_actions:
+                self._supported_actions[definition_id] |= {self._machine_actions[action_key]}
             else:
-                self._supported_actions[machine_id] = {self._machine_actions[action_key]}
+                self._supported_actions[definition_id] = {self._machine_actions[action_key]}
         else:
-            Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id)
+            Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, definition_id)
 
     ##  Add an action to the first start list of a machine.
-    def addFirstStartAction(self, machine_id, action_key, index = None):
+    def addFirstStartAction(self, definition_id, action_key, index = None):
         if action_key in self._machine_actions:
-            if machine_id in self._first_start_actions:
+            if definition_id in self._first_start_actions:
                 if index is not None:
-                    self._first_start_actions[machine_id].insert(index, self._machine_actions[action_key])
+                    self._first_start_actions[definition_id].insert(index, self._machine_actions[action_key])
                 else:
-                    self._first_start_actions[machine_id].append(self._machine_actions[action_key])
+                    self._first_start_actions[definition_id].append(self._machine_actions[action_key])
             else:
-                self._first_start_actions[machine_id] = [self._machine_actions[action_key]]
+                self._first_start_actions[definition_id] = [self._machine_actions[action_key]]
         else:
-            Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, machine_id)
+            Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, definition_id)
 
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
@@ -92,35 +92,35 @@ class MachineActionManager(QObject):
         if action.getKey() not in self._machine_actions:
             self._machine_actions[action.getKey()] = action
         else:
-            raise NotUniqueMachineAction("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
+            raise NotUniqueMachineActionError("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
 
     ##  Get all actions supported by given machine
-    #   \param machine The machine you want the supported actions of
+    #   \param definition_id The ID of the definition you want the supported actions of
     #   \returns set of supported actions.
     @pyqtSlot(str, result = "QVariantList")
-    def getSupportedActions(self, machine_id):
-        if machine_id in self._supported_actions:
-            return list(self._supported_actions[machine_id])
+    def getSupportedActions(self, definition_id):
+        if definition_id in self._supported_actions:
+            return list(self._supported_actions[definition_id])
         else:
             return set()
 
     ##  Get all actions required by given machine
-    #   \param machine The machine you want the required actions of
+    #   \param definition_id The ID of the definition you want the required actions of
     #   \returns set of required actions.
-    def getRequiredActions(self, machine_id):
-        if machine_id in self._required_actions:
-            return self._required_actions[machine_id]
+    def getRequiredActions(self, definition_id):
+        if definition_id in self._required_actions:
+            return self._required_actions[definition_id]
         else:
             return set()
 
     ##  Get all actions that need to be performed upon first start of a given machine.
     #   Note that contrary to required / supported actions a list is returned (as it could be required to run the same
     #   action multiple times).
-    #   \param machine The machine you want the first start actions of
+    #   \param definition_id The ID of the definition that you want to get the "on added" actions for.
     #   \returns List of actions.
-    def getFirstStartActions(self, machine_id):
-        if machine_id in self._first_start_actions:
-            return self._first_start_actions[machine_id]
+    def getFirstStartActions(self, definition_id):
+        if definition_id in self._first_start_actions:
+            return self._first_start_actions[definition_id]
         else:
             return []
 
