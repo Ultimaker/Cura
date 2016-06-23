@@ -33,11 +33,7 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your ptiner is connected to the network using a network cable of by connecting your printer to your WIFI network. \n\n If you don't want to connect Cura with your Ultimaker 3 now, you can always use a USB drive to transfer g-code files to your Printer.\n\n Select your Ultimaker 3 from the list below:")
         }
-        Button
-        {
-            text: "Start looking!"
-            onClicked: manager.startDiscovery()
-        }
+
         Row
         {
             width: parent.width
@@ -94,6 +90,7 @@ Cura.MachineAction
             Column
             {
                 width: parent.width * 0.5
+                visible: base.selectedPrinter
                 Label
                 {
                     width: parent.width
@@ -143,6 +140,11 @@ Cura.MachineAction
                     }
                 }
             }
+        }
+        Button
+        {
+            text: catalog.i18nc("@label","Start looking!")
+            onClicked: manager.startDiscovery()
         }
     }
     Button
