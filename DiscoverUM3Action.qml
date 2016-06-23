@@ -9,7 +9,7 @@ import QtQuick.Window 2.1
 Cura.MachineAction
 {
     anchors.fill: parent;
-    Item
+    Column
     {
         anchors.fill: parent;
         id: discoverUM3Action
@@ -26,6 +26,27 @@ Cura.MachineAction
         {
             text: "Start looking!"
             onClicked: manager.startDiscovery()
+        }
+
+        ListView
+        {
+            model: manager.foundDevices
+            width: parent.width
+            height: 500
+            delegate: Rectangle
+            {
+                height: childrenRect.height;
+                color: "white"
+                width: parent.width
+                Label
+                {
+                    anchors.left: parent.left;
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+                    anchors.right: parent.right;
+                    text: modelData
+                    elide: Text.ElideRight
+                }
+            }
         }
     }
 }

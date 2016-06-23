@@ -26,7 +26,7 @@ class DiscoverUM3Action(MachineAction):
     @pyqtProperty("QVariantList", notify = printerDetected)
     def foundDevices(self):
         if self._network_plugin:
-            print(list(self._network_plugin.getPrinters().keys()))
+
             return list(self._network_plugin.getPrinters().keys())
         else:
             return []

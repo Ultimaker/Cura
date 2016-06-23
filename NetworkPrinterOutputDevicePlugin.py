@@ -67,7 +67,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         if state_change == ServiceStateChange.Added:
             info = zeroconf.get_service_info(service_type, name)
             if info:
-                if info.properties.get(b"type", None):
+                if info.properties.get(b"type", None) == b'printer':
                     address = '.'.join(map(lambda n: str(n), info.address))
                     self.addPrinterSignal.emit(str(name), address, info.properties)
 
