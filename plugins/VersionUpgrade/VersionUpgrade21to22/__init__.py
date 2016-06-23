@@ -6,6 +6,8 @@ from . import VersionUpgrade21to22
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+upgrade = VersionUpgrade21to22.VersionUpgrade21to22()
+
 def getMetaData():
     return {
         "plugin": {
@@ -17,25 +19,25 @@ def getMetaData():
         },
         "version_upgrade": {
             # From                   To                        Upgrade function
-            ("profile", 1):          ("instance_container", 2, VersionUpgrade21to22.upgradeProfile),
-            ("machine_instance", 1): ("container_stack", 2,    VersionUpgrade21to22.upgradeMachineInstance),
-            ("preferences", 1):      ("preferences", 2,        VersionUpgrade21to22.upgradePreferences)
+            ("profile", 1):          ("instance_container", 2, upgrade.upgradeProfile),
+            ("machine_instance", 1): ("container_stack", 2,    upgrade.upgradeMachineInstance),
+            ("preferences", 1):      ("preferences", 2,        upgrade.upgradePreferences)
         },
         "sources": {
             "profile": {
-                "get_version": VersionUpgrade21to22.getCfgVersion,
+                "get_version": upgrade.getCfgVersion,
                 "location": {"./profiles"}
             },
             "machine_instance": {
-                "get_version": VersionUpgrade21to22.getCfgVersion,
+                "get_version": upgrade.getCfgVersion,
                 "location": {"./machine_instances"}
             },
             "preferences": {
-                "get_version": VersionUpgrade21to22.getCfgVersion,
+                "get_version": upgrade.getCfgVersion,
                 "location": {"."}
             }
         }
     }
 
 def register(app):
-    return { "version_upgrade": VersionUpgrade21to22.VersionUpgrade21to22() }
+    return { "version_upgrade": upgrade }
