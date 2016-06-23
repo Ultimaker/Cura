@@ -19,11 +19,11 @@ i18n_catalog = i18nCatalog("cura")
 ##  Network connected (wifi / lan) printer that uses the Ultimaker API
 @signalemitter
 class NetworkPrinterOutputDevice(PrinterOutputDevice):
-    def __init__(self, key, address, info):
+    def __init__(self, key, address, properties):
         super().__init__(key)
         self._address = address
         self._key = key
-        self._info = info
+        self._properties = properties  # Properties dict as provided by zero conf
 
         self._gcode = None
 
@@ -41,7 +41,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._api_prefix = "/api/v" + self._api_version + "/"
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with WIFI"))
-        self.setDescription(i18n_catalog.i18nc("@info:tooltip", "Print with WIFI"))
+        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print with WIFI"))
         self.setIconName("print")
 
         #   QNetwork manager needs to be created in advance. If we don't it can happen that it doesn't correctly
@@ -83,6 +83,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._camera_image_id = 0
 
         self._camera_image = QImage()
+
+    def getProperties(self):
+        return self._properties
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
