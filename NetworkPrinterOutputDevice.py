@@ -92,6 +92,21 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def getKey(self):
         return self._key
 
+    ##  Name of the printer (as returned from the zeroConf properties)
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        return self._properties.get(b"name", b"").decode("utf-8")
+
+    ##  Firmware version (as returned from the zeroConf properties)
+    @pyqtProperty(str, constant=True)
+    def firmwareVersion(self):
+        return self._properties.get(b"firmware_version", b"").decode("utf-8")
+
+    ## IPadress of this printer
+    @pyqtProperty(str, constant=True)
+    def ipAddress(self):
+        return self._address
+
     def _update_camera(self):
         ## Request new image
         url = QUrl("http://" + self._address + ":8080/?action=snapshot")

@@ -8,7 +8,9 @@ import QtQuick.Window 2.1
 
 Cura.MachineAction
 {
+    id: base
     anchors.fill: parent;
+    property var selectedPrinter: null
     Column
     {
         anchors.fill: parent;
@@ -39,6 +41,7 @@ Cura.MachineAction
         Row
         {
             width: parent.width
+            spacing: UM.Theme.getSize("default_margin").width
             ScrollView
             {
                 id: objectListContainer
@@ -54,10 +57,12 @@ Cura.MachineAction
 
                 ListView
                 {
+                    id: listview
                     model: manager.foundDevices
                     width: parent.width
                     height: 500
                     currentIndex: activeIndex
+                    onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
                     delegate: Rectangle
                     {
                         height: childrenRect.height;
@@ -68,7 +73,7 @@ Cura.MachineAction
                             anchors.left: parent.left;
                             anchors.leftMargin: UM.Theme.getSize("default_margin").width;
                             anchors.right: parent.right;
-                            text: modelData
+                            text: listview.model[index].name
                             elide: Text.ElideRight
                         }
 
@@ -80,10 +85,61 @@ Cura.MachineAction
                                 if(!parent.ListView.isCurrentItem)
                                 {
                                     parent.ListView.view.currentIndex = index;
-                                    //base.itemActivated();
                                 }
                             }
                         }
+                    }
+                }
+            }
+            Column
+            {
+                width: parent.width * 0.5
+                Label
+                {
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                    text: base.selectedPrinter ? base.selectedPrinter.name : ""
+                    font.pointSize: 16;
+                }
+                Grid
+                {
+                    width: parent.width
+                    columns: 2
+                    Label
+                    {
+                        width: parent.width * 0.5
+                        wrapMode: Text.WordWrap
+                        text: catalog.i18nc("@label", "Type")
+                    }
+                    Label
+                    {
+                        width: parent.width * 0.5
+                        wrapMode: Text.WordWrap
+                        text: catalog.i18nc("@label", "Ultimaker 3")
+                    }
+                    Label
+                    {
+                        width: parent.width * 0.5
+                        wrapMode: Text.WordWrap
+                        text: catalog.i18nc("@label", "Firmware version")
+                    }
+                    Label
+                    {
+                        width: parent.width * 0.5
+                        wrapMode: Text.WordWrap
+                        text: base.selectedPrinter ? base.selectedPrinter.firmwareVersion : ""
+                    }
+                    Label
+                    {
+                        width: parent.width * 0.5
+                        wrapMode: Text.WordWrap
+                        text: catalog.i18nc("@label", "IP Address")
+                    }
+                    Label
+                    {
+                        width: parent.width * 0.5
+                        wrapMode: Text.WordWrap
+                        text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
                 }
             }

@@ -27,6 +27,6 @@ class DiscoverUM3Action(MachineAction):
     def foundDevices(self):
         if self._network_plugin:
             printers = self._network_plugin.getPrinters()
-            return [printers[printer].getProperties().get(b"name").decode("utf-8") for printer in printers]
+            return [printers[printer] for printer in printers]
         else:
             return []
