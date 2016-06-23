@@ -155,7 +155,7 @@ Rectangle
 
     Label {
         id: settingsModeLabel
-        text: catalog.i18nc("@label:listbox","Setup");
+        text: catalog.i18nc("@label:listbox","Print Setup");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
@@ -226,7 +226,7 @@ Rectangle
 
     Label {
         id: monitorLabel
-        text: catalog.i18nc("@label","Activity Data");
+        text: catalog.i18nc("@label","Printer Monitor");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
@@ -321,6 +321,16 @@ Rectangle
         // Spacers
         Label { text: " "}
         Label { text: " "}
+
+        Label
+        {
+            text: "Job name:"
+        }
+
+        Label
+        {
+            text: " "  + Cura.MachineManager.printerOutputDevices[0].jobName
+        }
 
         Label
         {
