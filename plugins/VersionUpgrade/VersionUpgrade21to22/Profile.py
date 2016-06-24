@@ -93,19 +93,19 @@ class Profile:
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         if self._settings:
-            VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
+            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
             config.add_section("settings")
             for key, value in self._settings.items():
                 config.set("settings", key, str(value))
 
         if self._changed_settings_defaults:
-            VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
+            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
             config.add_section("defaults")
             for key, value in self._changed_settings_defaults.items():
                 config.set("defaults", key, str(value))
 
         if self._disabled_settings_defaults:
-            VersionUpgrade21to22.VersionUpgrade21to22.translateSettingNames(self._disabled_settings_defaults)
+            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingNames(self._disabled_settings_defaults)
             config.add_section("disabled_defaults")
             disabled_defaults_string = str(self._disabled_settings_defaults[0]) # Must be at least 1 item, otherwise we wouldn't enter this if statement.
             for item in self._disabled_settings_defaults[1:]:

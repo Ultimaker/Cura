@@ -74,7 +74,7 @@ class MachineInstance:
             config.set("general", "material", self._active_material_name)
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
-        VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._machine_setting_overrides)
+        VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._machine_setting_overrides)
         config.add_section("machine_settings")
         for key, value in self._machine_setting_overrides.items():
             config.set("machine_settings", key, str(value))
