@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
 import Cura 1.0 as Cura
 
 Rectangle
@@ -18,6 +18,7 @@ Rectangle
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    onPrinterConnectedChanged: populatePrintMonitorModel()
 
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -277,10 +278,11 @@ Rectangle
         }
     }
 
-    // Item that holds all the print monitor properties
-    Grid
+    // ListView that shows the print monitor properties
+    ListView
     {
         id: printMonitor
+
         anchors.bottom: footerSeparator.top
         anchors.top: monitorLabel.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -288,78 +290,43 @@ Rectangle
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: base.right
         visible: monitoringPrint
-        columns: 2
-        columnSpacing: UM.Theme.getSize("default_margin").width
-        Label
-        {
-            text: "Temperature 1:"
-        }
-        Label
-        {
-            text: " " + Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[0]) + "°C"
-        }
 
+        model: printMonitorModel
+        delegate: Row
+        {
+            Label
+            {
+                text: label
+                color: UM.Theme.getColor("setting_control_text");
+                font: UM.Theme.getFont("default");
+                width: base.width * .4
+                elide: Text.ElideRight;
+            }
+            Label
+            {
+                text: value
+                color: UM.Theme.getColor("setting_control_text");
+                font: UM.Theme.getFont("default");
+            }
+        }
+        section.property: "category"
+        section.criteria: ViewSection.FullString
+        section.delegate: Rectangle
+        {
+            color: UM.Theme.getColor("setting_category")
+            width: parent.width - UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("section").height
 
-        Label
-        {
-            text: "Temperature 2:"
+            Label
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                text: section
+                font: UM.Theme.getFont("setting_category")
+                color: UM.Theme.getColor("setting_category_text")
+            }
         }
-        Label
-        {
-            text: " " + Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[1]) + "°C"
-        }
-
-        Label
-        {
-            text: "Bed Temperature:"
-        }
-        Label
-        {
-            text: " " + Math.round(Cura.MachineManager.printerOutputDevices[0].bedTemperature) + "°C"
-        }
-
-        // Spacers
-        Label { text: " "}
-        Label { text: " "}
-
-        Label
-        {
-            text: "Job name:"
-        }
-
-        Label
-        {
-            text: " "  + Cura.MachineManager.printerOutputDevices[0].jobName
-        }
-
-        Label
-        {
-            text: "Printing Time:"
-        }
-
-        Label
-        {
-            text: " "  + getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal)
-        }
-
-        Label
-        {
-            text: "Estimated time left:"
-        }
-        Label
-        {
-            text: " " + getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed)
-        }
-
-        Label
-        {
-            text: "Current Layer:"
-        }
-        Label
-        {
-            text: " "
-        }
-
     }
 
     Rectangle
@@ -374,7 +341,7 @@ Rectangle
 
     SaveButton
     {
-        id: saveButton;
+        id: saveButton
         implicitWidth: base.width
         implicitHeight: totalHeight
         anchors.bottom: parent.bottom
@@ -383,11 +350,11 @@ Rectangle
 
     MonitorButton
     {
-        id: monitorButton;
+        id: monitorButton
         implicitWidth: base.width
         implicitHeight: totalHeight
         anchors.bottom: parent.bottom
-        visible: monitoringPrint
+        visible: monitoringPrint && printerConnected
     }
 
 
@@ -424,5 +391,69 @@ Rectangle
         modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), item: sidebarSimple })
         modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), item: sidebarAdvanced })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    ListModel {
+        id: printMonitorModel
+        Component.onCompleted: populatePrintMonitorModel()
+    }
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onGlobalContainerChanged: populatePrintMonitorModel()
+    }
+
+    function populatePrintMonitorModel()
+    {
+        printMonitorModel.clear();
+
+        if (!printerConnected)
+            return
+
+        var extruderCount = machineExtruderCount.properties.value
+        for(var extruderNumber = 0; extruderNumber < extruderCount ; extruderNumber++) {
+            printMonitorModel.append({
+                label: extruderCount > 1 ? catalog.i18nc("@label", "Hotend Temperature %1").arg(extruderNumber + 1) : catalog.i18nc("@label", "Hotend Temperature"),
+                value: Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[extruderNumber]) + "°C",
+                category: catalog.i18nc("@label", "Temperatures")
+            })
+        }
+        printMonitorModel.append({
+            label: catalog.i18nc("@label", "Bed Temperature"),
+            value: Math.round(Cura.MachineManager.printerOutputDevices[0].bedTemperature) + "°C",
+            category: catalog.i18nc("@label", "Temperatures")
+        })
+
+        printMonitorModel.append({
+            label: catalog.i18nc("@label", "Job name"),
+            value: Cura.MachineManager.printerOutputDevices[0].jobName,
+            category: catalog.i18nc("@label", "Active print")
+        })
+        printMonitorModel.append({
+            label: catalog.i18nc("@label", "Printing Time"),
+            value: getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal),
+            category: catalog.i18nc("@label", "Active print")
+        })
+        printMonitorModel.append({
+            label: catalog.i18nc("@label", "Estimated time left"),
+            value: getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed),
+            category: catalog.i18nc("@label", "Active print")
+        })
+        printMonitorModel.append({
+            label: catalog.i18nc("@label", "Current Layer"),
+            value: 0,
+            category: catalog.i18nc("@label", "Active print")
+        })
     }
 }
