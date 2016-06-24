@@ -6,6 +6,7 @@ import configparser #To get version numbers from config files.
 from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 
 from . import MachineInstance # To upgrade machine instances.
+from . import Preferences #To upgrade preferences.
 from . import Profile # To upgrade profiles.
 
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
@@ -35,13 +36,16 @@ class VersionUpgrade21to22(VersionUpgrade):
             return None
         return machine_instance.export()
 
-    ##  Converts preferences from format version 1 to version 2.
+    ##  Converts preferences from format version 2 to version 3.
     #
-    #   \param serialised The serialised preferences file in version 1.
-    #   \return The serialised preferences in version 2, or None if the input
+    #   \param serialised The serialised preferences file in version 2.
+    #   \return The serialised preferences in version 3, or None if the input
     #   was not of the correct format.
     def upgradePreferences(self, serialised):
-        return serialised #TODO
+        preferences = Preferences.importFrom(serialised)
+        if not preferences: #Invalid file format.
+            return None
+        return preferences.export()
 
     ##  Converts profiles from format version 1 to version 2.
     #
