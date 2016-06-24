@@ -69,8 +69,8 @@ class GCodeWriter(MeshWriter):
         prefix_length = len(prefix)
 
         global_stack = Application.getInstance().getGlobalContainerStack()
-        container_with_settings = global_stack.getContainers()[1]
-        serialized = container_with_settings.serialize()
+        container_with_profile = global_stack.findContainer({"type": "quality"})
+        serialized = container_with_profile.serialize()
 
         # Escape characters that have a special meaning in g-code comments.
         pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
