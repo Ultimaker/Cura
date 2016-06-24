@@ -17,6 +17,11 @@ UM.MainWindow
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
 
+    Component.onCompleted:
+    {
+        Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+    }
+
     Item
     {
         id: backgroundItem;
