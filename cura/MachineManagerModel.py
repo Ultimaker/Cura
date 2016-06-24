@@ -84,8 +84,8 @@ class MachineManagerModel(QObject):
                     self._global_stack_valid = False
                     self.globalValidationChanged.emit()
             else:
-                new_validation_state = self._checkStackForErrors(self._active_container_stack)
-                if new_validation_state:
+                has_errors = self._checkStackForErrors(self._active_container_stack)
+                if not has_errors:
                     self._global_stack_valid = True
                     self.globalValidationChanged.emit()
 
