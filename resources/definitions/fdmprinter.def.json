@@ -1123,6 +1123,15 @@
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "retraction_hop_after_extruder_switch": {
+                    "label": "Z Hop After Extruder Switch",
+                    "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_hop_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
