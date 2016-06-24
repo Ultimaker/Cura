@@ -9,7 +9,6 @@ from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the c
 
 from UM.View.GL.OpenGL import OpenGL
 
-
 class ConvexHullNode(SceneNode):
     ##  Convex hull node is a special type of scene node that is used to display a 2D area, to indicate the
     #   location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
@@ -31,20 +30,22 @@ class ConvexHullNode(SceneNode):
 
         # The node this mesh is "watching"
         self._node = node
-        self._node.transformationChanged.connect(self._onNodePositionChanged)
-        self._node.parentChanged.connect(self._onNodeParentChanged)
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
 
         self._convex_hull_head_mesh = None
         self._hull = hull
 
-        hull_mesh = self.createHullMesh(self._hull.getPoints())
-        if hull_mesh:
-            self.setMeshData(hull_mesh)
+        if self._hull:
+            hull_mesh = self.createHullMesh(self._hull.getPoints())
+            if hull_mesh:
+                self.setMeshData(hull_mesh)
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             self._convex_hull_head_mesh = self.createHullMesh(convex_hull_head.getPoints())
+
+    def getHull(self):
+        return self._hull
 
     ##  Actually create the mesh from the hullpoints
     #   /param hull_points list of xy values
@@ -62,7 +63,7 @@ class ConvexHullNode(SceneNode):
             mesh_builder.addFace(point_first, point_previous, point_new, color = self._color)
             point_previous = point_new  # Prepare point_previous for the next triangle.
 
-        return mesh_builder.getData()
+        return mesh_builder.build()
 
     def getWatchedNode(self):
         return self._node
@@ -73,23 +74,12 @@ class ConvexHullNode(SceneNode):
             self._shader.setUniformValue("u_color", self._color)
 
         if self.getParent():
-            renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
-            if self._convex_hull_head_mesh:
-                renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+            if self.getMeshData():
+                renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
+                if self._convex_hull_head_mesh:
+                    renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
-
-    def _onNodePositionChanged(self, node):
-        if node.callDecoration("getConvexHull"): 
-            node.callDecoration("setConvexHull", None)
-            node.callDecoration("setConvexHullNode", None)
-            self.setParent(None)  # Garbage collection should delete this node after a while.
-
-    def _onNodeParentChanged(self, node):
-        if node.getParent():
-            self.setParent(self._original_parent)
-        else:
-            self.setParent(None)
 
     def _onNodeDecoratorsChanged(self, node):
         self._color = Color(35, 35, 35, 0.5)

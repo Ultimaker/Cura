@@ -1,25 +1,29 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Application import Application #To get the machine manager to create the new profile in.
-from UM.Settings.Profile import Profile
-from UM.Settings.ProfileReader import ProfileReader
-from UM.Logger import Logger
+import os
 import re #Regular expressions for parsing escape characters in the settings.
 
+from UM.Application import Application #To get the machine manager to create the new profile in.
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Logger import Logger
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
+from cura.ProfileReader import ProfileReader
 
 ##  A class that reads profile data from g-code files.
 #
 #   It reads the profile data from g-code files and stores it in a new profile.
 #   This class currently does not process the rest of the g-code in any way.
 class GCodeProfileReader(ProfileReader):
-    ##  The file format version of the serialised g-code.
+    ##  The file format version of the serialized g-code.
     #
     #   It can only read settings with the same version as the version it was
     #   written with. If the file format is changed in a way that breaks reverse
     #   compatibility, increment this version number!
     version = 1
-    
+
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
     #
@@ -51,31 +55,36 @@ class GCodeProfileReader(ProfileReader):
         # Loading all settings from the file.
         # They are all at the end, but Python has no reverse seek any more since Python3.
         # TODO: Consider moving settings to the start?
-        serialised = ""  # Will be filled with the serialised profile.
+        serialized = ""  # Will be filled with the serialized profile.
         try:
             with open(file_name) as f:
                 for line in f:
                     if line.startswith(prefix):
                         # Remove the prefix and the newline from the line and add it to the rest.
-                        serialised += line[prefix_length : -1]
+                        serialized += line[prefix_length : -1]
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
             return None
 
-        # Un-escape the serialised profile.
+        # Un-escape the serialized profile.
         pattern = re.compile("|".join(GCodeProfileReader.escape_characters.keys()))
 
         # Perform the replacement with a regular expression.
-        serialised = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialised)
+        serialized = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialized)
+        Logger.log("i", "Serialized the following from %s: %s" %(file_name, repr(serialized)))
 
-        # Apply the changes to the current profile.
-        profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
+        # Create an empty profile - the id will be changed later
+        profile = InstanceContainer("")
+        profile.addMetaDataEntry("type", "quality")
         try:
-            profile.unserialise(serialised)
-            profile.setType(None)  # Force type to none so it's correctly added.
-            profile.setReadOnly(False)
-            profile.setDirty(True)
+            profile.deserialize(serialized)
         except Exception as e:  # Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
+
+        #Creating a unique name using the filename of the GCode
+        new_name = catalog.i18nc("@label", "Custom profile (%s)") %(os.path.splitext(os.path.basename(file_name))[0])
+        profile.setName(new_name)
+        profile._id = new_name
+
         return profile

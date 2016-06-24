@@ -12,7 +12,8 @@
         "icon": "icon_ultimaker2.png",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2backplate.png",
-        "platform_offset": [9, 0, 0]
+        "platform_offset": [9, 0, 0],
+        "supported_actions":["UpgradeFirmware"]
     },
     "overrides": {
         "machine_start_gcode" : {

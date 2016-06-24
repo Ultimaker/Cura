@@ -11,9 +11,10 @@ QtObject {
     property Component sidebar_header_button: Component {
         ButtonStyle {
             background: Rectangle {
-                color: Theme.getColor("setting_control")
+                color: control.enabled ? Theme.getColor("setting_control") : Theme.getColor("setting_control_disabled")
                 border.width: Theme.getSize("default_lining").width
-                border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border")
+                border.color: !control.enabled ? Theme.getColor("setting_control_disabled_border") :
+                                control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border")
                 UM.RecolorImage {
                     id: downArrow
                     anchors.verticalCenter: parent.verticalCenter
@@ -23,12 +24,12 @@ QtObject {
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width
                     sourceSize.height: width
-                    color: Theme.getColor("setting_category_text")
+                    color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_control_disabled_text")
                     source: Theme.getIcon("arrow_bottom")
                 }
                 Label {
                     id: sidebarComboBoxLabel
-                    color: Theme.getColor("setting_control_text")
+                    color: control.enabled ? Theme.getColor("setting_control_text") : Theme.getColor("setting_control_disabled_text")
                     text: control.text;
                     elide: Text.ElideRight;
                     anchors.left: parent.left;

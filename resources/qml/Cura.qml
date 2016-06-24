@@ -17,6 +17,11 @@ UM.MainWindow
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
 
+    Component.onCompleted:
+    {
+        Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+    }
+
     Item
     {
         id: backgroundItem;
@@ -771,6 +776,38 @@ UM.MainWindow
     AddMachineDialog
     {
         id: addMachineDialog
+        onMachineAdded:
+        {
+            machineActionsWizard.start(id)
+        }
+    }
+
+    // Dialog to handle first run machine actions
+    UM.Wizard
+    {
+        id: machineActionsWizard;
+
+        title: catalog.i18nc("@title:window", "Add Printer")
+        property var machine;
+
+        function start(id)
+        {
+            var actions =  Cura.MachineActionManager.getFirstStartActions(id)
+            resetPages() // Remove previous pages
+
+            for (var i = 0; i < actions.length; i++)
+            {
+                actions[i].displayItem.reset()
+                machineActionsWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
+            }
+
+            //Only start if there are actions to perform.
+            if (actions.length > 0)
+            {
+                machineActionsWizard.currentPage = 0;
+                show()
+            }
+        }
     }
 
     Connections
