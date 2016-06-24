@@ -202,7 +202,7 @@ class MachineManagerModel(QObject):
     @pyqtProperty(bool, notify = activeStackChanged)
     def hasUserSettings(self):
         if not self._active_container_stack:
-            return
+            return False
 
         user_settings = self._active_container_stack.getTop().findInstances(**{})
         return len(user_settings) != 0
