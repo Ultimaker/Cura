@@ -285,6 +285,7 @@ class MachineManagerModel(QObject):
         self.blurSettings.emit()
         self.setActiveQuality(new_container_id)
         self.updateQualityContainerFromUserContainer()
+        return new_container_id
 
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
