@@ -20,6 +20,7 @@ from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 import UM.Settings.Validator
+import UM.Qt.Bindings.Theme
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -48,7 +49,7 @@ from . import MachineActionManager
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
+from PyQt5.QtQml import QQmlEngine, qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import platform
 import sys
@@ -324,9 +325,10 @@ class CuraApplication(QtApplication):
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
 
+        message_color = UM.Qt.Bindings.Theme.Theme(QQmlEngine()).colors["text_hover"].name()
         i18nCatalog.setTagReplacements({
             "filename": "font color=\"black\"",
-            "message": "font color=UM.Theme.colors.message_text;",
+            "message": "font color=%s" %(message_color),
         })
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
