@@ -168,6 +168,7 @@
     },
 
     "sizes": {
+        "window_minimum_size": [70, 54],
         "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
         "default_lining": [0.08, 0.08],
