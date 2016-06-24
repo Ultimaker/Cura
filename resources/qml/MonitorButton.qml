@@ -14,7 +14,8 @@ Rectangle
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property real progress: Cura.MachineManager.printerOutputDevices[0].progress;
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property real progress: printerConnected ? Cura.MachineManager.printerOutputDevices[0].progress : 0;
     property int backendState: UM.Backend.state;
 
     property bool activity: Printer.getPlatformActivity;
@@ -22,7 +23,10 @@ Rectangle
     property string fileBaseName
     property string statusText:
     {
-        if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+        if(!printerConnected)
+        {
+            return "Please check your printer connections"
+        } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
         {
             return "Printing..."
         } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
@@ -48,7 +52,7 @@ Rectangle
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready")
+        color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
         font: UM.Theme.getFont("large")
         text: statusText;
     }
@@ -58,11 +62,11 @@ Rectangle
         id: percentageLabel
         anchors.top: parent.top
         anchors.right: progressBar.right
-        //anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready")
+        color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
         font: UM.Theme.getFont("large")
-        text: Math.round(progress * 100) + "%" ;
+        text: Math.round(progress * 100) + "%";
+        visible: printerConnected
     }
 
     Rectangle
@@ -81,16 +85,16 @@ Rectangle
         {
             width: Math.max(parent.width * base.progress)
             height: parent.height
-            color: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready")
+            color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
             radius: UM.Theme.getSize("progressbar_radius").width
         }
     }
 
-     Button
-     {
+    Button
+    {
         id: abortButton
 
-        enabled: true
+        visible: printerConnected
         height: UM.Theme.getSize("save_button_save_to_button").height
 
         anchors.top: progressBar.bottom
@@ -98,7 +102,7 @@ Rectangle
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        text: catalog.i18nc("@label:", "Abort Job")
+        text: catalog.i18nc("@label:", "Abort Print")
         onClicked: { Cura.MachineManager.printerOutputDevices[0].setJobState("abort") }
 
 
@@ -130,20 +134,21 @@ Rectangle
             }
         label: Item { }
         }
-     }
+    }
 
-     Button
-     {
+    Button
+    {
         id: pauseButton
 
         height: UM.Theme.getSize("save_button_save_to_button").height
+        visible: printerConnected
 
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: abortButton.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        text: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? catalog.i18nc("@label:", "Resume") : catalog.i18nc("@label:", "Pause")
+        text: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? catalog.i18nc("@label:", "Resume") : catalog.i18nc("@label:", "Pause") : ""
         onClicked: { Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? Cura.MachineManager.printerOutputDevices[0].setJobState("print") : Cura.MachineManager.printerOutputDevices[0].setJobState("pause") }
 
         style: ButtonStyle

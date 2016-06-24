@@ -569,7 +569,7 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
-                source: Cura.MachineManager.printerOutputDevices[0].cameraImage
+                source: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
             }
         }
     }
