@@ -52,7 +52,7 @@ class Preferences:
             visible_settings = visible_settings.split(",")
             import VersionUpgrade21to22 #Import here to prevent a circular dependency.
             VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingNames(visible_settings)
-            visible_settings = visible_settings.join(",")
+            visible_settings = ",".join(visible_settings)
             self._config.set("machines", "setting_visibility", value = visible_settings)
 
         #Update the version number itself.
