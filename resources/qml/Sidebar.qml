@@ -353,19 +353,22 @@ Rectangle
 
             Row
             {
+                height: UM.Theme.getSize("setting_control").height
                 Label
                 {
                     text: label
-                    color: UM.Theme.getColor("setting_control_text");
-                    font: UM.Theme.getFont("default");
+                    color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                    font: UM.Theme.getFont("default")
                     width: base.width * 0.4
-                    elide: Text.ElideRight;
+                    elide: Text.ElideRight
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 Label
                 {
                     text: value
-                    color: UM.Theme.getColor("setting_control_text");
-                    font: UM.Theme.getFont("default");
+                    color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                    font: UM.Theme.getFont("default")
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
         }
