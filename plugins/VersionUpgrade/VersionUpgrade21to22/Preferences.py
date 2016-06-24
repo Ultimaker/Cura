@@ -55,6 +55,9 @@ class Preferences:
             visible_settings = visible_settings.join(",")
             self._config.set("machines", "setting_visibility", value = visible_settings)
 
+        #Update the version number itself.
+        self._config.set("general", "version", value = "3")
+
         #Output the result as a string.
         output = io.StringIO()
         self._config.write(output)
