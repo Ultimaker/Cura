@@ -21,7 +21,7 @@ def getMetaData():
             # From                     To                      Upgrade function
             ("profile", 1):          ("instance_container", 2, upgrade.upgradeProfile),
             ("machine_instance", 1): ("container_stack", 2,    upgrade.upgradeMachineInstance),
-            ("preferences", 1):      ("preferences", 2,        upgrade.upgradePreferences)
+            ("preferences", 2):      ("preferences", 3,        upgrade.upgradePreferences)
         },
         "sources": {
             "profile": {
