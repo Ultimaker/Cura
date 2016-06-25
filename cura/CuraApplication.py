@@ -122,7 +122,6 @@ class CuraApplication(QtApplication):
         self._platform = None
         self._output_devices = {}
         self._print_information = None
-        self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
         self._scene_bounding_box = AxisAlignedBox.Null
@@ -133,11 +132,15 @@ class CuraApplication(QtApplication):
         self._cura_actions = None
         self._started = False
 
+        self._i18n_catalog = i18nCatalog("cura")
+
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
+
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -326,8 +329,6 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        self._i18n_catalog = i18nCatalog("cura");
-
         i18nCatalog.setTagReplacements({
             "filename": "font color=\"black\"",
             "message": "font color=UM.Theme.colors.message_text;",
