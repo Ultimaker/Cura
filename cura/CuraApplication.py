@@ -325,11 +325,6 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        i18nCatalog.setTagReplacements({
-            "filename": "font color=\"black\"",
-            "message": "font color=UM.Theme.colors.message_text;",
-        })
-
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
