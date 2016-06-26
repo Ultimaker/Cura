@@ -6,34 +6,38 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-UM.Dialog {
+UM.Dialog
+{
     width: 500 * Screen.devicePixelRatio;
     height: 100 * Screen.devicePixelRatio;
+    modality: Qt.NonModal
 
-    title: "Print with USB"
+    title: catalog.i18nc("@title:window", "Print with USB")
 
     Column
     {
         anchors.fill: parent;
         Row
         {
-            spacing: UM.Theme.sizes.default_margin.width;
-            Text
+            spacing: UM.Theme.getSize("default_margin").width;
+            Label
             {
                 //: USB Printing dialog label, %1 is head temperature
-                text: qsTr("Extruder Temperature %1").arg(manager.extruderTemperature)
+                text: catalog.i18nc("@label","Extruder Temperature %1").arg(manager.hotendTemperatures[0])
             }
-            Text
+            Label
             {
                 //: USB Printing dialog label, %1 is bed temperature
-                text: qsTr("Bed Temperature %1").arg(manager.bedTemperature)
+                text: catalog.i18nc("@label","Bed Temperature %1").arg(manager.bedTemperature)
             }
-            Text
+            Label
             {
                 text: "" + manager.error
             }
+
+            UM.I18nCatalog{id: catalog; name:"cura"}
 
         }
 
@@ -50,16 +54,17 @@ UM.Dialog {
     }
 
     rightButtons: [
-        Button {
+        Button
+        {
             //: USB Printing dialog start print button
-            text: qsTr("Print");
+            text: catalog.i18nc("@action:button","Print");
             onClicked: { manager.startPrint() }
             enabled: manager.progress == 0 ? true : false
         },
         Button
         {
             //: USB Printing dialog cancel print button
-            text: qsTr("Cancel");
+            text: catalog.i18nc("@action:button","Cancel");
             onClicked: { manager.cancelPrint() }
             enabled: manager.progress == 0 ? false:  true
         }

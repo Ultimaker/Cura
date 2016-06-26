@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.Dialog
 {
@@ -17,15 +17,16 @@ UM.Dialog
     visible: true;
     modality: Qt.ApplicationModal;
 
-    title: "Firmware Update";
+    title: catalog.i18nc("@title:window","Firmware Update");
 
     Column
     {
         anchors.fill: parent;
- 
-        Text
+
+        Label
         {
-            anchors {
+            anchors
+            {
                 left: parent.left;
                 right: parent.right;
             }
@@ -34,44 +35,50 @@ UM.Dialog
                 if (manager.progress == 0)
                 {
                     //: Firmware update status label
-                    return qsTr("Starting firmware update, this may take a while.")
+                    return catalog.i18nc("@label","Starting firmware update, this may take a while.")
                 }
                 else if (manager.progress > 99)
                 {
                     //: Firmware update status label
-                    return qsTr("Firmware update completed.")
+                    return catalog.i18nc("@label","Firmware update completed.")
                 }
                 else
                 {
                     //: Firmware update status label
-                    return qsTr("Updating firmware.")
+                    return catalog.i18nc("@label","Updating firmware.")
                 }
             }
 
             wrapMode: Text.Wrap;
         }
 
-        ProgressBar 
+        ProgressBar
         {
-            id: prog;
+            id: prog
             value: manager.progress
-            minimumValue: 0;
-            maximumValue: 100;
-            anchors {
+            minimumValue: 0
+            maximumValue: 100
+            indeterminate: manager.progress < 100
+            anchors
+            {
                 left: parent.left;
                 right: parent.right;
             }
 
         }
-        
-        SystemPalette {
+
+        SystemPalette
+        {
            id: palette;
         }
+
+        UM.I18nCatalog { id: catalog; name: "cura"; }
     }
 
     rightButtons: [
-        Button {
-            text: "Close";
+        Button
+        {
+            text: catalog.i18nc("@action:button","Close");
             enabled: manager.progress >= 100;
             onClicked: base.visible = false;
         }

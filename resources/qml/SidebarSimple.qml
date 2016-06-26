@@ -6,120 +6,413 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
-Item {
+Item
+{
     id: base;
 
-    anchors.fill: parent;
-    anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-    anchors.rightMargin: UM.Theme.sizes.default_margin.width;
+    signal showTooltip(Item item, point location, string text);
+    signal hideTooltip();
 
     property Action configureSettings;
-
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
+    UM.I18nCatalog { id: catalog; name:"cura"}
 
-    ColumnLayout {
-        anchors.fill: parent;
+    Rectangle{
+        id: infillCellLeft
+        anchors.top: parent.top
+        anchors.left: parent.left
+        width: base.width / 100 * 35 - UM.Theme.getSize("default_margin").width
+        height: childrenRect.height
 
-        Item {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
+        Label{
+            id: infillLabel
+            //: Infill selection label
+            text: catalog.i18nc("@label", "Infill:");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        }
+    }
 
-            Label {
-                anchors.left: parent.left;
-                anchors.verticalCenter: parent.verticalCenter;
-                text: base.minimumPrintTime.valid ? base.minimumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
-                font: UM.Theme.fonts.timeslider_time;
-                color: UM.Theme.colors.primary;
-            }
-            Label {
-                anchors.centerIn: parent;
-                text: {
-                    if (UM.Backend.progress < 0)
+    Flow {
+        id: infillCellRight
+
+        height: childrenRect.height;
+        width: base.width / 100 * 65
+        spacing: UM.Theme.getSize("default_margin").width
+
+        anchors.left: infillCellLeft.right
+        anchors.top: infillCellLeft.top
+
+        Repeater {
+            id: infillListView
+            property int activeIndex: {
+                var density = parseInt(infillDensity.properties.value)
+                for(var i = 0; i < infillModel.count; ++i)
+                {
+                    if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
                     {
-                        //: Sidebar configuration label
-                        return qsTr("No Model Loaded");
-                    }
-                    else if (!base.minimumPrintTime.valid || !base.maximumPrintTime.valid)
-                    {
-                        //: Sidebar configuration label
-                        return qsTr("Calculating...")
-                    }
-                    else
-                    {
-                        //: Sidebar configuration label
-                        return qsTr("Estimated Print Time");
+                        return i;
                     }
                 }
-                color: UM.Theme.colors.text;
-                font: UM.Theme.fonts.default;
+
+                return -1;
             }
-            Label {
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter;
-                text: base.maximumPrintTime.valid ? base.maximumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
-                font: UM.Theme.fonts.timeslider_time;
-                color: UM.Theme.colors.primary;
+            model: infillModel;
+
+            Item {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                Rectangle{
+                    id: infillIconLining
+
+                    width: (infillCellRight.width - 3 * UM.Theme.getSize("default_margin").width) / 4;
+                    height: width
+
+                    border.color: {
+                        if(infillListView.activeIndex == index)
+                        {
+                            return UM.Theme.getColor("setting_control_selected")
+                        }
+                        else if(infillMouseArea.containsMouse)
+                        {
+                            return UM.Theme.getColor("setting_control_border_highlight")
+                        }
+                        return UM.Theme.getColor("setting_control_border")
+                    }
+                    border.width: UM.Theme.getSize("default_lining").width
+                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_selected") : "transparent"
+
+                    UM.RecolorImage {
+                        id: infillIcon
+                        anchors.fill: parent;
+                        anchors.margins: UM.Theme.getSize("infill_button_margin").width
+
+                        sourceSize.width: width
+                        sourceSize.height: width
+                        source: UM.Theme.getIcon(model.icon);
+                        color: (infillListView.activeIndex == index) ? UM.Theme.getColor("text_white") : UM.Theme.getColor("text")
+                    }
+
+                    MouseArea {
+                        id: infillMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {
+                            if (infillListView.activeIndex != index)
+                            {
+                                infillDensity.setPropertyValue("value", model.percentage)
+                            }
+                        }
+                        onEntered: {
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, 0), model.text);
+                        }
+                        onExited: {
+                            base.hideTooltip();
+                        }
+                    }
+                }
+                Label{
+                    id: infillLabel
+                    anchors.top: infillIconLining.bottom
+                    anchors.horizontalCenter: infillIconLining.horizontalCenter
+                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_border")
+                    text: name
+                }
             }
         }
 
-        Slider {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
+        ListModel {
+            id: infillModel
 
-            minimumValue: 0;
-            maximumValue: 100;
+            Component.onCompleted:
+            {
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Hollow"),
+                    percentage: 0,
+                    percentageMin: -1,
+                    percentageMax: 0,
+                    text: catalog.i18nc("@label", "No (0%) infill will leave your model hollow at the cost of low strength"),
+                    icon: "hollow"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Light"),
+                    percentage: 20,
+                    percentageMin: 0,
+                    percentageMax: 30,
+                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
+                    icon: "sparse"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Dense"),
+                    percentage: 50,
+                    percentageMin: 30,
+                    percentageMax: 70,
+                    text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
+                    icon: "dense"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Solid"),
+                    percentage: 100,
+                    percentageMin: 70,
+                    percentageMax: 100,
+                    text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
+                    icon: "solid"
+                })
+            }
+        }
+    }
 
-            value: PrintInformation.timeQualityValue;
-            onValueChanged: PrintInformation.setTimeQualityValue(value);
+    Rectangle {
+        id: helpersCell
+        anchors.top: infillCellRight.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: childrenRect.height
 
-            style: UM.Theme.styles.slider;
+        Label{
+            id: adhesionHelperLabel
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: brimCheckBox.verticalCenter
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            //: Bed adhesion label
+            text: catalog.i18nc("@label:listbox", "Bed Adhesion:");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
 
-        Item {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
+        CheckBox{
+            id: brimCheckBox
+            property alias _hovered: brimMouseArea.containsMouse
 
-            Label {
-                anchors.left: parent.left;
-                anchors.verticalCenter: parent.verticalCenter;
+            anchors.top: parent.top
+            anchors.left: adhesionHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-                //: Quality slider label
-                text: qsTr("Minimum\nDraft");
-                color: UM.Theme.colors.text;
-                font: UM.Theme.fonts.default;
-            }
-
-            Label {
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter;
-
-                //: Quality slider label
-                text: qsTr("Maximum\nQuality");
-                horizontalAlignment: Text.AlignRight;
-                color: UM.Theme.colors.text;
-                font: UM.Theme.fonts.default;
-            }
-        }
-
-        CheckBox {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
-
-            //: Setting checkbox
-            text: qsTr("Enable Support");
-
+            //: Setting enable skirt adhesion checkbox
+            text: catalog.i18nc("@option:check", "Print Brim");
             style: UM.Theme.styles.checkbox;
 
-            checked: Printer.getSettingValue("support_enable");
-            onCheckedChanged: Printer.setSettingValue("support_enable", checked);
+            checked: platformAdhesionType.properties.value == "brim"
+
+            MouseArea {
+                id: brimMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
+                {
+                    platformAdhesionType.setPropertyValue("value", !parent.checked ? "brim" : "skirt")
+                }
+                onEntered:
+                {
+                    base.showTooltip(brimCheckBox, Qt.point(-brimCheckBox.x, 0),
+                        catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
+            }
         }
 
-        Item { Layout.fillWidth: true; Layout.fillHeight: true; }
+        Label{
+            id: supportHelperLabel
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: supportCheckBox.verticalCenter
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            //: Support label
+            text: catalog.i18nc("@label:listbox", "Support:");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        CheckBox{
+            id: supportCheckBox
+            visible: machineExtruderCount.properties.value <= 1
+            property alias _hovered: supportMouseArea.containsMouse
+
+            anchors.top: brimCheckBox.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: supportHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+            //: Setting enable support checkbox
+            text: catalog.i18nc("@option:check", "Print Support Structure");
+            style: UM.Theme.styles.checkbox;
+
+            checked: supportEnabled.properties.value == "True"
+            MouseArea {
+                id: supportMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
+                {
+                    supportEnabled.setPropertyValue("value", !parent.checked)
+                }
+                onEntered:
+                {
+                    base.showTooltip(supportCheckBox, Qt.point(-supportCheckBox.x, 0),
+                        catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
+            }
+        }
+
+        ComboBox {
+            id: supportExtruderCombobox
+            visible: machineExtruderCount.properties.value > 1
+            model: extruderModel
+
+            anchors.top: brimCheckBox.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: supportHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 45
+
+            style: UM.Theme.styles.combobox
+            property alias _hovered: supportExtruderMouseArea.containsMouse
+
+            currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
+            onActivated: {
+                if(index==0) {
+                    supportEnabled.setPropertyValue("value", false);
+                } else {
+                    supportEnabled.setPropertyValue("value", true);
+                    supportExtruderNr.setPropertyValue("value", index - 1);
+                }
+            }
+            MouseArea {
+                id: supportExtruderMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                acceptedButtons: Qt.NoButton
+                onEntered:
+                {
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
+            }
+        }
+
+        ListModel {
+            id: extruderModel
+            Component.onCompleted: populateExtruderModel()
+        }
+
+        //: Invisible list used to populate the extrudelModel
+        ListView
+        {
+            id: extruders
+            model: Cura.ExtrudersModel { onModelChanged: populateExtruderModel() }
+            visible: false
+        }
+    }
+
+    function populateExtruderModel()
+    {
+        extruderModel.clear();
+        extruderModel.append({
+            text: catalog.i18nc("@label", "Don't print support"),
+            color: ""
+        })
+        for(var extruderNumber = 0; extruderNumber < extruders.model.rowCount() ; extruderNumber++) {
+            extruderModel.append({
+                text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNumber).name),
+                color: extruders.model.getItem(extruderNumber).colour
+            })
+        }
+    }
+
+    Rectangle {
+        id: tipsCell
+        anchors.top: helpersCell.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.left: parent.left
+        width: parent.width
+        height: childrenRect.height
+
+        Label{
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            wrapMode: Text.WordWrap
+            //: Tips label
+            text: catalog.i18nc("@label", "Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            linkColor: UM.Theme.getColor("text_link")
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillDensity
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "infill_sparse_density"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: platformAdhesionType
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "adhesion_type"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: supportEnabled
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_enable"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+    UM.SettingPropertyProvider
+    {
+        id: supportExtruderNr
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_extruder_nr"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 }

@@ -4,59 +4,107 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform
+from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
-from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Mesh.WriteMeshJob import WriteMeshJob
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
-from UM.Message import Message
-from UM.PluginRegistry import PluginRegistry
+from UM.Platform import Platform
 from UM.JobQueue import JobQueue
-from UM.Math.Polygon import Polygon
-
-from UM.Scene.BoxRenderer import BoxRenderer
+from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+import UM.Settings.Validator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from cura.SetParentOperation import SetParentOperation
+
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
+from . import ExtruderManager
+from . import ExtrudersModel
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
+from . import MultiMaterialDecorator
+from . import ZOffsetDecorator
+from . import CuraSplashScreen
+from . import MachineManagerModel
+from . import ContainerSettingsModel
+from . import MachineActionManager
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import platform
 import sys
-import os
 import os.path
-import configparser
 import numpy
+import copy
+import urllib
 numpy.seterr(all="ignore")
 
+#WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
+if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
+    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
+    if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
+        import ctypes
+        from ctypes.util import find_library
+        ctypes.CDLL(find_library('GL'), ctypes.RTLD_GLOBAL)
+
+try:
+    from cura.CuraVersion import CuraVersion, CuraBuildType
+except ImportError:
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
+
+
 class CuraApplication(QtApplication):
+    class ResourceTypes:
+        QmlFiles = Resources.UserType + 1
+        Firmware = Resources.UserType + 2
+        QualityInstanceContainer = Resources.UserType + 3
+        MaterialInstanceContainer = Resources.UserType + 4
+        VariantInstanceContainer = Resources.UserType + 5
+        UserInstanceContainer = Resources.UserType + 6
+        MachineStack = Resources.UserType + 7
+        ExtruderStack = Resources.UserType + 8
+
+    Q_ENUMS(ResourceTypes)
+
     def __init__(self):
-        Resources.addResourcePath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
+        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
-        super().__init__(name = "cura", version = "master")
+        self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
-        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
+        # Need to do this before ContainerRegistry tries to load the machines
+        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+
+        self._machine_action_manager = MachineActionManager.MachineActionManager()
+
+        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
+
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -66,25 +114,121 @@ class CuraApplication(QtApplication):
             "SelectionTool",
             "CameraTool",
             "GCodeWriter",
-            "LocalFileStorage"
+            "LocalFileOutputDevice"
         ])
         self._physics = None
         self._volume = None
         self._platform = None
         self._output_devices = {}
         self._print_information = None
-        self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
+        self._scene_bounding_box = AxisAlignedBox.Null
 
-        self.activeMachineChanged.connect(self._onActiveMachineChanged)
+        self._job_name = None
+        self._center_after_select = False
+        self._camera_animation = None
+        self._cura_actions = None
+        self._started = False
 
-        Preferences.getInstance().addPreference("cura/active_machine", "")
+        self._i18n_catalog = i18nCatalog("cura")
+
+        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
+
+        Resources.addType(self.ResourceTypes.QmlFiles, "qml")
+        Resources.addType(self.ResourceTypes.Firmware, "firmware")
+
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
+
+        ## Add the 4 types of profiles to storage.
+        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
+        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
+        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
+        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+
+        # Add empty variant, material and quality containers.
+        # Since they are empty, they should never be serialized and instead just programmatically created.
+        # We need them to simplify the switching between materials.
+        empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        empty_variant_container = copy.deepcopy(empty_container)
+        empty_variant_container._id = "empty_variant"
+        empty_variant_container.addMetaDataEntry("type", "variant")
+        ContainerRegistry.getInstance().addContainer(empty_variant_container)
+        empty_material_container = copy.deepcopy(empty_container)
+        empty_material_container._id = "empty_material"
+        empty_material_container.addMetaDataEntry("type", "material")
+        ContainerRegistry.getInstance().addContainer(empty_material_container)
+        empty_quality_container = copy.deepcopy(empty_container)
+        empty_quality_container._id = "empty_quality"
+        empty_quality_container.addMetaDataEntry("type", "quality")
+        ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
+        ContainerRegistry.getInstance().load()
+
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
+        Preferences.getInstance().addPreference("cura/jobname_prefix", True)
+        Preferences.getInstance().addPreference("view/center_on_select", True)
+        Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
+        Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
+        Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
+
+        Preferences.getInstance().setDefault("general/visible_settings", """
+            machine_settings
+                resolution
+                layer_height
+            shell
+                wall_thickness
+                top_bottom_thickness
+            infill
+                infill_sparse_density
+            material
+                material_print_temperature
+                material_bed_temperature
+                material_diameter
+                material_flow
+                retraction_enable
+            speed
+                speed_print
+                speed_travel
+                acceleration_print
+                acceleration_travel
+                jerk_print
+                jerk_travel
+            travel
+            cooling
+                cool_fan_enabled
+            support
+                support_enable
+                support_type
+                support_roof_density
+            platform_adhesion
+                adhesion_type
+                brim_width
+                raft_airgap
+                layer_0_z_overlap
+                raft_surface_layers
+            meshfix
+            blackmagic
+                print_sequence
+                dual
+            experimental
+        """.replace("\n", ";").replace(" ", ""))
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
+
+        self.applicationShuttingDown.connect(self.saveSettings)
 
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
@@ -93,110 +237,198 @@ class CuraApplication(QtApplication):
                 continue
 
             self._recent_files.append(QUrl.fromLocalFile(f))
+
+    ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
+    #
+    #   Note that the AutoSave plugin also calls this method.
+    def saveSettings(self):
+        if not self._started: # Do not do saving during application start
+            return
+
+        for instance in ContainerRegistry.getInstance().findInstanceContainers():
+            if not instance.isDirty():
+                continue
+
+            try:
+                data = instance.serialize()
+            except NotImplementedError:
+                continue
+            except Exception:
+                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                continue
+
+            file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
+            instance_type = instance.getMetaDataEntry("type")
+            path = None
+            if instance_type == "material":
+                path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
+            elif instance_type == "quality":
+                path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
+            elif instance_type == "user":
+                path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
+            elif instance_type == "variant":
+                path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+
+            if path:
+                with SaveFile(path, "wt", -1, "utf-8") as f:
+                    f.write(data)
+
+        for stack in ContainerRegistry.getInstance().findContainerStacks():
+            if not stack.isDirty():
+                continue
+
+            try:
+                data = stack.serialize()
+            except NotImplementedError:
+                continue
+            except Exception:
+                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                continue
+
+            file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
+            stack_type = stack.getMetaDataEntry("type", None)
+            path = None
+            if not stack_type or stack_type == "machine":
+                path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+            elif stack_type == "extruder_train":
+                path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
+            if path:
+                with SaveFile(path, "wt", -1, "utf-8") as f:
+                    f.write(data)
+
+
+    @pyqtSlot(result = QUrl)
+    def getDefaultPath(self):
+        return QUrl.fromLocalFile(os.path.expanduser("~/"))
     
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
+        self._plugin_registry.addType("profile_reader", self._addProfileReader)
+        self._plugin_registry.addType("profile_writer", self._addProfileWriter)
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
+            self._plugin_registry.loadPlugin("ConsoleLogger")
+            self._plugin_registry.loadPlugin("CuraEngineBackend")
 
-        self._plugin_registry.loadPlugins({ "type": "logger"})
-        self._plugin_registry.loadPlugins({ "type": "storage_device" })
-        self._plugin_registry.loadPlugins({ "type": "view" })
-        self._plugin_registry.loadPlugins({ "type": "mesh_reader" })
-        self._plugin_registry.loadPlugins({ "type": "mesh_writer" })
-        self._plugin_registry.loadPlugins({ "type": "tool" })
-        self._plugin_registry.loadPlugins({ "type": "extension" })
+        self._plugin_registry.loadPlugins()
 
-        self._plugin_registry.loadPlugin("CuraEngineBackend")
+        if self.getBackend() == None:
+            raise RuntimeError("Could not load the backend plugin!")
+
+        self._plugins_loaded = True
 
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+        parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        self._i18n_catalog = i18nCatalog("cura");
-
-        self.addOutputDevice("local_file", {
-            "id": "local_file",
-            "function": self._writeToLocalFile,
-            "description": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
-            "shortDescription": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
-            "icon": "save",
-            "priority": 0
-        })
-
-        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
 
-        controller.setActiveView("MeshView")
+        controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
         t = controller.getTool("TranslateTool")
         if t:
-            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.ZAxis])
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis,ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Platform(root)
+        self._platform = Scene_Platform(root)
 
         self._volume = BuildVolume.BuildVolume(root)
 
-        self.getRenderer().setLightPosition(Vector(0, 150, 0))
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-150, 150, 300))
+        camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
+        controller.getScene().setActiveCamera("3d")
+
+        self.getController().getTool("CameraTool").setOrigin(Vector(0, 100, 0))
 
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
 
-        controller.getScene().setActiveCamera("3d")
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
+        # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
+        ExtruderManager.ExtruderManager.getInstance()
+        qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
+                                 MachineManagerModel.createMachineManagerModel)
 
-        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Cura.qml"))
+        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+        self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
+        self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
 
-        self.getStorageDevice("LocalFileStorage").removableDrivesChanged.connect(self._removableDrivesChanged)
-
-        if self.getMachines():
-            active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
-            if active_machine_pref:
-                for machine in self.getMachines():
-                    if machine.getName() == active_machine_pref:
-                        self.setActiveMachine(machine)
-
-            if not self.getActiveMachine():
-                self.setActiveMachine(self.getMachines()[0])
-        else:
-            self.requestAddPrinter.emit()
-
-        self._removableDrivesChanged()
         if self._engine.rootObjects:
             self.closeSplash()
 
             for file in self.getCommandLineOption("file", []):
-                job = ReadMeshJob(os.path.abspath(file))
-                job.finished.connect(self._onFileLoaded)
-                job.start()
+                self._openFile(file)
+            for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
+                self._openFile(file_name)
+
+            self._started = True
 
             self.exec_()
 
+    ##  Get the machine action manager
+    #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
+    #   It wants to give this function an engine and script engine, but we don't care about that.
+    def getMachineActionManager(self, *args):
+        return self._machine_action_manager
+
+    ##   Handle Qt events
+    def event(self, event):
+        if event.type() == QEvent.FileOpen:
+            if self._plugins_loaded:
+                self._openFile(event.file())
+            else:
+                self._open_file_queue.append(event.file())
+
+        return super().event(event)
+
+    ##  Get print information (duration / material used)
+    def getPrintInformation(self):
+        return self._print_information
+
+    ##  Registers objects for the QML engine to use.
+    #
+    #   \param engine The QML engine.
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         self._cura_actions = CuraActions.CuraActions(self)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
+
+        qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
+
+        qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+
+        qmlRegisterType(ContainerSettingsModel.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+
+        qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+
+        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.ExtruderManager.getInstance())
+
+        for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
+            type_name = os.path.splitext(os.path.basename(path))[0]
+            if type_name in ("Cura", "Actions"):
+                continue
+
+            qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
@@ -206,10 +438,8 @@ class CuraApplication(QtApplication):
                     self._previous_active_tool = None
                 else:
                     self.getController().setActiveTool("TranslateTool")
-
-            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
-            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
-            self._camera_animation.start()
+            if Preferences.getInstance().getValue("view/center_on_select"):
+                self._center_after_select = True
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
@@ -217,91 +447,142 @@ class CuraApplication(QtApplication):
             else:
                 self._previous_active_tool = None
 
+    def _onToolOperationStopped(self, event):
+        if self._center_after_select:
+            self._center_after_select = False
+            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
+            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
+            self._camera_animation.start()
+
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
+    sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def getPlatformActivity(self):
         return self._platform_activity
 
-    @pyqtSlot(bool)
-    def setPlatformActivity(self, activity):
-        ##Sets the _platform_activity variable on true or false depending on whether there is a mesh on the platform
-        if activity == True:
-            self._platform_activity = activity
-        elif activity == False:
-            nodes = []
-            for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-                if type(node) is not SceneNode or not node.getMeshData():
-                    continue
-                nodes.append(node)
-            i = 0
-            for node in nodes:
-                if not node.getMeshData():
-                    continue
-                i += 1
-            if i <= 1: ## i == 0 when the meshes are removed using the deleteAll function; i == 1 when the last remaining mesh is removed using the deleteObject function
-                self._platform_activity = activity
+    @pyqtProperty(str, notify = sceneBoundingBoxChanged)
+    def getSceneBoundingBoxString(self):
+        return self._i18n_catalog.i18nc("@info", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
+
+    def updatePlatformActivity(self, node = None):
+        count = 0
+        scene_bounding_box = None
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+
+            count += 1
+            if not scene_bounding_box:
+                scene_bounding_box = node.getBoundingBox()
+            else:
+                other_bb = node.getBoundingBox()
+                if other_bb is not None:
+                    scene_bounding_box = scene_bounding_box + node.getBoundingBox()
+
+        if not scene_bounding_box:
+            scene_bounding_box = AxisAlignedBox.Null
+
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+            self._scene_bounding_box = scene_bounding_box
+            self.sceneBoundingBoxChanged.emit()
+
+        self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
 
-    ##  Remove an object from the scene
+    # Remove all selected objects from the scene.
+    @pyqtSlot()
+    def deleteSelection(self):
+        if not self.getController().getToolsEnabled():
+            return
+
+        op = GroupedOperation()
+        nodes = Selection.getAllSelectedObjects()
+        for node in nodes:
+            op.addOperation(RemoveSceneNodeOperation(node))
+
+        op.push()
+
+        pass
+
+    ##  Remove an object from the scene.
+    #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
-        object = self.getController().getScene().findObject(object_id)
+        if not self.getController().getToolsEnabled():
+            return
 
-        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
-            object = Selection.getSelectedObject(0)
-        
-        if object:
-            if object.getParent():
-                group_node = object.getParent()
+        node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
+
+        if node:
+            if node.getParent():
+                group_node = node.getParent()
                 if not group_node.callDecoration("isGroup"):
-                    op = RemoveSceneNodeOperation(object)
+                    op = RemoveSceneNodeOperation(node)
                 else:
                     while group_node.getParent().callDecoration("isGroup"):
                         group_node = group_node.getParent()
                     op = RemoveSceneNodeOperation(group_node)
             op.push()
-            self.setPlatformActivity(False)
-    
+
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
 
-        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
         if node:
             op = GroupedOperation()
-            for i in range(count):
-                new_node = SceneNode()
-                new_node.setMeshData(node.getMeshData())
-                new_node.setScale(node.getScale())
-                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, 0, 0))
-                new_node.setSelectable(True)
-                op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+            for _ in range(count):
+                if node.getParent() and node.getParent().callDecoration("isGroup"):
+                    new_node = copy.deepcopy(node.getParent()) #Copy the group node.
+                    new_node.callDecoration("setConvexHull",None)
+
+                    op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
+                else:
+                    new_node = copy.deepcopy(node)
+                    new_node.callDecoration("setConvexHull", None)
+                    op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+
             op.push()
-    
+
     ##  Center object on platform.
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-
-        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
+
+        if not node:
+            return
+
+        if node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
 
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
     
-    ##  Delete all mesh data on the scene.
+    ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):
+        if not self.getController().getToolsEnabled():
+            return
+
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
         if nodes:
             op = GroupedOperation()
@@ -310,22 +591,26 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
-        self.setPlatformActivity(False)
-    
+
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
     def resetAllTranslation(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+
             nodes.append(node)
 
         if nodes:
             op = GroupedOperation()
-
             for node in nodes:
-                op.addOperation(SetTransformOperation(node, Vector()))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
 
             op.push()
     
@@ -334,15 +619,21 @@ class CuraApplication(QtApplication):
     def resetAll(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
 
         if nodes:
             op = GroupedOperation()
 
             for node in nodes:
-                op.addOperation(SetTransformOperation(node, Vector(), Quaternion(), Vector(1, 1, 1)))
+                # Ensure that the object is above the build platform
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
@@ -372,7 +663,7 @@ class CuraApplication(QtApplication):
     
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data
-    @pyqtSlot(result=str)
+    @pyqtSlot(result = str)
     def getEngineLog(self):
         log = ""
 
@@ -382,6 +673,7 @@ class CuraApplication(QtApplication):
         return log
 
     recentFilesChanged = pyqtSignal()
+
     @pyqtProperty("QVariantList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
@@ -396,202 +688,88 @@ class CuraApplication(QtApplication):
             self.expandedCategoriesChanged.emit()
 
     expandedCategoriesChanged = pyqtSignal()
+
     @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
-    outputDevicesChanged = pyqtSignal()
-    
-    @pyqtProperty("QVariantMap", notify = outputDevicesChanged)
-    def outputDevices(self):
-        return self._output_devices
-
-    @pyqtProperty("QStringList", notify = outputDevicesChanged)
-    def outputDeviceNames(self):
-        return self._output_devices.keys()
-
-    @pyqtSlot(str, result = "QVariant")
-    def getSettingValue(self, key):
-        if not self.getActiveMachine():
-            return None
-
-        return self.getActiveMachine().getSettingValueByKey(key)
-    
-    ##  Change setting by key value pair
-    @pyqtSlot(str, "QVariant")
-    def setSettingValue(self, key, value):
-        if not self.getActiveMachine():
+    @pyqtSlot()
+    def mergeSelected(self):
+        self.groupSelected()
+        try:
+            group_node = Selection.getAllSelectedObjects()[0]
+        except Exception as e:
+            Logger.log("d", "mergeSelected: Exception:", e)
             return
+        multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
+        group_node.addDecorator(multi_material_decorator)
+        # Reset the position of each node
+        for node in group_node.getChildren():
+            new_position = node.getMeshData().getCenterPosition()
+            new_position = new_position.scale(node.getScale())
+            node.setPosition(new_position)
+        
+        # Use the previously found center of the group bounding box as the new location of the group
+        group_node.setPosition(group_node.getBoundingBox().center)
 
-        self.getActiveMachine().setSettingValueByKey(key, value)
-        
-        
     @pyqtSlot()
     def groupSelected(self):
+        # Create a group-node
         group_node = SceneNode()
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.setParent(self.getController().getScene().getRoot())
-        
-        for node in Selection.getAllSelectedObjects():
-            node.setParent(group_node)
-        
+        group_node.setSelectable(True)
+        center = Selection.getSelectionCenter()
+        group_node.setPosition(center)
+        group_node.setCenterPosition(center)
+
+        # Move selected nodes into the group-node
+        Selection.applyOperation(SetParentOperation, group_node)
+
+        # Deselect individual nodes and select the group-node instead
         for node in group_node.getChildren():
             Selection.remove(node)
-        
         Selection.add(group_node)
-    
+
     @pyqtSlot()
     def ungroupSelected(self):
-        ungrouped_nodes = []
-        selected_objects = Selection.getAllSelectedObjects()[:] #clone the list
+        selected_objects = Selection.getAllSelectedObjects().copy()
         for node in selected_objects:
-            if node.callDecoration("isGroup" ):
-                children_to_move = []
-                for child in node.getChildren():
-                    if type(child) is SceneNode:
-                        children_to_move.append(child)
-                       
-                for child in children_to_move:
-                    child.setParent(node.getParent())
+            if node.callDecoration("isGroup"):
+                op = GroupedOperation()
+
+                group_parent = node.getParent()
+                children = node.getChildren().copy()
+                for child in children:
+                    # Set the parent of the children to the parent of the group-node
+                    op.addOperation(SetParentOperation(child, group_parent))
+
+                    # Add all individual nodes to the selection
                     Selection.add(child)
-                    child.callDecoration("setConvexHull",None)
-                node.setParent(None)
-                ungrouped_nodes.append(node)
-        for node in ungrouped_nodes:
-            Selection.remove(node)
 
-    ##  Add an output device that can be written to.
-    #
-    #   \param id \type{string} The identifier used to identify the device.
-    #   \param device \type{StorageDevice} A dictionary of device information.
-    #                 It should contains the following:
-    #                 - function: A function to be called when trying to write to the device. Will be passed the device id as first parameter.
-    #                 - description: A translated string containing a description of what happens when writing to the device.
-    #                 - icon: The icon to use to represent the device.
-    #                 - priority: The priority of the device. The device with the highest priority will be used as the default device.
-    def addOutputDevice(self, id, device):
-        self._output_devices[id] = device
-        self.outputDevicesChanged.emit()
-    
-    ##  Remove output device
-    #   \param id \type{string} The identifier used to identify the device.
-    #   \sa PrinterApplication::addOutputDevice()
-    def removeOutputDevice(self, id):
-        if id in self._output_devices:
-            del self._output_devices[id]
-            self.outputDevicesChanged.emit()
+                op.push()
+                # Note: The group removes itself from the scene once all its children have left it,
+                # see GroupDecorator._onChildrenChanged
 
-    @pyqtSlot(str)
-    def writeToOutputDevice(self, device):
-        self._output_devices[device]["function"](device)
-
-    writeToLocalFileRequested = pyqtSignal()
-    
-    def _writeToLocalFile(self, device):
-        self.writeToLocalFileRequested.emit()
-
-    def _writeToSD(self, device):
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
-                continue
-
-            try:
-                path = self.getStorageDevice("LocalFileStorage").getRemovableDrives()[device]
-            except KeyError:
-                Logger.log("e", "Tried to write to unknown SD card %s", device)
-                return
-    
-            filename = os.path.join(path, node.getName()[0:node.getName().rfind(".")] + ".gcode")
-
-            message = Message(self._output_devices[device]["description"], 0, False, -1)
-            message.show()
-
-            job = WriteMeshJob(filename, node.getMeshData())
-            job._sdcard = device
-            job._message = message
-            job.start()
-            job.finished.connect(self._onWriteToSDFinished)
-
-            return
-
-    def _removableDrivesChanged(self):
-        drives = self.getStorageDevice("LocalFileStorage").getRemovableDrives()
-        for drive in drives:
-            if drive not in self._output_devices:
-                self.addOutputDevice(drive, {
-                    "id": drive,
-                    "function": self._writeToSD,
-                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
-                    "shortDescription": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(""),
-                    "icon": "save_sd",
-                    "priority": 1
-                })
-
-        drives_to_remove = []
-        for device in self._output_devices:
-            if device not in drives:
-                if self._output_devices[device]["function"] == self._writeToSD:
-                    drives_to_remove.append(device)
-
-        for drive in drives_to_remove:
-            self.removeOutputDevice(drive)
+    def _createSplashScreen(self):
+        return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
-        machine = self.getActiveMachine()
-        if machine:
-            Preferences.getInstance().setValue("cura/active_machine", machine.getName())
+        pass
 
-            self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
-            self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
-            self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
-
-            disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
-            areas = []
-            if disallowed_areas:
-                for area in disallowed_areas:
-                    areas.append(Polygon(numpy.array(area, numpy.float32)))
-
-            self._volume.setDisallowedAreas(areas)
-
-            self._volume.rebuild()
-
-            offset = machine.getSettingValueByKey("machine_platform_offset")
-            if offset:
-                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
-            else:
-                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
-
-    def _onWriteToSDFinished(self, job):
-        message = Message(self._i18n_catalog.i18nc("Saved to SD message, {0} is sdcard, {1} is filename", "Saved to SD Card {0} as {1}").format(job._sdcard, job.getFileName()))
-        message.addAction(
-            "eject",
-            self._i18n_catalog.i18nc("Message action", "Eject"),
-            "eject",
-            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
-        )
-
-        job._message.hide()
-
-        message._sdcard = job._sdcard
-        message.actionTriggered.connect(self._onMessageActionTriggered)
-        message.show()
-
-    def _onMessageActionTriggered(self, message, action):
-        if action == "eject":
-            self.getStorageDevice("LocalFileStorage").ejectRemovableDrive(message._sdcard)
+    fileLoaded = pyqtSignal(str)
 
     def _onFileLoaded(self, job):
-        mesh = job.getResult()
-        if mesh != None:
-            node = SceneNode()
-
+        node = job.getResult()
+        if node != None:
+            self.fileLoaded.emit(job.getFileName())
             node.setSelectable(True)
-            node.setMeshData(mesh)
             node.setName(os.path.basename(job.getFileName()))
-
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
+
+            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
@@ -613,4 +791,21 @@ class CuraApplication(QtApplication):
         self.recentFilesChanged.emit()
 
     def _reloadMeshFinished(self, job):
-        job._node.setMeshData(job.getResult())
+        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
+        job._node.setMeshData(job.getResult().getMeshData())
+
+    def _openFile(self, file):
+        job = ReadMeshJob(os.path.abspath(file))
+        job.finished.connect(self._onFileLoaded)
+        job.start()
+
+    def _addProfileReader(self, profile_reader):
+        # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
+        pass
+
+    def _addProfileWriter(self, profile_writer):
+        pass
+
+    @pyqtSlot("QSize")
+    def setMinimumWindowSize(self, size):
+        self.getMainWindow().setMinimumSize(size)

@@ -2,7 +2,34 @@
 project(cura)
 cmake_minimum_required(VERSION 2.8.12)
 
+include(GNUInstallDirs)
+
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
+
+# Tests
+# Note that we use exit 0 here to not mark the build as a failure on test failure
+add_custom_target(tests)
+add_custom_command(TARGET tests POST_BUILD COMMAND "PYTHONPATH=${CMAKE_SOURCE_DIR}/../Uranium/:${CMAKE_SOURCE_DIR}" ${PYTHON_EXECUTABLE} -m pytest -r a --junitxml=${CMAKE_BINARY_DIR}/junit.xml ${CMAKE_SOURCE_DIR} || exit 0)
+
+
+set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
+set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
+configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
+
+# Macro needed to list all sub-directory of a directory.
+# There is no function in cmake as far as I know.
+# Found at: http://stackoverflow.com/a/7788165
+MACRO(SUBDIRLIST result curdir)
+  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${curdir}/${child})
+        STRING(REPLACE "/" "" child ${child})
+        LIST(APPEND dirlist ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
 
 if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     # Extract Strings
@@ -10,61 +37,59 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
 
     # Build Translations
     find_package(Gettext)
-    include(${URANIUM_SCRIPTS_DIR}/ECMPoQmTools.cmake)
-
     if(GETTEXT_FOUND)
         # translations target will convert .po files into .mo and .qm as needed.
         # The files are checked for a _qt suffix and if it is found, converted to
         # qm, otherwise they are converted to .po.
-        add_custom_target(translations)
+        add_custom_target(translations ALL)
         # copy-translations can be used to copy the built translation files from the
         # build directory to the source resources directory. This is mostly a convenience
         # during development, normally you want to simply use the install target to install
         # the files along side the rest of the application.
-        add_custom_target(copy-translations)
 
-        #TODO: Properly install the built files. This should be done after we move the applications out of the Uranium repo.
-        set(languages
-            en
-            x-test
-            ru
-            fr
-            de
-            it
-            es
-            fi
-        )
+        SUBDIRLIST(languages ${CMAKE_SOURCE_DIR}/resources/i18n/)
         foreach(lang ${languages})
-            file(GLOB po_files resources/i18n/${lang}/*.po)
-            foreach(file ${po_files})
-                string(REGEX MATCH "qt\\.po$" match "${file}")
-                if(match)
-                    ecm_process_po_files_as_qm(${lang} PO_FILES ${file})
-                else()
-                    string(REGEX REPLACE ".*/(.*).po" "${lang}/\\1.mo" mofile ${file})
-                    add_custom_command(TARGET translations POST_BUILD COMMAND mkdir ARGS -p ${lang} COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ARGS ${file} -o ${mofile})
-                endif()
-            endforeach()
-
-            file(GLOB qm_files ${CMAKE_BINARY_DIR}/${lang}/*.qm)
-            file(GLOB mo_files ${CMAKE_BINARY_DIR}/${lang}/*.mo)
-            foreach(file ${qm_files} ${mo_files})
-                add_custom_command(TARGET copy-translations POST_BUILD COMMAND mkdir ARGS -p ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMAND cp ARGS ${file} ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMENT "Copying ${file}...")
+            file(GLOB po_files ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/*.po)
+            foreach(po_file ${po_files})
+                string(REGEX REPLACE ".*/(.*).po" "${CMAKE_BINARY_DIR}/resources/i18n/${lang}/LC_MESSAGES/\\1.mo" mo_file ${po_file})
+                add_custom_command(TARGET translations POST_BUILD COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ARGS ${po_file} -o ${mo_file} -f)
             endforeach()
         endforeach()
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/resources
+                DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
     endif()
 endif()
 
-include(GNUInstallDirs)
 find_package(PythonInterp 3.4.0 REQUIRED)
 
-install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
-install(DIRECTORY plugins DESTINATION lib/cura)
-install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(DIRECTORY resources
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
+install(DIRECTORY plugins
+        DESTINATION lib/cura)
 if(NOT APPLE AND NOT WIN32)
-    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages)
-    install(FILES cura.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+    install(FILES cura_app.py
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+            RENAME cura)
+    install(DIRECTORY cura
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages
+            FILES_MATCHING PATTERN *.py)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
+    install(FILES cura.desktop
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+    install(FILES cura.sharedmimeinfo
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
+            RENAME cura.xml )
 else()
-    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
+    install(FILES cura_app.py
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(DIRECTORY cura
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+            FILES_MATCHING PATTERN *.py)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
 
+include(CPackConfig.cmake)

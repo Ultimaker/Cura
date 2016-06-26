@@ -8,12 +8,14 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Rectangle {
+UM.PointingRectangle {
     id: base;
 
-    width: UM.Theme.sizes.tooltip.width;
-    height: label.height + UM.Theme.sizes.tooltip_margins.height * 2;
-    color: UM.Theme.colors.tooltip;
+    width: UM.Theme.getSize("tooltip").width;
+    height: label.height + UM.Theme.getSize("tooltip_margins").height * 2;
+    color: UM.Theme.getColor("tooltip");
+
+    arrowSize: UM.Theme.getSize("default_arrow").width
 
     opacity: 0;
     Behavior on opacity { NumberAnimation { duration: 100; } }
@@ -26,9 +28,10 @@ Rectangle {
             y = parent.height - base.height;
         } else {
             x = position.x - base.width;
-            y = position.y;
+            y = position.y - UM.Theme.getSize("tooltip_arrow_margins").height;
         }
         base.opacity = 1;
+        target = Qt.point(40 , position.y + UM.Theme.getSize("tooltip_arrow_margins").height / 2)
     }
 
     function hide() {
@@ -39,13 +42,14 @@ Rectangle {
         id: label;
         anchors {
             top: parent.top;
-            topMargin: UM.Theme.sizes.tooltip_margins.height;
+            topMargin: UM.Theme.getSize("tooltip_margins").height;
             left: parent.left;
-            leftMargin: UM.Theme.sizes.tooltip_margins.width;
+            leftMargin: UM.Theme.getSize("tooltip_margins").width;
             right: parent.right;
-            rightMargin: UM.Theme.sizes.tooltip_margins.width;
+            rightMargin: UM.Theme.getSize("tooltip_margins").width;
         }
         wrapMode: Text.Wrap;
-        font: UM.Theme.fonts.default;
+        font: UM.Theme.getFont("default");
+        color: UM.Theme.getColor("tooltip_text");
     }
 }

@@ -5,149 +5,115 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 QtObject {
     property Component sidebar_header_button: Component {
         ButtonStyle {
-            background: Item {
+            background: Rectangle {
+                color: control.enabled ? Theme.getColor("setting_control") : Theme.getColor("setting_control_disabled")
+                border.width: Theme.getSize("default_lining").width
+                border.color: !control.enabled ? Theme.getColor("setting_control_disabled_border") :
+                                control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border")
+                UM.RecolorImage {
+                    id: downArrow
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.getSize("default_margin").width
+                    width: Theme.getSize("standard_arrow").width
+                    height: Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: control.enabled ? Theme.getColor("setting_category_text") : Theme.getColor("setting_control_disabled_text")
+                    source: Theme.getIcon("arrow_bottom")
+                }
                 Label {
-                    anchors.right: parent.right;
-                    anchors.top: parent.top;
-
-                    text: "▼";
-
-                    property bool down: control.pressed || (control.checkable && control.checked);
-                    color: down ? UM.Theme.colors.text_pressed : control.hovered ? UM.Theme.colors.text_hover : UM.Theme.colors.text;
+                    id: sidebarComboBoxLabel
+                    color: control.enabled ? Theme.getColor("setting_control_text") : Theme.getColor("setting_control_disabled_text")
+                    text: control.text;
+                    elide: Text.ElideRight;
+                    anchors.left: parent.left;
+                    anchors.leftMargin: Theme.getSize("setting_unit_margin").width
+                    anchors.right: downArrow.left;
+                    anchors.rightMargin: control.rightMargin;
+                    anchors.verticalCenter: parent.verticalCenter;
+                    font: Theme.getFont("default")
                 }
             }
-
-            label: Label {
-                property bool down: control.pressed || (control.checkable && control.checked);
-
-                font: UM.Theme.fonts.sidebar_header;
-                color: down ? UM.Theme.colors.text_pressed : control.hovered ? UM.Theme.colors.text_hover : UM.Theme.colors.text;
-
-                text: control.text;
-
-                elide: Text.ElideRight;
-            }
-        }
-    }
-
-     property Component open_file_button: Component {
-        ButtonStyle {
-            background: Item {
-                implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.height;
-
-                Rectangle {
-                    anchors.bottom: parent.verticalCenter;
-                    width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 100; } }
-
-                    opacity: control.hovered ? 1.0 : 0.0;
-                    Behavior on opacity { NumberAnimation { duration: 100; } }
-
-                    Label {
-                        id: label;
-                        anchors.horizontalCenter: parent.horizontalCenter;
-                        text: control.text.replace("&", "");
-                        font: UM.Theme.fonts.button_tooltip;
-                        color: UM.Theme.colors.button_tooltip_text;
-                    }
-                }
-
-                UM.AngledCornerRectangle {
-                    anchors.fill: parent;
-                    color: {
-                        if(control.hovered) {
-                            return UM.Theme.colors.button_active_hover;
-                        } else {
-                            return UM.Theme.colors.button_active;
-                        }
-                    }
-                    Behavior on color { ColorAnimation { duration: 50; } }
-                    cornerSize: UM.Theme.sizes.default_margin.width;
-                }
-            }
-
-            label: Item {
-                Image {
-                    anchors.centerIn: parent;
-
-                    source: control.iconSource;
-                    width: UM.Theme.sizes.button_icon.width;
-                    height: UM.Theme.sizes.button_icon.height;
-
-                    sourceSize: UM.Theme.sizes.button_icon;
-                }
-            }
+            label: Label{}
         }
     }
 
     property Component tool_button: Component {
         ButtonStyle {
             background: Item {
-                implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.height;
+                implicitWidth: Theme.getSize("button").width;
+                implicitHeight: Theme.getSize("button").height;
 
-                Rectangle {
-                    anchors.bottom: parent.verticalCenter;
+                UM.PointingRectangle {
+                    id: button_tooltip
 
-                    width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 100; } }
+                    anchors.left: parent.right
+                    anchors.leftMargin: Theme.getSize("button_tooltip_arrow").width * 2
+                    anchors.verticalCenter: parent.verticalCenter
 
+                    target: Qt.point(parent.x, y + height/2)
+                    arrowSize: Theme.getSize("button_tooltip_arrow").width
+                    color: Theme.getColor("tooltip")
                     opacity: control.hovered ? 1.0 : 0.0;
+
+                    width: control.hovered ? button_tip.width + Theme.getSize("button_tooltip").width : 0
+                    height: Theme.getSize("button_tooltip").height
+
+                    Behavior on width { NumberAnimation { duration: 100; } }
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
-                    Rectangle {
-                        anchors.horizontalCenter: parent.horizontalCenter;
-                        width: childrenRect.width;
-                        height: childrenRect.height;
+                    Label {
+                        id: button_tip
 
-                        Label {
-                            id: label
-                            text: control.text.replace("&", "");
-                            font: UM.Theme.fonts.button_tooltip;
-                            color: UM.Theme.colors.button_tooltip_text;
-                        }
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter;
+
+                        text: control.text;
+                        font: Theme.getFont("button_tooltip");
+                        color: Theme.getColor("tooltip_text");
                     }
                 }
 
-                UM.AngledCornerRectangle {
+                Rectangle {
                     id: buttonFace;
 
                     anchors.fill: parent;
-
                     property bool down: control.pressed || (control.checkable && control.checked);
 
                     color: {
-                        if(!control.enabled) {
-                            return UM.Theme.colors.button_disabled;
-                        } else if(control.checkable && control.checked && control.hovered) {
-                            return UM.Theme.colors.button_active_hover;
+                        if(control.checkable && control.checked && control.hovered) {
+                            return Theme.getColor("button_active_hover");
                         } else if(control.pressed || (control.checkable && control.checked)) {
-                            return UM.Theme.colors.button_active;
+                            return Theme.getColor("button_active");
                         } else if(control.hovered) {
-                            return UM.Theme.colors.button_hover;
+                            return Theme.getColor("button_hover");
                         } else {
-                            return UM.Theme.colors.button;
+                            return Theme.getColor("button");
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
-                    cornerSize: UM.Theme.sizes.default_margin.width;
 
-                    Label {
+
+                    UM.RecolorImage {
+                        id: tool_button_arrow
+                        opacity: !control.enabled ? 0.2 : 1.0
                         anchors.right: parent.right;
-                        anchors.rightMargin: UM.Theme.sizes.default_margin.width / 2;
-                        anchors.verticalCenter: parent.verticalCenter;
-                        text: "▼";
-                        font: UM.Theme.fonts.small;
+                        anchors.rightMargin: (Theme.getSize("button").width - Theme.getSize("button_icon").width) / 4
+                        anchors.bottom: parent.bottom;
+                        anchors.bottomMargin: (Theme.getSize("button").height - Theme.getSize("button_icon").height) / 4
+                        width: Theme.getSize("standard_arrow").width
+                        height: Theme.getSize("standard_arrow").height
+                        sourceSize.width: width
+                        sourceSize.height: width
                         visible: control.menu != null;
-                        color: "white";
+                        color: Theme.getColor("button_text")
+                        source: Theme.getIcon("arrow_bottom")
                     }
                 }
             }
@@ -155,40 +121,38 @@ QtObject {
             label: Item {
                 Image {
                     anchors.centerIn: parent;
-
+                    opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
-                    width: UM.Theme.sizes.button_icon.width;
-                    height: UM.Theme.sizes.button_icon.height;
+                    width: Theme.getSize("button_icon").width;
+                    height: Theme.getSize("button_icon").height;
 
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: Theme.getSize("button_icon")
                 }
             }
         }
     }
 
-
     property Component progressbar: Component{
         ProgressBarStyle {
-            background: UM.AngledCornerRectangle {
-                cornerSize: UM.Theme.sizes.progressbar_control.height
-                implicitWidth: UM.Theme.sizes.progressbar.width
-                implicitHeight: UM.Theme.sizes.progressbar.height
-                color: UM.Theme.colors.progressbar_background
+            background:Rectangle {
+                implicitWidth: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2)
+                implicitHeight: Theme.getSize("progressbar").height
+                radius: Theme.getSize("progressbar_radius").width
+                color: Theme.getColor("progressbar_background")
             }
-            progress: UM.AngledCornerRectangle {
-                cornerSize: UM.Theme.sizes.progressbar_control.height
-                color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
-
-                UM.AngledCornerRectangle {
-                    cornerSize: UM.Theme.sizes.progressbar_control.height
-                    color: UM.Theme.colors.progressbar_control
-                    width: UM.Theme.sizes.progressbar_control.width
-                    height: UM.Theme.sizes.progressbar_control.height
+            progress: Rectangle {
+                color: control.indeterminate ? "transparent" : Theme.getColor("progressbar_control")
+                radius: Theme.getSize("progressbar_radius").width
+                Rectangle{
+                    radius: Theme.getSize("progressbar_radius").width
+                    color: Theme.getColor("progressbar_control")
+                    width: Theme.getSize("progressbar_control").width
+                    height: Theme.getSize("progressbar_control").height
                     visible: control.indeterminate
 
                     SequentialAnimation on x {
                         id: xAnim
-                        property int animEndPoint: UM.Theme.sizes.progressbar.width - UM.Theme.sizes.progressbar_control.width
+                        property int animEndPoint: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2) - Theme.getSize("progressbar_control").width
                         running: control.indeterminate
                         loops: Animation.Infinite
                         NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
@@ -199,58 +163,95 @@ QtObject {
         }
     }
 
-    
-
     property Component sidebar_category: Component {
         ButtonStyle {
-            background: UM.AngledCornerRectangle {
-                implicitHeight: UM.Theme.sizes.section.height;
+            background: Rectangle {
+                anchors.fill: parent;
+                anchors.left: parent.left
+                anchors.leftMargin: Theme.getSize("default_margin").width
+                anchors.right: parent.right
+                anchors.rightMargin: Theme.getSize("default_margin").width
+                implicitHeight: Theme.getSize("section").height;
                 color: {
                     if(control.color) {
                         return control.color;
                     } else if(!control.enabled) {
-                        return UM.Theme.colors.setting_category_disabled;
+                        return Theme.getColor("setting_category_disabled");
                     } else if(control.hovered && control.checkable && control.checked) {
-                        return UM.Theme.colors.setting_category_active_hover;
+                        return Theme.getColor("setting_category_active_hover");
                     } else if(control.pressed || (control.checkable && control.checked)) {
-                        return UM.Theme.colors.setting_category_active;
+                        return Theme.getColor("setting_category_active");
                     } else if(control.hovered) {
-                        return UM.Theme.colors.setting_category_hover;
+                        return Theme.getColor("setting_category_hover");
                     } else {
-                        return UM.Theme.colors.setting_category;
+                        return Theme.getColor("setting_category");
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
-                cornerSize: UM.Theme.sizes.default_margin.width;
+                Rectangle {
+                    height: Theme.getSize("default_lining").height
+                    width: parent.width
+                    anchors.bottom: parent.bottom
+                    color: {
+                        if(!control.enabled) {
+                            return Theme.getColor("setting_category_disabled_border");
+                        } else if(control.hovered && control.checkable && control.checked) {
+                            return Theme.getColor("setting_category_active_hover_border");
+                        } else if(control.pressed || (control.checkable && control.checked)) {
+                            return Theme.getColor("setting_category_active_border");
+                        } else if(control.hovered) {
+                            return Theme.getColor("setting_category_hover_border");
+                        } else {
+                            return Theme.getColor("setting_category_border");
+                        }
+                    }
+                }
             }
             label: Item {
                 anchors.fill: parent;
-                anchors.margins: UM.Theme.sizes.default_margin.width;
-
-                Image {
+                anchors.left: parent.left
+                Item{
                     id: icon;
-
-                    anchors.left: parent.left;
-                    anchors.verticalCenter: parent.verticalCenter;
-
-                    source: control.iconSource;
-                    width: UM.Theme.sizes.section_icon.width;
-                    height: UM.Theme.sizes.section_icon.height;
+                    anchors.left: parent.left
+                    height: parent.height
+                    width: Theme.getSize("section_icon_column").width
+                    UM.RecolorImage {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: Theme.getSize("default_margin").width
+                        color: Theme.getColor("setting_category_text")
+                        source: control.iconSource;
+                        width: Theme.getSize("section_icon").width;
+                        height: Theme.getSize("section_icon").height;
+                        sourceSize.width: width + 15
+                        sourceSize.height: width + 15
+                    }
                 }
 
                 Label {
                     anchors {
                         left: icon.right;
-                        leftMargin: UM.Theme.sizes.default_margin.width;
+                        leftMargin: Theme.getSize("default_lining").width;
                         right: parent.right;
                         verticalCenter: parent.verticalCenter;
                     }
-
                     text: control.text;
-                    font: UM.Theme.fonts.setting_category;
-                    color: UM.Theme.colors.setting_category_text;
+                    font: Theme.getFont("setting_category");
+                    color: Theme.getColor("setting_category_text");
                     fontSizeMode: Text.HorizontalFit;
                     minimumPointSize: 8
+                }
+                UM.RecolorImage {
+                    id: category_arrow
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.getSize("default_margin").width * 2 - width / 2
+                    width: Theme.getSize("standard_arrow").width
+                    height: Theme.getSize("standard_arrow").height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: Theme.getColor("setting_category_text")
+                    source: control.checked ? Theme.getIcon("arrow_bottom") : Theme.getIcon("arrow_left")
                 }
             }
         }
@@ -263,78 +264,101 @@ QtObject {
 
             transientScrollBars: false
 
-            scrollBarBackground: UM.AngledCornerRectangle {
-                implicitWidth: UM.Theme.sizes.scrollbar.width;
-
-                cornerSize: UM.Theme.sizes.scrollbar.width;
-
-                color: UM.Theme.colors.scrollbar_background;
+            scrollBarBackground: Rectangle {
+                implicitWidth: Theme.getSize("scrollbar").width
+                radius: implicitWidth / 2
+                color: Theme.getColor("scrollbar_background");
             }
 
-            handle: UM.AngledCornerRectangle {
+            handle: Rectangle {
                 id: scrollViewHandle
-                implicitWidth: UM.Theme.sizes.scrollbar.width;
+                implicitWidth: Theme.getSize("scrollbar").width;
+                radius: implicitWidth / 2
 
-                cornerSize: UM.Theme.sizes.scrollbar.width;
-
-                color: styleData.pressed ? UM.Theme.colors.scrollbar_handle_down : styleData.hovered ? UM.Theme.colors.scrollbar_handle_hover : UM.Theme.colors.scrollbar_handle;
+                color: styleData.pressed ? Theme.getColor("scrollbar_handle_down") : styleData.hovered ? Theme.getColor("scrollbar_handle_hover") : Theme.getColor("scrollbar_handle");
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }
     }
 
-    property variant setting_item: UM.SettingItemStyle {
-        labelFont: UM.Theme.fonts.default;
-        labelColor: UM.Theme.colors.setting_label;
+    property Component combobox: Component {
+        ComboBoxStyle {
+            background: Rectangle {
+                implicitHeight: Theme.getSize("setting_control").height;
+                implicitWidth: Theme.getSize("setting_control").width;
 
-        spacing: UM.Theme.sizes.default_margin.width;
-        fixedHeight: UM.Theme.sizes.setting.height;
+                color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
+                Behavior on color { ColorAnimation { duration: 50; } }
 
-        controlWidth: UM.Theme.sizes.setting_control.width;
-        controlRightMargin: UM.Theme.sizes.setting_control_margin.width;
-        controlBorderWidth: 1;
-        controlColor: UM.Theme.colors.setting_control;
-        controlHighlightColor: UM.Theme.colors.setting_control_highlight;
-        controlBorderColor: UM.Theme.colors.setting_control_border;
-        controlTextColor: UM.Theme.colors.setting_control_text;
-        controlFont: UM.Theme.fonts.default;
+                border.width: Theme.getSize("default_lining").width;
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
+            }
+            label: Item {
+                Label {
+                    anchors.left: parent.left;
+                    anchors.leftMargin: Theme.getSize("default_lining").width
+                    anchors.right: downArrow.left;
+                    anchors.rightMargin: Theme.getSize("default_lining").width;
+                    anchors.verticalCenter: parent.verticalCenter;
 
-        validationErrorColor: UM.Theme.colors.setting_validation_error;
-        validationWarningColor: UM.Theme.colors.setting_validation_warning;
-        validationOkColor: UM.Theme.colors.setting_validation_ok;
+                    text: control.currentText;
+                    font: Theme.getFont("default");
+                    color: !enabled ? Theme.getColor("setting_control_disabled_text") : Theme.getColor("setting_control_text");
 
-        unitRightMargin: UM.Theme.sizes.setting_unit_margin.width;
-        unitColor: UM.Theme.colors.setting_unit;
-        unitFont: UM.Theme.fonts.default;
+                    elide: Text.ElideRight;
+                    verticalAlignment: Text.AlignVCenter;
+                }
+
+                UM.RecolorImage {
+                    id: downArrow
+                    anchors.right: parent.right;
+                    anchors.rightMargin: Theme.getSize("default_lining").width * 2;
+                    anchors.verticalCenter: parent.verticalCenter;
+
+                    source: Theme.getIcon("arrow_bottom")
+                    width: Theme.getSize("standard_arrow").width
+                    height: Theme.getSize("standard_arrow").height
+                    sourceSize.width: width + 5
+                    sourceSize.height: width + 5
+
+                    color: Theme.getColor("setting_control_text");
+                }
+            }
+        }
     }
 
     property Component checkbox: Component {
         CheckBoxStyle {
             background: Item { }
             indicator: Rectangle {
-                implicitWidth:  UM.Theme.sizes.checkbox.width;
-                implicitHeight: UM.Theme.sizes.checkbox.height;
+                implicitWidth:  Theme.getSize("checkbox").width;
+                implicitHeight: Theme.getSize("checkbox").height;
 
-                color: control.hovered ? UM.Theme.colors.checkbox_hover : UM.Theme.colors.checkbox;
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                border.width: 1
-                border.color: UM.Theme.colors.checkbox_border;
+                radius: control.exclusiveGroup ? Theme.getSize("checkbox").width / 2 : 0
 
-                Label {
-                    anchors.centerIn: parent;
-                    color: UM.Theme.colors.checkbox_mark;
+                border.width: Theme.getSize("default_lining").width;
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
 
-                    text: "✓";
-
-                    opacity: control.checked ? 1 : 0;
+                UM.RecolorImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width/2.5
+                    height: parent.height/2.5
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: Theme.getColor("checkbox_mark")
+                    source: control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
+                    opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
             }
             label: Label {
                 text: control.text;
-                color: UM.Theme.colors.checkbox_text;
-                font: UM.Theme.fonts.default;
+                color: Theme.getColor("checkbox_text");
+                font: Theme.getFont("default");
             }
         }
     }
@@ -343,11 +367,13 @@ QtObject {
         SliderStyle {
             groove: Rectangle {
                 implicitWidth: control.width;
-                implicitHeight: UM.Theme.sizes.slider_groove.height;
+                implicitHeight: Theme.getSize("slider_groove").height;
 
-                color: UM.Theme.colors.slider_groove;
-                border.width: 1;
-                border.color: UM.Theme.colors.slider_groove_border;
+                color: Theme.getColor("slider_groove");
+                border.width: Theme.getSize("default_lining").width;
+                border.color: Theme.getColor("slider_groove_border");
+
+                radius: width / 2;
 
                 Rectangle {
                     anchors {
@@ -355,114 +381,44 @@ QtObject {
                         top: parent.top;
                         bottom: parent.bottom;
                     }
-                    color: UM.Theme.colors.slider_groove_fill;
+                    color: Theme.getColor("slider_groove_fill");
                     width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
+                    radius: width / 2;
                 }
             }
             handle: Rectangle {
-                width: UM.Theme.sizes.slider_handle.width;
-                height: UM.Theme.sizes.slider_handle.height;
-                color: control.hovered ? UM.Theme.colors.slider_handle_hover : UM.Theme.colors.slider_handle;
+                width: Theme.getSize("slider_handle").width;
+                height: Theme.getSize("slider_handle").height;
+                color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
+                radius: Theme.getSize("slider_handle").width/2;
                 Behavior on color { ColorAnimation { duration: 50; } }
-            }
-        }
-    }
-
-    property Component layerViewSlider: Component {
-        SliderStyle {
-            groove: Rectangle {
-                id: layerSliderGroove
-                implicitWidth: control.width;
-                implicitHeight: UM.Theme.sizes.slider_groove.height;
-
-                color: UM.Theme.colors.slider_groove;
-                border.width: 1;
-                border.color: UM.Theme.colors.slider_groove_border;
-                Rectangle {
-                    anchors {
-                        left: parent.left;
-                        top: parent.top;
-                        bottom: parent.bottom;
-                    }
-                    color: UM.Theme.colors.slider_groove_fill;
-                    width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
-                }
-                Label {
-                    id: maxValueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: control.maximumValue + 1
-                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
-                    transformOrigin: Item.BottomLeft
-                    rotation: 90
-                    x: parent.x + parent.width - maxValueLabel.height
-                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
-                }
-                Label {
-                    id: minValueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: '1'
-                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
-                    transformOrigin: Item.BottomLeft
-                    rotation: 90
-                    x: parent.x
-                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
-                }
-            }
-            handle: Rectangle {
-                id: layerSliderControl
-                width: UM.Theme.sizes.slider_handle.width;
-                height: UM.Theme.sizes.slider_handle.height;
-                color: control.hovered ? UM.Theme.colors.slider_handle_hover : UM.Theme.colors.slider_handle;
-                Behavior on color { ColorAnimation { duration: 50; } }
-                Label {
-                    id: valueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: control.value + 1
-                    anchors.bottom: layerSliderControl.bottom
-                    anchors.right: layerSliderControl.left
-                    anchors.bottomMargin: parent.width + UM.Theme.sizes.default_margin.width
-                    font: UM.Theme.fonts.default
-                    transformOrigin: Item.BottomRight
-                    rotation: 90
-                    Rectangle {
-                        width: (parent.width + UM.Theme.sizes.tooltip_margins.width) < 35 ? 35 : parent.width + UM.Theme.sizes.tooltip_margins.width
-                        height: parent.height + (UM.Theme.sizes.tooltip_margins.height / 2)
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        z: parent.z - 1
-                        color: UM.Theme.colors.slider_text_background
-                        border.width: 1
-                        border.color: UM.Theme.colors.slider_groove_fill;
-
-                    }
-                }
             }
         }
     }
 
     property Component text_field: Component {
         TextFieldStyle {
-            textColor: UM.Theme.colors.setting_control_text;
-            font: UM.Theme.fonts.default;
+            textColor: Theme.getColor("setting_control_text");
+            font: Theme.getFont("default");
 
             background: Rectangle
             {
                 implicitHeight: control.height;
                 implicitWidth: control.width;
 
-                border.width: 1;
-                border.color: UM.Theme.colors.setting_control_border;
+                border.width: Theme.getSize("default_lining").width;
+                border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
 
-                color: UM.Theme.colors.setting_validation_ok;
+                color: Theme.getColor("setting_validation_ok");
 
                 Label {
                     anchors.right: parent.right;
-                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width;
+                    anchors.rightMargin: Theme.getSize("setting_unit_margin").width;
                     anchors.verticalCenter: parent.verticalCenter;
 
                     text: control.unit ? control.unit : ""
-                    color: UM.Theme.colors.setting_unit;
-                    font: UM.Theme.fonts.default;
+                    color: Theme.getColor("setting_unit");
+                    font: Theme.getFont("default");
                 }
             }
         }

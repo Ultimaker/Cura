@@ -5,9 +5,9 @@ import QtQuick 2.0
 
 import QtQuick.Controls 1.2
 
-import UM 1.0 as UM
+import "Settings"
 
-UM.SettingView {
-    expandedCategories: Printer.expandedCategories;
-    onExpandedCategoriesChanged: Printer.setExpandedCategories(expandedCategories);
+SettingView {
+//     expandedCategories: Printer.expandedCategories;
+//     onExpandedCategoriesChanged: Printer.setExpandedCategories(expandedCategories);
 }

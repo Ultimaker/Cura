@@ -2,8 +2,6 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Operations.Operation import Operation
-from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
-from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 
 ##  A specialised operation designed specifically to modify the previous operation.
@@ -30,4 +28,4 @@ class PlatformPhysicsOperation(Operation):
         return group
 
     def __repr__(self):
-        return "PlatformPhysicsOperation(t = {0})".format(self._position)
+        return "PlatformPhysicsOperation(new_position = {0})".format(self._new_position)

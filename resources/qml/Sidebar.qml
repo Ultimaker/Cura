@@ -6,111 +6,240 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
+import Cura 1.0 as Cura
 
-Rectangle {
+Rectangle
+{
     id: base;
 
-    property Action addMachineAction;
-    property Action configureMachinesAction;
-    property alias saveAction: saveButton.saveAction;
+    property int currentModeIndex;
 
-    color: UM.Theme.colors.sidebar;
+    // Is there an output device for this printer?
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
 
-    function showTooltip(item, position, text) {
+    color: UM.Theme.getColor("sidebar");
+    UM.I18nCatalog { id: catalog; name:"cura"}
+
+    function showTooltip(item, position, text)
+    {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y / 2);
+        position = item.mapToItem(base, position.x, position.y);
         tooltip.show(position);
     }
 
-    function hideTooltip() {
+    function hideTooltip()
+    {
         tooltip.hide();
     }
 
-    MouseArea {
+    MouseArea
+    {
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons;
 
-        onWheel: {
+        onWheel:
+        {
             wheel.accepted = true;
         }
     }
 
-    ColumnLayout {
-        anchors.fill: parent;
-        anchors.topMargin: UM.Theme.sizes.default_margin.height;
+    SidebarHeader {
+        id: header
+        width: parent.width
+        height: totalHeightHeader
 
-        spacing: UM.Theme.sizes.default_margin.height;
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-        SidebarHeader {
-            id: header;
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
 
-            Layout.fillWidth: true;
+    Rectangle {
+        id: headerSeparator
+        width: parent.width
+        height: UM.Theme.getSize("sidebar_lining").height
+        color: UM.Theme.getColor("sidebar_lining")
+        anchors.top: header.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+    }
 
-            addMachineAction: base.addMachineAction;
-            configureMachinesAction: base.configureMachinesAction;
-            modesModel: modesListModel;
-
-            currentModeIndex: {
-                var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-                if(index) {
-                    return index;
-                }
-                return 0;
-            }
-            onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+    currentModeIndex:
+    {
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+        if(index)
+        {
+            return index;
         }
-
-        Loader {
-            id: sidebarContents;
-
-            Layout.fillWidth: true;
-            Layout.fillHeight: true;
-
-            source: modesListModel.get(header.currentModeIndex).file;
-
-            property Item sidebar: base;
-
-            onLoaded:
-            {
-                if(item)
-                {
-                    item.configureSettings = base.configureMachinesAction;
-                    if(item.onShowTooltip != undefined)
-                    {
-                        item.showTooltip.connect(base.showTooltip)
-                    }
-                    if(item.onHideTooltip != undefined)
-                    {
-                        item.hideTooltip.connect(base.hideTooltip)
-                    }
-                }
-            }
-        }
-
-        SaveButton {
-            id: saveButton;
-            implicitWidth: base.width
-            implicitHeight: UM.Theme.sizes.save_button_text_margin.height * 2 + UM.Theme.sizes.save_button_slicing_bar.height + UM.Theme.sizes.save_button_save_to_button.height +  UM.Theme.sizes.default_margin.height
+        return 0;
+    }
+    onCurrentModeIndexChanged:
+    {
+        UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+        if(modesListModel.count > base.currentModeIndex)
+        {
+            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
         }
     }
 
-    SidebarTooltip {
+    Label {
+        id: settingsModeLabel
+        text: catalog.i18nc("@label:listbox","Setup");
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+        anchors.top: headerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        width: parent.width/100*45
+        font: UM.Theme.getFont("large");
+        color: UM.Theme.getColor("text")
+    }
+
+    Rectangle {
+        id: settingsModeSelection
+        width: parent.width/100*55
+        height: UM.Theme.getSize("sidebar_header_mode_toggle").height
+        anchors.right: parent.right
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        anchors.top: headerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        Component{
+            id: wizardDelegate
+            Button {
+                height: settingsModeSelection.height
+                anchors.left: parent.left
+                anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width / 2
+                text: model.text
+                exclusiveGroup: modeMenuGroup;
+                checkable: true;
+                checked: base.currentModeIndex == index
+                onClicked: base.currentModeIndex = index
+
+                style: ButtonStyle {
+                    background: Rectangle {
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
+                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
+                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
+                        color: control.checked ? UM.Theme.getColor("toggle_checked") :
+                                   control.pressed ? UM.Theme.getColor("toggle_active") :
+                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
+                        Behavior on color { ColorAnimation { duration: 50; } }
+                        Label {
+                            anchors.centerIn: parent
+                            color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
+                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
+                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                            font: UM.Theme.getFont("default")
+                            text: control.text;
+                        }
+                    }
+                    label: Item { }
+                }
+            }
+        }
+        ExclusiveGroup { id: modeMenuGroup; }
+        ListView{
+            id: modesList
+            property var index: 0
+            model: modesListModel
+            delegate: wizardDelegate
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
+        }
+    }
+
+    StackView
+    {
+        id: sidebarContents
+
+        anchors.bottom: footerSeparator.top
+        anchors.top: settingsModeSelection.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.left: base.left
+        anchors.right: base.right
+
+        delegate: StackViewDelegate
+        {
+            function transitionFinished(properties)
+            {
+                properties.exitItem.opacity = 1
+            }
+
+            pushTransition: StackViewTransition
+            {
+                PropertyAnimation
+                {
+                    target: enterItem
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 100
+                }
+                PropertyAnimation
+                {
+                    target: exitItem
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 100
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        id: footerSeparator
+        width: parent.width
+        height: UM.Theme.getSize("sidebar_lining").height
+        color: UM.Theme.getColor("sidebar_lining")
+        anchors.bottom: saveButton.top
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height 
+    }
+
+    SaveButton
+    {
+        id: saveButton;
+        implicitWidth: base.width
+        implicitHeight: totalHeight
+        anchors.bottom: parent.bottom
+    }
+
+    SidebarTooltip
+    {
         id: tooltip;
     }
 
-    ListModel {
+    ListModel
+    {
         id: modesListModel;
-        //: Simple configuration mode option
-        ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
-        //: Advanced configuration mode option
-        ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
 
-    Component.onCompleted: {
-        for(var i = 0; i < modesListModel.count; ++i)
-        {
-            modesListModel.setProperty(i, "text", qsTr(modesListModel.get(i).text));
-        }
+    SidebarSimple
+    {
+        id: sidebarSimple;
+        visible: false;
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
+    SidebarAdvanced
+    {
+        id: sidebarAdvanced;
+        visible: false;
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
+    Component.onCompleted:
+    {
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), item: sidebarSimple })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), item: sidebarAdvanced })
+        sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
 }

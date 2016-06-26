@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package cura.proto;
+
+message ObjectList
+{
+    repeated Object objects = 1;
+    repeated Setting settings = 2; // meshgroup settings (for one-at-a-time printing)
+}
+
+message Slice
+{
+    repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
+    SettingList global_settings = 2; // The global settings used for the whole print job
+    repeated Extruder extruders = 3; // The settings sent to each extruder object
+}
+
+message Extruder
+{
+    int32 id = 1;
+    SettingList settings = 2;
+}
+
+message Object
+{
+    int64 id = 1;
+    bytes vertices = 2; //An array of 3 floats.
+    bytes normals = 3; //An array of 3 floats.
+    bytes indices = 4; //An array of ints.
+    repeated Setting settings = 5; // Setting override per object, overruling the global settings.
+}
+
+message Progress
+{
+    float amount = 1;
+}
+
+message Layer {
+    int32 id = 1;
+    float height = 2; // Z position
+    float thickness = 3; // height of a single layer
+
+    repeated Polygon polygons = 4; // layer data
+}
+
+message Polygon {
+    enum Type {
+        NoneType = 0;
+        Inset0Type = 1;
+        InsetXType = 2;
+        SkinType = 3;
+        SupportType = 4;
+        SkirtType = 5;
+        InfillType = 6;
+        SupportInfillType = 7;
+        MoveCombingType = 8;
+        MoveRetractionType = 9;
+    }
+    Type type = 1; // Type of move
+    bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
+    float line_width = 3; // The width of the line being laid down
+}
+
+message GCodeLayer {
+    bytes data = 2;
+}
+
+message ObjectPrintTime { // The print time for the whole print and material estimates for the first extruder
+    int64 id = 1;
+    float time = 2; // Total time estimate
+    float material_amount = 3; // material used in the first extruder
+}
+
+message SettingList {
+    repeated Setting settings = 1;
+}
+
+message Setting {
+    string name = 1; // Internal key to signify a setting
+
+    bytes value = 2; // The value of the setting
+}
+
+message GCodePrefix {
+    bytes data = 2; // Header string to be prenpended before the rest of the gcode sent from the engine
+}
+
+message SlicingFinished {
+}

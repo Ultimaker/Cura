@@ -1,30 +1,32 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, QDateTime, QTimer, pyqtSignal, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
 from UM.Application import Application
-from UM.Settings.MachineSettings import MachineSettings
-from UM.Resources import Resources
-from UM.Scene.SceneNode import SceneNode
 from UM.Qt.Duration import Duration
+from UM.Preferences import Preferences
 
 import math
+import os.path
+import unicodedata
 
-##  A class for processing and calculating minimum, currrent and maximum print time.
+##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
 #   This class contains all the logic relating to calculation and slicing for the
 #   time/quality slider concept. It is a rather tricky combination of event handling
 #   and state management. The logic behind this is as follows:
 #
-#   - A scene change or settting change event happens.
+#   - A scene change or setting change event happens.
 #        We track what the source was of the change, either a scene change, a setting change, an active machine change or something else.
 #   - This triggers a new slice with the current settings - this is the "current settings pass".
 #   - When the slice is done, we update the current print time and material amount.
 #   - If the source of the slice was not a Setting change, we start the second slice pass, the "low quality settings pass". Otherwise we stop here.
-#   - When that is done, we update the minimum print time and start the final slcice pass, the "high quality settings pass".
+#   - When that is done, we update the minimum print time and start the final slice pass, the "high quality settings pass".
 #   - When the high quality pass is done, we update the maximum print time.
 #
+#   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
+#   This job name is requested by the JobSpecs qml file.
 class PrintInformation(QObject):
     class SlicePass:
         CurrentSettings = 1
@@ -40,194 +42,81 @@ class PrintInformation(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._enabled = False
-
-        self._minimum_print_time = Duration(None, self)
         self._current_print_time = Duration(None, self)
-        self._maximum_print_time = Duration(None, self)
 
         self._material_amount = -1
-
-        self._time_quality_value = 50
-        self._time_quality_changed_timer = QTimer()
-        self._time_quality_changed_timer.setInterval(500)
-        self._time_quality_changed_timer.setSingleShot(True)
-        self._time_quality_changed_timer.timeout.connect(self._updateTimeQualitySettings)
-
-        self._interpolation_settings = {
-            "layer_height": { "minimum": "low", "maximum": "high", "curve": "linear", "precision": 2 },
-            "fill_sparse_density": { "minimum": "low", "maximum": "high", "curve": "linear", "precision": 0 }
-        }
-
-        self._low_quality_settings = None
-        self._current_settings = None
-        self._high_quality_settings = None
-
-        self._slice_pass = None
-        self._slice_reason = None
-
-        Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
-        self._onActiveMachineChanged()
-
-        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
         self._backend = Application.getInstance().getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
-            self._backend.slicingStarted.connect(self._onSlicingStarted)
-            self._backend.slicingCancelled.connect(self._onSlicingCancelled)
 
-    minimumPrintTimeChanged = pyqtSignal()
-    
-    @pyqtProperty(Duration, notify = minimumPrintTimeChanged)
-    def minimumPrintTime(self):
-        return self._minimum_print_time
+        self._job_name = ""
+        self._abbr_machine = ""
+
+        Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
+        Application.getInstance().fileLoaded.connect(self.setJobName)
 
     currentPrintTimeChanged = pyqtSignal()
-    
+
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
         return self._current_print_time
 
-    maximumPrintTimeChanged = pyqtSignal()
-    
-    @pyqtProperty(Duration, notify = maximumPrintTimeChanged)
-    def maximumPrintTime(self):
-        return self._maximum_print_time
-
     materialAmountChanged = pyqtSignal()
-    
+
     @pyqtProperty(float, notify = materialAmountChanged)
     def materialAmount(self):
         return self._material_amount
 
-    timeQualityValueChanged = pyqtSignal()
-    
-    @pyqtProperty(int, notify = timeQualityValueChanged)
-    def timeQualityValue(self):
-        return self._time_quality_value
-
-    def setEnabled(self, enabled):
-        if enabled != self._enabled:
-            self._enabled = enabled
-
-            if self._enabled:
-                self._updateTimeQualitySettings()
-                self._onSlicingStarted()
-
-            self.enabledChanged.emit()
-
-    enabledChanged = pyqtSignal()
-    @pyqtProperty(bool, fset = setEnabled, notify = enabledChanged)
-    def enabled(self):
-        return self._enabled
-
-    @pyqtSlot(int)
-    def setTimeQualityValue(self, value):
-        if value != self._time_quality_value:
-            self._time_quality_value = value
-            self.timeQualityValueChanged.emit()
-
-            self._time_quality_changed_timer.start()
-
-    def _onSlicingStarted(self):
-        if self._slice_pass is None:
-            self._slice_pass = self.SlicePass.CurrentSettings
-
-        if self._slice_reason is None:
-            self._slice_reason = self.SliceReason.Other
-
-        if self._slice_pass == self.SlicePass.CurrentSettings and self._slice_reason != self.SliceReason.SettingChanged:
-            self._minimum_print_time.setDuration(-1)
-            self.minimumPrintTimeChanged.emit()
-            self._maximum_print_time.setDuration(-1)
-            self.maximumPrintTimeChanged.emit()
-
     def _onPrintDurationMessage(self, time, amount):
-        if self._slice_pass == self.SlicePass.CurrentSettings:
-            self._current_print_time.setDuration(time)
-            self.currentPrintTimeChanged.emit()
+        #if self._slice_pass == self.SlicePass.CurrentSettings:
+        self._current_print_time.setDuration(time)
+        self.currentPrintTimeChanged.emit()
 
-            # Material amount is sent as an amount of mm^3, so calculate length from that
-            r = self._current_settings.getSettingValueByKey("material_diameter") / 2
-            self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
-            self.materialAmountChanged.emit()
+        # Material amount is sent as an amount of mm^3, so calculate length from that
+        r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
+        self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
+        self.materialAmountChanged.emit()
 
-            if not self._enabled:
-                return
+    @pyqtSlot(str)
+    def setJobName(self, name):
+        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
+        # extension. This cuts the extension off if necessary.
+        name = os.path.splitext(name)[0]
+        if self._job_name != name:
+            self._job_name = name
+            self.jobNameChanged.emit()
 
-            if self._slice_reason != self.SliceReason.SettingChanged or not self._minimum_print_time.valid or not self._maximum_print_time.valid:
-                self._slice_pass = self.SlicePass.LowQualitySettings
-                self._backend.slice(settings = self._low_quality_settings, save_gcode = False, save_polygons = False, force_restart = False, report_progress = False)
+    jobNameChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = jobNameChanged)
+    def jobName(self):
+        return self._job_name
+
+    @pyqtSlot(str, result = str)
+    def createJobName(self, base_name):
+        base_name = self._stripAccents(base_name)
+        if Preferences.getInstance().getValue("cura/jobname_prefix"):
+            return self._abbr_machine + "_" + base_name
+        else:
+            return base_name
+
+    ##  Created an acronymn-like abbreviated machine name from the currently active machine name
+    #   Called each time the global stack is switched
+    def _setAbbreviatedMachineName(self):
+        global_stack_name = Application.getInstance().getGlobalContainerStack().getName()
+        split_name = global_stack_name.split(" ")
+        abbr_machine = ""
+        for word in split_name:
+            if word.lower() == "ultimaker":
+                abbr_machine += "UM"
+            elif word.isdigit():
+                abbr_machine += word
             else:
-                self._slice_pass = None
-                self._slice_reason = None
-        elif self._slice_pass == self.SlicePass.LowQualitySettings:
-            self._minimum_print_time.setDuration(time)
-            self.minimumPrintTimeChanged.emit()
+                abbr_machine += self._stripAccents(word.strip("()[]{}#").upper())[0]
 
-            self._slice_pass = self.SlicePass.HighQualitySettings
-            self._backend.slice(settings = self._high_quality_settings, save_gcode = False, save_polygons = False, force_restart = False, report_progress = False)
-        elif self._slice_pass == self.SlicePass.HighQualitySettings:
-            self._maximum_print_time.setDuration(time)
-            self.maximumPrintTimeChanged.emit()
+        self._abbr_machine = abbr_machine
 
-            self._slice_pass = None
-            self._slice_reason = None
-
-    def _onActiveMachineChanged(self):
-        if self._current_settings:
-            self._current_settings.settingChanged.disconnect(self._onSettingChanged)
-
-        self._current_settings = Application.getInstance().getActiveMachine()
-
-        if self._current_settings:
-            self._current_settings.settingChanged.connect(self._onSettingChanged)
-            self._low_quality_settings = None
-            self._high_quality_settings = None
-            self._updateTimeQualitySettings()
-
-            self._slice_reason = self.SliceReason.ActiveMachineChanged
-
-    def _updateTimeQualitySettings(self):
-        if not self._current_settings or not self._enabled:
-            return
-
-        if not self._low_quality_settings:
-            self._low_quality_settings = MachineSettings()
-            self._low_quality_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, self._current_settings.getTypeID() + ".json"))
-            self._low_quality_settings.loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, "profiles", "low_quality.conf"))
-
-        if not self._high_quality_settings:
-            self._high_quality_settings = MachineSettings()
-            self._high_quality_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, self._current_settings.getTypeID() + ".json"))
-            self._high_quality_settings.loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, "profiles", "high_quality.conf"))
-
-        for key, options in self._interpolation_settings.items():
-            minimum_value = None
-            if options["minimum"] == "low":
-                minimum_value = self._low_quality_settings.getSettingValueByKey(key)
-            elif options["minimum"] == "high":
-                minimum_value = self._high_quality_settings.getSettingValueByKey(key)
-            else:
-                continue
-
-            maximum_value = None
-            if options["maximum"] == "low":
-                maximum_value = self._low_quality_settings.getSettingValueByKey(key)
-            elif options["maximum"] == "high":
-                maximum_value = self._high_quality_settings.getSettingValueByKey(key)
-            else:
-                continue
-
-            setting_value = round(minimum_value + (maximum_value - minimum_value) * (self._time_quality_value / 100), options["precision"])
-            self._current_settings.setSettingValueByKey(key, setting_value)
-
-    def _onSceneChanged(self, source):
-        self._slice_reason = self.SliceReason.SceneChanged
-
-    def _onSettingChanged(self, source):
-        self._slice_reason = self.SliceReason.SettingChanged
-
-    def _onSlicingCancelled(self):
-        self._slice_pass = None
+    ##  Utility method that strips accents from characters (eg: â -> a)
+    def _stripAccents(self, str):
+       return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')
