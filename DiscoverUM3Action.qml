@@ -16,14 +16,14 @@ Cura.MachineAction
         anchors.fill: parent;
         id: discoverUM3Action
         SystemPalette { id: palette }
-        UM.I18nCatalog { id: catalog; name:"cura"}
+        UM.I18nCatalog { id: catalog; name:"cura" }
         Label
         {
             id: pageTitle
             width: parent.width
             text: catalog.i18nc("@title", "Connect to Networked Printer")
             wrapMode: Text.WordWrap
-            font.pointSize: 18;
+            font.pointSize: 18
         }
 
         Label
@@ -41,8 +41,9 @@ Cura.MachineAction
             ScrollView
             {
                 id: objectListContainer
-                frameVisible: true;
+                frameVisible: true
                 width: parent.width * 0.5
+                height: base.height - parent.y
 
                 Rectangle
                 {
@@ -56,7 +57,6 @@ Cura.MachineAction
                     id: listview
                     model: manager.foundDevices
                     width: parent.width
-                    height: 500
                     currentIndex: activeIndex
                     onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
                     Component.onCompleted: manager.startDiscovery()
@@ -98,7 +98,8 @@ Cura.MachineAction
                     width: parent.width
                     wrapMode: Text.WordWrap
                     text: base.selectedPrinter ? base.selectedPrinter.name : ""
-                    font.pointSize: 16;
+                    font: UM.Theme.getFont("large")
+                    elide: Text.ElideRight
                 }
                 Grid
                 {
