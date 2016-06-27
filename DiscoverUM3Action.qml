@@ -59,6 +59,7 @@ Cura.MachineAction
                     height: 500
                     currentIndex: activeIndex
                     onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
+                    Component.onCompleted: manager.startDiscovery()
                     delegate: Rectangle
                     {
                         height: childrenRect.height
@@ -141,11 +142,6 @@ Cura.MachineAction
                     }
                 }
             }
-        }
-        Button
-        {
-            text: catalog.i18nc("@label","Start looking!")
-            onClicked: manager.startDiscovery()
         }
     }
     Button
