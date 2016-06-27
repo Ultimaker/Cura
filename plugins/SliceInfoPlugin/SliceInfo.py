@@ -112,5 +112,5 @@ class SliceInfo(Extension):
             f = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
             Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
             f.close()
-        except Exception as e:
-            Logger.log("e", "Exception occured: %s" %(e))
+        except Exception:
+            Logger.logException("e", "Sending anonymous slice info failed!")
