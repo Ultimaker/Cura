@@ -4,9 +4,12 @@ from UM.Application import Application
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 class DiscoverUM3Action(MachineAction):
     def __init__(self):
-        super().__init__("DiscoverUM3Action", "Discover printers")
+        super().__init__("DiscoverUM3Action", catalog.i18nc("@action","Connect via Network"))
         self._qml_url = "DiscoverUM3Action.qml"
 
         self._network_plugin = None
