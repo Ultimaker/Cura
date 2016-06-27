@@ -257,13 +257,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if progress == 0:
                         progress += 0.001
                     self.setProgress(progress)
-                    self._updateJobState(json_data["state"])
+                    self._setJobState(json_data["state"])
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])
                     self.setJobName(json_data["name"])
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress!
-                    self._updateJobState("")
+                    self._setJobState("")
             elif "snapshot" in reply.url().toString():  # Status update from image:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                     self._camera_image.loadFromData(reply.readAll())
