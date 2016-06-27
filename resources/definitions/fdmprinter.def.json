@@ -2998,7 +2998,8 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "is_experimental": true
                 },
                 "draft_shield_dist":
                 {
@@ -3011,7 +3012,8 @@
                     "default_value": 10,
                     "enabled": "draft_shield_enabled",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "is_experimental": true
                 },
                 "draft_shield_height_limitation":
                 {
@@ -3026,7 +3028,8 @@
                     "default_value": "full",
                     "enabled": "draft_shield_enabled",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "is_experimental": true
                 },
                 "draft_shield_height":
                 {
@@ -3040,13 +3043,15 @@
                     "value": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
                     "enabled": "draft_shield_height_limitation == \"limited\"",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "is_experimental": true
                 },
                 "conical_overhang_enabled": {
                     "label": "Make Overhang Printable",
                     "description": "Change the geometry of the printed model such that minimal support is required. Steep overhangs will become shallow overhangs. Overhanging areas will drop down to become more vertical.",
                     "type": "bool",
-                    "default_value": false
+                    "default_value": false,
+                    "is_experimental": true
                 },
                 "conical_overhang_angle": {
                     "label": "Maximum Model Angle",
@@ -3056,7 +3061,8 @@
                     "minimum_value": "0",
                     "maximum_value": "89",
                     "default_value": 50,
-                    "enabled": "conical_overhang_enabled"
+                    "enabled": "conical_overhang_enabled",
+                    "is_experimental": true
                 },
                 "coasting_enable":
                 {
@@ -3065,7 +3071,8 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "is_experimental": true
                 },
                 "coasting_volume":
                 {
@@ -3078,7 +3085,8 @@
                     "maximum_value_warning": "2.0",
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "is_experimental": true
                 },
                 "coasting_min_volume":
                 {
@@ -3091,7 +3099,8 @@
                     "maximum_value_warning": "10.0",
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "is_experimental": true
                 },
                 "coasting_speed":
                 {
@@ -3104,7 +3113,8 @@
                     "maximum_value_warning": "100",
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "is_experimental": true
                 },
                 "skin_outline_count":
                 {
@@ -3114,7 +3124,8 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "type": "int",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "skin_alternate_rotation":
                 {
@@ -3123,7 +3134,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "top_bottom_pattern != \"concentric\"",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "support_conical_enabled":
                 {
@@ -3132,7 +3144,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "support_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "support_conical_angle":
                 {
@@ -3146,7 +3159,8 @@
                     "maximum_value": "90",
                     "default_value": 30,
                     "enabled": "support_conical_enabled and support_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "support_conical_min_width":
                 {
@@ -3159,7 +3173,8 @@
                     "maximum_value_warning": "100.0",
                     "type": "float",
                     "enabled": "support_conical_enabled and support_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "magic_fuzzy_skin_enabled":
                 {
@@ -3167,7 +3182,8 @@
                     "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "magic_fuzzy_skin_thickness":
                 {
@@ -3179,7 +3195,8 @@
                     "minimum_value": "0.001",
                     "maximum_value_warning": "wall_line_width_0",
                     "enabled": "magic_fuzzy_skin_enabled",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "is_experimental": true
                 },
                 "magic_fuzzy_skin_point_density":
                 {
@@ -3210,7 +3227,8 @@
                             "enabled": "magic_fuzzy_skin_enabled",
                             "settable_per_mesh": true
                         }
-                    }
+                    },
+                    "is_experimental": true
                 },
                 "wireframe_enabled":
                 {
@@ -3220,7 +3238,8 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_height":
                 {
@@ -3234,7 +3253,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_roof_inset":
                 {
@@ -3250,7 +3270,8 @@
                     "value": "wireframe_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_printspeed":
                 {
@@ -3332,7 +3353,8 @@
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": false
                         }
-                    }
+                    },
+                    "is_experimental": true
                 },
                 "wireframe_flow":
                 {
@@ -3379,7 +3401,8 @@
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": false
                         }
-                    }
+                    },
+                    "is_experimental": true
                 },
                 "wireframe_top_delay":
                 {
@@ -3393,7 +3416,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_bottom_delay":
                 {
@@ -3407,7 +3431,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_flat_delay":
                 {
@@ -3421,7 +3446,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_up_half_speed":
                 {
@@ -3435,7 +3461,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_top_jump":
                 {
@@ -3449,7 +3476,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_fall_down":
                 {
@@ -3463,7 +3491,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_drag_along":
                 {
@@ -3477,7 +3506,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_strategy":
                 {
@@ -3494,7 +3524,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_straight_before_down":
                 {
@@ -3508,7 +3539,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_roof_fall_down":
                 {
@@ -3522,7 +3554,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_roof_drag_along":
                 {
@@ -3536,7 +3569,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_roof_outer_delay":
                 {
@@ -3550,7 +3584,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 },
                 "wireframe_nozzle_clearance":
                 {
@@ -3564,7 +3599,8 @@
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "is_experimental": true
                 }
             }
         }
