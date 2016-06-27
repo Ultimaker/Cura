@@ -31,7 +31,7 @@ Cura.MachineAction
             id: pageDescription
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your ptiner is connected to the network using a network cable of by connecting your printer to your WIFI network. \n\n If you don't want to connect Cura with your Ultimaker 3 now, you can always use a USB drive to transfer g-code files to your Printer.\n\n Select your Ultimaker 3 from the list below:")
+            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. \n\nIf you don't want to connect Cura with your Ultimaker 3 now, you can always use a USB drive to transfer g-code files to your printer.\n\nSelect your Ultimaker 3 from the list below:")
         }
 
         Row
@@ -61,15 +61,16 @@ Cura.MachineAction
                     onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
                     delegate: Rectangle
                     {
-                        height: childrenRect.height;
+                        height: childrenRect.height
                         color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                         width: parent.width
                         Label
                         {
-                            anchors.left: parent.left;
-                            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-                            anchors.right: parent.right;
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.right: parent.right
                             text: listview.model[index].name
+                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
                             elide: Text.ElideRight
                         }
 
