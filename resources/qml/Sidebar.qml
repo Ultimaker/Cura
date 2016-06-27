@@ -18,7 +18,6 @@ Rectangle
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
-    onPrinterConnectedChanged: populatePrintMonitorModel()
 
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
