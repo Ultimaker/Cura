@@ -36,6 +36,7 @@ class BuildVolume(SceneNode):
         self._disallowed_area_mesh = None
 
         self.setCalculateBoundingBox(False)
+        self._volume_aabb = None
 
         self._active_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
@@ -99,7 +100,7 @@ class BuildVolume(SceneNode):
         mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        self.setMeshData(mb.getData())
+        self.setMeshData(mb.build())
 
         mb = MeshBuilder()
         mb.addQuad(
@@ -108,10 +109,10 @@ class BuildVolume(SceneNode):
             Vector(max_w, min_h - 0.2, max_d),
             Vector(min_w, min_h - 0.2, max_d)
         )
-        self._grid_mesh = mb.getData()
         for n in range(0, 6):
-            v = self._grid_mesh.getVertex(n)
-            self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
+            v = mb.getVertex(n)
+            mb.setVertexUVCoordinates(n, v[0], v[2])
+        self._grid_mesh = mb.build()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -136,11 +137,11 @@ class BuildVolume(SceneNode):
                     size = 0
                 disallowed_area_size = max(size, disallowed_area_size)
 
-            self._disallowed_area_mesh = mb.getData()
+            self._disallowed_area_mesh = mb.build()
         else:
             self._disallowed_area_mesh = None
 
-        self._aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
+        self._volume_aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
 
         skirt_size = 0.0
 
@@ -157,6 +158,9 @@ class BuildVolume(SceneNode):
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
+
+    def getBoundingBox(self):
+        return self._volume_aabb
 
     def _onGlobalContainerStackChanged(self):
         if self._active_container_stack:

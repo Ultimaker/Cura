@@ -34,34 +34,34 @@ Item {
 
     property string tooltipText:
     {
-            var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
-            var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
+        var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
+        var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
 
-            var affected_by_list = ""
-            for(var i in affected_by)
-            {
-                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
-            }
+        var affected_by_list = ""
+        for(var i in affected_by)
+        {
+            affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+        }
 
-            var affects_list = ""
-            for(var i in affects)
-            {
-                affects_list += "<li>%1</li>\n".arg(affects[i].label)
-            }
+        var affects_list = ""
+        for(var i in affects)
+        {
+            affects_list += "<li>%1</li>\n".arg(affects[i].label)
+        }
 
-            var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
+        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
 
-            if(affects_list != "")
-            {
-                tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
-            }
+        if(affects_list != "")
+        {
+            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
+        }
 
-            if(affected_by_list != "")
-            {
-                tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
-            }
+        if(affected_by_list != "")
+        {
+            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
+        }
 
-            return tooltip
+        return tooltip
     }
 
     MouseArea 
@@ -236,7 +236,7 @@ Item {
         {
             id: controlContainer;
 
-            enabled: provider.isValueUsed
+            enabled: propertyProvider.isValueUsed
 
             anchors.right: parent.right;
             anchors.rightMargin: UM.Theme.getSize("default_margin").width

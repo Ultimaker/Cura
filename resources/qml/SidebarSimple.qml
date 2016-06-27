@@ -319,11 +319,13 @@ Item
             id: extruderModel
             Component.onCompleted: populateExtruderModel()
         }
-        Connections
+
+        //: Invisible list used to populate the extrudelModel
+        ListView
         {
-            id: machineChange
-            target: Cura.MachineManager
-            onGlobalContainerChanged: populateExtruderModel()
+            id: extruders
+            model: Cura.ExtrudersModel { onModelChanged: populateExtruderModel() }
+            visible: false
         }
     }
 
@@ -331,11 +333,13 @@ Item
     {
         extruderModel.clear();
         extruderModel.append({
-            text: catalog.i18nc("@label", "Don't print support")
+            text: catalog.i18nc("@label", "Don't print support"),
+            color: ""
         })
-        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
+        for(var extruderNumber = 0; extruderNumber < extruders.model.rowCount() ; extruderNumber++) {
             extruderModel.append({
-                text: catalog.i18nc("@label", "Print using Extruder %1").arg(extruder + 1)
+                text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNumber).name),
+                color: extruders.model.getItem(extruderNumber).colour
             })
         }
     }
