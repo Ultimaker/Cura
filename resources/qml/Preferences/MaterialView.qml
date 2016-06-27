@@ -2,7 +2,7 @@
 // Uranium is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.3
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
@@ -27,13 +27,15 @@ TabView
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("default_margin").width
 
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
             Flow
             {
                 id: containerGrid
 
-                width: base.width - UM.Theme.getSize("default_margin").width * 4;
+                width: base.width;
 
-                property real firstColumnWidth: width * 0.5
+                property real firstColumnWidth: width * 0.45
                 property real secondColumnWidth: width * 0.4
 
                 property real rowHeight: textField.height;
