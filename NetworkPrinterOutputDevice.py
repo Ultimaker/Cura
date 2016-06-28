@@ -48,6 +48,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         #   hook itself into the event loop, which results in events never being fired / done.
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self._onFinished)
+        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
         ##  Hack to ensure that the qt networking stuff isn't garbage collected (unless we want it to)
         self._printer_request = None
@@ -82,7 +83,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._camera_image_id = 0
 
+        self._authenticated = False
+        self._authentication_id = None
+        self._authentication_key = None
+
         self._camera_image = QImage()
+
+    def _onAuthenticationRequired(self, reply, authenticator):
+        if self._authentication_id is not None and self._authentication_key is not None:
+            authenticator.setUser(self._authentication_id)
+            authenticator.setPassword(self._authentication_key)
 
     def getProperties(self):
         return self._properties
@@ -115,6 +125,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._image_reply = self._manager.get(self._image_request)
 
     def _update(self):
+        if not self._authenticated:
+            self._checkAuthentication()
         ## Request 'general' printer data
         url = QUrl("http://" + self._address + self._api_prefix + "printer")
         self._printer_request = QNetworkRequest(url)
@@ -237,6 +249,19 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message.hide()
             Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
+    ##  Verify if we are authenticated to make requests.
+    def _checkAuthentication(self):
+        url = QUrl("http://" + self._address + self._api_prefix + "auth/verify")
+        request = QNetworkRequest(url)
+        self._manager.get(request)
+
+    ##  Request a authentication key from the printer so we can be authenticated
+    def _requestAuthentication(self):
+        url = QUrl("http://" + self._address + self._api_prefix + "auth/request")
+        request = QNetworkRequest(url)
+        request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._manager.post(request, json.dumps({"application": "Cura", "user":"test"}).encode())
+
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
         if reply.operation() == QNetworkAccessManager.GetOperation:
@@ -268,9 +293,27 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                     self._camera_image.loadFromData(reply.readAll())
                     self.newImage.emit()
+            elif "auth/verify" in reply.url().toString():  # Answer when requesting authentication
+                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 401:
+                    Logger.log("i", "Not authenticated. Attempting to request authentication")
+                    self._requestAuthentication()
+                else:
+                    self._authenticated = True
+                    Logger.log("i", "Authentication succeeded")
+
         elif reply.operation() == QNetworkAccessManager.PostOperation:
-            reply.uploadProgress.disconnect(self._onUploadProgress)
-            self._progress_message.hide()
+            if "/auth/request" in reply.url().toString():
+                # We got a response to requesting authentication.
+                data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                self._authentication_key = data["key"]
+                self._authentication_id = data["id"]
+                Logger.log("i", "Got a new authentication ID. Waiting for authorization: %s", self._authentication_id )
+
+                # Continue with handshaking; send request to printer so it can be authenticated.
+                self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
+            else:
+                reply.uploadProgress.disconnect(self._onUploadProgress)
+                self._progress_message.hide()
         elif reply.operation() == QNetworkAccessManager.PutOperation:
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 204:
                 pass  # Request was sucesfull!
