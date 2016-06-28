@@ -2987,7 +2987,7 @@
         {
             "label": "Experimental Modes",
             "type": "category",
-            "icon": "category_blackmagic",
+            "icon": "category_experimental",
             "description": "experimental!",
             "children":
             {
