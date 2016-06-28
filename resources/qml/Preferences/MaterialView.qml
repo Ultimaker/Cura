@@ -14,19 +14,26 @@ TabView
 
     property QtObject properties;
 
-    property bool editingEnabled;
-
+    property bool editingEnabled: false;
     property string currency: UM.Preferences.getValue("general/currency") ? UM.Preferences.getValue("general/currency") : "€"
+    property real firstColumnWidth: width * 0.45
+    property real secondColumnWidth: width * 0.45
+    property string containerId: ""
 
     Tab
     {
         title: "Information"
+        anchors
+        {
+            leftMargin: UM.Theme.getSize("default_margin").width
+            topMargin: UM.Theme.getSize("default_margin").height
+            bottomMargin: UM.Theme.getSize("default_margin").height
+            rightMargin: 0
+        }
 
         ScrollView
         {
             anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_margin").width
-
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
             Flow
@@ -35,22 +42,19 @@ TabView
 
                 width: base.width;
 
-                property real firstColumnWidth: width * 0.45
-                property real secondColumnWidth: width * 0.4
-
                 property real rowHeight: textField.height;
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
-                TextField { id: textField; width: parent.secondColumnWidth; text: properties.supplier; readOnly: !base.editingEnabled; }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
+                TextField { id: textField; width: base.secondColumnWidth; text: properties.supplier; readOnly: !base.editingEnabled; }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
-                TextField { width: parent.secondColumnWidth; text: properties.material_type; readOnly: !base.editingEnabled; }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
+                TextField { width: base.secondColumnWidth; text: properties.material_type; readOnly: !base.editingEnabled; }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
 
                 Row
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     height:  parent.rowHeight;
                     spacing: UM.Theme.getSize("default_margin").width/2
 
@@ -75,10 +79,10 @@ TabView
 
                 Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: "<b>" + catalog.i18nc("@label", "Properties") + "</b>" }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
                 ReadOnlySpinBox
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     value: properties.density;
                     decimals: 2
                     suffix: "g/cm"
@@ -86,10 +90,10 @@ TabView
                     readOnly: !base.editingEnabled;
                 }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
                 ReadOnlySpinBox
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     value: properties.diameter;
                     decimals: 2
                     suffix: "mm³"
@@ -97,38 +101,38 @@ TabView
                     readOnly: !base.editingEnabled;
                 }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
                 ReadOnlySpinBox
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     value: properties.spool_cost;
                     prefix: base.currency
                     readOnly: !base.editingEnabled;
                 }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
                 ReadOnlySpinBox
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     value: properties.spool_weight;
                     suffix: "g";
                     stepSize: 10
                     readOnly: !base.editingEnabled;
                 }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
                 ReadOnlySpinBox
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     value: parseFloat(properties.spool_length);
                     suffix: "m";
                     readOnly: !base.editingEnabled;
                 }
 
-                Label { width: parent.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter (Approx.)") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter (Approx.)") }
                 ReadOnlySpinBox
                 {
-                    width: parent.secondColumnWidth;
+                    width: base.secondColumnWidth;
                     value: parseFloat(properties.cost_per_meter);
                     suffix: catalog.i18nc("@label", "%1/m".arg(base.currency));
                     readOnly: !base.editingEnabled;
@@ -141,7 +145,7 @@ TabView
                 TextArea
                 {
                     text: properties.description;
-                    width: parent.firstColumnWidth + parent.secondColumnWidth
+                    width: base.firstColumnWidth + base.secondColumnWidth
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
@@ -152,7 +156,7 @@ TabView
                 TextArea
                 {
                     text: properties.adhesion_info;
-                    width: parent.firstColumnWidth + parent.secondColumnWidth
+                    width: base.firstColumnWidth + base.secondColumnWidth
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
@@ -164,7 +168,13 @@ TabView
     Tab
     {
         title: catalog.i18nc("@label", "Print settings")
-        anchors.margins: UM.Theme.getSize("default_margin").height
+        anchors
+        {
+            leftMargin: UM.Theme.getSize("default_margin").width
+            topMargin: UM.Theme.getSize("default_margin").height
+            bottomMargin: UM.Theme.getSize("default_margin").height
+            rightMargin: 0
+        }
 
         ScrollView
         {
@@ -175,11 +185,43 @@ TabView
                 model: UM.SettingDefinitionsModel
                 {
                     containerId: Cura.MachineManager.activeDefinitionId
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
                     expanded: ["*"]
                 }
 
-                delegate: Label { text: model.label }
+                delegate: UM.TooltipArea
+                {
+                    width: childrenRect.width
+                    height: childrenRect.height
+                    text: model.description
+                    Label
+                    {
+                        id: label
+                        width: base.firstColumnWidth;
+                        height: spinBox.height
+                        text: model.label
+                    }
+                    ReadOnlySpinBox
+                    {
+                        id: spinBox
+                        anchors.left: label.right
+                        value: parseFloat(provider.properties.value);
+                        width: base.secondColumnWidth;
+                        readOnly: !base.editingEnabled
+                        suffix: model.unit
+                        maximumValue: 99999
+                        decimals: model.unit == "mm" ? 2 : 0
+                    }
+
+                    UM.SettingPropertyProvider
+                    {
+                        id: provider
+
+                        containerStackId: Cura.MachineManager.activeMachineId
+                        key: model.key
+                        watchedProperties: [ "value" ]
+                    }
+                }
             }
         }
     }
