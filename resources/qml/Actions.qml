@@ -92,7 +92,7 @@ Item
     Action
     {
         id: preferencesAction;
-        text: catalog.i18nc("@action:inmenu menubar:settings","&Preferences...");
+        text: catalog.i18nc("@action:inmenu","Configure Cura...");
         iconName: "configure";
     }
 
@@ -282,5 +282,6 @@ Item
     {
         id: configureSettingVisibilityAction
         text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
+        iconName: "configure"
     }
 }
