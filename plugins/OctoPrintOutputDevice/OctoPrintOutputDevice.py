@@ -4,6 +4,7 @@ import os.path
 
 from PyQt5 import QtNetwork
 from PyQt5.QtCore import QTemporaryFile, QUrl
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -195,10 +196,15 @@ class OctoPrintOutputDevice(OutputDevice):
             self.writeError.emit(self)
         else:
             message = Message(catalog.i18nc("@info:status", "Saved to OctoPrint {0} as {1}").format(self.getName(), os.path.basename(self._fileName)))
+            message.addAction("open_browser", catalog.i18nc("@action:button", "Open Browser"), "globe", catalog.i18nc("@info:tooltip", "Open browser to OctoPrint."))
+            message.actionTriggered.connect(self._onMessageActionTriggered)
             message.show()
             self.writeSuccess.emit(self)
         self._cleanupRequest()
 
+    def _onMessageActionTriggered(self, message, action):
+        if action == "open_browser":
+            QDesktopServices.openUrl(QUrl(self._host))
 
     def _onAuthRequired(self, authenticator):
         Logger.log("e", "Not yet implemented: OctoPrint authentication other than api-key")
