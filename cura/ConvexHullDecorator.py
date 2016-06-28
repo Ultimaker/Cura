@@ -144,6 +144,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         else:
             rounded_hull = None
+            mesh = None
+            world_transform = None
             if self._node.getMeshData():
                 mesh = self._node.getMeshData()
                 world_transform = self._node.getWorldTransformation()
