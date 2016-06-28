@@ -65,7 +65,6 @@ class LayerDataBuilder(MeshBuilder):
             ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, indices)
             self._element_counts[layer] = data.elementCount
 
-        self.clear()
         self.addVertices(vertices)
         self.addColors(colors)
         self.addIndices(indices.flatten())

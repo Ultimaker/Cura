@@ -259,12 +259,12 @@ class _CreateTopLayersJob(Job):
 
             layer_mesh.addIndices(layer_mesh._vertex_count+layer.getIndices())
             layer_mesh.addVertices(layer.getVertices())
-            
+
             # Scale layer color by a brightness factor based on the current layer number
             # This will result in a range of 0.5 - 1.0 to multiply colors by.
-            brightness = numpy.ones((1,4),dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
-            brightness[0,3] = 1.0;
-            layer_mesh.addColors(layer.getColors() * brightness )
+            brightness = numpy.ones((1,4), dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
+            brightness[0, 3] = 1.0;
+            layer_mesh.addColors(layer.getColors() * brightness)
 
             if self._cancel:
                 return

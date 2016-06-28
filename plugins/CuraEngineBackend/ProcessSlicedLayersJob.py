@@ -114,7 +114,7 @@ class ProcessSlicedLayersJob(Job):
                 new_points /= 1000
 
                 this_poly = LayerPolygon.LayerPolygon(layer_data, line_types, new_points, line_widths)
-                this_poly.build_cache()
+                this_poly.buildCache()
                 
                 this_layer.polygons.append(this_poly)
 

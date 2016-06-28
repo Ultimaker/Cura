@@ -38,25 +38,24 @@ class LayerPolygon:
         self._colors = self.__color_map[self._types]
         self._color_map = self.__color_map
         
-        # type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
+        # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._orInfillSkin = numpy.array([0,0,0,1,0,0,1,1,0,0],dtype=numpy.bool)
+        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0], dtype=numpy.bool)
         
         self._build_cache_line_mesh_mask = None
         self._build_cache_needed_points = None
         
-    def build_cache(self):
-        #if polygon.type == LayerPolygon.InfillType or polygon.type == LayerPolygon.MoveCombingType or polygon.type == LayerPolygon.MoveRetractionType:
-        #    continue
-        self._build_cache_line_mesh_mask = numpy.logical_not(numpy.logical_or(self._jump_mask,self._types == LayerPolygon.InfillType ))
+    def buildCache(self):
+        # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
+        self._build_cache_line_mesh_mask = numpy.logical_not(numpy.logical_or(self._jump_mask, self._types == LayerPolygon.InfillType ))
         mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
         self._index_end = mesh_line_count
         
-        self._build_cache_needed_points = numpy.ones((len(self._types),2), dtype=numpy.bool)
+        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype=numpy.bool)
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
-        self._build_cache_needed_points[1:,0][:,numpy.newaxis] = self._types[1:] != self._types[:-1]
-        # Remove points of types we don't want in the line mesh
+        self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
+        # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
         numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points )
         
         self._vertex_begin = 0
@@ -65,35 +64,48 @@ class LayerPolygon:
 
     def build(self, vertex_offset, index_offset, vertices, colors, indices):
         if (self._build_cache_line_mesh_mask == None) or (self._build_cache_needed_points == None ):
-            self.build_cache()
+            self.buildCache()
             
         line_mesh_mask = self._build_cache_line_mesh_mask
         needed_points_list = self._build_cache_needed_points
-            
-        index_list = ( numpy.arange(len(self._types)).reshape((-1,1)) + numpy.array([[0,1]]) ).reshape((-1,1))[needed_points_list.reshape((-1,1))]
         
+        # Index to the points we need to represent the line mesh. This is constructed by generating simple
+        # start and end points for each line. For line segment n these are points n and n+1. Row n reads [n n+1] 
+        # Then then the indices for the points we don't need are thrown away based on the pre-calculated list. 
+        index_list = ( numpy.arange(len(self._types)).reshape((-1, 1)) + numpy.array([[0, 1]]) ).reshape((-1, 1))[needed_points_list.reshape((-1, 1))]
+        
+        # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._vertex_begin += vertex_offset
         self._vertex_end += vertex_offset
         
+        # Points are picked based on the index list to get the vertices needed. 
         vertices[self._vertex_begin:self._vertex_end, :] = self._data[index_list, :]
-        colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors,(1,2)).reshape((-1,4))[needed_points_list.ravel()] 
+        # Create an array with colors for each vertex and remove the color data for the points that has been thrown away. 
+        colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()] 
         colors[self._vertex_begin:self._vertex_end, :] *= numpy.array([[0.5, 0.5, 0.5, 1.0]], numpy.float32)
 
+        # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._index_begin += index_offset
         self._index_end += index_offset
         
-        indices[self._index_begin:self._index_end,:] = numpy.arange(self._index_end-self._index_begin, dtype=numpy.int32).reshape((-1,1))
+        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype=numpy.int32).reshape((-1, 1))
         # When the line type changes the index needs to be increased by 2.
-        indices[self._index_begin:self._index_end,:] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(),0],dtype=numpy.int32).reshape((-1,1))
+        indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype=numpy.int32).reshape((-1, 1))
         # Each line segment goes from it's starting point p to p+1, offset by the vertex index. 
         # The -1 is to compensate for the neccecarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
-        indices[self._index_begin:self._index_end,:] += numpy.array([self._vertex_begin - 1,self._vertex_begin])
+        indices[self._index_begin:self._index_end, :] += numpy.array([self._vertex_begin - 1, self._vertex_begin])
         
         self._build_cache_line_mesh_mask = None
         self._build_cache_needed_points = None
 
     def getColors(self):
         return self._colors
+
+    def mapLineTypeToColor(self, line_types):
+        return self._color_map[line_types]
+
+    def isInfillOrSkinType(self, line_types):
+        return self._isInfillOrSkinTypeMap[line_types]
 
     def lineMeshVertexCount(self):
         return (self._vertex_end - self._vertex_begin)
@@ -116,6 +128,18 @@ class LayerPolygon:
     @property
     def lineWidths(self):
         return self._line_widths
+    
+    @property
+    def jumpMask(self):
+        return self._jump_mask
+
+    @property
+    def meshLineCount(self):
+        return self._mesh_line_count
+
+    @property
+    def jumpCount(self):
+        return self._jump_count
 
     # Calculate normals for the entire polygon using numpy.
     def getNormals(self):
@@ -166,4 +190,5 @@ class LayerPolygon:
         [1.0, 0.74, 0.0, 1.0],
         [0.0, 1.0, 1.0, 1.0],
         [0.0, 0.0, 1.0, 1.0],
-        [0.5, 0.5, 1.0, 1.0]])
+        [0.5, 0.5, 1.0, 1.0]
+    ])
