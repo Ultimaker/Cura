@@ -584,6 +584,16 @@ UM.MainWindow
 
     Connections
     {
+        target: Cura.Actions.manageMaterials
+        onTriggered:
+        {
+            preferences.visible = true;
+            preferences.setPage(3)
+        }
+    }
+
+    Connections
+    {
         target: Cura.Actions.configureSettingVisibility
         onTriggered:
         {

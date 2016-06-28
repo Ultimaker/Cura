@@ -39,6 +39,8 @@ Item
     property alias resetProfile: resetProfileAction;
     property alias manageProfiles: manageProfilesAction;
 
+    property alias manageMaterials: manageMaterialsAction;
+
     property alias preferences: preferencesAction;
 
     property alias showEngineLog: showEngineLogAction;
@@ -105,6 +107,13 @@ Item
         id: settingsAction;
         text: catalog.i18nc("@action:inmenu menubar:printer","Manage Pr&inters...");
         iconName: "configure";
+    }
+
+    Action
+    {
+        id: manageMaterialsAction
+        text: catalog.i18nc("@action:inmenu", "Manage Materials...")
+        iconName: "configure"
     }
 
     Action
