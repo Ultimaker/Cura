@@ -1012,16 +1012,34 @@
                     "enabled": "retraction_enable",
                     "settable_per_mesh": true
                 },
-                "retraction_hop": {
-                    "label": "Z Hop when Retracting",
+                "retraction_hop_enabled": {
+                    "label": "Z Hop when Retracted",
                     "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value_warning": "-0.0001",
-                    "maximum_value_warning": "10",
+                    "type": "bool",
+                    "default_value": false,
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children": {
+                        "retraction_hop_only_when_collides": {
+                            "label": "Z Hop Only Over Printed Parts",
+                            "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
+                            "type": "bool",
+                            "default_value": false,
+                            "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
+                            "settable_per_mesh": true
+                        },
+                        "retraction_hop": {
+                            "label": "Z Hop Height",
+                            "description": "The height difference when performing a Z Hop.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1,
+                            "minimum_value_warning": "-0.0001",
+                            "maximum_value_warning": "10",
+                            "enabled": "retraction_enable and retraction_hop_enabled",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "material_standby_temperature":
                 {
@@ -1093,16 +1111,12 @@
                         }
                     }
                 },
-                "switch_extruder_retraction_hop":
-                {
-                    "label": "Nozzle Switch Z Hop",
-                    "description": "Whenever the machine switches to another nozzle, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle which has been unused for a while from oozing material on the outside of the print.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 1,
-                    "minimum_value_warning": "-0.0001",
-                    "maximum_value_warning": "10",
-                    "enabled": "retraction_enable",
+                "retraction_hop_after_extruder_switch": {
+                    "label": "Z Hop After Extruder Switch",
+                    "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_hop_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
