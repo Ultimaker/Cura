@@ -50,23 +50,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._manager.finished.connect(self._onFinished)
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
-        ##  Hack to ensure that the qt networking stuff isn't garbage collected (unless we want it to)
-        self._printer_request = None
-        self._printer_reply = None
-
-        self._print_job_request = None
-        self._print_job_reply = None
-
-        self._image_request = None
-        self._image_reply = None
-
         self._post_request = None
         self._post_reply = None
         self._post_multi_part = None
         self._post_part = None
-
-        self._put_request = None
-        self._put_reply = None
 
         self._progress_message = None
         self._error_message = None
@@ -121,21 +108,21 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _update_camera(self):
         ## Request new image
         url = QUrl("http://" + self._address + ":8080/?action=snapshot")
-        self._image_request = QNetworkRequest(url)
-        self._image_reply = self._manager.get(self._image_request)
+        image_request = QNetworkRequest(url)
+        self._manager.get(image_request)
 
     def _update(self):
         if not self._authenticated:
             self._checkAuthentication()
         ## Request 'general' printer data
         url = QUrl("http://" + self._address + self._api_prefix + "printer")
-        self._printer_request = QNetworkRequest(url)
-        self._printer_reply = self._manager.get(self._printer_request)
+        printer_request = QNetworkRequest(url)
+        self._manager.get(printer_request)
 
         ## Request print_job data
         url = QUrl("http://" + self._address + self._api_prefix + "print_job")
-        self._print_job_request = QNetworkRequest(url)
-        self._print_job_reply = self._manager.get(self._print_job_request)
+        print_job_request = QNetworkRequest(url)
+        self._manager.get(print_job_request)
 
     ##  Convenience function that gets information from the received json data and converts it to the right internal
     #   values / variables
@@ -200,10 +187,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _setJobState(self, job_state):
         url = QUrl("http://" + self._address + self._api_prefix + "print_job/state")
-        self._put_request = QNetworkRequest(url)
-        self._put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        put_request = QNetworkRequest(url)
+        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         data = "{\"target\": \"%s\"}" % job_state
-        self._put_reply = self._manager.put(self._put_request, data.encode())
+        self._manager.put(put_request, data.encode())
 
     def startPrint(self):
         if self._progress != 0:
