@@ -44,6 +44,7 @@ from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import MachineManagerModel
 from . import ContainerSettingsModel
+from . import CameraImageProvider
 from . import MachineActionManager
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
@@ -229,7 +230,7 @@ class CuraApplication(QtApplication):
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
         self.applicationShuttingDown.connect(self.saveSettings)
-
+        self.engineCreatedSignal.connect(self._onEngineCreated)
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
         for f in files:
@@ -237,6 +238,9 @@ class CuraApplication(QtApplication):
                 continue
 
             self._recent_files.append(QUrl.fromLocalFile(f))
+
+    def _onEngineCreated(self):
+        self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
