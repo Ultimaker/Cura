@@ -29,11 +29,9 @@ class OctoPrintExtension(QObject, Extension, OutputDevicePlugin):
 
         Preferences.getInstance().addPreference("octoprint/instances", json.dumps({}))
         self._instances = json.loads(Preferences.getInstance().getValue("octoprint/instances"))
-        Logger.log("i", "self._instances %s", repr(self._instances))
 
     def start(self):
         manager = self.getOutputDeviceManager()
-        Logger.log("i", "self._instances %s", repr(self._instances))
         for name, instance in self._instances.items():
             manager.addOutputDevice(OctoPrintOutputDevice.OctoPrintOutputDevice(name, instance["url"], instance["apikey"]))
 
