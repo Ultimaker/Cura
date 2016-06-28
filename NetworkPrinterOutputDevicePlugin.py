@@ -44,7 +44,8 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                 self._printers[key].connect()
                 self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
-                self._printers[key].close()
+                if self._printers[key].isConnected():
+                    self._printers[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties):
