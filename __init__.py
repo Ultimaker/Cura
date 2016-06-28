@@ -8,9 +8,9 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     return {
         "plugin": {
-            "name": "Wifi connection",
+            "name": "UM3 Network Connection",
             "author": "Ultimaker",
-            "description": catalog.i18nc("Wifi connection", "Wifi connection"),
+            "description": catalog.i18nc("Wifi connection", "UM3 Network Connection"),
             "api": 3
         }
     }
