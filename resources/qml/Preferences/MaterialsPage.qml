@@ -13,6 +13,7 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Materials");
+    addText: catalog.i18nc("@action:button", "Duplicate")
 
     model: UM.InstanceContainersModel
     {
@@ -33,6 +34,8 @@ UM.ManagementPage
             }
             return result
         }
+
+        sectionProperty: "brand"
     }
 
     activeId: Cura.MachineManager.activeMaterialId
@@ -45,12 +48,18 @@ UM.ManagementPage
         return -1;
     }
 
-    addEnabled: false
-    removeEnabled: false
-    renameEnabled: false
+    onActivateObject: Cura.MachineManager.setActiveMaterial(currentItem.id)
 
-    scrollviewCaption: " "
+    activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeMaterialId : false;
+    addEnabled: currentItem != null;
+    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
+    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
+
+    scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
     detailsVisible: true
+
+    section.property: "section"
+    section.delegate: Label { text: section }
 
     Item {
         UM.I18nCatalog { id: catalog; name: "cura"; }
@@ -91,6 +100,7 @@ UM.ManagementPage
             editingEnabled: editButton.checked;
 
             properties: materialProperties
+            containerId: base.currentItem.id
         }
 
         QtObject
@@ -106,9 +116,7 @@ UM.ManagementPage
             property color color_code: "yellow";
 
             property real density: 0.0;
-            onDensityChanged: console.log(density);
             property real diameter: 0.0;
-            onDiameterChanged: console.log(diameter);
 
             property real spool_cost: 0.0;
             property real spool_weight: 0.0;
