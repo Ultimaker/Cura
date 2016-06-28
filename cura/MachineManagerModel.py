@@ -104,6 +104,7 @@ class MachineManagerModel(QObject):
             self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
 
     def _onActiveExtruderStackChanged(self):
+        self.blurSettings.emit()  # Ensure no-one has focus.
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
