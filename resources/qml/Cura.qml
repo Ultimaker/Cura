@@ -294,7 +294,7 @@ UM.MainWindow
                         id: item
                         text: model_data ? model_data.name : ""
                         checkable: true
-                        checked: Cura.MachineManager.activeQualityId == model_data.id
+                        checked: model_data != null ? Cura.MachineManager.activeQualityId == model_data.id : false
                         exclusiveGroup: profileMenuGroup
                         onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
                     }
