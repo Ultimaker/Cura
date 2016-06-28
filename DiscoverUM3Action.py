@@ -30,7 +30,7 @@ class DiscoverUM3Action(MachineAction):
     def foundDevices(self):
         if self._network_plugin:
             printers = self._network_plugin.getPrinters()
-            return [printers[printer] for printer in printers]
+            return list(printers.values())
         else:
             return []
 
