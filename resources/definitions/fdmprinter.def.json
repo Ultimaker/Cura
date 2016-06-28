@@ -1517,7 +1517,7 @@
                 
                 "jerk_enabled": {
                     "label": "Enable Jerk Control",
-                    "description": "Enables adjusting the jerk of print head when the X or Y axis halts or starts to move. Increasing the jerk can reduce printing time at the cost of print quality.",
+                    "description": "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
@@ -1525,7 +1525,7 @@
                 },
                 "jerk_print": {
                     "label": "Print Jerk",
-                    "description": "The maximal allowed jerk of the print head when starting to move or when changing direction.",
+                    "description": "The maximum instantaneous velocity change of the print head.",
                     "unit": "mm/s³",
                     "type": "float",
                     "minimum_value": "0.1",
@@ -1537,7 +1537,7 @@
                     "children": {
                         "jerk_infill": {
                             "label": "Infill Jerk",
-                            "description": "The jerk with which infill is printed.",
+                            "description": "The maximum instantaneous velocity change with which infill is printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -1550,7 +1550,7 @@
                         },
                         "jerk_wall": {
                             "label": "Wall Jerk",
-                            "description": "The jerk with which the walls are printed.",
+                            "description": "The maximum instantaneous velocity change with which the walls are printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -1563,7 +1563,7 @@
                             "children": {
                                 "jerk_wall_0": {
                                     "label": "Outer Wall Jerk",
-                                    "description": "The jerk with which the outermost walls are printed.",
+                                    "description": "The maximum instantaneous velocity change with which the outermost walls are printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "minimum_value": "0.1",
@@ -1576,7 +1576,7 @@
                                 },
                                 "jerk_wall_x": {
                                     "label": "Inner Wall Jerk",
-                                    "description": "The jerk with which all inner walls are printed.",
+                                    "description": "The maximum instantaneous velocity change with which all inner walls are printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "minimum_value": "0.1",
@@ -1591,7 +1591,7 @@
                         },
                         "jerk_topbottom": {
                             "label": "Top/Bottom Jerk",
-                            "description": "The jerk with which top/bottom layers are printed.",
+                            "description": "The maximum instantaneous velocity change with which top/bottom layers are printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -1604,7 +1604,7 @@
                         },
                         "jerk_support": {
                             "label": "Support Jerk",
-                            "description": "The jerk with which the support structure is printed.",
+                            "description": "The maximum instantaneous velocity change with which the support structure is printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -1618,7 +1618,7 @@
                             "children": {
                                 "jerk_support_infill": {
                                     "label": "Support Infill Jerk",
-                                    "description": "The jerk with which the infill of support is printed.",
+                                    "description": "The maximum instantaneous velocity change with which the infill of support is printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "default_value": 20,
@@ -1632,7 +1632,7 @@
                                 },
                                 "jerk_support_roof": {
                                     "label": "Support Roof Jerk",
-                                    "description": "The jerk with which the roofs of support are printed.",
+                                    "description": "The maximum instantaneous velocity change with which the roofs of support are printed.",
                                     "unit": "mm/s³",
                                     "type": "float",
                                     "default_value": 20,
@@ -1648,7 +1648,7 @@
                         },
                         "jerk_prime_tower": {
                             "label": "Prime Tower Jerk",
-                            "description": "The jerk with which the prime tower is printed.",
+                            "description": "The maximum instantaneous velocity change with which the prime tower is printed.",
                             "unit": "mm/s³",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -1663,7 +1663,7 @@
                 },
                 "jerk_travel": {
                     "label": "Travel Jerk",
-                    "description": "The jerk with which travel moves are made.",
+                    "description": "The maximum instantaneous velocity change with which travel moves are made.",
                     "unit": "mm/s³",
                     "type": "float",
                     "default_value": 30,
@@ -1676,7 +1676,7 @@
                 },
                 "jerk_layer_0": {
                     "label": "Initial Layer Jerk",
-                    "description": "The print jerk for the initial layer.",
+                    "description": "The print maximum instantaneous velocity change for the initial layer.",
                     "unit": "mm/s³",
                     "type": "float",
                     "default_value": 20,
@@ -1689,7 +1689,7 @@
                 },
                 "jerk_skirt": {
                     "label": "Skirt Jerk",
-                    "description": "The jerk with which the skirt and brim are printed.",
+                    "description": "The maximum instantaneous velocity change with which the skirt and brim are printed.",
                     "unit": "mm/s³",
                     "type": "float",
                     "default_value": 20,
