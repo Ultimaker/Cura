@@ -10,6 +10,8 @@ import QtQuick.Dialogs 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+import "Menus"
+
 UM.MainWindow
 {
     id: base
@@ -417,14 +419,9 @@ UM.MainWindow
             {
                 id: view_panel
 
-                //anchors.left: parent.left;
-                //anchors.right: parent.right;
-                //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
                 anchors.topMargin: UM.Theme.getSize("default_margin").height;
                 anchors.left: viewModeButton.left;
-                //anchors.bottom: buttons.top;
-                //anchors.bottomMargin: UM.Theme.getSize("default_margin").height;
 
                 height: childrenRect.height;
 
@@ -434,7 +431,6 @@ UM.MainWindow
             Button
             {
                 id: openFileButton;
-                //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
@@ -442,9 +438,7 @@ UM.MainWindow
                 anchors
                 {
                     top: parent.top;
-                    //topMargin: UM.Theme.getSize("loadfile_margin").height
                     left: parent.left;
-                    //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
                 action: Cura.Actions.open;
             }
@@ -484,27 +478,7 @@ UM.MainWindow
 
                 style: UM.Theme.styles.tool_button;
                 tooltip: '';
-                menu: Menu
-                {
-                    id: viewMenu;
-                    Instantiator
-                    {
-                        id: viewMenuInstantiator
-                        model: UM.ViewModel { }
-                        MenuItem
-                        {
-                            text: model.name
-                            checkable: true;
-                            checked: model.active
-                            exclusiveGroup: viewMenuGroup;
-                            onTriggered: UM.Controller.setActiveView(model.id);
-                        }
-                        onObjectAdded: viewMenu.insertItem(index, object)
-                        onObjectRemoved: viewMenu.removeItem(object)
-                    }
-
-                    ExclusiveGroup { id: viewMenuGroup; }
-                }
+                menu: ViewMenu { }
             }
 
             Toolbar
