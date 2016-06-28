@@ -15,6 +15,13 @@ import json
 
 i18n_catalog = i18nCatalog("cura")
 
+from enum import IntEnum
+
+class AuthState(IntEnum):
+    NotAuthenticated = 1
+    AuthenticationRequested = 2
+    Authenticated = 3
+    AuthenticationDenied = 4
 
 ##  Network connected (wifi / lan) printer that uses the Ultimaker API
 @signalemitter
@@ -70,7 +77,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._camera_image_id = 0
 
-        self._authenticated = False
+        self._authentication_state = AuthState.NotAuthenticated
         self._authentication_id = None
         self._authentication_key = None
 
@@ -112,7 +119,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._manager.get(image_request)
 
     def _update(self):
-        if not self._authenticated:
+        if self._authentication_state in [AuthState.NotAuthenticated, AuthState.AuthenticationRequested]:
             self._checkAuthentication()
         ## Request 'general' printer data
         url = QUrl("http://" + self._address + self._api_prefix + "printer")
@@ -247,6 +254,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "auth/request")
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._authentication_state = AuthState.AuthenticationRequested
         self._manager.post(request, json.dumps({"application": "Cura", "user":"test"}).encode())
 
     ##  Handler for all requests that have finished.
@@ -285,8 +293,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     Logger.log("i", "Not authenticated. Attempting to request authentication")
                     self._requestAuthentication()
                 else:
-                    self._authenticated = True
+                    self._authenticated = AuthState.Authenticated
                     Logger.log("i", "Authentication succeeded")
+            elif "auth/check" in reply.url().toString():  # Check if we are authenticated (user can refuse this!)
+                data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                if data.get("message", "") == "authorized":
+                    Logger.log("i", "Authentication completed.")
+                    self._authentication_state = AuthState.Authenticated
+                else:
+                    Logger.log("i", "Authentication was denied.")
+                    self._authentication_state = AuthState.AuthenticationDenied
 
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             if "/auth/request" in reply.url().toString():
