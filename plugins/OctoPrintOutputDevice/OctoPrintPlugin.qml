@@ -26,15 +26,13 @@ UM.Dialog
     property int defaultVerticalMargin: UM.Theme.getSize("default_margin").height;
     property int defaultHorizontalMargin: UM.Theme.getSize("default_margin").width;
 
-    Row
-    {
+    Row {
         id: buttons;
 
         width: childrenRect.width;
         height: childrenRect.height;
 
-        Button
-        {
+        Button {
             id: addButton;
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
@@ -47,8 +45,7 @@ UM.Dialog
                 nameField.textChanged();
             }
         }
-        Button
-        {
+        Button {
             id: removeButton;
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
@@ -59,8 +56,7 @@ UM.Dialog
                 manager.removeInstance(name);
             }
         }
-        Button
-        {
+        Button {
             id: editButton;
             text: catalog.i18nc("@action:button", "Edit");
             iconName: "edit-rename";
@@ -76,13 +72,11 @@ UM.Dialog
         }
     }
 
-    Item
-    {
+    Item {
         UM.I18nCatalog { id: catalog; name: "cura"; }
         SystemPalette { id: palette }
 
-        anchors
-        {
+        anchors {
             top: buttons.bottom;
             topMargin: parent.defaultVerticalMargin;
             left: parent.left;
@@ -90,12 +84,10 @@ UM.Dialog
             bottom: parent.bottom;
         }
 
-        ScrollView
-        {
+        ScrollView {
             id: instanceScroll;
 
-            anchors
-            {
+            anchors {
                 top: parent.top;
                 topMargin: dialog.defaultVerticalMargin;
                 bottom: parent.bottom;
@@ -103,8 +95,7 @@ UM.Dialog
             }
             width: parent.width * 0.4;
 
-            ListView
-            {
+            ListView {
                 id: instanceList;
 
                 anchors {
@@ -114,25 +105,20 @@ UM.Dialog
 
                 model: manager.serverList;
 
-                delegate: Rectangle
-                {
+                delegate: Rectangle {
                     width: parent.width;
                     height: childrenRect.height;
                     color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase;
                     property string name: modelData.toString();
 
-                    Text
-                    {
+                    Text {
                         text: name;
                     }
 
-                    MouseArea
-                    {
+                    MouseArea {
                         anchors.fill: parent;
-                        onClicked:
-                        {
-                            if(!parent.ListView.isCurrentItem)
-                            {
+                        onClicked: {
+                            if(!parent.ListView.isCurrentItem) {
                                 parent.ListView.view.currentIndex = index;
                             }
                         }
@@ -141,12 +127,10 @@ UM.Dialog
             }
         }
 
-        Item
-        {
+        Item {
             id: detailsPane;
 
-            anchors
-            {
+            anchors {
                 left: instanceScroll.right;
                 leftMargin: dialog.defaultHorizontalMargin;
                 top: parent.top;
@@ -155,7 +139,7 @@ UM.Dialog
             }
 
             ColumnLayout {
-                anchors.margins: 11; // dialog.defaultVerticalMargin;
+                anchors.margins: dialog.defaultVerticalMargin;
 
                 Label {
                     text: dialog.currentName;
@@ -175,10 +159,8 @@ UM.Dialog
         }
     }
 
-    Item
-    {
-        UM.Dialog
-        {
+    Item {
+        UM.Dialog {
             id: instanceDialog;
 
             property string oldName: ""; // oldName = "" for add
