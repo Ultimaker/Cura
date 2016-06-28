@@ -36,9 +36,9 @@ class DiscoverUM3Action(MachineAction):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             if "key" in global_container_stack.getMetaData():
-                global_container_stack.setMetaDataEntry("key", key)
+                global_container_stack.setMetaDataEntry("um_network_key", key)
             else:
-                global_container_stack.addMetaDataEntry("key", key)
+                global_container_stack.addMetaDataEntry("um_network_key", key)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.

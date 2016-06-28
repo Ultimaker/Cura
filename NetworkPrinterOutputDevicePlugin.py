@@ -40,7 +40,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             return
 
         for key in self._printers:
-            if key == active_machine.getMetaDataEntry("key"):
+            if key == active_machine.getMetaDataEntry("um_network_key"):
                 self._printers[key].connect()
                 self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
@@ -51,7 +51,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
         self._printers[printer.getKey()] = printer
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("key"):
+        if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
             self._printers[printer.getKey()].connect()
             printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
