@@ -157,6 +157,26 @@ Item {
 
             UM.SimpleButton
             {
+                id: experimentalIcon;
+
+                visible: definition.is_experimental
+                
+                height: parent.height;
+                width: height;
+
+                backgroundColor: UM.Theme.getColor("setting_control");
+                hoverBackgroundColor: UM.Theme.getColor("setting_control_experimental_highlight")
+                color: UM.Theme.getColor("setting_control_experimental")
+                hoverColor: UM.Theme.getColor("setting_control_experimental_hover")
+
+                iconSource: UM.Theme.getIcon("experimental")
+
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting or tool is experimental.")) }
+                onExited: base.showTooltip(base.tooltipText);
+            }
+
+            UM.SimpleButton
+            {
                 // This button shows when the setting has an inherited function, but is overriden by profile.
                 id: inheritButton;
                 // Inherit button needs to be visible if;
