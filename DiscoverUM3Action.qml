@@ -16,14 +16,14 @@ Cura.MachineAction
         anchors.fill: parent;
         id: discoverUM3Action
         SystemPalette { id: palette }
-        UM.I18nCatalog { id: catalog; name:"cura"}
+        UM.I18nCatalog { id: catalog; name:"cura" }
         Label
         {
             id: pageTitle
             width: parent.width
             text: catalog.i18nc("@title", "Connect to Networked Printer")
             wrapMode: Text.WordWrap
-            font.pointSize: 18;
+            font.pointSize: 18
         }
 
         Label
@@ -31,7 +31,7 @@ Cura.MachineAction
             id: pageDescription
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your ptiner is connected to the network using a network cable of by connecting your printer to your WIFI network. \n\n If you don't want to connect Cura with your Ultimaker 3 now, you can always use a USB drive to transfer g-code files to your Printer.\n\n Select your Ultimaker 3 from the list below:")
+            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. \n\nIf you don't want to connect Cura with your Ultimaker 3 now, you can always use a USB drive to transfer g-code files to your printer.\n\nSelect your Ultimaker 3 from the list below:")
         }
 
         Row
@@ -41,8 +41,9 @@ Cura.MachineAction
             ScrollView
             {
                 id: objectListContainer
-                frameVisible: true;
+                frameVisible: true
                 width: parent.width * 0.5
+                height: base.height - parent.y
 
                 Rectangle
                 {
@@ -56,20 +57,21 @@ Cura.MachineAction
                     id: listview
                     model: manager.foundDevices
                     width: parent.width
-                    height: 500
                     currentIndex: activeIndex
                     onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
+                    Component.onCompleted: manager.startDiscovery()
                     delegate: Rectangle
                     {
-                        height: childrenRect.height;
+                        height: childrenRect.height
                         color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                         width: parent.width
                         Label
                         {
-                            anchors.left: parent.left;
-                            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-                            anchors.right: parent.right;
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.right: parent.right
                             text: listview.model[index].name
+                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
                             elide: Text.ElideRight
                         }
 
@@ -96,7 +98,8 @@ Cura.MachineAction
                     width: parent.width
                     wrapMode: Text.WordWrap
                     text: base.selectedPrinter ? base.selectedPrinter.name : ""
-                    font.pointSize: 16;
+                    font: UM.Theme.getFont("large")
+                    elide: Text.ElideRight
                 }
                 Grid
                 {
@@ -140,11 +143,6 @@ Cura.MachineAction
                     }
                 }
             }
-        }
-        Button
-        {
-            text: catalog.i18nc("@label","Start looking!")
-            onClicked: manager.startDiscovery()
         }
     }
     Button
