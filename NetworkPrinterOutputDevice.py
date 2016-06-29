@@ -233,6 +233,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
             self._error_message.show()
             return
+        elif self._authentication_state != AuthState.Authenticated:
+            self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
+                                                                         "Not authenticated to print with this machine. Unable to start a new job."))
+            self._not_authenticated_message.show()
+            return
         try:
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
@@ -333,7 +338,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     Logger.log("i", "Authentication succeeded")
             elif "auth/check" in reply.url().toString():  # Check if we are authenticated (user can refuse this!)
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-                print("auth check response")
                 if data.get("message", "") == "authorized":
                     Logger.log("i", "Authentication was approved")
                     self._verifyAuthentication()  # Ensure that the verification is really used and correct.
