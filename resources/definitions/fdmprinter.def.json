@@ -29,19 +29,19 @@
             {
                 "machine_show_variants":
                 {
+                    "label": "Show machine variants",
                     "description": "Whether to show the different variants of this machine, which are described in separate json files.",
                     "default_value": false,
                     "type": "bool",
-                    "label": "Show machine variants",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_start_gcode":
                 {
+                    "label": "Start GCode",
                     "description": "Gcode commands to be executed at the very start - separated by \\n.",
                     "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
-                    "label": "Start GCode",
                     "type": "str",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -49,9 +49,9 @@
                 },
                 "machine_end_gcode":
                 {
+                    "label": "End GCode",
                     "description": "Gcode commands to be executed at the very end - separated by \\n.",
                     "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84",
-                    "label": "End GCode",
                     "type": "str",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -59,8 +59,8 @@
                 },
                 "material_bed_temp_wait":
                 {
-                    "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
                     "label": "Wait for bed heatup",
+                    "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -69,49 +69,49 @@
                 },
                 "material_print_temp_prepend":
                 {
+                    "label": "Wait for material heatup",
                     "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
-                    "label": "Wait for material heatup",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_width":
                 {
+                    "label": "Machine width",
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "label": "Machine width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_depth":
                 {
+                    "label": "Machine depth",
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "label": "Machine depth",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_height":
                 {
+                    "label": "Machine height",
                     "description": "The height (Z-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "label": "Machine height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_heated_bed":
                 {
+                    "label": "Has heated bed",
                     "description": "Whether the machine has a heated bed present.",
                     "default_value": false,
-                    "label": "Has heated bed",
                     "type": "bool",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -119,28 +119,28 @@
                 },
                 "machine_center_is_zero":
                 {
+                    "label": "Is center origin",
                     "description": "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area.",
                     "default_value": false,
                     "type": "bool",
-                    "label": "Is center origin",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_extruder_count":
                 {
+                    "label": "Number extruders",
                     "description": "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle.",
                     "default_value": 1,
                     "type": "int",
-                    "label": "Number extruders",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_tip_outer_diameter":
                 {
-                    "description": "The outer diameter of the tip of the nozzle.",
                     "label": "Outer nozzle diameter",
+                    "description": "The outer diameter of the tip of the nozzle.",
                     "default_value": 1,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -150,74 +150,75 @@
                 },
                 "machine_nozzle_head_distance":
                 {
+                    "label": "Nozzle length",
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
                     "default_value": 3,
                     "type": "float",
-                    "label": "Nozzle length",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_expansion_angle":
                 {
+                    "label": "Nozzle angle",
                     "description": "The angle between the horizontal plane and the conical part right above the tip of the nozzle.",
                     "default_value": 45,
                     "type": "int",
-                    "label": "Nozzle angle",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_heat_zone_length":
                 {
+                    "label": "Heat zone length",
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
                     "default_value": 16,
                     "type": "float",
-                    "label": "Heat zone length",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_heat_up_speed":
                 {
+                    "label": "Heat up speed",
                     "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
                     "type": "float",
-                    "label": "Heat up speed",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "machine_nozzle_cool_down_speed":
                 {
+                    "label": "Cool down speed",
                     "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
                     "type": "float",
-                    "label": "Cool down speed",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "machine_gcode_flavor":
                 {
+                    "label": "Gcode flavour",
                     "description": "The type of gcode to be generated.",
                     "default_value": "RepRap",
                     "type": "str",
-                    "label": "Gcode flavour",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_disallowed_areas":
                 {
+                    "label": "Disallowed areas",
                     "description": "A list of polygons with areas the print head is not allowed to enter.",
                     "type": "polygons",
                     "default_value": [],
-                    "label": "Disallowed areas",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_head_polygon":
                 {
+                    "label": "Machine head polygon",
                     "description": "A 2D silhouette of the print head (fan caps excluded).",
                     "type": "polygon",
                     "default_value":
@@ -239,13 +240,13 @@
                             1
                         ]
                     ],
-                    "label": "Machine head polygon",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_head_with_fans_polygon":
                 {
+                    "label": "Machine head & Fan polygon",
                     "description": "A 2D silhouette of the print head (fan caps included).",
                     "type": "polygon",
                     "default_value":
@@ -267,16 +268,15 @@
                             -10
                         ]
                     ],
-                    "label": "Machine head & Fan polygon",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "gantry_height":
                 {
+                    "label": "Gantry height",
                     "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
                     "default_value": 99999999999,
-                    "label": "Gantry height",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
