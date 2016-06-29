@@ -211,16 +211,11 @@ TabView
                         suffix: model.unit
                         maximumValue: 99999
                         decimals: model.unit == "mm" ? 2 : 0
+
+                        onEditingFinished: provider.setPropertyValue("value", value)
                     }
 
-                    UM.SettingPropertyProvider
-                    {
-                        id: provider
-
-                        containerStackId: Cura.MachineManager.activeMachineId
-                        key: model.key
-                        watchedProperties: [ "value" ]
-                    }
+                    UM.ContainerPropertyProvider { id: provider; containerId: base.containerId; watchedProperties: [ "value" ]; key: model.key }
                 }
             }
         }
