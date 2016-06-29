@@ -79,7 +79,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._camera_image_id = 0
 
         self._authentication_counter = 0
-        self._max_authentication_counter = 30 # Number of attempts before authentication timed out.
+        self._max_authentication_counter = 5 * 60  # Number of attempts before authentication timed out (5 min)
 
         self._authentication_timer = QTimer()
         self._authentication_timer.setInterval(1000)  # TODO; Add preference for update interval
