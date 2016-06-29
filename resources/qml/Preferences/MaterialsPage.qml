@@ -13,7 +13,6 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Materials");
-    addText: catalog.i18nc("@action:button", "Duplicate")
 
     model: UM.InstanceContainersModel
     {
@@ -48,18 +47,42 @@ UM.ManagementPage
         return -1;
     }
 
-    onActivateObject: Cura.MachineManager.setActiveMaterial(currentItem.id)
-
-    activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeMaterialId : false;
-    addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
-    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
-
     scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
     detailsVisible: true
 
     section.property: "section"
     section.delegate: Label { text: section }
+
+    buttons: [
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Activate");
+            iconName: "list-activate";
+            enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
+            onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Duplicate");
+            iconName: "list-add";
+            enabled: base.currentItem
+            onClicked: Cura.ContainerManager.duplicateContainer(base.currentItem.id)
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Remove");
+            iconName: "list-remove";
+            enabled: base.currentItem && !base.currentItem.readOnly
+//             onClicked: Cura.ContainerManager.removeContainer()
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Rename");
+            iconName: "edit-rename";
+            enabled: base.currentItem && !base.currentItem.readOnly
+//             onClicked: Cura.ContainerManager.renameContainer()
+        }
+    ]
 
     Item {
         UM.I18nCatalog { id: catalog; name: "cura"; }
