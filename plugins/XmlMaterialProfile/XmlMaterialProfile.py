@@ -28,8 +28,25 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         result.setMetaDataEntry("GUID", str(uuid.uuid4()))
         return result
 
+    def setProperty(self, key, property_name, property_value, container = None):
+        super().setProperty(key, property_name, property_value)
+
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+            container._dirty = True
+
     def serialize(self):
-        if self.getDefinition().id != "fdmprinter":
+        registry = UM.Settings.ContainerRegistry.getInstance()
+
+        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"))
+        most_generic = all_containers[0]
+        for container in all_containers:
+            # Find the "most generic" version of this material
+            # This is a bit of a nasty implementation because of the naive assumption that anything with a shorter
+            # id is more generic. It holds for the current implementation though.
+            if len(most_generic.id) > len(container.id):
+                most_generic = container
+
+        if most_generic and self.id != most_generic.id:
             # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
             # we should only serialize the "base" material definition, since that can then take care of
             # serializing the machine/nozzle specific profiles.
@@ -91,54 +108,63 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         ## Begin Settings Block
         builder.start("settings")
 
-        for instance in self.findInstances():
-            builder.start("setting", { "key": UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key) })
-            builder.data(str(instance.value))
-            builder.end("setting")
+        if self.getDefinition().id == "fdmprinter":
+            for instance in self.findInstances():
+                self._addSettingElement(builder, instance)
 
-        # Find all machine sub-profiles corresponding to this material and add them to this profile.
-        machines = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = self.getId() + "_*")
-        for machine in machines:
-            if machine.getMetaDataEntry("variant"):
-                # Since the list includes variant-specific containers but we do not yet want to add those, we just skip them.
+        machine_container_map = {}
+        machine_nozzle_map = {}
+
+        for container in all_containers:
+            definition_id = container.getDefinition().id
+            if definition_id == "fdmprinter":
+                continue
+
+            if definition_id not in machine_container_map:
+                machine_container_map[definition_id] = container
+            elif len(container.id) < len(machine_container_map[definition_id].id):
+                machine_container_map[definition_id] = container
+
+            variant = container.getMetaDataEntry("variant")
+            if variant:
+                if variant not in machine_nozzle_map:
+                    machine_nozzle_map[definition_id] = []
+                machine_nozzle_map[definition_id].append(container)
+
+        for definition_id, container in machine_container_map.items():
+            definition = container.getDefinition()
+            try:
+                product = UM.Dictionary.findKey(self.__product_id_map, definition_id)
+            except ValueError:
                 continue
 
             builder.start("machine")
-
-            definition = machine.getDefinition()
-            builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product": UM.Dictionary.findKey(self.__product_id_map, definition.id) })
+            builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product":  product})
             builder.end("machine_identifier")
 
-            for instance in machine.findInstances():
-                if self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
+            for instance in container.findInstances():
+                if self.getDefinition().id == "fdmprinter" and self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
                     # If the settings match that of the base profile, just skip since we inherit the base profile.
                     continue
 
-                builder.start("setting", { "key": UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key) })
-                builder.data(str(instance.value))
-                builder.end("setting")
+                self._addSettingElement(builder, instance)
 
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
-            hotends = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = machine.getId() + "_*")
-            for hotend in hotends:
-                variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = hotend.getMetaDataEntry("variant"))
-                if variant_containers:
-                    builder.start("hotend", { "id": variant_containers[0].getName() })
+            for hotend in machine_nozzle_map[definition_id]:
+                variant_containers = registry.findInstanceContainers(id = hotend.getMetaDataEntry("variant"))
+                if not variant_containers:
+                    continue
 
-                    for instance in hotend.findInstances():
-                        if self.getInstance(instance.definition.key) and self.getProperty(instance.definition.key, "value") == instance.value:
-                            # If the settings match that of the base profile, just skip since we inherit the base profile.
-                            continue
+                builder.start("hotend", { "id": variant_containers[0].getName() })
 
-                        if machine.getInstance(instance.definition.key) and machine.getProperty(instance.definition.key, "value") == instance.value:
-                            # If the settings match that of the machine profile, just skip since we inherit the machine profile.
-                            continue
+                for instance in hotend.findInstances():
+                    if container.getInstance(instance.definition.key) and container.getProperty(instance.definition.key, "value") == instance.value:
+                        # If the settings match that of the machine profile, just skip since we inherit the machine profile.
+                        continue
 
-                        builder.start("setting", { "key": UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key) })
-                        builder.data(str(instance.value))
-                        builder.end("setting")
+                    self._addSettingElement(builder, instance)
 
-                    builder.end("hotend")
+                builder.end("hotend")
 
             builder.end("machine")
 
@@ -297,6 +323,15 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material._dirty = False
                     UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
+    def _addSettingElement(self, builder, instance):
+        try:
+            key = UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key)
+        except ValueError:
+            return
+
+        builder.start("setting", { "key": key })
+        builder.data(str(instance.value))
+        builder.end("setting")
 
     # Map XML file setting names to internal names
     __material_property_setting_map = {
