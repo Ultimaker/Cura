@@ -335,15 +335,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                 print("auth check response")
                 if data.get("message", "") == "authorized":
-                    Logger.log("i", "Authentication completed.")
-                    self.setAuthenticationState(AuthState.Authenticated)
+                    Logger.log("i", "Authentication was approved")
+                    self._verifyAuthentication()  # Ensure that the verification is really used and correct.
                 elif data.get("message", "") == "unauthorized":
                     Logger.log("i", "Authentication was denied.")
                     self.setAuthenticationState(AuthState.AuthenticationDenied)
                 else:
                     pass
-                    #Logger.log("i", "Authentication was denied.")
-                    #self.setAuthenticationState(AuthState.AuthenticationDenied)
 
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             if "/auth/request" in reply.url().toString():
