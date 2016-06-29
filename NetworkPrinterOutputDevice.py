@@ -135,6 +135,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         image_request = QNetworkRequest(url)
         self._manager.get(image_request)
 
+    ##  Set the authentication state.
+    #   \param auth_state \type{AuthState} Enum value representing the new auth state
     def setAuthenticationState(self, auth_state):
         if auth_state == AuthState.AuthenticationRequested:
             self._authentication_requested_message.show()
@@ -146,6 +148,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._authentication_state = auth_state
 
+    ##  Request data from the connected device.
     def _update(self):
         if self._authentication_state == AuthState.NotAuthenticated:
             self._verifyAuthentication() # We don't know if we are authenticated; check if we have correct auth.
@@ -229,6 +232,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         data = "{\"target\": \"%s\"}" % job_state
         self._manager.put(put_request, data.encode())
 
+    ##  Convenience function to get the username from the OS.
+    #   The code was copied from the getpass module, as we try to use as little dependencies as possible.
     def _getUserName(self):
         for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
             user = os.environ.get(name)
@@ -236,6 +241,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 return user
         return "Unknown User"  # Couldn't find out username.
 
+    ##  Attempt to start a new print.
+    #   This function can fail to actually start a print due to not being authenticated or another print already
+    #   being in progress.
     def startPrint(self):
         if self._progress != 0:
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
@@ -291,6 +299,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         request = QNetworkRequest(url)
         self._manager.get(request)
 
+    ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
