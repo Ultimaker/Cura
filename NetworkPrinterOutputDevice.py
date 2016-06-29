@@ -211,6 +211,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         self._update_camera()
         Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
+
+        ## Check if this machine was authenticated before.
+        self._authentication_id = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_id", None)
+        self._authentication_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_key", None)
+
         self._update_timer.start()
         self._camera_timer.start()
 
@@ -352,6 +357,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     pass
                 else:
                     self.setAuthenticationState(AuthState.Authenticated)
+                    global_container_stack = Application.getInstance().getGlobalContainerStack()
+                    ## Save authentication details.
+                    if global_container_stack:
+                        if "network_authentication_key" in global_container_stack.getMetaData():
+                            global_container_stack.setMetaDataEntry("network_authentication_key", self._authentication_key)
+                        else:
+                            global_container_stack.addMetaDataEntry("network_authentication_key", self._authentication_key)
+                        if "network_authentication_id" in global_container_stack.getMetaData():
+                            global_container_stack.setMetaDataEntry("network_authentication_id", self._authentication_id)
+                        else:
+                            global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
                     Logger.log("i", "Authentication succeeded")
             elif "auth/check" in reply.url().toString():  # Check if we are authenticated (user can refuse this!)
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
