@@ -45,6 +45,7 @@ from . import CuraSplashScreen
 from . import MachineManagerModel
 from . import ContainerSettingsModel
 from . import MachineActionManager
+from . import ContainerManager
 
 import cura.Settings
 
@@ -427,6 +428,8 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(ContainerSettingsModel.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+
+        qmlRegisterSingletonType(ContainerManager.ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 
