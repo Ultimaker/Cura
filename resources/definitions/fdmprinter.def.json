@@ -183,6 +183,7 @@
                     "label": "Heat up speed",
                     "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
+                    "unit": "°C/s",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -192,6 +193,17 @@
                     "label": "Cool down speed",
                     "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
+                    "unit": "°C/s",
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_min_cool_heat_time_window":
+                {
+                    "label": "Minimal Time Standby Temperature",
+                    "description": "The minimal time an extruder has to be inactive before the nozzle is cooled. Only when an extruder is not used for longer than this time will it be allowed to cool down to the standby temperature.",
+                    "default_value": 50.0,
+                    "unit": "s",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
