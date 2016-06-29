@@ -12,6 +12,7 @@ from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
 from PyQt5.QtGui import QImage
 
 import json
+import os
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -228,6 +229,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         data = "{\"target\": \"%s\"}" % job_state
         self._manager.put(put_request, data.encode())
 
+    def _getUserName(self):
+        for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+            user = os.environ.get(name)
+            if user:
+                return user
+        return "Unknown User"  # Couldn't find out username.
+
     def startPrint(self):
         if self._progress != 0:
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
@@ -292,7 +300,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self.setAuthenticationState(AuthState.AuthenticationRequested)
-        self._manager.post(request, json.dumps({"application": "Cura", "user":"test"}).encode())
+        self._manager.post(request, json.dumps({"application": "Cura-" + Application.getInstance().getVersion(), "user": self._getUserName()}).encode())
 
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
