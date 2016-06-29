@@ -81,6 +81,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_id = None
         self._authentication_key = None
 
+        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please aprove the request on the printer"), lifetime = 0, dismissable = False)
         self._camera_image = QImage()
 
     def _onAuthenticationRequired(self, reply, authenticator):
@@ -117,6 +118,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + ":8080/?action=snapshot")
         image_request = QNetworkRequest(url)
         self._manager.get(image_request)
+
+    def setAuthenticationState(self, auth_state):
+        if auth_state == AuthState.AuthenticationRequested:
+            self._authentication_requested_message.show()
+        elif auth_state == AuthState.Authenticated:
+            self._authentication_requested_message.hide()
+        elif auth_state == AuthState.AuthenticationDenied:
+            self._authentication_requested_message.hide()
+
+        self._authentication_state = auth_state
 
     def _update(self):
         if self._authentication_state in [AuthState.NotAuthenticated, AuthState.AuthenticationRequested]:
@@ -254,7 +265,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "auth/request")
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
-        self._authentication_state = AuthState.AuthenticationRequested
+        self.setAuthenticationState(AuthState.AuthenticationRequested)
         self._manager.post(request, json.dumps({"application": "Cura", "user":"test"}).encode())
 
     ##  Handler for all requests that have finished.
@@ -290,19 +301,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.newImage.emit()
             elif "auth/verify" in reply.url().toString():  # Answer when requesting authentication
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 401:
-                    Logger.log("i", "Not authenticated. Attempting to request authentication")
-                    self._requestAuthentication()
+                    if self._authentication_state != AuthState.AuthenticationRequested:
+                        # Only request a new authentication when we have not already done so.
+                        Logger.log("i", "Not authenticated. Attempting to request authentication")
+                        self._requestAuthentication()
+                elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 403:
+                    print("403")
                 else:
-                    self._authenticated = AuthState.Authenticated
+                    self.setAuthenticationState(AuthState.Authenticated)
                     Logger.log("i", "Authentication succeeded")
             elif "auth/check" in reply.url().toString():  # Check if we are authenticated (user can refuse this!)
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                print("auth check response")
                 if data.get("message", "") == "authorized":
                     Logger.log("i", "Authentication completed.")
-                    self._authentication_state = AuthState.Authenticated
+                    self.setAuthenticationState(AuthState.Authenticated)
                 else:
-                    Logger.log("i", "Authentication was denied.")
-                    self._authentication_state = AuthState.AuthenticationDenied
+                    pass
+                    #Logger.log("i", "Authentication was denied.")
+                    #self.setAuthenticationState(AuthState.AuthenticationDenied)
 
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             if "/auth/request" in reply.url().toString():
