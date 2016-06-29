@@ -5,6 +5,7 @@ import math
 import copy
 import io
 import xml.etree.ElementTree as ET
+import uuid
 
 from UM.Logger import Logger
 
@@ -21,6 +22,11 @@ def _tag_without_namespace(element):
 class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
+
+    def duplicate(self, new_id, new_name = None):
+        result = super().duplicate(self.getMetaDataEntry("brand") + "_" + new_id, new_name)
+        result.setMetaDataEntry("GUID", str(uuid.uuid4()))
+        return result
 
     def serialize(self):
         if self.getDefinition().id != "fdmprinter":
