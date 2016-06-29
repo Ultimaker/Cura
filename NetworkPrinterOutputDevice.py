@@ -77,12 +77,27 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._camera_image_id = 0
 
+        self._authentication_counter = 0
+        self._max_authentication_counter = 30 # Number of attempts before authentication timed out.
+
+        self._authentication_timer = QTimer()
+        self._authentication_timer.setInterval(1000)  # TODO; Add preference for update interval
+        self._authentication_timer.setSingleShot(False)
+        self._authentication_timer.timeout.connect(self._onAuthenticationTimer)
+
         self._authentication_state = AuthState.NotAuthenticated
         self._authentication_id = None
         self._authentication_key = None
 
-        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please aprove the request on the printer"), lifetime = 0, dismissable = False)
+        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please aprove the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
         self._camera_image = QImage()
+
+    def _onAuthenticationTimer(self):
+        self._authentication_counter += 1
+        self._authentication_requested_message.setProgress(self._authentication_counter / self._max_authentication_counter * 100)
+        if self._authentication_counter > self._max_authentication_counter:
+            self._authentication_timer.stop()
+            self.setAuthenticationState(AuthState.AuthenticationDenied)
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
@@ -122,6 +137,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def setAuthenticationState(self, auth_state):
         if auth_state == AuthState.AuthenticationRequested:
             self._authentication_requested_message.show()
+            self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
             self._authentication_requested_message.hide()
         elif auth_state == AuthState.AuthenticationDenied:
@@ -130,8 +146,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_state = auth_state
 
     def _update(self):
-        if self._authentication_state in [AuthState.NotAuthenticated, AuthState.AuthenticationRequested]:
-            self._checkAuthentication()
+        if self._authentication_state == AuthState.NotAuthenticated:
+            self._verifyAuthentication() # We don't know if we are authenticated; check if we have correct auth.
+        elif self._authentication_state == AuthState.AuthenticationRequested:
+            self._checkAuthentication() # We requested authentication at some point. Check if we got permission.
         ## Request 'general' printer data
         url = QUrl("http://" + self._address + self._api_prefix + "printer")
         printer_request = QNetworkRequest(url)
@@ -170,7 +188,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Check if cartridges are loaded at all (Error)
         #self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] != ""
 
-        # Check if there is material loaded at all (Error)
+        # Check if there is material loaded at all (Error)self.authentication_requested_message.setProgress(self._authentication_counter / self._max_authentication_counter)
         #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] != ""
 
         # Check if there is enough material (Warning)
@@ -255,10 +273,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
     ##  Verify if we are authenticated to make requests.
-    def _checkAuthentication(self):
+    def _verifyAuthentication(self):
         url = QUrl("http://" + self._address + self._api_prefix + "auth/verify")
         request = QNetworkRequest(url)
         self._manager.get(request)
+
+    def _checkAuthentication(self):
+        self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
     def _requestAuthentication(self):
@@ -306,7 +327,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         Logger.log("i", "Not authenticated. Attempting to request authentication")
                         self._requestAuthentication()
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 403:
-                    print("403")
+                    pass
                 else:
                     self.setAuthenticationState(AuthState.Authenticated)
                     Logger.log("i", "Authentication succeeded")
@@ -316,6 +337,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 if data.get("message", "") == "authorized":
                     Logger.log("i", "Authentication completed.")
                     self.setAuthenticationState(AuthState.Authenticated)
+                elif data.get("message", "") == "unauthorized":
+                    Logger.log("i", "Authentication was denied.")
+                    self.setAuthenticationState(AuthState.AuthenticationDenied)
                 else:
                     pass
                     #Logger.log("i", "Authentication was denied.")
@@ -329,8 +353,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._authentication_id = data["id"]
                 Logger.log("i", "Got a new authentication ID. Waiting for authorization: %s", self._authentication_id )
 
-                # Continue with handshaking; send request to printer so it can be authenticated.
-                self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
+                # Check if the authentication is accepted.
+                self._checkAuthentication()
             else:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
