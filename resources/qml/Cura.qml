@@ -407,17 +407,6 @@ UM.MainWindow
                 }
             }
 
-            UM.MessageStack
-            {
-                anchors
-                {
-                    horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
-                }
-            }
-
             Loader
             {
                 id: view_panel
@@ -575,6 +564,17 @@ UM.MainWindow
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
                 source: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+            }
+
+            UM.MessageStack
+            {
+                anchors
+                {
+                    horizontalCenter: parent.horizontalCenter
+                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
+                    top: parent.verticalCenter;
+                    bottom: parent.bottom;
+                }
             }
         }
     }
