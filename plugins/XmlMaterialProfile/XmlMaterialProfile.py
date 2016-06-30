@@ -28,6 +28,12 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         result.setMetaDataEntry("GUID", str(uuid.uuid4()))
         return result
 
+    def setMetaDataEntry(self, key, value):
+        super().setMetaDataEntry(key, value)
+
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+            container.setMetaData(copy.deepcopy(self._metadata))
+
     def setProperty(self, key, property_name, property_value, container = None):
         super().setProperty(key, property_name, property_value)
 
@@ -75,8 +81,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         builder.end("brand")
 
         builder.start("material")
-        builder.data(self.getName())
-        metadata.pop("material", "")
+        builder.data(metadata.pop("material", ""))
         builder.end("material")
 
         builder.start("color")
@@ -128,8 +133,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             variant = container.getMetaDataEntry("variant")
             if variant:
                 if definition_id not in machine_nozzle_map:
-                    machine_nozzle_map[definition_id] = []
-                machine_nozzle_map[definition_id].append(container)
+                    machine_nozzle_map[definition_id] = {}
+                machine_nozzle_map[definition_id][variant] = container
 
         for definition_id, container in machine_container_map.items():
             definition = container.getDefinition()
@@ -150,7 +155,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 self._addSettingElement(builder, instance)
 
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
-            for hotend in machine_nozzle_map[definition_id]:
+            for hotend_id, hotend in machine_nozzle_map[definition_id].items():
                 variant_containers = registry.findInstanceContainers(id = hotend.getMetaDataEntry("variant"))
                 if not variant_containers:
                     continue
