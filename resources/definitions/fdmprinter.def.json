@@ -904,7 +904,7 @@
                             "type": "float",
                             "default_value": 2,
                             "minimum_value": "0",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == \"grid\" else (3 if infill_pattern == \"triangles\" else 1))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == \"grid\" else (3 if infill_pattern == \"triangles\" else (3 if infill_pattern == \"cubic\" else 1)))",
                             "settable_per_mesh": true
                         }
                     }
@@ -912,12 +912,13 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle and concentric patterns are fully printed every layer.",
+                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, cubic, triangle and concentric patterns are fully printed every layer.",
                     "type": "enum",
                     "options":
                     {
                         "grid": "Grid",
                         "lines": "Lines",
+                        "cubic": "Cubic",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
