@@ -16,8 +16,8 @@ Generic ABS profile. Serves as an example file, data in this file is not correct
     <properties>
     </properties>
     <settings>
-        <setting key="print temperature">250</setting>
-        <setting key="heated bed temperature">100</setting>
+        <setting key="print temperature">240</setting>
+        <setting key="heated bed temperature">80</setting>
         <setting key="standby temperature">200</setting>
     </settings>
 </fdmmaterial>
