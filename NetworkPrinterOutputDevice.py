@@ -353,11 +353,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 material_multi_part.append(material_part)
                 url = QUrl("http://" + self._address + self._api_prefix + "materials")
                 material_post_request = QNetworkRequest(url)
+                reply = self._manager.post(material_post_request, material_multi_part)
 
-                self._manager.post(material_post_request, material_multi_part)
-
-                # Keep reference to material_part and material_multi_part so the garbage collector won't touch them.
-                self._material_post_objects[container.getId()] = (material_part, material_multi_part)
+                # Keep reference to material_part, material_multi_part and reply so the garbage collector won't touch them.
+                self._material_post_objects[id(reply)] = (material_part, material_multi_part, reply)
             except NotImplementedError:
                 # If the material container is not the most "generic" one it can't be serialized an will raise a
                 # NotImplementedError. We can simply ignore these.
@@ -441,8 +440,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Check if the authentication is accepted.
                 self._checkAuthentication()
             elif "materials" in reply.url().toString():
-                # TODO: Remove cached post request items.
-                pass
+                # Remove cached post request items.
+                del self._material_post_objects[id(reply)]
             else:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
