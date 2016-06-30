@@ -35,6 +35,8 @@ class Preferences:
             raise UM.VersionUpgrade.FormatException("No \"version\" in \"general\" section.")
         if int(self._config.get("general", "version")) != 2: # Explicitly hard-code version 2, since if this number changes the programmer MUST change this entire function.
             raise UM.VersionUpgrade.InvalidVersionException("The version of this preferences file is wrong. It must be 2.")
+        if self._config.has_option("general", "name"): #This is probably a machine instance.
+            raise UM.VersionUpgrade.FormatException("There is a \"name\" field in this configuration file. I suspect it is not a preferences file.")
 
     ##  Serialises these preferences as a preferences file of version 3.
     #
