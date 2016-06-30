@@ -109,8 +109,9 @@ Rectangle
         id: abortButton
 
         visible: printerConnected
-        height: UM.Theme.getSize("save_button_save_to_button").height
+        enabled: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing"
 
+        height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: parent.right
@@ -154,9 +155,10 @@ Rectangle
     {
         id: pauseButton
 
-        height: UM.Theme.getSize("save_button_save_to_button").height
         visible: printerConnected
+        enabled: Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing"
 
+        height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: abortButton.left
