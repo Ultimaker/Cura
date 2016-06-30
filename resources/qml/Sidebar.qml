@@ -95,15 +95,13 @@ Rectangle
                 onClicked: monitoringPrint = true
                 iconSource: {
                     if(!printerConnected)
-                    {
                         return UM.Theme.getIcon("tab_monitor")
-                    } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
-                    {
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+                        return UM.Theme.getIcon("tab_monitor_busy")
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
                         return UM.Theme.getIcon("tab_monitor_paused")
-                    } else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
-                    {
+                    else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
                         return UM.Theme.getIcon("tab_monitor_connected")
-                    }
                 }
                 checkable: true
                 exclusiveGroup: sidebarHeaderBarGroup
