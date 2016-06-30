@@ -546,12 +546,12 @@ class CuraApplication(QtApplication):
             for _ in range(count):
                 if node.getParent() and node.getParent().callDecoration("isGroup"):
                     new_node = copy.deepcopy(node.getParent()) #Copy the group node.
-                    new_node.callDecoration("setConvexHull",None)
+                    new_node.callDecoration("recomputeConvexHull")
 
                     op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
                 else:
                     new_node = copy.deepcopy(node)
-                    new_node.callDecoration("setConvexHull", None)
+                    new_node.callDecoration("recomputeConvexHull")
                     op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
 
             op.push()
