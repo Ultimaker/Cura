@@ -65,7 +65,7 @@ Rectangle
 
         color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
         font: UM.Theme.getFont("large")
-        text: Math.round(progress * 100) + "%";
+        text: Math.round(progress) + "%";
         visible: printerConnected
     }
 
@@ -83,7 +83,7 @@ Rectangle
 
         Rectangle
         {
-            width: Math.max(parent.width * base.progress)
+            width: Math.max(parent.width * base.progress / 100)
             height: parent.height
             color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
             radius: UM.Theme.getSize("progressbar_radius").width
