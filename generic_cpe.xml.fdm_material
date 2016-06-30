@@ -17,7 +17,7 @@ Generic CPE profile. Serves as an example file, data in this file is not correct
     </properties>
     <settings>
         <setting key="print temperature">250</setting>
-        <setting key="heated bed temperature">60</setting>
+        <setting key="heated bed temperature">70</setting>
         <setting key="standby temperature">175</setting>
     </settings>
 </fdmmaterial>
