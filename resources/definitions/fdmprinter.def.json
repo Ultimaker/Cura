@@ -2998,7 +2998,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "support_enable",
+                            "enabled": "support_enable and support_roof_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
