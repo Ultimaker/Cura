@@ -45,10 +45,23 @@ TabView
                 property real rowHeight: textField.height;
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
-                TextField { id: textField; width: base.secondColumnWidth; text: properties.supplier; readOnly: !base.editingEnabled; }
+                TextField
+                {
+                    id: textField;
+                    width: base.secondColumnWidth;
+                    text: properties.supplier;
+                    readOnly: !base.editingEnabled;
+                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "brand", text)
+                }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
-                TextField { width: base.secondColumnWidth; text: properties.material_type; readOnly: !base.editingEnabled; }
+                TextField
+                {
+                    width: base.secondColumnWidth;
+                    text: properties.material_type;
+                    readOnly: !base.editingEnabled;
+                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "material", text)
+                }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
 
@@ -62,6 +75,8 @@ TabView
                     {
                         id: colorSelector
                         color: properties.color_code
+                        onColorChanged: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "color_code", color)
+
                         width: colorLabel.height * 0.75
                         height: colorLabel.height * 0.75
                         border.width: UM.Theme.getSize("default_lining").height
@@ -70,7 +85,13 @@ TabView
 
                         MouseArea { anchors.fill: parent; onClicked: colorDialog.open(); enabled: base.editingEnabled }
                     }
-                    TextField { id: colorLabel; text: properties.color_name; readOnly: !base.editingEnabled }
+                    TextField
+                    {
+                        id: colorLabel;
+                        text: properties.color_name;
+                        readOnly: !base.editingEnabled
+                        onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "color_name", text)
+                    }
 
                     ColorDialog { id: colorDialog; color: properties.color_code; onAccepted: colorSelector.color = color }
                 }
@@ -88,6 +109,8 @@ TabView
                     suffix: "g/cm"
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
+
+                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "properties/density", value)
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
@@ -99,6 +122,8 @@ TabView
                     suffix: "mm³"
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
+
+                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "properties/diameter", value)
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
