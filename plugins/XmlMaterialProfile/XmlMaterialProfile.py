@@ -127,7 +127,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
             variant = container.getMetaDataEntry("variant")
             if variant:
-                if variant not in machine_nozzle_map:
+                if definition_id not in machine_nozzle_map:
                     machine_nozzle_map[definition_id] = []
                 machine_nozzle_map[definition_id].append(container)
 
