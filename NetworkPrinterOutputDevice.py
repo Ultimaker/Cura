@@ -185,9 +185,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def close(self):
         self.setConnectionState(ConnectionState.closed)
-        self._progress_message.hide()
+        if self._progress_message:
+            self._progress_message.hide()
         self._authentication_requested_message.hide()
-        self._error_message.hide()
+        if self._error_message:
+            self._error_message.hide()
         self._authentication_counter = 0
         self._authentication_timer.stop()
         self._update_timer.stop()
