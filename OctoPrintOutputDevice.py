@@ -182,7 +182,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         Logger.log("d", "Sent command to OctoPrint instance: %s", data)
 
     def startPrint(self):
-        if self.jobState != "ready":
+        if self.jobState != "ready" and self.jobState != "":
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is printing. Unable to start a new job."))
             self._error_message.show()
             return
@@ -274,7 +274,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
                     progress = json_data["progress"]["completion"]
                     if progress:
-                        self.setProgress(progress / 100)
+                        self.setProgress(progress)
 
                     if json_data["progress"]["printTime"]:
                         self.setTimeElapsed(json_data["progress"]["printTime"])
