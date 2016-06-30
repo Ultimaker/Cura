@@ -73,8 +73,8 @@ material_map = {
 	"PCTPE": "PCTPE",
 	"PC-ABS": "PC-ABS",
 	"T-Glase": "t-glase",
-	"Bronzefill": "bronzefill",
-	"Copperfill": "copperfill",
+	"Bronzefill": "colorfabb-metal-filled",
+	"Copperfill": "colorfabb-metal-filled",
 	
 	# Expert
 	"PP-Conductive": "protopasta-conductive-PLA",
@@ -124,7 +124,7 @@ material_map = {
 	"PLA_poly": "PLA-polylite",
 	"polyflex": "polyflex",
 	"armadillo": "armadillo",
-	"brassfill": "brassfill",
+	"brassfill": "colorfabb-metal-filled",
 }
 
 material_order = {
