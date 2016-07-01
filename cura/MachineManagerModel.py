@@ -213,7 +213,7 @@ class MachineManagerModel(QObject):
     #   Calling _checkStackForErrors on every change is simply too expensive
     @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
-        return self._global_stack_valid
+        return bool(self._global_stack_valid)
 
     @pyqtProperty(str, notify = activeStackChanged)
     def activeUserProfileId(self):
