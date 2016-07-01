@@ -52,7 +52,6 @@ Cura.MachineAction
                 onClicked:
                 {
                     checkupContent.visible = true
-                    startCheckButton.enabled = false
                     manager.startCheck()
                 }
             }
@@ -94,7 +93,7 @@ Cura.MachineAction
                 anchors.left: connectionLabel.right
                 anchors.top: parent.top
                 wrapMode: Text.WordWrap
-                text: Cura.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
+                text: Cura.USBPrinterManager.connectedPrinterList.rowCount() > 0 ? catalog.i18nc("@info:status","Connected"): catalog.i18nc("@info:status","Not connected")
             }
             //////////////////////////////////////////////////////////
             Label
