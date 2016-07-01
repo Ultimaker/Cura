@@ -57,6 +57,12 @@ class Preferences:
             visible_settings = ",".join(visible_settings)
             self._config.set("machines", "setting_visibility", value = visible_settings)
 
+        #Translate the active_instance key.
+        if self._config.has_section("machines") and self._config.has_option("machines", "active_instance"):
+            active_machine = self._config.get("machines", "active_instance")
+            self._config.remove_option("machines", "active_instance")
+            self._config.set("cura", "active_machine", active_machine)
+
         #Update the version number itself.
         self._config.set("general", "version", value = "3")
 
