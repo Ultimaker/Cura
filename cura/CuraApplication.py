@@ -19,7 +19,7 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
-import UM.Settings.Validator
+from UM.Settings.Validator import Validator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -99,7 +99,32 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+        SettingDefinition.addSettingType("extruder", int, str, Validator)
+
+        ## Add the 4 types of profiles to storage.
+        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
+        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
+        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
+        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+
+        ##  Initialise the version upgrade manager with Cura's storage paths.
+        import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+        self._version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager(
+            {
+                ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences")
+            }
+        )
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
 
@@ -141,21 +166,6 @@ class CuraApplication(QtApplication):
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
-
-        ## Add the 4 types of profiles to storage.
-        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
-        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
-        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
-        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
-        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
-        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
-
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
 
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
