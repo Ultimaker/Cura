@@ -83,11 +83,11 @@ class Profile:
         if self._weight:
             config.set("general", "weight", self._weight)
         if self._machine_type_id:
-            config.set("general", "machine_type", self._machine_type_id)
+            config.set("general", "definition", self._machine_type_id)
+        else:
+            config.set("general", "definition", "fdmprinter")
         if self._machine_variant_name:
-            config.set("general", "machine_variant", self._machine_variant_name)
-        if self._machine_instance_name:
-            config.set("general", "machine_instance", self._machine_instance_name)
+            config.set("general", "variant", self._machine_variant_name)
         if self._material_name and self._type != "material":
             config.set("general", "material", self._material_name)
 
