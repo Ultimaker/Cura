@@ -58,11 +58,16 @@ class VersionUpgrade21to22(VersionUpgrade):
             return None
         return profile.export()
 
+    ##  Translates printer names that have changed since the last version.
+    #
+    #   \param printers A list of printer names in the old version.
+    #   \return The same list, but with printer names translated.
     @staticmethod
     def translatePrinters(printers):
         for index, printer in enumerate(printers):
             if printer == "ultimaker2plus":
                 printers[index] = "ultimaker2_plus"
+        return printers
 
     ##  Updates settings for the change from Cura 2.1 to 2.2.
     #
