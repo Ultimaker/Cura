@@ -196,6 +196,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._camera_timer.stop()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
+        Application.getInstance().showPrintMonitor.emit(True)
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
         # TODO: Implement all checks.
