@@ -62,22 +62,26 @@ class MachineInstance:
 
         config.add_section("general")
         config.set("general", "name", self._name)
+        config.set("general", "id", self._name)
         config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
-        if self._variant_name:
-            config.set("general", "variant", self._variant_name)
-        if self._key:
-            config.set("general", "key", self._key)
-        if self._active_profile_name:
-            config.set("general", "active_profile", self._active_profile_name)
-        if self._active_material_name:
-            config.set("general", "material", self._active_material_name)
+
+        containers = []
+        containers.append(self._name + "_current_settings")
+        containers.append("empty") #The dependencies of the active profile, material and variant changed, so there is no 1:1 relation possible here.
+        containers.append("empty")
+        containers.append("empty")
+        containers.append(self._type_name)
+        config.set("general", "containers", ",".join(containers))
+
+        config.add_section("metadata")
+        config.set("metadata", "type", "machine")
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._machine_setting_overrides)
-        config.add_section("machine_settings")
+        config.add_section("values")
         for key, value in self._machine_setting_overrides.items():
-            config.set("machine_settings", key, str(value))
+            config.set("values", key, str(value))
 
         output = io.StringIO()
         config.write(output)
