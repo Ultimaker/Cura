@@ -365,6 +365,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.onError.emit()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
+        Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
 
     def _setEndstopState(self, endstop_key, value):
@@ -516,6 +517,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._is_printing = False
         self._is_paused = False
         self._updateJobState("ready")
+        Application.getInstance().showPrintMonitor.emit(False)
 
     ##  Check if the process did not encounter an error yet.
     def hasError(self):

@@ -242,6 +242,8 @@ class CuraApplication(QtApplication):
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
+    showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
+
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
     #   Note that the AutoSave plugin also calls this method.

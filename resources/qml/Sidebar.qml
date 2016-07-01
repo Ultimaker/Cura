@@ -15,6 +15,11 @@ Rectangle
 
     property int currentModeIndex;
     property bool monitoringPrint: false
+    Connections
+    {
+        target: Printer
+        onShowPrintMonitor: base.monitoringPrint = show
+    }
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
@@ -83,7 +88,7 @@ Rectangle
                 onClicked: monitoringPrint = false
                 iconSource: UM.Theme.getIcon("tab_settings");
                 checkable: true
-                checked: true
+                checked: !monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
 
                 style:  UM.Theme.styles.sidebar_header_tab
@@ -104,6 +109,7 @@ Rectangle
                         return UM.Theme.getIcon("tab_monitor_connected")
                 }
                 checkable: true
+                checked: monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
 
                 style:  UM.Theme.styles.sidebar_header_tab
