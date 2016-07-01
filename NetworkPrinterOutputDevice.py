@@ -5,6 +5,8 @@ from UM.Signal import signalemitter
 
 from UM.Message import Message
 
+import UM.Settings
+
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
@@ -63,6 +65,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._post_multi_part = None
         self._post_part = None
 
+
+        self._material_multi_part = None
+        self._material_part = None
+
         self._progress_message = None
         self._error_message = None
 
@@ -92,6 +98,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please aprove the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
         self._camera_image = QImage()
+
+        self._material_post_objects = {}
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
@@ -145,6 +153,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._authentication_requested_message.hide()
             authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
             authentication_succeeded_message.show()
+            # Once we are authenticated we need to send all material profiles.
+            #
+            self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
             self._authentication_requested_message.hide()
             authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed. This can be either due to a timeout or the printer refused the request."))
@@ -327,6 +338,31 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setAuthenticationState(AuthState.AuthenticationRequested)
         self._manager.post(request, json.dumps({"application": "Cura-" + Application.getInstance().getVersion(), "user": self._getUserName()}).encode())
 
+    ##  Send all material profiles to the printer.
+    def sendMaterialProfiles(self):
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
+            try:
+                xml_data = container.serialize()
+                if xml_data == "":
+                    continue
+                material_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
+
+                material_part = QHttpPart()
+                file_name = "none.xml"
+                material_part.setHeader(QNetworkRequest.ContentDispositionHeader, "form-data; name=\"file\";filename=\"%s\"" % file_name)
+                material_part.setBody(xml_data.encode())
+                material_multi_part.append(material_part)
+                url = QUrl("http://" + self._address + self._api_prefix + "materials")
+                material_post_request = QNetworkRequest(url)
+                reply = self._manager.post(material_post_request, material_multi_part)
+
+                # Keep reference to material_part, material_multi_part and reply so the garbage collector won't touch them.
+                self._material_post_objects[id(reply)] = (material_part, material_multi_part, reply)
+            except NotImplementedError:
+                # If the material container is not the most "generic" one it can't be serialized an will raise a
+                # NotImplementedError. We can simply ignore these.
+                pass
+
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
         if reply.operation() == QNetworkAccessManager.GetOperation:
@@ -404,6 +440,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()
+            elif "materials" in reply.url().toString():
+                # Remove cached post request items.
+                del self._material_post_objects[id(reply)]
             else:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
