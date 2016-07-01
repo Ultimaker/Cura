@@ -55,8 +55,8 @@ material_map = {
 	# Intermediate
 	"ABS_VP": "ABS",
 	"Laybrick": "laybrick",
-	"PP-Iron": "protopasta-magnetic-iron",
-	"PP-Steel": "protopasta-stainless-steel",
+	"PP-Iron": "protopasta-metal-filled",
+	"PP-Steel": "protopasta-metal-filled",
 	"Bamboofill": "bamboofill",
 	"Woodfill": "woodfill",
 	"Corkfill": "corkfill",
