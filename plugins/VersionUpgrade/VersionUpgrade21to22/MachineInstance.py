@@ -68,9 +68,9 @@ class MachineInstance:
 
         containers = [
             self._name + "_current_settings",
-            "empty", #The dependencies of the active profile, material and variant changed, so there is no 1:1 relation possible here.
-            "empty",
-            "empty",
+            self._active_profile_name,
+            self._active_material_name,
+            self._variant_name,
             self._type_name
         ]
         config.set("general", "containers", ",".join(containers))
