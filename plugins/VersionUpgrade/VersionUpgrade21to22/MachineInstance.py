@@ -66,12 +66,13 @@ class MachineInstance:
         config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
-        containers = []
-        containers.append(self._name + "_current_settings")
-        containers.append("empty") #The dependencies of the active profile, material and variant changed, so there is no 1:1 relation possible here.
-        containers.append("empty")
-        containers.append("empty")
-        containers.append(self._type_name)
+        containers = [
+            self._name + "_current_settings",
+            "empty", #The dependencies of the active profile, material and variant changed, so there is no 1:1 relation possible here.
+            "empty",
+            "empty",
+            self._type_name
+        ]
         config.set("general", "containers", ",".join(containers))
 
         config.add_section("metadata")
