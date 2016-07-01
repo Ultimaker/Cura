@@ -58,6 +58,12 @@ class VersionUpgrade21to22(VersionUpgrade):
             return None
         return profile.export()
 
+    @staticmethod
+    def translatePrinters(printers):
+        for index, printer in enumerate(printers):
+            if printer == "ultimaker2plus":
+                printers[index] = "ultimaker2_plus"
+
     ##  Updates settings for the change from Cura 2.1 to 2.2.
     #
     #   The keys and values of settings are changed to what they should be in
