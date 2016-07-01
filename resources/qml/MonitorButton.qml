@@ -28,8 +28,10 @@ Rectangle
             return UM.Theme.getColor("status_ready")
         else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
             return UM.Theme.getColor("status_paused")
-        else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
-            return UM.Theme.getColor("status_error")
+        else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
+            return UM.Theme.getColor("status_stopped")
+        else
+            return UM.Theme.getColor("text")
     }
 
     property bool activity: Printer.getPlatformActivity;
