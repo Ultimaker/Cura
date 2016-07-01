@@ -26,7 +26,7 @@ def getMetaData():
         "sources": {
             "profile": {
                 "get_version": upgrade.getCfgVersion,
-                "location": {"./profiles"}
+                "location": {"./profiles", "./instance_profiles"}
             },
             "machine_instance": {
                 "get_version": upgrade.getCfgVersion,
