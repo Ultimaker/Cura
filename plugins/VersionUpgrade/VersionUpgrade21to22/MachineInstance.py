@@ -67,7 +67,7 @@ class MachineInstance:
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
         containers = [
-            self._name + "_current_settings",
+            self._name,
             self._active_profile_name,
             self._active_material_name,
             self._variant_name,
