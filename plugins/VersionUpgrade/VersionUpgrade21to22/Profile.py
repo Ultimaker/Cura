@@ -73,6 +73,8 @@ class Profile:
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
     def export(self):
+        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
+
         config = configparser.ConfigParser(interpolation = None)
 
         config.add_section("general")
@@ -92,7 +94,6 @@ class Profile:
         if self._material_name and self._type != "material":
             config.set("general", "material", self._material_name)
 
-        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         if self._settings:
             VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
             config.add_section("settings")
