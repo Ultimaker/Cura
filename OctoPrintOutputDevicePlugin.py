@@ -1,10 +1,11 @@
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import OctoPrintOutputDevice
 
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
 
+import time
 
 ##      This plugin handles the connection detection & creation of output device objects for OctoPrint-connected printers.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -68,8 +69,16 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
-            info = zeroconf.get_service_info(service_type, name)
-            if info:
+            info = ServiceInfo(service_type, name)
+            for record in zeroconf.cache.entries_with_name(name.lower()):
+                info.update_record(zeroconf, time.time(), record)
+
+            for record in zeroconf.cache.entries_with_name(info.server):
+                info.update_record(zeroconf, time.time(), record)
+                if info.address:
+                    break
+
+            if info.address:
                 address = '.'.join(map(lambda n: str(n), info.address))
                 self.addPrinterSignal.emit(str(name), address, info.properties)
 
