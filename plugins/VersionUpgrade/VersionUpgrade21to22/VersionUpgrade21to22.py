@@ -16,6 +16,10 @@ _profile_translation = {
     "CPE": "generic_cpe"
 }
 
+_setting_name_translation = {
+    "speed_support_lines": "speed_support_infill"
+}
+
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
 #   It converts the machine instances and profiles.
@@ -85,7 +89,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     def translateProfile(profile):
         if profile in _profile_translation:
             return _profile_translation[profile]
-        return profile
+        return profile #Doesn't need to be translated.
 
     ##  Updates settings for the change from Cura 2.1 to 2.2.
     #
@@ -105,16 +109,12 @@ class VersionUpgrade21to22(VersionUpgrade):
                 settings[key] = "off" if (value == "False") else "all"
         return settings
 
-    ##  Translates setting names for the change from Cura 2.1 to 2.2.
+    ##  Translates a setting name for the change from Cura 2.1 to 2.2.
     #
-    #   The setting names are changed in-place in the provided list. This changes
-    #   the input parameter.
-    #
-    #   \param settings A list of setting names to update.
-    #   \return The same list.
+    #   \param setting The name of a setting in Cura 2.1.
+    #   \return The name of the corresponding setting in Cura 2.2.
     @staticmethod
-    def translateSettingNames(settings):
-        for i in range(0, len(settings)):
-            if settings[i] == "speed_support_lines":
-                settings[i] = "speed_support_infill"
-        return settings
+    def translateSettingName(setting):
+        if setting in _setting_name_translation:
+            return _setting_name_translation[setting]
+        return setting #Doesn't need to be translated.
