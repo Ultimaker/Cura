@@ -25,10 +25,14 @@ class CuraSplashScreen(QSplashScreen):
         if buildtype:
             version[0] += " (%s)" %(buildtype)
 
-        painter.setFont(QFont("Proxima Nova Rg", 20 ))
+        used_font = QFont() # Using system-default font here
+        used_font.setPointSize(20)
+        painter.setFont(used_font)
         painter.drawText(0, 0, 330 * self._scale, 230 * self._scale, Qt.AlignHCenter | Qt.AlignBottom, version[0])
         if len(version) > 1:
-            painter.setFont(QFont("Proxima Nova Rg", 12 ))
+            used_font = QFont() # Using system-default font here
+            used_font.setPointSize(12)
+            painter.setFont(used_font)
             painter.drawText(0, 0, 330 * self._scale, 255 * self._scale, Qt.AlignHCenter | Qt.AlignBottom, version[1])
 
         painter.restore()
