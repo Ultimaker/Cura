@@ -9,6 +9,13 @@ from . import MachineInstance # To upgrade machine instances.
 from . import Preferences #To upgrade preferences.
 from . import Profile # To upgrade profiles.
 
+##  How to translate profile names from the old version to the new.
+_profile_translation = {
+    "PLA": "generic_pla",
+    "ABS": "generic_abs",
+    "CPE": "generic_cpe"
+}
+
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
 #   It converts the machine instances and profiles.
@@ -68,6 +75,17 @@ class VersionUpgrade21to22(VersionUpgrade):
             if printer == "ultimaker2plus":
                 printers[index] = "ultimaker2_plus"
         return printers
+
+    ##  Translates a built-in profile name that might have changed since the
+    #   last version.
+    #
+    #   \param profile A profile name in the old version.
+    #   \return The corresponding profile name in the new version.
+    @staticmethod
+    def translateProfile(profile):
+        if profile in _profile_translation:
+            return _profile_translation[profile]
+        return profile
 
     ##  Updates settings for the change from Cura 2.1 to 2.2.
     #

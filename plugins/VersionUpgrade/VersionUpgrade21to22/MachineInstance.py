@@ -66,10 +66,13 @@ class MachineInstance:
         config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
+        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
+        active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
         containers = [
             self._name,
-            self._active_profile_name,
-            self._active_material_name,
+            active_profile,
+            active_material,
             self._variant_name,
             self._type_name
         ]
@@ -78,7 +81,6 @@ class MachineInstance:
         config.add_section("metadata")
         config.set("metadata", "type", "machine")
 
-        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._machine_setting_overrides)
         config.add_section("values")
         for key, value in self._machine_setting_overrides.items():
