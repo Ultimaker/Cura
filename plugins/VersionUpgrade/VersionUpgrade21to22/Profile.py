@@ -78,7 +78,7 @@ class Profile:
         config = configparser.ConfigParser(interpolation = None)
 
         config.add_section("general")
-        config.set("general", "version", "2") # Hard-coded profile version 2
+        config.set("general", "version", "2") #Hard-coded profile version 2.
         config.set("general", "name", self._name)
         if self._type:
             config.set("general", "type", self._type)
@@ -90,7 +90,10 @@ class Profile:
         else:
             config.set("general", "definition", "fdmprinter")
         if self._machine_variant_name:
-            config.set("general", "variant", self._machine_variant_name)
+            if self._machine_type_id:
+                config.set("general", "variant", VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._machine_variant_name, self._machine_type_id))
+            else:
+                config.set("general", "variant", self._machine_variant_name)
         if self._material_name and self._type != "material":
             config.set("general", "material", self._material_name)
 
@@ -110,7 +113,7 @@ class Profile:
             disabled_settings_defaults = [VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingName(setting)
                                           for setting in self._disabled_settings_defaults]
             config.add_section("disabled_defaults")
-            disabled_defaults_string = str(disabled_settings_defaults[0]) # Must be at least 1 item, otherwise we wouldn't enter this if statement.
+            disabled_defaults_string = str(disabled_settings_defaults[0]) #Must be at least 1 item, otherwise we wouldn't enter this if statement.
             for item in disabled_settings_defaults[1:]:
                 disabled_defaults_string += "," + str(item)
 
