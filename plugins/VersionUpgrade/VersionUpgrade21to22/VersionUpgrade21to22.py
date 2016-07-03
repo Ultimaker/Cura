@@ -23,6 +23,10 @@ _profile_translation = {
 
 ##  How to translate setting names from the old version to the new.
 _setting_name_translation = {
+    "remove_overlapping_walls_0_enabled": "travel_compensate_overlapping_walls_0_enabled",
+    "remove_overlapping_walls_enabled": "travel_compensate_overlapping_walls_enabled",
+    "remove_overlapping_walls_x_enabled": "travel_compensate_overlapping_walls_x_enabled",
+    "retraction_hop": "retraction_hop_enabled",
     "speed_support_lines": "speed_support_infill"
 }
 
@@ -125,11 +129,25 @@ class VersionUpgrade21to22(VersionUpgrade):
     @staticmethod
     def translateSettings(settings):
         for key, value in settings.items():
-            if key == "speed_support_lines": # Setting key was changed for 2.2.
+            if key == "fill_perimeter_gaps": #Setting is removed.
+                del settings[key]
+            elif key == "remove_overlapping_walls_0_enabled": #Setting is functionally replaced.
+                del settings[key]
+                settings["travel_compensate_overlapping_walls_0_enabled"] = value
+            elif key == "remove_overlapping_walls_enabled": #Setting is functionally replaced.
+                del settings[key]
+                settings["travel_compensate_overlapping_walls_enabled"] = value
+            elif key == "remove_overlapping_walls_x_enabled": #Setting is functionally replaced.
+                del settings[key]
+                settings["travel_compensate_overlapping_walls_x_enabled"] = value
+            elif key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                settings[key] = "off" if (value == "False") else "all"
+            elif key == "retraction_hop": #Setting key was changed.
+                del settings[key]
+                settings["retraction_hop_enabled"] = value
+            elif key == "speed_support_lines": #Setting key was changed.
                 del settings[key]
                 settings["speed_support_infill"] = value
-            if key == "retraction_combing": # Combing was made into an enum instead of a boolean.
-                settings[key] = "off" if (value == "False") else "all"
         return settings
 
     ##  Translates a setting name for the change from Cura 2.1 to 2.2.
