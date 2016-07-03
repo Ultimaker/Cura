@@ -70,30 +70,7 @@ class MachineInstance:
         type_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._type_name)
         active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
         active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
-        if type_name == "ultimaker2_plus":
-            if self._variant_name == "0.25 mm":
-                variant = "ultimaker2_plus_0.25"
-            elif self._variant_name == "0.4 mm":
-                variant = "ultimaker2_plus_0.4"
-            elif self._variant_name == "0.6 mm":
-                variant = "ultimaker2_plus_0.6"
-            elif self._variant_name == "0.8 mm":
-                variant = "ultimaker2_plus_0.8"
-            else:
-                variant = self._variant_name
-        elif type_name == "ultimaker2_extended_plus":
-            if self._variant_name == "0.25 mm":
-                variant = "ultimaker2_extended_plus_0.25"
-            elif self._variant_name == "0.4 mm":
-                variant = "ultimaker2_extended_plus_0.4"
-            elif self._variant_name == "0.6 mm":
-                variant = "ultimaker2_extended_plus_0.6"
-            elif self._variant_name == "0.8 mm":
-                variant = "ultimaker2_extended_plus_0.8"
-            else:
-                variant = self._variant_name
-        else:
-            variant = self._variant_name
+        variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
 
         containers = [
             self._name,

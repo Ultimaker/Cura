@@ -26,6 +26,23 @@ _setting_name_translation = {
     "speed_support_lines": "speed_support_infill"
 }
 
+##  How to translate variants of specific machines from the old version to the
+#   new.
+_variant_translation = {
+    "ultimaker2_plus": {
+        "0.25 mm": "ultimaker2_plus_0.25",
+        "0.4 mm": "ultimaker2_plus_0.4",
+        "0.6 mm": "ultimaker2_plus_0.6",
+        "0.8 mm": "ultimaker2_plus_0.8"
+    },
+    "ultimaker2_extended_plus": {
+        "0.25 mm": "ultimaker2_extended_plus_0.25",
+        "0.4 mm": "ultimaker2_extended_plus_0.4",
+        "0.6 mm": "ultimaker2_extended_plus_0.6",
+        "0.8 mm": "ultimaker2_extended_plus_0.8"
+    }
+}
+
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
 #   It converts the machine instances and profiles.
@@ -124,3 +141,15 @@ class VersionUpgrade21to22(VersionUpgrade):
         if setting in _setting_name_translation:
             return _setting_name_translation[setting]
         return setting #Doesn't need to be translated.
+
+    ##  Translates a variant name for the change from Cura 2.1 to 2.2
+    #
+    #   \param variant The name of a variant in Cura 2.1.
+    #   \param machine The name of the machine this variant is part of in Cura
+    #   2.2's naming.
+    #   \return The name of the corresponding variant in Cura 2.2.
+    @staticmethod
+    def translateVariant(variant, machine):
+        if machine in _variant_translation and variant in _variant_translation[machine]:
+            return _variant_translation[machine][variant]
+        return variant
