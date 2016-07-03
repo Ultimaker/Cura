@@ -2,6 +2,7 @@
 # Uranium is released under the terms of the AGPLv3 or higher.
 
 import platform
+from UM import Logger
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -25,7 +26,12 @@ def register(app):
         from . import OSXRemovableDrivePlugin
         return { "output_device": OSXRemovableDrivePlugin.OSXRemovableDrivePlugin() }
     elif platform.system() == "Linux":
-        from . import LinuxRemovableDrivePlugin
+        try:
+            from . import LinuxUDisksRemovableDrivePlugin
+        except Exception as e:
+            Logger.log("w", "An error appeared, when importing LinuxUDisks2RemovableDrivePlugin: %s" %(str(e)))
+            Logger.log("i", "Trying to import LinuxLegacyRemovableDrivePlugin now...")
+            from . import LinuxLegacyRemovableDrivePlugin
         return { "output_device": LinuxRemovableDrivePlugin.LinuxRemovableDrivePlugin() }
     else:
         Logger.log("e", "Unsupported system %s, no removable device hotplugging support available.", platform.system())
