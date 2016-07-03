@@ -99,9 +99,9 @@ class Profile:
 
         if self._settings:
             VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
-            config.add_section("settings")
+            config.add_section("values")
             for key, value in self._settings.items():
-                config.set("settings", key, str(value))
+                config.set("values", key, str(value))
 
         if self._changed_settings_defaults:
             VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
