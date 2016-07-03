@@ -85,7 +85,7 @@ class Profile:
         if self._weight:
             config.set("general", "weight", self._weight)
         if self._machine_type_id:
-            translated_machine = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinters([self._machine_type_id])[0]
+            translated_machine = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._machine_type_id)
             config.set("general", "definition", translated_machine)
         else:
             config.set("general", "definition", "fdmprinter")

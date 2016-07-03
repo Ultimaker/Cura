@@ -9,6 +9,11 @@ from . import MachineInstance # To upgrade machine instances.
 from . import Preferences #To upgrade preferences.
 from . import Profile # To upgrade profiles.
 
+##  How to translate printer names from the old version to the new.
+_printer_translation = {
+    "ultimaker2plus": "ultimaker2_plus"
+}
+
 ##  How to translate profile names from the old version to the new.
 _profile_translation = {
     "PLA": "generic_pla",
@@ -16,6 +21,7 @@ _profile_translation = {
     "CPE": "generic_cpe"
 }
 
+##  How to translate setting names from the old version to the new.
 _setting_name_translation = {
     "speed_support_lines": "speed_support_infill"
 }
@@ -69,16 +75,16 @@ class VersionUpgrade21to22(VersionUpgrade):
             return None
         return profile.export()
 
-    ##  Translates printer names that have changed since the last version.
+    ##  Translates a printer name that might have changed since the last
+    #   version.
     #
-    #   \param printers A list of printer names in the old version.
-    #   \return The same list, but with printer names translated.
+    #   \param printer A printer name in Cura 2.1.
+    #   \return The name of the corresponding printer in Cura 2.2.
     @staticmethod
-    def translatePrinters(printers):
-        for index, printer in enumerate(printers):
-            if printer == "ultimaker2plus":
-                printers[index] = "ultimaker2_plus"
-        return printers
+    def translatePrinter(printer):
+        if printer in _printer_translation:
+            return _printer_translation[printer]
+        return printer #Doesn't need to be translated.
 
     ##  Translates a built-in profile name that might have changed since the
     #   last version.
