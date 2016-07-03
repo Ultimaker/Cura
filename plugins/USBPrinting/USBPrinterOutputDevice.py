@@ -26,8 +26,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
-        self.setShortDescription(catalog.i18nc("@action:button", "Print with USB"))
-        self.setDescription(catalog.i18nc("@info:tooltip", "Print with USB"))
+        self.setShortDescription(catalog.i18nc("@action:button", "Print via USB"))
+        self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
 
         self._serial = None
