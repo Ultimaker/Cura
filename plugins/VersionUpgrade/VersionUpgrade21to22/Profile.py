@@ -80,22 +80,26 @@ class Profile:
         config.add_section("general")
         config.set("general", "version", "2") #Hard-coded profile version 2.
         config.set("general", "name", self._name)
-        if self._type:
-            config.set("general", "type", self._type)
-        if self._weight:
-            config.set("general", "weight", self._weight)
         if self._machine_type_id:
             translated_machine = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._machine_type_id)
             config.set("general", "definition", translated_machine)
         else:
             config.set("general", "definition", "fdmprinter")
+
+        config.add_section("metadata")
+        if self._type:
+            config.set("metadata", "type", self._type)
+        else:
+            config.set("metadata", "type", "quality")
+        if self._weight:
+            config.set("metadata", "weight", self._weight)
         if self._machine_variant_name:
             if self._machine_type_id:
-                config.set("general", "variant", VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._machine_variant_name, self._machine_type_id))
+                config.set("metadata", "variant", VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._machine_variant_name, self._machine_type_id))
             else:
-                config.set("general", "variant", self._machine_variant_name)
+                config.set("metadata", "variant", self._machine_variant_name)
         if self._material_name and self._type != "material":
-            config.set("general", "material", self._material_name)
+            config.set("metadata", "material", self._material_name)
 
         if self._settings:
             VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
