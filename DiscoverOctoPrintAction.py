@@ -22,24 +22,28 @@ class DiscoverOctoPrintAction(MachineAction, QObject, ):
 
         cura.CuraContainerRegistry.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
-    printerDetected = pyqtSignal()
+    printersChanged = pyqtSignal()
 
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("OctoPrintPlugin")
-            self._network_plugin.addPrinterSignal.connect(self._onPrinterAdded)
-            self.printerDetected.emit()
+            self._network_plugin.addPrinterSignal.connect(self._onPrinterDiscoveryChanged)
+            self._network_plugin.removePrinterSignal.connect(self._onPrinterDiscoveryChanged)
+            self.printersChanged.emit()
+        else:
+            # Restart bonjour discovery
+            self._network_plugin.startDiscovery()
 
-    def _onPrinterAdded(self, *args):
-        self.printerDetected.emit()
+    def _onPrinterDiscoveryChanged(self, *args):
+        self.printersChanged.emit()
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
-    @pyqtProperty("QVariantList", notify = printerDetected)
+    @pyqtProperty("QVariantList", notify = printersChanged)
     def foundDevices(self):
         if self._network_plugin:
             printers = self._network_plugin.getPrinters()
@@ -73,9 +77,11 @@ class DiscoverOctoPrintAction(MachineAction, QObject, ):
             # Ensure that the connection states are refreshed.
             self._network_plugin.reCheckConnections()
 
+    apiKeyChanged = pyqtSignal()
+
     ##  Get the stored API key of this machine
     #   \return key String containing the key of the machine.
-    @pyqtProperty(str)
+    @pyqtProperty(str, notify = apiKeyChanged)
     def apiKey(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:

@@ -153,6 +153,13 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._update_timer.start()
         self._camera_timer.start()
 
+    ##  Stop requesting data from printer
+    def disconnect(self):
+        self.setConnectionState(ConnectionState.closed)
+        Logger.log("d", "Connection with printer %s with ip %s stopped", self._key, self._address)
+        self._update_timer.stop()
+        self._camera_timer.stop()
+
     newImage = pyqtSignal()
 
     @pyqtProperty(QUrl, notify = newImage)
