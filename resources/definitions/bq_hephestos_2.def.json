@@ -14,7 +14,7 @@
     },
 
     "overrides": {
-        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\nM109 S{print_temperature} ;Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\n; -- end of START GCODE --" },
         "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --" },
         "machine_width": { "default_value": 210 },
         "machine_depth": { "default_value": 297 },
