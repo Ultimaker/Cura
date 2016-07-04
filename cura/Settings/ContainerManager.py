@@ -58,5 +58,6 @@ class ContainerManager(QObject):
 
         containers[0].setMetaDataEntry(entry_name, entry_value)
 
-def createContainerManager(engine, js_engine):
-    return ContainerManager()
+    @staticmethod
+    def createContainerManager(engine, js_engine):
+        return ContainerManager()
