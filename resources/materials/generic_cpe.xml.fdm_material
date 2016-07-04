@@ -9,7 +9,7 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
             <material>CPE</material>
             <color>Generic</color>
         </name>
-        <GUID>506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9</GUID>
+        <GUID>12f41353-1a33-415e-8b4f-a775a6c70cc6</GUID>
         <version>0</version>
         <color_code>#0000FF</color_code>
     </metadata>

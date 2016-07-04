@@ -9,7 +9,7 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
             <material>ABS</material>
             <color>Generic</color>
         </name>
-        <GUID>506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9</GUID>
+        <GUID>60636bb4-518f-42e7-8237-fe77b194ebe0</GUID>
         <version>0</version>
         <color_code>#FF0000</color_code>
     </metadata>

@@ -9,7 +9,7 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
             <material>PLA</material>
             <color>Generic</color>
         </name>
-        <GUID>506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9</GUID>
+        <GUID>86a89ceb-4159-47f6-ab97-e9953803d70f</GUID>
         <version>0</version>
         <color_code>#00FF00</color_code>
     </metadata>
