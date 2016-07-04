@@ -127,7 +127,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
-        self.printDurationMessage.emit(0, 0)
+        self.printDurationMessage.emit(0, [0])
 
         self._stored_layer_data = []
 
