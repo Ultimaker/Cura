@@ -107,12 +107,11 @@ class MachineManagerModel(QObject):
         if not self._global_container_stack:
             return
 
+        definition_id = "fdmprinter"
         if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
-            definition_id = "fdmprinter"
-        else:
             definition_id = self._global_container_stack.getBottom().getId()
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", defintion = definition_id, GUID = material_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
         if containers:
             ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
             Logger.log("d", "Setting material of hotend %d to %s" % (index, containers[0].getId()))
