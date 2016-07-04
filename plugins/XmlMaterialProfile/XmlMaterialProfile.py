@@ -13,33 +13,32 @@ import UM.Dictionary
 
 import UM.Settings
 
-# The namespace is prepended to the tag name but between {}.
-# We are only interested in the actual tag name, so discard everything
-# before the last }
-def _tag_without_namespace(element):
-        return element.tag[element.tag.rfind("}") + 1:]
-
+##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
+    ##  Overridden from InstanceContainer
     def duplicate(self, new_id, new_name = None):
         result = super().duplicate(self.getMetaDataEntry("brand") + "_" + new_id, new_name)
         result.setMetaDataEntry("GUID", str(uuid.uuid4()))
         return result
 
+    ##  Overridden from InstanceContainer
     def setMetaDataEntry(self, key, value):
         super().setMetaDataEntry(key, value)
 
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
             container.setMetaData(copy.deepcopy(self._metadata))
 
+    ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):
         super().setProperty(key, property_name, property_value)
 
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
             container._dirty = True
 
+    ##  Overridden from InstanceContainer
     def serialize(self):
         registry = UM.Settings.ContainerRegistry.getInstance()
 
@@ -186,6 +185,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         return stream.getvalue()
 
+    ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
         data = ET.fromstring(serialized)
 
@@ -359,6 +359,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         "Ultimaker Original+": "ultimaker_original_plus"
     }
 
+    # Map of recognised namespaces with a proper prefix.
     __namespaces = {
         "um": "http://www.ultimaker.com/material"
     }
@@ -378,3 +379,10 @@ def _indent(elem, level = 0):
     else:
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
+
+
+# The namespace is prepended to the tag name but between {}.
+# We are only interested in the actual tag name, so discard everything
+# before the last }
+def _tag_without_namespace(element):
+    return element.tag[element.tag.rfind("}") + 1:]
