@@ -50,10 +50,11 @@ UM.ManagementPage
             elide: Text.ElideRight
         }
 
-        Row
+        Flow
         {
             id: machineActions
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.top: machineName.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
