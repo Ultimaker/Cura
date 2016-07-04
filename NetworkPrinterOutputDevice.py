@@ -48,6 +48,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._hotend_temperatures = [0] * self._num_extruders
         self._target_hotend_temperatures = [0] * self._num_extruders
 
+        self._material_ids = [""] * self._num_extruders
+        self._hotend_ids = [""] * self._num_extruders
+
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
         self.setName(key)
