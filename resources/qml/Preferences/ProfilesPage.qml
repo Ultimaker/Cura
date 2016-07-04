@@ -13,7 +13,6 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Profiles");
-    addText: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
 
     model: UM.InstanceContainersModel
     {
@@ -60,27 +59,62 @@ UM.ManagementPage
         return -1;
     }
 
-    onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
-    onAddObject: {
-        var selectedContainer;
-        if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
-            selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
-        } else {
-            selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
+    buttons: [
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Activate");
+            iconName: "list-activate";
+            enabled: base.currentItem != null ? base.currentItem.id != Cura.MachineManager.activeQualityId : false;
+            onClicked: Cura.MachineManager.setActiveQuality(base.currentItem.id)
+        },
+        Button
+        {
+            text: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
+            iconName: "list-add";
+
+            onClicked:
+            {
+                var selectedContainer;
+                if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
+                    selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
+                } else {
+                    selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
+                }
+                base.selectContainer(selectedContainer);
+
+                renameDialog.removeWhenRejected = true;
+                renameDialog.open();
+                renameDialog.selectText();
+            }
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Remove");
+            iconName: "list-remove";
+            enabled: base.currentItem != null ? !base.currentItem.readOnly : false;
+            onClicked: confirmDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Rename");
+            iconName: "edit-rename";
+            enabled: base.currentItem != null ? !base.currentItem.readOnly : false;
+            onClicked: { renameDialog.removeWhenRejected = false; renameDialog.open(); renameDialog.selectText(); }
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Import");
+            iconName: "document-import";
+            onClicked: importDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Export")
+            iconName: "document-export"
+            onClicked: exportDialog.open()
+            enabled: currentItem != null
         }
-        base.selectContainer(selectedContainer);
-
-        renameDialog.removeWhenRejected = true;
-        renameDialog.open();
-        renameDialog.selectText();
-    }
-    onRemoveObject: confirmDialog.open();
-    onRenameObject: { renameDialog.removeWhenRejected = false; renameDialog.open(); renameDialog.selectText(); }
-
-    activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
-    addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
-    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
+    ]
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
@@ -208,24 +242,6 @@ UM.ManagementPage
                     font.bold: true
                 }
             }
-        }
-    }
-
-    buttons: Row {
-
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Import");
-            iconName: "document-import";
-            onClicked: importDialog.open();
-        }
-
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Export")
-            iconName: "document-export"
-            onClicked: exportDialog.open()
-            enabled: currentItem != null
         }
     }
 
