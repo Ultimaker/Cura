@@ -98,9 +98,9 @@ class MachineManagerModel(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = self._global_container_stack.getBottom().getId(), name = hotend_id)
         if containers:
-            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
             Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, containers[0].getId()))
-            self._updateVariantContainer(containers[0])
+            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
+            self.setActiveVariant(containers[0].getId())
 
     def _onMaterialIdChanged(self, index, material_id):
         # TODO: fix this
@@ -113,9 +113,9 @@ class MachineManagerModel(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
         if containers:
-            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
             Logger.log("d", "Setting material of hotend %d to %s" % (index, containers[0].getId()))
-            self._updateMaterialContainer(containers[0])
+            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
+            self.setActiveMaterial(containers[0].getId())
         else:
             Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
 
