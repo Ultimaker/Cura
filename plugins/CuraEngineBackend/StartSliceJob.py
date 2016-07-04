@@ -15,7 +15,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Validator import ValidatorState
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
-from cura.ExtruderManager import ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 class StartJobResult(IntEnum):
     Finished = 1

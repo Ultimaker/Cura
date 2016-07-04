@@ -13,7 +13,7 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 
-from cura.ExtruderManager import ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob

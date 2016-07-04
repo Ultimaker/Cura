@@ -10,7 +10,7 @@ from UM.View.Renderer import Renderer
 
 from UM.View.GL.OpenGL import OpenGL
 
-from cura.ExtrudersModel import ExtrudersModel
+from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
 
