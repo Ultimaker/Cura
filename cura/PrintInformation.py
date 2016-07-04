@@ -44,7 +44,7 @@ class PrintInformation(QObject):
 
         self._current_print_time = Duration(None, self)
 
-        self._material_amount = -1
+        self._material_amounts = []
 
         self._backend = Application.getInstance().getBackend()
         if self._backend:
@@ -62,21 +62,22 @@ class PrintInformation(QObject):
     def currentPrintTime(self):
         return self._current_print_time
 
-    materialAmountChanged = pyqtSignal()
+    materialAmountsChanged = pyqtSignal()
 
-    @pyqtProperty(float, notify = materialAmountChanged)
-    def materialAmount(self):
-        return self._material_amount
+    @pyqtProperty("QVariantList", notify = materialAmountsChanged)
+    def materialAmounts(self):
+        return self._material_amounts
 
-    def _onPrintDurationMessage(self, time, amount):
-        #if self._slice_pass == self.SlicePass.CurrentSettings:
-        self._current_print_time.setDuration(time)
+    def _onPrintDurationMessage(self, total_time, material_amounts):
+        self._current_print_time.setDuration(total_time)
         self.currentPrintTimeChanged.emit()
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
-        self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
-        self.materialAmountChanged.emit()
+        self._material_amounts = []
+        for amount in material_amounts:
+            self._material_amounts.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
+        self.materialAmountsChanged.emit()
 
     @pyqtSlot(str)
     def setJobName(self, name):
