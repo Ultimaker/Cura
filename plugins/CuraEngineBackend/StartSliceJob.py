@@ -15,7 +15,8 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Validator import ValidatorState
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
-from cura.Settings.ExtruderManager import ExtruderManager
+
+import cura.Settings
 
 class StartJobResult(IntEnum):
     Finished = 1
@@ -128,7 +129,7 @@ class StartSliceJob(Job):
 
             self._buildGlobalSettingsMessage(stack)
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
+            for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
                 self._buildExtruderMessage(extruder_stack)
 
             for group in object_groups:

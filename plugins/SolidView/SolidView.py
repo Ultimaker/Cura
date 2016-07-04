@@ -10,7 +10,7 @@ from UM.View.Renderer import Renderer
 
 from UM.View.GL.OpenGL import OpenGL
 
-from cura.Settings.ExtrudersModel import ExtrudersModel
+import cura.Settings
 
 import math
 
@@ -24,7 +24,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
 
-        self._extruders_model = ExtrudersModel()
+        self._extruders_model = cura.Settings.ExtrudersModel()
 
     def beginRendering(self):
         scene = self.getController().getScene()

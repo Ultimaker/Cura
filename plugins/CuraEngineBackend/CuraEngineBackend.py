@@ -13,7 +13,7 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 
-from cura.Settings.ExtruderManager import ExtruderManager
+import cura.Settings
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob
@@ -63,7 +63,7 @@ class CuraEngineBackend(Backend):
         self._onGlobalStackChanged()
 
         self._active_extruder_stack = None
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
         #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
@@ -379,7 +379,7 @@ class CuraEngineBackend(Backend):
             self._active_extruder_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
-        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        self._active_extruder_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_extruder_stack:
             self._active_extruder_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
