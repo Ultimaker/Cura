@@ -3,9 +3,13 @@ from cura.PrinterOutputDevice import PrinterOutputDevice
 from UM.Application import Application
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
+
 class UMOCheckupMachineAction(MachineAction):
     def __init__(self):
-        super().__init__("UMOCheckup", "Checkup")
+        super().__init__("UMOCheckup", catalog.i18nc("@action", "Checkup"))
         self._qml_url = "UMOCheckupMachineAction.qml"
         self._hotend_target_temp = 180
         self._bed_target_temp = 60

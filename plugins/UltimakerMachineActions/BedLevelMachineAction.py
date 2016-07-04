@@ -1,14 +1,16 @@
 from cura.MachineAction import MachineAction
+from cura.PrinterOutputDevice import PrinterOutputDevice
 
-from PyQt5.QtCore import  pyqtSlot
+from PyQt5.QtCore import pyqtSlot
 
 from UM.Application import Application
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
-from cura.PrinterOutputDevice import PrinterOutputDevice
 
 class BedLevelMachineAction(MachineAction):
     def __init__(self):
-        super().__init__("BedLevel", "Level bed")
+        super().__init__("BedLevel", catalog.i18nc("@action", "Level bed"))
         self._qml_url = "BedLevelMachineAction.qml"
         self._bed_level_position = 0
 
