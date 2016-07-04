@@ -60,10 +60,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     headPositionChanged = pyqtSignal()
 
     # Signal to be emitted when either of the material ids is changed
-    MaterialIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
+    materialIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
 
     # Signal to be emitted when either of the hotend ids is changed
-    HotendIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
+    hotendIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
 
     # Signal that is emitted every time connection state is changed.
     # it also sends it's own device_id (for convenience sake)
@@ -220,7 +220,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._hotend_temperatures[index] = temperature
         self.hotendTemperaturesChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = MaterialIdChanged)
+    @pyqtProperty("QVariantList", notify = materialIdChanged)
     def materialIds(self):
         return self._material_ids
 
@@ -231,10 +231,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if material_id and material_id != "" and material_id != self._material_ids[index]:
             Logger.log("d", "Setting material id of hotend %d to %s" % (index, material_id))
             self._material_ids[index] = material_id
-            self.MaterialIdChanged.emit(index, material_id)
+            self.materialIdChanged.emit(index, material_id)
 
 
-    @pyqtProperty("QVariantList", notify = HotendIdChanged)
+    @pyqtProperty("QVariantList", notify = hotendIdChanged)
     def hotendIds(self):
         return self._hotend_ids
 
@@ -245,7 +245,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if hotend_id and hotend_id != "" and hotend_id != self._hotend_ids[index]:
             Logger.log("d", "Setting hotend id of hotend %d to %s" % (index, hotend_id))
             self._hotend_ids[index] = hotend_id
-            self.HotendIdChanged.emit(index, hotend_id)
+            self.hotendIdChanged.emit(index, hotend_id)
 
 
     ##  Attempt to establish connection

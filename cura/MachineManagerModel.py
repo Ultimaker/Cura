@@ -75,16 +75,16 @@ class MachineManagerModel(QObject):
 
     def _onOutputDevicesChanged(self):
         for printer_output_device in self._printer_output_devices:
-            printer_output_device.HotendIdChanged.disconnect(self._onHotendIdChanged)
-            printer_output_device.MaterialIdChanged.disconnect(self._onMaterialIdChanged)
+            printer_output_device.hotendIdChanged.disconnect(self._onHotendIdChanged)
+            printer_output_device.materialIdChanged.disconnect(self._onMaterialIdChanged)
 
         self._printer_output_devices.clear()
 
         for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices():
             if isinstance(printer_output_device, PrinterOutputDevice):
                 self._printer_output_devices.append(printer_output_device)
-                printer_output_device.HotendIdChanged.connect(self._onHotendIdChanged)
-                printer_output_device.MaterialIdChanged.connect(self._onMaterialIdChanged)
+                printer_output_device.hotendIdChanged.connect(self._onHotendIdChanged)
+                printer_output_device.materialIdChanged.connect(self._onMaterialIdChanged)
 
         self.outputDevicesChanged.emit()
 
