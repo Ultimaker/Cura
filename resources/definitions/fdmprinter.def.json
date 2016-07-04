@@ -1025,7 +1025,7 @@
                     "default_value": 5.0,
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "100",
-                    "enabled": "n_infill_steps > 0",
+                    "enabled": "gradual_infill_steps > 0",
                     "settable_per_mesh": true
                 },
                 "infill_before_walls":
