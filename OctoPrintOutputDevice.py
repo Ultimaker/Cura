@@ -203,7 +203,6 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             for line in self._gcode:
                 single_string_file_data += line
 
-            ##  TODO: Use correct file name (we use placeholder now)
             file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
 
             ##  Create multi_part request

@@ -12,7 +12,7 @@ catalog = i18nCatalog("cura")
 
 class DiscoverOctoPrintAction(MachineAction, QObject, ):
     def __init__(self, parent = None):
-        MachineAction.__init__(self, "DiscoverOctoPrintAction", catalog.i18nc("@action","Connect OctoPrint"))
+        MachineAction.__init__(self, "DiscoverOctoPrintAction", catalog.i18nc("@action", "Connect OctoPrint"))
 
         self._qml_url = "DiscoverOctoPrintAction.qml"
         self._window = None
