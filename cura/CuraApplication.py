@@ -44,6 +44,7 @@ from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import MachineManagerModel
 from . import ContainerSettingsModel
+from . import CameraImageProvider
 from . import MachineActionManager
 from . import ContainerManager
 
@@ -124,7 +125,6 @@ class CuraApplication(QtApplication):
         self._platform = None
         self._output_devices = {}
         self._print_information = None
-        self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
         self._scene_bounding_box = AxisAlignedBox.Null
@@ -135,11 +135,15 @@ class CuraApplication(QtApplication):
         self._cura_actions = None
         self._started = False
 
+        self._i18n_catalog = i18nCatalog("cura")
+
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
+
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -229,7 +233,7 @@ class CuraApplication(QtApplication):
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
         self.applicationShuttingDown.connect(self.saveSettings)
-
+        self.engineCreatedSignal.connect(self._onEngineCreated)
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
         for f in files:
@@ -237,6 +241,11 @@ class CuraApplication(QtApplication):
                 continue
 
             self._recent_files.append(QUrl.fromLocalFile(f))
+
+    def _onEngineCreated(self):
+        self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
+
+    showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
 
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
@@ -327,13 +336,6 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        self._i18n_catalog = i18nCatalog("cura");
-
-        i18nCatalog.setTagReplacements({
-            "filename": "font color=\"black\"",
-            "message": "font color=UM.Theme.colors.message_text;",
-        })
-
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
@@ -554,12 +556,12 @@ class CuraApplication(QtApplication):
             for _ in range(count):
                 if node.getParent() and node.getParent().callDecoration("isGroup"):
                     new_node = copy.deepcopy(node.getParent()) #Copy the group node.
-                    new_node.callDecoration("setConvexHull",None)
+                    new_node.callDecoration("recomputeConvexHull")
 
                     op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
                 else:
                     new_node = copy.deepcopy(node)
-                    new_node.callDecoration("setConvexHull", None)
+                    new_node.callDecoration("recomputeConvexHull")
                     op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
 
             op.push()
@@ -817,3 +819,7 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
+
+    @pyqtSlot("QSize")
+    def setMinimumWindowSize(self, size):
+        self.getMainWindow().setMinimumSize(size)

@@ -2,7 +2,7 @@
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
 <svg
-   xmlns:ns="&amp;#38;#38;#38;ns_ai;"
+   xmlns:i="&amp;#38;#38;#38;#38;ns_ai;"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -21,7 +21,7 @@
    xml:space="preserve"
    id="svg3445"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="category_shell.svg"><metadata
+   sodipodi:docname="category_experimental.svg"><metadata
      id="metadata3464"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
@@ -38,9 +38,9 @@
      inkscape:window-height="748"
      id="namedview3460"
      showgrid="false"
-     inkscape:zoom="15.733333"
-     inkscape:cx="7.9274541"
-     inkscape:cy="15.727567"
+     inkscape:zoom="16.233993"
+     inkscape:cx="15"
+     inkscape:cy="15"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -51,9 +51,9 @@
        x="0"
        y="0"
        width="1"
-       height="1"><ns:pgfRef
+       height="1"><i:pgfRef
          xlink:href="#adobe_illustrator_pgf" /></foreignObject><g
-       ns:extraneous="self"
+       i:extraneous="self"
        id="g3449"
        style="fill:#000000"><g
          id="frame_30x30"
@@ -75,14 +75,7 @@
            height="24"
            id="rect3455"
            style="fill:#000000" /></g><path
-         sodipodi:nodetypes="cccccccccccccccccc"
-         inkscape:connector-curvature="0"
-         style="fill:#ffffff"
-         id="path3458"
-         d="M 21,11 24,3 6,3 9,11 3,27 27,27 Z M 9.937,10.648 7.443,4 22.556,4 20.063,10.648 19.932,11 l 0.132,0.352 5.495386,14.648398 c -21.1116911,-0.0086 0,0 -21.1116911,-0.0086 L 9.938,11.352 10.068,11 Z" /><path
-         sodipodi:nodetypes="cccccccccccccccccc"
-         inkscape:connector-curvature="0"
-         style="fill:#ffffff"
-         id="path3458-9"
-         d="M 18,11 21,3 9,3 12,11 6,27 24,27 Z M 12.937,10.648 10.443,4 19.556,4 17.063,10.648 16.932,11 17.064,11.352 22.559386,26.000398 7.4476949,25.991798 12.938,11.352 13.068,11 Z" /></g></switch><ns:pgf
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         d="M 9 3 L 10 11 L 3 27 L 27 27 L 20 11 L 21 3 L 9 3 z M 10.443359 4 L 19.556641 4 L 19.0625 10.648438 L 18.931641 11 L 19.064453 11.351562 L 20.236328 14.478516 L 9.765625 14.478516 L 10.9375 11.351562 L 11.068359 11 L 10.9375 10.648438 L 10.443359 4 z M 13.855469 8.8613281 A 1.5913661 1.5692637 0 0 0 12.263672 10.429688 A 1.5913661 1.5692637 0 0 0 13.855469 12 A 1.5913661 1.5692637 0 0 0 15.447266 10.429688 A 1.5913661 1.5692637 0 0 0 13.855469 8.8613281 z M 13.658203 16.289062 C 14.870119 16.28903 15.852364 17.227542 15.851562 18.384766 C 15.851234 19.541227 14.869319 20.478548 13.658203 20.478516 C 12.44785 20.477519 11.467125 19.540499 11.466797 18.384766 C 11.465996 17.22827 12.44705 16.29006 13.658203 16.289062 z M 9.7949219 21.191406 A 1.6015776 1.6015776 0 0 1 11.396484 22.792969 A 1.6015776 1.6015776 0 0 1 9.7949219 24.394531 A 1.6015776 1.6015776 0 0 1 8.1933594 22.792969 A 1.6015776 1.6015776 0 0 1 9.7949219 21.191406 z "
+         id="path3458" /></g></switch><i:pgf
      id="adobe_illustrator_pgf" /></svg>

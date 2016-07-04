@@ -92,7 +92,8 @@ Column
             onGlobalContainerChanged:
             {
                 base.currentExtruderIndex = -1;
-                ExtruderManager.setActiveExtruderIndex(index);
+                forceActiveFocus()
+                ExtruderManager.setActiveExtruderIndex(0);
             }
         }
 
@@ -109,7 +110,7 @@ Column
 
             onClicked:
             {
-                focus = true; //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                forceActiveFocus() //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
                 base.currentExtruderIndex = index;
                 ExtruderManager.setActiveExtruderIndex(index);
             }

@@ -26,8 +26,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
-        self.setShortDescription(catalog.i18nc("@action:button", "Print with USB"))
-        self.setDescription(catalog.i18nc("@info:tooltip", "Print with USB"))
+        self.setShortDescription(catalog.i18nc("@action:button", "Print via USB"))
+        self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
 
         self._serial = None
@@ -51,13 +51,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
         self._update_firmware_thread.daemon = True
         self.firmwareUpdateComplete.connect(self._onFirmwareUpdateComplete)
-        
+
         self._heatup_wait_start_time = time.time()
 
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = queue.Queue()
 
         self._is_printing = False
+        self._is_paused = False
 
         ## Set when print is started in order to check running time.
         self._print_start_time = None
@@ -80,13 +81,15 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         # In order to keep the connection alive we request the temperature every so often from a different extruder.
         # This index is the extruder we requested data from the last time.
-        self._temperature_requested_extruder_index = 0 
+        self._temperature_requested_extruder_index = 0
+
+        self._current_z = 0
 
         self._updating_firmware = False
 
         self._firmware_file_name = None
 
-        self._control_view = None
+        self._error_message = None
 
     onError = pyqtSignal()
 
@@ -120,10 +123,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _homeBed(self):
         self._sendCommand("G28 Z")
 
-    @pyqtSlot()
     def startPrint(self):
         self.writeStarted.emit(self)
         gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
+        self._updateJobState("printing")
         self.printGCode(gcode_list)
 
     def _moveHead(self, x, y, z, speed):
@@ -135,6 +138,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
         if self._progress or self._connection_state != ConnectionState.connected:
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is busy or not connected. Unable to start a new job."))
+            self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
             return
@@ -344,23 +349,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._setErrorState("Unexpected error while writing serial port %s " % e)
             self.close()
 
-    def createControlInterface(self):
-        if self._control_view is None:
-            Logger.log("d", "Creating control interface for printer connection")
-            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
-            component = QQmlComponent(Application.getInstance()._engine, path)
-            self._control_context = QQmlContext(Application.getInstance()._engine.rootContext())
-            self._control_context.setContextProperty("manager", self)
-            self._control_view = component.create(self._control_context)
-
-    ##  Show control interface.
-    #   This will create the view if its not already created.
-    def showControlInterface(self):
-        if self._control_view is None:
-            self.createControlInterface()
-        self._control_view.show()
-
-    ##  Send a command to printer. 
+    ##  Send a command to printer.
     #   \param cmd string with g-code
     def sendCommand(self, cmd):
         if self._progress:
@@ -371,11 +360,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Set the error state with a message.
     #   \param error String with the error message.
     def _setErrorState(self, error):
+        self._updateJobState("error")
         self._error_state = error
         self.onError.emit()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
-        self.showControlInterface()
+        Application.getInstance().showPrintMonitor.emit(True)
+        self.startPrint()
 
     def _setEndstopState(self, endstop_key, value):
         if endstop_key == b"x_min":
@@ -391,14 +382,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 self.endstopStateChanged.emit("z_min", value)
             self._z_min_endstop_pressed = value
 
-    ##  Listen thread function. 
+    ##  Listen thread function.
     def _listen(self):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
         temperature_request_timeout = time.time()
         ok_timeout = time.time()
         while self._connection_state == ConnectionState.connected:
             line = self._readline()
-            if line is None: 
+            if line is None:
                 break  # None is only returned when something went wrong. Stop listening
 
             if time.time() > temperature_request_timeout:
@@ -423,7 +414,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._setErrorState(line[6:])
 
             elif b" T:" in line or line.startswith(b"T:"):  # Temperature message
-                try: 
+                try:
                     self._setHotendTemperature(self._temperature_requested_extruder_index, float(re.search(b"T: *([0-9\.]*)", line).group(1)))
                 except:
                     pass
@@ -445,6 +436,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     ok_timeout = time.time() + 5
                     if not self._command_queue.empty():
                         self._sendCommand(self._command_queue.get())
+                    elif self._is_paused:
+                        line = b""  # Force getting temperature as keep alive
                     else:
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:  # Because a resend can be asked with "resend" and "rs"
@@ -454,13 +447,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         if b"rs" in line:
                             self._gcode_position = int(line.split()[1])
 
-            else:  # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
-                if line == b"":
-                    if self._num_extruders > 0:
-                        self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
-                        self.sendCommand("M105 T%d" % self._temperature_requested_extruder_index)
-                    else:
-                        self.sendCommand("M105")
+            # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
+            if line == b"":
+                if self._num_extruders > 0:
+                    self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
+                    self.sendCommand("M105 T%d" % self._temperature_requested_extruder_index)
+                else:
+                    self.sendCommand("M105")
+
         Logger.log("i", "Printer connection listen thread stopped for %s" % self._serial_port)
 
     ##  Send next Gcode in the gcode list
@@ -487,9 +481,21 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
-        self._gcode_position += 1 
+        self._gcode_position += 1
         self.setProgress((self._gcode_position / len(self._gcode)) * 100)
         self.progressChanged.emit()
+
+    ##  Set the state of the print.
+    #   Sent from the print monitor
+    def _setJobState(self, job_state):
+        if job_state == "pause":
+            self._is_paused = True
+            self._updateJobState("paused")
+        elif job_state == "print":
+            self._is_paused = False
+            self._updateJobState("printing")
+        elif job_state == "abort":
+            self.cancelPrint()
 
     ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
@@ -498,16 +504,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.progressChanged.emit()
 
     ##  Cancel the current print. Printer connection wil continue to listen.
-    @pyqtSlot()
     def cancelPrint(self):
         self._gcode_position = 0
         self.setProgress(0)
         self._gcode = []
 
-        # Turn of temperatures
+        # Turn off temperatures, fan and steppers
         self._sendCommand("M140 S0")
         self._sendCommand("M104 S0")
+        self._sendCommand("M107")
+        self._sendCommand("M84")
         self._is_printing = False
+        self._is_paused = False
+        self._updateJobState("ready")
+        Application.getInstance().showPrintMonitor.emit(False)
 
     ##  Check if the process did not encounter an error yet.
     def hasError(self):

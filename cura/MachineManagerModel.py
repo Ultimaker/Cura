@@ -84,8 +84,8 @@ class MachineManagerModel(QObject):
                     self._global_stack_valid = False
                     self.globalValidationChanged.emit()
             else:
-                new_validation_state = self._checkStackForErrors(self._active_container_stack)
-                if new_validation_state:
+                has_errors = self._checkStackForErrors(self._active_container_stack)
+                if not has_errors:
                     self._global_stack_valid = True
                     self.globalValidationChanged.emit()
 
@@ -104,6 +104,7 @@ class MachineManagerModel(QObject):
             self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
 
     def _onActiveExtruderStackChanged(self):
+        self.blurSettings.emit()  # Ensure no-one has focus.
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
@@ -202,7 +203,7 @@ class MachineManagerModel(QObject):
     @pyqtProperty(bool, notify = activeStackChanged)
     def hasUserSettings(self):
         if not self._active_container_stack:
-            return
+            return False
 
         user_settings = self._active_container_stack.getTop().findInstances(**{})
         return len(user_settings) != 0
@@ -212,7 +213,7 @@ class MachineManagerModel(QObject):
     #   Calling _checkStackForErrors on every change is simply too expensive
     @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
-        return self._global_stack_valid
+        return bool(self._global_stack_valid)
 
     @pyqtProperty(str, notify = activeStackChanged)
     def activeUserProfileId(self):
@@ -285,7 +286,7 @@ class MachineManagerModel(QObject):
         self.blurSettings.emit()
         self.setActiveQuality(new_container_id)
         self.updateQualityContainerFromUserContainer()
-
+        return new_container_id
 
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
@@ -357,7 +358,6 @@ class MachineManagerModel(QObject):
                 self.setActiveQuality(containers[0].getId())
                 self.activeQualityChanged.emit()
 
-
     @pyqtSlot()
     def updateQualityContainerFromUserContainer(self):
         if not self._active_container_stack:
@@ -401,9 +401,9 @@ class MachineManagerModel(QObject):
 
             preferred_material = None
             if old_material:
-                preferred_material = old_material.getId()
+                preferred_material_name = old_material.getName()
 
-            self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material).id)
+            self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
 
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
@@ -496,6 +496,12 @@ class MachineManagerModel(QObject):
 
         return False
 
+    @pyqtSlot(str, result = str)
+    def getDefinitionByMachineId(self, machine_id):
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=machine_id)
+        if containers:
+            return containers[0].getBottom().getId()
+
     def _updateVariantContainer(self, definition):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
@@ -513,7 +519,7 @@ class MachineManagerModel(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, variant_container = None, preferred_material = None):
+    def _updateMaterialContainer(self, definition, variant_container = None, preferred_material_name = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
@@ -527,14 +533,25 @@ class MachineManagerModel(QObject):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        if not preferred_material:
+        if preferred_material_name:
+            search_criteria["name"] = preferred_material_name
+        else:
             preferred_material = definition.getMetaDataEntry("preferred_material")
-        if preferred_material:
-            search_criteria["id"] = preferred_material
+            if preferred_material:
+                search_criteria["id"] = preferred_material
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if containers:
             return containers[0]
+
+        if "name" in search_criteria or "id" in search_criteria:
+            # If a material by this name can not be found, try a wider set of search criteria
+            search_criteria.pop("name", None)
+            search_criteria.pop("id", None)
+
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+            if containers:
+                return containers[0]
 
         return self._empty_material_container
 
@@ -559,6 +576,15 @@ class MachineManagerModel(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if containers:
             return containers[0]
+
+        if "name" in search_criteria or "id" in search_criteria:
+            # If a quality by this name can not be found, try a wider set of search criteria
+            search_criteria.pop("name", None)
+            search_criteria.pop("id", None)
+
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+            if containers:
+                return containers[0]
 
         return self._empty_quality_container
 
