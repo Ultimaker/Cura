@@ -19,5 +19,21 @@ Cura.MachineAction
         anchors.fill: parent;
 
         UM.I18nCatalog { id: catalog; name: "cura"; }
+        Column
+        {
+            anchors.fill: parent;
+            Label
+            {
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label","Please select any upgrades made to this ultimaker original");
+            }
+            CheckBox
+            {
+                text: catalog.i18nc("@label", "Self-built heated bed")
+                checked: manager.hasHeatedBed
+                onClicked: manager.hasHeatedBed ? manager.removeHeatedBed() : manager.addHeatedBed()
+            }
+        }
     }
 }
