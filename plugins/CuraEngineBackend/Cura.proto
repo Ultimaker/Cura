@@ -65,10 +65,15 @@ message GCodeLayer {
     bytes data = 2;
 }
 
-message ObjectPrintTime { // The print time for the whole print and material estimates for the first extruder
+
+message PrintTimeMaterialEstimates { // The print time for the whole print and material estimates for the extruder
+    float time = 1; // Total time estimate
+    repeated MaterialEstimates materialEstimates = 2; // materialEstimates data
+}
+
+message MaterialEstimates {
     int64 id = 1;
-    float time = 2; // Total time estimate
-    float material_amount = 3; // material used in the first extruder
+    float material_amount = 2; // material used in the extruder
 }
 
 message SettingList {

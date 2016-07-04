@@ -236,6 +236,13 @@ class MachineManagerModel(QObject):
 
         return ""
 
+    @pyqtProperty(str, notify = activeStackChanged)
+    def activeStackId(self):
+        if self._active_container_stack:
+            return self._active_container_stack.getId()
+
+        return ""
+
     @pyqtProperty(str, notify = activeMaterialChanged)
     def activeMaterialName(self):
         if self._active_container_stack:
