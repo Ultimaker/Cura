@@ -115,7 +115,6 @@ class SliceInfo(Extension):
         # Submit data
         try:
             f = urllib.request.urlopen("https://stats.youmagine.com/curastats/slice", data = binary_data, timeout = 1)
+            f.close()
         except Exception as e:
             print("Exception occured", e)
-
-        f.close()
