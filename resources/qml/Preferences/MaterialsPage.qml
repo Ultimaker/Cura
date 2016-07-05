@@ -65,22 +65,15 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add";
-            enabled: base.currentItem
+            enabled: base.currentItem != null
             onClicked: Cura.ContainerManager.duplicateContainer(base.currentItem.id)
         },
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
-            enabled: base.currentItem && !base.currentItem.readOnly
-//             onClicked: Cura.ContainerManager.removeContainer()
-        },
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Rename");
-            iconName: "edit-rename";
-            enabled: base.currentItem && !base.currentItem.readOnly
-//             onClicked: Cura.ContainerManager.renameContainer()
+            enabled: base.currentItem != null && !base.currentItem.readOnly
+            onClicked: confirmDialog.open()
         }
     ]
 
@@ -148,6 +141,13 @@ UM.ManagementPage
 
             property string description: "";
             property string adhesion_info: "";
+        }
+
+        UM.ConfirmRemoveDialog
+        {
+            id: confirmDialog
+            object: base.currentItem != null ? base.currentItem.name : ""
+            onYes: Cura.ContainerManager.removeContainer(base.currentItem.id)
         }
     }
 
