@@ -127,6 +127,8 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        self.printDurationMessage.emit(0, [0])
+
         self._stored_layer_data = []
 
         if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.

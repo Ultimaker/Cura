@@ -22,7 +22,7 @@ Rectangle
     {
         if(!printerConnected)
             return UM.Theme.getColor("status_offline")
-        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing" || Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
             return UM.Theme.getColor("status_busy")
         else if(Cura.MachineManager.printerOutputDevices[0].jobState == "ready")
             return UM.Theme.getColor("status_ready")
