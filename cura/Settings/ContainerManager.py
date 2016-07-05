@@ -29,21 +29,115 @@ class ContainerManager(QObject):
     #   \return The ID of the new container, or an empty string if duplication failed.
     @pyqtSlot(str, result = str)
     def duplicateContainer(self, container_id):
-        containers = self._registry.findInstanceContainers(id = container_id)
+        containers = self._registry.findContainers(None, id = container_id)
         if not containers:
-            return
+            return ""
 
-        new_name = self_registry.uniqueName(containers[0].getName())
-        new_material = containers[0].duplicate(new_name)
-        self._registry.addContainer(new_material)
+        container = containers[0]
 
-    @pyqtSlot(str, str)
-    def renameContainer(self, container_id, new_name):
-        pass
+        new_container = None
+        new_name = self._registry.uniqueName(container.getName())
+        if hasattr(container, "duplicate"):
+            new_container = container.duplicate(new_name)
+        else:
+            new_container = container.__class__(new_name)
+            new_container.deserialize(container.serialize())
+            new_container.setName(new_name)
 
-    @pyqtSlot(str)
+        if new_container:
+            self._registry.addContainer(new_container)
+
+        return new_container.getId()
+
+    ##  Change the name of a specified container to a new name.
+    #
+    #   \param container_id \type{str} The ID of the container to change the name of.
+    #   \param new_id \type{str} The new ID of the container.
+    #   \param new_name \type{str} The new name of the specified container.
+    #
+    #   \return True if successful, False if not.
+    @pyqtSlot(str, str, str, result = bool)
+    def renameContainer(self, container_id, new_id, new_name):
+        containers = self._registry.findContainers(None, id = container_id)
+        if not containers:
+            return False
+
+        container = containers[0]
+        # First, remove the container from the registry. This will clean up any files related to the container.
+        self._registry.removeContainer(container)
+
+        # Ensure we have a unique name for the container
+        new_name = self._registry.uniqueName(new_name)
+
+        # Then, update the name and ID of the container
+        container.setName(new_name)
+        container._id = new_id # TODO: Find a nicer way to set a new, unique ID
+
+        # Finally, re-add the container so it will be properly serialized again.
+        self._registry.addContainer(container)
+
+        return True
+
+    ##  Remove the specified container.
+    #
+    #   \param container_id \type{str} The ID of the container to remove.
+    #
+    #   \return True if the container was successfully removed, False if not.
+    @pyqtSlot(str, result = bool)
     def removeContainer(self, container_id):
-        pass
+        containers = self._registry.findContainers(None, id = container_id)
+        if not containers:
+            return False
+
+        self._registry.removeContainer(containers[0])
+
+        return True
+
+    ##  Merge a container with another.
+    #
+    #   This will try to merge one container into the other, by going through the container
+    #   and setting the right properties on the other container.
+    #
+    #   \param merge_into_id \type{str} The ID of the container to merge into.
+    #   \param merge_id \type{str} The ID of the container to merge.
+    #
+    #   \return True if successfully merged, False if not.
+    @pyqtSlot(str, result = bool)
+    def mergeContainers(self, merge_into_id, merge_id):
+        containers = self._registry.findContainers(None, id = container_id)
+        if not containers:
+            return False
+
+        merge_into = containers[0]
+
+        containers = self._registry.findContainers(None, id = container_id)
+        if not containers:
+            return False
+
+        merge = containers[0]
+
+        if type(merge) != type(merge_into):
+            return False
+
+        for key in merge.getAllKeys():
+            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+
+        return True
+
+    ##  Clear the contents of a container.
+    #
+    #   \param container_id \type{str} The ID of the container to clear.
+    #
+    #   \return True if successful, False if not.
+    @pyqtSlot(str, result = bool)
+    def clearContainer(self, container_id):
+        containers = self._registry.findContainers(None, id = container_id)
+        if not containers:
+            return False
+
+        containers[0].clear()
+
+        return True
 
     ##  Set a metadata entry of the specified container.
     #
@@ -57,7 +151,7 @@ class ContainerManager(QObject):
     #   \param entry_value The new value of the entry.
     @pyqtSlot(str, str, str)
     def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
         if not containers:
             return
 
