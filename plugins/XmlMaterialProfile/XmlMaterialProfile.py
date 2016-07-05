@@ -233,17 +233,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         diameter = float(property_values.get("diameter", 2.85)) # In mm
         density = float(property_values.get("density", 1.3)) # In g/cm3
 
-        weight_per_cm = (math.pi * (diameter / 20) ** 2 * 0.1) * density
-
-        spool_weight = property_values.get("spool_weight")
-        spool_length = property_values.get("spool_length")
-        if spool_weight:
-            length = float(spool_weight) / weight_per_cm
-            property_values["spool_length"] = str(length / 100)
-        elif spool_length:
-            weight = (float(spool_length) * 100) * weight_per_cm
-            property_values["spool_weight"] = str(weight)
-
         self.addMetaDataEntry("properties", property_values)
 
         self.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
@@ -360,6 +349,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     }
 
     # Map XML file product names to internal ids
+    # TODO: Move this to definition's metadata
     __product_id_map = {
         "Ultimaker2": "ultimaker2",
         "Ultimaker2+": "ultimaker2_plus",
