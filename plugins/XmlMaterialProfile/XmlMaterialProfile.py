@@ -25,6 +25,13 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         return result
 
     ##  Overridden from InstanceContainer
+    def setReadOnly(self, read_only):
+        super().setReadOnly(read_only)
+
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+            container._read_only = read_only
+
+    ##  Overridden from InstanceContainer
     def setMetaDataEntry(self, key, value):
         super().setMetaDataEntry(key, value)
 
