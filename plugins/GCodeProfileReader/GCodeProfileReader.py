@@ -22,7 +22,7 @@ class GCodeProfileReader(ProfileReader):
     #   It can only read settings with the same version as the version it was
     #   written with. If the file format is changed in a way that breaks reverse
     #   compatibility, increment this version number!
-    version = 1
+    version = 2
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -75,15 +75,16 @@ class GCodeProfileReader(ProfileReader):
 
         # Create an empty profile - the id will be changed later
         profile = InstanceContainer("")
-        profile.addMetaDataEntry("type", "quality")
         try:
             profile.deserialize(serialized)
         except Exception as e:  # Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
 
+        profile.addMetaDataEntry("type", "quality")
+
         #Creating a unique name using the filename of the GCode
-        new_name = catalog.i18nc("@label", "Custom profile (%s)") %(os.path.splitext(os.path.basename(file_name))[0])
+        new_name = catalog.i18nc("@label", "G-Code-imported profile")
         profile.setName(new_name)
         profile._id = new_name
 
