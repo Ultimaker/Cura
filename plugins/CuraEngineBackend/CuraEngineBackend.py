@@ -387,4 +387,3 @@ class CuraEngineBackend(Backend):
         if self._active_extruder_stack:
             self._active_extruder_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
-            self._onChanged()
