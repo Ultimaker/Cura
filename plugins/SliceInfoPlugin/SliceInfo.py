@@ -55,7 +55,7 @@ class SliceInfo(Extension):
         print_information = Application.getInstance().getPrintInformation()
         material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
 
-        # TODO; Send material per extruder instead of mashing it on a pile
+        # TODO: Send material per extruder instead of mashing it on a pile
         material_used = math.pi * material_radius * material_radius * sum(print_information.materialAmounts) #Volume of all materials used
 
         # Get model information (bounding boxes, hashes and transformation matrix)
