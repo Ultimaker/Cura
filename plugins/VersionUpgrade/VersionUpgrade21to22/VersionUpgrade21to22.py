@@ -10,19 +10,19 @@ from . import Preferences #To upgrade preferences.
 from . import Profile # To upgrade profiles.
 
 ##  How to translate printer names from the old version to the new.
-_printer_translation = {
+_printer_translations = {
     "ultimaker2plus": "ultimaker2_plus"
 }
 
 ##  How to translate profile names from the old version to the new.
-_profile_translation = {
+_profile_translations = {
     "PLA": "generic_pla",
     "ABS": "generic_abs",
     "CPE": "generic_cpe"
 }
 
 ##  How to translate setting names from the old version to the new.
-_setting_name_translation = {
+_setting_name_translations = {
     "remove_overlapping_walls_0_enabled": "travel_compensate_overlapping_walls_0_enabled",
     "remove_overlapping_walls_enabled": "travel_compensate_overlapping_walls_enabled",
     "remove_overlapping_walls_x_enabled": "travel_compensate_overlapping_walls_x_enabled",
@@ -32,7 +32,7 @@ _setting_name_translation = {
 
 ##  How to translate variants of specific machines from the old version to the
 #   new.
-_variant_translation = {
+_variant_translations = {
     "ultimaker2_plus": {
         "0.25 mm": "ultimaker2_plus_0.25",
         "0.4 mm": "ultimaker2_plus_0.4",
@@ -103,8 +103,8 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The name of the corresponding printer in Cura 2.2.
     @staticmethod
     def translatePrinter(printer):
-        if printer in _printer_translation:
-            return _printer_translation[printer]
+        if printer in _printer_translations:
+            return _printer_translations[printer]
         return printer #Doesn't need to be translated.
 
     ##  Translates a built-in profile name that might have changed since the
@@ -114,8 +114,8 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The corresponding profile name in the new version.
     @staticmethod
     def translateProfile(profile):
-        if profile in _profile_translation:
-            return _profile_translation[profile]
+        if profile in _profile_translations:
+            return _profile_translations[profile]
         return profile #Doesn't need to be translated.
 
     ##  Updates settings for the change from Cura 2.1 to 2.2.
@@ -156,8 +156,8 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The name of the corresponding setting in Cura 2.2.
     @staticmethod
     def translateSettingName(setting):
-        if setting in _setting_name_translation:
-            return _setting_name_translation[setting]
+        if setting in _setting_name_translations:
+            return _setting_name_translations[setting]
         return setting #Doesn't need to be translated.
 
     ##  Translates a variant name for the change from Cura 2.1 to 2.2
@@ -168,6 +168,6 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The name of the corresponding variant in Cura 2.2.
     @staticmethod
     def translateVariant(variant, machine):
-        if machine in _variant_translation and variant in _variant_translation[machine]:
-            return _variant_translation[machine][variant]
+        if machine in _variant_translations and variant in _variant_translations[machine]:
+            return _variant_translations[machine][variant]
         return variant
