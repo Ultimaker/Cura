@@ -73,7 +73,7 @@ class GCodeProfileReader(ProfileReader):
         serialized = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialized)
         Logger.log("i", "Serialized the following from %s: %s" %(file_name, repr(serialized)))
 
-        # Create an empty profile - the id will be changed later
+        # Create an empty profile - the id and name will be changed by the ContainerRegistry
         profile = InstanceContainer("")
         try:
             profile.deserialize(serialized)
@@ -82,10 +82,5 @@ class GCodeProfileReader(ProfileReader):
             return None
 
         profile.addMetaDataEntry("type", "quality")
-
-        #Creating a unique name using the filename of the GCode
-        new_name = catalog.i18nc("@label", "G-Code-imported profile")
-        profile.setName(new_name)
-        profile._id = new_name
 
         return profile
