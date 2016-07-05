@@ -40,6 +40,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
     ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):
+        if self.isReadOnly():
+            return
+
         super().setProperty(key, property_name, property_value)
 
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
