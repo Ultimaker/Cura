@@ -139,10 +139,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             elif len(container.id) < len(machine_container_map[definition_id].id):
                 machine_container_map[definition_id] = container
 
+            if definition_id not in machine_nozzle_map:
+                machine_nozzle_map[definition_id] = {}
+
             variant = container.getMetaDataEntry("variant")
             if variant:
-                if definition_id not in machine_nozzle_map:
-                    machine_nozzle_map[definition_id] = {}
                 machine_nozzle_map[definition_id][variant] = container
 
         for definition_id, container in machine_container_map.items():
