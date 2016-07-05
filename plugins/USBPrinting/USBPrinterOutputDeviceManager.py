@@ -41,10 +41,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         self._check_updates = True
         self._firmware_view = None
 
-        ## Add menu item to top menu of the application.
-        self.setMenuName(i18n_catalog.i18nc("@title:menu","Firmware"))
-        self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Update Firmware"), self.updateAllFirmware)
-
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
 
