@@ -32,7 +32,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label","It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
+            text: catalog.i18nc("@label", "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
         }
 
         Item
@@ -51,7 +51,7 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
-                    checkupContent.visible = true
+                    //checkupContent.visible = true
                     manager.startCheck()
                 }
             }
@@ -73,7 +73,7 @@ Cura.MachineAction
             id: checkupContent
             anchors.top: startStopButtons.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            visible: false
+            visible: manager.checkStarted
             width: parent.width
             height: 250
             //////////////////////////////////////////////////////////
@@ -188,7 +188,6 @@ Cura.MachineAction
                     onClicked:
                     {
                         manager.heatupHotend()
-                        nozzleTempStatus.text = catalog.i18nc("@info:progress","Checking")
                     }
                 }
             }
