@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
 
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -461,9 +462,30 @@ class MachineManager(QObject):
             return
 
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
-        if old_quality:
+        if old_quality and old_quality != containers[0]:
             quality_index = self._active_container_stack.getContainerIndex(old_quality)
+
             self._active_container_stack.replaceContainer(quality_index, containers[0])
+
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+                # Ask the user if the user profile should be cleared or not (discarding the current settings)
+                # In Simple Mode we assume the user always wants to keep the (limited) current settings
+                details = catalog.i18nc("@label", "You made changes to the following setting(s):")
+                user_settings = self._active_container_stack.getTop().findInstances(**{})
+                for setting in user_settings:
+                    details = details + "\n    " + setting.definition.label
+
+                Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
+                                                     catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
+                                                     buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
+
+    def _keepUserSettingsDialogCallback(self, button):
+        if button == QMessageBox.Yes:
+            # Yes, keep the settings in the user profile with this profile
+            pass
+        elif button == QMessageBox.No:
+            # No, discard the settings in the user profile
+            self.clearUserSettings()
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self):
