@@ -36,7 +36,22 @@ Menu
         }
         MenuItem
         {
-            text: model.name;
+            text:
+            {
+                var result = model.name
+
+                if(model.metadata.brand != undefined && model.metadata.brand != "Generic")
+                {
+                    result = model.metadata.brand + " " + result
+                }
+
+                if(model.metadata.color_name != undefined && model.metadata.color_name != "Generic")
+                {
+                    result = result + " (%1)".arg(model.metadata.color_name)
+                }
+
+                return result
+            }
             checkable: true;
             checked: model.id == Cura.MachineManager.activeMaterialId;
             exclusiveGroup: group;
