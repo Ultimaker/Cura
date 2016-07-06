@@ -18,6 +18,7 @@ class ContainerManager(QObject):
         super().__init__(parent)
 
         self._registry = UM.Settings.ContainerRegistry.getInstance()
+        self._container_name_filters = {}
 
     ##  Create a duplicate of the specified container
     #
@@ -89,7 +90,7 @@ class ContainerManager(QObject):
         if not containers:
             return False
 
-        self._registry.removeContainer(containers[0])
+        self._registry.removeContainer(containers[0].getId())
 
         return True
 
@@ -135,6 +136,9 @@ class ContainerManager(QObject):
         if not containers:
             return False
 
+        if containers[0].isReadOnly():
+            return False
+
         containers[0].clear()
 
         return True
@@ -149,13 +153,18 @@ class ContainerManager(QObject):
     #   \param container_id \type{str} The ID of the container to change.
     #   \param entry_name \type{str} The name of the metadata entry to change.
     #   \param entry_value The new value of the entry.
-    @pyqtSlot(str, str, str)
+    #
+    #   \return True if successful, False if not.
+    @pyqtSlot(str, str, str, result = bool)
     def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
         if not containers:
-            return
+            return False
 
         container = containers[0]
+
+        if container.isReadOnly():
+            return False
 
         entries = entry_name.split("/")
         entry_name = entries.pop()
