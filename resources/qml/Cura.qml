@@ -683,6 +683,35 @@ UM.MainWindow
         }
     }
 
+    MessageDialog
+    {
+        id: messageDialog
+        modality: Qt.ApplicationModal
+        onAccepted: Printer.messageBoxClosed(clickedButton)
+        onApply: Printer.messageBoxClosed(clickedButton)
+        onDiscard: Printer.messageBoxClosed(clickedButton)
+        onHelp: Printer.messageBoxClosed(clickedButton)
+        onNo: Printer.messageBoxClosed(clickedButton)
+        onRejected: Printer.messageBoxClosed(clickedButton)
+        onReset: Printer.messageBoxClosed(clickedButton)
+        onYes: Printer.messageBoxClosed(clickedButton)
+    }
+
+    Connections
+    {
+        target: Printer
+        onShowMessageBox:
+        {
+            messageDialog.title = title
+            messageDialog.text = text
+            messageDialog.informativeText = informativeText
+            messageDialog.detailedText = detailedText
+            messageDialog.standardButtons = buttons
+            messageDialog.icon = icon
+            messageDialog.visible = true
+        }
+    }
+
     Connections
     {
         target: Cura.Actions.addMachine
