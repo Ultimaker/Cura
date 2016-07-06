@@ -44,8 +44,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         ##  It's okay to leave this for now, as this plugin is um3 only (and has 2 extruders by definition)
         self._num_extruders = 2
 
+        # These are reinitialised here (from PrinterOutputDevice) to match the new _num_extruders
         self._hotend_temperatures = [0] * self._num_extruders
         self._target_hotend_temperatures = [0] * self._num_extruders
+
+        self._material_ids = [""] * self._num_extruders
+        self._hotend_ids = [""] * self._num_extruders
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
@@ -185,6 +189,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         for index in range(0, self._num_extruders):
             temperature = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]["current"]
             self._setHotendTemperature(index, temperature)
+            try:
+                material_id = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]
+            except KeyError:
+                material_id = ""
+            self._setMaterialId(index, material_id)
+            try:
+                hotend_id = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
+            except KeyError:
+                hotend_id = ""
+            self._setHotendId(index, hotend_id)
 
         bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
         self._setBedTemperature(bed_temperature)
@@ -214,7 +228,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Check if cartridges are loaded at all (Error)
         #self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] != ""
 
-        # Check if there is material loaded at all (Error)self.authentication_requested_message.setProgress(self._authentication_counter / self._max_authentication_counter)
+        # Check if there is material loaded at all (Error)
         #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] != ""
 
         # Check if there is enough material (Warning)
