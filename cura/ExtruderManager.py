@@ -66,6 +66,10 @@ class ExtruderManager(QObject):
         self._active_extruder_index = index
         self.activeExtruderChanged.emit()
 
+    @pyqtProperty(int, notify = activeExtruderChanged)
+    def activeExtruderIndex(self):
+        return self._active_extruder_index
+
     def getActiveExtruderStack(self):
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
