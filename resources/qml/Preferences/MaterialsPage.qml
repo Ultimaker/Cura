@@ -66,7 +66,23 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add";
             enabled: base.currentItem != null
-            onClicked: Cura.ContainerManager.duplicateContainer(base.currentItem.id)
+            onClicked:
+            {
+                var material_id = Cura.ContainerManager.duplicateContainer(base.currentItem.id)
+                if(material_id == "")
+                {
+                    return
+                }
+
+                if(Cura.MachineManager.filterQualityByMachine)
+                {
+                    var quality_id = Cura.ContainerManager.duplicateContainer(Cura.MachineManager.activeQualityId)
+                    Cura.ContainerManager.setContainerMetaDataEntry(quality_id, "material", material_id)
+                    Cura.MachineManager.setActiveQuality(quality_id)
+                }
+
+                Cura.MachineManager.setActiveMaterial(material_id)
+            }
         },
         Button
         {
@@ -74,6 +90,19 @@ UM.ManagementPage
             iconName: "list-remove";
             enabled: base.currentItem != null && !base.currentItem.readOnly
             onClicked: confirmDialog.open()
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Import");
+            iconName: "document-import";
+            onClicked: importDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Export")
+            iconName: "document-export"
+            onClicked: exportDialog.open()
+            enabled: currentItem != null
         }
     ]
 
@@ -98,6 +127,8 @@ UM.ManagementPage
                 text: catalog.i18nc("@action:button", "Edit");
                 iconName: "document-edit";
 
+                enabled: base.currentItem != null && !base.currentItem.readOnly
+
                 checkable: true
             }
         }
@@ -113,7 +144,7 @@ UM.ManagementPage
                 bottom: parent.bottom
             }
 
-            editingEnabled: editButton.checked;
+            editingEnabled: base.currentItem != null && !base.currentItem.readOnly && editButton.checked;
 
             properties: materialProperties
             containerId: base.currentItem.id
@@ -147,7 +178,83 @@ UM.ManagementPage
         {
             id: confirmDialog
             object: base.currentItem != null ? base.currentItem.name : ""
-            onYes: Cura.ContainerManager.removeContainer(base.currentItem.id)
+            onYes:
+            {
+                var containers = Cura.ContainerManager.findInstanceContainers({"GUID": base.currentItem.metadata.GUID})
+                for(var i in containers)
+                {
+                    Cura.ContainerManager.removeContainer(containers[i])
+                }
+            }
+        }
+
+        FileDialog
+        {
+            id: importDialog;
+            title: catalog.i18nc("@title:window", "Import Material");
+            selectExisting: true;
+            nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
+            folder: CuraApplication.getDefaultPath()
+            onAccepted:
+            {
+                var result = Cura.ContainerManager.importContainer(fileUrl)
+
+                messageDialog.title = catalog.i18nc("@title:window", "Import Material")
+                messageDialog.text = catalog.i18nc("@info:status", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                if(result.status == "success")
+                {
+                    messageDialog.icon = StandardIcon.Information
+                    messageDialog.text = catalog.i18nc("@info:status", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
+                }
+                else if(result.status == "duplicate")
+                {
+                    messageDialog.icon = StandardIcon.Warning
+                }
+                else
+                {
+                    messageDialog.icon = StandardIcon.Critical
+                }
+                messageDialog.open()
+            }
+        }
+
+        FileDialog
+        {
+            id: exportDialog;
+            title: catalog.i18nc("@title:window", "Export Material");
+            selectExisting: false;
+            nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
+            folder: CuraApplication.getDefaultPath()
+            onAccepted:
+            {
+                if(base.currentItem.metadata.base_file)
+                {
+                    var result = Cura.ContainerManager.exportContainer(base.currentItem.metadata.base_file, selectedNameFilter, fileUrl)
+                }
+                else
+                {
+                    var result = Cura.ContainerManager.exportContainer(base.currentItem.id, selectedNameFilter, fileUrl)
+                }
+
+                messageDialog.title = catalog.i18nc("@title:window", "Export Material")
+                if(result.status == "error")
+                {
+                    messageDialog.icon = StandardIcon.Critical
+                    messageDialog.text = catalog.i18nc("@info:status", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                    messageDialog.open()
+                }
+                else if(result.status == "success")
+                {
+                    messageDialog.icon = StandardIcon.Information
+                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(fileUrl)
+                    messageDialog.open()
+                }
+            }
+        }
+
+        MessageDialog
+        {
+            id: messageDialog
         }
     }
 
