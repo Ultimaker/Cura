@@ -195,7 +195,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             self._error_message.show()
             return
         try:
-            self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
+            self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to OctoPrint"), 0, False, -1)
             self._progress_message.show()
 
             ## Mash the data into single string
@@ -328,6 +328,11 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
-            self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+            progress = bytes_sent / bytes_total * 100
+            if progress <= 100:
+                self._progress_message.setProgress(progress)
+            else:
+                self._progress_message.setProgress(-1)
+                self._progress_message.setText(i18n_catalog.i18nc("@info:status", "Storing data on OctoPrint."))
         else:
             self._progress_message.setProgress(0)
