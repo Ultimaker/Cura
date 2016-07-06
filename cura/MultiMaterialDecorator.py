@@ -6,3 +6,6 @@ class MultiMaterialDecorator(SceneNodeDecorator):
         
     def isMultiMaterial(self):
         return True
+
+    def __deepcopy__(self, memo):
+        return MultiMaterialDecorator()
