@@ -86,7 +86,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
-            info = ServiceInfo(service_type, name)
+            info = ServiceInfo(service_type, name, properties = {})
             for record in zeroconf.cache.entries_with_name(name.lower()):
                 info.update_record(zeroconf, time.time(), record)
 
