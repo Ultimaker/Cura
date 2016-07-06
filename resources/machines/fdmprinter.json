@@ -481,7 +481,7 @@
                     "label": "Compensate Wall Overlaps",
                     "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "visible": false
                 },
                 "xy_offset": {
@@ -760,7 +760,7 @@
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
                     "description": "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
-                    "default": 45,
+                    "default": 90,
                     "min_value": "0",
                     "max_value_warning": "100",
                     "type": "int",
@@ -1630,7 +1630,7 @@
                     "description": "The speed at which the raft is printed.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default": 30,
+                    "default": 20,
                     "min_value": "0.1",
                     "max_value_warning": "200",
                     "enabled": "adhesion_type == \"raft\"",
@@ -1660,7 +1660,7 @@
                             "min_value": "0.1",
                             "max_value_warning": "150",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "0.5 * parent_value",
+                            "inherit_function": "parent_value",
                             "global_only": "True",
                             "visible": false
                         },
@@ -1673,7 +1673,7 @@
                             "min_value": "0.1",
                             "max_value_warning": "200",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "0.5 * parent_value",
+                            "inherit_function": "0.75 * parent_value",
                             "global_only": "True",
                             "visible": false
                         }
