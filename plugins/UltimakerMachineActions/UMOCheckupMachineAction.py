@@ -43,7 +43,6 @@ class UMOCheckupMachineAction(MachineAction):
         if self._output_device is None and self._check_started:
             self.startCheck()
 
-
     def _getPrinterOutputDevices(self):
         return [printer_output_device for printer_output_device in
                 Application.getInstance().getOutputDeviceManager().getOutputDevices() if
@@ -63,6 +62,7 @@ class UMOCheckupMachineAction(MachineAction):
         self._output_device = None
 
         self._check_started = False
+        self.checkStartedChanged.emit()
 
         # Ensure everything is reset (and right signals are emitted again)
         self._bed_test_completed = False
@@ -79,6 +79,7 @@ class UMOCheckupMachineAction(MachineAction):
 
     @pyqtProperty(bool, notify = onBedTestCompleted)
     def bedTestCompleted(self):
+        print("zomg?")
         return self._bed_test_completed
 
     @pyqtProperty(bool, notify = onHotendTestCompleted)
@@ -137,9 +138,16 @@ class UMOCheckupMachineAction(MachineAction):
                 self._z_min_endstop_test_completed = True
                 self.onZMinEndstopTestCompleted.emit()
 
+    checkStartedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = checkStartedChanged)
+    def checkStarted(self):
+        return self._check_started
+
     @pyqtSlot()
     def startCheck(self):
         self._check_started = True
+        self.checkStartedChanged.emit()
         output_devices = self._getPrinterOutputDevices()
         if output_devices:
             self._output_device = output_devices[0]
