@@ -11,6 +11,6 @@
     "inherits": "ultimaker2.json",
 
     "machine_settings": {
-        "machine_height": { "default": 315 }
+        "machine_height": { "default": 305 }
     }
 }
