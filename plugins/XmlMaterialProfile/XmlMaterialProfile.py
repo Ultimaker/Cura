@@ -52,16 +52,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def serialize(self):
         registry = UM.Settings.ContainerRegistry.getInstance()
 
-        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"))
-        most_generic = all_containers[0]
-        for container in all_containers:
-            # Find the "most generic" version of this material
-            # This is a bit of a nasty implementation because of the naive assumption that anything with a shorter
-            # id is more generic. It holds for the current implementation though.
-            if len(most_generic.id) > len(container.id):
-                most_generic = container
-
-        if most_generic and self.id != most_generic.id:
+        base_file = self.getMetaDataEntry("base_file", "")
+        if base_file and self.id != base_file:
             # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
             # we should only serialize the "base" material definition, since that can then take care of
             # serializing the machine/nozzle specific profiles.
@@ -81,6 +73,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         metadata.pop("status", "")
         metadata.pop("variant", "")
         metadata.pop("type", "")
+        metadata.pop("base_file", "")
 
         ## Begin Name Block
         builder.start("name")
@@ -129,14 +122,13 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         machine_container_map = {}
         machine_nozzle_map = {}
 
+        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"))
         for container in all_containers:
             definition_id = container.getDefinition().id
             if definition_id == "fdmprinter":
                 continue
 
             if definition_id not in machine_container_map:
-                machine_container_map[definition_id] = container
-            elif len(container.id) < len(machine_container_map[definition_id].id):
                 machine_container_map[definition_id] = container
 
             if definition_id not in machine_nozzle_map:
@@ -145,6 +137,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             variant = container.getMetaDataEntry("variant")
             if variant:
                 machine_nozzle_map[definition_id][variant] = container
+                continue
+
+            machine_container_map[definition_id] = container
 
         for definition_id, container in machine_container_map.items():
             definition = container.getDefinition()
@@ -278,6 +273,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 new_material.setName(self.getName())
                 new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                 new_material.setDefinition(definition)
+                new_material.addMetaDataEntry("base_file", self.id)
 
                 for key, value in global_setting_values.items():
                     new_material.setProperty(key, "value", value, definition)
@@ -308,6 +304,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
+                    new_hotend_material.addMetaDataEntry("base_file", self.id)
 
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
 
