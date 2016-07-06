@@ -414,6 +414,7 @@ class CuraApplication(QtApplication):
     #   \param engine The QML engine.
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
+        engine.rootContext().setContextProperty("CuraApplication", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         self._cura_actions = CuraActions.CuraActions(self)
