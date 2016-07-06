@@ -152,7 +152,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                                    "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
                                    "ultimaker2"               : "MarlinUltimaker2.hex",
                                    "ultimaker2_go"            : "MarlinUltimaker2go.hex",
-                                   "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
+                                   "ultimaker2_plus"           : "MarlinUltimaker2plus.hex",
                                    "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
                                    "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
                                    }
