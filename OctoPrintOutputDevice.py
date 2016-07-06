@@ -288,7 +288,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                         if json_data["progress"]["printTimeLeft"]:
                             self.setTimeTotal(json_data["progress"]["printTime"] + json_data["progress"]["printTimeLeft"])
                         elif json_data["job"]["estimatedPrintTime"]:
-                            self.setTimeTotal(json_data["job"]["estimatedPrintTime"])
+                            self.setTimeTotal(max(json_data["job"]["estimatedPrintTime"], json_data["progress"]["printTime"]))
                         elif progress > 0:
                             self.setTimeTotal(json_data["progress"]["printTime"] / (progress / 100))
                         else:
