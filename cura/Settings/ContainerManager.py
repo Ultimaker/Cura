@@ -1,9 +1,19 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+import os.path
+import urllib
 
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
+from PyQt5.QtWidgets import QMessageBox
+
+import UM.PluginRegistry
 import UM.Settings
+import UM.SaveFile
+import UM.Platform
+import UM.MimeTypeDatabase
+
+from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -182,7 +192,177 @@ class ContainerManager(QObject):
             entry_name = root_name
             entry_value = root
 
-        containers[0].setMetaDataEntry(entry_name, entry_value)
+        container.setMetaDataEntry(entry_name, entry_value)
+
+        return True
+
+    ##  Find instance containers matching certain criteria.
+    #
+    #   This effectively forwards to ContainerRegistry::findInstanceContainers.
+    #
+    #   \param criteria A dict of key - value pairs to search for.
+    #
+    #   \return A list of container IDs that match the given criteria.
+    @pyqtSlot("QVariantMap", result = "QVariantList")
+    def findInstanceContainers(self, criteria):
+        result = []
+        for entry in self._registry.findInstanceContainers(**criteria):
+            result.append(entry.getId())
+
+        return result
+
+    ##  Get a list of string that can be used as name filters for a Qt File Dialog
+    #
+    #   This will go through the list of available container types and generate a list of strings
+    #   out of that. The strings are formatted as "description (*.extension)" and can be directly
+    #   passed to a nameFilters property of a Qt File Dialog.
+    #
+    #   \param type_name Which types of containers to list. These types correspond to the "type"
+    #                    key of the plugin metadata.
+    #
+    #   \return A string list with name filters.
+    @pyqtSlot(str, result = "QStringList")
+    def getContainerNameFilters(self, type_name):
+        if not self._container_name_filters:
+            self._updateContainerNameFilters()
+
+        filters = []
+        for filter_string, entry in self._container_name_filters.items():
+            if not type_name or entry["type"] == type_name:
+                filters.append(filter_string)
+
+        return filters
+
+    ##  Export a container to a file
+    #
+    #   \param container_id The ID of the container to export
+    #   \param file_type The type of file to save as. Should be in the form of "description (*.extension, *.ext)"
+    #   \param file_url The URL where to save the file.
+    #
+    #   \return A dictionary containing a key "status" with a status code and a key "message" with a message
+    #           explaining the status.
+    #           The status code can be one of "error", "cancelled", "success"
+    @pyqtSlot(str, str, QUrl, result = "QVariantMap")
+    def exportContainer(self, container_id, file_type, file_url):
+        if not container_id or not file_type or not file_url:
+            return { "status": "error", "message": "Invalid arguments"}
+
+        if isinstance(file_url, QUrl):
+            file_url = file_url.toLocalFile()
+
+        if not file_url:
+            return { "status": "error", "message": "Invalid path"}
+
+        mime_type = None
+        if not file_type in self._container_name_filters:
+            try:
+                mime_type = UM.MimeTypeDatabase.getMimeTypeForFile(file_url)
+            except MimeTypeNotFoundError:
+                return { "status": "error", "message": "Unknown File Type" }
+        else:
+            mime_type = self._container_name_filters[file_type]["mime"]
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
+        if not containers:
+            return { "status": "error", "message": "Container not found"}
+        container = containers[0]
+
+        for suffix in mime_type.suffixes:
+            if file_url.endswith(suffix):
+                break
+        else:
+            file_url += "." + mime_type.preferredSuffix
+
+        if not UM.Platform.isWindows():
+            if os.path.exists(file_url):
+                result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
+                                              catalog.i18nc("@label", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
+                if result == QMessageBox.No:
+                    return { "status": "cancelled", "message": "User cancelled"}
+
+        try:
+            contents = container.serialize()
+        except NotImplementedError:
+            return { "status": "error", "message": "Unable to serialize container"}
+
+        with UM.SaveFile(file_url, "w") as f:
+            f.write(contents)
+
+        return { "status": "success", "message": "Succesfully exported container"}
+
+    ##  Imports a profile from a file
+    #
+    #   \param file_url A URL that points to the file to import.
+    #
+    #   \return \type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
+    #       containing a message for the user
+    @pyqtSlot(QUrl, result = "QVariantMap")
+    def importContainer(self, file_url):
+        if not file_url:
+            return { "status": "error", "message": "Invalid path"}
+
+        if isinstance(file_url, QUrl):
+            file_url = file_url.toLocalFile()
+
+        if not file_url or not os.path.exists(file_url):
+            return { "status": "error", "message": "Invalid path" }
+
+        try:
+            mime_type = UM.MimeTypeDatabase.getMimeTypeForFile(file_url)
+        except MimeTypeNotFoundError:
+            return { "status": "error", "message": "Could not determine mime type of file" }
+
+        container_type = UM.Settings.ContainerRegistry.getContainerForMimeType(mime_type)
+        if not container_type:
+            return { "status": "error", "message": "Could not find a container to handle the specified file."}
+
+        container_id = urllib.parse.unquote_plus(mime_type.stripExtension(os.path.basename(file_url)))
+        container_id = UM.Settings.ContainerRegistry.getInstance().uniqueName(container_id)
+
+        container = container_type(container_id)
+
+        try:
+            with open(file_url, "rt") as f:
+                container.deserialize(f.read())
+        except PermissionError:
+            return { "status": "error", "message": "Permission denied when trying to read the file"}
+
+        container.setName(container_id)
+
+        UM.Settings.ContainerRegistry.getInstance().addContainer(container)
+
+        return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
+
+    def _updateContainerNameFilters(self):
+        self._container_name_filters = {}
+        for plugin_id, container_type in UM.Settings.ContainerRegistry.getContainerTypes():
+            serialize_type = ""
+            try:
+                plugin_metadata = UM.PluginRegistry.getInstance().getMetaData(plugin_id)
+                if plugin_metadata:
+                    serialize_type = plugin_metadata["settings_container"]["type"]
+                else:
+                    continue
+            except KeyError as e:
+                continue
+
+            mime_type = UM.Settings.ContainerRegistry.getMimeTypeForContainer(container_type)
+
+            entry = {
+                "type": serialize_type,
+                "mime": mime_type,
+                "container": container_type
+            }
+
+            suffix_list = "*." + mime_type.preferredSuffix
+            for suffix in mime_type.suffixes:
+                if suffix == mime_type.preferredSuffix:
+                    continue
+
+                suffix_list += ", *." + suffix
+
+            name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
+            self._container_name_filters[name_filter] = entry
 
     # Factory function, used by QML
     @staticmethod
