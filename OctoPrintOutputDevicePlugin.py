@@ -92,7 +92,6 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
             for record in zeroconf.cache.entries_with_name(info.server):
                 info.update_record(zeroconf, time.time(), record)
-                print(record.address)
                 if info.address:
                     break
 
