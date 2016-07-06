@@ -9,7 +9,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
-from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QImage, QDesktopServices
 
 import json
 
@@ -190,6 +190,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         Logger.log("d", "Sent command to OctoPrint instance: %s", data)
 
     def startPrint(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return
+
         if self.jobState != "ready" and self.jobState != "":
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is printing. Unable to start a new job."))
             self._error_message.show()
@@ -214,15 +218,16 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             self._post_part.setBody(b"true")
             self._post_multi_part.append(self._post_part)
 
-            self._post_part = QHttpPart()
-            self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader, "form-data; name=\"print\"")
-            self._post_part.setBody(b"true")
-            self._post_multi_part.append(self._post_part)
+            if global_container_stack.getMetaDataEntry("octoprint_auto_print", True):
+                self._post_part = QHttpPart()
+                self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader, "form-data; name=\"print\"")
+                self._post_part.setBody(b"true")
+                self._post_multi_part.append(self._post_part)
 
-            self._post_part = QHttpPart()
-            self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader, "form-data; name=\"file\"; filename=\"%s\"" % file_name)
-            self._post_part.setBody(single_string_file_data.encode())
-            self._post_multi_part.append(self._post_part)
+                self._post_part = QHttpPart()
+                self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader, "form-data; name=\"file\"; filename=\"%s\"" % file_name)
+                self._post_part.setBody(single_string_file_data.encode())
+                self._post_multi_part.append(self._post_part)
 
             url = QUrl("http://" + self._address + self._api_prefix + "files/local")
 
@@ -316,6 +321,12 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
+                if global_container_stack and not global_container_stack.getMetaDataEntry("octoprint_auto_print", True):
+                    message = Message(catalog.i18nc("@info:status", "Saved to OctoPrint as {1}").format(reply.header(QNetworkRequest.LocationHeader).toString()))
+                    message.addAction("open_browser", catalog.i18nc("@action:button", "Open Browser"), "globe", catalog.i18nc("@info:tooltip", "Open browser to OctoPrint."))
+                    message.actionTriggered.connect(self._onMessageActionTriggered)
+                    message.show()
 
             elif "job" in reply.url().toString():  # Result from /job command:
                 if http_status_code == 204:
@@ -336,3 +347,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 self._progress_message.setText(i18n_catalog.i18nc("@info:status", "Storing data on OctoPrint."))
         else:
             self._progress_message.setProgress(0)
+
+    def _onMessageActionTriggered(self, message, action):
+        if action == "open_browser":
+            QDesktopServices.openUrl(QUrl("http://" + self._address))
