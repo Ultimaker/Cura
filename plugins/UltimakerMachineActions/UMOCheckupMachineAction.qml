@@ -51,7 +51,6 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
-                    //checkupContent.visible = true
                     manager.startCheck()
                 }
             }
