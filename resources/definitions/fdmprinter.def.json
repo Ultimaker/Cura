@@ -315,6 +315,51 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "extruder_prime_pos_x":
+                {
+                    "label": "Extruder Prime X Position",
+                    "description": "The x coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_y":
+                {
+                    "label": "Extruder Prime Y Position",
+                    "description": "The y coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_z":
+                {
+                    "label": "Extruder Prime Z Position",
+                    "description": "The z coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_abs":
+                {
+                    "label": "Absolute Extruder Prime Position",
+                    "description": "Make the extruder prime position absolute rather than relative to the last-known location of the head.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
