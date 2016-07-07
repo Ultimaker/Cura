@@ -2,22 +2,21 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 
 import UM.Settings
-from UM.Settings.Validator import ValidatorState
-from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
-from UM.Settings.ContainerStack import ContainerStack
+
 from . import ExtruderManager
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-
-class MachineManagerModel(QObject):
+class MachineManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -28,7 +27,7 @@ class MachineManagerModel(QObject):
         self._global_stack_valid = None
         self._onGlobalContainerChanged()
 
-        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
         self.globalContainerChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
 
@@ -36,13 +35,13 @@ class MachineManagerModel(QObject):
         self.globalContainerChanged.connect(self.activeMaterialChanged)
         self.globalContainerChanged.connect(self.activeVariantChanged)
         self.globalContainerChanged.connect(self.activeQualityChanged)
-        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeMaterialChanged)
-        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeVariantChanged)
-        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeQualityChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeMaterialChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeVariantChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeQualityChanged)
 
         self.globalContainerChanged.connect(self.activeStackChanged)
         self.globalValueChanged.connect(self.activeStackChanged)
-        ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeStackChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeStackChanged)
 
         self._empty_variant_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_variant")[0]
         self._empty_material_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
@@ -126,7 +125,7 @@ class MachineManagerModel(QObject):
         if property_name == "validationState":
             if self._global_stack_valid:
                 changed_validation_state = self._active_container_stack.getProperty(key, property_name)
-                if changed_validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
                     self._global_stack_valid = False
                     self.globalValidationChanged.emit()
             else:
@@ -155,7 +154,7 @@ class MachineManagerModel(QObject):
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
 
-        self._active_container_stack = ExtruderManager.ExtruderManager.getInstance().getActiveExtruderStack()
+        self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_container_stack:
             self._active_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
@@ -207,7 +206,7 @@ class MachineManagerModel(QObject):
                 new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
-            ExtruderManager.ExtruderManager.getInstance().addMachineExtruders(definition)
+            ExtruderManager.getInstance().addMachineExtruders(definition)
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
@@ -228,7 +227,7 @@ class MachineManagerModel(QObject):
 
         for key in stack.getAllKeys():
             validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+            if validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
                 return True
         return False
 
@@ -552,6 +551,10 @@ class MachineManagerModel(QObject):
         if containers:
             return containers[0].getBottom().getId()
 
+    @staticmethod
+    def createMachineManager(engine, script_engine):
+        return MachineManager()
+
     def _updateVariantContainer(self, definition):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
@@ -637,6 +640,3 @@ class MachineManagerModel(QObject):
                 return containers[0]
 
         return self._empty_quality_container
-
-def createMachineManagerModel(engine, script_engine):
-    return MachineManagerModel()
