@@ -5,7 +5,7 @@ from UM.Logger import Logger
 
 import UM.Settings.Models
 
-from cura.SettingOverrideDecorator import SettingOverrideDecorator
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  The per object setting visibility handler ensures that only setting defintions that have a matching instance Container
 #   are returned as visible. 
