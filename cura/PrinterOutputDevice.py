@@ -24,6 +24,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._num_extruders = 1
         self._hotend_temperatures = [0] * self._num_extruders
         self._target_hotend_temperatures = [0] * self._num_extruders
+        self._material_ids = [""] * self._num_extruders
+        self._hotend_ids = [""] * self._num_extruders
         self._progress = 0
         self._head_x = 0
         self._head_y = 0
@@ -56,6 +58,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     # Signal to be emitted when head position is changed (x,y,z)
     headPositionChanged = pyqtSignal()
+
+    # Signal to be emitted when either of the material ids is changed
+    materialIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
+
+    # Signal to be emitted when either of the hotend ids is changed
+    hotendIdChanged = pyqtSignal(int, str, arguments = ["index", "id"])
 
     # Signal that is emitted every time connection state is changed.
     # it also sends it's own device_id (for convenience sake)
@@ -211,6 +219,34 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _setHotendTemperature(self, index, temperature):
         self._hotend_temperatures[index] = temperature
         self.hotendTemperaturesChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = materialIdChanged)
+    def materialIds(self):
+        return self._material_ids
+
+    ##  Protected setter for the current material id.
+    #   /param index Index of the extruder
+    #   /param material_id id of the material
+    def _setMaterialId(self, index, material_id):
+        if material_id and material_id != "" and material_id != self._material_ids[index]:
+            Logger.log("d", "Setting material id of hotend %d to %s" % (index, material_id))
+            self._material_ids[index] = material_id
+            self.materialIdChanged.emit(index, material_id)
+
+
+    @pyqtProperty("QVariantList", notify = hotendIdChanged)
+    def hotendIds(self):
+        return self._hotend_ids
+
+    ##  Protected setter for the current hotend id.
+    #   /param index Index of the extruder
+    #   /param hotend_id id of the hotend
+    def _setHotendId(self, index, hotend_id):
+        if hotend_id and hotend_id != "" and hotend_id != self._hotend_ids[index]:
+            Logger.log("d", "Setting hotend id of hotend %d to %s" % (index, hotend_id))
+            self._hotend_ids[index] = hotend_id
+            self.hotendIdChanged.emit(index, hotend_id)
+
 
     ##  Attempt to establish connection
     def connect(self):

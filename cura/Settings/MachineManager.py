@@ -5,6 +5,7 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Application import Application
 from UM.Preferences import Preferences
+from UM.Logger import Logger
 
 import UM.Settings
 
@@ -50,6 +51,7 @@ class MachineManager(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
+        self._printer_output_devices = []
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
         if active_machine_id != "":
@@ -71,7 +73,51 @@ class MachineManager(QObject):
     outputDevicesChanged = pyqtSignal()
 
     def _onOutputDevicesChanged(self):
+        for printer_output_device in self._printer_output_devices:
+            printer_output_device.hotendIdChanged.disconnect(self._onHotendIdChanged)
+            printer_output_device.materialIdChanged.disconnect(self._onMaterialIdChanged)
+
+        self._printer_output_devices.clear()
+
+        for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices():
+            if isinstance(printer_output_device, PrinterOutputDevice):
+                self._printer_output_devices.append(printer_output_device)
+                printer_output_device.hotendIdChanged.connect(self._onHotendIdChanged)
+                printer_output_device.materialIdChanged.connect(self._onMaterialIdChanged)
+
         self.outputDevicesChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = outputDevicesChanged)
+    def printerOutputDevices(self):
+        return self._printer_output_devices
+
+    def _onHotendIdChanged(self, index, hotend_id):
+        if not self._global_container_stack:
+            return
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = self._global_container_stack.getBottom().getId(), name = hotend_id)
+        if containers:
+            Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, containers[0].getId()))
+            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
+            self.setActiveVariant(containers[0].getId())
+
+    def _onMaterialIdChanged(self, index, material_id):
+        # TODO: fix this
+        if not self._global_container_stack:
+            return
+
+        definition_id = "fdmprinter"
+        if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
+            definition_id = self._global_container_stack.getBottom().getId()
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
+        if containers:
+            Logger.log("d", "Setting material of hotend %d to %s" % (index, containers[0].getId()))
+            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
+            self.setActiveMaterial(containers[0].getId())
+        else:
+            Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
+
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
@@ -164,9 +210,6 @@ class MachineManager(QObject):
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
-    @pyqtProperty("QVariantList", notify = outputDevicesChanged)
-    def printerOutputDevices(self):
-        return [printer_output_device for printer_output_device in Application.getInstance().getOutputDeviceManager().getOutputDevices() if isinstance(printer_output_device, PrinterOutputDevice)]
 
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
@@ -232,6 +275,13 @@ class MachineManager(QObject):
     def activeMachineId(self):
         if self._global_container_stack:
             return self._global_container_stack.getId()
+
+        return ""
+
+    @pyqtProperty(str, notify = activeStackChanged)
+    def activeStackId(self):
+        if self._active_container_stack:
+            return self._active_container_stack.getId()
 
         return ""
 

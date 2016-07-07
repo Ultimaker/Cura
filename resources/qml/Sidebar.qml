@@ -101,12 +101,16 @@ Rectangle
                 iconSource: {
                     if(!printerConnected)
                         return UM.Theme.getIcon("tab_monitor")
-                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing" || Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
                         return UM.Theme.getIcon("tab_monitor_busy")
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "ready" || Cura.MachineManager.printerOutputDevices[0].jobState == "")
+                        return UM.Theme.getIcon("tab_monitor_connected")
                     else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
                         return UM.Theme.getIcon("tab_monitor_paused")
-                    else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
-                        return UM.Theme.getIcon("tab_monitor_connected")
+                    else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
+                        return UM.Theme.getIcon("tab_monitor_stopped")
+                    else
+                        return UM.Theme.getIcon("tab_monitor")
                 }
                 checkable: true
                 checked: monitoringPrint

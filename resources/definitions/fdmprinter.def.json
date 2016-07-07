@@ -410,7 +410,7 @@
                         },
                         "skin_line_width":
                         {
-                            "label": "Top/bottom Line Width",
+                            "label": "Top/Bottom Line Width",
                             "description": "Width of a single top/bottom line.",
                             "unit": "mm",
                             "minimum_value": "0.0001",
@@ -926,7 +926,8 @@
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
                     "type": "bool",
                     "default_value": true,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
@@ -937,7 +938,8 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_speed": {
                     "label": "Retraction Speed",
@@ -949,7 +951,8 @@
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "100",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
                     "children": {
                         "retraction_retract_speed": {
                             "label": "Retraction Retract Speed",
@@ -962,7 +965,8 @@
                             "maximum_value_warning": "100",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         },
                         "retraction_prime_speed": {
                             "label": "Retraction Prime Speed",
@@ -975,7 +979,8 @@
                             "maximum_value_warning": "100",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -988,7 +993,8 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "5.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_min_travel": {
                     "label": "Retraction Minimum Travel",
@@ -1000,7 +1006,8 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
@@ -1010,7 +1017,8 @@
                     "maximum_value_warning": "100",
                     "type": "int",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_extrusion_window": {
                     "label": "Minimum Extrusion Distance Window",
@@ -1022,7 +1030,8 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_hop_enabled": {
                     "label": "Z Hop when Retracted",
@@ -1030,7 +1039,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
                     "children": {
                         "retraction_hop_only_when_collides": {
                             "label": "Z Hop Only Over Printed Parts",
@@ -1038,7 +1048,8 @@
                             "type": "bool",
                             "default_value": false,
                             "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         },
                         "retraction_hop": {
                             "label": "Z Hop Height",
@@ -1049,7 +1060,8 @@
                             "minimum_value_warning": "-0.0001",
                             "maximum_value_warning": "10",
                             "enabled": "retraction_enable and retraction_hop_enabled",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },

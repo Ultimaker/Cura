@@ -79,7 +79,8 @@ class CuraEngineBackend(Backend):
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
-        self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
+        self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
+        #self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._start_slice_job = None
@@ -126,10 +127,14 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
-        self._stored_layer_data = []
-
         if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
+            # try again in a short time
+            self._change_timer.start()
             return
+
+        self.printDurationMessage.emit(0, [0])
+
+        self._stored_layer_data = []
 
         if self._slicing: #We were already slicing. Stop the old job.
             self._terminate()
@@ -294,9 +299,12 @@ class CuraEngineBackend(Backend):
     ##  Called when a print time message is received from the engine.
     #
     #   \param message The protobuf message containing the print time and
-    #   material amount.
-    def _onObjectPrintTimeMessage(self, message):
-        self.printDurationMessage.emit(message.time, message.material_amount)
+    #   material amount per extruder
+    def _onPrintTimeMaterialEstimates(self, message):
+        material_amounts = []
+        for index in range(message.repeatedMessageCount("materialEstimates")):
+            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
+        self.printDurationMessage.emit(message.time, material_amounts)
 
     ##  Creates a new socket connection.
     def _createSocket(self):
@@ -383,4 +391,4 @@ class CuraEngineBackend(Backend):
         if self._active_extruder_stack:
             self._active_extruder_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
-            self._onChanged()
+
