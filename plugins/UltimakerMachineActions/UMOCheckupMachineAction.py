@@ -79,6 +79,8 @@ class UMOCheckupMachineAction(MachineAction):
         self._z_min_endstop_test_completed = False
         self.onZMinEndstopTestCompleted.emit()
 
+        self.heatedBedChanged.emit()
+
     @pyqtProperty(bool, notify = onBedTestCompleted)
     def bedTestCompleted(self):
         return self._bed_test_completed
@@ -181,3 +183,10 @@ class UMOCheckupMachineAction(MachineAction):
     def heatupBed(self):
         if self._output_device is not None:
             self._output_device.setTargetBedTemperature(self._bed_target_temp)
+
+    heatedBedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = heatedBedChanged)
+    def hasHeatedBed(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        return global_container_stack.getProperty("machine_heated_bed", "value")
