@@ -241,6 +241,12 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
             self.addMetaDataEntry(tag_name, entry.text)
 
+        if not "description" in self.getMetaData():
+            self.addMetaDataEntry("description", "")
+
+        if not "adhesion_info" in self.getMetaData():
+            self.addMetaDataEntry("adhesion_info", "")
+
         property_values = {}
         properties = data.iterfind("./um:properties/*", self.__namespaces)
         for entry in properties:
