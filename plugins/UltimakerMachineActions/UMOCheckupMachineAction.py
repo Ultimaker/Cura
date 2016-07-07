@@ -3,6 +3,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice
 from UM.Application import Application
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
+from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -57,8 +58,9 @@ class UMOCheckupMachineAction(MachineAction):
             self._output_device.endstopStateChanged.disconnect(self._onEndstopStateChanged)
             try:
                 self._output_device.stopPollEndstop()
-            except AttributeError:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
-                pass
+            except AttributeError as e:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
+                Logger.log("e", "An exception occurred while stopping end stop polling: %s" % str(e))
+
         self._output_device = None
 
         self._check_started = False
@@ -158,7 +160,7 @@ class UMOCheckupMachineAction(MachineAction):
                 self._output_device.hotendTemperaturesChanged.connect(self._onHotendTemperatureChanged)
                 self._output_device.endstopStateChanged.connect(self._onEndstopStateChanged)
             except AttributeError as e:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
-                pass
+                Logger.log("e", "An exception occurred while starting end stop polling: %s" % str(e))
 
     @pyqtSlot()
     def cooldownHotend(self):
