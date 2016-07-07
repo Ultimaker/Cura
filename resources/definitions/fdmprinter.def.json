@@ -3042,6 +3042,17 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "infill_mesh":
+                {
+                    "label": "Infill Mesh",
+                    "description": "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "magic_mesh_surface_mode":
                 {
                     "label": "Surface Mode",
