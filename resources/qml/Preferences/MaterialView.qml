@@ -127,40 +127,40 @@ TabView
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
-                ReadOnlySpinBox
+                SpinBox
                 {
                     width: base.secondColumnWidth;
                     value: properties.spool_cost;
                     prefix: base.currency
-                    readOnly: !base.editingEnabled;
+                    enabled: false
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
-                ReadOnlySpinBox
+                SpinBox
                 {
                     width: base.secondColumnWidth;
                     value: properties.spool_weight;
                     suffix: "g";
                     stepSize: 10
-                    readOnly: !base.editingEnabled;
+                    enabled: false
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
-                ReadOnlySpinBox
+                SpinBox
                 {
                     width: base.secondColumnWidth;
                     value: parseFloat(properties.spool_length);
                     suffix: "m";
-                    readOnly: !base.editingEnabled;
+                    enabled: false
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter (Approx.)") }
-                ReadOnlySpinBox
+                SpinBox
                 {
                     width: base.secondColumnWidth;
                     value: parseFloat(properties.cost_per_meter);
                     suffix: catalog.i18nc("@label", "%1/m".arg(base.currency));
-                    readOnly: !base.editingEnabled;
+                    enabled: false
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
