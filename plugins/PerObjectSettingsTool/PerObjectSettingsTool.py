@@ -5,7 +5,7 @@ from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Application import Application
 from UM.Preferences import Preferences
-from cura.SettingOverrideDecorator import SettingOverrideDecorator
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  This tool allows the user to add & change settings per node in the scene.
 #   The settings per object are kept in a ContainerStack, which is linked to a node by decorator.

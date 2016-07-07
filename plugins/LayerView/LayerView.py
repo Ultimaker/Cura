@@ -135,8 +135,6 @@ class LayerView(View):
 
             self.currentLayerNumChanged.emit()
 
-    currentLayerNumChanged = Signal()
-
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer() # TODO: @UnusedVariable

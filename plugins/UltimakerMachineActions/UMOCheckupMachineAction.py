@@ -3,6 +3,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice
 from UM.Application import Application
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
+from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -57,8 +58,9 @@ class UMOCheckupMachineAction(MachineAction):
             self._output_device.endstopStateChanged.disconnect(self._onEndstopStateChanged)
             try:
                 self._output_device.stopPollEndstop()
-            except AttributeError:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
-                pass
+            except AttributeError as e:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
+                Logger.log("e", "An exception occurred while stopping end stop polling: %s" % str(e))
+
         self._output_device = None
 
         self._check_started = False
@@ -76,6 +78,8 @@ class UMOCheckupMachineAction(MachineAction):
         self.onYMinEndstopTestCompleted.emit()
         self._z_min_endstop_test_completed = False
         self.onZMinEndstopTestCompleted.emit()
+
+        self.heatedBedChanged.emit()
 
     @pyqtProperty(bool, notify = onBedTestCompleted)
     def bedTestCompleted(self):
@@ -158,7 +162,17 @@ class UMOCheckupMachineAction(MachineAction):
                 self._output_device.hotendTemperaturesChanged.connect(self._onHotendTemperatureChanged)
                 self._output_device.endstopStateChanged.connect(self._onEndstopStateChanged)
             except AttributeError as e:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
-                pass
+                Logger.log("e", "An exception occurred while starting end stop polling: %s" % str(e))
+
+    @pyqtSlot()
+    def cooldownHotend(self):
+        if self._output_device is not None:
+            self._output_device.setTargetHotendTemperature(0, 0)
+
+    @pyqtSlot()
+    def cooldownBed(self):
+        if self._output_device is not None:
+            self._output_device.setTargetBedTemperature(0)
 
     @pyqtSlot()
     def heatupHotend(self):
@@ -169,3 +183,10 @@ class UMOCheckupMachineAction(MachineAction):
     def heatupBed(self):
         if self._output_device is not None:
             self._output_device.setTargetBedTemperature(self._bed_target_temp)
+
+    heatedBedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = heatedBedChanged)
+    def hasHeatedBed(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        return global_container_stack.getProperty("machine_heated_bed", "value")

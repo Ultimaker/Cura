@@ -69,7 +69,7 @@ Item
                 // Ensure that the cursor is at the first position. On some systems the text isnt fully visible
                 // Seems to have to do something with different dpi densities that QML doesn't quite handle.
                 // Another option would be to increase the size even further, but that gives pretty ugly results.
-                onTextChanged: cursorPosition = 0
+                onEditingFinished: cursorPosition = 0
                 style: TextFieldStyle
                 {
                     textColor: UM.Theme.getColor("setting_control_text");

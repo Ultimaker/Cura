@@ -3045,7 +3045,7 @@
                 "infill_mesh":
                 {
                     "label": "Infill Mesh",
-                    "description": "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh.",
+                    "description": "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh. It's suggested to only print one Wall and no Top/Bottom Skin for this mesh.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true,
