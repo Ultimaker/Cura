@@ -9,24 +9,18 @@ Item
 {
     id: base
 
-    property alias value: spinBox.value
-    property alias minimumValue: spinBox.minimumValue
-    property alias maximumValue: spinBox.maximumValue
-    property alias stepSize: spinBox.stepSize
-    property alias prefix: spinBox.prefix
-    property alias suffix: spinBox.suffix
-    property alias decimals: spinBox.decimals
+    property alias text: textField.text
 
     signal editingFinished();
 
     property bool readOnly: false
 
-    width: spinBox.width
-    height: spinBox.height
+    width: textField.width
+    height: textField.height
 
-    SpinBox
+    TextField
     {
-        id: spinBox
+        id: textField
 
         enabled: !base.readOnly
         opacity: base.readOnly ? 0.5 : 1.0
@@ -39,11 +33,11 @@ Item
     Label
     {
         visible: base.readOnly
-        text: base.prefix + base.value.toFixed(spinBox.decimals) + base.suffix
+        text: textField.text
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: spinBox.__style ? spinBox.__style.padding.left : 0
+        anchors.leftMargin: textField.__panel ? textField.__panel.leftMargin : 0
 
         color: palette.buttonText
     }

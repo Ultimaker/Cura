@@ -45,7 +45,7 @@ TabView
                 property real rowHeight: textField.height;
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
-                TextField
+                ReadOnlyTextField
                 {
                     id: textField;
                     width: base.secondColumnWidth;
@@ -55,7 +55,7 @@ TabView
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
-                TextField
+                ReadOnlyTextField
                 {
                     width: base.secondColumnWidth;
                     text: properties.material_type;
@@ -85,7 +85,7 @@ TabView
 
                         MouseArea { anchors.fill: parent; onClicked: colorDialog.open(); enabled: base.editingEnabled }
                     }
-                    TextField
+                    ReadOnlyTextField
                     {
                         id: colorLabel;
                         text: properties.color_name;
@@ -167,7 +167,7 @@ TabView
 
                 Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Description") }
 
-                TextArea
+                ReadOnlyTextArea
                 {
                     text: properties.description;
                     width: base.firstColumnWidth + base.secondColumnWidth
@@ -180,13 +180,14 @@ TabView
 
                 Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Adhesion Information") }
 
-                TextArea
+                ReadOnlyTextArea
                 {
                     text: properties.adhesion_info;
                     width: base.firstColumnWidth + base.secondColumnWidth
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
+
                     onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "adhesion_info", text)
                 }
             }
