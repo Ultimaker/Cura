@@ -10,11 +10,12 @@ import UM.VersionUpgrade #To indicate that a file is of the wrong format.
 #   in version 1 of the file format.
 #
 #   \param serialised The serialised form of a preferences file in version 1.
+#   \param filename The supposed filename of the preferences file.
 #   \return A representation of those preferences, or None if the file format is
 #   incorrect.
-def importFrom(serialised):
+def importFrom(serialised, filename):
     try:
-        return Preferences(serialised)
+        return Preferences(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
 
@@ -24,7 +25,10 @@ class Preferences:
     ##  Reads version 2 of the preferences file format, storing it in memory.
     #
     #   \param serialised A serialised version 2 preferences file.
-    def __init__(self, serialised):
+    #   \param filename The supposed filename of the preferences file.
+    def __init__(self, serialised, filename):
+        self._filename = filename
+
         self._config = configparser.ConfigParser(interpolation = None)
         self._config.read_string(serialised)
 
@@ -42,7 +46,8 @@ class Preferences:
     #
     #   This is where the actual translation happens.
     #
-    #   \return A serialised version of a preferences file in version 3.
+    #   \return A tuple containing the new filename and a serialised version of
+    #   a preferences file in version 3.
     def export(self):
         #Reset the cura/categories_expanded property since it works differently now.
         if self._config.has_section("cura") and self._config.has_option("cura", "categories_expanded"):
@@ -70,4 +75,4 @@ class Preferences:
         #Output the result as a string.
         output = io.StringIO()
         self._config.write(output)
-        return output.getvalue()
+        return self._filename, output.getvalue()

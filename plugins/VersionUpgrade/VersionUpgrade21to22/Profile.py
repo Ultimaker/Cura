@@ -10,10 +10,11 @@ import UM.VersionUpgrade
 #   of the file format.
 #
 #   \param serialised The serialised form of a profile in version 1.
+#   \param filename The supposed filename of the profile.
 #   \return A profile instance, or None if the file format is incorrect.
-def importFrom(serialised):
+def importFrom(serialised, filename):
     try:
-        return Profile(serialised)
+        return Profile(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
 
@@ -22,8 +23,11 @@ def importFrom(serialised):
 class Profile:
     ##  Reads version 1 of the file format, storing it in memory.
     #
-    #   \param serialised A string with the contents of a machine instance file.
-    def __init__(self, serialised):
+    #   \param serialised A string with the contents of a profile.
+    #   \param filename The supposed filename of the profile.
+    def __init__(self, serialised, filename):
+        self._filename = filename
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
@@ -70,10 +74,13 @@ class Profile:
 
     ##  Serialises this profile as file format version 2.
     #
-    #   \return A serialised form of this profile, serialised in version 2 of
-    #   the file format.
+    #   \return A tuple containing the new filename and a serialised form of
+    #   this profile, serialised in version 2 of the file format.
     def export(self):
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
+
+        if self._name == "Current settings":
+            self._filename += "_current_settings" #This resolves a duplicate ID arising from how Cura 2.1 stores its current settings.
 
         config = configparser.ConfigParser(interpolation = None)
 
@@ -123,4 +130,4 @@ class Profile:
 
         output = io.StringIO()
         config.write(output)
-        return output.getvalue()
+        return self._filename, output.getvalue()

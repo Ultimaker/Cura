@@ -66,34 +66,39 @@ class VersionUpgrade21to22(VersionUpgrade):
     ##  Converts machine instances from format version 1 to version 2.
     #
     #   \param serialised The serialised machine instance in version 1.
-    #   \return The serialised machine instance in version 2, or None if the
-    #   input was not of the correct format.
-    def upgradeMachineInstance(self, serialised):
-        machine_instance = MachineInstance.importFrom(serialised)
+    #   \param filename The supposed file name of the machine instance.
+    #   \return A tuple containing the new filename and the serialised machine
+    #   instance in version 2, or None if the input was not of the correct
+    #   format.
+    def upgradeMachineInstance(self, serialised, filename):
+        machine_instance = MachineInstance.importFrom(serialised, filename)
         if not machine_instance: #Invalid file format.
-            return None
+            return filename, None
         return machine_instance.export()
 
     ##  Converts preferences from format version 2 to version 3.
     #
     #   \param serialised The serialised preferences file in version 2.
-    #   \return The serialised preferences in version 3, or None if the input
-    #   was not of the correct format.
-    def upgradePreferences(self, serialised):
-        preferences = Preferences.importFrom(serialised)
+    #   \param filename THe supposed file name of the preferences file.
+    #   \return A tuple containing the new filename and the serialised
+    #   preferences in version 3, or None if the input was not of the correct
+    #   format.
+    def upgradePreferences(self, serialised, filename):
+        preferences = Preferences.importFrom(serialised, filename)
         if not preferences: #Invalid file format.
-            return None
+            return filename, None
         return preferences.export()
 
     ##  Converts profiles from format version 1 to version 2.
     #
     #   \param serialised The serialised profile in version 1.
-    #   \return The serialised profile in version 2, or None if the input was
-    #   not of the correct format.
-    def upgradeProfile(self, serialised):
-        profile = Profile.importFrom(serialised)
+    #   \param filename The supposed file name of the profile.
+    #   \return A tuple containing the new filename and the serialised profile
+    #   in version 2, or None if the input was not of the correct format.
+    def upgradeProfile(self, serialised, filename):
+        profile = Profile.importFrom(serialised, filename)
         if not profile: # Invalid file format.
-            return None
+            return filename, None
         return profile.export()
 
     ##  Translates a printer name that might have changed since the last

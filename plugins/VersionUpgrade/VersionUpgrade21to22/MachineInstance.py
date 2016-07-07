@@ -10,11 +10,12 @@ import io #To write config files to strings as if they were files.
 #   instance in version 1 of the file format.
 #
 #   \param serialised The serialised form of a machine instance in version 1.
+#   \param filename The supposed file name of this machine instance.
 #   \return A machine instance instance, or None if the file format is
 #   incorrect.
-def importFrom(serialised):
+def importFrom(serialised, filename):
     try:
-        return MachineInstance(serialised)
+        return MachineInstance(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
 
@@ -24,7 +25,10 @@ class MachineInstance:
     ##  Reads version 1 of the file format, storing it in memory.
     #
     #   \param serialised A string with the contents of a machine instance file.
-    def __init__(self, serialised):
+    #   \param filename The supposed file name of this machine instance.
+    def __init__(self, serialised, filename):
+        self._filename = filename
+
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
 
@@ -55,8 +59,8 @@ class MachineInstance:
     #
     #   This is where the actual translation happens in this case.
     #
-    #   \return A serialised form of this machine instance, serialised in
-    #   version 2 of the file format.
+    #   \return A tuple containing the new filename and a serialised form of
+    #   this machine instance, serialised in version 2 of the file format.
     def export(self):
         config = configparser.ConfigParser(interpolation = None) # Build a config file in the form of version 2.
 
@@ -73,7 +77,7 @@ class MachineInstance:
         variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
 
         containers = [
-            self._name,
+            self._name + "_current_settings",
             active_profile,
             active_material,
             variant,
@@ -91,4 +95,4 @@ class MachineInstance:
 
         output = io.StringIO()
         config.write(output)
-        return output.getvalue()
+        return self._filename, output.getvalue()
