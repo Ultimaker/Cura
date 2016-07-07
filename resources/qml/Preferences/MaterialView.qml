@@ -174,6 +174,8 @@ TabView
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
+
+                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "description", text)
                 }
 
                 Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Adhesion Information") }
@@ -185,6 +187,7 @@ TabView
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
+                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "adhesion_info", text)
                 }
             }
         }
