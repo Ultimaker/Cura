@@ -3160,7 +3160,8 @@
                     "description": "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way.",
                     "unit": "°",
                     "type": "float",
-                    "minimum_value": "0",
+                    "minimum_value": "-89",
+                    "minimum_value_warning": "0",
                     "maximum_value": "89",
                     "default_value": 50,
                     "enabled": "conical_overhang_enabled"
