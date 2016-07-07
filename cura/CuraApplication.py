@@ -157,6 +157,7 @@ class CuraApplication(QtApplication):
         self._started = False
 
         self._message_box_callback = None
+        self._message_box_callback_arguments = []
 
         self._i18n_catalog = i18nCatalog("cura")
 
@@ -257,15 +258,17 @@ class CuraApplication(QtApplication):
     ## A reusable dialogbox
     #
     showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
-    def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None):
+    def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None, callback_arguments = []):
         self._message_box_callback = callback
+        self._message_box_callback_arguments = callback_arguments
         self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
         if self._message_box_callback:
-            self._message_box_callback(button)
+            self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
+            self._message_box_callback_arguments = []
 
     showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
 
