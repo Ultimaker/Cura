@@ -10,7 +10,8 @@ import UM.VersionUpgrade #To indicate that a file is of the wrong format.
 #   in version 1 of the file format.
 #
 #   \param serialised The serialised form of a preferences file in version 1.
-#   \param filename The supposed filename of the preferences file.
+#   \param filename The supposed filename of the preferences file, without
+#   extension.
 #   \return A representation of those preferences, or None if the file format is
 #   incorrect.
 def importFrom(serialised, filename):
@@ -25,7 +26,8 @@ class Preferences:
     ##  Reads version 2 of the preferences file format, storing it in memory.
     #
     #   \param serialised A serialised version 2 preferences file.
-    #   \param filename The supposed filename of the preferences file.
+    #   \param filename The supposed filename of the preferences file, without
+    #   extension.
     def __init__(self, serialised, filename):
         self._filename = filename
 

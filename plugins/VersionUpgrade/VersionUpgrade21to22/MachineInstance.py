@@ -10,7 +10,8 @@ import io #To write config files to strings as if they were files.
 #   instance in version 1 of the file format.
 #
 #   \param serialised The serialised form of a machine instance in version 1.
-#   \param filename The supposed file name of this machine instance.
+#   \param filename The supposed file name of this machine instance, without
+#   extension.
 #   \return A machine instance instance, or None if the file format is
 #   incorrect.
 def importFrom(serialised, filename):
@@ -24,7 +25,8 @@ def importFrom(serialised, filename):
 class MachineInstance:
     ##  Reads version 1 of the file format, storing it in memory.
     #
-    #   \param serialised A string with the contents of a machine instance file.
+    #   \param serialised A string with the contents of a machine instance file,
+    #   without extension.
     #   \param filename The supposed file name of this machine instance.
     def __init__(self, serialised, filename):
         self._filename = filename

@@ -66,7 +66,8 @@ class VersionUpgrade21to22(VersionUpgrade):
     ##  Converts machine instances from format version 1 to version 2.
     #
     #   \param serialised The serialised machine instance in version 1.
-    #   \param filename The supposed file name of the machine instance.
+    #   \param filename The supposed file name of the machine instance, without
+    #   extension.
     #   \return A tuple containing the new filename and the serialised machine
     #   instance in version 2, or None if the input was not of the correct
     #   format.
@@ -79,7 +80,8 @@ class VersionUpgrade21to22(VersionUpgrade):
     ##  Converts preferences from format version 2 to version 3.
     #
     #   \param serialised The serialised preferences file in version 2.
-    #   \param filename THe supposed file name of the preferences file.
+    #   \param filename THe supposed file name of the preferences file, without
+    #   extension.
     #   \return A tuple containing the new filename and the serialised
     #   preferences in version 3, or None if the input was not of the correct
     #   format.
@@ -92,7 +94,8 @@ class VersionUpgrade21to22(VersionUpgrade):
     ##  Converts profiles from format version 1 to version 2.
     #
     #   \param serialised The serialised profile in version 1.
-    #   \param filename The supposed file name of the profile.
+    #   \param filename The supposed file name of the profile, without
+    #   extension.
     #   \return A tuple containing the new filename and the serialised profile
     #   in version 2, or None if the input was not of the correct format.
     def upgradeProfile(self, serialised, filename):

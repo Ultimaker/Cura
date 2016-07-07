@@ -10,7 +10,7 @@ import UM.VersionUpgrade
 #   of the file format.
 #
 #   \param serialised The serialised form of a profile in version 1.
-#   \param filename The supposed filename of the profile.
+#   \param filename The supposed filename of the profile, without extension.
 #   \return A profile instance, or None if the file format is incorrect.
 def importFrom(serialised, filename):
     try:
@@ -24,7 +24,7 @@ class Profile:
     ##  Reads version 1 of the file format, storing it in memory.
     #
     #   \param serialised A string with the contents of a profile.
-    #   \param filename The supposed filename of the profile.
+    #   \param filename The supposed filename of the profile, without extension.
     def __init__(self, serialised, filename):
         self._filename = filename
 
