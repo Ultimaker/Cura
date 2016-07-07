@@ -32,7 +32,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label","It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
+            text: catalog.i18nc("@label", "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
         }
 
         Item
@@ -51,7 +51,6 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
-                    checkupContent.visible = true
                     manager.startCheck()
                 }
             }
@@ -73,7 +72,7 @@ Cura.MachineAction
             id: checkupContent
             anchors.top: startStopButtons.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            visible: false
+            visible: manager.checkStarted
             width: parent.width
             height: 250
             //////////////////////////////////////////////////////////
@@ -157,6 +156,7 @@ Cura.MachineAction
             {
                 id: nozzleTempLabel
                 width: checkupMachineAction.leftRow
+                height: nozzleTempButton.height
                 anchors.left: parent.left
                 anchors.top: endstopZLabel.bottom
                 wrapMode: Text.WordWrap
@@ -175,20 +175,16 @@ Cura.MachineAction
             {
                 id: nozzleTempButton
                 width: checkupMachineAction.rightRow * 0.3
-                height: nozzleTemp.height
+                height: childrenRect.height
                 anchors.top: nozzleTempLabel.top
                 anchors.left: bedTempStatus.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
                 Button
                 {
-                    height: nozzleTemp.height - 2
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
                     text: catalog.i18nc("@action:button","Start Heating")
                     onClicked:
                     {
                         manager.heatupHotend()
-                        nozzleTempStatus.text = catalog.i18nc("@info:progress","Checking")
                     }
                 }
             }
@@ -208,10 +204,11 @@ Cura.MachineAction
             {
                 id: bedTempLabel
                 width: checkupMachineAction.leftRow
+                height: bedTempButton.height
                 anchors.left: parent.left
                 anchors.top: nozzleTempLabel.bottom
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","bed temperature check:")
+                text: catalog.i18nc("@label","Bed temperature check:")
             }
 
             Label
@@ -227,15 +224,12 @@ Cura.MachineAction
             {
                 id: bedTempButton
                 width: checkupMachineAction.rightRow * 0.3
-                height: bedTemp.height
+                height: childrenRect.height
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempStatus.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
                 Button
                 {
-                    height: bedTemp.height - 2
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
                     text: catalog.i18nc("@action:button","Start Heating")
                     onClicked:
                     {

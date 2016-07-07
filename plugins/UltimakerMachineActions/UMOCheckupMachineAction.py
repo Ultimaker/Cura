@@ -43,7 +43,6 @@ class UMOCheckupMachineAction(MachineAction):
         if self._output_device is None and self._check_started:
             self.startCheck()
 
-
     def _getPrinterOutputDevices(self):
         return [printer_output_device for printer_output_device in
                 Application.getInstance().getOutputDeviceManager().getOutputDevices() if
@@ -63,6 +62,7 @@ class UMOCheckupMachineAction(MachineAction):
         self._output_device = None
 
         self._check_started = False
+        self.checkStartedChanged.emit()
 
         # Ensure everything is reset (and right signals are emitted again)
         self._bed_test_completed = False
@@ -137,9 +137,16 @@ class UMOCheckupMachineAction(MachineAction):
                 self._z_min_endstop_test_completed = True
                 self.onZMinEndstopTestCompleted.emit()
 
+    checkStartedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = checkStartedChanged)
+    def checkStarted(self):
+        return self._check_started
+
     @pyqtSlot()
     def startCheck(self):
         self._check_started = True
+        self.checkStartedChanged.emit()
         output_devices = self._getPrinterOutputDevices()
         if output_devices:
             self._output_device = output_devices[0]
@@ -150,7 +157,7 @@ class UMOCheckupMachineAction(MachineAction):
                 self._output_device.bedTemperatureChanged.connect(self._onBedTemperatureChanged)
                 self._output_device.hotendTemperaturesChanged.connect(self._onHotendTemperatureChanged)
                 self._output_device.endstopStateChanged.connect(self._onEndstopStateChanged)
-            except AttributeError:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
+            except AttributeError as e:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
                 pass
 
     @pyqtSlot()

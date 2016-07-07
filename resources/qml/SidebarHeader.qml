@@ -13,7 +13,7 @@ Column
     id: base;
 
     property int totalHeightHeader: childrenRect.height
-    property int currentExtruderIndex: -1;
+    property int currentExtruderIndex:ExtruderManager.activeExtruderIndex;
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -118,7 +118,7 @@ Column
             {
                 base.currentExtruderIndex = -1;
                 forceActiveFocus()
-                ExtruderManager.setActiveExtruderIndex(0);
+                ExtruderManager.setActiveExtruderIndex(base.currentExtruderIndex);
             }
         }
 

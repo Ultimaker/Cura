@@ -455,7 +455,7 @@
                         },
                         "skin_line_width":
                         {
-                            "label": "Top/bottom Line Width",
+                            "label": "Top/Bottom Line Width",
                             "description": "Width of a single top/bottom line.",
                             "unit": "mm",
                             "minimum_value": "0.0001",
