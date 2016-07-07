@@ -194,17 +194,15 @@ Rectangle {
                 color: UM.Theme.getColor("text_subtext")
                 text:
                 {
-                    var material_lengths;
+                    var amounts = [];
                     if(base.printMaterialAmounts) {
-                        material_lengths = ""
                         for(var index = 0; index < base.printMaterialAmounts.length; index++) {
-                            material_lengths +=  base.printMaterialAmounts[index].toFixed(2).toString() + " + "
+                            amounts.push(base.printMaterialAmounts[index].toFixed(2));
                         }
-                        material_lengths = material_lengths.substr(0, material_lengths.length - 3)
                     } else {
-                        material_lengths = "0.00"
+                        amounts = ["0.00"];
                     }
-                    return catalog.i18nc("@label", "%1 m").arg(material_lengths)
+                    return catalog.i18nc("@label", "%1 m").arg(amounts.join(" + "));
                 }
             }
         }
