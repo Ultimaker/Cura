@@ -24,7 +24,7 @@ Rectangle {
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property variant printDuration: PrintInformation.currentPrintTime
-    property real printMaterialAmount: PrintInformation.materialAmounts[0]
+    property variant printMaterialAmounts: PrintInformation.materialAmounts
 
     height: childrenRect.height
     color: "transparent"
@@ -192,7 +192,20 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 font: UM.Theme.getFont("small")
                 color: UM.Theme.getColor("text_subtext")
-                text: catalog.i18nc("@label", "%1 m").arg(base.printMaterialAmount > 0 ? base.printMaterialAmount : 0)
+                text:
+                {
+                    var material_lengths;
+                    if(base.printMaterialAmounts) {
+                        material_lengths = ""
+                        for(var index = 0; index < base.printMaterialAmounts.length; index++) {
+                            material_lengths +=  base.printMaterialAmounts[index].toFixed(2).toString() + " + "
+                        }
+                        material_lengths = material_lengths.substr(0, material_lengths.length - 3)
+                    } else {
+                        material_lengths = "0.00"
+                    }
+                    return catalog.i18nc("@label", "%1 m").arg(material_lengths)
+                }
             }
         }
     }
