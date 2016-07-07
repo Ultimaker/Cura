@@ -37,9 +37,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._connect_thread = threading.Thread(target = self._connect)
         self._connect_thread.daemon = True
 
-        self._end_stop_thread = threading.Thread(target = self._pollEndStop)
-        self._end_stop_thread.daemon = True
-        self._poll_endstop = -1
+        self._end_stop_thread = None
+        self._poll_endstop = False
 
         # The baud checking is done by sending a number of m105 commands to the printer and waiting for a readable
         # response. If the baudrate is correct, this should make sense, else we get giberish.
@@ -221,13 +220,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot()
     def startPollEndstop(self):
-        if self._poll_endstop == -1:
+        if not self._poll_endstop:
             self._poll_endstop = True
+            if self._end_stop_thread is None:
+                self._end_stop_thread = threading.Thread(target=self._pollEndStop)
+                self._end_stop_thread.daemon = True
             self._end_stop_thread.start()
 
     @pyqtSlot()
     def stopPollEndstop(self):
         self._poll_endstop = False
+        self._end_stop_thread = None
 
     def _pollEndStop(self):
         while self._connection_state == ConnectionState.connected and self._poll_endstop:

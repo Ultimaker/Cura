@@ -157,7 +157,7 @@ class UMOCheckupMachineAction(MachineAction):
                 self._output_device.bedTemperatureChanged.connect(self._onBedTemperatureChanged)
                 self._output_device.hotendTemperaturesChanged.connect(self._onHotendTemperatureChanged)
                 self._output_device.endstopStateChanged.connect(self._onEndstopStateChanged)
-            except AttributeError:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
+            except AttributeError as e:  # Connection is probably not a USB connection. Something went pretty wrong if this happens.
                 pass
 
     @pyqtSlot()
