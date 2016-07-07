@@ -3,8 +3,9 @@
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
-import cura.ExtruderManager
 import UM.Qt.ListModel
+
+from . import ExtruderManager
 
 ##  Model that holds extruders.
 #
@@ -49,7 +50,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._active_extruder_stack = None
 
         #Listen to changes.
-        manager = cura.ExtruderManager.ExtruderManager.getInstance()
+        manager = ExtruderManager.getInstance()
         manager.extrudersChanged.connect(self._updateExtruders) #When the list of extruders changes in general.
         UM.Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders) #When the current machine changes.
         self._updateExtruders()
@@ -69,7 +70,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         return self._add_global
 
     def _onActiveExtruderChanged(self):
-        manager = cura.ExtruderManager.ExtruderManager.getInstance()
+        manager = ExtruderManager.getInstance()
         active_extruder_stack = manager.getActiveExtruderStack()
         if self._active_extruder_stack != active_extruder_stack:
             if self._active_extruder_stack:
@@ -93,7 +94,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   This should be called whenever the list of extruders changes.
     def _updateExtruders(self):
         self.clear()
-        manager = cura.ExtruderManager.ExtruderManager.getInstance()
+        manager = ExtruderManager.getInstance()
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return #There is no machine to get the extruders of.

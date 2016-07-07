@@ -32,8 +32,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
-from . import ExtruderManager
-from . import ExtrudersModel
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -42,10 +40,10 @@ from . import CuraActions
 from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
-from . import MachineManagerModel
-from . import ContainerSettingsModel
 from . import CameraImageProvider
 from . import MachineActionManager
+
+import cura.Settings
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -273,7 +271,8 @@ class CuraApplication(QtApplication):
                 Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
                 continue
 
-            file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
+            mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
+            file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
             instance_type = instance.getMetaDataEntry("type")
             path = None
             if instance_type == "material":
@@ -301,7 +300,8 @@ class CuraApplication(QtApplication):
                 Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
                 continue
 
-            file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
+            mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
+            file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
             stack_type = stack.getMetaDataEntry("type", None)
             path = None
             if not stack_type or stack_type == "machine":
@@ -378,9 +378,9 @@ class CuraApplication(QtApplication):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        ExtruderManager.ExtruderManager.getInstance()
-        qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
-                                 MachineManagerModel.createMachineManagerModel)
+        cura.Settings.ExtruderManager.getInstance()
+        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager",
+                                 cura.Settings.MachineManager.createMachineManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -424,6 +424,7 @@ class CuraApplication(QtApplication):
     #   \param engine The QML engine.
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
+        engine.rootContext().setContextProperty("CuraApplication", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         self._cura_actions = CuraActions.CuraActions(self)
@@ -431,13 +432,16 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
-        qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+        qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
-        qmlRegisterType(ContainerSettingsModel.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+
+        qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 
-        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.ExtruderManager.getInstance())
+        engine.rootContext().setContextProperty("ExtruderManager", cura.Settings.ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]

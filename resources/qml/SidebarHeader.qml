@@ -8,6 +8,8 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+import "Menus"
+
 Column
 {
     id: base;
@@ -56,34 +58,7 @@ Column
 
             width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
 
-            menu: Menu
-            {
-                id: machineSelectionMenu
-                Instantiator
-                {
-                    model: UM.ContainerStacksModel
-                    {
-                        filter: {"type": "machine"}
-                    }
-                    MenuItem
-                    {
-                        text: model.name;
-                        checkable: true;
-                        checked: Cura.MachineManager.activeMachineId == model.id
-                        exclusiveGroup: machineSelectionMenuGroup;
-                        onTriggered: Cura.MachineManager.setActiveMachine(model.id);
-                    }
-                    onObjectAdded: machineSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: machineSelectionMenu.removeItem(object)
-                }
-
-                ExclusiveGroup { id: machineSelectionMenuGroup; }
-
-                MenuSeparator { }
-
-                MenuItem { action: Cura.Actions.addMachine; }
-                MenuItem { action: Cura.Actions.configureMachines; }
-            }
+            menu: PrinterMenu { }
         }
     }
 
@@ -236,37 +211,7 @@ Column
                 anchors.left: parent.left
                 style: UM.Theme.styles.sidebar_header_button
 
-                menu: Menu
-                {
-                    id: variantsSelectionMenu
-                    Instantiator
-                    {
-                        id: variantSelectionInstantiator
-                        model: UM.InstanceContainersModel
-                        {
-                            filter:
-                            {
-                                "type": "variant",
-                                "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
-                            }
-                        }
-                        MenuItem
-                        {
-                            text: model.name;
-                            checkable: true;
-                            checked: model.id == Cura.MachineManager.activeVariantId;
-                            exclusiveGroup: variantSelectionMenuGroup;
-                            onTriggered:
-                            {
-                                Cura.MachineManager.setActiveVariant(model.id);
-                            }
-                        }
-                        onObjectAdded: variantsSelectionMenu.insertItem(index, object)
-                        onObjectRemoved: variantsSelectionMenu.removeItem(object)
-                    }
-
-                    ExclusiveGroup { id: variantSelectionMenuGroup; }
-                }
+                menu: NozzleMenu { }
             }
 
             ToolButton {
@@ -281,49 +226,7 @@ Column
                 anchors.right: parent.right
                 style: UM.Theme.styles.sidebar_header_button
 
-                menu: Menu
-                {
-                    id: materialSelectionMenu
-                    Instantiator
-                    {
-                        id: materialSelectionInstantiator
-                        model: UM.InstanceContainersModel
-                        {
-                            filter:
-                            {
-                                var result = { "type": "material" }
-                                if(Cura.MachineManager.filterMaterialsByMachine)
-                                {
-                                    result.definition = Cura.MachineManager.activeDefinitionId
-                                    if(Cura.MachineManager.hasVariants)
-                                    {
-                                        result.variant = Cura.MachineManager.activeVariantId
-                                    }
-                                }
-                                else
-                                {
-                                    result.definition = "fdmprinter"
-                                }
-                                return result
-                            }
-                        }
-                        MenuItem
-                        {
-                            text: model.name;
-                            checkable: true;
-                            checked: model.id == Cura.MachineManager.activeMaterialId;
-                            exclusiveGroup: materialSelectionMenuGroup;
-                            onTriggered:
-                            {
-                                Cura.MachineManager.setActiveMaterial(model.id);
-                            }
-                        }
-                        onObjectAdded: materialSelectionMenu.insertItem(index, object)
-                        onObjectRemoved: materialSelectionMenu.removeItem(object)
-                    }
-
-                    ExclusiveGroup { id: materialSelectionMenuGroup; }
-                }
+                menu: MaterialMenu { }
             }
         }
     }
@@ -360,88 +263,7 @@ Column
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
 
-            menu: Menu
-            {
-                id: profileSelectionMenu
-                Instantiator
-                {
-                    id: profileSelectionInstantiator
-                    model: UM.InstanceContainersModel
-                    {
-                        filter:
-                        {
-                            var result = { "type": "quality" };
-                            if(Cura.MachineManager.filterQualityByMachine)
-                            {
-                                result.definition = Cura.MachineManager.activeDefinitionId;
-                                if(Cura.MachineManager.hasMaterials)
-                                {
-                                    result.material = Cura.MachineManager.activeMaterialId;
-                                }
-                            }
-                            else
-                            {
-                                result.definition = "fdmprinter"
-                            }
-                            return result
-                        }
-                    }
-                    property int separatorIndex: -1
-
-                    Loader {
-                        property QtObject model_data: model
-                        property int model_index: index
-                        sourceComponent: menuItemDelegate
-                    }
-                    onObjectAdded:
-                    {
-                        //Insert a separator between readonly and custom profiles
-                        if(separatorIndex < 0 && index > 0)
-                        {
-                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly)
-                            {
-                                profileSelectionMenu.insertSeparator(index);
-                                separatorIndex = index;
-                            }
-                        }
-                        //Because of the separator, custom profiles move one index lower
-                        profileSelectionMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
-                    }
-                    onObjectRemoved:
-                    {
-                        //When adding a profile, the menu is rebuilt by removing all items.
-                        //If a separator was added, we need to remove that too.
-                        if(separatorIndex >= 0)
-                        {
-                            profileSelectionMenu.removeItem(profileSelectionMenu.items[separatorIndex])
-                            separatorIndex = -1;
-                        }
-                        profileSelectionMenu.removeItem(object.item);
-                    }
-                }
-                ExclusiveGroup { id: profileSelectionMenuGroup; }
-
-                Component
-                {
-                    id: menuItemDelegate
-                    MenuItem
-                    {
-                        id: item
-                        text: model_data ? model_data.name : ""
-                        checkable: true
-                        checked: model_data != null ? Cura.MachineManager.activeQualityId == model_data.id : false
-                        exclusiveGroup: profileSelectionMenuGroup;
-                        onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
-                    }
-                }
-
-                MenuSeparator { }
-                MenuItem { action: Cura.Actions.addProfile }
-                MenuItem { action: Cura.Actions.updateProfile }
-                MenuItem { action: Cura.Actions.resetProfile }
-                MenuSeparator { }
-                MenuItem { action: Cura.Actions.manageProfiles }
-            }
+            menu: ProfileMenu { }
 
             UM.SimpleButton
             {

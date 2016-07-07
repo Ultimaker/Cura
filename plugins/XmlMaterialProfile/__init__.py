@@ -17,6 +17,7 @@ def getMetaData():
             "api": 3
         },
         "settings_container": {
+            "type": "material",
             "mimetype": "application/x-ultimaker-material-profile"
         }
     }
