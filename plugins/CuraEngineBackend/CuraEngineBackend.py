@@ -80,7 +80,6 @@ class CuraEngineBackend(Backend):
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
         self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
-        #self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._start_slice_job = None
