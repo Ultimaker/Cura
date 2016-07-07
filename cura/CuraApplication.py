@@ -231,6 +231,7 @@ class CuraApplication(QtApplication):
             meshfix
             blackmagic
                 print_sequence
+                infill_mesh
                 dual
             experimental
         """.replace("\n", ";").replace(" ", ""))

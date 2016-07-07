@@ -3042,6 +3042,30 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "infill_mesh":
+                {
+                    "label": "Infill Mesh",
+                    "description": "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh. It's suggested to only print one Wall and no Top/Bottom Skin for this mesh.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "infill_mesh_order":
+                {
+                    "label": "Infill Mesh Order",
+                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "50",
+                    "type": "int",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "magic_mesh_surface_mode":
                 {
                     "label": "Surface Mode",
