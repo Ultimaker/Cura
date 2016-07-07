@@ -12,6 +12,7 @@ import UM.Settings
 import UM.SaveFile
 import UM.Platform
 import UM.MimeTypeDatabase
+import UM.Logger
 
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
@@ -42,12 +43,15 @@ class ContainerManager(QObject):
     def duplicateContainer(self, container_id):
         containers = self._registry.findContainers(None, id = container_id)
         if not containers:
+            UM.Logger.log("w", "Could duplicate container %s because it was not found.", container_id)
             return ""
 
         container = containers[0]
 
         new_container = None
         new_name = self._registry.uniqueName(container.getName())
+        # Only InstanceContainer has a duplicate method at the moment.
+        # So fall back to serialize/deserialize when no duplicate method exists.
         if hasattr(container, "duplicate"):
             new_container = container.duplicate(new_name)
         else:
@@ -71,6 +75,7 @@ class ContainerManager(QObject):
     def renameContainer(self, container_id, new_id, new_name):
         containers = self._registry.findContainers(None, id = container_id)
         if not containers:
+            UM.Logger.log("w", "Could rename container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
@@ -98,6 +103,7 @@ class ContainerManager(QObject):
     def removeContainer(self, container_id):
         containers = self._registry.findContainers(None, id = container_id)
         if not containers:
+            UM.Logger.log("w", "Could remove container %s because it was not found.", container_id)
             return False
 
         self._registry.removeContainer(containers[0].getId())
@@ -115,19 +121,22 @@ class ContainerManager(QObject):
     #   \return True if successfully merged, False if not.
     @pyqtSlot(str, result = bool)
     def mergeContainers(self, merge_into_id, merge_id):
-        containers = self._registry.findContainers(None, id = container_id)
+        containers = self._registry.findContainers(None, id = merge_into_id)
         if not containers:
+            UM.Logger.log("w", "Could merge into container %s because it was not found.", merge_into_id)
             return False
 
         merge_into = containers[0]
 
-        containers = self._registry.findContainers(None, id = container_id)
+        containers = self._registry.findContainers(None, id = merge_id)
         if not containers:
+            UM.Logger.log("w", "Could not merge container %s because it was not found", merge_id)
             return False
 
         merge = containers[0]
 
         if type(merge) != type(merge_into):
+            UM.Logger.log("w", "Cannot merge two containers of different types")
             return False
 
         for key in merge.getAllKeys():
@@ -144,9 +153,11 @@ class ContainerManager(QObject):
     def clearContainer(self, container_id):
         containers = self._registry.findContainers(None, id = container_id)
         if not containers:
+            UM.Logger.log("w", "Could clear container %s because it was not found.", container_id)
             return False
 
         if containers[0].isReadOnly():
+            UM.Logger.log("w", "Cannot clear read-only container %s", container_id)
             return False
 
         containers[0].clear()
@@ -169,11 +180,13 @@ class ContainerManager(QObject):
     def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
         if not containers:
+            UM.Logger.log("w", "Could set metadata of container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
 
         if container.isReadOnly():
+            UM.Logger.log("w", "Cannot set metadata of read-only container %s.", container_id)
             return False
 
         entries = entry_name.split("/")
