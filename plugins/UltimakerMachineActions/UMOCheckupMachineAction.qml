@@ -51,7 +51,6 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
-                    //checkupContent.visible = true
                     manager.startCheck()
                 }
             }
@@ -157,6 +156,7 @@ Cura.MachineAction
             {
                 id: nozzleTempLabel
                 width: checkupMachineAction.leftRow
+                height: nozzleTempButton.height
                 anchors.left: parent.left
                 anchors.top: endstopZLabel.bottom
                 wrapMode: Text.WordWrap
@@ -175,15 +175,12 @@ Cura.MachineAction
             {
                 id: nozzleTempButton
                 width: checkupMachineAction.rightRow * 0.3
-                height: nozzleTemp.height
+                height: childrenRect.height
                 anchors.top: nozzleTempLabel.top
                 anchors.left: bedTempStatus.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
                 Button
                 {
-                    height: nozzleTemp.height - 2
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
                     text: catalog.i18nc("@action:button","Start Heating")
                     onClicked:
                     {
@@ -207,10 +204,11 @@ Cura.MachineAction
             {
                 id: bedTempLabel
                 width: checkupMachineAction.leftRow
+                height: bedTempButton.height
                 anchors.left: parent.left
                 anchors.top: nozzleTempLabel.bottom
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","bed temperature check:")
+                text: catalog.i18nc("@label","Bed temperature check:")
             }
 
             Label
@@ -226,15 +224,12 @@ Cura.MachineAction
             {
                 id: bedTempButton
                 width: checkupMachineAction.rightRow * 0.3
-                height: bedTemp.height
+                height: childrenRect.height
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempStatus.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
                 Button
                 {
-                    height: bedTemp.height - 2
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
                     text: catalog.i18nc("@action:button","Start Heating")
                     onClicked:
                     {

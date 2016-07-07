@@ -79,7 +79,6 @@ class UMOCheckupMachineAction(MachineAction):
 
     @pyqtProperty(bool, notify = onBedTestCompleted)
     def bedTestCompleted(self):
-        print("zomg?")
         return self._bed_test_completed
 
     @pyqtProperty(bool, notify = onHotendTestCompleted)
