@@ -15,6 +15,8 @@ Cura.MachineAction
         anchors.fill: parent;
         property int leftRow: checkupMachineAction.width * 0.40
         property int rightRow: checkupMachineAction.width * 0.60
+        property bool heatupHotendStarted: false
+        property bool heatupBedStarted: false
         UM.I18nCatalog { id: catalog; name:"cura"}
         Label
         {
@@ -51,6 +53,8 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
+                    checkupMachineAction.heatupHotendStarted = false
+                    checkupMachineAction.heatupBedStarted = false
                     manager.startCheck()
                 }
             }
@@ -181,10 +185,19 @@ Cura.MachineAction
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
                 Button
                 {
-                    text: catalog.i18nc("@action:button","Start Heating")
+                    text: checkupMachineAction.heatupHotendStarted ? catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
+                    //
                     onClicked:
                     {
-                        manager.heatupHotend()
+                        if (checkupMachineAction.heatupHotendStarted)
+                        {
+                            manager.cooldownHotend()
+                            checkupMachineAction.heatupHotendStarted = false
+                        } else
+                        {
+                            manager.heatupHotend()
+                            checkupMachineAction.heatupHotendStarted = true
+                        }
                     }
                 }
             }
@@ -230,10 +243,18 @@ Cura.MachineAction
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
                 Button
                 {
-                    text: catalog.i18nc("@action:button","Start Heating")
+                    text: checkupMachineAction.heatupBedStarted ?catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
                     onClicked:
                     {
-                        manager.heatupBed()
+                        if (checkupMachineAction.heatupBedStarted)
+                        {
+                            manager.cooldownBed()
+                            checkupMachineAction.heatupBedStarted = false
+                        } else
+                        {
+                            manager.heatupBed()
+                            checkupMachineAction.heatupBedStarted = true
+                        }
                     }
                 }
             }

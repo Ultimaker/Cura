@@ -161,6 +161,16 @@ class UMOCheckupMachineAction(MachineAction):
                 pass
 
     @pyqtSlot()
+    def cooldownHotend(self):
+        if self._output_device is not None:
+            self._output_device.setTargetHotendTemperature(0, 0)
+
+    @pyqtSlot()
+    def cooldownBed(self):
+        if self._output_device is not None:
+            self._output_device.setTargetBedTemperature(0)
+
+    @pyqtSlot()
     def heatupHotend(self):
         if self._output_device is not None:
             self._output_device.setTargetHotendTemperature(0, self._hotend_target_temp)
