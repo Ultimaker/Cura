@@ -18,7 +18,12 @@ Rectangle
     Connections
     {
         target: Printer
-        onShowPrintMonitor: base.monitoringPrint = show
+        onShowPrintMonitor:
+        {
+            base.monitoringPrint = show;
+            showSettings.checked = !show;
+            showMonitor.checked = show;
+        }
     }
 
     // Is there an output device for this printer?
@@ -83,6 +88,7 @@ Rectangle
             anchors.right: parent.right
             Button
             {
+                id: showSettings
                 width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = false
@@ -95,6 +101,7 @@ Rectangle
             }
             Button
             {
+                id: showMonitor
                 width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = true
