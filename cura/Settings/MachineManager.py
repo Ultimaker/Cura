@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
 
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -15,6 +16,8 @@ from . import ExtruderManager
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
+import time
 
 class MachineManager(QObject):
     def __init__(self, parent = None):
@@ -59,6 +62,10 @@ class MachineManager(QObject):
             self.setActiveMachine(active_machine_id)
             pass
 
+        self._auto_change_material_hotend_flood_window = 10 # The minimum number of seconds between asking if the material or hotend on the machine should be used
+        self._auto_change_material_hotend_flood_time = 0 # The last timestamp (in seconds) when the user was asked about changing the material or hotend to whatis loaded on the machine
+        self._auto_change_material_hotend_flood_last_choice = None # The last choice that was made, so we can apply that choice again
+
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
@@ -97,12 +104,45 @@ class MachineManager(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = self._global_container_stack.getBottom().getId(), name = hotend_id)
         if containers:
-            Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, containers[0].getId()))
-            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
-            self.setActiveVariant(containers[0].getId())
+            extruder_manager = ExtruderManager.getInstance()
+            old_index = extruder_manager.activeExtruderIndex
+            if old_index != index:
+                extruder_manager.setActiveExtruderIndex(index)
+            else:
+                old_index = None
+
+            if self.activeVariantId != containers[0].getId():
+                if time.time() - self._auto_change_material_hotend_flood_time > self._auto_change_material_hotend_flood_window:
+                    Application.getInstance().messageBox(catalog.i18nc("@window:title", "Changes on the Printer"), catalog.i18nc("@label", "Do you want to change the hotend to match the hotend in your printer?"),
+                                                         catalog.i18nc("@label", "The hotend on your printer was changed. For best results always slice for the hotend that is inserted in your printer."),
+                                                         buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._hotendChangedDialogCallback, callback_arguments = [index, containers[0].getId()])
+                else:
+                    self._hotendChangedDialogCallback(self._auto_change_material_hotend_flood_last_choice, index, containers[0].getId())
+            if old_index is not None:
+                extruder_manager.setActiveExtruderIndex(old_index)
+
+        else:
+            Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
+
+    def _hotendChangedDialogCallback(self, button, index, hotend_id):
+        self._auto_change_material_hotend_flood_time = time.time()
+        self._auto_change_material_hotend_flood_last_choice = button
+
+        Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, hotend_id))
+
+        extruder_manager = ExtruderManager.getInstance()
+        old_index = extruder_manager.activeExtruderIndex
+        if old_index != index:
+            extruder_manager.setActiveExtruderIndex(index)
+        else:
+            old_index = None
+
+        self.setActiveVariant(hotend_id)
+
+        if old_index is not None:
+            extruder_manager.setActiveExtruderIndex(old_index)
 
     def _onMaterialIdChanged(self, index, material_id):
-        # TODO: fix this
         if not self._global_container_stack:
             return
 
@@ -112,11 +152,43 @@ class MachineManager(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
         if containers:
-            Logger.log("d", "Setting material of hotend %d to %s" % (index, containers[0].getId()))
-            ExtruderManager.ExtruderManager.getInstance().setActiveExtruderIndex(index)
-            self.setActiveMaterial(containers[0].getId())
+            extruder_manager = ExtruderManager.getInstance()
+            old_index = extruder_manager.activeExtruderIndex
+            if old_index != index:
+                extruder_manager.setActiveExtruderIndex(index)
+            else:
+                old_index = None
+
+            if self.activeMaterialId != containers[0].getId():
+                if time.time() - self._auto_change_material_hotend_flood_time > self._auto_change_material_hotend_flood_window:
+                    Application.getInstance().messageBox(catalog.i18nc("@window:title", "Changes on the Printer"), catalog.i18nc("@label", "Do you want to change the material to match the material in your printer?"),
+                                                         catalog.i18nc("@label", "The material on your printer was changed. For best results always slice for the material that is inserted in your printer."),
+                                                         buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._materialIdChangedDialogCallback, callback_arguments = [index, containers[0].getId()])
+                else:
+                    self._materialIdChangedDialogCallback(self._auto_change_material_hotend_flood_last_choice, index, containers[0].getId())
+            if old_index is not None:
+                extruder_manager.setActiveExtruderIndex(old_index)
+
         else:
             Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
+
+    def _materialIdChangedDialogCallback(self, button, index, material_id):
+        self._auto_change_material_hotend_flood_time = time.time()
+        self._auto_change_material_hotend_flood_last_choice = button
+
+        Logger.log("d", "Setting material of hotend %d to %s" % (index, material_id))
+
+        extruder_manager = ExtruderManager.getInstance()
+        old_index = extruder_manager.activeExtruderIndex
+        if old_index != index:
+            extruder_manager.setActiveExtruderIndex(index)
+        else:
+            old_index = None
+
+        self.setActiveMaterial(material_id)
+
+        if old_index is not None:
+            extruder_manager.setActiveExtruderIndex(old_index)
 
 
     def _onGlobalPropertyChanged(self, key, property_name):
@@ -441,7 +513,6 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
         if not containers or not self._active_container_stack:
             return
-
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
         old_material = self._active_container_stack.findContainer({"type": "material"})
         if old_variant:
@@ -451,7 +522,6 @@ class MachineManager(QObject):
             preferred_material = None
             if old_material:
                 preferred_material_name = old_material.getName()
-
             self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
 
     @pyqtSlot(str)
@@ -461,9 +531,30 @@ class MachineManager(QObject):
             return
 
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
-        if old_quality:
+        if old_quality and old_quality != containers[0]:
             quality_index = self._active_container_stack.getContainerIndex(old_quality)
+
             self._active_container_stack.replaceContainer(quality_index, containers[0])
+
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+                # Ask the user if the user profile should be cleared or not (discarding the current settings)
+                # In Simple Mode we assume the user always wants to keep the (limited) current settings
+                details = catalog.i18nc("@label", "You made changes to the following setting(s):")
+                user_settings = self._active_container_stack.getTop().findInstances(**{})
+                for setting in user_settings:
+                    details = details + "\n    " + setting.definition.label
+
+                Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
+                                                     catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
+                                                     buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
+
+    def _keepUserSettingsDialogCallback(self, button):
+        if button == QMessageBox.Yes:
+            # Yes, keep the settings in the user profile with this profile
+            pass
+        elif button == QMessageBox.No:
+            # No, discard the settings in the user profile
+            self.clearUserSettings()
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self):
