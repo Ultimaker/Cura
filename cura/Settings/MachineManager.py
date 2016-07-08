@@ -507,6 +507,8 @@ class MachineManager(QObject):
                 preferred_quality_name = old_quality.getName()
 
             self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), containers[0], preferred_quality_name).id)
+        else:
+            Logger.log("w", "While trying to set the active material, no material was found to replace.")
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
@@ -523,6 +525,8 @@ class MachineManager(QObject):
             if old_material:
                 preferred_material_name = old_material.getName()
             self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
+        else:
+            Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
@@ -547,6 +551,8 @@ class MachineManager(QObject):
                 Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
                                                      catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
                                                      buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
+        else:
+            Logger.log("w", "While trying to set the active quality, no quality was found to replace.")
 
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:
