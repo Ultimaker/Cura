@@ -52,7 +52,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         #Listen to changes.
         manager = ExtruderManager.getInstance()
         manager.extrudersChanged.connect(self._updateExtruders) #When the list of extruders changes in general.
-        UM.Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders) #When the current machine changes.
+
         self._updateExtruders()
 
         manager.activeExtruderChanged.connect(self._onActiveExtruderChanged)
@@ -65,6 +65,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             self.addGlobalChanged.emit()
 
     addGlobalChanged = pyqtSignal()
+
     @pyqtProperty(bool, fset = setAddGlobal, notify = addGlobalChanged)
     def addGlobal(self):
         return self._add_global
@@ -93,42 +94,48 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #
     #   This should be called whenever the list of extruders changes.
     def _updateExtruders(self):
-        self.clear()
-        manager = ExtruderManager.getInstance()
+        changed = False
+
+        if self.rowCount() != 0:
+            self.clear()
+            changed = True
+
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
-            return #There is no machine to get the extruders of.
+        if global_container_stack:
+            if self._add_global:
+                material = global_container_stack.findContainer({ "type": "material" })
+                colour = material.getMetaDataEntry("color_code", default = self.defaultColours[0]) if material else self.defaultColours[0]
+                item = {
+                    "id": global_container_stack.getId(),
+                    "name": "Global",
+                    "colour": colour,
+                    "index": -1
+                }
+                self.appendItem(item)
+                changed = True
 
-        if self._add_global:
-            material = global_container_stack.findContainer({ "type": "material" })
-            colour = material.getMetaDataEntry("color_code", default = self.defaultColours[0]) if material else self.defaultColours[0]
-            item = {
-                "id": global_container_stack.getId(),
-                "name": "Global",
-                "colour": colour,
-                "index": -1
-            }
-            self.appendItem(item)
+            manager = ExtruderManager.getInstance()
+            for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
+                extruder_name = extruder.getName()
+                material = extruder.findContainer({ "type": "material" })
+                if material:
+                    extruder_name = "%s (%s)" % (material.getName(), extruder_name)
+                position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
+                try:
+                    position = int(position)
+                except ValueError: #Not a proper int.
+                    position = -1
+                default_colour = self.defaultColours[position] if position >= 0 and position < len(self.defaultColours) else self.defaultColours[0]
+                colour = material.getMetaDataEntry("color_code", default = default_colour) if material else default_colour
+                item = { #Construct an item with only the relevant information.
+                    "id": extruder.getId(),
+                    "name": extruder_name,
+                    "colour": colour,
+                    "index": position
+                }
+                self.appendItem(item)
+                changed = True
 
-        for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
-            extruder_name = extruder.getName()
-            material = extruder.findContainer({ "type": "material" })
-            if material:
-                extruder_name = "%s (%s)" % (material.getName(), extruder_name)
-            position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
-            try:
-                position = int(position)
-            except ValueError: #Not a proper int.
-                position = -1
-            default_colour = self.defaultColours[position] if position >= 0 and position < len(self.defaultColours) else defaultColours[0]
-            colour = material.getMetaDataEntry("color_code", default = default_colour) if material else default_colour
-            item = { #Construct an item with only the relevant information.
-                "id": extruder.getId(),
-                "name": extruder_name,
-                "colour": colour,
-                "index": position
-            }
-            self.appendItem(item)
-
-        self.sort(lambda item: item["index"])
-        self.modelChanged.emit()
+        if changed:
+            self.sort(lambda item: item["index"])
+            self.modelChanged.emit()

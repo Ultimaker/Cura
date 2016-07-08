@@ -11,7 +11,6 @@ from UM.Logger import Logger
 import UM.Settings
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
-
 from . import ExtruderManager
 
 from UM.i18n import i18nCatalog
@@ -31,7 +30,6 @@ class MachineManager(QObject):
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
-        self.globalContainerChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
 
         ##  When the global container is changed, active material probably needs to be updated.
