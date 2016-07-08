@@ -9,6 +9,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Platform import Platform
 
 import collections
 import json
@@ -18,6 +19,7 @@ import platform
 import math
 import urllib.request
 import urllib.parse
+import ssl
 
 catalog = i18nCatalog("cura")
 
@@ -112,9 +114,12 @@ class SliceInfo(Extension):
 
             # Submit data
             try:
-                f = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
-                Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
-                f.close()
+                if Platform.isOSX():
+                    ssl_context = ssl._create_unverified_context()
+                    server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1, context = ssl_context)
+                else:
+                    server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)                Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
+                server_request.close()
             except Exception as e:
                 Logger.logException("e", "An exception occurred while trying to send slice information")
         except:
