@@ -599,7 +599,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
-        # If the machine that is being removed is the currently active machine, set another machine as the active machine
+        # If the machine that is being removed is the currently active machine, set another machine as the active machine.
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
 
         current_settings_id = machine_id + "_current_settings"
@@ -628,6 +628,8 @@ class MachineManager(QObject):
 
         return False
 
+    ##  Property to indicate if a machine has "specialized" material profiles.
+    #   Some machines have their own material profiles that "override" the default catch all profiles.
     @pyqtProperty(bool, notify = globalContainerChanged)
     def filterMaterialsByMachine(self):
         if self._global_container_stack:
@@ -635,13 +637,17 @@ class MachineManager(QObject):
 
         return False
 
+    ##  Property to indicate if a machine has "specialized" quality profiles.
+    #   Some machines have their own quality profiles that "override" the default catch all profiles.
     @pyqtProperty(bool, notify = globalContainerChanged)
     def filterQualityByMachine(self):
         if self._global_container_stack:
             return bool(self._global_container_stack.getMetaDataEntry("has_machine_quality", False))
-
         return False
 
+    ##  Get the Definition ID of a machine (specified by ID)
+    #   \param machine_id string machine id to get the definition ID of
+    #   \returns DefinitionID (string) if found, None otherwise
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=machine_id)
