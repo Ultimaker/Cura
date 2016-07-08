@@ -70,7 +70,7 @@ class ThreeMFReader(MeshReader):
 
                 # TODO: We currently do not check for normals and simply recalculate them.
                 mesh_builder.calculateNormals()
-                
+                mesh_builder.setFileName(file_name)
                 node.setMeshData(mesh_builder.build().getTransformed(rotation))
                 node.setSelectable(True)
 
