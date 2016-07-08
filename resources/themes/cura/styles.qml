@@ -44,6 +44,56 @@ QtObject {
         }
     }
 
+    property Component sidebar_header_tab: Component {
+        ButtonStyle {
+            background: Item {
+                implicitWidth: Theme.getSize("button").width;
+                implicitHeight: Theme.getSize("button").height;
+
+                Rectangle {
+                    id: buttonFace;
+
+                    anchors.fill: parent;
+                    property bool down: control.pressed || (control.checkable && control.checked);
+
+                    color: {
+                        if(control.pressed || (control.checkable && control.checked)) {
+                            return Theme.getColor("sidebar_header_active");
+                        } else if(control.hovered) {
+                            return Theme.getColor("sidebar_header_hover");
+                        } else {
+                            return Theme.getColor("sidebar_header_bar");
+                        }
+                    }
+                    Behavior on color { ColorAnimation { duration: 50; } }
+
+                    Rectangle {
+                        id: underline;
+
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        height: UM.Theme.getSize("sidebar_header_highlight").height
+                        color: control.checked ? UM.Theme.getColor("sidebar_header_highlight") : UM.Theme.getColor("sidebar_header_highlight_hover")
+                        visible: control.hovered || control.checked
+                    }
+                }
+            }
+
+            label: Item {
+                Image {
+                    anchors.centerIn: parent;
+                    opacity: !control.enabled ? 0.2 : 1.0
+                    source: control.iconSource;
+                    width: Theme.getSize("button_icon").width;
+                    height: Theme.getSize("button_icon").height;
+
+                    sourceSize: Theme.getSize("button_icon")
+                }
+            }
+        }
+    }
+
     property Component tool_button: Component {
         ButtonStyle {
             background: Item {

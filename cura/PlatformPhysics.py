@@ -7,7 +7,6 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
-from UM.Application import Application
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
 
@@ -15,8 +14,6 @@ from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
 from . import ZOffsetDecorator
-
-import copy
 
 class PlatformPhysics:
     def __init__(self, controller, volume):
@@ -100,18 +97,15 @@ class PlatformPhysics:
                     #    continue
 
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
-                    try:
-                        head_hull = node.callDecoration("getConvexHullHead")
-                        if head_hull:
-                            overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
-                            if not overlap:
-                                other_head_hull = other_node.callDecoration("getConvexHullHead")
-                                if other_head_hull:
-                                    overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
-                        else:
-                            overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
-                    except:
-                        overlap = None #It can sometimes occur that the calculated convex hull has no size, in which case there is no overlap.
+                    head_hull = node.callDecoration("getConvexHullHead")
+                    if head_hull:
+                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                        if not overlap:
+                            other_head_hull = other_node.callDecoration("getConvexHullHead")
+                            if other_head_hull:
+                                overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
+                    else:
+                        overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
 
                     if overlap is None:
                         continue

@@ -14,7 +14,7 @@ UM.Dialog
     height: 100 * Screen.devicePixelRatio;
     modality: Qt.NonModal
 
-    title: catalog.i18nc("@title:window", "Print with USB")
+    title: catalog.i18nc("@title:window", "Print via USB")
 
     Column
     {

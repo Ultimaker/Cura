@@ -16,7 +16,7 @@ UM.MainWindow
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
-
+    property bool monitoringPrint: false
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
@@ -294,7 +294,7 @@ UM.MainWindow
                         id: item
                         text: model_data ? model_data.name : ""
                         checkable: true
-                        checked: Cura.MachineManager.activeQualityId == model_data.id
+                        checked: model_data != null ? Cura.MachineManager.activeQualityId == model_data.id : false
                         exclusiveGroup: profileMenuGroup
                         onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
                     }
@@ -404,17 +404,6 @@ UM.MainWindow
                     right: sidebar.left;
                     bottomMargin: UM.Theme.getSize("default_margin").height;
                     rightMargin: UM.Theme.getSize("default_margin").width;
-                }
-            }
-
-            UM.MessageStack
-            {
-                anchors
-                {
-                    horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
                 }
             }
 
@@ -536,8 +525,56 @@ UM.MainWindow
                     bottom: parent.bottom;
                     right: parent.right;
                 }
-
+                onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
+            }
+
+            Rectangle
+            {
+                id: viewportOverlay
+
+                color: UM.Theme.getColor("viewport_overlay")
+                anchors
+                {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left:parent.left
+                    right: sidebar.left
+                }
+                visible: opacity > 0
+                opacity: base.monitoringPrint ? 0.75 : 0
+
+                Behavior on opacity { NumberAnimation { duration: 100; } }
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.AllButtons
+
+                    onWheel: wheel.accepted = true
+                }
+            }
+
+            Image
+            {
+                id: cameraImage
+                width: Math.min(viewportOverlay.width, sourceSize.width)
+                height: sourceSize.height * width / sourceSize.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
+                visible: base.monitoringPrint
+                source: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+            }
+
+            UM.MessageStack
+            {
+                anchors
+                {
+                    horizontalCenter: parent.horizontalCenter
+                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
+                    top: parent.verticalCenter;
+                    bottom: parent.bottom;
+                }
             }
         }
     }

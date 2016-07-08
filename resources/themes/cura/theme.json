@@ -38,6 +38,7 @@
     "colors": {
         "sidebar": [255, 255, 255, 255],
         "lining": [127, 127, 127, 255],
+        "viewport_overlay": [24, 41, 77, 255],
 
         "primary": [12, 169, 227, 255],
         "primary_hover": [48, 182, 231, 255],
@@ -55,6 +56,10 @@
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [24, 41, 77, 255],
+        "sidebar_header_active": [70, 84, 113, 255],
+        "sidebar_header_hover": [24, 41, 77, 255],
+        "sidebar_header_highlight": [12, 169, 227, 255],
+        "sidebar_header_highlight_hover": [255, 255, 255, 255],
         "sidebar_lining": [245, 245, 245, 255],
 
         "button": [24, 41, 77, 255],
@@ -153,7 +158,13 @@
         "message_text": [32, 166, 219, 255],
         "message_dismiss": [127, 127, 127, 255],
 
-        "tool_panel_background": [255, 255, 255, 255]
+        "tool_panel_background": [255, 255, 255, 255],
+
+        "status_offline": [0, 0, 0, 255],
+        "status_ready": [0, 205, 0, 255],
+        "status_busy": [12, 169, 227, 255],
+        "status_paused": [255, 140, 0, 255],
+        "status_stopped": [236, 82, 80, 255]
     },
 
     "sizes": {
@@ -166,6 +177,7 @@
 
         "sidebar": [35.0, 10.0],
         "sidebar_header": [0.0, 4.0],
+        "sidebar_header_highlight": [0.5, 0.5],
         "sidebar_header_mode_toggle": [0.0, 2.0],
         "sidebar_lining": [0.5, 0.5],
         "sidebar_setup": [0.0, 2.0],

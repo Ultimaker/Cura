@@ -117,7 +117,7 @@ Column
             onGlobalContainerChanged:
             {
                 base.currentExtruderIndex = -1;
-                ExtruderManager.setActiveExtruderIndex(index);
+                ExtruderManager.setActiveExtruderIndex(0);
             }
         }
 
