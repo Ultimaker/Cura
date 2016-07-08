@@ -47,82 +47,78 @@ class SliceInfo(Extension):
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
     def _onWriteStarted(self, output_device):
-        try:
-            if not Preferences.getInstance().getValue("info/send_slice_info"):
-                Logger.log("d", "'info/send_slice_info' is turned off.")
-                return # Do nothing, user does not want to send data
+        if not Preferences.getInstance().getValue("info/send_slice_info"):
+            Logger.log("d", "'info/send_slice_info' is turned off.")
+            return # Do nothing, user does not want to send data
 
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
 
-            # Get total material used (in mm^3)
-            print_information = Application.getInstance().getPrintInformation()
-            material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
+        # Get total material used (in mm^3)
+        print_information = Application.getInstance().getPrintInformation()
+        material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
 
-            # TODO: Send material per extruder instead of mashing it on a pile
-            material_used = math.pi * material_radius * material_radius * sum(print_information.materialAmounts) #Volume of all materials used
+        # TODO: Send material per extruder instead of mashing it on a pile
+        material_used = math.pi * material_radius * material_radius * sum(print_information.materialAmounts) #Volume of all materials used
 
-            # Get model information (bounding boxes, hashes and transformation matrix)
-            models_info = []
-            for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        model_info = {}
-                        model_info["hash"] = node.getMeshData().getHash()
-                        model_info["bounding_box"] = {}
-                        model_info["bounding_box"]["minimum"] = {}
-                        model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
-                        model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
-                        model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
+        # Get model information (bounding boxes, hashes and transformation matrix)
+        models_info = []
+        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
+            if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                if not getattr(node, "_outside_buildarea", False):
+                    model_info = {}
+                    model_info["hash"] = node.getMeshData().getHash()
+                    model_info["bounding_box"] = {}
+                    model_info["bounding_box"]["minimum"] = {}
+                    model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
+                    model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
+                    model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
 
-                        model_info["bounding_box"]["maximum"] = {}
-                        model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
-                        model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
-                        model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
-                        model_info["transformation"] = str(node.getWorldTransformation().getData())
+                    model_info["bounding_box"]["maximum"] = {}
+                    model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
+                    model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
+                    model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
+                    model_info["transformation"] = str(node.getWorldTransformation().getData())
 
-                        models_info.append(model_info)
+                    models_info.append(model_info)
 
-            # Bundle the collected data
-            submitted_data = {
-                "processor": platform.processor(),
-                "machine": platform.machine(),
-                "platform": platform.platform(),
-                "settings": global_container_stack.serialize(), # global_container with references on used containers
-                "version": Application.getInstance().getVersion(),
-                "modelhash": "None",
-                "printtime": print_information.currentPrintTime.getDisplayString(),
-                "filament": material_used,
-                "language": Preferences.getInstance().getValue("general/language"),
-                "materials_profiles ": {}
-            }
-            for container in global_container_stack.getContainers():
-                container_id = container.getId()
-                try:
-                    container_serialized = container.serialize()
-                except NotImplementedError:
-                    Logger.log("w", "Container %s could not be serialized!", container_id)
-                    continue
-
-                if container_serialized:
-                    submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
-                else:
-                    Logger.log("i", "No data found in %s to be serialized!", container_id)
+        # Bundle the collected data
+        submitted_data = {
+            "processor": platform.processor(),
+            "machine": platform.machine(),
+            "platform": platform.platform(),
+            "settings": global_container_stack.serialize(), # global_container with references on used containers
+            "version": Application.getInstance().getVersion(),
+            "modelhash": "None",
+            "printtime": print_information.currentPrintTime.getDisplayString(),
+            "filament": material_used,
+            "language": Preferences.getInstance().getValue("general/language"),
+            "materials_profiles ": {}
+        }
+        for container in global_container_stack.getContainers():
+            container_id = container.getId()
+            try:
+                container_serialized = container.serialize()
+            except NotImplementedError:
+                Logger.log("w", "Container %s could not be serialized!", container_id)
+                continue
+            if container_serialized:
+                submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
+            else:
+                Logger.log("i", "No data found in %s to be serialized!", container_id)
 
             # Convert data to bytes
-            submitted_data = urllib.parse.urlencode(submitted_data)
-            binary_data = submitted_data.encode("utf-8")
+        submitted_data = urllib.parse.urlencode(submitted_data)
+        binary_data = submitted_data.encode("utf-8")
 
-            # Submit data
-            try:
-                if Platform.isOSX():
-                    ssl_context = ssl._create_unverified_context()
-                    server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1, context = ssl_context)
-                else:
-                    server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)                Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
-                server_request.close()
-            except Exception as e:
-                Logger.logException("e", "An exception occurred while trying to send slice information")
-        except:
-            # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
-            # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
-            pass
+        # Submit data
+        try:
+            if Platform.isOSX():
+                ssl_context = ssl._create_unverified_context()
+                server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1, context = ssl_context)
+            else:
+                server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
+            
+            Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
+            server_request.close()
+        except Exception as e:
+            Logger.logException("e", "An exception occurred while trying to send slice information")
