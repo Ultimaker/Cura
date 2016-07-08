@@ -104,7 +104,7 @@ class MachineManager(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = self._global_container_stack.getBottom().getId(), name = hotend_id)
         if containers:
-            extruder_manager = ExtruderManager.ExtruderManager.getInstance()
+            extruder_manager = ExtruderManager.getInstance()
             old_index = extruder_manager.activeExtruderIndex
             if old_index != index:
                 extruder_manager.setActiveExtruderIndex(index)
@@ -122,22 +122,22 @@ class MachineManager(QObject):
                 extruder_manager.setActiveExtruderIndex(old_index)
 
         else:
-            Logger.log("w", "No variant found for printer definition %s with id %s" % (definition_id, variant_id))
+            Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
 
     def _hotendChangedDialogCallback(self, button, index, hotend_id):
         self._auto_change_material_hotend_flood_time = time.time()
         self._auto_change_material_hotend_flood_last_choice = button
 
-        Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, containers[0].getId()))
+        Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, hotend_id))
 
-        extruder_manager = ExtruderManager.ExtruderManager.getInstance()
+        extruder_manager = ExtruderManager.getInstance()
         old_index = extruder_manager.activeExtruderIndex
         if old_index != index:
             extruder_manager.setActiveExtruderIndex(index)
         else:
             old_index = None
 
-        self.setActiveVariant(containers[0].getId())
+        self.setActiveVariant(hotend_id)
 
         if old_index is not None:
             extruder_manager.setActiveExtruderIndex(old_index)
@@ -152,7 +152,7 @@ class MachineManager(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
         if containers:
-            extruder_manager = ExtruderManager.ExtruderManager.getInstance()
+            extruder_manager = ExtruderManager.getInstance()
             old_index = extruder_manager.activeExtruderIndex
             if old_index != index:
                 extruder_manager.setActiveExtruderIndex(index)
@@ -178,7 +178,7 @@ class MachineManager(QObject):
 
         Logger.log("d", "Setting material of hotend %d to %s" % (index, material_id))
 
-        extruder_manager = ExtruderManager.ExtruderManager.getInstance()
+        extruder_manager = ExtruderManager.getInstance()
         old_index = extruder_manager.activeExtruderIndex
         if old_index != index:
             extruder_manager.setActiveExtruderIndex(index)
@@ -513,7 +513,6 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
         if not containers or not self._active_container_stack:
             return
-
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
         old_material = self._active_container_stack.findContainer({"type": "material"})
         if old_variant:
@@ -523,7 +522,6 @@ class MachineManager(QObject):
             preferred_material = None
             if old_material:
                 preferred_material_name = old_material.getName()
-
             self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
 
     @pyqtSlot(str)
