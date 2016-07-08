@@ -63,9 +63,6 @@ class PlatformPhysics:
                 elif bbox.bottom < z_offset:
                     move_vector = move_vector.set(y=(-bbox.bottom) - z_offset)
 
-            #if not Float.fuzzyCompare(bbox.bottom, 0.0):
-            #   pass#move_vector.setY(-bbox.bottom)
-
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
@@ -78,23 +75,17 @@ class PlatformPhysics:
                     if other_node is root or type(other_node) is not SceneNode or other_node is node:
                         continue
                     
-                    # Ignore colissions of a group with it's own children
+                    # Ignore collisions of a group with it's own children
                     if other_node in node.getAllChildren() or node in other_node.getAllChildren():
                         continue
                     
-                    # Ignore colissions within a group
+                    # Ignore collisions within a group
                     if other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None:
                         continue
-                        #if node.getParent().callDecoration("isGroup") is other_node.getParent().callDecoration("isGroup"):
-                        #    continue
                     
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue
-
-                    # Check to see if the bounding boxes intersect. If not, we can ignore the node as there is no way the hull intersects.
-                    #if node.getBoundingBox().intersectsBox(other_node.getBoundingBox()) == AxisAlignedBox.IntersectionResult.NoIntersection:
-                    #    continue
 
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     head_hull = node.callDecoration("getConvexHullHead")
@@ -105,7 +96,14 @@ class PlatformPhysics:
                             if other_head_hull:
                                 overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
                     else:
-                        overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                        own_convex_hull = node.callDecoration("getConvexHull")
+                        other_convex_hull = other_node.callDecoration("getConvexHull")
+                        if own_convex_hull and other_convex_hull:
+                            overlap = own_convex_hull.intersectsPolygon(other_convex_hull)
+                        else:
+                            # This can happen in some cases if the object is not yet done with being loaded.
+                            #  Simply waiting for the next tick seems to resolve this correctly.
+                            overlap = None
 
                     if overlap is None:
                         continue
