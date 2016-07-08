@@ -169,7 +169,16 @@ class ExtruderManager(QObject):
                 material = materials[0]
             preferred_material_id = machine_definition.getMetaDataEntry("preferred_material")
             if preferred_material_id:
-                preferred_materials = container_registry.findInstanceContainers(id = preferred_material_id, type = "material")
+                search_criteria = { "type": "material",  "id": preferred_material_id}
+                if machine_definition.getMetaDataEntry("has_machine_materials"):
+                    search_criteria["definition"] = machine_definition.id
+
+                    if machine_definition.getMetaDataEntry("has_variants") and variant:
+                        search_criteria["variant"] = variant.id
+                else:
+                    search_criteria["definition"] = "fdmprinter"
+
+                preferred_materials = container_registry.findInstanceContainers(**search_criteria)
                 if len(preferred_materials) >= 1:
                     material = preferred_materials[0]
                 else:
