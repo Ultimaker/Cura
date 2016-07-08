@@ -9,6 +9,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Platform import Platform
 
 import collections
 import json
@@ -18,6 +19,7 @@ import platform
 import math
 import urllib.request
 import urllib.parse
+import ssl
 
 catalog = i18nCatalog("cura")
 
@@ -111,8 +113,13 @@ class SliceInfo(Extension):
             binary_data = submitted_data.encode("utf-8")
 
             # Submit data
+            kwoptions = {"data" : binary_data,
+                         "timeout" : 1
+                         }
+            if Platform.isOSX():
+                kwoptions["context"] = ssl._create_unverified_context()
             try:
-                f = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
+                f = urllib.request.urlopen(self.info_url, **kwoptions)
                 Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
                 f.close()
             except Exception as e:
