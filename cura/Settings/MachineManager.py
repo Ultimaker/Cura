@@ -417,7 +417,7 @@ class MachineManager(QObject):
         if containers:
             new_name = self._createUniqueName("quality", "", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
 
-            new_container = InstanceContainer("")
+            new_container = UM.Settings.InstanceContainer("")
 
             ## Copy all values
             new_container.deserialize(containers[0].serialize())
@@ -444,7 +444,7 @@ class MachineManager(QObject):
             # As we also want the id of the container to be changed (so that profile name is the name of the file
             # on disk. We need to create a new instance and remove it (so the old file of the container is removed)
             # If we don't do that, we might get duplicates & other weird issues.
-            new_container = InstanceContainer("")
+            new_container = UM.Settings.InstanceContainer("")
             new_container.deserialize(containers[0].serialize())
 
             # Actually set the name
