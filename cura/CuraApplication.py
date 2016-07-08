@@ -612,6 +612,7 @@ class CuraApplication(QtApplication):
     ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):
+        Logger.log("i", "Clearing scene")
         if not self.getController().getToolsEnabled():
             return
 
@@ -635,6 +636,7 @@ class CuraApplication(QtApplication):
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
     def resetAllTranslation(self):
+        Logger.log("i", "Resetting all scene translations")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
@@ -657,6 +659,7 @@ class CuraApplication(QtApplication):
     ## Reset all transformations on nodes with mesh data. 
     @pyqtSlot()
     def resetAll(self):
+        Logger.log("i", "Resetting all scene transformations")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
@@ -680,6 +683,7 @@ class CuraApplication(QtApplication):
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
     def reloadAll(self):
+        Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
