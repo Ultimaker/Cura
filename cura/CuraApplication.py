@@ -695,15 +695,14 @@ class CuraApplication(QtApplication):
             return
 
         for node in nodes:
-            if not node.getMeshData():
-                continue
-
             file_name = node.getMeshData().getFileName()
             if file_name:
                 job = ReadMeshJob(file_name)
                 job._node = node
                 job.finished.connect(self._reloadMeshFinished)
                 job.start()
+            else:
+                Logger.log("w", "Unable to reload data because we don't have a filename.")
     
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data
