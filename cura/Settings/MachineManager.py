@@ -62,9 +62,9 @@ class MachineManager(QObject):
             self.setActiveMachine(active_machine_id)
             pass
 
-        self._auto_change_material_hotend_flood_window = 10
-        self._auto_change_material_hotend_flood_time = 0
-        self._auto_change_material_hotend_flood_last_choice = None
+        self._auto_change_material_hotend_flood_window = 10 # The minimum number of seconds between asking if the material or hotend on the machine should be used
+        self._auto_change_material_hotend_flood_time = 0 # The last timestamp (in seconds) when the user was asked about changing the material or hotend to whatis loaded on the machine
+        self._auto_change_material_hotend_flood_last_choice = None # The last choice that was made, so we can apply that choice again
 
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
