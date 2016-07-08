@@ -112,11 +112,12 @@ class SliceInfo(Extension):
 
         # Submit data
         try:
+            kwoptions = {"data" : binary_data,
+                         "timeout" : 1
+                         }
             if Platform.isOSX():
-                ssl_context = ssl._create_unverified_context()
-                server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1, context = ssl_context)
-            else:
-                server_request = urllib.request.urlopen(self.info_url, data = binary_data, timeout = 1)
+                kwoptions["context"] = ssl._create_unverified_context()
+            server_request = urllib.request.urlopen(self.info_url, **kwoptions)
             
             Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
             server_request.close()
