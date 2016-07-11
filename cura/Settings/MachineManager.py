@@ -403,8 +403,8 @@ class MachineManager(QObject):
         if new_container_id == "":
             return
         self.blurSettings.emit()
+        self.updateQualityContainerFromUserContainer(new_container_id)
         self.setActiveQuality(new_container_id)
-        self.updateQualityContainerFromUserContainer()
         return new_container_id
 
     @pyqtSlot(str, result=str)
@@ -477,12 +477,23 @@ class MachineManager(QObject):
                 self.setActiveQuality(containers[0].getId())
                 self.activeQualityChanged.emit()
 
-    @pyqtSlot()
-    def updateQualityContainerFromUserContainer(self):
+    @pyqtSlot(str)
+    def updateQualityContainerFromUserContainer(self, quality_id = None):
         if not self._active_container_stack:
             return
+
+        if quality_id:
+            quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id, type = "quality")
+            if quality:
+                quality = quality[0]
+        else:
+            quality = self._active_container_stack.findContainer({"type": "quality"})
+
+        if not quality:
+            return
+
         user_settings = self._active_container_stack.getTop()
-        quality = self._active_container_stack.findContainer({"type": "quality"})
+
         for key in user_settings.getAllKeys():
             quality.setProperty(key, "value", user_settings.getProperty(key, "value"))
         self.clearUserSettings()  # As all users settings are noq a quality, remove them.
