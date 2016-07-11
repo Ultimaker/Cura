@@ -13,7 +13,6 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Profiles");
-    addText: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
 
     model: UM.InstanceContainersModel
     {
@@ -60,27 +59,62 @@ UM.ManagementPage
         return -1;
     }
 
-    onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
-    onAddObject: {
-        var selectedContainer;
-        if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
-            selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
-        } else {
-            selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
+    buttons: [
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Activate");
+            iconName: "list-activate";
+            enabled: base.currentItem != null ? base.currentItem.id != Cura.MachineManager.activeQualityId : false;
+            onClicked: Cura.MachineManager.setActiveQuality(base.currentItem.id)
+        },
+        Button
+        {
+            text: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
+            iconName: "list-add";
+
+            onClicked:
+            {
+                var selectedContainer;
+                if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
+                    selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
+                } else {
+                    selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
+                }
+                base.selectContainer(selectedContainer);
+
+                renameDialog.removeWhenRejected = true;
+                renameDialog.open();
+                renameDialog.selectText();
+            }
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Remove");
+            iconName: "list-remove";
+            enabled: base.currentItem != null ? !base.currentItem.readOnly : false;
+            onClicked: confirmDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Rename");
+            iconName: "edit-rename";
+            enabled: base.currentItem != null ? !base.currentItem.readOnly : false;
+            onClicked: { renameDialog.removeWhenRejected = false; renameDialog.open(); renameDialog.selectText(); }
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Import");
+            iconName: "document-import";
+            onClicked: importDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Export")
+            iconName: "document-export"
+            onClicked: exportDialog.open()
+            enabled: currentItem != null
         }
-        base.selectContainer(selectedContainer);
-
-        renameDialog.removeWhenRejected = true;
-        renameDialog.open();
-        renameDialog.selectText();
-    }
-    onRemoveObject: confirmDialog.open();
-    onRenameObject: { renameDialog.removeWhenRejected = false; renameDialog.open(); renameDialog.selectText(); }
-
-    activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
-    addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
-    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
+    ]
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
@@ -106,7 +140,7 @@ UM.ManagementPage
 
         Row {
             id: currentSettingsActions
-            visible: currentItem.id == Cura.MachineManager.activeQualityId
+            visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId
 
             anchors.left: parent.left
             anchors.top: profileName.bottom
@@ -139,14 +173,14 @@ UM.ManagementPage
 
             Label {
                 id: defaultsMessage
-                visible: !currentItem.metadata.has_settings
+                visible: currentItem && !currentItem.metadata.has_settings
                 text: catalog.i18nc("@action:label", "This profile has no settings and uses the defaults specified by the printer.")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
             Label {
                 id: noCurrentSettingsMessage
-                visible: currentItem.id == Cura.MachineManager.activeQualityId && !Cura.MachineManager.hasUserSettings
+                visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId && !Cura.MachineManager.hasUserSettings
                 text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -163,7 +197,17 @@ UM.ManagementPage
             anchors.bottom: parent.bottom
 
             ListView {
-                model: Cura.ContainerSettingsModel{ containers: (currentItem.id == Cura.MachineManager.activeQualityId) ? [base.currentItem.id, Cura.MachineManager.activeUserProfileId] : [base.currentItem.id] }
+                model: Cura.ContainerSettingsModel{ containers:
+                    {
+                        if (!currentItem) {
+                            return []
+                        } else if (currentItem.id == Cura.MachineManager.activeQualityId) {
+                            return [base.currentItem.id, Cura.MachineManager.activeUserProfileId]
+                        } else {
+                            return [base.currentItem.id]
+                        }
+                    }
+                }
                 delegate: Row {
                     property variant setting: model
                     spacing: UM.Theme.getSize("default_margin").width/2
@@ -187,7 +231,7 @@ UM.ManagementPage
                     }
                 }
                 header: Row {
-                    visible: currentItem.id == Cura.MachineManager.activeQualityId
+                    visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId
                     spacing: UM.Theme.getSize("default_margin").width
                     Label {
                         text: catalog.i18nc("@action:label", "Profile:")
@@ -197,7 +241,7 @@ UM.ManagementPage
                     }
                     Label {
                         text: catalog.i18nc("@action:label", "Current:")
-                        visible: currentItem.id == Cura.MachineManager.activeQualityId
+                        visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId
                         font.bold: true
                     }
                 }
@@ -208,24 +252,6 @@ UM.ManagementPage
                     font.bold: true
                 }
             }
-        }
-    }
-
-    buttons: Row {
-
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Import");
-            iconName: "document-import";
-            onClicked: importDialog.open();
-        }
-
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Export")
-            iconName: "document-export"
-            onClicked: exportDialog.open()
-            enabled: currentItem != null
         }
     }
 

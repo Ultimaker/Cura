@@ -13,7 +13,7 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 
-from cura.ExtruderManager import ExtruderManager
+import cura.Settings
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob
@@ -64,7 +64,7 @@ class CuraEngineBackend(Backend):
         self._onGlobalStackChanged()
 
         self._active_extruder_stack = None
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
         #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
@@ -81,7 +81,7 @@ class CuraEngineBackend(Backend):
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
-        self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
+        self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._start_slice_job = None
@@ -128,11 +128,15 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
+            # try again in a short time
+            self._change_timer.start()
+            return
+
+        self.printDurationMessage.emit(0, [0])
+
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
-
-        if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
-            return
 
         if self._slicing: #We were already slicing. Stop the old job.
             self._terminate()
@@ -304,9 +308,12 @@ class CuraEngineBackend(Backend):
     ##  Called when a print time message is received from the engine.
     #
     #   \param message The protobuf message containing the print time and
-    #   material amount.
-    def _onObjectPrintTimeMessage(self, message):
-        self.printDurationMessage.emit(message.time, message.material_amount)
+    #   material amount per extruder
+    def _onPrintTimeMaterialEstimates(self, message):
+        material_amounts = []
+        for index in range(message.repeatedMessageCount("materialEstimates")):
+            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
+        self.printDurationMessage.emit(message.time, material_amounts)
 
     ##  Creates a new socket connection.
     def _createSocket(self):
@@ -389,8 +396,8 @@ class CuraEngineBackend(Backend):
             self._active_extruder_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
-        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        self._active_extruder_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_extruder_stack:
             self._active_extruder_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
-            self._onChanged()
+

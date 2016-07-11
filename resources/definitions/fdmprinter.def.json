@@ -29,19 +29,19 @@
             {
                 "machine_show_variants":
                 {
+                    "label": "Show machine variants",
                     "description": "Whether to show the different variants of this machine, which are described in separate json files.",
                     "default_value": false,
                     "type": "bool",
-                    "label": "Show machine variants",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_start_gcode":
                 {
+                    "label": "Start GCode",
                     "description": "Gcode commands to be executed at the very start - separated by \\n.",
                     "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
-                    "label": "Start GCode",
                     "type": "str",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -49,9 +49,9 @@
                 },
                 "machine_end_gcode":
                 {
+                    "label": "End GCode",
                     "description": "Gcode commands to be executed at the very end - separated by \\n.",
                     "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84",
-                    "label": "End GCode",
                     "type": "str",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -59,8 +59,18 @@
                 },
                 "material_bed_temp_wait":
                 {
-                    "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
                     "label": "Wait for bed heatup",
+                    "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
+                    "default_value": true,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "material_print_temp_wait":
+                {
+                    "label": "Wait for nozzle heatup",
+                    "description": "Whether to wait until the nozzle temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -69,49 +79,49 @@
                 },
                 "material_print_temp_prepend":
                 {
+                    "label": "Include material temperatures",
                     "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
-                    "label": "Wait for material heatup",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_width":
                 {
+                    "label": "Machine width",
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "label": "Machine width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_depth":
                 {
+                    "label": "Machine depth",
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "label": "Machine depth",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_height":
                 {
+                    "label": "Machine height",
                     "description": "The height (Z-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "label": "Machine height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_heated_bed":
                 {
+                    "label": "Has heated bed",
                     "description": "Whether the machine has a heated bed present.",
                     "default_value": false,
-                    "label": "Has heated bed",
                     "type": "bool",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -119,28 +129,28 @@
                 },
                 "machine_center_is_zero":
                 {
+                    "label": "Is center origin",
                     "description": "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area.",
                     "default_value": false,
                     "type": "bool",
-                    "label": "Is center origin",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_extruder_count":
                 {
+                    "label": "Number extruders",
                     "description": "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle.",
                     "default_value": 1,
                     "type": "int",
-                    "label": "Number extruders",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_tip_outer_diameter":
                 {
-                    "description": "The outer diameter of the tip of the nozzle.",
                     "label": "Outer nozzle diameter",
+                    "description": "The outer diameter of the tip of the nozzle.",
                     "default_value": 1,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -150,74 +160,87 @@
                 },
                 "machine_nozzle_head_distance":
                 {
+                    "label": "Nozzle length",
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
                     "default_value": 3,
                     "type": "float",
-                    "label": "Nozzle length",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_expansion_angle":
                 {
+                    "label": "Nozzle angle",
                     "description": "The angle between the horizontal plane and the conical part right above the tip of the nozzle.",
                     "default_value": 45,
                     "type": "int",
-                    "label": "Nozzle angle",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_heat_zone_length":
                 {
+                    "label": "Heat zone length",
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
                     "default_value": 16,
                     "type": "float",
-                    "label": "Heat zone length",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
                 "machine_nozzle_heat_up_speed":
                 {
+                    "label": "Heat up speed",
                     "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
+                    "unit": "°C/s",
                     "type": "float",
-                    "label": "Heat up speed",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "machine_nozzle_cool_down_speed":
                 {
+                    "label": "Cool down speed",
                     "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
+                    "unit": "°C/s",
                     "type": "float",
-                    "label": "Cool down speed",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_min_cool_heat_time_window":
+                {
+                    "label": "Minimal Time Standby Temperature",
+                    "description": "The minimal time an extruder has to be inactive before the nozzle is cooled. Only when an extruder is not used for longer than this time will it be allowed to cool down to the standby temperature.",
+                    "default_value": 50.0,
+                    "unit": "s",
+                    "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "machine_gcode_flavor":
                 {
+                    "label": "Gcode flavour",
                     "description": "The type of gcode to be generated.",
                     "default_value": "RepRap",
                     "type": "str",
-                    "label": "Gcode flavour",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_disallowed_areas":
                 {
+                    "label": "Disallowed areas",
                     "description": "A list of polygons with areas the print head is not allowed to enter.",
                     "type": "polygons",
                     "default_value": [],
-                    "label": "Disallowed areas",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_head_polygon":
                 {
+                    "label": "Machine head polygon",
                     "description": "A 2D silhouette of the print head (fan caps excluded).",
                     "type": "polygon",
                     "default_value":
@@ -239,13 +262,13 @@
                             1
                         ]
                     ],
-                    "label": "Machine head polygon",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "machine_head_with_fans_polygon":
                 {
+                    "label": "Machine head & Fan polygon",
                     "description": "A 2D silhouette of the print head (fan caps included).",
                     "type": "polygon",
                     "default_value":
@@ -267,16 +290,15 @@
                             -10
                         ]
                     ],
-                    "label": "Machine head & Fan polygon",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "gantry_height":
                 {
+                    "label": "Gantry height",
                     "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
                     "default_value": 99999999999,
-                    "label": "Gantry height",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -303,6 +325,51 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "extruder_prime_pos_x":
+                {
+                    "label": "Extruder Prime X Position",
+                    "description": "The X coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_y":
+                {
+                    "label": "Extruder Prime Y Position",
+                    "description": "The Y coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_z":
+                {
+                    "label": "Extruder Prime Z Position",
+                    "description": "The Z coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_abs":
+                {
+                    "label": "Absolute Extruder Prime Position",
+                    "description": "Make the extruder prime position absolute rather than relative to the last-known location of the head.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -398,7 +465,7 @@
                         },
                         "skin_line_width":
                         {
-                            "label": "Top/bottom Line Width",
+                            "label": "Top/Bottom Line Width",
                             "description": "Width of a single top/bottom line.",
                             "unit": "mm",
                             "minimum_value": "0.0001",
@@ -525,6 +592,7 @@
                     "default_value": 0.8,
                     "minimum_value": "0",
                     "minimum_value_warning": "0.6",
+                    "maximum_value_warning": "machine_height",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -536,7 +604,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
-                            "maximum_value_warning": "100",
+                            "maximum_value_warning": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "settable_per_mesh": true,
@@ -564,6 +632,7 @@
                             "minimum_value": "0",
                             "type": "float",
                             "value": "top_bottom_thickness",
+                            "maximum_value_warning": "machine_height",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -705,7 +774,7 @@
                             "type": "float",
                             "default_value": 2,
                             "minimum_value": "0",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == \"grid\" else (3 if infill_pattern == \"triangles\" else 1))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == \"grid\" else (3 if infill_pattern == \"triangles\" else (3 if infill_pattern == \"cubic\" else 1)))",
                             "settable_per_mesh": true
                         }
                     }
@@ -713,12 +782,13 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle and concentric patterns are fully printed every layer.",
+                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, cubic, triangle and concentric patterns are fully printed every layer.",
                     "type": "enum",
                     "options":
                     {
                         "grid": "Grid",
                         "lines": "Lines",
+                        "cubic": "Cubic",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
@@ -914,7 +984,8 @@
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
                     "type": "bool",
                     "default_value": true,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
@@ -925,7 +996,8 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_speed": {
                     "label": "Retraction Speed",
@@ -937,7 +1009,8 @@
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "100",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
                     "children": {
                         "retraction_retract_speed": {
                             "label": "Retraction Retract Speed",
@@ -950,7 +1023,8 @@
                             "maximum_value_warning": "100",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         },
                         "retraction_prime_speed": {
                             "label": "Retraction Prime Speed",
@@ -963,7 +1037,8 @@
                             "maximum_value_warning": "100",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -976,7 +1051,8 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "5.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_min_travel": {
                     "label": "Retraction Minimum Travel",
@@ -988,7 +1064,8 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
@@ -998,7 +1075,8 @@
                     "maximum_value_warning": "100",
                     "type": "int",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_extrusion_window": {
                     "label": "Minimum Extrusion Distance Window",
@@ -1010,7 +1088,8 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "retraction_hop_enabled": {
                     "label": "Z Hop when Retracted",
@@ -1018,7 +1097,8 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
                     "children": {
                         "retraction_hop_only_when_collides": {
                             "label": "Z Hop Only Over Printed Parts",
@@ -1026,7 +1106,8 @@
                             "type": "bool",
                             "default_value": false,
                             "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         },
                         "retraction_hop": {
                             "label": "Z Hop Height",
@@ -1037,7 +1118,8 @@
                             "minimum_value_warning": "-0.0001",
                             "maximum_value_warning": "10",
                             "enabled": "retraction_enable and retraction_hop_enabled",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -1831,7 +1913,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.5,
-                    "value": "layer_height_0",
+                    "value": "0 if adhesion_type == \"raft\" else layer_height_0",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "settable_per_mesh": false,
@@ -2324,7 +2406,7 @@
                     "description": "If the raft is enabled, this is the extra raft area around the object which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 15,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "adhesion_type == \"raft\""
@@ -2374,6 +2456,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.1,
+                    "value": "layer_height",
                     "minimum_value": "0",
                     "maximum_value_warning": "2.0",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2386,7 +2469,8 @@
                     "description": "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.3,
+                    "default_value": 0.4,
+                    "value": "line_width",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2399,7 +2483,7 @@
                     "description": "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.3,
+                    "default_value": 0.4,
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2413,7 +2497,8 @@
                     "description": "Layer thickness of the middle raft layer.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.27,
+                    "default_value": 0.15,
+                    "value": "layer_height * 1.5",
                     "minimum_value": "0",
                     "maximum_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2426,7 +2511,7 @@
                     "description": "Width of the lines in the middle raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 1,
+                    "default_value": 0.7,
                     "value": "line_width * 2",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "machine_nozzle_size * 2",
@@ -2440,7 +2525,8 @@
                     "description": "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 1.0,
+                    "default_value": 0.9,
+                    "value": "raft_interface_line_width + 0.2",
                     "minimum_value": "0",
                     "maximum_value_warning": "15.0",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2454,6 +2540,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
+                    "value": "layer_height_0 * 1.2",
                     "minimum_value": "0",
                     "maximum_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2466,10 +2553,10 @@
                     "description": "Width of the lines in the base raft layer. These should be thick lines to assist in bed adhesion.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 1,
+                    "default_value": 0.8,
                     "minimum_value": "0.0001",
-                    "value": "line_width * 2",
-                    "maximum_value_warning": "machine_nozzle_size * 2",
+                    "value": "machine_nozzle_size * 2",
+                    "maximum_value_warning": "machine_nozzle_size * 3",
                     "enabled": "adhesion_type == \"raft\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2480,7 +2567,8 @@
                     "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 3.0,
+                    "default_value": 1.6,
+                    "value": "raft_base_line_width * 2",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "100",
                     "enabled": "adhesion_type == \"raft\"",
@@ -2524,12 +2612,12 @@
                             "description": "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high.",
                             "unit": "mm/s",
                             "type": "float",
-                            "default_value": 20,
+                            "default_value": 15,
+                            "value": "raft_speed * 0.75",
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "150",
                             "enabled": "adhesion_type == \"raft\"",
-                            "value": "raft_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -2781,7 +2869,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "support_enable",
+                            "enabled": "support_enable and support_roof_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
@@ -2973,6 +3061,31 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "infill_mesh":
+                {
+                    "label": "Infill Mesh",
+                    "description": "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh. It's suggested to only print one Wall and no Top/Bottom Skin for this mesh.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "infill_mesh_order":
+                {
+                    "label": "Infill Mesh Order",
+                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "default_value": 0,
+                    "value": "1 if infill_mesh else 0",
+                    "minimum_value_warning": "1",
+                    "maximum_value_warning": "50",
+                    "type": "int",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "magic_mesh_surface_mode":
                 {
                     "label": "Surface Mode",
@@ -3067,7 +3180,8 @@
                     "description": "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way.",
                     "unit": "°",
                     "type": "float",
-                    "minimum_value": "0",
+                    "minimum_value": "-89",
+                    "minimum_value_warning": "0",
                     "maximum_value": "89",
                     "default_value": 50,
                     "enabled": "conical_overhang_enabled"

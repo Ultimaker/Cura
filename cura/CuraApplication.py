@@ -19,7 +19,7 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
-import UM.Settings.Validator
+from UM.Settings.Validator import Validator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -32,8 +32,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
-from . import ExtruderManager
-from . import ExtrudersModel
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -42,13 +40,14 @@ from . import CuraActions
 from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
-from . import MachineManagerModel
-from . import ContainerSettingsModel
 from . import CameraImageProvider
 from . import MachineActionManager
 
+import cura.Settings
+
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import platform
@@ -99,7 +98,32 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
+        SettingDefinition.addSettingType("extruder", int, str, Validator)
+
+        ## Add the 4 types of profiles to storage.
+        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
+        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
+        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
+        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+
+        ##  Initialise the version upgrade manager with Cura's storage paths.
+        import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+        self._version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager(
+            {
+                ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences")
+            }
+        )
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
 
@@ -132,6 +156,9 @@ class CuraApplication(QtApplication):
         self._cura_actions = None
         self._started = False
 
+        self._message_box_callback = None
+        self._message_box_callback_arguments = []
+
         self._i18n_catalog = i18nCatalog("cura")
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
@@ -141,21 +168,6 @@ class CuraApplication(QtApplication):
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
-
-        ## Add the 4 types of profiles to storage.
-        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
-        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
-        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
-        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
-        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
-        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
-
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
 
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
@@ -223,6 +235,7 @@ class CuraApplication(QtApplication):
             meshfix
             blackmagic
                 print_sequence
+                infill_mesh
                 dual
             experimental
         """.replace("\n", ";").replace(" ", ""))
@@ -241,6 +254,23 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
+
+    ## A reusable dialogbox
+    #
+    showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
+    def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None, callback_arguments = []):
+        self._message_box_callback = callback
+        self._message_box_callback_arguments = callback_arguments
+        self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
+
+    @pyqtSlot(int)
+    def messageBoxClosed(self, button):
+        if self._message_box_callback:
+            self._message_box_callback(button, *self._message_box_callback_arguments)
+            self._message_box_callback = None
+            self._message_box_callback_arguments = []
+
+    showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
 
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
@@ -261,7 +291,8 @@ class CuraApplication(QtApplication):
                 Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
                 continue
 
-            file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
+            mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
+            file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
             instance_type = instance.getMetaDataEntry("type")
             path = None
             if instance_type == "material":
@@ -289,7 +320,8 @@ class CuraApplication(QtApplication):
                 Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
                 continue
 
-            file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
+            mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
+            file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
             stack_type = stack.getMetaDataEntry("type", None)
             path = None
             if not stack_type or stack_type == "machine":
@@ -366,9 +398,9 @@ class CuraApplication(QtApplication):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        ExtruderManager.ExtruderManager.getInstance()
-        qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
-                                 MachineManagerModel.createMachineManagerModel)
+        cura.Settings.ExtruderManager.getInstance()
+        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager",
+                                 cura.Settings.MachineManager.createMachineManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -412,6 +444,7 @@ class CuraApplication(QtApplication):
     #   \param engine The QML engine.
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
+        engine.rootContext().setContextProperty("CuraApplication", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         self._cura_actions = CuraActions.CuraActions(self)
@@ -419,13 +452,16 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
-        qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+        qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
-        qmlRegisterType(ContainerSettingsModel.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+
+        qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 
-        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.ExtruderManager.getInstance())
+        engine.rootContext().setContextProperty("ExtruderManager", cura.Settings.ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
@@ -546,12 +582,12 @@ class CuraApplication(QtApplication):
             for _ in range(count):
                 if node.getParent() and node.getParent().callDecoration("isGroup"):
                     new_node = copy.deepcopy(node.getParent()) #Copy the group node.
-                    new_node.callDecoration("setConvexHull",None)
+                    new_node.callDecoration("recomputeConvexHull")
 
                     op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
                 else:
                     new_node = copy.deepcopy(node)
-                    new_node.callDecoration("setConvexHull", None)
+                    new_node.callDecoration("recomputeConvexHull")
                     op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
 
             op.push()
@@ -576,6 +612,7 @@ class CuraApplication(QtApplication):
     ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):
+        Logger.log("i", "Clearing scene")
         if not self.getController().getToolsEnabled():
             return
 
@@ -599,6 +636,7 @@ class CuraApplication(QtApplication):
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
     def resetAllTranslation(self):
+        Logger.log("i", "Resetting all scene translations")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
@@ -621,6 +659,7 @@ class CuraApplication(QtApplication):
     ## Reset all transformations on nodes with mesh data. 
     @pyqtSlot()
     def resetAll(self):
+        Logger.log("i", "Resetting all scene transformations")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
@@ -644,6 +683,7 @@ class CuraApplication(QtApplication):
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
     def reloadAll(self):
+        Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
@@ -655,15 +695,14 @@ class CuraApplication(QtApplication):
             return
 
         for node in nodes:
-            if not node.getMeshData():
-                continue
-
             file_name = node.getMeshData().getFileName()
             if file_name:
                 job = ReadMeshJob(file_name)
                 job._node = node
                 job.finished.connect(self._reloadMeshFinished)
                 job.start()
+            else:
+                Logger.log("w", "Unable to reload data because we don't have a filename.")
     
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data

@@ -14,6 +14,11 @@
             "bold": true,
             "family": "Open Sans"
         },
+        "default_italic": {
+            "size": 1.15,
+            "italic": true,
+            "family": "Open Sans"
+        },
         "small": {
             "size": 1.0,
             "bold": true,

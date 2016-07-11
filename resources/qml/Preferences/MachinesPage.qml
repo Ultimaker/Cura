@@ -27,14 +27,35 @@ UM.ManagementPage
         return -1;
     }
 
-    onAddObject: Printer.requestAddPrinter()
-    onRemoveObject: confirmDialog.open();
-    onRenameObject: renameDialog.open();
-    onActivateObject: Cura.MachineManager.setActiveMachine(base.currentItem.id)
-
-    removeEnabled: base.currentItem != null && model.rowCount() > 1
-    renameEnabled: base.currentItem != null
-    activateEnabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachineId
+    buttons: [
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Activate");
+            iconName: "list-activate";
+            enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
+            onClicked: Cura.MachineManager.setActiveMachine(base.currentItem.id)
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Add");
+            iconName: "list-add";
+            onClicked: Printer.requestAddPrinter()
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Remove");
+            iconName: "list-remove";
+            enabled: base.currentItem != null && model.rowCount() > 1
+            onClicked: confirmDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Rename");
+            iconName: "edit-rename";
+            enabled: base.currentItem != null
+            onClicked: renameDialog.open();
+        }
+    ]
 
     Item
     {
@@ -50,10 +71,11 @@ UM.ManagementPage
             elide: Text.ElideRight
         }
 
-        Row
+        Flow
         {
             id: machineActions
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.top: machineName.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 

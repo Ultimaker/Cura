@@ -371,7 +371,7 @@ Item
     {
         id: infillDensity
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: Cura.MachineManager.activeStackId
         key: "infill_sparse_density"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -406,6 +406,7 @@ Item
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
+
     UM.SettingPropertyProvider
     {
         id: supportExtruderNr

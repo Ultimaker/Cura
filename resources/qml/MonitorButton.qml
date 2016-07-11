@@ -18,6 +18,22 @@ Rectangle
     property real progress: printerConnected ? Cura.MachineManager.printerOutputDevices[0].progress : 0;
     property int backendState: UM.Backend.state;
 
+    property variant statusColor:
+    {
+        if(!printerConnected)
+            return UM.Theme.getColor("status_offline")
+        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing" || Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
+            return UM.Theme.getColor("status_busy")
+        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "ready" || Cura.MachineManager.printerOutputDevices[0].jobState == "")
+            return UM.Theme.getColor("status_ready")
+        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+            return UM.Theme.getColor("status_paused")
+        else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
+            return UM.Theme.getColor("status_stopped")
+        else
+            return UM.Theme.getColor("text")
+    }
+
     property bool activity: Printer.getPlatformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
@@ -25,17 +41,17 @@ Rectangle
     {
         if(!printerConnected)
         {
-            return "Please check your printer connections"
+            return catalog.i18nc("@label:", "Please check your printer connections")
         } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
         {
-            return "Printing..."
+            return catalog.i18nc("@label:", "Printing...")
         } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
         {
-            return "Paused"
+            return catalog.i18nc("@label:", "Paused")
         }
         else if(Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
         {
-            return "Preparing..."
+            return catalog.i18nc("@label:", "Preparing...")
         }
         else
         {
@@ -52,7 +68,7 @@ Rectangle
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-        color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
+        color: base.statusColor
         font: UM.Theme.getFont("large")
         text: statusText;
     }
@@ -63,9 +79,9 @@ Rectangle
         anchors.top: parent.top
         anchors.right: progressBar.right
 
-        color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
+        color: base.statusColor
         font: UM.Theme.getFont("large")
-        text: Math.round(progress * 100) + "%";
+        text: Math.round(progress) + "%";
         visible: printerConnected
     }
 
@@ -83,9 +99,9 @@ Rectangle
 
         Rectangle
         {
-            width: Math.max(parent.width * base.progress)
+            width: Math.max(parent.width * base.progress / 100)
             height: parent.height
-            color: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? UM.Theme.getColor("status_paused") : UM.Theme.getColor("status_ready") : UM.Theme.getColor("status_offline")
+            color: base.statusColor
             radius: UM.Theme.getSize("progressbar_radius").width
         }
     }
@@ -95,8 +111,9 @@ Rectangle
         id: abortButton
 
         visible: printerConnected
-        height: UM.Theme.getSize("save_button_save_to_button").height
+        enabled: printerConnected && (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
 
+        height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: parent.right
@@ -140,9 +157,10 @@ Rectangle
     {
         id: pauseButton
 
-        height: UM.Theme.getSize("save_button_save_to_button").height
         visible: printerConnected
+        enabled: printerConnected && (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
 
+        height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: abortButton.left

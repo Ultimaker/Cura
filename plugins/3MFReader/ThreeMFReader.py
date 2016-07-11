@@ -53,7 +53,6 @@ class ThreeMFReader(MeshReader):
                 triangles = entry.findall(".//3mf:triangle", self._namespaces)
                 mesh_builder.reserveFaceCount(len(triangles))
 
-                #for triangle in object.mesh.triangles.triangle:
                 for triangle in triangles:
                     v1 = int(triangle.get("v1"))
                     v2 = int(triangle.get("v2"))
@@ -67,11 +66,11 @@ class ThreeMFReader(MeshReader):
 
                 # Rotate the model; We use a different coordinate frame.
                 rotation = Matrix()
-                rotation.setByRotationAxis(-0.5 * math.pi, Vector(1,0,0))
+                rotation.setByRotationAxis(-0.5 * math.pi, Vector(1, 0, 0))
 
-                #TODO: We currently do not check for normals and simply recalculate them.
+                # TODO: We currently do not check for normals and simply recalculate them.
                 mesh_builder.calculateNormals()
-
+                mesh_builder.setFileName(file_name)
                 node.setMeshData(mesh_builder.build().getTransformed(rotation))
                 node.setSelectable(True)
 
@@ -108,11 +107,11 @@ class ThreeMFReader(MeshReader):
 
                 Job.yieldThread()
 
-            #If there is more then one object, group them.
+            # If there is more then one object, group them.
             if len(objects) > 1:
                 group_decorator = GroupDecorator()
                 result.addDecorator(group_decorator)
         except Exception as e:
-            Logger.log("e" ,"exception occured in 3mf reader: %s" , e)
+            Logger.log("e", "exception occured in 3mf reader: %s", e)
 
         return result  

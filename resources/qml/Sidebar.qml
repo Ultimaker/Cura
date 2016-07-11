@@ -15,6 +15,16 @@ Rectangle
 
     property int currentModeIndex;
     property bool monitoringPrint: false
+    Connections
+    {
+        target: Printer
+        onShowPrintMonitor:
+        {
+            base.monitoringPrint = show;
+            showSettings.checked = !show;
+            showMonitor.checked = show;
+        }
+    }
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
@@ -78,34 +88,39 @@ Rectangle
             anchors.right: parent.right
             Button
             {
+                id: showSettings
                 width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = false
                 iconSource: UM.Theme.getIcon("tab_settings");
                 checkable: true
-                checked: true
+                checked: !monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
 
                 style:  UM.Theme.styles.sidebar_header_tab
             }
             Button
             {
+                id: showMonitor
                 width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = true
                 iconSource: {
                     if(!printerConnected)
-                    {
                         return UM.Theme.getIcon("tab_monitor")
-                    } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
-                    {
-                        return UM.Theme.getIcon("tab_monitor_paused")
-                    } else if (Cura.MachineManager.printerOutputDevices[0].jobState != "error")
-                    {
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing" || Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
+                        return UM.Theme.getIcon("tab_monitor_busy")
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "ready" || Cura.MachineManager.printerOutputDevices[0].jobState == "")
                         return UM.Theme.getIcon("tab_monitor_connected")
-                    }
+                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+                        return UM.Theme.getIcon("tab_monitor_paused")
+                    else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
+                        return UM.Theme.getIcon("tab_monitor_stopped")
+                    else
+                        return UM.Theme.getIcon("tab_monitor")
                 }
                 checkable: true
+                checked: monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
 
                 style:  UM.Theme.styles.sidebar_header_tab
@@ -277,122 +292,16 @@ Rectangle
         }
     }
 
-    // Item that shows the print monitor properties
-    Column
+    Loader
     {
-        id: printMonitor
-
         anchors.bottom: footerSeparator.top
         anchors.top: monitorLabel.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: base.right
-        visible: monitoringPrint
-
-        Loader
-        {
-            sourceComponent: monitorSection
-            property string label: catalog.i18nc("@label", "Temperatures")
-        }
-        Repeater
-        {
-            model: machineExtruderCount.properties.value
-            delegate: Loader
-            {
-                sourceComponent: monitorItem
-                property string label: machineExtruderCount.properties.value > 1 ? catalog.i18nc("@label", "Hotend Temperature %1").arg(index + 1) : catalog.i18nc("@label", "Hotend Temperature")
-                property string value: printerConnected ? Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[index]) + "°C" : ""
-            }
-        }
-        Repeater
-        {
-            model: machineHeatedBed.properties.value == "True" ? 1 : 0
-            delegate: Loader
-            {
-                sourceComponent: monitorItem
-                property string label: catalog.i18nc("@label", "Bed Temperature")
-                property string value: printerConnected ? Math.round(Cura.MachineManager.printerOutputDevices[0].bedTemperature) + "°C" : ""
-            }
-        }
-
-        Loader
-        {
-            sourceComponent: monitorSection
-            property string label: catalog.i18nc("@label", "Active print")
-        }
-        Loader
-        {
-            sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Job Name")
-            property string value: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobName : ""
-        }
-        Loader
-        {
-            sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Printing Time")
-            property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal) : ""
-        }
-        Loader
-        {
-            sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Estimated time left")
-            property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed) : ""
-        }
-        Loader
-        {
-            sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Current Layer")
-            property string value: printerConnected ? "0" : ""
-        }
-
-        Component
-        {
-            id: monitorItem
-
-            Row
-            {
-                height: UM.Theme.getSize("setting_control").height
-                Label
-                {
-                    text: label
-                    color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-                    font: UM.Theme.getFont("default")
-                    width: base.width * 0.4
-                    elide: Text.ElideRight
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                Label
-                {
-                    text: value
-                    color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-                    font: UM.Theme.getFont("default")
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-        }
-        Component
-        {
-            id: monitorSection
-
-            Rectangle
-            {
-                color: UM.Theme.getColor("setting_category")
-                width: base.width - 2 * UM.Theme.getSize("default_margin").width
-                height: UM.Theme.getSize("section").height
-
-                Label
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    text: label
-                    font: UM.Theme.getFont("setting_category")
-                    color: UM.Theme.getColor("setting_category_text")
-                }
-            }
-        }
-    }
+        source: monitoringPrint ? "PrintMonitor.qml": "SidebarContents.qml"
+   }
 
     Rectangle
     {

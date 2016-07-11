@@ -35,7 +35,7 @@ sys.excepthook = exceptHook
 import Arcus #@UnusedImport
 from UM.Platform import Platform
 import cura.CuraApplication
-import cura.CuraContainerRegistry
+import cura.Settings.CuraContainerRegistry
 
 if Platform.isWindows() and hasattr(sys, "frozen"):
     dirpath = os.path.expanduser("~/AppData/Local/cura/")
@@ -44,7 +44,7 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
 # Force an instance of CuraContainerRegistry to be created and reused later.
-cura.CuraContainerRegistry.CuraContainerRegistry.getInstance()
+cura.Settings.CuraContainerRegistry.getInstance()
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()

@@ -10,6 +10,8 @@ import QtQuick.Dialogs 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+import "Menus"
+
 UM.MainWindow
 {
     id: base
@@ -55,41 +57,13 @@ UM.MainWindow
             Menu
             {
                 id: fileMenu
-                //: File menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
 
                 MenuItem {
                     action: Cura.Actions.open;
                 }
 
-                Menu
-                {
-                    id: recentFilesMenu;
-                    title: catalog.i18nc("@title:menu menubar:file", "Open &Recent")
-                    iconName: "document-open-recent";
-
-                    enabled: Printer.recentFiles.length > 0;
-
-                    Instantiator
-                    {
-                        model: Printer.recentFiles
-                        MenuItem
-                        {
-                            text:
-                            {
-                                var path = modelData.toString()
-                                return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
-                            }
-                            onTriggered: {
-                                UM.MeshFileHandler.readLocalFile(modelData);
-                                var meshName = backgroundItem.getMeshName(modelData.toString())
-                                backgroundItem.hasMesh(decodeURIComponent(meshName))
-                            }
-                        }
-                        onObjectAdded: recentFilesMenu.insertItem(index, object)
-                        onObjectRemoved: recentFilesMenu.removeItem(object)
-                    }
-                }
+                RecentFilesMenu { }
 
                 MenuSeparator { }
 
@@ -130,7 +104,6 @@ UM.MainWindow
 
             Menu
             {
-                //: Edit menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Edit");
 
                 MenuItem { action: Cura.Actions.undo; }
@@ -146,173 +119,45 @@ UM.MainWindow
                 MenuItem { action: Cura.Actions.unGroupObjects;}
             }
 
+            ViewMenu { title: catalog.i18nc("@title:menu", "&View") }
+
             Menu
             {
-                title: catalog.i18nc("@title:menu menubar:toplevel","&View");
-                id: top_view_menu
-                Instantiator
-                {
-                    model: UM.ViewModel { }
-                    MenuItem
-                    {
-                        text: model.name;
-                        checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: view_menu_top_group;
-                        onTriggered: UM.Controller.setActiveView(model.id);
-                    }
-                    onObjectAdded: top_view_menu.insertItem(index, object)
-                    onObjectRemoved: top_view_menu.removeItem(object)
-                }
-                ExclusiveGroup { id: view_menu_top_group; }
-            }
-            Menu
-            {
-                id: machineMenu;
-                //: Machine menu
-                title: catalog.i18nc("@title:menu menubar:toplevel","&Printer");
+                id: settingsMenu
+                title: catalog.i18nc("@title:menu", "&Settings")
+
+                PrinterMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Printer") }
 
                 Instantiator
                 {
-                    model: UM.ContainerStacksModel
-                    {
-                        filter: {"type": "machine"}
+                    model: Cura.ExtrudersModel { }
+                    Menu {
+                        title: model.name
+
+                        NozzleMenu { title: catalog.i18nc("@title:menu", "&Nozzle"); visible: Cura.MachineManager.hasVariants }
+                        MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials }
+                        ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
+
+                        MenuSeparator { }
+
+                        MenuItem { text: "Set as Active Extruder" }
                     }
-                    MenuItem
-                    {
-                        text: model.name;
-                        checkable: true;
-                        checked: Cura.MachineManager.activeMachineId == model.id
-                        exclusiveGroup: machineMenuGroup;
-                        onTriggered: Cura.MachineManager.setActiveMachine(model.id);
-                    }
-                    onObjectAdded: machineMenu.insertItem(index, object)
-                    onObjectRemoved: machineMenu.removeItem(object)
+                    onObjectAdded: settingsMenu.insertItem(index, object)
+                    onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                ExclusiveGroup { id: machineMenuGroup; }
+                NozzleMenu { title: catalog.i18nc("@title:menu", "&Nozzle"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
+                MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasMaterials }
+                ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); visible: machineExtruderCount.properties.value <= 1 }
 
                 MenuSeparator { }
 
-                Instantiator
-                {
-                    model: UM.InstanceContainersModel
-                    {
-                        filter:
-                        {
-                            "type": "variant",
-                            "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
-                        }
-                    }
-                    MenuItem {
-                        text: model.name;
-                        checkable: true;
-                        checked: model.id == Cura.MachineManager.activeVariantId;
-                        exclusiveGroup: machineVariantsGroup;
-                        onTriggered: Cura.MachineManager.setActiveVariant(model.id)
-                    }
-                    onObjectAdded: machineMenu.insertItem(index, object)
-                    onObjectRemoved: machineMenu.removeItem(object)
-                }
-
-                ExclusiveGroup { id: machineVariantsGroup; }
-
-                MenuSeparator { visible: Cura.MachineManager.hasVariants; }
-
-                MenuItem { action: Cura.Actions.addMachine; }
-                MenuItem { action: Cura.Actions.configureMachines; }
-            }
-
-            Menu
-            {
-                id: profileMenu
-                title: catalog.i18nc("@title:menu menubar:toplevel", "P&rofile")
-
-                Instantiator
-                {
-                    id: profileMenuInstantiator
-                    model: UM.InstanceContainersModel
-                    {
-                        filter:
-                        {
-                            var result = { "type": "quality" };
-                            if(Cura.MachineManager.filterQualityByMachine)
-                            {
-                                result.definition = Cura.MachineManager.activeDefinitionId;
-                                if(Cura.MachineManager.hasMaterials)
-                                {
-                                    result.material = Cura.MachineManager.activeMaterialId;
-                                }
-                            }
-                            else
-                            {
-                                result.definition = "fdmprinter"
-                            }
-                            return result
-                        }
-                    }
-                    property int separatorIndex: -1
-
-                    Loader {
-                        property QtObject model_data: model
-                        property int model_index: index
-                        sourceComponent: profileMenuItemDelegate
-                    }
-
-                    onObjectAdded:
-                    {
-                        //Insert a separator between readonly and custom profiles
-                        if(separatorIndex < 0 && index > 0) {
-                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
-                                profileMenu.insertSeparator(index);
-                                separatorIndex = index;
-                            }
-                        }
-                        //Because of the separator, custom profiles move one index lower
-                        profileMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
-                    }
-                    onObjectRemoved:
-                    {
-                        //When adding a profile, the menu is rebuild by removing all items.
-                        //If a separator was added, we need to remove that too.
-                        if(separatorIndex >= 0)
-                        {
-                            profileMenu.removeItem(profileMenu.items[separatorIndex])
-                            separatorIndex = -1;
-                        }
-                        profileMenu.removeItem(object.item);
-                    }
-                }
-
-                ExclusiveGroup { id: profileMenuGroup; }
-
-                Component
-                {
-                    id: profileMenuItemDelegate
-                    MenuItem
-                    {
-                        id: item
-                        text: model_data ? model_data.name : ""
-                        checkable: true
-                        checked: model_data != null ? Cura.MachineManager.activeQualityId == model_data.id : false
-                        exclusiveGroup: profileMenuGroup
-                        onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
-                    }
-                }
-
-                MenuSeparator { id: profileMenuSeparator }
-
-                MenuItem { action: Cura.Actions.addProfile }
-                MenuItem { action: Cura.Actions.updateProfile }
-                MenuItem { action: Cura.Actions.resetProfile }
-                MenuSeparator { }
-                MenuItem { action: Cura.Actions.manageProfiles }
+                MenuItem { action: Cura.Actions.configureSettingVisibility }
             }
 
             Menu
             {
                 id: extension_menu
-                //: Extensions menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","E&xtensions");
 
                 Instantiator
@@ -346,8 +191,7 @@ UM.MainWindow
 
             Menu
             {
-                //: Settings menu
-                title: catalog.i18nc("@title:menu menubar:toplevel","&Settings");
+                title: catalog.i18nc("@title:menu menubar:toplevel","P&references");
 
                 MenuItem { action: Cura.Actions.preferences; }
             }
@@ -363,6 +207,16 @@ UM.MainWindow
                 MenuSeparator { }
                 MenuItem { action: Cura.Actions.about; }
             }
+        }
+
+        UM.SettingPropertyProvider
+        {
+            id: machineExtruderCount
+
+            containerStackId: Cura.MachineManager.activeMachineId
+            key: "machine_extruder_count"
+            watchedProperties: [ "value" ]
+            storeIndex: 0
         }
 
         Item
@@ -407,29 +261,13 @@ UM.MainWindow
                 }
             }
 
-            UM.MessageStack
-            {
-                anchors
-                {
-                    horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
-                }
-            }
-
             Loader
             {
                 id: view_panel
 
-                //anchors.left: parent.left;
-                //anchors.right: parent.right;
-                //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
                 anchors.topMargin: UM.Theme.getSize("default_margin").height;
                 anchors.left: viewModeButton.left;
-                //anchors.bottom: buttons.top;
-                //anchors.bottomMargin: UM.Theme.getSize("default_margin").height;
 
                 height: childrenRect.height;
 
@@ -439,7 +277,6 @@ UM.MainWindow
             Button
             {
                 id: openFileButton;
-                //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
@@ -447,9 +284,7 @@ UM.MainWindow
                 anchors
                 {
                     top: parent.top;
-                    //topMargin: UM.Theme.getSize("loadfile_margin").height
                     left: parent.left;
-                    //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
                 action: Cura.Actions.open;
             }
@@ -489,27 +324,7 @@ UM.MainWindow
 
                 style: UM.Theme.styles.tool_button;
                 tooltip: '';
-                menu: Menu
-                {
-                    id: viewMenu;
-                    Instantiator
-                    {
-                        id: viewMenuInstantiator
-                        model: UM.ViewModel { }
-                        MenuItem
-                        {
-                            text: model.name
-                            checkable: true;
-                            checked: model.active
-                            exclusiveGroup: viewMenuGroup;
-                            onTriggered: UM.Controller.setActiveView(model.id);
-                        }
-                        onObjectAdded: viewMenu.insertItem(index, object)
-                        onObjectRemoved: viewMenu.removeItem(object)
-                    }
-
-                    ExclusiveGroup { id: viewMenuGroup; }
-                }
+                menu: ViewMenu { }
             }
 
             Toolbar
@@ -575,6 +390,17 @@ UM.MainWindow
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
                 source: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+            }
+
+            UM.MessageStack
+            {
+                anchors
+                {
+                    horizontalCenter: parent.horizontalCenter
+                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
+                    top: parent.verticalCenter;
+                    bottom: parent.bottom;
+                }
             }
         }
     }
@@ -647,6 +473,16 @@ UM.MainWindow
         {
             preferences.visible = true;
             preferences.setPage(4);
+        }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.manageMaterials
+        onTriggered:
+        {
+            preferences.visible = true;
+            preferences.setPage(3)
         }
     }
 
@@ -844,6 +680,35 @@ UM.MainWindow
                 machineActionsWizard.currentPage = 0;
                 show()
             }
+        }
+    }
+
+    MessageDialog
+    {
+        id: messageDialog
+        modality: Qt.ApplicationModal
+        onAccepted: Printer.messageBoxClosed(clickedButton)
+        onApply: Printer.messageBoxClosed(clickedButton)
+        onDiscard: Printer.messageBoxClosed(clickedButton)
+        onHelp: Printer.messageBoxClosed(clickedButton)
+        onNo: Printer.messageBoxClosed(clickedButton)
+        onRejected: Printer.messageBoxClosed(clickedButton)
+        onReset: Printer.messageBoxClosed(clickedButton)
+        onYes: Printer.messageBoxClosed(clickedButton)
+    }
+
+    Connections
+    {
+        target: Printer
+        onShowMessageBox:
+        {
+            messageDialog.title = title
+            messageDialog.text = text
+            messageDialog.informativeText = informativeText
+            messageDialog.detailedText = detailedText
+            messageDialog.standardButtons = buttons
+            messageDialog.icon = icon
+            messageDialog.visible = true
         }
     }
 

@@ -246,7 +246,7 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","Should objects be scaled up if they are extremely small?")
+            text: catalog.i18nc("@info:tooltip","An object may appear extremely small if its unit is for example in meters rather than millimeters. Should these objects be scaled up?")
 
             CheckBox
             {

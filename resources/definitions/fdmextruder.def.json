@@ -144,6 +144,42 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
                     "settable_globally": false
+                },
+                "extruder_prime_pos_x":
+                {
+                    "label": "Extruder Prime X Position",
+                    "description": "The X coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_y":
+                {
+                    "label": "Extruder Prime Y Position",
+                    "description": "The Y coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "extruder_prime_pos_z":
+                {
+                    "label": "Extruder Prime Z Position",
+                    "description": "The Z coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         }

@@ -33,6 +33,8 @@ UM.ManagementPage
             }
             return result
         }
+
+        sectionProperty: "brand"
     }
 
     activeId: Cura.MachineManager.activeMaterialId
@@ -45,14 +47,70 @@ UM.ManagementPage
         return -1;
     }
 
-    addEnabled: false
-    removeEnabled: false
-    renameEnabled: false
-
-    scrollviewCaption: " "
+    scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
     detailsVisible: true
 
-    property string currency: UM.Preferences.getValue("general/currency")
+    section.property: "section"
+    section.delegate: Label
+    {
+        text: section
+        font.bold: true
+        anchors.left: parent.left;
+        anchors.leftMargin: UM.Theme.getSize("default_lining").width;
+    }
+
+    buttons: [
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Activate");
+            iconName: "list-activate";
+            enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
+            onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Duplicate");
+            iconName: "list-add";
+            enabled: base.currentItem != null
+            onClicked:
+            {
+                var material_id = Cura.ContainerManager.duplicateContainer(base.currentItem.id)
+                if(material_id == "")
+                {
+                    return
+                }
+
+                if(Cura.MachineManager.filterQualityByMachine)
+                {
+                    var quality_id = Cura.ContainerManager.duplicateContainer(Cura.MachineManager.activeQualityId)
+                    Cura.ContainerManager.setContainerMetaDataEntry(quality_id, "material", material_id)
+                    Cura.MachineManager.setActiveQuality(quality_id)
+                }
+
+                Cura.MachineManager.setActiveMaterial(material_id)
+            }
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Remove");
+            iconName: "list-remove";
+            enabled: base.currentItem != null && !base.currentItem.readOnly
+            onClicked: confirmDialog.open()
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Import");
+            iconName: "document-import";
+            onClicked: importDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Export")
+            iconName: "document-export"
+            onClicked: exportDialog.open()
+            enabled: currentItem != null
+        }
+    ]
 
     Item {
         UM.I18nCatalog { id: catalog; name: "cura"; }
@@ -60,126 +118,42 @@ UM.ManagementPage
         visible: base.currentItem != null
         anchors.fill: parent
 
-        Label { id: profileName; text: materialProperties.name; font: UM.Theme.getFont("large"); width: parent.width; }
+        Item
+        {
+            id: profileName
 
-        TabView {
-            id: scrollView
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: profileName.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.bottom: parent.bottom
+            width: parent.width;
+            height: childrenRect.height
 
-            Tab {
-                title: "Information"
-                anchors.margins: UM.Theme.getSize("default_margin").height
+            Label { text: materialProperties.name; font: UM.Theme.getFont("large"); }
+            Button
+            {
+                id: editButton
+                anchors.right: parent.right;
+                text: catalog.i18nc("@action:button", "Edit");
+                iconName: "document-edit";
 
-                Flow {
-                    id: containerGrid
+                enabled: base.currentItem != null && !base.currentItem.readOnly
 
-                    width: scrollView.width;
-                    property real columnWidth: width / 2
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Profile Type") }
-                    Label { width: parent.columnWidth; text: materialProperties.profile_type }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Supplier") }
-                    Label { width: parent.columnWidth; text: materialProperties.supplier }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Material Type") }
-                    Label { width: parent.columnWidth; text: materialProperties.material_type }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Color") }
-
-                    Row {
-                        width: parent.columnWidth;
-                        spacing: UM.Theme.getSize("default_margin").width/2
-                        Rectangle {
-                            color: materialProperties.color_code
-                            width: colorLabel.height
-                            height: colorLabel.height
-                            border.width: UM.Theme.getSize("default_lining").height
-                        }
-                        Label { id: colorLabel; text: materialProperties.color_name }
-                    }
-
-                    Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
-
-                    Label { width: parent.width; text: "<b>" + catalog.i18nc("@label", "Properties") + "</b>" }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Density") }
-                    Label { width: parent.columnWidth; text: materialProperties.density }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Diameter") }
-                    Label { width: parent.columnWidth; text: materialProperties.diameter }
-
-                    Label {
-                        text: catalog.i18nc("@label", "Filament cost")
-                        width: parent.columnWidth;
-                        height: spoolCostInput.height
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Row {
-                        width: parent.columnWidth;
-                        Label {
-                            text: base.currency ? base.currency + " " : " "
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        TextField {
-                            id: spoolCostInput
-                            text: materialProperties.spool_cost
-                        }
-                    }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Filament weight") }
-                    Label { width: parent.columnWidth; text: materialProperties.spool_weight + " " + "g" }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Filament length") }
-                    Label { width: parent.columnWidth; text: materialProperties.spool_length + " " + "m" }
-
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Cost per meter") }
-                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "approx. %1 %2/m").arg(materialProperties.cost_per_meter).arg(base.currency); }
-
-                    Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
-
-                    Label {
-                        text: materialProperties.description ? "<b>" + catalog.i18nc("@label", "Information") + "</b><br>" + materialProperties.description : "";
-                        width: parent.width
-                        wrapMode: Text.WordWrap
-                    }
-                    Label {
-                        text: materialProperties.adhesion_info ? "<b>" + catalog.i18nc("@label", "Adhesion") + "</b><br>" + materialProperties.adhesion_info : "";
-                        width: parent.width
-                        wrapMode: Text.WordWrap
-                    }
-                }
+                checkable: enabled
             }
-            Tab {
-                title: catalog.i18nc("@label", "Print settings")
-                anchors.margins: UM.Theme.getSize("default_margin").height
+        }
 
-                Grid {
-                    columns: 2
-                    spacing: UM.Theme.getSize("default_margin").width
-
-                    Column {
-                        Repeater {
-                            model: base.currentItem ? base.currentItem.settings : null
-                            Label {
-                                text: modelData.name.toString();
-                                elide: Text.ElideMiddle;
-                            }
-                        }
-                    }
-                    Column {
-                        Repeater {
-                            model: base.currentItem ? base.currentItem.settings : null
-                            Label { text: modelData.value.toString() + " " + modelData.unit.toString(); }
-                        }
-                    }
-                }
+        MaterialView
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: profileName.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+                bottom: parent.bottom
             }
+
+            editingEnabled: editButton.checkable && editButton.checked;
+
+            properties: materialProperties
+            containerId: base.currentItem != null ? base.currentItem.id : ""
         }
 
         QtObject
@@ -194,16 +168,99 @@ UM.ManagementPage
             property string color_name: "Yellow";
             property color color_code: "yellow";
 
-            property string density: "Unknown";
-            property string diameter: "Unknown";
+            property real density: 0.0;
+            property real diameter: 0.0;
 
-            property string spool_cost: "Unknown";
-            property string spool_weight: "Unknown";
-            property string spool_length: "Unknown";
-            property string cost_per_meter: "Unknown";
+            property real spool_cost: 0.0;
+            property real spool_weight: 0.0;
+            property real spool_length: 0.0;
+            property real cost_per_meter: 0.0;
 
             property string description: "";
             property string adhesion_info: "";
+        }
+
+        UM.ConfirmRemoveDialog
+        {
+            id: confirmDialog
+            object: base.currentItem != null ? base.currentItem.name : ""
+            onYes:
+            {
+                var containers = Cura.ContainerManager.findInstanceContainers({"GUID": base.currentItem.metadata.GUID})
+                for(var i in containers)
+                {
+                    Cura.ContainerManager.removeContainer(containers[i])
+                }
+            }
+        }
+
+        FileDialog
+        {
+            id: importDialog;
+            title: catalog.i18nc("@title:window", "Import Material");
+            selectExisting: true;
+            nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
+            folder: CuraApplication.getDefaultPath()
+            onAccepted:
+            {
+                var result = Cura.ContainerManager.importContainer(fileUrl)
+
+                messageDialog.title = catalog.i18nc("@title:window", "Import Material")
+                messageDialog.text = catalog.i18nc("@info:status", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                if(result.status == "success")
+                {
+                    messageDialog.icon = StandardIcon.Information
+                    messageDialog.text = catalog.i18nc("@info:status", "Successfully imported material <filename>%1</filename>").arg(fileUrl)
+                }
+                else if(result.status == "duplicate")
+                {
+                    messageDialog.icon = StandardIcon.Warning
+                }
+                else
+                {
+                    messageDialog.icon = StandardIcon.Critical
+                }
+                messageDialog.open()
+            }
+        }
+
+        FileDialog
+        {
+            id: exportDialog;
+            title: catalog.i18nc("@title:window", "Export Material");
+            selectExisting: false;
+            nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
+            folder: CuraApplication.getDefaultPath()
+            onAccepted:
+            {
+                if(base.currentItem.metadata.base_file)
+                {
+                    var result = Cura.ContainerManager.exportContainer(base.currentItem.metadata.base_file, selectedNameFilter, fileUrl)
+                }
+                else
+                {
+                    var result = Cura.ContainerManager.exportContainer(base.currentItem.id, selectedNameFilter, fileUrl)
+                }
+
+                messageDialog.title = catalog.i18nc("@title:window", "Export Material")
+                if(result.status == "error")
+                {
+                    messageDialog.icon = StandardIcon.Critical
+                    messageDialog.text = catalog.i18nc("@info:status", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message)
+                    messageDialog.open()
+                }
+                else if(result.status == "success")
+                {
+                    messageDialog.icon = StandardIcon.Information
+                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(fileUrl)
+                    messageDialog.open()
+                }
+            }
+        }
+
+        MessageDialog
+        {
+            id: messageDialog
         }
     }
 
@@ -228,13 +285,13 @@ UM.ManagementPage
 
             if(currentItem.metadata.properties != undefined && currentItem.metadata.properties != null)
             {
-                materialProperties.density = currentItem.metadata.properties.density ? currentItem.metadata.properties.density : "Unknown";
-                materialProperties.diameter = currentItem.metadata.properties.diameter ? currentItem.metadata.properties.diameter : "Unknown";
+                materialProperties.density = currentItem.metadata.properties.density ? currentItem.metadata.properties.density : 0.0;
+                materialProperties.diameter = currentItem.metadata.properties.diameter ? currentItem.metadata.properties.diameter : 0.0;
             }
             else
             {
-                materialProperties.density = "Unknown";
-                materialProperties.diameter = "Unknown";
+                materialProperties.density = 0.0;
+                materialProperties.diameter = 0.0;
             }
         }
     }
