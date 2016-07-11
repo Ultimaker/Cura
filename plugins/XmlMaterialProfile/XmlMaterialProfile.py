@@ -58,8 +58,13 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
+        if key == "material":
+            self.setName(value)
+
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
             container.setMetaData(copy.deepcopy(self._metadata))
+            if key == "material":
+                container.setName(value)
 
     ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):
