@@ -217,6 +217,8 @@ class MachineManager(QObject):
             quality.nameChanged.disconnect(self._onQualityNameChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        self._active_container_stack = self._global_container_stack
+
         self.globalContainerChanged.emit()
 
         if self._global_container_stack:
