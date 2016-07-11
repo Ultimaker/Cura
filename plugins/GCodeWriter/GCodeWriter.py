@@ -5,6 +5,7 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer #To create a complete setting profile to store in the g-code.
+from UM.Settings.ContainerRegistry import ContainerRegistry
 import re #For escaping characters in the settings.
 
 ##  Writes g-code to a file.
@@ -69,8 +70,13 @@ class GCodeWriter(MeshWriter):
         prefix_length = len(prefix)
 
         global_stack = Application.getInstance().getGlobalContainerStack()
-        container_with_profile = global_stack.findContainer({"type": "quality"})
-        serialized = container_with_profile.serialize()
+        # Collecting all data from the top of the stack
+        temporarySettings= InstanceContainer("")
+        temporarySettings.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
+        for key in global_stack.getAllKeys():
+            result = global_stack.getProperty(key, "value")
+            temporarySettings.setProperty(key, "value", result)
+        serialized = temporarySettings.serialize()
 
         # Escape characters that have a special meaning in g-code comments.
         pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
