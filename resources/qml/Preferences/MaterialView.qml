@@ -51,7 +51,7 @@ TabView
                     width: base.secondColumnWidth;
                     text: properties.supplier;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "brand", text)
+                    onEditingFinished: base.setMetaDataEntry("brand", properties.supplier, text)
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
@@ -60,7 +60,7 @@ TabView
                     width: base.secondColumnWidth;
                     text: properties.material_type;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "material", text)
+                    onEditingFinished: base.setMetaDataEntry("material", properties.material_type, text)
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
@@ -75,7 +75,6 @@ TabView
                     {
                         id: colorSelector
                         color: properties.color_code
-                        onColorChanged: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "color_code", color)
 
                         width: colorLabel.height * 0.75
                         height: colorLabel.height * 0.75
@@ -90,15 +89,15 @@ TabView
                         id: colorLabel;
                         text: properties.color_name;
                         readOnly: !base.editingEnabled
-                        onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "color_name", text)
+                        onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
                     }
 
-                    ColorDialog { id: colorDialog; color: properties.color_code; onAccepted: colorSelector.color = color }
+                    ColorDialog { id: colorDialog; color: properties.color_code; onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color) }
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
 
-                Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: "<b>" + catalog.i18nc("@label", "Properties") + "</b>" }
+                Label { width: parent.width; height: parent.rowHeight; font.bold: true; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Properties") }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
                 ReadOnlySpinBox
@@ -110,7 +109,7 @@ TabView
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
 
-                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "properties/density", value)
+                    onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
@@ -123,7 +122,7 @@ TabView
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
 
-                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "properties/diameter", value)
+                    onEditingFinished: base.setMetaDataEntry("properties/diameter", properties.diameter, value)
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
@@ -175,7 +174,7 @@ TabView
 
                     readOnly: !base.editingEnabled;
 
-                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "description", text)
+                    onEditingFinished: base.setMetaDataEntry("description", properties.description, text)
                 }
 
                 Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Adhesion Information") }
@@ -188,7 +187,7 @@ TabView
 
                     readOnly: !base.editingEnabled;
 
-                    onEditingFinished: Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, "adhesion_info", text)
+                    onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
                 }
             }
         }
@@ -247,6 +246,15 @@ TabView
                     UM.ContainerPropertyProvider { id: provider; containerId: base.containerId; watchedProperties: [ "value" ]; key: model.key }
                 }
             }
+        }
+    }
+
+    // Tiny convenience function to check if a value really changed before trying to set it.
+    function setMetaDataEntry(entry_name, old_value, new_value)
+    {
+        if(old_value != new_value)
+        {
+            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
         }
     }
 }
