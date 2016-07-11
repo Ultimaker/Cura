@@ -147,7 +147,7 @@ UM.ManagementPage
             editingEnabled: base.currentItem != null && !base.currentItem.readOnly && editButton.checked;
 
             properties: materialProperties
-            containerId: base.currentItem.id
+            containerId: base.currentItem != null ? base.currentItem.id : ""
         }
 
         QtObject
