@@ -20,7 +20,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
     ##  Overridden from InstanceContainer
     def duplicate(self, new_id, new_name = None):
-        base_file = self.getMetaDataEntry("base_file", "")
+        base_file = self.getMetaDataEntry("base_file", None)
         new_uuid = str(uuid.uuid4())
 
         if base_file:
@@ -40,7 +40,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         result = super().duplicate(new_id, new_name)
         result.setMetaDataEntry("GUID", new_uuid)
-        result.setMetaDataEntry("base_file", base_file)
+        if result.getMetaDataEntry("base_file", None):
+            result.setMetaDataEntry("base_file", base_file)
         return result
 
     ##  Overridden from InstanceContainer
@@ -57,8 +58,13 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
+        if key == "material":
+            self.setName(value)
+
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
             container.setMetaData(copy.deepcopy(self._metadata))
+            if key == "material":
+                container.setName(value)
 
     ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):

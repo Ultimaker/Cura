@@ -206,17 +206,31 @@ class MachineManager(QObject):
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
+            self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
+
+            material = self._global_container_stack.findContainer({"type": "material"})
+            material.nameChanged.disconnect(self._onMaterialNameChanged)
+
+            quality = self._global_container_stack.findContainer({"type": "quality"})
+            quality.nameChanged.disconnect(self._onQualityNameChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         self.globalContainerChanged.emit()
 
         if self._global_container_stack:
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
+            self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
             self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
+
+            material = self._global_container_stack.findContainer({"type": "material"})
+            material.nameChanged.connect(self._onMaterialNameChanged)
+
+            quality = self._global_container_stack.findContainer({"type": "quality"})
+            quality.nameChanged.connect(self._onQualityNameChanged)
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
@@ -508,8 +522,12 @@ class MachineManager(QObject):
         old_material = self._active_container_stack.findContainer({"type":"material"})
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
         if old_material:
+            old_material.nameChanged.disconnect(self._onMaterialNameChanged)
+
             material_index = self._active_container_stack.getContainerIndex(old_material)
             self._active_container_stack.replaceContainer(material_index, containers[0])
+
+            containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
             preferred_quality_name = None
             if old_quality:
@@ -545,9 +563,13 @@ class MachineManager(QObject):
 
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
         if old_quality and old_quality != containers[0]:
+            old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+
             quality_index = self._active_container_stack.getContainerIndex(old_quality)
 
             self._active_container_stack.replaceContainer(quality_index, containers[0])
+
+            containers[0].nameChanged.connect(self._onQualityNameChanged)
 
             if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
                 # Ask the user if the user profile should be cleared or not (discarding the current settings)
@@ -752,3 +774,15 @@ class MachineManager(QObject):
                 return containers[0]
 
         return self._empty_quality_container
+
+    def _onMachineNameChanged(self):
+        print("machine name changed")
+        self.globalContainerChanged.emit()
+
+    def _onMaterialNameChanged(self):
+        print("material name changed")
+        self.activeMaterialChanged.emit()
+
+    def _onQualityNameChanged(self):
+        print("quality name changed")
+        self.activeQualityChanged.emit()

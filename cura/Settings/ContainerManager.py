@@ -349,6 +349,10 @@ class ContainerManager(QObject):
     def _updateContainerNameFilters(self):
         self._container_name_filters = {}
         for plugin_id, container_type in UM.Settings.ContainerRegistry.getContainerTypes():
+            # Ignore default container types since those are not plugins
+            if container_type in (UM.Settings.InstanceContainer, UM.Settings.ContainerStack, UM.Settings.DefinitionContainer):
+                continue
+
             serialize_type = ""
             try:
                 plugin_metadata = UM.PluginRegistry.getInstance().getMetaData(plugin_id)

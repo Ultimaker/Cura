@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Resources import Resources
@@ -9,9 +10,11 @@ from UM.Math.Vector import Vector
 from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
+from UM.Message import Message
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+catalog = i18nCatalog("cura")
 
 import numpy
 
@@ -162,6 +165,13 @@ class BuildVolume(SceneNode):
     def getBoundingBox(self):
         return self._volume_aabb
 
+    def _buildVolumeMessage(self):
+        Message(catalog.i18nc(
+            "@info:status",
+            "The build volume height has been reduced due to the value of the"
+            " \"Print Sequence\" setting to prevent the gantry from colliding"
+            " with printed objects."), lifetime=10).show()
+
     def _onGlobalContainerStackChanged(self):
         if self._active_container_stack:
             self._active_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
@@ -174,6 +184,7 @@ class BuildVolume(SceneNode):
             self._width = self._active_container_stack.getProperty("machine_width", "value")
             if self._active_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = self._active_container_stack.getProperty("gantry_height", "value")
+                self._buildVolumeMessage()
             else:
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
             self._depth = self._active_container_stack.getProperty("machine_depth", "value")
@@ -189,6 +200,7 @@ class BuildVolume(SceneNode):
         if setting_key == "print_sequence":
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = self._active_container_stack.getProperty("gantry_height", "value")
+                self._buildVolumeMessage()
             else:
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
             self.rebuild()

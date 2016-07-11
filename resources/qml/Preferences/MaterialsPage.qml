@@ -129,7 +129,7 @@ UM.ManagementPage
 
                 enabled: base.currentItem != null && !base.currentItem.readOnly
 
-                checkable: true
+                checkable: enabled
             }
         }
 
@@ -144,10 +144,10 @@ UM.ManagementPage
                 bottom: parent.bottom
             }
 
-            editingEnabled: base.currentItem != null && !base.currentItem.readOnly && editButton.checked;
+            editingEnabled: editButton.checkable && editButton.checked;
 
             properties: materialProperties
-            containerId: base.currentItem.id
+            containerId: base.currentItem != null ? base.currentItem.id : ""
         }
 
         QtObject
