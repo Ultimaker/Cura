@@ -616,7 +616,7 @@ def main():
 	clear_quickprint_folders()
 
 	dirs = glob.glob(os.path.join(CURA_QUICKPRINT_DIR, PROFILES_DIR, "*"))
- 
+
 	for d in dirs:
 		dir = os.path.basename(d)
 		if dir_map.has_key(dir):
