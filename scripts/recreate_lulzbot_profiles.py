@@ -49,6 +49,7 @@ material_map = {
 	"HIPS_eSUN": "HIPS",
 	"PLA_eSUN": "PLA",
 	"PLA_VP": "PLA",
+	"PLA_verbatim": "PLA",
 	"nGen": "nGen",
 	"PLA_PHA": "PLA-PHA",
 	
@@ -135,6 +136,7 @@ material_order = {
 	"HIPS_eSUN":            2,
 	"PLA_eSUN":             3,
 	"PLA_PHA":              4,
+	"PLA_verbatim":         5,
 	
 	# Intermediate
 	"ABS_VP":              10,
@@ -219,6 +221,7 @@ material_types = {
 	"PLA_VP": "Beginner",
 	"nGen": "Beginner",
 	"PLA_PHA": "Beginner",
+	"PLA_verbatim": "Beginner",
 	
 	# Intermediate
 	"ABS_VP": "Intermediate",
@@ -293,6 +296,7 @@ material_names = {
 	"PLA_VP": "PLA (Village Plastics)",
 	"nGen": "nGen (colorFabb)",
 	"PLA_PHA": "PLA/PHA (colorFabb)",
+	"PLA_verbatim": "PLA (Verbatim)",
 	
 	# Intermediate
 	"ABS_VP": "ABS (Village Plastics)",
@@ -377,6 +381,7 @@ material_url = {
 	"PLA_VP": "lulzbot.com/store/filament/pla-village",
 	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PLA_PHA": "",
+#	"PLA_verbatim": "",
 
 	# Intermediate
 	"ABS_VP": "lulzbot.com/store/filament/abs",
