@@ -13,7 +13,10 @@ import Cura 1.0 as Cura
 
     Instantiator
     {
-        model: UM.InstanceContainersModel { filter: menu.getFilter({ "read_only": true }); }
+        model: UM.InstanceContainersModel
+        {
+            filter: menu.getFilter({ "read_only": true });
+        }
 
         MenuItem
         {
@@ -32,13 +35,11 @@ import Cura 1.0 as Cura
 
     Instantiator
     {
+        id: customProfileInstantiator
         model: UM.InstanceContainersModel
         {
-            id: customProfilesModel;
             filter: menu.getFilter({ "read_only": false });
-            onRowsInserted: customSeparator.visible = rowCount() > 1
-            onRowsRemoved: customSeparator.visible = rowCount() > 1
-            onModelReset: customSeparator.visible = rowCount() > 1
+            onModelReset: customSeparator.visible = rowCount() > 0
         }
 
         MenuItem
@@ -50,8 +51,16 @@ import Cura 1.0 as Cura
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
         }
 
-        onObjectAdded: menu.insertItem(index, object);
-        onObjectRemoved: menu.removeItem(object);
+        onObjectAdded:
+        {
+            customSeparator.visible = model.rowCount() > 0;
+            menu.insertItem(index, object);
+        }
+        onObjectRemoved:
+        {
+            customSeparator.visible = model.rowCount() > 0;
+            menu.removeItem(object);
+        }
     }
 
     ExclusiveGroup { id: group; }
