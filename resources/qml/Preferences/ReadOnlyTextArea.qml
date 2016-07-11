@@ -3,7 +3,6 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.2
 
 Item
 {
@@ -28,7 +27,23 @@ Item
 
         anchors.fill: parent
 
-        onEditingFinished: base.editingFinished()
+        Keys.onReturnPressed:
+        {
+            base.editingFinished()
+        }
+
+        Keys.onEnterPressed:
+        {
+            base.editingFinished()
+        }
+
+        onActiveFocusChanged:
+        {
+            if(!activeFocus)
+            {
+                base.editingFinished()
+            }
+        }
     }
 
     Label
