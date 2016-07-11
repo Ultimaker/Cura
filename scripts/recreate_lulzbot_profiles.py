@@ -52,6 +52,7 @@ material_map = {
 	"PLA_verbatim": "PLA",
 	"nGen": "nGen",
 	"PLA_PHA": "PLA-PHA",
+	"PLA_poly": "PLA-polylite",
 	
 	# Intermediate
 	"ABS_VP": "ABS",
@@ -122,7 +123,6 @@ material_map = {
 	"b-pet": "b-pet",
 	"PC-MAX": "polymaker-PC-MAX",
 	"wood-bamboo": "woodFill-bambooFill",
-	"PLA_poly": "PLA-polylite",
 	"polyflex": "polyflex",
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
@@ -137,6 +137,7 @@ material_order = {
 	"PLA_eSUN":             3,
 	"PLA_PHA":              4,
 	"PLA_verbatim":         5,
+	"PLA_poly":          	6,
 	
 	# Intermediate
 	"ABS_VP":              10,
@@ -207,7 +208,6 @@ material_order = {
 	"b-pet":             5002,
 	"PC-MAX":            5003,
 	"wood-bamboo":       5004,
-	"PLA_poly":          5005,
 	"polyflex":          5006,
 	"armadillo":         5007,
 	"brassfill":         5008,
@@ -222,6 +222,7 @@ material_types = {
 	"nGen": "Beginner",
 	"PLA_PHA": "Beginner",
 	"PLA_verbatim": "Beginner",
+	"PLA_poly": "Beginner",
 	
 	# Intermediate
 	"ABS_VP": "Intermediate",
@@ -297,6 +298,7 @@ material_names = {
 	"nGen": "nGen (colorFabb)",
 	"PLA_PHA": "PLA/PHA (colorFabb)",
 	"PLA_verbatim": "PLA (Verbatim)",
+	"PLA_poly": "PLA Polylite (Polymaker)",
 	
 	# Intermediate
 	"ABS_VP": "ABS (Village Plastics)",
@@ -367,7 +369,6 @@ material_names = {
 	"b-pet": "B-Pet",
 	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
-	"PLA_poly": "PLA Polylite (Polymaker)",
 	"polyflex": "Polyflex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
@@ -382,6 +383,7 @@ material_url = {
 	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PLA_PHA": "",
 #	"PLA_verbatim": "",
+#	"PLA_poly": "",
 
 	# Intermediate
 	"ABS_VP": "lulzbot.com/store/filament/abs",
@@ -451,7 +453,6 @@ material_url = {
 #	"b-pet": "",
 #	"PC-MAX": "",
 #	"wood-bamboo": "",
-#	"PLA_poly": "",
 #	"polyflex": "",
 #	"armadillo": "",
 #	"brassfill": "",
