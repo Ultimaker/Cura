@@ -67,9 +67,11 @@ class Layer:
     def createJumps(self):
         return self.createMeshOrJumps(False)
 
+    # Defines the two triplets of local point indices to use to draw the two faces for each line segment in createMeshOrJump
+    __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
+
     def createMeshOrJumps(self, make_mesh):
         builder = MeshBuilder()
-        index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
         
         line_count = 0
         if make_mesh:
@@ -106,8 +108,8 @@ class Layer:
 
             # Create 4 points to draw each line segment, points +- normals results in 2 points each. Reshape to one point per line
             f_points = numpy.concatenate((points-normals, points+normals), 1).reshape((-1, 3))
-            # index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4 
-            f_indices = ( index_pattern + numpy.arange(0, 4 * len(normals), 4, dtype=numpy.int32).reshape((-1, 1)) ).reshape((-1, 3))
+            # __index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4 
+            f_indices = ( self.__index_pattern + numpy.arange(0, 4 * len(normals), 4, dtype=numpy.int32).reshape((-1, 1)) ).reshape((-1, 3))
             f_colors = numpy.repeat(polygon.mapLineTypeToColor(line_types), 4, 0)
 
             builder.addFacesWithColor(f_points, f_indices, f_colors)

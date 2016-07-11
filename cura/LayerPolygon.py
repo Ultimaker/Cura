@@ -63,7 +63,7 @@ class LayerPolygon:
         
 
     def build(self, vertex_offset, index_offset, vertices, colors, indices):
-        if (self._build_cache_line_mesh_mask == None) or (self._build_cache_needed_points == None ):
+        if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
             self.buildCache()
             
         line_mesh_mask = self._build_cache_line_mesh_mask
