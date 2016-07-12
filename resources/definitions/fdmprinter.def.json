@@ -1433,7 +1433,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 60,
                             "value": "speed_print",
-                            "enabled": "support_roof_enable and support_enable",
+                            "enabled": "support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
