@@ -51,7 +51,13 @@ UM.ManagementPage
     detailsVisible: true
 
     section.property: "section"
-    section.delegate: Label { text: section }
+    section.delegate: Label
+    {
+        text: section
+        font.bold: true
+        anchors.left: parent.left;
+        anchors.leftMargin: UM.Theme.getSize("default_lining").width;
+    }
 
     buttons: [
         Button

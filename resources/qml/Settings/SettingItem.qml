@@ -64,7 +64,7 @@ Item {
         return tooltip
     }
 
-    MouseArea 
+    MouseArea
     {
         id: mouse;
 
@@ -114,7 +114,8 @@ Item {
             elide: Text.ElideMiddle;
 
             color: UM.Theme.getColor("setting_control_text");
-            font: UM.Theme.getFont("default");
+            // emphasize the setting if it has a value in the user or quality profile
+            font: base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
         Row

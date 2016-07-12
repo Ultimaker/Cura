@@ -221,7 +221,18 @@ class ExtruderManager(QObject):
 
         container_registry.addContainer(container_stack)
 
-    ##  Generates extruders for a specific machine.
+    ##  Removes the container stack and user profile for the extruders for a specific machine.
+    #
+    #   \param machine_id The machine to remove the extruders for.
+    def removeMachineExtruders(self, machine_id):
+        for extruder in self.getMachineExtruders(machine_id):
+            current_settings_id = extruder.getId() + "_current_settings"
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = current_settings_id)
+            for container in containers:
+                UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
+            UM.Settings.ContainerRegistry.getInstance().removeContainer(extruder.getId())
+
+    ##  Returns extruders for a specific machine.
     #
     #   \param machine_id The machine to get the extruders of.
     def getMachineExtruders(self, machine_id):

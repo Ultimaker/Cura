@@ -3,9 +3,11 @@
 
 from UM.Tool import Tool
 from UM.Scene.Selection import Selection
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Application import Application
 from UM.Preferences import Preferences
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+
 
 ##  This tool allows the user to add & change settings per node in the scene.
 #   The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
@@ -69,6 +71,11 @@ class PerObjectSettingsTool(Tool):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             self._multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+            if not self._multi_extrusion:
+                # Ensure that all extruder data is reset
+                root_node = Application.getInstance().getController().getScene().getRoot()
+                for node in DepthFirstIterator(root_node):
+                    node.callDecoration("setActiveExtruder", global_container_stack.getId())
             self._updateEnabled()
 
     def _updateEnabled(self):
