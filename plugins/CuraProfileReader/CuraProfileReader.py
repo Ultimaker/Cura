@@ -3,7 +3,6 @@
 
 import os.path
 
-from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer #The new profile to make.
 from cura.ProfileReader import ProfileReader

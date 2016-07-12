@@ -12,6 +12,6 @@ class ProfileReader(PluginObject):
 
     ##  Read profile data from a file and return a filled profile.
     #
-    #   \return \type{Profile} The profile that was obtained from the file.
+    #   \return \type{Profile|Profile[]} The profile that was obtained from the file or a list of Profiles.
     def read(self, file_name):
         raise NotImplementedError("Profile reader plug-in was not correctly implemented. The read function was not implemented.")
