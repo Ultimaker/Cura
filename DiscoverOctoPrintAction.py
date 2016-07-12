@@ -1,6 +1,6 @@
 from UM.i18n import i18nCatalog
 from cura.MachineAction import MachineAction
-import cura.CuraContainerRegistry
+import cura.Settings.CuraContainerRegistry
 
 from UM.Settings.DefinitionContainer import DefinitionContainer
 
@@ -20,7 +20,7 @@ class DiscoverOctoPrintAction(MachineAction, QObject, ):
 
         self._network_plugin = None
 
-        cura.CuraContainerRegistry.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+        cura.Settings.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     printersChanged = pyqtSignal()
 
