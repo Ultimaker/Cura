@@ -207,12 +207,13 @@ class ExtruderManager(QObject):
                 #And leave it at the default quality.
         container_stack.addContainer(quality)
 
-        user_profile = container_registry.findInstanceContainers(id = extruder_stack_id + "_current_settings")
+        user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
         if user_profile: #There was already a user profile, loaded from settings.
             user_profile = user_profile[0]
         else:
             user_profile = UM.Settings.InstanceContainer(extruder_stack_id + "_current_settings") #Add an empty user profile.
             user_profile.addMetaDataEntry("type", "user")
+            user_profile.addMetaDataEntry("extruder", extruder_stack_id)
             user_profile.setDefinition(machine_definition)
             container_registry.addContainer(user_profile)
         container_stack.addContainer(user_profile)
@@ -226,8 +227,7 @@ class ExtruderManager(QObject):
     #   \param machine_id The machine to remove the extruders for.
     def removeMachineExtruders(self, machine_id):
         for extruder in self.getMachineExtruders(machine_id):
-            current_settings_id = extruder.getId() + "_current_settings"
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = current_settings_id)
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "user", extruder = extruder.getId())
             for container in containers:
                 UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
             UM.Settings.ContainerRegistry.getInstance().removeContainer(extruder.getId())
