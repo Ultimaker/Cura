@@ -1433,7 +1433,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 60,
                             "value": "speed_print",
-                            "enabled": "support_roof_enable",
+                            "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
@@ -1635,7 +1635,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled and support_roof_enable",
+                            "enabled": "acceleration_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children": {
@@ -1663,7 +1663,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "enabled": "acceleration_enabled and support_roof_enable",
+                                    "enabled": "acceleration_enabled and support_roof_enable and support_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -1823,7 +1823,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled and support_roof_enable",
+                            "enabled": "jerk_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children": {
@@ -1851,7 +1851,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "enabled": "jerk_enabled and support_roof_enable",
+                                    "enabled": "jerk_enabled and support_roof_enable and support_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -2340,7 +2340,7 @@
                     "default_value": 1,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "support_roof_enable",
+                    "enabled": "support_roof_enable and support_enable",
                     "settable_per_mesh": true
                 },
                 "support_roof_density":
@@ -2352,7 +2352,7 @@
                     "default_value": 100,
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
-                    "enabled":"support_roof_enable",
+                    "enabled":"support_roof_enable and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -2366,7 +2366,7 @@
                             "default_value": 0.4,
                             "minimum_value": "0",
                             "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == \"grid\" else (3 if support_roof_pattern == \"triangles\" else 1))",
-                            "enabled": "support_roof_enable",
+                            "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
@@ -2386,7 +2386,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
-                    "enabled": "support_roof_enable",
+                    "enabled": "support_roof_enable and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
