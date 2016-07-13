@@ -35,10 +35,10 @@ class ExtruderManager(QObject):
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self):
         if not UM.Application.getInstance().getGlobalContainerStack():
-            return None #No active machine, so no active extruder.
+            return None # No active machine, so no active extruder.
         try:
             return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)].getId()
-        except KeyError: #Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
+        except KeyError: # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
     ##  The instance of the singleton pattern.
@@ -74,11 +74,9 @@ class ExtruderManager(QObject):
     def getActiveExtruderStack(self):
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            global_definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
-            if global_definition_container:
-                if global_definition_container.getId() in self._extruder_trains:
-                    if str(self._active_extruder_index) in self._extruder_trains[global_definition_container.getId()]:
-                        return self._extruder_trains[global_definition_container.getId()][str(self._active_extruder_index)]
+            if global_container_stack.getId() in self._extruder_trains:
+                if str(self._active_extruder_index) in self._extruder_trains[global_container_stack.getId()]:
+                    return self._extruder_trains[global_container_stack.getId()][str(self._active_extruder_index)]
         return None
 
     ##  Adds all extruders of a specific machine definition to the extruder
