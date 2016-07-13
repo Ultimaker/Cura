@@ -42,7 +42,7 @@ Cura.MachineAction
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            text: catalog.i18nc("@label", "Self-built heated bed")
+            text: catalog.i18nc("@label", "Heated bed (official kit or self-built)")
             checked: manager.hasHeatedBed
             onClicked: manager.hasHeatedBed ? manager.removeHeatedBed() : manager.addHeatedBed()
         }
