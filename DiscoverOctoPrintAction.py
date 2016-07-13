@@ -6,13 +6,13 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 
 from UM.Application import Application
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot
 
 catalog = i18nCatalog("cura")
 
-class DiscoverOctoPrintAction(MachineAction, QObject):
+class DiscoverOctoPrintAction(MachineAction):
     def __init__(self, parent = None):
-        MachineAction.__init__(self, "DiscoverOctoPrintAction", catalog.i18nc("@action", "Connect OctoPrint"))
+        super().__init__("DiscoverOctoPrintAction", catalog.i18nc("@action", "Connect OctoPrint"))
 
         self._qml_url = "DiscoverOctoPrintAction.qml"
         self._window = None
