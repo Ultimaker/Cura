@@ -1,9 +1,11 @@
-[2.1.2]
-
-Cura has been completely reengineered from the ground up for an even more seamless integration between hardware, software and materials. Together with its intuitive new user interface, it’s now also ready for any future developments. For the beginner Cura makes 3D printing incredibly easy, and for more advanced users, there are over 140 new customisable settings.
+[2.1.3]
 
 *Material Profiles
 New material profiles for CPE+, PC, Nylon and TPU for the Ultimaker 2+ family.
+
+[2.1.2]
+
+Cura has been completely reengineered from the ground up for an even more seamless integration between hardware, software and materials. Together with its intuitive new user interface, it’s now also ready for any future developments. For the beginner Cura makes 3D printing incredibly easy, and for more advanced users, there are over 200 customizable settings.
 
 *Select Multiple Objects
 You now have the freedom to select and manipulate multiple objects at the same time.
@@ -30,22 +32,61 @@ An optimized 64-bit Windows Cura version is now available. This allows you to lo
 Cura allows you to set a number of lines/layers instead of millimeters. The engine automatically calculates the right settings.
 
 *Per-Object Settings
-You can now override individual settings for different objects in advanced mode.
+Per-object settings allow you to override individual profile settings per object.
 
-*Fuzzy Skin
-Prints the outer walls with a jittering motion to give your object a diffused finish.
+*Engine Features
 
-*Wire Printing
-The object is printed with a mid-air / net-like structure, following the mesh surface. The build plate will move up and down during diagonal segments. Though not visible in layer view, you can view the result in other software, such as Repetier Host or http://chilipeppr.com/tinyg.
+*Line Width
+Line width settings added per feature: Global, Walls, Top/Bottom, Infill, Skirt, Support.
 
-*Conical Support
-An experimental filament, cost-reduction feature, for support.
+*Pattern Settings
+Pattern settings improved per feature: Top/Bottom, Infill, Support.
+
+*Shell
+
+*Alternate Skin Rotation
+Helps to combat the pillowing problem on top layers.
+
+*Alternate Extra Wall
+For better infill adhesion.
+
+*Horizontal Expansion
+Allows to compensate model x,y-size to get a 1:1 result.
+
+*Travel
+
+*Avoid Printed Parts
+When moving to the next part to print, avoid collisions between the nozzle and other parts which are already printed.
+
+*Support
+
+*Stair Step Height
+Sets the balance between sturdy and hard to remove support. By setting steps of the stair-like bottom of the support resting on the model.
+
+*ZigZag
+A new, infill type that’s easily breakable, introduced specially for support.
+
+*Support Roofs
+A new sub-feature to reduce scars the support leaves on overhangs.
 
 *Support Towers
 Specialized support for tiny overhang areas.
 
-*ZigZag infill
-A new, infill type that’s easily breakable, introduced specially for support.
+*Special Modes
 
-*Avoid Printed Parts
-While combing, the print head moves around printed parts, avoiding collisions with the nozzle and a part that’s already printed.
+*Surface Mode
+This mode will print the surface of the mesh instead of the enclosed volume. This used to be called ‘Only follow mesh surface’. In addition to the ‘surface mode’ and ‘normal’, a ‘both’ mode has now been added. This ensures all closed volumes are printed as normal and all loose geometry as single walls.
+
+*Experimental Features
+
+*Conical Support
+An experimental filament, cost-reduction feature, for support.
+
+*Draft Shield
+Prints a protective wall at a set distance around the object that prevents air from hitting the print, reducing warping.
+
+*Fuzzy Skin
+Prints the outer walls with a jittering motion to give your object a diffuse finish.
+
+*Wire Printing
+The object is printed with a mid-air / net-like structure, following the mesh surface. The build plate will move up and down during diagonal segments. Though not visible in layer view, you can view the result in other software, such as Repetier Host or http://chilipeppr.com/tinyg.
