@@ -39,10 +39,6 @@ Per-object settings allow you to override individual profile settings per object
 *Line Width
 Line width settings added per feature: Global, Walls, Top/Bottom, Infill, Skirt, Support.
 
-<<<<<<< HEAD
-* Conical Support
-An experimental filament, cost-reduction feature, for support.
-=======
 *Pattern Settings
 Pattern settings improved per feature: Top/Bottom, Infill, Support.
 
