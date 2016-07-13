@@ -68,7 +68,6 @@ A new, infill type that’s easily breakable, introduced specially for support.
 
 *Support Roofs
 A new sub-feature to reduce scars the support leaves on overhangs.
->>>>>>> 24c8773... Update changelog with corrections done after release
 
 *Support Towers
 Specialized support for tiny overhang areas.
