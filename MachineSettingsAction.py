@@ -10,7 +10,7 @@ from PyQt5.QtCore import  pyqtSlot, QObject
 
 catalog = i18nCatalog("cura")
 
-class MachineSettingsAction(MachineAction, QObject, ):
+class MachineSettingsAction(MachineAction, QObject):
     def __init__(self, parent = None):
         MachineAction.__init__(self, "MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
