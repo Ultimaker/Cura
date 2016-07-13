@@ -126,6 +126,7 @@ class CuraApplication(QtApplication):
         )
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
+        self._machine_manager = None    # This is initialized on demand.
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
@@ -399,8 +400,7 @@ class CuraApplication(QtApplication):
 
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         cura.Settings.ExtruderManager.getInstance()
-        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager",
-                                 cura.Settings.MachineManager.createMachineManager)
+        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -418,6 +418,11 @@ class CuraApplication(QtApplication):
             self._started = True
 
             self.exec_()
+
+    def getMachineManager(self, *args):
+        if self._machine_manager is None:
+            self._machine_manager = cura.Settings.MachineManager.createMachineManager()
+        return self._machine_manager
 
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.

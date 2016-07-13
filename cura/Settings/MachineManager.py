@@ -692,7 +692,7 @@ class MachineManager(QObject):
             return containers[0].getBottom().getId()
 
     @staticmethod
-    def createMachineManager(engine, script_engine):
+    def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
     def _updateVariantContainer(self, definition):
