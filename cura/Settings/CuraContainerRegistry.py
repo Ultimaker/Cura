@@ -133,31 +133,44 @@ class CuraContainerRegistry(ContainerRegistry):
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
-                profile = profile_reader.read(file_name) #Try to open the file with the profile reader.
+                profile_or_list = profile_reader.read(file_name) # Try to open the file with the profile reader.
             except Exception as e:
                 #Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s", file_name, str(e))
                 return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
-            if profile: #Success!
-                profile.setReadOnly(False)
-
-                new_name = self.createUniqueName("quality", "", os.path.splitext(os.path.basename(file_name))[0],
-                                                 catalog.i18nc("@label", "Custom profile"))
-                profile.setName(new_name)
-                profile._id = new_name
-
-                if self._machineHasOwnQualities():
-                    profile.setDefinition(self._activeDefinition())
-                    if self._machineHasOwnMaterials():
-                        profile.addMetaDataEntry("material", self._activeMaterialId())
+            if profile_or_list: # Success!
+                name_seed = os.path.splitext(os.path.basename(file_name))[0]
+                if type(profile_or_list) is not list:
+                    profile = profile_or_list
+                    self._configureProfile(profile, name_seed)
+                    return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
-                    profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
-                ContainerRegistry.getInstance().addContainer(profile)
+                    for profile in profile_or_list:
+                        self._configureProfile(profile, name_seed)
 
-                return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
+                    if len(profile_or_list) == 1:
+                        return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
+                    else:
+                        profile_names = ", ".join([profile.getName() for profile in profile_or_list])
+                        return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profiles {0}", profile_names) }
 
         #If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return { "status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
+
+    def _configureProfile(self, profile, name_seed):
+        profile.setReadOnly(False)
+
+        new_name = self.createUniqueName("quality", "", name_seed, catalog.i18nc("@label", "Custom profile"))
+        profile.setName(new_name)
+        profile._id = new_name
+
+        if self._machineHasOwnQualities():
+            profile.setDefinition(self._activeDefinition())
+            if self._machineHasOwnMaterials():
+                profile.addMetaDataEntry("material", self._activeMaterialId())
+        else:
+            profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
+        ContainerRegistry.getInstance().addContainer(profile)
 
     ##  Gets a list of profile writer plugins
     #   \return List of tuples of (plugin_id, meta_data).

@@ -87,6 +87,21 @@
         "material_bed_temperature": {
             "enabled": "False"
         },
+        "machine_max_feedrate_x": {
+            "default_value": 300
+        },
+        "machine_max_feedrate_y": {
+            "default_value": 300
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 40
+        },
+        "machine_max_feedrate_e": {
+            "default_value": 45
+        },
+        "machine_acceleration": {
+            "default_value": 3000
+        },
         "material_diameter": {
             "enabled": "False"
         },

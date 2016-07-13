@@ -640,8 +640,7 @@ class MachineManager(QObject):
             return
         ExtruderManager.getInstance().removeMachineExtruders(stacks[0].getBottom().getId())
 
-        current_settings_id = machine_id + "_current_settings"
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = current_settings_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
         for container in containers:
             UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
@@ -693,7 +692,7 @@ class MachineManager(QObject):
             return containers[0].getBottom().getId()
 
     @staticmethod
-    def createMachineManager(engine, script_engine):
+    def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
     def _updateVariantContainer(self, definition):
