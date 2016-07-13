@@ -88,7 +88,7 @@ class GCodeWriter(MeshWriter):
         data = {"global_quality": serialized}
 
         manager = ExtruderManager.getInstance()
-        for extruder in manager.getMachineExtruders(stack.getBottom().getId()):
+        for extruder in manager.getMachineExtruders(stack.getId()):
             extruder_quality = extruder.findContainer({"type": "quality"})
 
             flat_extruder_quality_id = machine_manager.duplicateContainer(extruder_quality.getId())

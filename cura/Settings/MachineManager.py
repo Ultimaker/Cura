@@ -292,7 +292,7 @@ class MachineManager(QObject):
                 new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
-            ExtruderManager.getInstance().addMachineExtruders(definition)
+            ExtruderManager.getInstance().addMachineExtruders(definition, new_global_stack.getId())
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
