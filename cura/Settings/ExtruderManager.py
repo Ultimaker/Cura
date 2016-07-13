@@ -95,21 +95,21 @@ class ExtruderManager(QObject):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
         if container_registry:
 
-            #Add the extruder trains that don't exist yet.
+            # Add the extruder trains that don't exist yet.
             for extruder_definition in container_registry.findDefinitionContainers(machine = machine_definition.getId()):
                 position = extruder_definition.getMetaDataEntry("position", None)
                 if not position:
                     UM.Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.getId())
-                if not container_registry.findContainerStacks(machine = machine_id, position = position): #Doesn't exist yet.
+                if not container_registry.findContainerStacks(machine = machine_id, position = position): # Doesn't exist yet.
                     self.createExtruderTrain(extruder_definition, machine_definition, position)
                     changed = True
 
-            #Gets the extruder trains that we just created as well as any that still existed.
+            # Gets the extruder trains that we just created as well as any that still existed.
             extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_definition.getId())
             for extruder_train in extruder_trains:
                 self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
 
-                #Ensure that the extruder train stacks are linked to global stack.
+                # Ensure that the extruder train stacks are linked to global stack.
                 extruder_train.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
                 changed = True
 
@@ -124,30 +124,27 @@ class ExtruderManager(QObject):
     #
     #   The resulting container stack is added to the registry.
     #
-    #   \param extruder_definition The extruder to create the extruder train
-    #   for.
-    #   \param machine_definition The machine that the extruder train belongs
-    #   to.
-    #   \param position The position of this extruder train in the extruder
-    #   slots of the machine.
+    #   \param extruder_definition  The extruder to create the extruder train for.
+    #   \param machine_definition   The machine that the extruder train belongs to.
+    #   \param position             The position of this extruder train in the extruder slots of the machine.
     def createExtruderTrain(self, extruder_definition, machine_definition, position):
-        #Cache some things.
+        # Cache some things.
         container_registry = UM.Settings.ContainerRegistry.getInstance()
         machine_id = machine_definition.getId()
 
-        #Create a container stack for this extruder.
+        # Create a container stack for this extruder.
         extruder_stack_id = container_registry.uniqueName(extruder_definition.getId())
         container_stack = UM.Settings.ContainerStack(extruder_stack_id)
-        container_stack.setName(extruder_definition.getName()) #Take over the display name to display the stack with.
+        container_stack.setName(extruder_definition.getName())  # Take over the display name to display the stack with.
         container_stack.addMetaDataEntry("type", "extruder_train")
         container_stack.addMetaDataEntry("machine", machine_definition.getId())
         container_stack.addMetaDataEntry("position", position)
         container_stack.addContainer(extruder_definition)
 
-        #Find the variant to use for this extruder.
+        # Find the variant to use for this extruder.
         variant = container_registry.getEmptyInstanceContainer()
         if machine_definition.getMetaDataEntry("has_variants"):
-            #First add any variant. Later, overwrite with preference if the preference is valid.
+            # First add any variant. Later, overwrite with preference if the preference is valid.
             variants = container_registry.findInstanceContainers(definition = machine_id, type = "variant")
             if len(variants) >= 1:
                 variant = variants[0]
@@ -158,13 +155,13 @@ class ExtruderManager(QObject):
                     variant = preferred_variants[0]
                 else:
                     UM.Logger.log("w", "The preferred variant \"%s\" of machine %s doesn't exist or is not a variant profile.", preferred_variant_id, machine_id)
-                    #And leave it at the default variant.
+                    # And leave it at the default variant.
         container_stack.addContainer(variant)
 
-        #Find a material to use for this variant.
+        # Find a material to use for this variant.
         material = container_registry.getEmptyInstanceContainer()
         if machine_definition.getMetaDataEntry("has_materials"):
-            #First add any material. Later, overwrite with preference if the preference is valid.
+            # First add any material. Later, overwrite with preference if the preference is valid.
             if machine_definition.getMetaDataEntry("has_variant_materials", default = "False") == "True":
                 materials = container_registry.findInstanceContainers(type = "material", definition = machine_id, variant = variant.getId())
             else:
@@ -187,13 +184,13 @@ class ExtruderManager(QObject):
                     material = preferred_materials[0]
                 else:
                     UM.Logger.log("w", "The preferred material \"%s\" of machine %s doesn't exist or is not a material profile.", preferred_material_id, machine_id)
-                    #And leave it at the default material.
+                    # And leave it at the default material.
         container_stack.addContainer(material)
 
-        #Find a quality to use for this extruder.
+        # Find a quality to use for this extruder.
         quality = container_registry.getEmptyInstanceContainer()
 
-        #First add any quality. Later, overwrite with preference if the preference is valid.
+        # First add any quality. Later, overwrite with preference if the preference is valid.
         qualities = container_registry.findInstanceContainers(type = "quality")
         if len(qualities) >= 1:
             quality = qualities[0]
@@ -204,14 +201,14 @@ class ExtruderManager(QObject):
                 quality = preferred_quality[0]
             else:
                 UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality_id, machine_id)
-                #And leave it at the default quality.
+                # And leave it at the default quality.
         container_stack.addContainer(quality)
 
         user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
-        if user_profile: #There was already a user profile, loaded from settings.
+        if user_profile: # There was already a user profile, loaded from settings.
             user_profile = user_profile[0]
         else:
-            user_profile = UM.Settings.InstanceContainer(extruder_stack_id + "_current_settings") #Add an empty user profile.
+            user_profile = UM.Settings.InstanceContainer(extruder_stack_id + "_current_settings")  # Add an empty user profile.
             user_profile.addMetaDataEntry("type", "user")
             user_profile.addMetaDataEntry("extruder", extruder_stack_id)
             user_profile.setDefinition(machine_definition)
