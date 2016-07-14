@@ -12,7 +12,7 @@ After adding a machine, go to "Manage Printers...", make sure your printer is ac
 
 Pro-tip: if you add a generic profile to the machine definitions and add ["MachineSettingsAction"] as a first_start_action, you get a nice solution to the "my printer is not listed" problem.
 
-*resource/definitions/generic_fdm.def.json*
+*resources/definitions/generic_fdm.def.json*
 ```
 {
     "version": 2,
