@@ -1013,7 +1013,8 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "7",
+                    "maximum_value_warning": "4",
+                    "maximum_value": "19",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
