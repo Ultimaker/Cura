@@ -189,11 +189,6 @@ class CuraApplication(QtApplication):
 
         ContainerRegistry.getInstance().load()
 
-        fdmprinter_definition = ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0]
-        empty_variant_container.setDefinition(fdmprinter_definition)
-        empty_material_container.setDefinition(fdmprinter_definition)
-        empty_quality_container.setDefinition(fdmprinter_definition)
-
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
