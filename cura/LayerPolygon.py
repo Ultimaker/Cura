@@ -17,11 +17,12 @@ class LayerPolygon:
     
     __jump_map = numpy.logical_or( numpy.arange(10) == NoneType, numpy.arange(10) >= MoveCombingType )
     
-    def __init__(self, mesh, line_types, data, line_widths):
+    def __init__(self, mesh, extruder, line_types, data, line_widths):
         self._mesh = mesh
+        self._extruder = extruder
         self._types = line_types
         self._data = data
-        self._line_widths = line_widths / 1000
+        self._line_widths = line_widths
         
         self._vertex_begin = 0
         self._vertex_end = 0
@@ -112,6 +113,10 @@ class LayerPolygon:
 
     def lineMeshElementCount(self):
         return (self._index_end - self._index_begin)
+
+    @property
+    def extruder(self):
+        return self._extruder
 
     @property
     def types(self):

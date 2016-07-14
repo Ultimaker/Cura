@@ -94,26 +94,35 @@ class ProcessSlicedLayersJob(Job):
             for p in range(layer.repeatedMessageCount("path_segment")):
                 polygon = layer.getRepeatedMessage("path_segment", p)
 
+                extruder = polygon.extruder
+
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
                 line_types = line_types.reshape((-1,1))
 
-                points = numpy.fromstring(polygon.points, dtype="i8")  # Convert bytearray to numpy array
-                points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
+                if polygon.point_type == 0: # Point2D
+                    points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                else: # Point3D
+                    points = points.reshape((-1,3))
 
-                line_widths = numpy.fromstring(polygon.line_width, dtype="i4")  # Convert bytearray to numpy array
+                line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
                 new_points = numpy.empty((len(points), 3), numpy.float32)
-                new_points[:,0] = points[:,0]
-                new_points[:,1] = layer.height
-                new_points[:,2] = -points[:,1]
+                if polygon.point_type == 0: # Point2D
+                    new_points[:,0] = points[:,0]
+                    new_points[:,1] = layer.height/1000 # layer height value is in backend representation
+                    new_points[:,2] = -points[:,1]
+                else: # Point3D
+                    new_points[:,0] = points[:,0]
+                    new_points[:,1] = points[:,2]
+                    new_points[:,2] = -points[:,1]
+                    
 
-                new_points /= 1000
-
-                this_poly = LayerPolygon.LayerPolygon(layer_data, line_types, new_points, line_widths)
+                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
                 this_poly.buildCache()
                 
                 this_layer.polygons.append(this_poly)

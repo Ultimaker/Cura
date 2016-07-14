@@ -77,9 +77,9 @@ message PathSegment {
         Point3D = 1;
     }
     PointType point_type = 2;
-    bytes points = 3; // The points defining the line segments, bytes of int64[2/3]? array of length N+1
+    bytes points = 3; // The points defining the line segments, bytes of float[2/3] array of length N+1
     bytes line_type = 4; // Type of line segment as an unsigned char array of length 1 or N, where N is the number of line segments in this path
-    bytes line_width = 5; // The widths of the line segments as bytes of a float? array of length 1 or N
+    bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
 }
 
 
