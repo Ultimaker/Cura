@@ -37,6 +37,13 @@ class MachineSettingsAction(MachineAction):
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
         if isinstance(container, UM.Settings.DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
+            if container.getProperty("machine_extruder_count", "value") > 1:
+                # Multiextruder printers are not currently supported
+                return
+            if container.getMetaDataEntry("has_variants", False):
+                # Machines that use variants are not currently supported
+                return
+
             UM.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     @pyqtSlot()
