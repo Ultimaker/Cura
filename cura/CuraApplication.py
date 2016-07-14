@@ -564,15 +564,17 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
+            group_node = None
             if node.getParent():
                 group_node = node.getParent()
-                if not group_node.callDecoration("isGroup"):
-                    op = RemoveSceneNodeOperation(node)
-                else:
-                    while group_node.getParent().callDecoration("isGroup"):
-                        group_node = group_node.getParent()
-                    op = RemoveSceneNodeOperation(group_node)
+                op = RemoveSceneNodeOperation(node)
+
             op.push()
+            if group_node:
+                if len(group_node.getChildren()) == 1:
+                    group_node.getChildren()[0].setParent(group_node.getParent())
+                    op = RemoveSceneNodeOperation(group_node)
+                    op.push()
 
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)

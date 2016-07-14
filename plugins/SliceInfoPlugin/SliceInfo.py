@@ -93,7 +93,6 @@ class SliceInfo(Extension):
                 "printtime": print_information.currentPrintTime.getDisplayString(),
                 "filament": material_used,
                 "language": Preferences.getInstance().getValue("general/language"),
-                "materials_profiles ": {}
             }
             for container in global_container_stack.getContainers():
                 container_id = container.getId()

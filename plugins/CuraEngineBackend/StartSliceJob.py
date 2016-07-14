@@ -129,7 +129,7 @@ class StartSliceJob(Job):
 
             self._buildGlobalSettingsMessage(stack)
 
-            for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
+            for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
 
             for group in object_groups:
