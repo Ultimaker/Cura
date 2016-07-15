@@ -110,6 +110,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_requested_message.setProgress(self._authentication_counter / self._max_authentication_counter * 100)
         if self._authentication_counter > self._max_authentication_counter:
             self._authentication_timer.stop()
+            Logger.log("i", "Authentication timer ended. Setting authentication to denied")
             self.setAuthenticationState(AuthState.AuthenticationDenied)
 
     def _onAuthenticationRequired(self, reply, authenticator):
