@@ -7,6 +7,8 @@ from UM.Application import Application
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
 
+import cura.Settings.ExtruderManager
+
 import math
 import os.path
 import unicodedata
@@ -44,7 +46,8 @@ class PrintInformation(QObject):
 
         self._current_print_time = Duration(None, self)
 
-        self._material_amounts = []
+        self._material_lengths = []
+        self._material_weights = []
 
         self._backend = Application.getInstance().getBackend()
         if self._backend:
@@ -62,11 +65,17 @@ class PrintInformation(QObject):
     def currentPrintTime(self):
         return self._current_print_time
 
-    materialAmountsChanged = pyqtSignal()
+    materialLengthsChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantList", notify = materialAmountsChanged)
-    def materialAmounts(self):
-        return self._material_amounts
+    @pyqtProperty("QVariantList", notify = materialLengthsChanged)
+    def materialLengths(self):
+        return self._material_lengths
+
+    materialWeightsChanged = pyqtSignal()
+
+    @pyqtProperty("QVariantList", notify = materialWeightsChanged)
+    def materialWeights(self):
+        return self._material_weights
 
     def _onPrintDurationMessage(self, total_time, material_amounts):
         self._current_print_time.setDuration(total_time)
@@ -74,10 +83,18 @@ class PrintInformation(QObject):
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
-        self._material_amounts = []
-        for amount in material_amounts:
-            self._material_amounts.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
-        self.materialAmountsChanged.emit()
+        self._material_lengths = []
+        self._material_weights = []
+        extruder_stacks = list(cura.Settings.ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
+        for index, amount in enumerate(material_amounts):
+            ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
+            #  list comprehension filtering to solve this for us.
+            extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
+            density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
+            self._material_weights.append(float(amount) * float(density))
+            self._material_lengths.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
+        self.materialLengthsChanged.emit()
+        self.materialWeightsChanged.emit()
 
     @pyqtSlot(str)
     def setJobName(self, name):

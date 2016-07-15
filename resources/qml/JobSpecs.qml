@@ -24,7 +24,7 @@ Rectangle {
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property variant printDuration: PrintInformation.currentPrintTime
-    property variant printMaterialAmounts: PrintInformation.materialAmounts
+    property variant printMaterialAmounts: PrintInformation.materialLengths
 
     height: childrenRect.height
     color: "transparent"
