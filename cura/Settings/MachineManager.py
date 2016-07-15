@@ -499,6 +499,7 @@ class MachineManager(QObject):
                 self.activeQualityChanged.emit()
 
     @pyqtSlot(str)
+    @pyqtSlot()
     def updateQualityContainerFromUserContainer(self, quality_id = None):
         if not self._active_container_stack:
             return
