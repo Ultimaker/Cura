@@ -391,7 +391,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from printer.
-                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                if status_code == 200:
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
                     self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
@@ -401,7 +401,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     Logger.log("w", "We got an unexpected status (%s) while requesting printer state", status_code)
                     pass  # TODO: Handle errors
             elif "print_job" in reply.url().toString():  # Status update from print_job:
-                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                if status_code == 200:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     progress = json_data["progress"]
                     ## If progress is 0 add a bit so another print can't be sent.
@@ -412,7 +412,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])
                     self.setJobName(json_data["name"])
-                elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 404:
+                elif status_code == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress or other data.
                     self._updateJobState("")
                     self.setTimeElapsed(0)
@@ -421,18 +421,18 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 else:
                     Logger.log("w", "We got an unexpected status (%s) while requesting print job state", status_code)
             elif "snapshot" in reply.url().toString():  # Status update from image:
-                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                if status_code == 200:
                     self._camera_image.loadFromData(reply.readAll())
                     self.newImage.emit()
             elif "auth/verify" in reply.url().toString():  # Answer when requesting authentication
-                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 401:
+                if status_code == 401:
                     if self._authentication_state != AuthState.AuthenticationRequested:
                         # Only request a new authentication when we have not already done so.
                         Logger.log("i", "Not authenticated. Attempting to request authentication")
                         self._requestAuthentication()
-                elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 403:
+                elif status_code == 403:
                     pass
-                elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                elif status_code == 200:
                     self.setAuthenticationState(AuthState.Authenticated)
                     global_container_stack = Application.getInstance().getGlobalContainerStack()
                     ## Save authentication details.
@@ -478,8 +478,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
         elif reply.operation() == QNetworkAccessManager.PutOperation:
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 204:
-                pass  # Request was sucesfull!
+            if status_code == 204:
+                pass  # Request was successful!
             else:
                 Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply.url().toString(), reply.readAll(), reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
         else:
