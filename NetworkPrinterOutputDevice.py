@@ -157,13 +157,22 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._authentication_requested_message.hide()
             authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
             authentication_succeeded_message.show()
+
+            # Stop waiting for a response
+            self._authentication_timer.stop()
+            self._authentication_counter = 0
+
             # Once we are authenticated we need to send all material profiles.
-            #
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
             self._authentication_requested_message.hide()
             authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed. This can be either due to a timeout or the printer refused the request."))
             authentication_failed_message.show()
+
+            # Stop waiting for a response
+            self._authentication_timer.stop()
+            self._authentication_counter = 0
+
         self._authentication_state = auth_state
 
     ##  Request data from the connected device.
