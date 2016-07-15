@@ -2434,7 +2434,8 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_width",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "enabled": false
                 },
                 "extruder_prime_pos_y":
                 {
@@ -2446,7 +2447,8 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_depth",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "enabled": false
                 },
                 "adhesion_type":
                 {
