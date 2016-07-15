@@ -74,10 +74,14 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         printer = self._printers.pop(name, None)
         if printer:
             if printer.isConnected:
+                printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
                 printer.disconnect()
 
     ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
+        if key not in self._printers:
+            return
+
         if self._printers[key].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._printers[key])
         else:
