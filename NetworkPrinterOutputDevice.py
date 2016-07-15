@@ -427,7 +427,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         self._requestAuthentication()
                 elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 403:
                     pass
-                else:
+                elif reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                     self.setAuthenticationState(AuthState.Authenticated)
                     global_container_stack = Application.getInstance().getGlobalContainerStack()
                     ## Save authentication details.
@@ -441,6 +441,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
                     Logger.log("i", "Authentication succeeded")
+                else:  # Got a response that we didn't expect, so something went wrong.
+                    Logger.log("w", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
+                    self.setAuthenticationState(AuthState.NotAuthenticated)
+
             elif "auth/check" in reply.url().toString():  # Check if we are authenticated (user can refuse this!)
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                 if data.get("message", "") == "authorized":
