@@ -388,6 +388,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from printer.
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
@@ -397,6 +398,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                     self._spliceJSONData()
                 else:
+                    Logger.log("w", "We got an unexpected status (%s) while requesting printer state", status_code)
                     pass  # TODO: Handle errors
             elif "print_job" in reply.url().toString():  # Status update from print_job:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
@@ -416,6 +418,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.setTimeElapsed(0)
                     self.setTimeTotal(0)
                     self.setJobName("")
+                else:
+                    Logger.log("w", "We got an unexpected status (%s) while requesting print job state", status_code)
             elif "snapshot" in reply.url().toString():  # Status update from image:
                 if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                     self._camera_image.loadFromData(reply.readAll())
