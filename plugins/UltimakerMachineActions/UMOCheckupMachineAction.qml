@@ -196,8 +196,8 @@ Cura.MachineAction
                 visible: checkupMachineAction.usbConnected
                 Button
                 {
+                    height: 20
                     text: checkupMachineAction.heatupHotendStarted ? catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
-                    //
                     onClicked:
                     {
                         if (checkupMachineAction.heatupHotendStarted)
@@ -259,6 +259,7 @@ Cura.MachineAction
                 Button
                 {
                     text: checkupMachineAction.heatupBedStarted ?catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
+                    height: 20
                     onClicked:
                     {
                         if (checkupMachineAction.heatupBedStarted)
