@@ -54,8 +54,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
         self.setName(key)
-        self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with WIFI"))
-        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print with WIFI"))
+        self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print over network"))
+        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
         self.setIconName("print")
 
         #   QNetwork manager needs to be created in advance. If we don't it can happen that it doesn't correctly
