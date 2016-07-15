@@ -9,7 +9,7 @@ import UM.Settings
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
 from PyQt5.QtGui import QImage
 
@@ -388,6 +388,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
+        if reply.error() == QNetworkReply.TimeoutError:
+            Logger.log("w", "Received a timeout on a request to the printer")
+            return
+
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from printer.
