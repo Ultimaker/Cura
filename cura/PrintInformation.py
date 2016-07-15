@@ -81,6 +81,9 @@ class PrintInformation(QObject):
 
     @pyqtSlot(str)
     def setJobName(self, name):
+        # Ensure that we don't use entire path but only filename
+        name = os.path.basename(name)
+
         # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
         # extension. This cuts the extension off if necessary.
         name = os.path.splitext(name)[0]
