@@ -585,18 +585,16 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
+            current_node = node
+            # Find the topmost group
+            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+                current_node = current_node.getParent()
+
+            new_node = copy.deepcopy(current_node)
+
             op = GroupedOperation()
             for _ in range(count):
-                if node.getParent() and node.getParent().callDecoration("isGroup"):
-                    new_node = copy.deepcopy(node.getParent()) #Copy the group node.
-                    new_node.callDecoration("recomputeConvexHull")
-
-                    op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
-                else:
-                    new_node = copy.deepcopy(node)
-                    new_node.callDecoration("recomputeConvexHull")
-                    op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
-
+                op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
     ##  Center object on platform.
