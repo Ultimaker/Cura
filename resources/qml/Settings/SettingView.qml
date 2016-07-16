@@ -34,14 +34,7 @@ ScrollView
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
 
-            filter:
-            {
-                if(ExtruderManager.activeExtruderStackId)
-                {
-                    return { "settable_per_extruder": true }
-                }
-                return { }
-            }
+            filter: {}
         }
 
         delegate: Loader
@@ -53,7 +46,15 @@ ScrollView
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: provider.properties.enabled == "True" ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
-            enabled: provider.properties.enabled == "True"
+            enabled:
+            {
+                if(!ExtruderManager.activeExtruderStackId && ExtruderManager.extruderCount > 0)
+                {
+                    // disable all controls on the global tab, except categories
+                    return model.type == "category"
+                }
+                return provider.properties.enabled == "True"
+            }
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel

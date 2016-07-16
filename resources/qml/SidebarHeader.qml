@@ -258,6 +258,8 @@ Column
         {
             id: globalProfileSelection
             text: Cura.MachineManager.activeQualityName
+            enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
+
             width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeQualityName
