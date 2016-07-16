@@ -629,6 +629,7 @@
                             "type": "float",
                             "enabled": "support_enable",
                             "value": "line_width",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -643,6 +644,7 @@
                             "type": "float",
                             "enabled": "support_roof_enable",
                             "value": "line_width",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -1442,6 +1444,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 60,
                             "value": "speed_print",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1458,6 +1461,7 @@
                                     "maximum_value": "299792458000",
                                     "maximum_value_warning": "150",
                                     "value": "speed_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "enabled": "support_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
@@ -1474,6 +1478,7 @@
                                     "maximum_value_warning": "150",
                                     "enabled": "support_roof_enable and support_enable",
                                     "value": "speed_support / 1.5",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -1644,6 +1649,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "acceleration_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1655,6 +1661,7 @@
                                     "type": "float",
                                     "default_value": 3000,
                                     "value": "acceleration_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
@@ -1669,6 +1676,7 @@
                                     "type": "float",
                                     "default_value": 3000,
                                     "value": "acceleration_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
@@ -1832,6 +1840,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "jerk_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1843,6 +1852,7 @@
                                     "type": "float",
                                     "default_value": 20,
                                     "value": "jerk_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
@@ -1857,6 +1867,7 @@
                                     "type": "float",
                                     "default_value": 20,
                                     "value": "jerk_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
@@ -2121,6 +2132,7 @@
                     "description": "Enable support structures. These structures support parts of the model with severe overhangs.",
                     "type": "bool",
                     "default_value": false,
+                    "global_inherits_stack": "support_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "support_type":
@@ -2134,6 +2146,7 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -2147,6 +2160,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "default_value": 50,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2164,6 +2178,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "zigzag",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -2174,6 +2189,7 @@
                     "description": "Connect the ZigZags. This will increase the strength of the zig zag support structure.",
                     "type": "bool",
                     "default_value": true,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable and (support_pattern == \"zigzag\")",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -2187,6 +2203,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 15,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2201,6 +2218,7 @@
                             "default_value": 2.66,
                             "enabled": "support_enable",
                             "value": "(support_line_width * 100) / support_infill_rate * (2 if support_pattern == \"grid\" else (3 if support_pattern == \"triangles\" else 1))",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
@@ -2215,6 +2233,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "default_value": 0.15,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true,
                     "children":
@@ -2230,6 +2249,7 @@
                             "type": "float",
                             "enabled": "support_enable",
                             "value": "support_z_distance",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "support_bottom_distance":
@@ -2241,6 +2261,7 @@
                             "maximum_value_warning": "10",
                             "default_value": 0.1,
                             "value": "0.1 if support_type == 'everywhere' else 0",
+                            "global_inherits_stack": "support_extruder_nr",
                             "type": "float",
                             "enabled": "support_enable and support_type == 'everywhere'",
                             "settable_per_mesh": true
@@ -2256,6 +2277,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "default_value": 0.7,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2268,6 +2290,7 @@
                         "z_overrides_xy": "Z overrides X/Y"
                     },
                     "default_value": "z_overrides_xy",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2280,6 +2303,7 @@
                     "maximum_value_warning": "10",
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable and support_xy_overrides_z=='z_overrides_xy'",
                     "settable_per_mesh": true
                 },
@@ -2290,6 +2314,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
                     "enabled": "support_enable",
@@ -2302,6 +2327,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.0,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "support_enable",
@@ -2314,6 +2340,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.2,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value_warning": "-0.5",
                     "maximum_value_warning": "5.0",
                     "enabled": "support_enable",
@@ -2326,6 +2353,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.6,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
                     "enabled": "support_enable",
@@ -2337,6 +2365,7 @@
                     "description": "Generate a dense top skin at the top of the support on which the model is printed.",
                     "type": "bool",
                     "default_value": false,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2348,6 +2377,7 @@
                     "type": "float",
                     "default_value": 1,
                     "minimum_value": "0",
+                    "global_inherits_stack": "support_extruder_nr",
                     "maximum_value_warning": "10",
                     "enabled": "support_roof_enable and support_enable",
                     "settable_per_mesh": true
@@ -2359,6 +2389,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "enabled":"support_roof_enable and support_enable",
@@ -2375,6 +2406,7 @@
                             "default_value": 0.4,
                             "minimum_value": "0",
                             "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == \"grid\" else (3 if support_roof_pattern == \"triangles\" else 1))",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
@@ -2395,6 +2427,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_roof_enable and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -2405,6 +2438,7 @@
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "bool",
                     "default_value": true,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2415,6 +2449,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "enabled": "support_enable and support_use_towers",
@@ -2427,6 +2462,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "maximum_value": "support_tower_diameter",
@@ -2442,6 +2478,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "default_value": 65,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
                 }
