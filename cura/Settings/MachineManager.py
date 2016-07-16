@@ -198,6 +198,12 @@ class MachineManager(QObject):
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
             self.globalValueChanged.emit()
+
+            if self._active_container_stack and self._active_container_stack != self._global_container_stack:
+                # Make the global stack value mirror the stack value appropriate for this setting
+                if self._active_container_stack.getProperty("extruder_nr", "value") == int(self._active_container_stack.getProperty(key, "global_inherits_stack")):
+                    self._global_container_stack.getTop().setProperty(key, "value", self._active_container_stack.getProperty(key, "value"))
+
         if property_name == "validationState":
             if self._global_stack_valid:
                 changed_validation_state = self._active_container_stack.getProperty(key, property_name)
