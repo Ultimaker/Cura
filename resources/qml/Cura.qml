@@ -506,6 +506,64 @@ UM.MainWindow
         onTriggered: preferences.getCurrentItem().showProfileNameDialog()
     }
 
+    // Workaround for shortcuts not working for singletons.
+    // The main window eats all the events, so we need to pass them manually.
+    Action
+    {
+        shortcut: StandardKey.Undo
+        onTriggered: Cura.Actions.undo.trigger()
+    }
+    Action
+    {
+        shortcut: StandardKey.Redo
+        onTriggered: Cura.Actions.redo.trigger()
+    }
+    Action
+    {
+        shortcut: StandardKey.Quit
+        onTriggered: Cura.Actions.quit.trigger()
+    }
+    Action
+    {
+        shortcut: StandardKey.Help
+        onTriggered: Cura.Actions.help.trigger()
+    }
+    Action
+    {
+        shortcut: StandardKey.Delete
+        onTriggered: Cura.Actions.delete.trigger()
+    }
+    Action
+    {
+        shortcut: "Ctrl+G"
+        onTriggered: Cura.Actions.groupObjects.trigger()
+    }
+    Action
+    {
+        shortcut: "Ctrl+Shift+G"
+        onTriggered: Cura.Actions.unGroupObjects.trigger()
+    }
+    Action
+    {
+        shortcut: "Ctrl+Alt+G"
+        onTriggered: Cura.Actions.mergeObjects.trigger()
+    }
+    Action
+    {
+        shortcut: "Ctrl+D"
+        onTriggered: Cura.Actions.deleteAll.trigger()
+    }
+    Action
+    {
+        shortcut: StandardKey.Open
+        onTriggered: Cura.Actions.open.trigger()
+    }
+    Action
+    {
+        shortcut: StandardKey.WhatsThis
+        onTriggered: Cura.Actions.showEngineLog.trigger()
+    }
+
     Menu
     {
         id: objectContextMenu;
