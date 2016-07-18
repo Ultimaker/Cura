@@ -992,6 +992,29 @@
                     "value": "layer_height",
                     "settable_per_mesh": true
                 },
+                "gradual_infill_steps":
+                {
+                    "label": "Gradual Infill Steps",
+                    "description": "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density.",
+                    "default_value": 0,
+                    "type": "int",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "4",
+                    "maximum_value": "17",
+                    "settable_per_mesh": true
+                },
+                "gradual_infill_step_height":
+                {
+                    "label": "Gradual Infill Step Height",
+                    "description": "The height of infill of a given density before switching to half the density.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5.0,
+                    "minimum_value": "0.0001",
+                    "maximum_value_warning": "100",
+                    "enabled": "gradual_infill_steps > 0",
+                    "settable_per_mesh": true
+                },
                 "infill_before_walls":
                 {
                     "label": "Infill Before Walls",
