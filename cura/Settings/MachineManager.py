@@ -126,6 +126,9 @@ class MachineManager(QObject):
         self._auto_change_material_hotend_flood_time = time.time()
         self._auto_change_material_hotend_flood_last_choice = button
 
+        if button == QMessageBox.No:
+            return
+
         Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, hotend_id))
 
         extruder_manager = ExtruderManager.getInstance()
@@ -173,6 +176,9 @@ class MachineManager(QObject):
     def _materialIdChangedDialogCallback(self, button, index, material_id):
         self._auto_change_material_hotend_flood_time = time.time()
         self._auto_change_material_hotend_flood_last_choice = button
+
+        if button == QMessageBox.No:
+            return
 
         Logger.log("d", "Setting material of hotend %d to %s" % (index, material_id))
 
@@ -493,6 +499,7 @@ class MachineManager(QObject):
                 self.activeQualityChanged.emit()
 
     @pyqtSlot(str)
+    @pyqtSlot()
     def updateQualityContainerFromUserContainer(self, quality_id = None):
         if not self._active_container_stack:
             return

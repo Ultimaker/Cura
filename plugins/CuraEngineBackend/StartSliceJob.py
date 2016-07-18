@@ -180,6 +180,12 @@ class StartSliceJob(Job):
             setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
 
+        # ALso send the material GUID as a setting.
+        material_instance_container = stack.findContainer({"type": "material"})
+        if material_instance_container:
+            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting.name = "material_GUID"
+            setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
     ##  Sends all global settings to the engine.
     #
     #   The settings are taken from the global stack. This does not include any
