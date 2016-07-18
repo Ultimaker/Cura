@@ -91,8 +91,8 @@ Column
             target: Cura.MachineManager
             onGlobalContainerChanged:
             {
-                base.currentExtruderIndex = -1;
-                forceActiveFocus()
+                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                base.currentExtruderIndex = (machineExtruderCount.properties.value == 1) ? -1 : 0;
                 ExtruderManager.setActiveExtruderIndex(base.currentExtruderIndex);
             }
         }
@@ -110,7 +110,7 @@ Column
 
             onClicked:
             {
-                forceActiveFocus() //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
                 base.currentExtruderIndex = index;
                 ExtruderManager.setActiveExtruderIndex(index);
             }
