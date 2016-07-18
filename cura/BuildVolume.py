@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
+from UM.Scene.Platform import Platform
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Resources import Resources
@@ -40,6 +41,9 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
         self._volume_aabb = None
+
+        self.raft_thickness = 0.0
+        self._platform = Platform(self)
 
         self._active_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
@@ -172,6 +176,21 @@ class BuildVolume(SceneNode):
             " \"Print Sequence\" setting to prevent the gantry from colliding"
             " with printed objects."), lifetime=10).show()
 
+    def _updateRaftThickness(self):
+        old_raft_thickness = self.raft_thickness
+        adhesion_type = self._active_container_stack.getProperty("adhesion_type", "value")
+        self.raft_thickness = 0.0
+        if adhesion_type == "raft":
+            self.raft_thickness = (
+                self._active_container_stack.getProperty("raft_base_thickness", "value") +
+                self._active_container_stack.getProperty("raft_interface_thickness", "value") +
+                self._active_container_stack.getProperty("raft_surface_layers", "value") *
+                    self._active_container_stack.getProperty("raft_surface_thickness", "value") +
+                self._active_container_stack.getProperty("raft_airgap", "value"))
+        # Rounding errors do not matter, we check if raft_thickness has changed at all
+        if old_raft_thickness != self.raft_thickness:
+            self.setPosition(Vector(0, -self.raft_thickness, 0), SceneNode.TransformSpace.World)
+
     def _onGlobalContainerStackChanged(self):
         if self._active_container_stack:
             self._active_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
@@ -190,6 +209,7 @@ class BuildVolume(SceneNode):
             self._depth = self._active_container_stack.getProperty("machine_depth", "value")
 
             self._updateDisallowedAreas()
+            self._updateRaftThickness()
 
             self.rebuild()
 
@@ -197,15 +217,24 @@ class BuildVolume(SceneNode):
         if property_name != "value":
             return
 
+        rebuild_me = False
         if setting_key == "print_sequence":
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = self._active_container_stack.getProperty("gantry_height", "value")
                 self._buildVolumeMessage()
             else:
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
-            self.rebuild()
+            rebuild_me = True
+
         if setting_key in self._skirt_settings:
             self._updateDisallowedAreas()
+            rebuild_me = True
+
+        if setting_key in self._raft_settings:
+            self._updateRaftThickness()
+            rebuild_me = True
+
+        if rebuild_me:
             self.rebuild()
 
     def _updateDisallowedAreas(self):
@@ -269,7 +298,7 @@ class BuildVolume(SceneNode):
 
         self._disallowed_areas = areas
 
-    ##  Convenience function to calculate the size of the bed adhesion.
+    ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
     def _getSkirtSize(self, container_stack):
         skirt_size = 0.0
 
@@ -295,3 +324,4 @@ class BuildVolume(SceneNode):
         return max(min(value, max_value), min_value)
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
+    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]

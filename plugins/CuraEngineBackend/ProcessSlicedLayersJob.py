@@ -128,7 +128,10 @@ class ProcessSlicedLayersJob(Job):
         new_node.addDecorator(decorator)
 
         new_node.setMeshData(mesh)
-        new_node.setParent(self._scene.getRoot())  # Note: After this we can no longer abort!
+        # Set build volume as parent, the build volume can move as a result of raft settings.
+        # It makes sense to set the build volume as parent: the print is actually printed on it.
+        new_node_parent = Application.getInstance().getBuildVolume()
+        new_node.setParent(new_node_parent)  # Note: After this we can no longer abort!
 
         settings = Application.getInstance().getGlobalContainerStack()
         if not settings.getProperty("machine_center_is_zero", "value"):

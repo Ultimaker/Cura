@@ -4,7 +4,6 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -144,7 +143,6 @@ class CuraApplication(QtApplication):
         ])
         self._physics = None
         self._volume = None
-        self._platform = None
         self._output_devices = {}
         self._print_information = None
         self._previous_active_tool = None
@@ -377,8 +375,8 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Scene_Platform(root)
 
+        # The platform is a child of BuildVolume
         self._volume = BuildVolume.BuildVolume(root)
 
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
@@ -857,3 +855,6 @@ class CuraApplication(QtApplication):
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
         self.getMainWindow().setMinimumSize(size)
+
+    def getBuildVolume(self):
+        return self._volume
