@@ -22,6 +22,18 @@ UM.MainWindow
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+
+        // Workaround silly issues with QML Action's shortcut property.
+        //
+        // Currently, there is no way to define shortcuts as "Application Shortcut".
+        // This means that all Actions are "Window Shortcuts". The code for this
+        // implements a rather naive check that just checks if any of the action's parents
+        // are a window. Since the "Actions" object is a singleton it has no parent by
+        // default. If we set its parent to something contained in this window, the
+        // shortcut will activate properly because one of its parents is a window.
+        //
+        // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
+        Cura.Actions.parent = backgroundItem
     }
 
     Item
@@ -515,64 +527,6 @@ UM.MainWindow
         {
             contentItem.focus = true
         }
-    }
-
-    // Workaround for shortcuts not working for singletons.
-    // The main window eats all the events, so we need to pass them manually.
-    Action
-    {
-        shortcut: StandardKey.Undo
-        onTriggered: Cura.Actions.undo.trigger()
-    }
-    Action
-    {
-        shortcut: StandardKey.Redo
-        onTriggered: Cura.Actions.redo.trigger()
-    }
-    Action
-    {
-        shortcut: StandardKey.Quit
-        onTriggered: Cura.Actions.quit.trigger()
-    }
-    Action
-    {
-        shortcut: StandardKey.Help
-        onTriggered: Cura.Actions.help.trigger()
-    }
-    Action
-    {
-        shortcut: StandardKey.Delete
-        onTriggered: Cura.Actions.delete.trigger()
-    }
-    Action
-    {
-        shortcut: "Ctrl+G"
-        onTriggered: Cura.Actions.groupObjects.trigger()
-    }
-    Action
-    {
-        shortcut: "Ctrl+Shift+G"
-        onTriggered: Cura.Actions.unGroupObjects.trigger()
-    }
-    Action
-    {
-        shortcut: "Ctrl+Alt+G"
-        onTriggered: Cura.Actions.mergeObjects.trigger()
-    }
-    Action
-    {
-        shortcut: "Ctrl+D"
-        onTriggered: Cura.Actions.deleteAll.trigger()
-    }
-    Action
-    {
-        shortcut: StandardKey.Open
-        onTriggered: Cura.Actions.open.trigger()
-    }
-    Action
-    {
-        shortcut: StandardKey.WhatsThis
-        onTriggered: Cura.Actions.showEngineLog.trigger()
     }
 
     Menu
