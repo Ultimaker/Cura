@@ -140,6 +140,11 @@ Cura.MachineAction
                         text: manager.apiKey
                     }
                 }
+                Button
+                {
+                    text: catalog.i18nc("@action", "Open webpage...")
+                    onClicked: manager.openWebPage("http://%1/".arg(base.selectedPrinter.ipAddress))
+                }
             }
         }
     }

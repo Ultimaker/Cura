@@ -6,7 +6,8 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 
 from UM.Application import Application
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QUrl
+from PyQt5.QtGui import QDesktopServices
 
 catalog = i18nCatalog("cura")
 
@@ -88,3 +89,7 @@ class DiscoverOctoPrintAction(MachineAction):
             return global_container_stack.getMetaDataEntry("octoprint_api_key")
         else:
             return ""
+
+    @pyqtSlot(str)
+    def openWebPage(self, url):
+        QDesktopServices.openUrl(QUrl(url))
