@@ -234,7 +234,7 @@ Item
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
 
-            checked: {print(platformAdhesionType.properties.value); return platformAdhesionType.properties.value == "brim"}
+            checked: platformAdhesionType.properties.value == "brim"
 
             MouseArea {
                 id: brimMouseArea
