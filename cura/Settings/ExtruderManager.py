@@ -22,7 +22,7 @@ class ExtruderManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs.
-        self._active_extruder_index = -1
+        self._active_extruder_index = 0
         UM.Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
         self._addCurrentMachineExtruders()
 
