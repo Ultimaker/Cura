@@ -89,8 +89,12 @@ class PrintInformation(QObject):
         for index, amount in enumerate(material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
-            extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
-            density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
+            if extruder_stacks:  # Multi extrusion machine
+                extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
+                density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
+            else:  # Machine with no extruder stacks
+                density = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("properties", {}).get("density", 0)
+
             self._material_weights.append(float(amount) * float(density))
             self._material_lengths.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
         self.materialLengthsChanged.emit()
