@@ -248,14 +248,5 @@ Item {
         }
     }
 
-    Connections
-    {
-        target: Cura.MachineManager
-        onBlurSettings:
-        {
-            revertButton.focus = true
-        }
-    }
-
     UM.I18nCatalog { id: catalog; name: "cura" }
 }

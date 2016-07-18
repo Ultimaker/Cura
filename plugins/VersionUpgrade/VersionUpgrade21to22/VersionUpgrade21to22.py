@@ -18,7 +18,11 @@ _printer_translations = {
 _profile_translations = {
     "PLA": "generic_pla",
     "ABS": "generic_abs",
-    "CPE": "generic_cpe"
+    "CPE": "generic_cpe",
+    "Low Quality": "low",
+    "Normal Quality": "normal",
+    "High Quality": "high",
+    "Ulti Quality": "high" #This one doesn't have an equivalent. Map it to high.
 }
 
 ##  How to translate setting names from the old version to the new.
