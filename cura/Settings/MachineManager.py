@@ -206,10 +206,11 @@ class MachineManager(QObject):
 
                 # Global-only setting values should be set on all extruders at once
                 if not self._global_container_stack.getProperty(key, "settable_per_extruder"):
+                    new_value = self._active_container_stack.getProperty(key, "value")
                     extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
                     for extruder_stack in extruder_stacks:
-                        if extruder_stacks != self._active_container_stack:
-                            extruder_stack.getTop().setProperty(key, "value", self._active_container_stack.getProperty(key, "value"))
+                        if extruder_stack != self._active_container_stack:
+                            extruder_stack.getTop().setProperty(key, "value", new_value)
 
         if property_name == "validationState":
             if self._global_stack_valid:
@@ -290,9 +291,15 @@ class MachineManager(QObject):
             new_global_stack.addMetaDataEntry("type", "machine")
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
-            variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
-            quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
+            if definition.getProperty("machine_extruder_count", "value") == 1:
+                variant_instance_container = self._updateVariantContainer(definition)
+                material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+                quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
+            else:
+                # Initialise multiextrusion global stacks to empty profiles; all settings go in the user profile
+                variant_instance_container = self._empty_variant_container
+                material_instance_container = self._empty_material_container
+                quality_instance_container = self._empty_quality_container
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
