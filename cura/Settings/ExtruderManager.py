@@ -187,18 +187,27 @@ class ExtruderManager(QObject):
         # Find a quality to use for this extruder.
         quality = container_registry.getEmptyInstanceContainer()
 
-        # First add any quality. Later, overwrite with preference if the preference is valid.
-        qualities = container_registry.findInstanceContainers(type = "quality")
-        if len(qualities) >= 1:
-            quality = qualities[0]
-        preferred_quality_id = machine_definition.getMetaDataEntry("preferred_quality")
-        if preferred_quality_id:
-            preferred_quality = container_registry.findInstanceContainers(id = preferred_quality_id, type = "quality")
-            if len(preferred_quality) >= 1:
-                quality = preferred_quality[0]
-            else:
-                UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality_id, machine_id)
-                # And leave it at the default quality.
+        search_criteria = { "type": "quality" }
+        if machine_definition.getMetaDataEntry("has_machine_quality"):
+            search_criteria["definition"] = machine_definition.id
+            if machine_definition.getMetaDataEntry("has_materials") and material:
+                search_criteria["material"] = material.id
+        else:
+            search_criteria["definition"] = "fdmprinter"
+
+        preferred_quality = machine_definition.getMetaDataEntry("preferred_quality")
+        if preferred_quality:
+            search_criteria["id"] = preferred_quality
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if not containers and preferred_quality:
+                UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality, machine_id)
+                search_criteria.pop("id", None)
+                containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if containers:
+            quality = containers[0]
+
+        container_stack.addContainer(containers[0])
         container_stack.addContainer(quality)
 
         user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
