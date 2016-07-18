@@ -58,7 +58,9 @@ class MachineManager(QObject):
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
-            pass
+            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+                # Make sure _active_container_stack is properly initiated
+                ExtruderManager.getInstance().setActiveExtruderIndex(0)
 
         self._auto_change_material_hotend_flood_window = 10 # The minimum number of seconds between asking if the material or hotend on the machine should be used
         self._auto_change_material_hotend_flood_time = 0 # The last timestamp (in seconds) when the user was asked about changing the material or hotend to whatis loaded on the machine
