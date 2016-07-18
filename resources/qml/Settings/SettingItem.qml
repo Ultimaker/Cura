@@ -21,10 +21,12 @@ Item {
 
     property var showRevertButton: true
     property var showInheritButton: true
+    property var showLinkedSettingIcon: true
     property var doDepthIndentation: true
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
+    property var settablePerExtruder: propertyProvider.properties.settable_per_extruder
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -133,6 +135,26 @@ Item {
 
             UM.SimpleButton
             {
+                id: linkedSettingIcon;
+
+                visible: base.settablePerExtruder != "True" && base.showLinkedSettingIcon
+
+                height: parent.height;
+                width: height;
+
+                backgroundColor: UM.Theme.getColor("setting_control");
+                hoverBackgroundColor: UM.Theme.getColor("setting_control")
+                color: UM.Theme.getColor("setting_control_button")
+                hoverColor: UM.Theme.getColor("setting_control_button")
+
+                iconSource: UM.Theme.getIcon("link")
+
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders")) }
+                onExited: base.showTooltip(base.tooltipText);
+            }
+
+            UM.SimpleButton
+            {
                 id: revertButton;
 
                 visible: base.stackLevel == 0 && base.showRevertButton
@@ -231,7 +253,6 @@ Item {
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.tooltipText);
             }
-
         }
 
         Item
