@@ -57,6 +57,14 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "material_guid":
+                {
+                    "label": "Material GUID",
+                    "description": "GUID of the material. This is set automatically. ",
+                    "default_value": "",
+                    "type": "str",
+                    "enabled": false
+                },
                 "material_bed_temp_wait":
                 {
                     "label": "Wait for bed heatup",
