@@ -73,7 +73,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     def removePrinter(self, name):
         printer = self._printers.pop(name, None)
         if printer:
-            if printer.isConnected:
+            if printer.isConnected():
                 printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
                 printer.disconnect()
 
