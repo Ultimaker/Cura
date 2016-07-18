@@ -306,7 +306,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                     pass  # TODO: Handle errors
 
             elif "snapshot" in reply.url().toString():  # Update from camera:
-                if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
+                if http_status_code == 200:
                     self._camera_image.loadFromData(reply.readAll())
                     self.newImage.emit()
                 else:
@@ -340,11 +340,12 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             progress = bytes_sent / bytes_total * 100
-            if progress <= 100:
+            if progress < 100:
                 self._progress_message.setProgress(progress)
             else:
-                self._progress_message.setProgress(-1)
-                self._progress_message.setText(i18n_catalog.i18nc("@info:status", "Storing data on OctoPrint."))
+                self._progress_message.hide()
+                self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Storing data on OctoPrint"), 0, False, -1)
+                self._progress_message.show()
         else:
             self._progress_message.setProgress(0)
 
