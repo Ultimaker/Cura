@@ -506,6 +506,17 @@ UM.MainWindow
         onTriggered: preferences.getCurrentItem().showProfileNameDialog()
     }
 
+    // BlurSettings is a way to force the focus away from any of the setting items.
+    // We need to do this in order to keep the bindings intact.
+    Connections
+    {
+        target: Cura.MachineManager
+        onBlurSettings:
+        {
+            contentItem.focus = true
+        }
+    }
+
     // Workaround for shortcuts not working for singletons.
     // The main window eats all the events, so we need to pass them manually.
     Action
