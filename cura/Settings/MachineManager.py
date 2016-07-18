@@ -788,13 +788,10 @@ class MachineManager(QObject):
         return self._empty_quality_container
 
     def _onMachineNameChanged(self):
-        print("machine name changed")
         self.globalContainerChanged.emit()
 
     def _onMaterialNameChanged(self):
-        print("material name changed")
         self.activeMaterialChanged.emit()
 
     def _onQualityNameChanged(self):
-        print("quality name changed")
         self.activeQualityChanged.emit()
