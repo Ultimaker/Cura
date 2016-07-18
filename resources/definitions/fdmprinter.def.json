@@ -2133,7 +2133,8 @@
                     "type": "bool",
                     "default_value": false,
                     "global_inherits_stack": "support_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "support_type":
                 {
