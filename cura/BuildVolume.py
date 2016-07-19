@@ -19,6 +19,7 @@ from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")
 
 import numpy
+import copy
 
 
 # Setting for clearance around the prime
@@ -283,17 +284,16 @@ class BuildVolume(SceneNode):
         if not self._active_container_stack:
             return
 
-        disallowed_areas = self._active_container_stack.getProperty("machine_disallowed_areas", "value")
+        disallowed_areas = copy.deepcopy(
+            self._active_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
 
         # Add extruder prime locations as disallowed areas.
         # Probably needs some rework after coordinate system change.
-        machine_definition = self._active_container_stack.getBottom()
-        current_machine_id = machine_definition.getId()
         extruder_manager = ExtruderManager.getInstance()
-        extruders = extruder_manager.getMachineExtruders(current_machine_id)
-        machine_width = machine_definition.getProperty("machine_width", "value")
-        machine_depth = machine_definition.getProperty("machine_depth", "value")
+        extruders = extruder_manager.getMachineExtruders(self._active_container_stack.getId())
+        machine_width = self._active_container_stack.getProperty("machine_width", "value")
+        machine_depth = self._active_container_stack.getProperty("machine_depth", "value")
         for single_extruder in extruders:
             extruder_prime_pos_x = single_extruder.getProperty("extruder_prime_pos_x", "value")
             extruder_prime_pos_y = single_extruder.getProperty("extruder_prime_pos_y", "value")
