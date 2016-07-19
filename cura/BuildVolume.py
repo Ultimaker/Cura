@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from cura.Settings.ExtruderManager import ExtruderManager
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.SceneNode import SceneNode
@@ -18,6 +19,10 @@ from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")
 
 import numpy
+
+
+# Setting for clearance around the prime
+PRIME_CLEARANCE = 10
 
 
 def approximatedCircleVertices(r):
@@ -280,6 +285,29 @@ class BuildVolume(SceneNode):
 
         disallowed_areas = self._active_container_stack.getProperty("machine_disallowed_areas", "value")
         areas = []
+
+        # Add extruder prime locations as disallowed areas.
+        # Probably needs some rework after coordinate system change.
+        machine_definition = self._active_container_stack.getBottom()
+        current_machine_id = machine_definition.getId()
+        extruder_manager = ExtruderManager.getInstance()
+        extruders = extruder_manager.getMachineExtruders(current_machine_id)
+        machine_width = machine_definition.getProperty("machine_width", "value")
+        machine_depth = machine_definition.getProperty("machine_depth", "value")
+        for single_extruder in extruders:
+            extruder_prime_pos_x = single_extruder.getProperty("extruder_prime_pos_x", "value")
+            extruder_prime_pos_y = single_extruder.getProperty("extruder_prime_pos_y", "value")
+            # TODO: calculate everything in CuraEngine/Firmware/lower left as origin coordinates.
+            # Here we transform the extruder prime pos (lower left as origin) to Cura coordinates
+            # (center as origin, y from back to front)
+            prime_x = extruder_prime_pos_x - machine_width / 2
+            prime_y = machine_depth / 2 - extruder_prime_pos_y
+            disallowed_areas.append([
+                [prime_x - PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
+                [prime_x + PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
+                [prime_x + PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
+                [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
+            ])
 
         skirt_size = self._getSkirtSize(self._active_container_stack)
 
