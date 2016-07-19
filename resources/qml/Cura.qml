@@ -638,7 +638,7 @@ UM.MainWindow
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: Printer.getDefaultPath()
+        folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
         {
             //Because several implementations of the file dialog only update the folder
@@ -646,6 +646,7 @@ UM.MainWindow
             var f = folder;
             folder = f;
 
+            CuraApplication.setDefaultPath("dialog_load_path", folder);
             UM.MeshFileHandler.readLocalFile(fileUrl)
             var meshName = backgroundItem.getMeshName(fileUrl.toString())
             backgroundItem.hasMesh(decodeURIComponent(meshName))

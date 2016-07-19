@@ -200,7 +200,7 @@ UM.ManagementPage
             title: catalog.i18nc("@title:window", "Import Material");
             selectExisting: true;
             nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
-            folder: CuraApplication.getDefaultPath()
+            folder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
                 var result = Cura.ContainerManager.importContainer(fileUrl)
@@ -221,6 +221,7 @@ UM.ManagementPage
                     messageDialog.icon = StandardIcon.Critical
                 }
                 messageDialog.open()
+                CuraApplication.setDefaultPath("dialog_material_path", folder)
             }
         }
 
@@ -230,7 +231,7 @@ UM.ManagementPage
             title: catalog.i18nc("@title:window", "Export Material");
             selectExisting: false;
             nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
-            folder: CuraApplication.getDefaultPath()
+            folder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
                 if(base.currentItem.metadata.base_file)
@@ -255,6 +256,7 @@ UM.ManagementPage
                     messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(fileUrl)
                     messageDialog.open()
                 }
+                CuraApplication.setDefaultPath("dialog_material_path", folder)
             }
         }
 
