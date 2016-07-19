@@ -206,13 +206,22 @@ class MachineManager(QObject):
                 if self._active_container_stack.getProperty("extruder_nr", "value") == int(self._active_container_stack.getProperty(key, "global_inherits_stack")):
                     self._global_container_stack.getTop().setProperty(key, "value", self._active_container_stack.getProperty(key, "value"))
 
-                # Global-only setting values should be set on all extruders at once
+                # Global-only setting values should be set on all extruders and the global stack
                 if not self._global_container_stack.getProperty(key, "settable_per_extruder"):
                     new_value = self._active_container_stack.getProperty(key, "value")
-                    extruder_stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
-                    for extruder_stack in extruder_stacks:
+                    active_stack_has_user_value = self._active_container_stack.getTop().getInstance(key) != None
+
+                    for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
                         if extruder_stack != self._active_container_stack:
-                            extruder_stack.getTop().setProperty(key, "value", new_value)
+                            if active_stack_has_user_value:
+                                extruder_stack.getTop().setProperty(key, "value", new_value)
+                            else:
+                                # Remove from the value from the other stacks as well, unless the
+                                # resulting value from the other stacklevels is different
+                                extruder_stack.getTop().removeInstance(key)
+                                if extruder_stack.getProperty(key, "value") != new_value:
+                                    extruder_stack.getTop().setProperty(key, "value", new_value)
+                    self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
         if property_name == "validationState":
             if self._global_stack_valid:
