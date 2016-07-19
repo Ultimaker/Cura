@@ -223,6 +223,17 @@ class MachineManager(QObject):
                                     extruder_stack.getTop().setProperty(key, "value", new_value)
                     self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
+        if property_name == "global_inherits_stack":
+            if self._active_container_stack and self._active_container_stack != self._global_container_stack:
+                # Update the global user value when the "global_inherits_stack" function points to a different stack
+                stack_index = int(self._active_container_stack.getProperty(key, property_name))
+                extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+
+                if len(extruder_stacks) > stack_index:
+                    new_value = extruder_stacks[stack_index].getProperty(key, "value")
+                    if self._global_container_stack.getProperty(key, "value") != new_value:
+                        self._global_container_stack.getTop().setProperty(key, "value", new_value)
+
         if property_name == "validationState":
             if self._global_stack_valid:
                 changed_validation_state = self._active_container_stack.getProperty(key, property_name)
