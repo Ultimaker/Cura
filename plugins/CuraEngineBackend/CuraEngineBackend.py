@@ -22,6 +22,7 @@ from . import StartSliceJob
 
 import os
 import sys
+from time import time
 
 from PyQt5.QtCore import QTimer
 
@@ -99,6 +100,8 @@ class CuraEngineBackend(Backend):
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
+        self._slice_start_time = None
+
     ##  Called when closing the application.
     #
     #   This function should terminate the engine process.
@@ -127,6 +130,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
             # try again in a short time
             self._change_timer.start()
@@ -214,6 +218,7 @@ class CuraEngineBackend(Backend):
 
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
+        Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
     ##  Listener for when the scene has changed.
     #
@@ -277,7 +282,7 @@ class CuraEngineBackend(Backend):
         self.processingProgress.emit(1.0)
 
         self._slicing = False
-
+        Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
             self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
             self._process_layers_job.start()

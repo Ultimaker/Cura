@@ -9,6 +9,7 @@ from UM.Mesh.MeshData import MeshData
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
@@ -16,7 +17,7 @@ from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 
 import numpy
-
+from time import time
 catalog = i18nCatalog("cura")
 
 
@@ -38,6 +39,7 @@ class ProcessSlicedLayersJob(Job):
         self._abort_requested = True
 
     def run(self):
+        start_time = time()
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
@@ -146,6 +148,8 @@ class ProcessSlicedLayersJob(Job):
 
         # Clear the unparsed layers. This saves us a bunch of memory if the Job does not get destroyed.
         self._layers = None
+
+        Logger.log("d", "Processing layers took %s seconds", time() - start_time)
 
     def _onActiveViewChanged(self):
         if self.isRunning():
