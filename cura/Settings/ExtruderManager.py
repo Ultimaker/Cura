@@ -207,7 +207,6 @@ class ExtruderManager(QObject):
         if containers:
             quality = containers[0]
 
-        container_stack.addContainer(containers[0])
         container_stack.addContainer(quality)
 
         user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
