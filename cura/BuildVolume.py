@@ -20,6 +20,25 @@ catalog = i18nCatalog("cura")
 import numpy
 
 
+def approximatedCircleVertices(r):
+    """
+    Return vertices from an approximated circle.
+    :param r: radius
+    :return: numpy 2-array with the vertices
+    """
+
+    return numpy.array([
+        [-r, 0],
+        [-r * 0.707, r * 0.707],
+        [0, r],
+        [r * 0.707, r * 0.707],
+        [r, 0],
+        [r * 0.707, -r * 0.707],
+        [0, -r],
+        [-r * 0.707, -r * 0.707]
+    ], numpy.float32)
+
+
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
     VolumeOutlineColor = Color(12, 169, 227, 255)
@@ -42,7 +61,9 @@ class BuildVolume(SceneNode):
         self.setCalculateBoundingBox(False)
         self._volume_aabb = None
 
-        self.raft_thickness = 0.0
+        self._raft_thickness = 0.0
+        self._adhesion_type = None
+        self._raft_mesh = None
         self._platform = Platform(self)
 
         self._active_container_stack = None
@@ -76,6 +97,9 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
+        if self._raft_mesh and self._adhesion_type == "raft":
+            renderer.queueNode(self, mesh=self._raft_mesh, transparent=True, backface_cull=True, sort=-9)
+
         return True
 
     ##  Recalculates the build volume & disallowed areas.
@@ -92,6 +116,7 @@ class BuildVolume(SceneNode):
 
         mb = MeshBuilder()
 
+        # Outline 'cube' of the build volume
         mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
@@ -116,10 +141,22 @@ class BuildVolume(SceneNode):
             Vector(max_w, min_h - 0.2, max_d),
             Vector(min_w, min_h - 0.2, max_d)
         )
+
         for n in range(0, 6):
             v = mb.getVertex(n)
             mb.setVertexUVCoordinates(n, v[0], v[2])
         self._grid_mesh = mb.build()
+
+        # Build raft mesh: a plane on the height of the raft.
+        mb = MeshBuilder()
+        mb.addQuad(
+            Vector(min_w, self._raft_thickness, min_d),
+            Vector(max_w, self._raft_thickness, min_d),
+            Vector(max_w, self._raft_thickness, max_d),
+            Vector(min_w, self._raft_thickness, max_d),
+            color=Color(128, 128, 128, 64)
+        )
+        self._raft_mesh = mb.build()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -177,19 +214,19 @@ class BuildVolume(SceneNode):
             " with printed objects."), lifetime=10).show()
 
     def _updateRaftThickness(self):
-        old_raft_thickness = self.raft_thickness
-        adhesion_type = self._active_container_stack.getProperty("adhesion_type", "value")
-        self.raft_thickness = 0.0
-        if adhesion_type == "raft":
-            self.raft_thickness = (
+        old_raft_thickness = self._raft_thickness
+        self._adhesion_type = self._active_container_stack.getProperty("adhesion_type", "value")
+        self._raft_thickness = 0.0
+        if self._adhesion_type == "raft":
+            self._raft_thickness = (
                 self._active_container_stack.getProperty("raft_base_thickness", "value") +
                 self._active_container_stack.getProperty("raft_interface_thickness", "value") +
                 self._active_container_stack.getProperty("raft_surface_layers", "value") *
                     self._active_container_stack.getProperty("raft_surface_thickness", "value") +
                 self._active_container_stack.getProperty("raft_airgap", "value"))
         # Rounding errors do not matter, we check if raft_thickness has changed at all
-        if old_raft_thickness != self.raft_thickness:
-            self.setPosition(Vector(0, -self.raft_thickness, 0), SceneNode.TransformSpace.World)
+        if old_raft_thickness != self._raft_thickness:
+            self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
 
     def _onGlobalContainerStackChanged(self):
         if self._active_container_stack:
@@ -250,16 +287,7 @@ class BuildVolume(SceneNode):
             # Extend every area already in the disallowed_areas with the skirt size.
             for area in disallowed_areas:
                 poly = Polygon(numpy.array(area, numpy.float32))
-                poly = poly.getMinkowskiHull(Polygon(numpy.array([
-                    [-skirt_size, 0],
-                    [-skirt_size * 0.707, skirt_size * 0.707],
-                    [0, skirt_size],
-                    [skirt_size * 0.707, skirt_size * 0.707],
-                    [skirt_size, 0],
-                    [skirt_size * 0.707, -skirt_size * 0.707],
-                    [0, -skirt_size],
-                    [-skirt_size * 0.707, -skirt_size * 0.707]
-                ], numpy.float32)))
+                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(skirt_size)))
 
                 areas.append(poly)
 
