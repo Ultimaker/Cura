@@ -4,7 +4,6 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -144,7 +143,6 @@ class CuraApplication(QtApplication):
         ])
         self._physics = None
         self._volume = None
-        self._platform = None
         self._output_devices = {}
         self._print_information = None
         self._previous_active_tool = None
@@ -196,6 +194,14 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
+
+        for key in [
+            "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
+            "dialog_profile_path",
+            "dialog_material_path"]:
+
+            Preferences.getInstance().addPreference("local_file/%s" % key, "~/")
+
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
         Preferences.getInstance().setDefault("general/visible_settings", """
@@ -334,10 +340,16 @@ class CuraApplication(QtApplication):
                     f.write(data)
 
 
-    @pyqtSlot(result = QUrl)
-    def getDefaultPath(self):
-        return QUrl.fromLocalFile(os.path.expanduser("~/"))
-    
+    @pyqtSlot(str, result = QUrl)
+    def getDefaultPath(self, key):
+        #return QUrl.fromLocalFile(os.path.expanduser("~/"))
+        default_path = Preferences.getInstance().getValue("local_file/%s" % key)
+        return QUrl.fromLocalFile(default_path)
+
+    @pyqtSlot(str, str)
+    def setDefaultPath(self, key, default_path):
+        Preferences.getInstance().setValue("local_file/%s" % key, default_path)
+
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
@@ -377,8 +389,8 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Scene_Platform(root)
 
+        # The platform is a child of BuildVolume
         self._volume = BuildVolume.BuildVolume(root)
 
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
@@ -857,3 +869,6 @@ class CuraApplication(QtApplication):
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
         self.getMainWindow().setMinimumSize(size)
+
+    def getBuildVolume(self):
+        return self._volume

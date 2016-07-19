@@ -40,6 +40,7 @@ class PlatformPhysics:
             return
 
         root = self._controller.getScene().getRoot()
+
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
@@ -58,10 +59,7 @@ class PlatformPhysics:
             move_vector = Vector()
             if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                if bbox.bottom > 0:
-                    move_vector = move_vector.set(y=-bbox.bottom + z_offset)
-                elif bbox.bottom < z_offset:
-                    move_vector = move_vector.set(y=(-bbox.bottom) - z_offset)
+                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):

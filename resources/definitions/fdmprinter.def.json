@@ -1000,7 +1000,7 @@
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
-                    "maximum_value": "17",
+                    "maximum_value": "20 - math.log(infill_line_distance) / math.log(2)",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
