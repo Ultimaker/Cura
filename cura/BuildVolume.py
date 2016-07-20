@@ -191,7 +191,9 @@ class BuildVolume(SceneNode):
         else:
             self._disallowed_area_mesh = None
 
-        self._volume_aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
+        self._volume_aabb = AxisAlignedBox(
+            minimum = Vector(min_w, min_h - 1.0, min_d),
+            maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
 
         skirt_size = 0.0
 
@@ -204,7 +206,7 @@ class BuildVolume(SceneNode):
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(min_w + skirt_size + 1, min_h, min_d + disallowed_area_size - skirt_size + 1),
-            maximum = Vector(max_w - skirt_size - 1, max_h, max_d - disallowed_area_size + skirt_size - 1)
+            maximum = Vector(max_w - skirt_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + skirt_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
