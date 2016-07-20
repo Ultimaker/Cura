@@ -342,7 +342,7 @@
                     "unit": "mm",
                     "default_value": 0,
                     "minimum_value_warning": "0",
-                    "maximum_value_warning": "machine_height",
+                    "maximum_value": "machine_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -706,7 +706,7 @@
                     "default_value": 0.8,
                     "minimum_value": "0",
                     "minimum_value_warning": "0.6",
-                    "maximum_value_warning": "machine_height",
+                    "maximum_value": "machine_height",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -718,7 +718,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
-                            "maximum_value_warning": "machine_height",
+                            "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "settable_per_mesh": true,
@@ -746,7 +746,7 @@
                             "minimum_value": "0",
                             "type": "float",
                             "value": "top_bottom_thickness",
-                            "maximum_value_warning": "machine_height",
+                            "maximum_value": "machine_height",
                             "settable_per_mesh": true,
                             "children":
                             {
