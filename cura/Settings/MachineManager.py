@@ -233,7 +233,7 @@ class MachineManager(QObject):
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
             self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
-
+            self.globalValidationChanged.emit()
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.connect(self._onMaterialNameChanged)
 
