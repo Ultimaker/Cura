@@ -50,7 +50,8 @@ class PlatformPhysics:
             # Ignore intersections with the bottom
             build_volume_bounding_box = self._build_volume.getBoundingBox()
             if build_volume_bounding_box:
-                build_volume_bounding_box.set(bottom=-9001)
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
             else:
                 # No bounding box. This is triggered when running Cura from command line with a model for the first time
                 # In that situation there is a model, but no machine (and therefore no build volume.
