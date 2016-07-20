@@ -583,7 +583,7 @@ class CuraApplication(QtApplication):
 
             op.push()
             if group_node:
-                if len(group_node.getChildren()) == 1:
+                if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
                     group_node.getChildren()[0].setParent(group_node.getParent())
                     op = RemoveSceneNodeOperation(group_node)
                     op.push()
