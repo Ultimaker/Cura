@@ -331,29 +331,48 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, str)
     def addMachine(self, name, definition_id):
-        definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
+        container_registry = UM.Settings.ContainerRegistry.getInstance()
+        definitions = container_registry.findDefinitionContainers(id = definition_id)
         if definitions:
             definition = definitions[0]
             name = self._createUniqueName("machine", "", name, definition.getName())
             new_global_stack = UM.Settings.ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
-            UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
+            container_registry.addContainer(new_global_stack)
 
             if definition.getProperty("machine_extruder_count", "value") == 1:
                 variant_instance_container = self._updateVariantContainer(definition)
                 material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
                 quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
             else:
-                # Initialise multiextrusion global stacks to empty profiles; all settings go in the user profile
-                variant_instance_container = self._empty_variant_container
-                material_instance_container = self._empty_material_container
-                quality_instance_container = self._empty_quality_container
+                # Initialise multiextrusion global stacks to new empty profiles
+                # These will mirror values from the extruder stacks
+                variant_instance_container = UM.Settings.InstanceContainer(name + "_global_variant")
+                variant_instance_container.addMetaDataEntry("machine", name)
+                variant_instance_container.addMetaDataEntry("type", "variant")
+                variant_instance_container.setDefinition(definitions[0])
+                variant_instance_container.setName("global")
+                container_registry.addContainer(variant_instance_container)
+
+                material_instance_container = UM.Settings.InstanceContainer(name + "_global_material")
+                material_instance_container.addMetaDataEntry("machine", name)
+                material_instance_container.addMetaDataEntry("type", "material")
+                material_instance_container.setDefinition(definitions[0])
+                material_instance_container.setName("global")
+                container_registry.addContainer(material_instance_container)
+
+                quality_instance_container = UM.Settings.InstanceContainer(name + "_global_quality")
+                quality_instance_container.addMetaDataEntry("machine", name)
+                quality_instance_container.addMetaDataEntry("type", "quality")
+                quality_instance_container.setDefinition(definitions[0])
+                quality_instance_container.setName("global")
+                container_registry.addContainer(quality_instance_container)
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
             current_settings_instance_container.addMetaDataEntry("type", "user")
             current_settings_instance_container.setDefinition(definitions[0])
-            UM.Settings.ContainerRegistry.getInstance().addContainer(current_settings_instance_container)
+            container_registry.addContainer(current_settings_instance_container)
 
             # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definition)
