@@ -97,7 +97,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "0")
+        SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
         SettingDefinition.addSettingType("extruder", int, str, Validator)
 
         ## Add the 4 types of profiles to storage.
