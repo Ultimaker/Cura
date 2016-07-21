@@ -478,7 +478,7 @@ class MachineManager(QObject):
             return
 
         new_value = self._active_container_stack.getProperty(key, "value")
-        stacks = [stack for stack in self._extruder_manager.getMachineExtruders(self._global_container_stack.getId())]
+        stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
         stacks.append(self._global_container_stack)
         for extruder_stack in stacks:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
