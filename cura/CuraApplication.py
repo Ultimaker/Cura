@@ -854,7 +854,7 @@ class CuraApplication(QtApplication):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
         mesh_data = job.getResult().getMeshData()
         if mesh_data:
-            job._node.setMeshData(job.getResult().getMeshData())
+            job._node.setMeshData(mesh_data)
         else:
             Logger.log("w", "Could not find a mesh in reloaded node.")
 
