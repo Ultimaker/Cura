@@ -502,6 +502,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   It will be normalized (based on max_progress) to range 0 - 100
     def setProgress(self, progress, max_progress = 100):
         self._progress = (progress / max_progress) * 100  # Convert to scale of 0-100
+        if self._progress == 100:
+            # Printing is done, reset progress
+            self._gcode_position = 0
+            self.setProgress(0)
+            self._is_printing = False
+            self._is_paused = False
+            self._updateJobState("ready")
         self.progressChanged.emit()
 
     ##  Cancel the current print. Printer connection wil continue to listen.
