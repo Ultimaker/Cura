@@ -199,6 +199,7 @@ class MachineManager(QObject):
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
+
             self.globalValueChanged.emit()
 
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
@@ -211,7 +212,6 @@ class MachineManager(QObject):
                 if not self._global_container_stack.getProperty(key, "settable_per_extruder"):
                     new_value = self._active_container_stack.getProperty(key, "value")
                     active_stack_has_user_value = self._active_container_stack.getTop().getInstance(key) != None
-
                     for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
                         if extruder_stack != self._active_container_stack:
                             if active_stack_has_user_value:
@@ -220,15 +220,16 @@ class MachineManager(QObject):
                                 # Remove from the value from the other stacks as well, unless the
                                 # top value from the other stacklevels is different than the new value
                                 for container in extruder_stack.getContainers():
-                                    if container == extruder_stack.getTop():
-                                        continue
+                                    # Commented out this line for a bit. Don't know why it's here, but it is causing
+                                    # issues with reset button. 
+                                    #if container == extruder_stack.getTop():
+                                    #    continue
                                     if container.__class__ == UM.Settings.InstanceContainer and container.getInstance(key) != None:
                                         if container.getProperty(key, "value") != new_value:
                                             extruder_stack.getTop().setProperty(key, "value", new_value)
                                         else:
                                             extruder_stack.getTop().removeInstance(key)
                                         break
-
                     if self._global_container_stack.getProperty(key, "value") != new_value:
                         self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
