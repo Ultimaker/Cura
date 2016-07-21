@@ -310,6 +310,20 @@ UM.ManagementPage
     {
         if(currentItem == null)
         {
+            // Useful when nothing is selected,
+            materialProperties.name = "";
+
+            materialProperties.supplier = "-";
+            materialProperties.material_type = "-";
+            materialProperties.color_name = "-";
+            materialProperties.color_code = "-";
+
+            materialProperties.description = "";
+            materialProperties.adhesion_info = "";
+
+            materialProperties.density = 0.0;
+            materialProperties.diameter = 0.0;
+
             return
         }
 
