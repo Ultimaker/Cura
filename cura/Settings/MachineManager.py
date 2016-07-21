@@ -202,9 +202,10 @@ class MachineManager(QObject):
             self.globalValueChanged.emit()
 
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
-                # Make the global stack value mirror the stack value appropriate for this setting
+                # Make the global current settings mirror the stack values appropriate for this setting
                 if self._active_container_stack.getProperty("extruder_nr", "value") == int(self._active_container_stack.getProperty(key, "global_inherits_stack")):
-                    self._global_container_stack.getTop().setProperty(key, "value", self._active_container_stack.getProperty(key, "value"))
+                    new_value = self._active_container_stack.getProperty(key, "value")
+                    self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
                 # Global-only setting values should be set on all extruders and the global stack
                 if not self._global_container_stack.getProperty(key, "settable_per_extruder"):
@@ -217,10 +218,17 @@ class MachineManager(QObject):
                                 extruder_stack.getTop().setProperty(key, "value", new_value)
                             else:
                                 # Remove from the value from the other stacks as well, unless the
-                                # resulting value from the other stacklevels is different
-                                extruder_stack.getTop().removeInstance(key)
-                                if extruder_stack.getProperty(key, "value") != new_value:
-                                    extruder_stack.getTop().setProperty(key, "value", new_value)
+                                # top value from the other stacklevels is different than the new value
+                                for container in extruder_stack.getContainers():
+                                    if container == extruder_stack.getTop():
+                                        continue
+                                    if container.__class__ == UM.Settings.InstanceContainer and container.getInstance(key) != None:
+                                        if container.getProperty(key, "value") != new_value:
+                                            extruder_stack.getTop().setProperty(key, "value", new_value)
+                                        else:
+                                            extruder_stack.getTop().removeInstance(key)
+                                        break
+
                     if self._global_container_stack.getProperty(key, "value") != new_value:
                         self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
@@ -292,29 +300,11 @@ class MachineManager(QObject):
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
 
-        if self._active_container_stack and self._active_container_stack != self._global_container_stack:
+        if self._active_container_stack and int(self._active_container_stack.getProperty("extruder_nr", "value")) == 0:
             global_container = self._global_container_stack.findContainer({"type": container_type})
-            if global_container:
-                # rebuild the global equivalent of the changed container
-                global_container.clear()
-
-                # get the keys from the containers of this type from all stacks
-                stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
-                keys = []
-                for extruder_stack in stacks:
-                    if extruder_stack == self._active_container_stack:
-                        extruder_container = container
-                    else:
-                        extruder_container = extruder_stack.findContainer({"type": container_type})
-                    if extruder_container:
-                        keys += extruder_container.getAllKeys()
-                keys = list(set(keys))
-
-                # set the value of the global container to the value of the inherit stack - if any
-                for key in keys:
-                    inherit_stack_index = int(self._active_container_stack.getProperty(key, "global_inherits_stack"))
-                    if stacks[inherit_stack_index].hasProperty(key, "value"):
-                        global_container.setProperty(key, "value", stacks[inherit_stack_index].getProperty(key, "value"))
+            if global_container and global_container != container:
+                container_index = self._global_container_stack.getContainerIndex(global_container)
+                self._global_container_stack.replaceContainer(container_index, container)
 
         if container_type == "material":
             self.activeMaterialChanged.emit()
@@ -340,33 +330,9 @@ class MachineManager(QObject):
             new_global_stack.addMetaDataEntry("type", "machine")
             container_registry.addContainer(new_global_stack)
 
-            if definition.getProperty("machine_extruder_count", "value") == 1:
-                variant_instance_container = self._updateVariantContainer(definition)
-                material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
-                quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
-            else:
-                # Initialise multiextrusion global stacks to new empty profiles
-                # These will mirror values from the extruder stacks
-                variant_instance_container = UM.Settings.InstanceContainer(name + "_global_variant")
-                variant_instance_container.addMetaDataEntry("machine", name)
-                variant_instance_container.addMetaDataEntry("type", "variant")
-                variant_instance_container.setDefinition(definitions[0])
-                variant_instance_container.setName("global")
-                container_registry.addContainer(variant_instance_container)
-
-                material_instance_container = UM.Settings.InstanceContainer(name + "_global_material")
-                material_instance_container.addMetaDataEntry("machine", name)
-                material_instance_container.addMetaDataEntry("type", "material")
-                material_instance_container.setDefinition(definitions[0])
-                material_instance_container.setName("global")
-                container_registry.addContainer(material_instance_container)
-
-                quality_instance_container = UM.Settings.InstanceContainer(name + "_global_quality")
-                quality_instance_container.addMetaDataEntry("machine", name)
-                quality_instance_container.addMetaDataEntry("type", "quality")
-                quality_instance_container.setDefinition(definitions[0])
-                quality_instance_container.setName("global")
-                container_registry.addContainer(quality_instance_container)
+            variant_instance_container = self._updateVariantContainer(definition)
+            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+            quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
