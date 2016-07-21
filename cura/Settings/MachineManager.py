@@ -221,7 +221,8 @@ class MachineManager(QObject):
                                 extruder_stack.getTop().removeInstance(key)
                                 if extruder_stack.getProperty(key, "value") != new_value:
                                     extruder_stack.getTop().setProperty(key, "value", new_value)
-                    self._global_container_stack.getTop().setProperty(key, "value", new_value)
+                    if self._global_container_stack.getProperty(key, "value") != new_value:
+                        self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
         if property_name == "global_inherits_stack":
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
@@ -290,6 +291,31 @@ class MachineManager(QObject):
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
+
+        if self._active_container_stack and self._active_container_stack != self._global_container_stack:
+            global_container = self._global_container_stack.findContainer({"type": container_type})
+            if global_container:
+                # rebuild the global equivalent of the changed container
+                global_container.clear()
+
+                # get the keys from the containers of this type from all stacks
+                stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+                keys = []
+                for extruder_stack in stacks:
+                    if extruder_stack == self._active_container_stack:
+                        extruder_container = container
+                    else:
+                        extruder_container = extruder_stack.findContainer({"type": container_type})
+                    if extruder_container:
+                        keys += extruder_container.getAllKeys()
+                keys = list(set(keys))
+
+                # set the value of the global container to the value of the inherit stack - if any
+                for key in keys:
+                    inherit_stack_index = int(self._active_container_stack.getProperty(key, "global_inherits_stack"))
+                    if stacks[inherit_stack_index].hasProperty(key, "value"):
+                        global_container.setProperty(key, "value", stacks[inherit_stack_index].getProperty(key, "value"))
+
         if container_type == "material":
             self.activeMaterialChanged.emit()
         elif container_type == "variant":
