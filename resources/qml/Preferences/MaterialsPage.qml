@@ -37,6 +37,51 @@ UM.ManagementPage
         sectionProperty: "brand"
     }
 
+    delegate: Rectangle
+    {
+
+        SystemPalette { id: palette }
+        // width: objectListContainer.viewport.width;
+        width: ListView.view.width;
+        height: childrenRect.height;
+        color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+
+        Label
+        {
+            id: materialLabel
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.right: parent.right;
+            text: model.name
+            elide: Text.ElideRight
+            font.italic: model.id == activeId
+            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+        }
+
+        UM.RecolorImage
+        {
+            anchors.left: parent.left;
+            source: UM.Theme.getIcon("lock");
+            visible: model.readOnly;
+            width: materialLabel.height - 2;
+            height: materialLabel.height - 2;
+            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent;
+            onClicked:
+            {
+                if(!parent.ListView.isCurrentItem)
+                {
+                    parent.ListView.view.currentIndex = index;
+                    base.itemActivated();
+                }
+            }
+        }
+    }
+
     activeId: Cura.MachineManager.activeMaterialId
     activeIndex: getActiveIndex();
 
