@@ -84,7 +84,7 @@ Column
 
         orientation: ListView.Horizontal
 
-        model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: true }
+        model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: false }
 
         Connections
         {
