@@ -505,6 +505,19 @@ class MachineManager(QObject):
             return True
         return containers[0].isReadOnly()
 
+    ## Copy the value of the setting of the current extruder to all other extruders as well as the global container.
+    @pyqtSlot(str)
+    def copyValueToExtruders(self, key):
+        if not self._active_container_stack or self._global_container_stack.getProperty("machine_extruder_count", "value") <= 1:
+            return
+
+        new_value = self._active_container_stack.getProperty(key, "value")
+        stacks = [stack for stack in self._extruder_manager.getMachineExtruders(self._global_container_stack.getId())]
+        stacks.append(self._global_container_stack)
+        for extruder_stack in stacks:
+            if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
+                extruder_stack.getTop().setProperty(key, "value", new_value)
+
     @pyqtSlot(result = str)
     def newQualityContainerFromQualityAndUser(self):
         new_container_id = self.duplicateContainer(self.activeQualityId)

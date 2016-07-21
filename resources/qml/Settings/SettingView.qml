@@ -102,7 +102,12 @@ ScrollView
             Connections
             {
                 target: item
-                onContextMenuRequested: { contextMenu.key = model.key; contextMenu.popup() }
+                onContextMenuRequested:
+                {
+                    contextMenu.key = model.key;
+                    contextMenu.provider = provider
+                    contextMenu.popup();
+                }
                 onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
                 onHideTooltip: base.hideTooltip()
             }
@@ -134,9 +139,24 @@ ScrollView
 
         Menu
         {
-            id: contextMenu;
+            id: contextMenu
 
-            property string key;
+            property string key
+            property var provider
+
+            MenuItem
+            {
+                //: Settings context menu action
+                text: catalog.i18nc("@action:menu", "Copy value to all extruders")
+                visible: machineExtruderCount.properties.value > 1
+                enabled: contextMenu.provider.properties.settable_per_extruder != "False"
+                onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
+            }
+
+            MenuSeparator
+            {
+                visible: machineExtruderCount.properties.value > 1
+            }
 
             MenuItem
             {
@@ -151,6 +171,16 @@ ScrollView
 
                 onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
             }
+        }
+
+        UM.SettingPropertyProvider
+        {
+            id: machineExtruderCount
+
+            containerStackId: Cura.MachineManager.activeMachineId
+            key: "machine_extruder_count"
+            watchedProperties: [ "value" ]
+            storeIndex: 0
         }
     }
 }
