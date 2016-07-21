@@ -60,6 +60,8 @@ ScrollView
             property var settingDefinitionsModel: definitionsModel
             property var propertyProvider: provider
 
+            property var stackId: ExtruderManager.activeExtruderStackId ? ExtruderManager.activeExtruderStackId : Cura.MachineManager.activeMachineId
+
             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
             //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
@@ -89,11 +91,45 @@ ScrollView
                 }
             }
 
+            // Binding to ensure that the right containerstack ID is set for the provider.
+            // This ensures that if a setting has a global_inherits_stack id (for instance; Support speed points to the
+            // extruder that actually prints the support, as that is the setting we need to use to calculate the value)
+            Binding
+            {
+                target: provider
+                property: "containerStackId"
+                value:
+                {
+                    if(inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
+                    {
+                        if( ExtruderManager.activeExtruderStackId)
+                        {
+                            return ExtruderManager.activeExtruderStackId
+                        }
+                        else
+                        {
+                            return Cura.MachineManager.activeMachineId
+                        }
+                    }
+                    return ExtruderManager.extruderIds[inheritStackProvider.properties.global_inherits_stack]
+                }
+            }
+
+            // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+            // so we bypass that to make a dedicated provider.
+            UM.SettingPropertyProvider
+            {
+                id: inheritStackProvider
+                containerStackId: Cura.MachineManager.activeMachineId
+                key: model.key
+                watchedProperties: [ "global_inherits_stack"]
+            }
+
             UM.SettingPropertyProvider
             {
                 id: provider
 
-                containerStackId: ExtruderManager.activeExtruderStackId ? ExtruderManager.activeExtruderStackId : Cura.MachineManager.activeMachineId
+                containerStackId: delegate.stackId
                 key: model.key ? model.key : ""
                 watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder" ]
                 storeIndex: 0
