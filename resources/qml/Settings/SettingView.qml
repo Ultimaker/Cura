@@ -111,7 +111,7 @@ ScrollView
                             return Cura.MachineManager.activeMachineId
                         }
                     }
-                    return ExtruderManager.extruderIds[inheritStackProvider.properties.global_inherits_stack]
+                    return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)]
                 }
             }
 

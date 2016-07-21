@@ -47,9 +47,12 @@ class ExtruderManager(QObject):
             return 0 # No active machine, so no extruders.
         return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
 
-    @pyqtProperty("QVariantList", notify=extrudersChanged)
+    @pyqtProperty("QVariantMap", notify=extrudersChanged)
     def extruderIds(self):
-        return [self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][extruder].getId() for extruder in self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()]]
+        map = {}
+        for position in self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()]:
+            map[position] = self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][position].getId()
+        return map
 
     ##  The instance of the singleton pattern.
     #
