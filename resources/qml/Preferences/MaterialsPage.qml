@@ -38,14 +38,7 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMaterialId
-    activeIndex: {
-        for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMaterialId) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    activeIndex: getActiveIndex();
 
     scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
     detailsVisible: true
@@ -87,7 +80,9 @@ UM.ManagementPage
                     Cura.MachineManager.setActiveQuality(quality_id)
                 }
 
-                Cura.MachineManager.setActiveMaterial(material_id)
+                Cura.MachineManager.setActiveMaterial(material_id);
+                // explicitly set currentIndex, or it will sometimes get a strange value.
+                base.objectList.currentIndex = getActiveIndex();
             }
         },
         Button
@@ -296,5 +291,15 @@ UM.ManagementPage
                 materialProperties.diameter = 0.0;
             }
         }
+    }
+
+    function getActiveIndex() {
+        var activeMaterialId = Cura.MachineManager.activeMaterialId;
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == activeMaterialId) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
