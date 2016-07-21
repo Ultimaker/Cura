@@ -300,11 +300,16 @@ class MachineManager(QObject):
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
 
-        if self._active_container_stack and int(self._active_container_stack.getProperty("extruder_nr", "value")) == 0:
-            global_container = self._global_container_stack.findContainer({"type": container_type})
-            if global_container and global_container != container:
-                container_index = self._global_container_stack.getContainerIndex(global_container)
-                self._global_container_stack.replaceContainer(container_index, container)
+        if self._active_container_stack and self._active_container_stack != self._global_container_stack:
+            if int(self._active_container_stack.getProperty("extruder_nr", "value")) == 0:
+                global_container = self._global_container_stack.findContainer({"type": container_type})
+                if global_container and global_container != container:
+                    container_index = self._global_container_stack.getContainerIndex(global_container)
+                    self._global_container_stack.replaceContainer(container_index, container)
+
+            for key in container.getAllKeys():
+                # Make sure the values in this profile are distributed to other stacks if necessary
+                self._onGlobalPropertyChanged(key, "value")
 
         if container_type == "material":
             self.activeMaterialChanged.emit()
