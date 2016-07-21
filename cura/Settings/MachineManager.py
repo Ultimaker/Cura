@@ -58,7 +58,7 @@ class MachineManager(QObject):
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+            if self._global_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 # Make sure _active_container_stack is properly initiated
                 ExtruderManager.getInstance().setActiveExtruderIndex(0)
 
