@@ -16,6 +16,8 @@ from PyQt5.QtGui import QImage
 import json
 import os
 
+from time import time
+
 i18n_catalog = i18nCatalog("cura")
 
 from enum import IntEnum
@@ -104,6 +106,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._camera_image = QImage()
 
         self._material_post_objects = {}
+        self._connection_state_before_timeout = None
+
+        self._last_response_time = time()
+        self._timeout_time = 10
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
@@ -178,6 +184,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Request data from the connected device.
     def _update(self):
+        # Check that we aren't in a timeout state
+        if self._last_response_time and not self._connection_state_before_timeout:
+            if time() - self._last_response_time > self._timeout_time:
+                # Go into timeout state.
+                Logger.log("d", "We did not recieve a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                self._connection_state_before_timeout = self._connection_state
+                self.setConnectionState(ConnectionState.error)
+
         if self._authentication_state == AuthState.NotAuthenticated:
             self._verifyAuthentication() # We don't know if we are authenticated; check if we have correct auth.
         elif self._authentication_state == AuthState.AuthenticationRequested:
@@ -390,7 +404,19 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _onFinished(self, reply):
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Received a timeout on a request to the printer")
+            self._connection_state_before_timeout = self._connection_state
+            self.setConnectionState(ConnectionState.error)
             return
+
+        if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  #  There was a timeout, but we got a correct answer again.
+            Logger.log("d", "We got a response from the server after %s of silence", time() - self._last_response_time )
+            self.setConnectionState(self._connection_state_before_timeout)
+            self._connection_state_before_timeout = None
+
+        if reply.error() == QNetworkReply.NoError:
+            self._last_response_time = time()
+        else:
+            return  # Error in the reply, drop it.
 
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if reply.operation() == QNetworkAccessManager.GetOperation:
