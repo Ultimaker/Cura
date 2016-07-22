@@ -111,6 +111,8 @@ class ThreeMFReader(MeshReader):
             if len(objects) > 1:
                 group_decorator = GroupDecorator()
                 result.addDecorator(group_decorator)
+            elif len(objects) == 1:
+                result = result.getChildren()[0] # Only one object found, return that.
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
 

@@ -157,7 +157,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
                 # Don't use data below 0.
                 # TODO; We need a better check for this as this gives poor results for meshes with long edges.
-                vertex_data = vertex_data[vertex_data[:,1] >= 0]
+                vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
 
                 if len(vertex_data) >= 4:
                     # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices

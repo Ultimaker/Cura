@@ -197,7 +197,6 @@ Cura.MachineAction
                 Button
                 {
                     text: checkupMachineAction.heatupHotendStarted ? catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
-                    //
                     onClicked:
                     {
                         if (checkupMachineAction.heatupHotendStarted)

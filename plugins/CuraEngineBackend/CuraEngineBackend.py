@@ -22,6 +22,7 @@ from . import StartSliceJob
 
 import os
 import sys
+from time import time
 
 from PyQt5.QtCore import QTimer
 
@@ -91,6 +92,7 @@ class CuraEngineBackend(Backend):
         self._always_restart = True #Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
+        self._backend_log_max_lines = 200 # Maximal count of lines to buffer
         self._error_message = None #Pop-up message that shows errors.
 
         self.backendQuit.connect(self._onBackendQuit)
@@ -99,6 +101,8 @@ class CuraEngineBackend(Backend):
         #When a tool operation is in progress, don't slice. So we need to listen for tool operations.
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
+
+        self._slice_start_time = None
 
     ##  Called when closing the application.
     #
@@ -128,6 +132,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
             # try again in a short time
             self._change_timer.start()
@@ -217,6 +222,7 @@ class CuraEngineBackend(Backend):
 
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
+        Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
     ##  Listener for when the scene has changed.
     #
@@ -286,7 +292,7 @@ class CuraEngineBackend(Backend):
         self.processingProgress.emit(1.0)
 
         self._slicing = False
-
+        Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
             self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data)
             self._process_layers_job.start()

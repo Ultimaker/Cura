@@ -125,6 +125,7 @@ Item
                 }
                 Label{
                     id: infillLabel
+                    font: UM.Theme.getFont("default")
                     anchors.top: infillIconLining.bottom
                     anchors.horizontalCenter: infillIconLining.horizontalCenter
                     color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_border")

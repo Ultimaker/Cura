@@ -4,7 +4,6 @@
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
-from UM.Scene.Platform import Platform as Scene_Platform
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -126,6 +125,7 @@ class CuraApplication(QtApplication):
         )
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
+        self._machine_manager = None    # This is initialized on demand.
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
@@ -143,7 +143,6 @@ class CuraApplication(QtApplication):
         ])
         self._physics = None
         self._volume = None
-        self._platform = None
         self._output_devices = {}
         self._print_information = None
         self._previous_active_tool = None
@@ -195,6 +194,14 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
+
+        for key in [
+            "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
+            "dialog_profile_path",
+            "dialog_material_path"]:
+
+            Preferences.getInstance().addPreference("local_file/%s" % key, "~/")
+
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
         Preferences.getInstance().setDefault("general/visible_settings", """
@@ -333,10 +340,15 @@ class CuraApplication(QtApplication):
                     f.write(data)
 
 
-    @pyqtSlot(result = QUrl)
-    def getDefaultPath(self):
-        return QUrl.fromLocalFile(os.path.expanduser("~/"))
-    
+    @pyqtSlot(str, result = QUrl)
+    def getDefaultPath(self, key):
+        default_path = Preferences.getInstance().getValue("local_file/%s" % key)
+        return QUrl.fromLocalFile(default_path)
+
+    @pyqtSlot(str, str)
+    def setDefaultPath(self, key, default_path):
+        Preferences.getInstance().setValue("local_file/%s" % key, default_path)
+
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
@@ -376,8 +388,8 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Scene_Platform(root)
 
+        # The platform is a child of BuildVolume
         self._volume = BuildVolume.BuildVolume(root)
 
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
@@ -399,8 +411,7 @@ class CuraApplication(QtApplication):
 
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         cura.Settings.ExtruderManager.getInstance()
-        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager",
-                                 cura.Settings.MachineManager.createMachineManager)
+        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -418,6 +429,11 @@ class CuraApplication(QtApplication):
             self._started = True
 
             self.exec_()
+
+    def getMachineManager(self, *args):
+        if self._machine_manager is None:
+            self._machine_manager = cura.Settings.MachineManager.createMachineManager()
+        return self._machine_manager
 
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
@@ -559,15 +575,18 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
+            group_node = None
             if node.getParent():
                 group_node = node.getParent()
-                if not group_node.callDecoration("isGroup"):
-                    op = RemoveSceneNodeOperation(node)
-                else:
-                    while group_node.getParent().callDecoration("isGroup"):
-                        group_node = group_node.getParent()
-                    op = RemoveSceneNodeOperation(group_node)
+                op = RemoveSceneNodeOperation(node)
+
             op.push()
+            if group_node:
+                if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
+                    group_node.getChildren()[0].translate(group_node.getPosition())
+                    group_node.getChildren()[0].setParent(group_node.getParent())
+                    op = RemoveSceneNodeOperation(group_node)
+                    op.push()
 
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
@@ -578,18 +597,16 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
+            current_node = node
+            # Find the topmost group
+            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+                current_node = current_node.getParent()
+
+            new_node = copy.deepcopy(current_node)
+
             op = GroupedOperation()
             for _ in range(count):
-                if node.getParent() and node.getParent().callDecoration("isGroup"):
-                    new_node = copy.deepcopy(node.getParent()) #Copy the group node.
-                    new_node.callDecoration("recomputeConvexHull")
-
-                    op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
-                else:
-                    new_node = copy.deepcopy(node)
-                    new_node.callDecoration("recomputeConvexHull")
-                    op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
-
+                op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
     ##  Center object on platform.
@@ -835,7 +852,11 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        job._node.setMeshData(job.getResult().getMeshData())
+        mesh_data = job.getResult().getMeshData()
+        if mesh_data:
+            job._node.setMeshData(mesh_data)
+        else:
+            Logger.log("w", "Could not find a mesh in reloaded node.")
 
     def _openFile(self, file):
         job = ReadMeshJob(os.path.abspath(file))
@@ -852,3 +873,6 @@ class CuraApplication(QtApplication):
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
         self.getMainWindow().setMinimumSize(size)
+
+    def getBuildVolume(self):
+        return self._volume

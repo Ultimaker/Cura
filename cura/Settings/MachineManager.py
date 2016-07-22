@@ -126,6 +126,9 @@ class MachineManager(QObject):
         self._auto_change_material_hotend_flood_time = time.time()
         self._auto_change_material_hotend_flood_last_choice = button
 
+        if button == QMessageBox.No:
+            return
+
         Logger.log("d", "Setting hotend variant of hotend %d to %s" % (index, hotend_id))
 
         extruder_manager = ExtruderManager.getInstance()
@@ -173,6 +176,9 @@ class MachineManager(QObject):
     def _materialIdChangedDialogCallback(self, button, index, material_id):
         self._auto_change_material_hotend_flood_time = time.time()
         self._auto_change_material_hotend_flood_last_choice = button
+
+        if button == QMessageBox.No:
+            return
 
         Logger.log("d", "Setting material of hotend %d to %s" % (index, material_id))
 
@@ -227,7 +233,7 @@ class MachineManager(QObject):
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
             self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
-
+            self.globalValidationChanged.emit()
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.connect(self._onMaterialNameChanged)
 
@@ -239,7 +245,6 @@ class MachineManager(QObject):
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
-
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_container_stack:
             self._active_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
@@ -292,7 +297,7 @@ class MachineManager(QObject):
                 new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
-            ExtruderManager.getInstance().addMachineExtruders(definition)
+            ExtruderManager.getInstance().addMachineExtruders(definition, new_global_stack.getId())
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
@@ -494,6 +499,7 @@ class MachineManager(QObject):
                 self.activeQualityChanged.emit()
 
     @pyqtSlot(str)
+    @pyqtSlot()
     def updateQualityContainerFromUserContainer(self, quality_id = None):
         if not self._active_container_stack:
             return
@@ -635,8 +641,12 @@ class MachineManager(QObject):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine.
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
 
-        current_settings_id = machine_id + "_current_settings"
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = current_settings_id)
+        stacks = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
+        if not stacks:
+            return
+        ExtruderManager.getInstance().removeMachineExtruders(stacks[0].getBottom().getId())
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
         for container in containers:
             UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
@@ -688,7 +698,7 @@ class MachineManager(QObject):
             return containers[0].getBottom().getId()
 
     @staticmethod
-    def createMachineManager(engine, script_engine):
+    def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
     def _updateVariantContainer(self, definition):
@@ -778,13 +788,10 @@ class MachineManager(QObject):
         return self._empty_quality_container
 
     def _onMachineNameChanged(self):
-        print("machine name changed")
         self.globalContainerChanged.emit()
 
     def _onMaterialNameChanged(self):
-        print("material name changed")
         self.activeMaterialChanged.emit()
 
     def _onQualityNameChanged(self):
-        print("quality name changed")
         self.activeQualityChanged.emit()

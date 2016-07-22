@@ -129,7 +129,7 @@ class StartSliceJob(Job):
 
             self._buildGlobalSettingsMessage(stack)
 
-            for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getBottom().getId()):
+            for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
 
             for group in object_groups:
@@ -174,10 +174,17 @@ class StartSliceJob(Job):
     def _buildExtruderMessage(self, stack):
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
+
+        material_instance_container = stack.findContainer({"type": "material"})
+
         for key in stack.getAllKeys():
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
-            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            if key == "material_guid" and material_instance_container:
+                # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
+                setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
+            else:
+                setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends all global settings to the engine.

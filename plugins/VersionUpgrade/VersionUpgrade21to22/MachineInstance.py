@@ -47,11 +47,11 @@ class MachineInstance:
             raise UM.VersionUpgrade.InvalidVersionException("The version of this machine instance is wrong. It must be 1.")
 
         self._type_name = config.get("general", "type")
-        self._variant_name = config.get("general", "variant", fallback = "empty")
+        self._variant_name = config.get("general", "variant", fallback = "empty_variant")
         self._name = config.get("general", "name", fallback = "")
         self._key = config.get("general", "key", fallback = None)
-        self._active_profile_name = config.get("general", "active_profile", fallback = "empty")
-        self._active_material_name = config.get("general", "material", fallback = "empty")
+        self._active_profile_name = config.get("general", "active_profile", fallback = "empty_quality")
+        self._active_material_name = config.get("general", "material", fallback = "empty_material")
 
         self._machine_setting_overrides = {}
         for key, value in config["machine_settings"].items():

@@ -9,6 +9,7 @@ from UM.Mesh.MeshData import MeshData
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
@@ -17,7 +18,7 @@ from cura import LayerDataDecorator
 from cura import LayerPolygon
 
 import numpy
-
+from time import time
 catalog = i18nCatalog("cura")
 
 
@@ -45,6 +46,7 @@ class ProcessSlicedLayersJob(Job):
         if len(self._layers) == 0:
             return
 
+        start_time = time()
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
@@ -155,7 +157,10 @@ class ProcessSlicedLayersJob(Job):
         new_node.addDecorator(decorator)
 
         new_node.setMeshData(mesh)
-        new_node.setParent(self._scene.getRoot())  # Note: After this we can no longer abort!
+        # Set build volume as parent, the build volume can move as a result of raft settings.
+        # It makes sense to set the build volume as parent: the print is actually printed on it.
+        new_node_parent = Application.getInstance().getBuildVolume()
+        new_node.setParent(new_node_parent)  # Note: After this we can no longer abort!
 
         settings = Application.getInstance().getGlobalContainerStack()
         if not settings.getProperty("machine_center_is_zero", "value"):
@@ -173,6 +178,8 @@ class ProcessSlicedLayersJob(Job):
 
         # Clear the unparsed layers. This saves us a bunch of memory if the Job does not get destroyed.
         self._layers = None
+
+        Logger.log("d", "Processing layers took %s seconds", time() - start_time)
 
     def _onActiveViewChanged(self):
         if self.isRunning():

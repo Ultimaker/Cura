@@ -215,8 +215,9 @@ Item {
                         // This ensures that the value in any of the deeper containers need not be removed, which is
                         // needed for the reset button (which deletes the top value) to correctly go back to profile
                         // defaults.
-                        propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
                         propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
+                        propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
+
                     }
                 }
 
@@ -244,15 +245,6 @@ Item {
             anchors.verticalCenter: parent.verticalCenter;
             width: UM.Theme.getSize("setting_control").width;
             height: UM.Theme.getSize("setting_control").height
-        }
-    }
-
-    Connections
-    {
-        target: Cura.MachineManager
-        onBlurSettings:
-        {
-            revertButton.focus = true
         }
     }
 

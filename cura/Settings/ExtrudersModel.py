@@ -115,7 +115,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 changed = True
 
             manager = ExtruderManager.getInstance()
-            for extruder in manager.getMachineExtruders(global_container_stack.getBottom().getId()):
+            for extruder in manager.getMachineExtruders(global_container_stack.getId()):
                 extruder_name = extruder.getName()
                 material = extruder.findContainer({ "type": "material" })
                 if material:

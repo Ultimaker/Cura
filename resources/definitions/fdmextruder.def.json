@@ -145,6 +145,28 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "extruder_prime_pos_z":
+                {
+                    "label": "Extruder Prime Z Position",
+                    "description": "The Z coordinate of the position where the nozzle primes at the start of printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
+                    "maximum_value": "machine_height",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                }
+            }
+        },
+        "platform_adhesion":
+        {
+            "label": "Platform Adhesion",
+            "type": "category",
+            "icon": "category_adhesion",
+            "description": "Adhesion",
+            "children":
+            {
                 "extruder_prime_pos_x":
                 {
                     "label": "Extruder Prime X Position",
@@ -152,10 +174,11 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "minimum_value_warning": "-1000",
-                    "maximum_value_warning": "1000",
+                    "minimum_value_warning": "machine_nozzle_offset_x",
+                    "maximum_value": "machine_width",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "enabled": false
                 },
                 "extruder_prime_pos_y":
                 {
@@ -164,22 +187,11 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "minimum_value_warning": "-1000",
-                    "maximum_value_warning": "1000",
+                    "minimum_value_warning": "machine_nozzle_offset_y",
+                    "maximum_value_warning": "machine_depth",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "extruder_prime_pos_z":
-                {
-                    "label": "Extruder Prime Z Position",
-                    "description": "The Z coordinate of the position where the nozzle primes at the start of printing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "minimum_value_warning": "-1000",
-                    "maximum_value_warning": "1000",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "enabled": false
                 }
             }
         }

@@ -40,6 +40,7 @@ class PlatformPhysics:
             return
 
         root = self._controller.getScene().getRoot()
+
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
@@ -47,7 +48,14 @@ class PlatformPhysics:
             bbox = node.getBoundingBox()
 
             # Ignore intersections with the bottom
-            build_volume_bounding_box = self._build_volume.getBoundingBox().set(bottom=-9001)
+            build_volume_bounding_box = self._build_volume.getBoundingBox()
+            if build_volume_bounding_box:
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+            else:
+                # No bounding box. This is triggered when running Cura from command line with a model for the first time
+                # In that situation there is a model, but no machine (and therefore no build volume.
+                return
             node._outside_buildarea = False
 
             # Mark the node as outside the build volume if the bounding box test fails.
@@ -58,10 +66,7 @@ class PlatformPhysics:
             move_vector = Vector()
             if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                if bbox.bottom > 0:
-                    move_vector = move_vector.set(y=-bbox.bottom + z_offset)
-                elif bbox.bottom < z_offset:
-                    move_vector = move_vector.set(y=(-bbox.bottom) - z_offset)
+                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):

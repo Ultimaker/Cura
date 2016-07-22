@@ -22,6 +22,18 @@ UM.MainWindow
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+
+        // Workaround silly issues with QML Action's shortcut property.
+        //
+        // Currently, there is no way to define shortcuts as "Application Shortcut".
+        // This means that all Actions are "Window Shortcuts". The code for this
+        // implements a rather naive check that just checks if any of the action's parents
+        // are a window. Since the "Actions" object is a singleton it has no parent by
+        // default. If we set its parent to something contained in this window, the
+        // shortcut will activate properly because one of its parents is a window.
+        //
+        // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
+        Cura.Actions.parent = backgroundItem
     }
 
     Item
@@ -309,23 +321,7 @@ UM.MainWindow
                 sourceSize.height: height;
             }
 
-            Button
-            {
-                id: viewModeButton
 
-                anchors
-                {
-                    top: toolbar.bottom;
-                    topMargin: UM.Theme.getSize("window_margin").height;
-                    left: parent.left;
-                }
-                text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.getIcon("viewmode");
-
-                style: UM.Theme.styles.tool_button;
-                tooltip: '';
-                menu: ViewMenu { }
-            }
 
             Toolbar
             {
@@ -353,6 +349,24 @@ UM.MainWindow
                 }
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
+            }
+
+            Button
+            {
+                id: viewModeButton
+
+                anchors
+                {
+                    top: toolbar.bottom;
+                    topMargin: UM.Theme.getSize("window_margin").height;
+                    left: parent.left;
+                }
+                text: catalog.i18nc("@action:button","View Mode");
+                iconSource: UM.Theme.getIcon("viewmode");
+
+                style: UM.Theme.styles.tool_button;
+                tooltip: '';
+                menu: ViewMenu { }
             }
 
             Rectangle
@@ -506,6 +520,17 @@ UM.MainWindow
         onTriggered: preferences.getCurrentItem().showProfileNameDialog()
     }
 
+    // BlurSettings is a way to force the focus away from any of the setting items.
+    // We need to do this in order to keep the bindings intact.
+    Connections
+    {
+        target: Cura.MachineManager
+        onBlurSettings:
+        {
+            contentItem.focus = true
+        }
+    }
+
     Menu
     {
         id: objectContextMenu;
@@ -615,7 +640,7 @@ UM.MainWindow
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: Printer.getDefaultPath()
+        folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
         {
             //Because several implementations of the file dialog only update the folder
@@ -623,6 +648,7 @@ UM.MainWindow
             var f = folder;
             folder = f;
 
+            CuraApplication.setDefaultPath("dialog_load_path", folder);
             UM.MeshFileHandler.readLocalFile(fileUrl)
             var meshName = backgroundItem.getMeshName(fileUrl.toString())
             backgroundItem.hasMesh(decodeURIComponent(meshName))
