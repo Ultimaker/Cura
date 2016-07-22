@@ -1520,9 +1520,9 @@
                     "maximum_value_warning": "300",
                     "settable_per_mesh": true
                 },
-                "skirt_speed": {
-                    "label": "Skirt Speed",
-                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt at a different speed.",
+                "skirt_brim_speed": {
+                    "label": "Skirt/Brim Speed",
+                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt or brim at a different speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
