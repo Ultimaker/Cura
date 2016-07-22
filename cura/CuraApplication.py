@@ -97,7 +97,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSettingType("extruder", int, str, Validator)
+        SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
