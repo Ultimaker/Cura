@@ -236,7 +236,9 @@ class MachineManager(QObject):
                                         if container.getProperty(key, "value") != new_value:
                                             extruder_stack.getTop().setProperty(key, "value", new_value)
                                         else:
-                                            extruder_stack.getTop().removeInstance(key)
+                                            # Check if we really need to remove something.
+                                            if extruder_stack.getProperty(key, "value") != new_value:
+                                                extruder_stack.getTop().removeInstance(key)
                                         break
                     if self._global_container_stack.getProperty(key, "value") != new_value:
                         self._global_container_stack.getTop().setProperty(key, "value", new_value)
