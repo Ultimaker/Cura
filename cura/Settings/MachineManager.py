@@ -210,17 +210,23 @@ class MachineManager(QObject):
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
                 # Make the global current settings mirror the stack values appropriate for this setting
                 if self._active_container_stack.getProperty("extruder_nr", "value") == int(self._active_container_stack.getProperty(key, "global_inherits_stack")):
+
                     new_value = self._active_container_stack.getProperty(key, "value")
                     self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
                 # Global-only setting values should be set on all extruders and the global stack
                 if not self._global_container_stack.getProperty(key, "settable_per_extruder"):
-                    new_value = self._active_container_stack.getProperty(key, "value")
-                    active_stack_has_user_value = self._active_container_stack.getTop().getInstance(key) != None
-
-                    for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
-                        if extruder_stack != self._active_container_stack:
-                            if active_stack_has_user_value:
+                    extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                    target_stack_position = int(self._active_container_stack.getProperty(key, "global_inherits_stack"))
+                    if target_stack_position == -1:  # Prevent -1 from selecting wrong stack.
+                        target_stack = self._active_container_stack
+                    else:
+                        target_stack = extruder_stacks[target_stack_position]
+                    new_value = target_stack.getProperty(key, "value")
+                    target_stack_has_user_value = target_stack.getTop().getInstance(key) != None
+                    for extruder_stack in extruder_stacks:
+                        if extruder_stack != target_stack:
+                            if target_stack_has_user_value:
                                 extruder_stack.getTop().setProperty(key, "value", new_value)
                             else:
                                 # Remove from the value from the other stacks as well, unless the
@@ -232,7 +238,6 @@ class MachineManager(QObject):
                                         else:
                                             extruder_stack.getTop().removeInstance(key)
                                         break
-
                     if self._global_container_stack.getProperty(key, "value") != new_value:
                         self._global_container_stack.getTop().setProperty(key, "value", new_value)
             self._global_event_keys.remove(key)
