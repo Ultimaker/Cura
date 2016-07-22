@@ -1719,9 +1719,9 @@
                     "enabled": "acceleration_enabled",
                     "settable_per_mesh": true
                 },
-                "acceleration_skirt": {
-                    "label": "Skirt Acceleration",
-                    "description": "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt at a different acceleration.",
+                "acceleration_skirt_brim": {
+                    "label": "Skirt/Brim Acceleration",
+                    "description": "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt or brim at a different acceleration.",
                     "unit": "mm/s²",
                     "type": "float",
                     "default_value": 3000,
