@@ -95,7 +95,7 @@ class PrintInformation(QObject):
             else:  # Machine with no extruder stacks
                 density = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("properties", {}).get("density", 0)
 
-            self._material_weights.append(float(amount) * float(density))
+            self._material_weights.append(float(amount) * float(density) / 1000)
             self._material_lengths.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
