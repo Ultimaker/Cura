@@ -50,6 +50,8 @@ class MachineManager(QObject):
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
+        self._global_event_keys = set()
+
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
         self._printer_output_devices = []
@@ -199,6 +201,10 @@ class MachineManager(QObject):
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
+            ## We can get recursion issues. So we store a list of keys that we are still handling to prevent this.
+            if key in self._global_event_keys:
+                return
+            self._global_event_keys.add(key)
             self.globalValueChanged.emit()
 
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
@@ -220,8 +226,6 @@ class MachineManager(QObject):
                                 # Remove from the value from the other stacks as well, unless the
                                 # top value from the other stacklevels is different than the new value
                                 for container in extruder_stack.getContainers():
-                                    if container == extruder_stack.getTop():
-                                        continue
                                     if container.__class__ == UM.Settings.InstanceContainer and container.getInstance(key) != None:
                                         if container.getProperty(key, "value") != new_value:
                                             extruder_stack.getTop().setProperty(key, "value", new_value)
@@ -231,6 +235,7 @@ class MachineManager(QObject):
 
                     if self._global_container_stack.getProperty(key, "value") != new_value:
                         self._global_container_stack.getTop().setProperty(key, "value", new_value)
+            self._global_event_keys.remove(key)
 
         if property_name == "global_inherits_stack":
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
@@ -254,7 +259,6 @@ class MachineManager(QObject):
                 if not has_errors:
                     self._global_stack_valid = True
                     self.globalValidationChanged.emit()
-
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
