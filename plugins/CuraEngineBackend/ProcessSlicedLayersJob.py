@@ -40,12 +40,6 @@ class ProcessSlicedLayersJob(Job):
         self._abort_requested = True
 
     def run(self):
-        # This is to prevent small models layer data to be cleared by extra invocation of engine
-        # Possibly adds an extra bug of layerdata not being removed if platform is cleared.
-        #TODO: remove need for this check 
-        if len(self._layers) == 0:
-            return
-
         start_time = time()
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
