@@ -2132,7 +2132,6 @@
                     "description": "Enable support structures. These structures support parts of the model with severe overhangs.",
                     "type": "bool",
                     "default_value": false,
-                    "global_inherits_stack": "support_extruder_nr",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
@@ -2147,7 +2146,6 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
-                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
