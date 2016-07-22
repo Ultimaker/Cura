@@ -195,18 +195,18 @@ class BuildVolume(SceneNode):
             minimum = Vector(min_w, min_h - 1.0, min_d),
             maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
 
-        skirt_size = 0.0
+        bed_adhesion_size = 0.0
 
         container_stack = Application.getInstance().getGlobalContainerStack()
         if container_stack:
-            skirt_size = self._getSkirtSize(container_stack)
+            bed_adhesion_size = self._getBedAdhesionSize(container_stack)
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + skirt_size + 1, min_h, min_d + disallowed_area_size - skirt_size + 1),
-            maximum = Vector(max_w - skirt_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + skirt_size - 1)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
@@ -311,53 +311,53 @@ class BuildVolume(SceneNode):
                 [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
             ])
 
-        skirt_size = self._getSkirtSize(self._active_container_stack)
+        bed_adhesion_size = self._getBedAdhesionSize(self._active_container_stack)
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
             for area in disallowed_areas:
                 poly = Polygon(numpy.array(area, numpy.float32))
-                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(skirt_size)))
+                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(bed_adhesion_size)))
 
                 areas.append(poly)
 
         # Add the skirt areas around the borders of the build plate.
-        if skirt_size > 0:
+        if bed_adhesion_size > 0:
             half_machine_width = self._active_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._active_container_stack.getProperty("machine_depth", "value") / 2
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, -half_machine_depth],
                 [-half_machine_width, half_machine_depth],
-                [-half_machine_width + skirt_size, half_machine_depth - skirt_size],
-                [-half_machine_width + skirt_size, -half_machine_depth + skirt_size]
+                [-half_machine_width + bed_adhesion_size, half_machine_depth - bed_adhesion_size],
+                [-half_machine_width + bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [half_machine_width, half_machine_depth],
                 [half_machine_width, -half_machine_depth],
-                [half_machine_width - skirt_size, -half_machine_depth + skirt_size],
-                [half_machine_width - skirt_size, half_machine_depth - skirt_size]
+                [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size],
+                [half_machine_width - bed_adhesion_size, half_machine_depth - bed_adhesion_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, half_machine_depth],
                 [half_machine_width, half_machine_depth],
-                [half_machine_width - skirt_size, half_machine_depth - skirt_size],
-                [-half_machine_width + skirt_size, half_machine_depth - skirt_size]
+                [half_machine_width - bed_adhesion_size, half_machine_depth - bed_adhesion_size],
+                [-half_machine_width + bed_adhesion_size, half_machine_depth - bed_adhesion_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [half_machine_width, -half_machine_depth],
                 [-half_machine_width, -half_machine_depth],
-                [-half_machine_width + skirt_size, -half_machine_depth + skirt_size],
-                [half_machine_width - skirt_size, -half_machine_depth + skirt_size]
+                [-half_machine_width + bed_adhesion_size, -half_machine_depth + bed_adhesion_size],
+                [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
             ], numpy.float32)))
 
         self._disallowed_areas = areas
 
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
-    def _getSkirtSize(self, container_stack):
+    def _getBedAdhesionSize(self, container_stack):
         skirt_size = 0.0
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
