@@ -364,9 +364,9 @@ class BuildVolume(SceneNode):
         if adhesion_type == "skirt":
             skirt_distance = container_stack.getProperty("skirt_gap", "value")
             skirt_line_count = container_stack.getProperty("skirt_line_count", "value")
-            skirt_size = skirt_distance + (skirt_line_count * container_stack.getProperty("skirt_line_width", "value"))
+            skirt_size = skirt_distance + (skirt_line_count * container_stack.getProperty("skirt_brim_line_width", "value"))
         elif adhesion_type == "brim":
-            skirt_size = container_stack.getProperty("brim_line_count", "value") * container_stack.getProperty("skirt_line_width", "value")
+            skirt_size = container_stack.getProperty("brim_line_count", "value") * container_stack.getProperty("skirt_brim_line_width", "value")
         elif adhesion_type == "raft":
             skirt_size = container_stack.getProperty("raft_margin", "value")
 
@@ -381,5 +381,5 @@ class BuildVolume(SceneNode):
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]

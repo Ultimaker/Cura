@@ -603,10 +603,10 @@
                             "value": "line_width",
                             "settable_per_mesh": true
                         },
-                        "skirt_line_width":
+                        "skirt_brim_line_width":
                         {
-                            "label": "Skirt Line Width",
-                            "description": "Width of a single skirt line.",
+                            "label": "Skirt/Brim Line Width",
+                            "description": "Width of a single skirt or brim line.",
                             "unit": "mm",
                             "minimum_value": "0.0001",
                             "minimum_value_warning": "0.2",
@@ -2557,7 +2557,7 @@
                             "default_value": 20,
                             "minimum_value": "0",
                             "maximum_value_warning": "300",
-                            "value": "math.ceil(brim_width / skirt_line_width)",
+                            "value": "math.ceil(brim_width / skirt_brim_line_width)",
                             "enabled": "adhesion_type == \"brim\"",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
