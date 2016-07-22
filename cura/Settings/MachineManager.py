@@ -234,7 +234,27 @@ class MachineManager(QObject):
                                 for container in extruder_stack.getContainers():
                                     if container.__class__ == UM.Settings.InstanceContainer and container.getInstance(key) != None:
                                         if container.getProperty(key, "value") != new_value:
-                                            extruder_stack.getTop().setProperty(key, "value", new_value)
+                                            # It could be that the setting needs to be removed instead of updated.
+                                            temp = extruder_stack
+                                            containers = extruder_stack.getContainers()
+                                            # Ensure we have the entire 'chain'
+                                            while temp.getNextStack():
+                                                temp = temp.getNextStack()
+                                                containers.extend(temp.getContainers())
+                                            instance_needs_removal = False
+
+                                            if len(containers) > 1:
+                                                for index in range(1, len(containers)):
+                                                    deeper_container = containers[index]
+                                                    if deeper_container.getProperty(key, "value") == new_value:
+                                                        # Removal will result in correct value, so do that.
+                                                        # We do this to prevent the reset from showing up unneeded.
+                                                        instance_needs_removal = True
+                                                        break
+                                            if instance_needs_removal:
+                                                extruder_stack.getTop().removeInstance(key)
+                                            else:
+                                                extruder_stack.getTop().setProperty(key, "value", new_value)
                                         else:
                                             # Check if we really need to remove something.
                                             if extruder_stack.getProperty(key, "value") != new_value:
