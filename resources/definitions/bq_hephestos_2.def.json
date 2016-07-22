@@ -40,7 +40,7 @@
         "speed_topbottom": { "default_value": 35 },
         "skirt_brim_speed": { "default_value": 35 },
         "skirt_line_count": { "default_value": 4 },
-        "skirt_minimal_length": { "default_value": 30 },
+        "skirt_brim_minimal_length": { "default_value": 30 },
         "skirt_gap": { "default_value": 6 },
         "cool_fan_full_at_height": { "default_value": 0.4 }
     }

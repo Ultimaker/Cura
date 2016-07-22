@@ -95,7 +95,7 @@
         "skirt_line_count": {
             "default_value": 4
         },
-        "skirt_minimal_length": {
+        "skirt_brim_minimal_length": {
             "default_value": 30
         },
         "skirt_gap": {

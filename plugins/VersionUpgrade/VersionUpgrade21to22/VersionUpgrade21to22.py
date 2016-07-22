@@ -32,6 +32,7 @@ _setting_name_translations = {
     "remove_overlapping_walls_x_enabled": "travel_compensate_overlapping_walls_x_enabled",
     "retraction_hop": "retraction_hop_enabled",
     "skirt_line_width": "skirt_brim_line_width",
+    "skirt_minimal_length": "skirt_brim_minimal_length",
     "skirt_speed": "skirt_brim_speed",
     "speed_support_lines": "speed_support_infill"
 }
@@ -159,6 +160,9 @@ class VersionUpgrade21to22(VersionUpgrade):
             elif key == "retraction_hop": #Setting key was changed.
                 del settings[key]
                 settings["retraction_hop_enabled"] = value
+            elif key == "skirt_minimal_length": #Setting key was changed.
+                del settings[key]
+                settings["skirt_brim_minimal_length"] = value
             elif key == "skirt_line_width": #Setting key was changed.
                 del settings[key]
                 settings["skirt_brim_line_width"] = value

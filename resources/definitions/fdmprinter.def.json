@@ -2521,10 +2521,10 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "skirt_minimal_length":
+                "skirt_brim_minimal_length":
                 {
-                    "label": "Skirt Minimum Length",
-                    "description": "The minimum length of the skirt. If this length is not reached by the skirt line count, more skirt lines will be added until the minimum length is reached. Note: If the line count is set to 0 this is ignored.",
+                    "label": "Skirt/Brim Minimum Length",
+                    "description": "The minimum length of the skirt or brim. If this length is not reached by all skirt or brim lines together, more skirt or brim lines will be added until the minimum length is reached. Note: If the line count is set to 0 this is ignored.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 250,
