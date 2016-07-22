@@ -614,6 +614,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
+                            "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -1530,6 +1531,7 @@
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "300",
                     "value": "speed_layer_0",
+                    "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2531,7 +2533,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
-                    "enabled": "adhesion_type == \"skirt\"",
+                    "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2597,7 +2599,7 @@
                     "value": "raft_airgap / 2",
                     "minimum_value": "0",
                     "maximum_value_warning": "layer_height",
-                    "enabled": "adhesion_type == 'raft'",
+                    "enabled": "adhesion_type == \"raft\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
