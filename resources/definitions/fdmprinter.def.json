@@ -1907,8 +1907,8 @@
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": true
                 },
-                "jerk_skirt": {
-                    "label": "Skirt Jerk",
+                "jerk_skirt_brim": {
+                    "label": "Skirt/Brim Jerk",
                     "description": "The maximum instantaneous velocity change with which the skirt and brim are printed.",
                     "unit": "mm/s",
                     "type": "float",
