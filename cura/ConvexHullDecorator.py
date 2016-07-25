@@ -15,6 +15,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._convex_hull_node = None
         self._init2DConvexHullCache()
 
+        self._raft_thickness = 0.0
+        # For raft thickness, DRY
+        self._build_volume = Application.getInstance().getBuildVolume()
+        self._build_volume.raftThicknessChanged.connect(self._onChanged)
+
         self._global_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         Application.getInstance().getController().toolOperationStarted.connect(self._onChanged)
@@ -93,14 +98,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         convex_hull = self.getConvexHull()
         if self._convex_hull_node:
-            if self._convex_hull_node.getHull() == convex_hull:
+            # Check if convex hull has changed
+            if (self._convex_hull_node.getHull() == convex_hull and
+                self._convex_hull_node.getThickness() == self._raft_thickness):
+
                 return
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull, root)
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull, self._raft_thickness, root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key, property_name):
-        if key == "print_sequence" and property_name == "value":
+        if key in self._affected_settings and property_name == "value":
             self._onChanged()
 
     def _init2DConvexHullCache(self):
@@ -157,7 +165,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
                 # Don't use data below 0.
                 # TODO; We need a better check for this as this gives poor results for meshes with long edges.
-                vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
+                # Do not throw away vertices: the convex hull may be too small and objects can collide.
+                # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
 
                 if len(vertex_data) >= 4:
                     # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
@@ -213,6 +222,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return convex_hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
 
     def _onChanged(self, *args):
+        self._raft_thickness = self._build_volume.getRaftThickness()
         self.recomputeConvexHull()
 
     def _onGlobalStackChanged(self):
@@ -235,3 +245,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if root is node:
             return True
         return self.__isDescendant(root, node.getParent())
+
+    _affected_settings = [
+        "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
+        "raft_surface_thickness", "raft_airgap", "print_sequence"]
