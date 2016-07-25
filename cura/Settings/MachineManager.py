@@ -543,15 +543,10 @@ class MachineManager(QObject):
         if containers:
             new_name = self._createUniqueName("quality", "", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
 
-            new_container = UM.Settings.InstanceContainer("")
+            new_container = containers[0].duplicate(new_name, new_name)
 
-            ## Copy all values
-            new_container.deserialize(containers[0].serialize())
-
-            new_container.setReadOnly(False)
-            new_container.setName(new_name)
-            new_container._id = new_name
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
+
             return new_name
 
         return ""
