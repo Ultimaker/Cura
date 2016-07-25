@@ -34,9 +34,10 @@ class SolidView(View):
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
 
         if not self._disabled_shader:
-            self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
-            self._disabled_shader.setUniformValue("u_diffuseColor", [0.68, 0.68, 0.68, 1.0])
-            self._disabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
+            self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
+            self._disabled_shader.setUniformValue("u_diffuseColor1", [1.0, 0.28, 0.28, 1.0])
+            self._disabled_shader.setUniformValue("u_diffuseColor2", [0.68, 0.68, 0.68, 1.0])
+            self._disabled_shader.setUniformValue("u_width", 50.0)
 
         if Application.getInstance().getGlobalContainerStack():
             if Preferences.getInstance().getValue("view/show_overhang"):
