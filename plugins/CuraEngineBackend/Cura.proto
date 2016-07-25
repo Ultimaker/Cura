@@ -61,6 +61,28 @@ message Polygon {
     float line_width = 3; // The width of the line being laid down
 }
 
+message LayerOptimized {
+    int32 id = 1;
+    float height = 2; // Z position
+    float thickness = 3; // height of a single layer
+
+    repeated PathSegment path_segment = 4; // layer data
+}
+
+
+message PathSegment {
+    int32 extruder = 1; // The extruder used for this path segment
+    enum PointType {
+        Point2D = 0;
+        Point3D = 1;
+    }
+    PointType point_type = 2;
+    bytes points = 3; // The points defining the line segments, bytes of float[2/3] array of length N+1
+    bytes line_type = 4; // Type of line segment as an unsigned char array of length 1 or N, where N is the number of line segments in this path
+    bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
+}
+
+
 message GCodeLayer {
     bytes data = 2;
 }

@@ -35,24 +35,31 @@ class Layer:
     def setThickness(self, thickness):
         self._thickness = thickness
 
-    def vertexCount(self):
+    def lineMeshVertexCount(self):
         result = 0
         for polygon in self._polygons:
-            result += polygon.vertexCount()
+            result += polygon.lineMeshVertexCount()
 
         return result
 
-    def build(self, offset, vertices, colors, indices):
-        result = offset
+    def lineMeshElementCount(self):
+        result = 0
         for polygon in self._polygons:
-            if polygon.type == LayerPolygon.InfillType or polygon.type == LayerPolygon.MoveCombingType or polygon.type == LayerPolygon.MoveRetractionType:
-                continue
+            result += polygon.lineMeshElementCount()
 
-            polygon.build(result, vertices, colors, indices)
-            result += polygon.vertexCount()
+        return result
+
+    def build(self, vertex_offset, index_offset, vertices, colors, indices):
+        result_vertex_offset = vertex_offset
+        result_index_offset = index_offset
+        self._element_count = 0
+        for polygon in self._polygons:
+            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, indices)
+            result_vertex_offset += polygon.lineMeshVertexCount()
+            result_index_offset += polygon.lineMeshElementCount()
             self._element_count += polygon.elementCount
 
-        return result
+        return (result_vertex_offset, result_index_offset)
 
     def createMesh(self):
         return self.createMeshOrJumps(True)
@@ -60,40 +67,52 @@ class Layer:
     def createJumps(self):
         return self.createMeshOrJumps(False)
 
+    # Defines the two triplets of local point indices to use to draw the two faces for each line segment in createMeshOrJump
+    __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
+
     def createMeshOrJumps(self, make_mesh):
         builder = MeshBuilder()
-
+        
+        line_count = 0
+        if make_mesh:
+            for polygon in self._polygons:
+                line_count += polygon.meshLineCount
+        else:
+            for polygon in self._polygons:
+                line_count += polygon.jumpCount
+            
+        
+        # Reserve the neccesary space for the data upfront
+        builder.reserveFaceAndVertexCount(2 * line_count, 4 * line_count)
+        
         for polygon in self._polygons:
-            if make_mesh and (polygon.type == LayerPolygon.MoveCombingType or polygon.type == LayerPolygon.MoveRetractionType):
-                continue
-            if not make_mesh and not (polygon.type == LayerPolygon.MoveCombingType or polygon.type == LayerPolygon.MoveRetractionType):
-                continue
+            # Filter out the types of lines we are not interesed in depending on whether we are drawing the mesh or the jumps.
+            index_mask = numpy.logical_not(polygon.jumpMask) if make_mesh else polygon.jumpMask
 
-            poly_color = polygon.getColor()
+            # Create an array with rows [p p+1] and only keep those we whant to draw based on make_mesh
+            points = numpy.concatenate((polygon.data[:-1], polygon.data[1:]), 1)[index_mask.ravel()]
+            # Line types of the points we want to draw
+            line_types = polygon.types[index_mask]
+            
+             # Shift the z-axis according to previous implementation. 
+            if make_mesh:
+                points[polygon.isInfillOrSkinType(line_types), 1::3] -= 0.01
+            else:
+                points[:, 1::3] += 0.01
 
-            points = numpy.copy(polygon.data)
-            if polygon.type == LayerPolygon.InfillType or polygon.type == LayerPolygon.SkinType or polygon.type == LayerPolygon.SupportInfillType:
-                points[:,1] -= 0.01
-            if polygon.type == LayerPolygon.MoveCombingType or polygon.type == LayerPolygon.MoveRetractionType:
-                points[:,1] += 0.01
+            # Create an array with normals and tile 2 copies to match size of points variable
+            normals = numpy.tile( polygon.getNormals()[index_mask.ravel()], (1, 2))
 
-            normals = polygon.getNormals()
+            # Scale all normals by the line width of the current line so we can easily offset.
+            normals *= (polygon.lineWidths[index_mask.ravel()] / 2)
 
-            # Scale all by the line width of the polygon so we can easily offset.
-            normals *= (polygon.lineWidth / 2)
+            # Create 4 points to draw each line segment, points +- normals results in 2 points each. Reshape to one point per line
+            f_points = numpy.concatenate((points-normals, points+normals), 1).reshape((-1, 3))
+            # __index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4 
+            f_indices = ( self.__index_pattern + numpy.arange(0, 4 * len(normals), 4, dtype=numpy.int32).reshape((-1, 1)) ).reshape((-1, 3))
+            f_colors = numpy.repeat(polygon.mapLineTypeToColor(line_types), 4, 0)
 
-            #TODO: Use numpy magic to perform the vertex creation to speed up things.
-            for i in range(len(points)):
-                start = points[i - 1]
-                end = points[i]
+            builder.addFacesWithColor(f_points, f_indices, f_colors)
 
-                normal = normals[i - 1]
-
-                point1 = Vector(data = start - normal)
-                point2 = Vector(data = start + normal)
-                point3 = Vector(data = end + normal)
-                point4 = Vector(data = end - normal)
-
-                builder.addQuad(point1, point2, point3, point4, color = poly_color)
-
+        
         return builder.build()
