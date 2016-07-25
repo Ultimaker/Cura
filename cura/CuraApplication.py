@@ -97,6 +97,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
         SettingDefinition.addSettingType("extruder", int, str, Validator)
 
         ## Add the 4 types of profiles to storage.
@@ -582,7 +583,8 @@ class CuraApplication(QtApplication):
 
             op.push()
             if group_node:
-                if len(group_node.getChildren()) == 1:
+                if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
+                    group_node.getChildren()[0].translate(group_node.getPosition())
                     group_node.getChildren()[0].setParent(group_node.getParent())
                     op = RemoveSceneNodeOperation(group_node)
                     op.push()
@@ -851,7 +853,11 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        job._node.setMeshData(job.getResult().getMeshData())
+        mesh_data = job.getResult().getMeshData()
+        if mesh_data:
+            job._node.setMeshData(mesh_data)
+        else:
+            Logger.log("w", "Could not find a mesh in reloaded node.")
 
     def _openFile(self, file):
         job = ReadMeshJob(os.path.abspath(file))

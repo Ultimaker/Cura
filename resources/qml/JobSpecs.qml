@@ -195,15 +195,21 @@ Rectangle {
                 color: UM.Theme.getColor("text_subtext")
                 text:
                 {
-                    var amounts = [];
+                    var lengths = [];
+                    var weights = [];
                     if(base.printMaterialLengths) {
                         for(var index = 0; index < base.printMaterialLengths.length; index++) {
-                            amounts.push(base.printMaterialLengths[index].toFixed(2));
+                            if(base.printMaterialLengths[index] > 0) {
+                                lengths.push(base.printMaterialLengths[index].toFixed(2));
+                                weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                            }
                         }
-                    } else {
-                        amounts = ["0.00"];
                     }
-                    return catalog.i18nc("@label", "%1 m").arg(amounts.join(" + "));
+                    if(lengths.length == 0) {
+                        lengths = ["0.00"];
+                        weights = ["0"];
+                    }
+                    return catalog.i18nc("@label", "%1 m / %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
                 }
             }
         }

@@ -21,10 +21,13 @@ Item {
 
     property var showRevertButton: true
     property var showInheritButton: true
+    property var showLinkedSettingIcon: true
     property var doDepthIndentation: true
+    property var doQualityUserSettingEmphasis: true
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
+    property var settablePerExtruder: propertyProvider.properties.settable_per_extruder
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -115,7 +118,7 @@ Item {
 
             color: UM.Theme.getColor("setting_control_text");
             // emphasize the setting if it has a value in the user or quality profile
-            font: base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
+            font: base.doQualityUserSettingEmphasis && base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
         Row
@@ -129,6 +132,26 @@ Item {
                 right: controlContainer.left
                 rightMargin: UM.Theme.getSize("default_margin").width / 2
                 verticalCenter: parent.verticalCenter
+            }
+
+            UM.SimpleButton
+            {
+                id: linkedSettingIcon;
+
+                visible: base.settablePerExtruder != "True" && base.showLinkedSettingIcon
+
+                height: parent.height;
+                width: height;
+
+                backgroundColor: UM.Theme.getColor("setting_control");
+                hoverBackgroundColor: UM.Theme.getColor("setting_control")
+                color: UM.Theme.getColor("setting_control_button")
+                hoverColor: UM.Theme.getColor("setting_control_button")
+
+                iconSource: UM.Theme.getIcon("link")
+
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders")) }
+                onExited: base.showTooltip(base.tooltipText);
             }
 
             UM.SimpleButton
@@ -231,7 +254,6 @@ Item {
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.tooltipText);
             }
-
         }
 
         Item

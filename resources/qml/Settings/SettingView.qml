@@ -33,15 +33,6 @@ ScrollView
             exclude: ["machine_settings"]
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
-
-            filter:
-            {
-                if(ExtruderManager.activeExtruderStackId)
-                {
-                    return { "settable_per_extruder": true }
-                }
-                return { }
-            }
         }
 
         delegate: Loader
@@ -53,7 +44,15 @@ ScrollView
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: provider.properties.enabled == "True" ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
-            enabled: provider.properties.enabled == "True"
+            enabled:
+            {
+                if(!ExtruderManager.activeExtruderStackId && ExtruderManager.extruderCount > 0)
+                {
+                    // disable all controls on the global tab, except categories
+                    return model.type == "category"
+                }
+                return provider.properties.enabled == "True"
+            }
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
@@ -88,20 +87,59 @@ ScrollView
                 }
             }
 
+            // Binding to ensure that the right containerstack ID is set for the provider.
+            // This ensures that if a setting has a global_inherits_stack id (for instance; Support speed points to the
+            // extruder that actually prints the support, as that is the setting we need to use to calculate the value)
+            Binding
+            {
+                target: provider
+                property: "containerStackId"
+                value:
+                {
+                    if(inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
+                    {
+                        if( ExtruderManager.activeExtruderStackId)
+                        {
+                            return ExtruderManager.activeExtruderStackId
+                        }
+                        else
+                        {
+                            return Cura.MachineManager.activeMachineId
+                        }
+                    }
+                    return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)]
+                }
+            }
+
+            // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+            // so we bypass that to make a dedicated provider.
+            UM.SettingPropertyProvider
+            {
+                id: inheritStackProvider
+                containerStackId: Cura.MachineManager.activeMachineId
+                key: model.key
+                watchedProperties: [ "global_inherits_stack"]
+            }
+
             UM.SettingPropertyProvider
             {
                 id: provider
 
-                containerStackId: ExtruderManager.activeExtruderStackId ? ExtruderManager.activeExtruderStackId : Cura.MachineManager.activeMachineId
+                containerStackId: delegate.stackId
                 key: model.key ? model.key : ""
-                watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder" ]
                 storeIndex: 0
             }
 
             Connections
             {
                 target: item
-                onContextMenuRequested: { contextMenu.key = model.key; contextMenu.popup() }
+                onContextMenuRequested:
+                {
+                    contextMenu.key = model.key;
+                    contextMenu.provider = provider
+                    contextMenu.popup();
+                }
                 onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
                 onHideTooltip: base.hideTooltip()
             }
@@ -133,9 +171,24 @@ ScrollView
 
         Menu
         {
-            id: contextMenu;
+            id: contextMenu
 
-            property string key;
+            property string key
+            property var provider
+
+            MenuItem
+            {
+                //: Settings context menu action
+                text: catalog.i18nc("@action:menu", "Copy value to all extruders")
+                visible: machineExtruderCount.properties.value > 1
+                enabled: contextMenu.provider != undefined && contextMenu.provider.properties.settable_per_extruder != "False"
+                onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
+            }
+
+            MenuSeparator
+            {
+                visible: machineExtruderCount.properties.value > 1
+            }
 
             MenuItem
             {
@@ -150,6 +203,16 @@ ScrollView
 
                 onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
             }
+        }
+
+        UM.SettingPropertyProvider
+        {
+            id: machineExtruderCount
+
+            containerStackId: Cura.MachineManager.activeMachineId
+            key: "machine_extruder_count"
+            watchedProperties: [ "value" ]
+            storeIndex: 0
         }
     }
 }

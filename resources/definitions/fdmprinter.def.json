@@ -342,7 +342,7 @@
                     "unit": "mm",
                     "default_value": 0,
                     "minimum_value_warning": "0",
-                    "maximum_value_warning": "machine_height",
+                    "maximum_value": "machine_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -603,10 +603,10 @@
                             "value": "line_width",
                             "settable_per_mesh": true
                         },
-                        "skirt_line_width":
+                        "skirt_brim_line_width":
                         {
-                            "label": "Skirt Line Width",
-                            "description": "Width of a single skirt line.",
+                            "label": "Skirt/Brim Line Width",
+                            "description": "Width of a single skirt or brim line.",
                             "unit": "mm",
                             "minimum_value": "0.0001",
                             "minimum_value_warning": "0.2",
@@ -614,6 +614,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
+                            "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -629,6 +630,7 @@
                             "type": "float",
                             "enabled": "support_enable",
                             "value": "line_width",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -643,6 +645,7 @@
                             "type": "float",
                             "enabled": "support_roof_enable",
                             "value": "line_width",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -706,7 +709,7 @@
                     "default_value": 0.8,
                     "minimum_value": "0",
                     "minimum_value_warning": "0.6",
-                    "maximum_value_warning": "machine_height",
+                    "maximum_value": "machine_height",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -718,7 +721,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
-                            "maximum_value_warning": "machine_height",
+                            "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "settable_per_mesh": true,
@@ -746,7 +749,7 @@
                             "minimum_value": "0",
                             "type": "float",
                             "value": "top_bottom_thickness",
-                            "maximum_value_warning": "machine_height",
+                            "maximum_value": "machine_height",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -1441,6 +1444,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 60,
                             "value": "speed_print",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1457,6 +1461,7 @@
                                     "maximum_value": "299792458000",
                                     "maximum_value_warning": "150",
                                     "value": "speed_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "enabled": "support_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
@@ -1473,6 +1478,7 @@
                                     "maximum_value_warning": "150",
                                     "enabled": "support_roof_enable and support_enable",
                                     "value": "speed_support / 1.5",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -1519,9 +1525,9 @@
                     "maximum_value_warning": "300",
                     "settable_per_mesh": true
                 },
-                "skirt_speed": {
-                    "label": "Skirt Speed",
-                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt at a different speed.",
+                "skirt_brim_speed": {
+                    "label": "Skirt/Brim Speed",
+                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt or brim at a different speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
@@ -1529,6 +1535,7 @@
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "300",
                     "value": "speed_layer_0",
+                    "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1643,6 +1650,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "acceleration_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1654,6 +1662,7 @@
                                     "type": "float",
                                     "default_value": 3000,
                                     "value": "acceleration_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
@@ -1668,6 +1677,7 @@
                                     "type": "float",
                                     "default_value": 3000,
                                     "value": "acceleration_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
@@ -1718,9 +1728,9 @@
                     "enabled": "acceleration_enabled",
                     "settable_per_mesh": true
                 },
-                "acceleration_skirt": {
-                    "label": "Skirt Acceleration",
-                    "description": "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt at a different acceleration.",
+                "acceleration_skirt_brim": {
+                    "label": "Skirt/Brim Acceleration",
+                    "description": "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt or brim at a different acceleration.",
                     "unit": "mm/s²",
                     "type": "float",
                     "default_value": 3000,
@@ -1831,6 +1841,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
+                            "global_inherits_stack": "support_extruder_nr",
                             "enabled": "jerk_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -1842,6 +1853,7 @@
                                     "type": "float",
                                     "default_value": 20,
                                     "value": "jerk_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
@@ -1856,6 +1868,7 @@
                                     "type": "float",
                                     "default_value": 20,
                                     "value": "jerk_support",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
@@ -1906,8 +1919,8 @@
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": true
                 },
-                "jerk_skirt": {
-                    "label": "Skirt Jerk",
+                "jerk_skirt_brim": {
+                    "label": "Skirt/Brim Jerk",
                     "description": "The maximum instantaneous velocity change with which the skirt and brim are printed.",
                     "unit": "mm/s",
                     "type": "float",
@@ -2120,7 +2133,8 @@
                     "description": "Enable support structures. These structures support parts of the model with severe overhangs.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "support_type":
                 {
@@ -2146,6 +2160,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "default_value": 50,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2214,6 +2229,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "default_value": 0.15,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true,
                     "children":
@@ -2229,6 +2245,7 @@
                             "type": "float",
                             "enabled": "support_enable",
                             "value": "support_z_distance",
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "support_bottom_distance":
@@ -2240,6 +2257,7 @@
                             "maximum_value_warning": "10",
                             "default_value": 0.1,
                             "value": "0.1 if support_type == 'everywhere' else 0",
+                            "global_inherits_stack": "support_extruder_nr",
                             "type": "float",
                             "enabled": "support_enable and support_type == 'everywhere'",
                             "settable_per_mesh": true
@@ -2255,6 +2273,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "default_value": 0.7,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2267,6 +2286,7 @@
                         "z_overrides_xy": "Z overrides X/Y"
                     },
                     "default_value": "z_overrides_xy",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2279,6 +2299,7 @@
                     "maximum_value_warning": "10",
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable and support_xy_overrides_z=='z_overrides_xy'",
                     "settable_per_mesh": true
                 },
@@ -2289,6 +2310,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
                     "enabled": "support_enable",
@@ -2301,6 +2323,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.0,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "support_enable",
@@ -2313,6 +2336,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.2,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value_warning": "-0.5",
                     "maximum_value_warning": "5.0",
                     "enabled": "support_enable",
@@ -2325,6 +2349,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.6,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
                     "enabled": "support_enable",
@@ -2336,6 +2361,7 @@
                     "description": "Generate a dense top skin at the top of the support on which the model is printed.",
                     "type": "bool",
                     "default_value": false,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2347,6 +2373,7 @@
                     "type": "float",
                     "default_value": 1,
                     "minimum_value": "0",
+                    "global_inherits_stack": "support_extruder_nr",
                     "maximum_value_warning": "10",
                     "enabled": "support_roof_enable and support_enable",
                     "settable_per_mesh": true
@@ -2404,6 +2431,7 @@
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "bool",
                     "default_value": true,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -2414,6 +2442,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "enabled": "support_enable and support_use_towers",
@@ -2426,6 +2455,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
+                    "global_inherits_stack": "support_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "maximum_value": "support_tower_diameter",
@@ -2441,6 +2471,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "default_value": 65,
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
                 }
@@ -2520,17 +2551,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "skirt_minimal_length":
+                "skirt_brim_minimal_length":
                 {
-                    "label": "Skirt Minimum Length",
-                    "description": "The minimum length of the skirt. If this length is not reached by the skirt line count, more skirt lines will be added until the minimum length is reached. Note: If the line count is set to 0 this is ignored.",
+                    "label": "Skirt/Brim Minimum Length",
+                    "description": "The minimum length of the skirt or brim. If this length is not reached by all skirt or brim lines together, more skirt or brim lines will be added until the minimum length is reached. Note: If the line count is set to 0 this is ignored.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 250,
                     "minimum_value": "0",
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
-                    "enabled": "adhesion_type == \"skirt\"",
+                    "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2556,7 +2587,7 @@
                             "default_value": 20,
                             "minimum_value": "0",
                             "maximum_value_warning": "300",
-                            "value": "math.ceil(brim_width / skirt_line_width)",
+                            "value": "math.ceil(brim_width / skirt_brim_line_width)",
                             "enabled": "adhesion_type == \"brim\"",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -2596,7 +2627,7 @@
                     "value": "raft_airgap / 2",
                     "minimum_value": "0",
                     "maximum_value_warning": "layer_height",
-                    "enabled": "adhesion_type == 'raft'",
+                    "enabled": "adhesion_type == \"raft\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },

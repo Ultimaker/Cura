@@ -8,14 +8,12 @@ import time
 import queue
 import re
 import functools
-import os.path
 
 from UM.Application import Application
 from UM.Logger import Logger
-from UM.PluginRegistry import PluginRegistry
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+from UM.Message import Message
 
-from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal
 
 from UM.i18n import i18nCatalog
@@ -137,7 +135,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
         if self._progress or self._connection_state != ConnectionState.connected:
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is busy or not connected. Unable to start a new job."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Printer is busy or not connected. Unable to start a new job."))
             self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
@@ -504,6 +502,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   It will be normalized (based on max_progress) to range 0 - 100
     def setProgress(self, progress, max_progress = 100):
         self._progress = (progress / max_progress) * 100  # Convert to scale of 0-100
+        if self._progress == 100:
+            # Printing is done, reset progress
+            self._gcode_position = 0
+            self.setProgress(0)
+            self._is_printing = False
+            self._is_paused = False
+            self._updateJobState("ready")
         self.progressChanged.emit()
 
     ##  Cancel the current print. Printer connection wil continue to listen.

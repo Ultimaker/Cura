@@ -153,7 +153,7 @@
                     "unit": "mm",
                     "default_value": 0,
                     "minimum_value_warning": "0",
-                    "maximum_value_warning": "machine_height",
+                    "maximum_value": "machine_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -175,7 +175,7 @@
                     "unit": "mm",
                     "default_value": 0,
                     "minimum_value_warning": "machine_nozzle_offset_x",
-                    "maximum_value_warning": "machine_width",
+                    "maximum_value": "machine_width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "enabled": false

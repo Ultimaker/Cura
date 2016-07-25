@@ -321,23 +321,7 @@ UM.MainWindow
                 sourceSize.height: height;
             }
 
-            Button
-            {
-                id: viewModeButton
 
-                anchors
-                {
-                    top: toolbar.bottom;
-                    topMargin: UM.Theme.getSize("window_margin").height;
-                    left: parent.left;
-                }
-                text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.getIcon("viewmode");
-
-                style: UM.Theme.styles.tool_button;
-                tooltip: '';
-                menu: ViewMenu { }
-            }
 
             Toolbar
             {
@@ -365,6 +349,24 @@ UM.MainWindow
                 }
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
+            }
+
+            Button
+            {
+                id: viewModeButton
+
+                anchors
+                {
+                    top: toolbar.bottom;
+                    topMargin: UM.Theme.getSize("window_margin").height;
+                    left: parent.left;
+                }
+                text: catalog.i18nc("@action:button","View Mode");
+                iconSource: UM.Theme.getIcon("viewmode");
+
+                style: UM.Theme.styles.tool_button;
+                tooltip: '';
+                menu: ViewMenu { }
             }
 
             Rectangle
