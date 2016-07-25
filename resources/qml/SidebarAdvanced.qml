@@ -8,6 +8,4 @@ import QtQuick.Controls 1.2
 import "Settings"
 
 SettingView {
-//     expandedCategories: Printer.expandedCategories;
-//     onExpandedCategoriesChanged: Printer.setExpandedCategories(expandedCategories);
 }
