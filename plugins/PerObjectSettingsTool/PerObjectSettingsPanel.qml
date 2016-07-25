@@ -181,6 +181,7 @@ Item {
                     onLoaded: {
                         settingLoader.item.showRevertButton = false
                         settingLoader.item.showInheritButton = false
+                        settingLoader.item.showLinkedSettingIcon = false
                         settingLoader.item.doDepthIndentation = false
                     }
 
