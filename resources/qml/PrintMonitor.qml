@@ -62,12 +62,6 @@ Column
         property string label: catalog.i18nc("@label", "Estimated time left")
         property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed) : ""
     }
-    Loader
-    {
-        sourceComponent: monitorItem
-        property string label: catalog.i18nc("@label", "Current Layer")
-        property string value: printerConnected ? "0" : ""
-    }
 
     Component
     {
