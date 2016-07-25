@@ -183,6 +183,7 @@ Item {
                         settingLoader.item.showInheritButton = false
                         settingLoader.item.showLinkedSettingIcon = false
                         settingLoader.item.doDepthIndentation = false
+                        settingLoader.item.doQualityUserSettingEmphasis = false
                     }
 
                     sourceComponent:

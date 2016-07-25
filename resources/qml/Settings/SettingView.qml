@@ -33,8 +33,6 @@ ScrollView
             exclude: ["machine_settings"]
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
-
-            filter: {}
         }
 
         delegate: Loader
@@ -183,7 +181,7 @@ ScrollView
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Copy value to all extruders")
                 visible: machineExtruderCount.properties.value > 1
-                enabled: contextMenu.provider.properties.settable_per_extruder != "False"
+                enabled: contextMenu.provider != undefined && contextMenu.provider.properties.settable_per_extruder != "False"
                 onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
             }
 

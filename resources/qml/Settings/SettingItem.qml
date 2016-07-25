@@ -23,6 +23,7 @@ Item {
     property var showInheritButton: true
     property var showLinkedSettingIcon: true
     property var doDepthIndentation: true
+    property var doQualityUserSettingEmphasis: true
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
@@ -117,7 +118,7 @@ Item {
 
             color: UM.Theme.getColor("setting_control_text");
             // emphasize the setting if it has a value in the user or quality profile
-            font: base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
+            font: base.doQualityUserSettingEmphasis && base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
         Row
