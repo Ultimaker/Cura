@@ -84,15 +84,15 @@ Column
 
         orientation: ListView.Horizontal
 
-        model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: true }
+        model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: false }
 
         Connections
         {
             target: Cura.MachineManager
             onGlobalContainerChanged:
             {
-                base.currentExtruderIndex = -1;
-                forceActiveFocus()
+                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                base.currentExtruderIndex = (machineExtruderCount.properties.value == 1) ? -1 : 0;
                 ExtruderManager.setActiveExtruderIndex(base.currentExtruderIndex);
             }
         }
@@ -110,7 +110,7 @@ Column
 
             onClicked:
             {
-                forceActiveFocus() //Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
                 base.currentExtruderIndex = index;
                 ExtruderManager.setActiveExtruderIndex(index);
             }
@@ -258,6 +258,8 @@ Column
         {
             id: globalProfileSelection
             text: Cura.MachineManager.activeQualityName
+            enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
+
             width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeQualityName
