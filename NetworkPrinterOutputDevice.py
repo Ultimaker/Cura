@@ -415,8 +415,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         if reply.error() == QNetworkReply.NoError:
             self._last_response_time = time()
-        else:
-            return  # Error in the reply, drop it.
 
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if reply.operation() == QNetworkAccessManager.GetOperation:
