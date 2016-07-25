@@ -78,15 +78,19 @@ class GCodeWriter(MeshWriter):
 
         # Duplicate the current quality profile and update it with any user settings.
         flat_quality_id = machine_manager.duplicateContainer(container_with_profile.getId())
+
         flat_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = flat_quality_id)[0]
         user_settings = stack.getTop()
+
+        # We don't want to send out any signals, so disconnect them.
+        flat_quality.propertyChanged.disconnectAll()
+
         for key in user_settings.getAllKeys():
             flat_quality.setProperty(key, "value", user_settings.getProperty(key, "value"))
 
         serialized = flat_quality.serialize()
 
         data = {"global_quality": serialized}
-
         manager = ExtruderManager.getInstance()
         for extruder in manager.getMachineExtruders(stack.getId()):
             extruder_quality = extruder.findContainer({"type": "quality"})
@@ -94,6 +98,10 @@ class GCodeWriter(MeshWriter):
             flat_extruder_quality_id = machine_manager.duplicateContainer(extruder_quality.getId())
             flat_extruder_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=flat_extruder_quality_id)[0]
             extruder_user_settings = extruder.getTop()
+
+            # We don't want to send out any signals, so disconnect them.
+            flat_extruder_quality.propertyChanged.disconnectAll()
+            
             for key in extruder_user_settings.getAllKeys():
                 flat_extruder_quality.setProperty(key, "value", extruder_user_settings.getProperty(key, "value"))
 
