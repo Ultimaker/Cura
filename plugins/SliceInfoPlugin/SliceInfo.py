@@ -12,10 +12,7 @@ from UM.Logger import Logger
 from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 
-import collections
-import json
-import os.path
-import copy
+from threading import Thread
 import platform
 import math
 import urllib.request
@@ -24,6 +21,33 @@ import ssl
 
 catalog = i18nCatalog("cura")
 
+class SliceInfoThread(Thread):
+    data = None
+    url = None
+
+    def __init__(self, url, data):
+        Thread.__init__(self)
+        self.url = url
+        self.data = data
+
+    def run(self):
+        if not self.url or not self.data:
+            Logger.log("e", "URL or DATA for sending slice info was not set!")
+
+        # Submit data
+        kwoptions = {"data" : self.data,
+                     "timeout" : 5
+                     }
+
+        if Platform.isOSX():
+            kwoptions["context"] = ssl._create_unverified_context()
+
+        try:
+            f = urllib.request.urlopen(self.url, **kwoptions)
+            Logger.log("i", "Sent anonymous slice info to %s", self.url)
+            f.close()
+        except Exception:
+            Logger.logException("e", "An exception occurred while trying to send slice information")
 
 ##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
@@ -43,11 +67,25 @@ class SliceInfo(Extension):
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 
+        self.runningThreads = []
+
+    def __del__(self):
+        for thread in self.threadedReports:
+            if thread.is_alive():
+                thread.join() # Wait for threads - shouldn't take much more time than the timeout. See above..
+
+    def _removeFinishedThreads(self):
+        for process in self.runningThreads:
+            if not process.is_alive():
+                self.runningThreads.remove(process) # Remove finished threads
+
     def messageActionTriggered(self, message_id, action_id):
         self.send_slice_info_message.hide()
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
     def _onWriteStarted(self, output_device):
+        self._removeFinishedThreads()
+
         try:
             if not Preferences.getInstance().getValue("info/send_slice_info"):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
@@ -112,19 +150,11 @@ class SliceInfo(Extension):
             submitted_data = urllib.parse.urlencode(submitted_data)
             binary_data = submitted_data.encode("utf-8")
 
-            # Submit data
-            kwoptions = {"data" : binary_data,
-                         "timeout" : 1
-                         }
-            if Platform.isOSX():
-                kwoptions["context"] = ssl._create_unverified_context()
-            try:
-                f = urllib.request.urlopen(self.info_url, **kwoptions)
-                Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
-                f.close()
-            except Exception as e:
-                Logger.logException("e", "An exception occurred while trying to send slice information")
+            # Sending slice info non-blocking
+            reportThread = SliceInfoThread(self.info_url, binary_data)
+            self.runningThreads.append(reportThread)
+            reportThread.start()
         except:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
             # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
-            pass
+            Logger.logException("e", "Exception raised while sending slice info") # But we should be notified about these problems of course.
