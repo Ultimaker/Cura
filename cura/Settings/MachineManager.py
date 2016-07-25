@@ -246,10 +246,15 @@ class MachineManager(QObject):
                                             if len(containers) > 1:
                                                 for index in range(1, len(containers)):
                                                     deeper_container = containers[index]
+                                                    if deeper_container.getProperty(key, "value") is None:
+                                                        continue  # Deeper container does not have the value, so continue.
                                                     if deeper_container.getProperty(key, "value") == new_value:
                                                         # Removal will result in correct value, so do that.
                                                         # We do this to prevent the reset from showing up unneeded.
                                                         instance_needs_removal = True
+                                                        break
+                                                    else:
+                                                        # Container has the value, but it's not the same. Stop looking.
                                                         break
                                             if instance_needs_removal:
                                                 extruder_stack.getTop().removeInstance(key)
