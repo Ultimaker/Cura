@@ -15,12 +15,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._convex_hull_node = None
         self._init2DConvexHullCache()
 
+        self._global_stack = None
+
         self._raft_thickness = 0.0
         # For raft thickness, DRY
         self._build_volume = Application.getInstance().getBuildVolume()
         self._build_volume.raftThicknessChanged.connect(self._onChanged)
 
-        self._global_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         Application.getInstance().getController().toolOperationStarted.connect(self._onChanged)
         Application.getInstance().getController().toolOperationStopped.connect(self._onChanged)
