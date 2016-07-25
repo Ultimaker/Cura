@@ -22,7 +22,7 @@ Cura.MachineAction
         {
             id: pageTitle
             width: parent.width
-            text: catalog.i18nc("@title", "Check Printer")
+            text: catalog.i18nc("@title", "Select Printer Upgrades")
             wrapMode: Text.WordWrap
             font.pointSize: 18;
         }
