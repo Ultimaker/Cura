@@ -51,6 +51,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         hull = self._compute2DConvexHull()
+
         if self._global_stack and self._node:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
@@ -72,7 +73,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         if self._global_stack:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
-                return self._compute2DConvexHeadMin()
+                head_with_fans = self._compute2DConvexHeadMin()
+                head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
+                return head_with_fans_with_adhesion_margin
         return None
 
     ##  Get convex hull of the node
@@ -84,6 +87,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         if self._global_stack:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+
                 # Printing one at a time and it's not an object in a group
                 return self._compute2DConvexHull()
         return None
@@ -99,11 +103,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         convex_hull = self.getConvexHull()
         if self._convex_hull_node:
-            # Check if convex hull has changed
-            if (self._convex_hull_node.getHull() == convex_hull and
-                self._convex_hull_node.getThickness() == self._raft_thickness):
-
-                return
             self._convex_hull_node.setParent(None)
         hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull, self._raft_thickness, root)
         self._convex_hull_node = hull_node
@@ -219,6 +218,44 @@ class ConvexHullDecorator(SceneNodeDecorator):
         min_head_hull = self._compute2DConvexHull().getMinkowskiHull(head_and_fans)
         return min_head_hull
 
+    ##  Compensate given 2D polygon with adhesion margin
+    #   \return 2D polygon with added margin
+    def _add2DAdhesionMargin(self, poly):
+        # Compensate for raft/skirt/brim
+        # Add extra margin depending on adhesion type
+        adhesion_type = self._global_stack.getProperty("adhesion_type", "value")
+        extra_margin = 0
+        machine_head_coords = numpy.array(
+            self._global_stack.getProperty("machine_head_with_fans_polygon", "value"),
+            numpy.float32)
+        head_y_size = abs(machine_head_coords).min()  # safe margin to take off in all directions
+
+        if adhesion_type == "raft":
+            extra_margin = max(0, self._global_stack.getProperty("raft_margin", "value") - head_y_size)
+        elif adhesion_type == "brim":
+            extra_margin = max(0, self._global_stack.getProperty("brim_width", "value") - head_y_size)
+        elif adhesion_type == "skirt":
+            extra_margin = max(
+                0, self._global_stack.getProperty("skirt_gap", "value") +
+                   self._global_stack.getProperty("skirt_line_count", "value") * self._global_stack.getProperty("skirt_brim_line_width", "value") -
+                   head_y_size)
+        # adjust head_and_fans with extra margin
+        if extra_margin > 0:
+            # In Cura 2.2+, there is a function to create this circle-like polygon.
+            extra_margin_polygon = Polygon(numpy.array([
+                [-extra_margin, 0],
+                [-extra_margin * 0.707, extra_margin * 0.707],
+                [0, extra_margin],
+                [extra_margin * 0.707, extra_margin * 0.707],
+                [extra_margin, 0],
+                [extra_margin * 0.707, -extra_margin * 0.707],
+                [0, -extra_margin],
+                [-extra_margin * 0.707, -extra_margin * 0.707]
+            ], numpy.float32))
+
+            poly = poly.getMinkowskiHull(extra_margin_polygon)
+        return poly
+
     def _roundHull(self, convex_hull):
         return convex_hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
 
@@ -249,4 +286,5 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     _affected_settings = [
         "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
-        "raft_surface_thickness", "raft_airgap", "print_sequence"]
+        "raft_surface_thickness", "raft_airgap", "print_sequence",
+        "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance"]

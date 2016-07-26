@@ -28,15 +28,16 @@ class ConvexHullNode(SceneNode):
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
 
+        self._thickness = thickness
+
         # The node this mesh is "watching"
         self._node = node
+        self._convex_hull_head_mesh = None
+
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
 
-        self._convex_hull_head_mesh = None
-
         self._hull = hull
-        self._thickness = thickness
         if self._hull:
             hull_mesh_builder = MeshBuilder()
 
@@ -46,11 +47,6 @@ class ConvexHullNode(SceneNode):
 
                 hull_mesh = hull_mesh_builder.build()
                 self.setMeshData(hull_mesh)
-        convex_hull_head = self._node.callDecoration("getConvexHullHead")
-        if convex_hull_head:
-            convex_hull_head_builder = MeshBuilder()
-            convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height-thickness)
-            self._convex_hull_head_mesh = convex_hull_head_builder.build()
 
     def getHull(self):
         return self._hull
@@ -77,6 +73,12 @@ class ConvexHullNode(SceneNode):
 
     def _onNodeDecoratorsChanged(self, node):
         self._color = Color(35, 35, 35, 0.5)
+
+        convex_hull_head = self._node.callDecoration("getConvexHullHead")
+        if convex_hull_head:
+            convex_hull_head_builder = MeshBuilder()
+            convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height-self._thickness)
+            self._convex_hull_head_mesh = convex_hull_head_builder.build()
 
         if not node:
             return
