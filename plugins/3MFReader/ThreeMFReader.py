@@ -9,8 +9,12 @@ from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Math.Quaternion import Quaternion
-
 from UM.Job import Job
+
+from UM.Message import Message
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 
 import math
 import zipfile
@@ -116,4 +120,11 @@ class ThreeMFReader(MeshReader):
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
 
+        try: # Selftest - There might be more functions that should fail 
+            result.getBoundingBox()
+        except:
+            message = Message(catalog.i18nc("@info:status", "Your 3MF file seems to be broken. Please visit https://modelrepair.azurewebsites.net/ and try to repair your model!"), lifetime = 0)
+            message.show()
+            return None
+        
         return result  
