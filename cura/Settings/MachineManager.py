@@ -117,22 +117,18 @@ class MachineManager(QObject):
                 self._auto_hotends_changed[str(index)] = containers[0].getId()
                 Application.getInstance().messageBox(catalog.i18nc("@window:title", "Changes on the Printer"),
                                                      catalog.i18nc("@label",
-                                                                   "Do you want to change the hotend to match the hotend in your printer?"),
+                                                                   "Do you want to change the materials and hotends to match the material in your printer?"),
                                                      catalog.i18nc("@label",
-                                                                   "The hotend on your printer was changed. For best results always slice for the hotend that is inserted in your printer."),
+                                                                   "The materials and / or hotends on your printer were changed. For best results always slice for the materials . hotends that are inserted in your printer."),
                                                      buttons=QMessageBox.Yes + QMessageBox.No,
                                                      icon=QMessageBox.Question,
-                                                     callback=self._hotendChangedDialogCallback)
+                                                     callback=self._materialHotendChangedCallback)
 
 
         else:
             Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
 
-    def _hotendChangedDialogCallback(self, button):
-        if button == QMessageBox.No:
-            self._auto_hotends_changed = {}
-            return
-
+    def _autoUpdateHotends(self):
         extruder_manager = ExtruderManager.getInstance()
         for position in self._auto_hotends_changed:
             hotend_id = self._auto_hotends_changed[position]
@@ -168,17 +164,22 @@ class MachineManager(QObject):
             if matching_extruder and matching_extruder.findContainer({"type":"material"}).getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
                 self._auto_materials_changed[str(index)] = containers[0].getId()
-                Application.getInstance().messageBox(catalog.i18nc("@window:title", "Changes on the Printer"), catalog.i18nc("@label", "Do you want to change the material to match the material in your printer?"),
-                                                 catalog.i18nc("@label", "The material on your printer was changed. For best results always slice for the material that is inserted in your printer."),
-                                                 buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._materialIdChangedDialogCallback)
+                Application.getInstance().messageBox(catalog.i18nc("@window:title", "Changes on the Printer"), catalog.i18nc("@label", "Do you want to change the materials and hotends to match the material in your printer?"),
+                                                 catalog.i18nc("@label", "The materials and / or hotends on your printer were changed. For best results always slice for the materials . hotends that are inserted in your printer."),
+                                                 buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._materialHotendChangedCallback)
 
         else:
             Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
 
-    def _materialIdChangedDialogCallback(self, button):
+    def _materialHotendChangedCallback(self, button):
         if button == QMessageBox.No:
             self._auto_materials_changed = {}
+            self._auto_hotends_changed = {}
             return
+        self._autoUpdateMaterials()
+        self._autoUpdateHotends()
+
+    def _autoUpdateMaterials(self):
         extruder_manager = ExtruderManager.getInstance()
         for position in self._auto_materials_changed:
             material_id = self._auto_materials_changed[position]
