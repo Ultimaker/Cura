@@ -128,6 +128,8 @@ class CuraApplication(QtApplication):
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
 
+        self._additional_components = {} # Components to add to certain areas in the interface
+
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
@@ -877,3 +879,21 @@ class CuraApplication(QtApplication):
 
     def getBuildVolume(self):
         return self._volume
+
+    additionalComponentsChanged = pyqtSignal(str, arguments = ["areaId"])
+
+    @pyqtProperty("QVariantMap", notify = additionalComponentsChanged)
+    def additionalComponents(self):
+        return self._additional_components
+
+    ##  Add a component to a list of components to be reparented to another area in the GUI.
+    #   The actual reparenting is done by the area itself.
+    #   \param area_id \type{str} Identifying name of the area to which the component should be reparented
+    #   \param component \type{QQuickComponent} The component that should be reparented
+    @pyqtSlot(str, "QVariant")
+    def addAdditionalComponent(self, area_id, component):
+        if area_id not in self._additional_components:
+            self._additional_components[area_id] = []
+        self._additional_components[area_id].append(component)
+
+        self.additionalComponentsChanged.emit(area_id)
