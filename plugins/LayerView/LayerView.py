@@ -49,11 +49,6 @@ class LayerView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
 
-        self._top_layer_timer = QTimer()
-        self._top_layer_timer.setInterval(50)
-        self._top_layer_timer.setSingleShot(True)
-        self._top_layer_timer.timeout.connect(self._startUpdateTopLayers)
-
         self._busy = False
 
     def getActivity(self):
@@ -132,8 +127,7 @@ class LayerView(View):
                 self._current_layer_num = self._max_layers
 
             self.resetLayerData()
-
-            self._top_layer_timer.start()
+            self._startUpdateTopLayers()
 
             self.currentLayerNumChanged.emit()
 
@@ -165,7 +159,7 @@ class LayerView(View):
             else:
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
-        self._top_layer_timer.start()
+        self._startUpdateTopLayers()
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
@@ -219,7 +213,7 @@ class LayerView(View):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
 
         self.resetLayerData()
-        self._top_layer_timer.start()
+        self._startUpdateTopLayers()
 
 class _CreateTopLayersJob(Job):
     def __init__(self, scene, layer_number, solid_layers):
