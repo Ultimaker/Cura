@@ -80,6 +80,7 @@ class GCodeWriter(MeshWriter):
         flat_quality_id = machine_manager.duplicateContainer(container_with_profile.getId())
 
         flat_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = flat_quality_id)[0]
+        flat_quality._dirty = False
         user_settings = stack.getTop()
 
         # We don't want to send out any signals, so disconnect them.
@@ -97,11 +98,12 @@ class GCodeWriter(MeshWriter):
 
             flat_extruder_quality_id = machine_manager.duplicateContainer(extruder_quality.getId())
             flat_extruder_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=flat_extruder_quality_id)[0]
+            flat_extruder_quality._dirty = False
             extruder_user_settings = extruder.getTop()
 
             # We don't want to send out any signals, so disconnect them.
             flat_extruder_quality.propertyChanged.disconnectAll()
-            
+
             for key in extruder_user_settings.getAllKeys():
                 flat_extruder_quality.setProperty(key, "value", extruder_user_settings.getProperty(key, "value"))
 

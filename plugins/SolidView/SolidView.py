@@ -35,7 +35,7 @@ class SolidView(View):
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            self._disabled_shader.setUniformValue("u_diffuseColor1", [1.0, 0.28, 0.28, 1.0])
+            self._disabled_shader.setUniformValue("u_diffuseColor1", [0.48, 0.48, 0.48, 1.0])
             self._disabled_shader.setUniformValue("u_diffuseColor2", [0.68, 0.68, 0.68, 1.0])
             self._disabled_shader.setUniformValue("u_width", 50.0)
 
