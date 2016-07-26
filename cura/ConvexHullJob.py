@@ -79,6 +79,40 @@ class ConvexHullJob(Job):
                 mirrored.mirror([0, 0], [0, 1]) #Mirror horizontally.
                 mirrored.mirror([0, 0], [1, 0]) #Mirror vertically.
                 head_and_fans = head_and_fans.intersectionConvexHulls(mirrored)
+
+                # Add extra margin depending on adhesion type
+                adhesion_type = profile.getSettingValue("adhesion_type")
+                extra_margin = 0
+                machine_head_coords = numpy.array(
+                    profile.getSettingValue("machine_head_with_fans_polygon"),
+                    numpy.float32)
+                head_y_size = abs(machine_head_coords).min()  # safe margin to take off in all directions
+
+                if adhesion_type == "raft":
+                    extra_margin = max(0, profile.getSettingValue("raft_margin")-head_y_size)
+                elif adhesion_type == "brim":
+                    extra_margin = max(0, profile.getSettingValue("brim_width")-head_y_size)
+                elif adhesion_type == "skirt":
+                    extra_margin = max(
+                        0, profile.getSettingValue("skirt_gap") +
+                           profile.getSettingValue("skirt_line_count") * profile.getSettingValue("skirt_line_width") -
+                           head_y_size)
+                # adjust head_and_fans with extra margin
+                if extra_margin > 0:
+                    # In Cura 2.2+, there is a function to create this circle-like polygon.
+                    extra_margin_polygon = Polygon(numpy.array([
+                        [-extra_margin, 0],
+                        [-extra_margin * 0.707, extra_margin * 0.707],
+                        [0, extra_margin],
+                        [extra_margin * 0.707, extra_margin * 0.707],
+                        [extra_margin, 0],
+                        [extra_margin * 0.707, -extra_margin * 0.707],
+                        [0, -extra_margin],
+                        [-extra_margin * 0.707, -extra_margin * 0.707]
+                    ], numpy.float32))
+
+                    head_and_fans = head_and_fans.getMinkowskiHull(extra_margin_polygon)
+
                 # Min head hull is used for the push free
                 min_head_hull = hull.getMinkowskiHull(head_and_fans)
                 self._node.callDecoration("setConvexHullHead", min_head_hull)

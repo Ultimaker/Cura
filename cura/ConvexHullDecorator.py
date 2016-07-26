@@ -87,10 +87,14 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._convex_hull_node = None
 
     def _onSettingValueChanged(self, setting):
-        if setting == "print_sequence":
+        if setting in self._affected_settings:
             if self._convex_hull_job:
                 self._convex_hull_job.cancel()
             self.setConvexHull(None)
             if self._convex_hull_node:
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None
+
+    _affected_settings = [
+        "print_sequence", "raft_margin", "adhesion_type", "brim_width",
+        "skirt_gap", "skirt_line_width", "skirt_line_count"]
