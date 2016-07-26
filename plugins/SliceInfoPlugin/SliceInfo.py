@@ -33,6 +33,7 @@ class SliceInfoThread(Thread):
     def run(self):
         if not self.url or not self.data:
             Logger.log("e", "URL or DATA for sending slice info was not set!")
+            return
 
         # Submit data
         kwoptions = {"data" : self.data,
