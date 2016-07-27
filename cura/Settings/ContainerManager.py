@@ -43,7 +43,7 @@ class ContainerManager(QObject):
     def duplicateContainer(self, container_id):
         containers = self._registry.findContainers(None, id = container_id)
         if not containers:
-            UM.Logger.log("w", "Could duplicate container %s because it was not found.", container_id)
+            UM.Logger.log("w", "Could not duplicate container %s because it was not found.", container_id)
             return ""
 
         container = containers[0]
@@ -103,7 +103,7 @@ class ContainerManager(QObject):
     def removeContainer(self, container_id):
         containers = self._registry.findContainers(None, id = container_id)
         if not containers:
-            UM.Logger.log("w", "Could remove container %s because it was not found.", container_id)
+            UM.Logger.log("w", "Could not remove container %s because it was not found.", container_id)
             return False
 
         self._registry.removeContainer(containers[0].getId())

@@ -254,7 +254,7 @@ TabView
     {
         if(old_value != new_value)
         {
-            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
+            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value);
         }
     }
 }

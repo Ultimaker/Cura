@@ -877,3 +877,7 @@ class CuraApplication(QtApplication):
 
     def getBuildVolume(self):
         return self._volume
+
+    @pyqtSlot(str)
+    def log(self, msg):
+        Logger.log("d", msg)

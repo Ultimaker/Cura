@@ -37,15 +37,53 @@ UM.ManagementPage
         sectionProperty: "brand"
     }
 
-    activeId: Cura.MachineManager.activeMaterialId
-    activeIndex: {
-        for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMaterialId) {
-                return i;
+    delegate: Rectangle
+    {
+
+        SystemPalette { id: palette }
+        // width: objectListContainer.viewport.width;
+        width: ListView.view.width;
+        height: childrenRect.height;
+        color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+
+        Label
+        {
+            id: materialLabel
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.right: parent.right;
+            text: model.name
+            elide: Text.ElideRight
+            font.italic: model.id == activeId
+            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+        }
+
+        UM.RecolorImage
+        {
+            anchors.left: parent.left;
+            source: UM.Theme.getIcon("lock");
+            visible: model.readOnly;
+            width: materialLabel.height - 2;
+            height: materialLabel.height - 2;
+            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text;
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent;
+            onClicked:
+            {
+                if(!parent.ListView.isCurrentItem)
+                {
+                    parent.ListView.view.currentIndex = index;
+                    base.itemActivated();
+                }
             }
         }
-        return -1;
     }
+
+    activeId: Cura.MachineManager.activeMaterialId
+    activeIndex: getActiveIndex();
 
     scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
     detailsVisible: true
@@ -87,7 +125,9 @@ UM.ManagementPage
                     Cura.MachineManager.setActiveQuality(quality_id)
                 }
 
-                Cura.MachineManager.setActiveMaterial(material_id)
+                Cura.MachineManager.setActiveMaterial(material_id);
+                // explicitly set currentIndex, or it will sometimes get a strange value.
+                base.objectList.currentIndex = getActiveIndex();
             }
         },
         Button
@@ -270,6 +310,20 @@ UM.ManagementPage
     {
         if(currentItem == null)
         {
+            // Useful when nothing is selected,
+            materialProperties.name = "";
+
+            materialProperties.supplier = "-";
+            materialProperties.material_type = "-";
+            materialProperties.color_name = "-";
+            materialProperties.color_code = "-";
+
+            materialProperties.description = "";
+            materialProperties.adhesion_info = "";
+
+            materialProperties.density = 0.0;
+            materialProperties.diameter = 0.0;
+
             return
         }
 
@@ -296,5 +350,15 @@ UM.ManagementPage
                 materialProperties.diameter = 0.0;
             }
         }
+    }
+
+    function getActiveIndex() {
+        var activeMaterialId = Cura.MachineManager.activeMaterialId;
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == activeMaterialId) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
