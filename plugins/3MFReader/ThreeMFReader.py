@@ -27,7 +27,7 @@ except ImportError:
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
     def __init__(self):
-        super(ThreeMFReader, self).__init__()
+        super().__init__()
         self._supported_extensions = [".3mf"]
 
         self._namespaces = {
