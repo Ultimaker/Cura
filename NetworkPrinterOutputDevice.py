@@ -506,9 +506,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             elif "materials" in reply.url().toString():
                 # Remove cached post request items.
                 del self._material_post_objects[id(reply)]
-            else:
+            elif "print_job" in reply.url().toString():
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
+                
         elif reply.operation() == QNetworkAccessManager.PutOperation:
             if status_code == 204:
                 pass  # Request was successful!
@@ -519,6 +520,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
-            self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+            new_progress = bytes_sent / bytes_total * 100
+            if new_progress > self._progress_message.getProgress():
+                self._progress_message.setProgress(bytes_sent / bytes_total * 100)
         else:
             self._progress_message.setProgress(0)
