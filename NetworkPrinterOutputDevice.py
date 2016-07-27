@@ -109,7 +109,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._connection_state_before_timeout = None
 
         self._last_response_time = time()
-        self._timeout_time = 10
+        self._response_timeout_time = 5
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
@@ -186,7 +186,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _update(self):
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
-            if time() - self._last_response_time > self._timeout_time:
+            if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
                 Logger.log("d", "We did not recieve a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
