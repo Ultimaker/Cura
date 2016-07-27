@@ -2402,6 +2402,7 @@
                             "default_value": 1,
                             "value": "support_interface_height",
                             "minimum_value": "0",
+                            "minimum_value_warning": "support_bottom_stair_step_height",
                             "global_inherits_stack": "support_extruder_nr",
                             "maximum_value_warning": "10",
                             "enabled": "support_roof_enable and support_enable",
