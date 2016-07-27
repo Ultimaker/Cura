@@ -19,7 +19,10 @@ catalog = i18nCatalog("cura")
 import math
 import zipfile
 
-import xml.etree.ElementTree as ET
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
