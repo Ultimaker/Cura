@@ -1541,7 +1541,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 60,
-                            "value": "speed_layer_0 * 2",
+                            "value": "speed_layer_0 * speed_travel / speed_print",
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "300",
