@@ -3,6 +3,11 @@
 *Material Profiles
 New material profiles for CPE+, PC, Nylon and TPU for the Ultimaker 2+ family.
 
+*Bug fixes
+- Solved the issue that printers from the Ultimaker 2(+) family occasionally hit the right side of the machine or the glass retainer clips during printing.
+- Solved the issue that a raft was able to go outside of the print area.
+- Solved the issue that platform adhesion material could overlap when printing one object at a time.
+
 [2.1.2]
 
 Cura has been completely reengineered from the ground up for an even more seamless integration between hardware, software and materials. Together with its intuitive new user interface, it’s now also ready for any future developments. For the beginner Cura makes 3D printing incredibly easy, and for more advanced users, there are over 200 customizable settings.
