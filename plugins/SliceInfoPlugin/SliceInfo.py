@@ -21,7 +21,7 @@ import ssl
 
 catalog = i18nCatalog("cura")
 
-class SliceInfoThread(Job):
+class SliceInfoJob(Job):
     data = None
     url = None
 
@@ -140,7 +140,7 @@ class SliceInfo(Extension):
             binary_data = submitted_data.encode("utf-8")
 
             # Sending slice info non-blocking
-            reportJob = SliceInfoThread(self.info_url, binary_data)
+            reportJob = SliceInfoJob(self.info_url, binary_data)
             reportJob.start()
         except:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
