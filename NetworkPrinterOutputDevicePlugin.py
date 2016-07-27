@@ -19,9 +19,11 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addPrinterSignal.connect(self.addPrinter)
+        self.removePrinterSignal.connect(self.removePrinter)
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
     addPrinterSignal = Signal()
+    removePrinterSignal = Signal()
 
     ##  Start looking for devices on network.
     def start(self):
@@ -56,6 +58,13 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             self._printers[printer.getKey()].connect()
             printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
+    def removePrinter(self, name):
+        printer = self._printers.pop(name, None)
+        if printer:
+            if printer.isConnected():
+                printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
+                printer.disconnect()
+
     ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
         if self._printers[key].isConnected():
@@ -73,6 +82,4 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                     self.addPrinterSignal.emit(str(name), address, info.properties)
 
         elif state_change == ServiceStateChange.Removed:
-            pass
-            # TODO; This isn't testable right now. We need to also decide how to handle
-            #
+            self.removePrinterSignal.emit(str(name))

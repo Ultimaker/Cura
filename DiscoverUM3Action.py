@@ -14,19 +14,20 @@ class DiscoverUM3Action(MachineAction):
 
         self._network_plugin = None
 
-    printerDetected = pyqtSignal()
+    printersChanged = pyqtSignal()
 
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("JediWifiPrintingPlugin")
-            self._network_plugin.addPrinterSignal.connect(self._onPrinterAdded)
-            self.printerDetected.emit()
+            self._network_plugin.addPrinterSignal.connect(self._onPrinterDiscoveryChanged)
+            self._network_plugin.removePrinterSignal.connect(self._onPrinterDiscoveryChanged)
+            self.printersChanged.emit()
 
-    def _onPrinterAdded(self, *args):
-        self.printerDetected.emit()
+    def _onPrinterDiscoveryChanged(self, *args):
+        self.printersChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = printerDetected)
+    @pyqtProperty("QVariantList", notify = printersChanged)
     def foundDevices(self):
         if self._network_plugin:
             printers = self._network_plugin.getPrinters()

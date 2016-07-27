@@ -233,6 +233,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
 
     def close(self):
+        self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
         if self._progress_message:
             self._progress_message.hide()
@@ -278,6 +279,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._update_timer.start()
         self._camera_timer.start()
+
+    ##  Stop requesting data from printer
+    def disconnect(self):
+        Logger.log("d", "Connection with printer %s with ip %s stopped", self._key, self._address)
+        self.close()
 
     newImage = pyqtSignal()
 
