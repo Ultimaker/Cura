@@ -38,8 +38,12 @@ class DiscoverUM3Action(MachineAction):
     def setKey(self, key):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            if "um_network_key" in global_container_stack.getMetaData():
+            meta_data = global_container_stack.getMetaData()
+            if "um_network_key" in meta_data:
                 global_container_stack.setMetaDataEntry("um_network_key", key)
+                # Delete old authentication data.
+                global_container_stack.removeMetaDataEntry("network_authentication_id")
+                global_container_stack.removeMetaDataEntry("network_authentication_key")
             else:
                 global_container_stack.addMetaDataEntry("um_network_key", key)
 
