@@ -92,7 +92,7 @@ class CuraEngineBackend(Backend):
         self._always_restart = True #Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
-        self._backend_log_max_lines = 200 # Maximal count of lines to buffer
+        self._backend_log_max_lines = 20000 # Maximum number of lines to buffer
         self._error_message = None #Pop-up message that shows errors.
 
         self.backendQuit.connect(self._onBackendQuit)
