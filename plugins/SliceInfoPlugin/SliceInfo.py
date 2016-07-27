@@ -26,7 +26,7 @@ class SliceInfoThread(Job):
     url = None
 
     def __init__(self, url, data):
-        Job.__init__(self)
+        super.__init__(self)
         self.url = url
         self.data = data
 
