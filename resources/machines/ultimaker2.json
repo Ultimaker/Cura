@@ -66,7 +66,7 @@
         "machine_nozzle_size": { "default": 0.4, "min_value": "0.001"},
         "machine_nozzle_heat_up_speed": { "default": 2.0 },
         "machine_nozzle_cool_down_speed": { "default": 2.0 },
-        "gantry_height": { "default": 55 },
+        "gantry_height": { "default": 48 },
         "machine_use_extruder_offset_to_offset_coords": { "default": true },
         "machine_gcode_flavor": { "default": "UltiGCode" },
         "machine_disallowed_areas": { "default": [
