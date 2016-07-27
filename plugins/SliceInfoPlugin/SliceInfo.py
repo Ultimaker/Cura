@@ -13,7 +13,6 @@ from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 from UM.Job import Job
 
-import time
 import platform
 import math
 import urllib.request
@@ -68,18 +67,6 @@ class SliceInfo(Extension):
             self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, "")
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
-
-        self.runningJobs = []
-
-    def __del__(self):
-        for job in self.runningJobs:
-            while not job.isFinished():
-                time.sleep(1) # Wait for threads - shouldn't take much more time than the timeout. See above..
-
-    def _removeFinishedThreads(self):
-        for job in self.runningJobs:
-            if job.isFinished():
-                self.runningJobs.remove(job) # Remove finished threads
 
     def messageActionTriggered(self, message_id, action_id):
         self.send_slice_info_message.hide()
@@ -154,7 +141,6 @@ class SliceInfo(Extension):
 
             # Sending slice info non-blocking
             reportJob = SliceInfoThread(self.info_url, binary_data)
-            self.runningJobs.append(reportJob)
             reportJob.start()
         except:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
