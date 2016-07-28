@@ -26,7 +26,7 @@ class MachineManager(QObject):
         self._global_container_stack = None
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        self._global_stack_valid = None
+        self._active_stack_valid = None
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
@@ -74,7 +74,7 @@ class MachineManager(QObject):
     activeStackChanged = pyqtSignal()
 
     globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
-    globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed
+    activeValidationChanged = pyqtSignal()  # Emitted whenever a validation inside active container is changed
 
     blurSettings = pyqtSignal() # Emitted to force fields in the advanced sidebar to un-focus, so they update properly
 
@@ -281,16 +281,17 @@ class MachineManager(QObject):
                     self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
         if property_name == "validationState":
-            if self._global_stack_valid:
+            if self._active_stack_valid:
                 changed_validation_state = self._active_container_stack.getProperty(key, property_name)
                 if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
-                    self._global_stack_valid = False
-                    self.globalValidationChanged.emit()
+                    self._active_stack_valid = False
+                    self.activeValidationChanged.emit()
             else:
                 has_errors = self._checkStackForErrors(self._active_container_stack)
                 if not has_errors:
-                    self._global_stack_valid = True
-                    self.globalValidationChanged.emit()
+                    self._active_stack_valid = True
+                    self.activeValidationChanged.emit()
+
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
@@ -313,8 +314,6 @@ class MachineManager(QObject):
             self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
-            self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
-            self.globalValidationChanged.emit()
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.connect(self._onMaterialNameChanged)
 
@@ -332,6 +331,8 @@ class MachineManager(QObject):
             self._active_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
         else:
             self._active_container_stack = self._global_container_stack
+        self._active_stack_valid = not self._checkStackForErrors(self._active_container_stack)
+        self.activeValidationChanged.emit()
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
@@ -436,11 +437,11 @@ class MachineManager(QObject):
         return len(user_settings) != 0
 
     ##  Check if the global profile does not contain error states
-    #   Note that the _global_stack_valid is cached due to performance issues
+    #   Note that the _active_stack_valid is cached due to performance issues
     #   Calling _checkStackForErrors on every change is simply too expensive
-    @pyqtProperty(bool, notify = globalValidationChanged)
-    def isGlobalStackValid(self):
-        return bool(self._global_stack_valid)
+    @pyqtProperty(bool, notify = activeValidationChanged)
+    def isActiveStackValid(self):
+        return bool(self._active_stack_valid)
 
     @pyqtProperty(str, notify = activeStackChanged)
     def activeUserProfileId(self):
