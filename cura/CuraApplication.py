@@ -235,7 +235,7 @@ class CuraApplication(QtApplication):
             support
                 support_enable
                 support_type
-                support_roof_density
+                support_interface_density
             platform_adhesion
                 adhesion_type
                 brim_width
