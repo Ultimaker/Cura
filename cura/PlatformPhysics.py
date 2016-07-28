@@ -71,7 +71,6 @@ class PlatformPhysics:
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
-            node.callDecoration("recomputeConvexHull")
 
             if Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
