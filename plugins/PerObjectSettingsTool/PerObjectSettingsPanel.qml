@@ -246,6 +246,7 @@ Item {
                     key: model.key
                     watchedProperties: [ "value", "enabled", "validationState" ]
                     storeIndex: 0
+                    removeUnusedValue: false
                 }
             }
         }
