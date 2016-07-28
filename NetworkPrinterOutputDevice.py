@@ -188,7 +188,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not recieve a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
                 self.setConnectionState(ConnectionState.error)
 
