@@ -1511,14 +1511,44 @@
                 },
                 "speed_layer_0": {
                     "label": "Initial Layer Speed",
-                    "description": "The print speed for the initial layer. A lower value is advised to improve adhesion to the build plate.",
+                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
                     "minimum_value": "0.1",
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "300",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "speed_print_layer_0":
+                        {
+                            "label": "Initial Layer Print Speed",
+                            "description": "The speed of printing for the initial layer. A lower value is advised to improve adhesion to the build plate.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 30,
+                            "value": "speed_layer_0",
+                            "minimum_value": "0.1",
+                            "maximum_value": "299792458000",
+                            "maximum_value_warning": "300",
+                            "settable_per_mesh": true
+                        },
+                        "speed_travel_layer_0":
+                        {
+                            "label": "Initial Layer Travel Speed",
+                            "description": "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 60,
+                            "value": "speed_layer_0 * speed_travel / speed_print",
+                            "minimum_value": "0.1",
+                            "maximum_value": "299792458000",
+                            "maximum_value_warning": "300",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "skirt_brim_speed": {
                     "label": "Skirt/Brim Speed",
@@ -1546,8 +1576,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                
-                
+
+
                 "acceleration_enabled": {
                     "label": "Enable Acceleration Control",
                     "description": "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality.",
@@ -1734,8 +1764,8 @@
                     "settable_per_mesh": false
                 },
 
-                
-                
+
+
                 "jerk_enabled": {
                     "label": "Enable Jerk Control",
                     "description": "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality.",
