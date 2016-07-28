@@ -71,7 +71,6 @@ class PlatformPhysics:
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
-            node.callDecoration("recomputeConvexHull")
 
             if Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
@@ -95,11 +94,11 @@ class PlatformPhysics:
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     head_hull = node.callDecoration("getConvexHullHead")
                     if head_hull:
-                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHullHead"))
                         if not overlap:
                             other_head_hull = other_node.callDecoration("getConvexHullHead")
                             if other_head_hull:
-                                overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
+                                overlap = node.callDecoration("getConvexHullHead").intersectsPolygon(other_head_hull)
                     else:
                         own_convex_hull = node.callDecoration("getConvexHull")
                         other_convex_hull = other_node.callDecoration("getConvexHull")

@@ -30,9 +30,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def setNode(self, node):
         previous_node = self._node
+        # Disconnect from previous node signals
         if previous_node is not None and node is not previous_node:
-            previous_node.transformationChanged.connect(self._onChanged)
-            previous_node.parentChanged.connect(self._onChanged)
+            previous_node.transformationChanged.disconnect(self._onChanged)
+            previous_node.parentChanged.disconnect(self._onChanged)
 
         super().setNode(node)
 

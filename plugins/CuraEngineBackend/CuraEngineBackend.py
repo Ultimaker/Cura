@@ -252,6 +252,9 @@ class CuraEngineBackend(Backend):
             return
 
         super()._onSocketError(error)
+        if error.getErrorCode() == Arcus.ErrorCode.Debug:
+            return
+
         self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:

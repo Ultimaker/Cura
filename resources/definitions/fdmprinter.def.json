@@ -3380,7 +3380,7 @@
                     "maximum_value_warning": "9999",
                     "default_value": 0,
                     "value": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
-                    "enabled": "draft_shield_height_limitation == \"limited\"",
+                    "enabled": "draft_shield_enabled and draft_shield_height_limitation == \"limited\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
