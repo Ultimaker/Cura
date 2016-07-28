@@ -77,7 +77,7 @@ class ConvexHullNode(SceneNode):
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             convex_hull_head_builder = MeshBuilder()
-            convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height-self._thickness)
+            convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height - self._thickness)
             self._convex_hull_head_mesh = convex_hull_head_builder.build()
 
         if not node:

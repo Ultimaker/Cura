@@ -105,13 +105,13 @@ SettingItem
         onActivated:
         {
             forceActiveFocus();
-            provider.setPropertyValue("value", extruders_model.getItem(index).index)
+            propertyProvider.setPropertyValue("value", extruders_model.getItem(index).index)
         }
         onModelChanged: updateCurrentIndex();
 
         Connections
         {
-            target: provider
+            target: propertyProvider
             onPropertiesChanged: control.updateCurrentIndex();
         }
 
@@ -119,7 +119,7 @@ SettingItem
         {
             for(var i = 0; i < extruders_model.rowCount(); ++i)
             {
-                if(extruders_model.getItem(i).index == provider.properties.value)
+                if(extruders_model.getItem(i).index == propertyProvider.properties.value)
                 {
                     currentIndex = i;
                     return;
