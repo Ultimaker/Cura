@@ -116,6 +116,8 @@ Rectangle
                         return UM.Theme.getIcon("tab_monitor_paused")
                     else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
                         return UM.Theme.getIcon("tab_monitor_stopped")
+                    else if (Cura.MachineManager.printerOutputDevices[0].jobState == "offline")
+                        return UM.Theme.getIcon("tab_monitor_offline")
                     else
                         return UM.Theme.getIcon("tab_monitor")
                 }
