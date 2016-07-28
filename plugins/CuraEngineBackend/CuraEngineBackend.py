@@ -22,6 +22,7 @@ from . import StartSliceJob
 
 import os
 import sys
+from time import time
 
 from PyQt5.QtCore import QTimer
 
@@ -56,6 +57,7 @@ class CuraEngineBackend(Backend):
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
         self._onActiveViewChanged()
         self._stored_layer_data = []
+        self._stored_optimized_layer_data = []
 
         #Triggers for when to (re)start slicing:
         self._global_container_stack = None
@@ -76,6 +78,7 @@ class CuraEngineBackend(Backend):
 
         #Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
+        self._message_handlers["cura.proto.LayerOptimized"] = self._onOptimizedLayerMessage
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
@@ -89,7 +92,7 @@ class CuraEngineBackend(Backend):
         self._always_restart = True #Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
-        self._backend_log_max_lines = 200 # Maximal count of lines to buffer
+        self._backend_log_max_lines = 20000 # Maximum number of lines to buffer
         self._error_message = None #Pop-up message that shows errors.
 
         self.backendQuit.connect(self._onBackendQuit)
@@ -98,6 +101,8 @@ class CuraEngineBackend(Backend):
         #When a tool operation is in progress, don't slice. So we need to listen for tool operations.
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
+
+        self._slice_start_time = None
 
     ##  Called when closing the application.
     #
@@ -127,6 +132,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
             # try again in a short time
             self._change_timer.start()
@@ -135,6 +141,7 @@ class CuraEngineBackend(Backend):
         self.printDurationMessage.emit(0, [0])
 
         self._stored_layer_data = []
+        self._stored_optimized_layer_data = []
 
         if self._slicing: #We were already slicing. Stop the old job.
             self._terminate()
@@ -163,6 +170,7 @@ class CuraEngineBackend(Backend):
         self._slicing = False
         self._restart = True
         self._stored_layer_data = []
+        self._stored_optimized_layer_data = []
         if self._start_slice_job is not None:
             self._start_slice_job.cancel()
 
@@ -214,6 +222,7 @@ class CuraEngineBackend(Backend):
 
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
+        Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
     ##  Listener for when the scene has changed.
     #
@@ -243,6 +252,9 @@ class CuraEngineBackend(Backend):
             return
 
         super()._onSocketError(error)
+        if error.getErrorCode() == Arcus.ErrorCode.Debug:
+            return
+
         self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
@@ -262,6 +274,12 @@ class CuraEngineBackend(Backend):
     def _onLayerMessage(self, message):
         self._stored_layer_data.append(message)
 
+    ##  Called when an optimized sliced layer data message is received from the engine.
+    #
+    #   \param message The protobuf message containing sliced layer data.
+    def _onOptimizedLayerMessage(self, message):
+        self._stored_optimized_layer_data.append(message)
+
     ##  Called when a progress message is received from the engine.
     #
     #   \param message The protobuf message containing the slicing progress.
@@ -277,11 +295,11 @@ class CuraEngineBackend(Backend):
         self.processingProgress.emit(1.0)
 
         self._slicing = False
-
+        Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
-            self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
+            self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data)
             self._process_layers_job.start()
-            self._stored_layer_data = []
+            self._stored_optimized_layer_data = []
 
     ##  Called when a g-code message is received from the engine.
     #
@@ -352,10 +370,10 @@ class CuraEngineBackend(Backend):
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
-                if self._stored_layer_data and not self._slicing:
-                    self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
+                if self._stored_optimized_layer_data and not self._slicing:
+                    self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data)
                     self._process_layers_job.start()
-                    self._stored_layer_data = []
+                    self._stored_optimized_layer_data = []
             else:
                 self._layer_view_active = False
 

@@ -120,7 +120,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 material = extruder.findContainer({ "type": "material" })
                 if material:
                     extruder_name = "%s (%s)" % (material.getName(), extruder_name)
-                position = extruder.getBottom().getMetaDataEntry("position", default = "0") #Position in the definition.
+                position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
                 try:
                     position = int(position)
                 except ValueError: #Not a proper int.

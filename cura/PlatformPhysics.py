@@ -48,7 +48,14 @@ class PlatformPhysics:
             bbox = node.getBoundingBox()
 
             # Ignore intersections with the bottom
-            build_volume_bounding_box = self._build_volume.getBoundingBox().set(bottom=-9001)
+            build_volume_bounding_box = self._build_volume.getBoundingBox()
+            if build_volume_bounding_box:
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+            else:
+                # No bounding box. This is triggered when running Cura from command line with a model for the first time
+                # In that situation there is a model, but no machine (and therefore no build volume.
+                return
             node._outside_buildarea = False
 
             # Mark the node as outside the build volume if the bounding box test fails.
@@ -64,7 +71,6 @@ class PlatformPhysics:
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
-            node.callDecoration("recomputeConvexHull")
 
             if Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
@@ -88,11 +94,11 @@ class PlatformPhysics:
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     head_hull = node.callDecoration("getConvexHullHead")
                     if head_hull:
-                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHullHead"))
                         if not overlap:
                             other_head_hull = other_node.callDecoration("getConvexHullHead")
                             if other_head_hull:
-                                overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
+                                overlap = node.callDecoration("getConvexHullHead").intersectsPolygon(other_head_hull)
                     else:
                         own_convex_hull = node.callDecoration("getConvexHull")
                         other_convex_hull = other_node.callDecoration("getConvexHull")

@@ -22,7 +22,7 @@ Cura.MachineAction
         {
             id: pageTitle
             width: parent.width
-            text: catalog.i18nc("@title", "Check Printer")
+            text: catalog.i18nc("@title", "Select Printer Upgrades")
             wrapMode: Text.WordWrap
             font.pointSize: 18;
         }
@@ -44,7 +44,7 @@ Cura.MachineAction
 
             text: catalog.i18nc("@label", "Heated bed (official kit or self-built)")
             checked: manager.hasHeatedBed
-            onClicked: manager.hasHeatedBed ? manager.removeHeatedBed() : manager.addHeatedBed()
+            onClicked: checked ? manager.addHeatedBed() : manager.removeHeatedBed()
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

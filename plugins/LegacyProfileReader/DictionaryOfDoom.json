@@ -47,7 +47,7 @@
         "adhesion_type": "\"skirt\" if (platform_adhesion == \"None\") else platform_adhesion.lower()",
         "skirt_line_count": "skirt_line_count",
         "skirt_gap": "skirt_gap",
-        "skirt_minimal_length": "skirt_minimal_length",
+        "skirt_brim_minimal_length": "skirt_minimal_length",
         "brim_line_count": "brim_line_count",
         "raft_margin": "raft_margin",
         "raft_airgap": "float(raft_airgap_all) + float(raft_airgap)",

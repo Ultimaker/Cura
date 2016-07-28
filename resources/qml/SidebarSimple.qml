@@ -19,6 +19,7 @@ Item
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
+    property bool settingsEnabled: ExtruderManager.activeExtruderStackId || ExtruderManager.extruderCount == 0
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
@@ -81,7 +82,11 @@ Item
                     height: width
 
                     border.color: {
-                        if(infillListView.activeIndex == index)
+                        if(!base.settingsEnabled)
+                        {
+                            return UM.Theme.getColor("setting_control_disabled_border")
+                        }
+                        else if(infillListView.activeIndex == index)
                         {
                             return UM.Theme.getColor("setting_control_selected")
                         }
@@ -92,7 +97,17 @@ Item
                         return UM.Theme.getColor("setting_control_border")
                     }
                     border.width: UM.Theme.getSize("default_lining").width
-                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_selected") : "transparent"
+                    color: {
+                        if(infillListView.activeIndex == index)
+                        {
+                            if(!base.settingsEnabled)
+                            {
+                                return UM.Theme.getColor("setting_control_disabled_text")
+                            }
+                            return UM.Theme.getColor("setting_control_selected")
+                        }
+                        return "transparent"
+                    }
 
                     UM.RecolorImage {
                         id: infillIcon
@@ -102,13 +117,24 @@ Item
                         sourceSize.width: width
                         sourceSize.height: width
                         source: UM.Theme.getIcon(model.icon);
-                        color: (infillListView.activeIndex == index) ? UM.Theme.getColor("text_white") : UM.Theme.getColor("text")
+                        color: {
+                            if(infillListView.activeIndex == index)
+                            {
+                                return UM.Theme.getColor("text_reversed")
+                            }
+                            if(!base.settingsEnabled)
+                            {
+                                return UM.Theme.getColor("setting_control_disabled_text")
+                            }
+                            return UM.Theme.getColor("text")
+                        }
                     }
 
                     MouseArea {
                         id: infillMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
+                        enabled: base.settingsEnabled
                         onClicked: {
                             if (infillListView.activeIndex != index)
                             {
@@ -125,6 +151,7 @@ Item
                 }
                 Label{
                     id: infillLabel
+                    font: UM.Theme.getFont("default")
                     anchors.top: infillIconLining.bottom
                     anchors.horizontalCenter: infillIconLining.horizontalCenter
                     color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_border")
@@ -205,6 +232,7 @@ Item
             //: Setting enable skirt adhesion checkbox
             text: catalog.i18nc("@option:check", "Print Brim");
             style: UM.Theme.styles.checkbox;
+            enabled: base.settingsEnabled
 
             checked: platformAdhesionType.properties.value == "brim"
 
@@ -212,6 +240,7 @@ Item
                 id: brimMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
+                enabled: base.settingsEnabled
                 onClicked:
                 {
                     platformAdhesionType.setPropertyValue("value", !parent.checked ? "brim" : "skirt")
@@ -253,12 +282,14 @@ Item
             //: Setting enable support checkbox
             text: catalog.i18nc("@option:check", "Print Support Structure");
             style: UM.Theme.styles.checkbox;
+            enabled: base.settingsEnabled
 
             checked: supportEnabled.properties.value == "True"
             MouseArea {
                 id: supportMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
+                enabled: base.settingsEnabled
                 onClicked:
                 {
                     supportEnabled.setPropertyValue("value", !parent.checked)
@@ -287,6 +318,7 @@ Item
             width: parent.width / 100 * 45
 
             style: UM.Theme.styles.combobox
+            enabled: base.settingsEnabled
             property alias _hovered: supportExtruderMouseArea.containsMouse
 
             currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
@@ -302,6 +334,7 @@ Item
                 id: supportExtruderMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
+                enabled: base.settingsEnabled
                 acceptedButtons: Qt.NoButton
                 onEntered:
                 {
@@ -381,7 +414,7 @@ Item
     {
         id: platformAdhesionType
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: Cura.MachineManager.activeStackId
         key: "adhesion_type"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -391,7 +424,7 @@ Item
     {
         id: supportEnabled
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: Cura.MachineManager.activeStackId
         key: "support_enable"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -411,7 +444,7 @@ Item
     {
         id: supportExtruderNr
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStackId: Cura.MachineManager.activeStackId
         key: "support_extruder_nr"
         watchedProperties: [ "value" ]
         storeIndex: 0

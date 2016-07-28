@@ -97,7 +97,7 @@
             "default_value": 4,
             "enabled": "adhesion_type == \"Skirt\""
         },
-        "skirt_minimal_length": {
+        "skirt_brim_minimal_length": {
             "default_value": 200,
             "enabled": "adhesion_type == \"Skirt\""
         }

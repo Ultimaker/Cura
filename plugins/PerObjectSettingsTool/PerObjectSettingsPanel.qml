@@ -47,7 +47,9 @@ Item {
                     id: extruders_model
                     onRowsInserted: extruderSelector.visible = extruders_model.rowCount() > 1
                     onModelReset:   extruderSelector.visible = extruders_model.rowCount() > 1
+                    onModelChanged: extruderSelector.color = extruders_model.getItem(extruderSelector.currentIndex).colour
                 }
+                property string color: extruders_model.getItem(extruderSelector.currentIndex).colour
                 visible: extruders_model.rowCount() > 1
                 textRole: "name"
                 width: UM.Theme.getSize("setting_control").width
@@ -88,7 +90,7 @@ Item {
                             anchors.leftMargin: UM.Theme.getSize("default_lining").width
                             anchors.verticalCenter: parent.verticalCenter
 
-                            color: extruders_model.getItem(extruderSelector.currentIndex).colour
+                            color: extruderSelector.color
                             border.width: UM.Theme.getSize("default_lining").width
                             border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
                         }
@@ -136,6 +138,7 @@ Item {
                         if(extruders_model.getItem(i).id == UM.ActiveTool.properties.getValue("SelectedActiveExtruder"))
                         {
                             extruderSelector.currentIndex = i;
+                            extruderSelector.color = extruders_model.getItem(i).colour;
                             return;
                         }
                     }
@@ -181,7 +184,9 @@ Item {
                     onLoaded: {
                         settingLoader.item.showRevertButton = false
                         settingLoader.item.showInheritButton = false
+                        settingLoader.item.showLinkedSettingIcon = false
                         settingLoader.item.doDepthIndentation = false
+                        settingLoader.item.doQualityUserSettingEmphasis = false
                     }
 
                     sourceComponent:
@@ -241,6 +246,7 @@ Item {
                     key: model.key
                     watchedProperties: [ "value", "enabled", "validationState" ]
                     storeIndex: 0
+                    removeUnusedValue: false
                 }
             }
         }

@@ -291,7 +291,7 @@ UM.ManagementPage
             title: catalog.i18nc("@title:window", "Import Profile");
             selectExisting: true;
             nameFilters: base.model.getFileNameFilters("profile_reader")
-            folder: base.model.getDefaultPath()
+            folder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
                 var result = base.model.importProfile(fileUrl)
@@ -309,6 +309,7 @@ UM.ManagementPage
                     messageDialog.icon = StandardIcon.Critical
                 }
                 messageDialog.open()
+                CuraApplication.setDefaultPath("dialog_profile_path", folder)
             }
         }
 
@@ -318,7 +319,7 @@ UM.ManagementPage
             title: catalog.i18nc("@title:window", "Export Profile");
             selectExisting: false;
             nameFilters: base.model.getFileNameFilters("profile_writer")
-            folder: base.model.getDefaultPath()
+            folder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
                 var result = base.model.exportProfile(base.currentItem.id, fileUrl, selectedNameFilter)
@@ -329,6 +330,7 @@ UM.ManagementPage
                     messageDialog.open()
                 }
                 // else pop-up Message thing from python code
+                CuraApplication.setDefaultPath("dialog_profile_path", folder)
             }
         }
     }

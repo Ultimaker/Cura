@@ -10,6 +10,7 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Platform import Platform
+from UM.Qt.Duration import DurationFormat
 
 import collections
 import json
@@ -90,7 +91,7 @@ class SliceInfo(Extension):
                 "settings": global_container_stack.serialize(), # global_container with references on used containers
                 "version": Application.getInstance().getVersion(),
                 "modelhash": "None",
-                "printtime": print_information.currentPrintTime.getDisplayString(),
+                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
                 "filament": material_used,
                 "language": Preferences.getInstance().getValue("general/language"),
             }

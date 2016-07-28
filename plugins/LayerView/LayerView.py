@@ -25,6 +25,8 @@ from . import LayerViewProxy
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+import numpy
+
 ## View used to display g-code paths.
 class LayerView(View):
     def __init__(self):
@@ -42,15 +44,10 @@ class LayerView(View):
         self._top_layers_job = None
         self._activity = False
 
-        Preferences.getInstance().addPreference("view/top_layer_count", 1)
+        Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
-
-        self._top_layer_timer = QTimer()
-        self._top_layer_timer.setInterval(50)
-        self._top_layer_timer.setSingleShot(True)
-        self._top_layer_timer.timeout.connect(self._startUpdateTopLayers)
 
         self._busy = False
 
@@ -130,8 +127,7 @@ class LayerView(View):
                 self._current_layer_num = self._max_layers
 
             self.resetLayerData()
-
-            self._top_layer_timer.start()
+            self._startUpdateTopLayers()
 
             self.currentLayerNumChanged.emit()
 
@@ -163,7 +159,7 @@ class LayerView(View):
             else:
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
-        self._top_layer_timer.start()
+        self._startUpdateTopLayers()
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
@@ -217,7 +213,7 @@ class LayerView(View):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
 
         self.resetLayerData()
-        self._top_layer_timer.start()
+        self._startUpdateTopLayers()
 
 class _CreateTopLayersJob(Job):
     def __init__(self, scene, layer_number, solid_layers):
@@ -253,11 +249,13 @@ class _CreateTopLayersJob(Job):
             if not layer or layer.getVertices() is None:
                 continue
 
+            layer_mesh.addIndices(layer_mesh._vertex_count+layer.getIndices())
             layer_mesh.addVertices(layer.getVertices())
 
             # Scale layer color by a brightness factor based on the current layer number
             # This will result in a range of 0.5 - 1.0 to multiply colors by.
-            brightness = (2.0 - (i / self._solid_layers)) / 2.0
+            brightness = numpy.ones((1,4), dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
+            brightness[0, 3] = 1.0;
             layer_mesh.addColors(layer.getColors() * brightness)
 
             if self._cancel:

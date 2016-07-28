@@ -50,16 +50,19 @@ class LayerDataBuilder(MeshBuilder):
 
     def build(self):
         vertex_count = 0
+        index_count = 0
         for layer, data in self._layers.items():
-            vertex_count += data.vertexCount()
+            vertex_count += data.lineMeshVertexCount()
+            index_count += data.lineMeshElementCount()
 
         vertices = numpy.empty((vertex_count, 3), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
-        indices = numpy.empty((vertex_count, 2), numpy.int32)
+        indices = numpy.empty((index_count, 2), numpy.int32)
 
-        offset = 0
+        vertex_offset = 0
+        index_offset = 0
         for layer, data in self._layers.items():
-            offset = data.build(offset, vertices, colors, indices)
+            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, indices)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)

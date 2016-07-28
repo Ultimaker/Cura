@@ -9,14 +9,16 @@ from UM.Mesh.MeshData import MeshData
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
+from cura import LayerPolygon
 
 import numpy
-
+from time import time
 catalog = i18nCatalog("cura")
 
 
@@ -38,6 +40,7 @@ class ProcessSlicedLayersJob(Job):
         self._abort_requested = True
 
     def run(self):
+        start_time = time()
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
@@ -80,26 +83,46 @@ class ProcessSlicedLayersJob(Job):
             abs_layer_number = layer.id + abs(min_layer_number)
 
             layer_data.addLayer(abs_layer_number)
+            this_layer = layer_data.getLayer(abs_layer_number)
             layer_data.setLayerHeight(abs_layer_number, layer.height)
             layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
-            for p in range(layer.repeatedMessageCount("polygons")):
-                polygon = layer.getRepeatedMessage("polygons", p)
+            for p in range(layer.repeatedMessageCount("path_segment")):
+                polygon = layer.getRepeatedMessage("path_segment", p)
 
-                points = numpy.fromstring(polygon.points, dtype="i8")  # Convert bytearray to numpy array
-                points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                extruder = polygon.extruder
 
+                line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
+                line_types = line_types.reshape((-1,1))
+
+                points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
+                if polygon.point_type == 0: # Point2D
+                    points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                else: # Point3D
+                    points = points.reshape((-1,3))
+
+                line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
+                line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
                 new_points = numpy.empty((len(points), 3), numpy.float32)
-                new_points[:,0] = points[:,0]
-                new_points[:,1] = layer.height
-                new_points[:,2] = -points[:,1]
+                if polygon.point_type == 0: # Point2D
+                    new_points[:,0] = points[:,0]
+                    new_points[:,1] = layer.height/1000 # layer height value is in backend representation
+                    new_points[:,2] = -points[:,1]
+                else: # Point3D
+                    new_points[:,0] = points[:,0]
+                    new_points[:,1] = points[:,2]
+                    new_points[:,2] = -points[:,1]
+                    
 
-                new_points /= 1000
+                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
+                this_poly.buildCache()
+                
+                this_layer.polygons.append(this_poly)
 
-                layer_data.addPolygon(abs_layer_number, polygon.type, new_points, polygon.line_width)
                 Job.yieldThread()
             Job.yieldThread()
             current_layer += 1
@@ -149,6 +172,8 @@ class ProcessSlicedLayersJob(Job):
 
         # Clear the unparsed layers. This saves us a bunch of memory if the Job does not get destroyed.
         self._layers = None
+
+        Logger.log("d", "Processing layers took %s seconds", time() - start_time)
 
     def _onActiveViewChanged(self):
         if self.isRunning():

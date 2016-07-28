@@ -321,23 +321,7 @@ UM.MainWindow
                 sourceSize.height: height;
             }
 
-            Button
-            {
-                id: viewModeButton
 
-                anchors
-                {
-                    top: toolbar.bottom;
-                    topMargin: UM.Theme.getSize("window_margin").height;
-                    left: parent.left;
-                }
-                text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.getIcon("viewmode");
-
-                style: UM.Theme.styles.tool_button;
-                tooltip: '';
-                menu: ViewMenu { }
-            }
 
             Toolbar
             {
@@ -365,6 +349,24 @@ UM.MainWindow
                 }
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
+            }
+
+            Button
+            {
+                id: viewModeButton
+
+                anchors
+                {
+                    top: toolbar.bottom;
+                    topMargin: UM.Theme.getSize("window_margin").height;
+                    left: parent.left;
+                }
+                text: catalog.i18nc("@action:button","View Mode");
+                iconSource: UM.Theme.getIcon("viewmode");
+
+                style: UM.Theme.styles.tool_button;
+                tooltip: '';
+                menu: ViewMenu { }
             }
 
             Rectangle
@@ -638,7 +640,7 @@ UM.MainWindow
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: Printer.getDefaultPath()
+        folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
         {
             //Because several implementations of the file dialog only update the folder
@@ -646,6 +648,7 @@ UM.MainWindow
             var f = folder;
             folder = f;
 
+            CuraApplication.setDefaultPath("dialog_load_path", folder);
             UM.MeshFileHandler.readLocalFile(fileUrl)
             var meshName = backgroundItem.getMeshName(fileUrl.toString())
             backgroundItem.hasMesh(decodeURIComponent(meshName))

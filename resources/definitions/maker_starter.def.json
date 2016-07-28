@@ -94,7 +94,7 @@
         "speed_layer_0": {
             "default_value": 20
         },
-        "skirt_speed": {
+        "skirt_brim_speed": {
             "default_value": 15
         },
         "speed_slowdown_layers": {
