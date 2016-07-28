@@ -23,7 +23,7 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = Color(35, 35, 35, 192)
+        self._color = Color(0.4, 0.4, 0.4, 1.0)
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
