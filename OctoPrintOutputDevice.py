@@ -131,9 +131,12 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._job_reply = self._manager.get(self._job_request)
 
     def close(self):
+        self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
         self._update_timer.stop()
         self._camera_timer.stop()
+        self._camera_image = QImage()
+        self.newImage.emit()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         Application.getInstance().showPrintMonitor.emit(True)
@@ -155,10 +158,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     ##  Stop requesting data from printer
     def disconnect(self):
-        self.setConnectionState(ConnectionState.closed)
         Logger.log("d", "Connection with printer %s with ip %s stopped", self._key, self._address)
-        self._update_timer.stop()
-        self._camera_timer.stop()
+        self.close()
 
     newImage = pyqtSignal()
 
