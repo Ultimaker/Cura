@@ -2,6 +2,7 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import NetworkPrinterOutputDevice
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
+from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
 
@@ -75,6 +76,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
+            Logger.log("d", "Bonjour service added: %s" % name)
             info = zeroconf.get_service_info(service_type, name)
             if info:
                 if info.properties.get(b"type", None) == b'printer':
@@ -82,4 +84,5 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                     self.addPrinterSignal.emit(str(name), address, info.properties)
 
         elif state_change == ServiceStateChange.Removed:
+            Logger.log("d", "Bonjour service removed: %s" % name)
             self.removePrinterSignal.emit(str(name))
