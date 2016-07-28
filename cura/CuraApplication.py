@@ -203,7 +203,7 @@ class CuraApplication(QtApplication):
             "dialog_profile_path",
             "dialog_material_path"]:
 
-            Preferences.getInstance().addPreference("local_file/%s" % key, "~/")
+            Preferences.getInstance().addPreference("local_file/%s" % key, os.path.expanduser("~/"))
 
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 

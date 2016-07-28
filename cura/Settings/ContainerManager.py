@@ -244,6 +244,7 @@ class ContainerManager(QObject):
             if not type_name or entry["type"] == type_name:
                 filters.append(filter_string)
 
+        filters.append("All Files (*)")
         return filters
 
     ##  Export a container to a file
@@ -280,6 +281,9 @@ class ContainerManager(QObject):
             return { "status": "error", "message": "Container not found"}
         container = containers[0]
 
+        if UM.Platform.isOSX() and "." in file_url:
+            file_url = file_url[:file_url.rfind(".")]
+
         for suffix in mime_type.suffixes:
             if file_url.endswith(suffix):
                 break
@@ -301,7 +305,7 @@ class ContainerManager(QObject):
         with UM.SaveFile(file_url, "w") as f:
             f.write(contents)
 
-        return { "status": "success", "message": "Succesfully exported container"}
+        return { "status": "success", "message": "Succesfully exported container", "path": file_url}
 
     ##  Imports a profile from a file
     #
@@ -371,10 +375,19 @@ class ContainerManager(QObject):
                 "container": container_type
             }
 
-            suffix_list = "*." + mime_type.preferredSuffix
+            suffix = mime_type.preferredSuffix
+            if UM.Platform.isOSX() and "." in suffix:
+                # OSX's File dialog is stupid and does not allow selecting files with a . in its name
+                suffix = suffix[suffix.index(".") + 1:]
+
+            suffix_list = "*." + suffix
             for suffix in mime_type.suffixes:
                 if suffix == mime_type.preferredSuffix:
                     continue
+
+                if UM.Platform.isOSX() and "." in suffix:
+                    # OSX's File dialog is stupid and does not allow selecting files with a . in its name
+                    suffix = suffix[suffix.index("."):]
 
                 suffix_list += ", *." + suffix
 
