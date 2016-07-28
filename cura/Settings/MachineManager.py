@@ -269,13 +269,16 @@ class MachineManager(QObject):
         if property_name == "global_inherits_stack":
             if self._active_container_stack and self._active_container_stack != self._global_container_stack:
                 # Update the global user value when the "global_inherits_stack" function points to a different stack
-                stack_index = int(self._active_container_stack.getProperty(key, property_name))
-                extruder_stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+                extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                target_stack_position = int(self._active_container_stack.getProperty(key, "global_inherits_stack"))
+                if target_stack_position == -1:  # Prevent -1 from selecting wrong stack.
+                    target_stack = self._active_container_stack
+                else:
+                    target_stack = extruder_stacks[target_stack_position]
 
-                if len(extruder_stacks) > stack_index:
-                    new_value = extruder_stacks[stack_index].getProperty(key, "value")
-                    if self._global_container_stack.getProperty(key, "value") != new_value:
-                        self._global_container_stack.getTop().setProperty(key, "value", new_value)
+                new_value = target_stack.getProperty(key, "value")
+                if self._global_container_stack.getProperty(key, "value") != new_value:
+                    self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
         if property_name == "validationState":
             if self._global_stack_valid:
@@ -549,7 +552,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtSlot(str, str)
-    def renameQualityContainer(self, container_id, new_name):
+    def renameQualityContainer(self, container_id, nbalew_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
             new_name = self._createUniqueName("quality", containers[0].getName(), new_name,
