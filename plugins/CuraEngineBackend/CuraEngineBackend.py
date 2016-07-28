@@ -13,9 +13,11 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 
+
 import cura.Settings
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
+from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
 from . import ProcessGCodeJob
 from . import StartSliceJob
@@ -391,22 +393,35 @@ class CuraEngineBackend(Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
+            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            if extruders:
+                for extruder in extruders:
+                    extruder.propertyChanged.disconnect(self._onSettingChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
+            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            if extruders:
+                for extruder in extruders:
+                    extruder.propertyChanged.connect(self._onSettingChanged)
             self._onActiveExtruderChanged()
             self._onChanged()
 
     def _onActiveExtruderChanged(self):
+        if self._global_container_stack:
+            # Connect all extruders of the active machine. This might cause a few connects that have already happend,
+            # but that shouldn't cause issues as only new / unique connections are added.
+            extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            if extruders:
+                for extruder in extruders:
+                    extruder.propertyChanged.connect(self._onSettingChanged)
         if self._active_extruder_stack:
-            self._active_extruder_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
         self._active_extruder_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_extruder_stack:
-            self._active_extruder_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
