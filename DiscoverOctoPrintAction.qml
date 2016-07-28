@@ -34,6 +34,15 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "Select your OctoPrint instance from the list below:")
         }
 
+        Button
+        {
+            id: rediscoverButton
+            text: catalog.i18nc("@title", "Refresh")
+            onClicked: manager.startDiscovery()
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.5
+        }
+
         Row
         {
             width: parent.width
@@ -108,38 +117,38 @@ Cura.MachineAction
                     columns: 2
                     Label
                     {
-                        width: parent.width * 0.4
+                        width: parent.width * 0.3
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "OctoPrint version")
                     }
                     Label
                     {
-                        width: parent.width * 0.6
+                        width: parent.width * 0.7
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.octoprintVersion : ""
                     }
                     Label
                     {
-                        width: parent.width * 0.4
+                        width: parent.width * 0.3
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "IP Address")
                     }
                     Label
                     {
-                        width: parent.width * 0.6
+                        width: parent.width * 0.7
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
                     Label
                     {
-                        width: parent.width * 0.4
+                        width: parent.width * 0.3
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "API Key")
                     }
                     TextField
                     {
                         id: apiKey
-                        width: parent.width * 0.6 - UM.Theme.getSize("default_margin").width
+                        width: parent.width * 0.7 - UM.Theme.getSize("default_margin").width
                         text: manager.apiKey
                     }
                 }

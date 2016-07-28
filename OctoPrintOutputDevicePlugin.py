@@ -4,6 +4,7 @@ from . import OctoPrintOutputDevice
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
+from UM.Logger import Logger
 
 import time
 
@@ -34,6 +35,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         if self._browser:
             self._browser.cancel()
             self._browser = None
+        self._zero_conf.__init__()
 
         self._browser = ServiceBrowser(self._zero_conf, u'_octoprint._tcp.local.', [self._onServiceChanged])
 
@@ -101,10 +103,9 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
             if info.address:
                 address = '.'.join(map(lambda n: str(n), info.address))
-            elif info.server:
-                address = info.server
-            if address:
                 self.addPrinterSignal.emit(str(name), address, info.properties)
+            else:
+                Logger.log("d", "Discovered instance named %s but received no address", name)
 
         elif state_change == ServiceStateChange.Removed:
             self.removePrinterSignal.emit(str(name))
