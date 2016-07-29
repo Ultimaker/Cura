@@ -30,6 +30,8 @@ Rectangle
             return UM.Theme.getColor("status_paused")
         else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
             return UM.Theme.getColor("status_stopped")
+        else if (Cura.MachineManager.printerOutputDevices[0].jobState == "offline")
+            return UM.Theme.getColor("status_offline")
         else
             return UM.Theme.getColor("text")
     }
@@ -41,7 +43,10 @@ Rectangle
     {
         if(!printerConnected)
         {
-            return catalog.i18nc("@label:", "Please check your printer connections")
+            return catalog.i18nc("@label:", "Not connected to a printer")
+        } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "offline")
+        {
+            return catalog.i18nc("@label:", "Lost connection with the printer")
         } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
         {
             return catalog.i18nc("@label:", "Printing...")
