@@ -633,7 +633,23 @@ class CuraApplication(QtApplication):
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
-    
+
+    ##  Select all nodes containing mesh data in the scene.
+    @pyqtSlot()
+    def selectAll(self):
+        if not self.getController().getToolsEnabled():
+            return
+
+        Selection.clear()
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            Selection.add(node)
+
     ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):

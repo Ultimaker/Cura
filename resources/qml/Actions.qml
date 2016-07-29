@@ -27,6 +27,7 @@ Item
 
     property alias multiplyObject: multiplyObjectAction;
 
+    property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
     property alias resetAllTranslation: resetAllTranslationAction;
@@ -228,6 +229,16 @@ Item
         id: multiplyObjectAction;
         text: catalog.i18nc("@action:inmenu","&Duplicate Object");
         iconName: "edit-duplicate"
+    }
+
+    Action
+    {
+        id: selectAllAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Select All Objects");
+        enabled: UM.Controller.toolsEnabled;
+        iconName: "edit-select-all";
+        shortcut: "Ctrl+A";
+        onTriggered: Printer.selectAll();
     }
 
     Action
