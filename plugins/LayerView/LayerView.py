@@ -126,7 +126,6 @@ class LayerView(View):
             if self._current_layer_num > self._max_layers:
                 self._current_layer_num = self._max_layers
 
-            self.resetLayerData()
             self._startUpdateTopLayers()
 
             self.currentLayerNumChanged.emit()
@@ -199,7 +198,7 @@ class LayerView(View):
 
         if not job.getResult():
             return
-
+        self.resetLayerData()  # Reset the layer data only when job is done. Doing it now prevents "blinking" data.
         self._current_layer_mesh = job.getResult().get("layers")
         self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
