@@ -3,6 +3,7 @@
 
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -87,7 +88,7 @@ class SolidView(View):
                             renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
                     else:
                         renderer.queueNode(node, material = self._enabled_shader, uniforms = uniforms)
-                if node.callDecoration("isGroup"):
+                if node.callDecoration("isGroup") and Selection.isSelected(node):
                     renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = Renderer.RenderLines)
 
     def endRendering(self):
