@@ -657,6 +657,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
+            Selection.clear()
 
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
