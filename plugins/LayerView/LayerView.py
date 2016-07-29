@@ -45,10 +45,11 @@ class LayerView(View):
         self._activity = False
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
+        Preferences.getInstance().addPreference("view/only_show_top_layers", False)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
-
+        self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._busy = False
 
     def getActivity(self):
@@ -100,7 +101,7 @@ class LayerView(View):
                         continue
 
                     # Render all layers below a certain number as line mesh instead of vertices.
-                    if self._current_layer_num - self._solid_layers > -1:
+                    if self._current_layer_num - self._solid_layers > -1 and not self._only_show_top_layers:
                         start = 0
                         end = 0
                         element_counts = layer_data.getElementCounts()
@@ -206,12 +207,12 @@ class LayerView(View):
         self._top_layers_job = None
 
     def _onPreferencesChanged(self, preference):
-        if preference != "view/top_layer_count":
+        if preference != "view/top_layer_count" and preference != "view/only_show_top_layers":
             return
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
+        self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
 
-        self.resetLayerData()
         self._startUpdateTopLayers()
 
 class _CreateTopLayersJob(Job):
