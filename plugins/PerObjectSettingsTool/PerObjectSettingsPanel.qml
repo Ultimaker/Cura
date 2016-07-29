@@ -127,7 +127,11 @@ Item {
                         }
                     }
                 }
-
+                Component.onCompleted:
+                {
+                    // Ensure primary extruder is set as active
+                    UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(0).id)
+                }
                 onActivated: UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
                 onModelChanged: updateCurrentIndex();
 
