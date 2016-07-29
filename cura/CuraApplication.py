@@ -555,12 +555,18 @@ class CuraApplication(QtApplication):
     def deleteSelection(self):
         if not self.getController().getToolsEnabled():
             return
-
+        removed_group_nodes = []
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
             op.addOperation(RemoveSceneNodeOperation(node))
-
+            group_node = node.getParent()
+            if group_node and group_node.callDecoration("isGroup") and group_node not in removed_group_nodes:
+                remaining_nodes_in_group = list(set(group_node.getChildren()) - set(nodes))
+                if len(remaining_nodes_in_group) == 1:
+                    removed_group_nodes.append(group_node)
+                    op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
         pass
@@ -586,8 +592,7 @@ class CuraApplication(QtApplication):
             op.push()
             if group_node:
                 if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
-                    group_node.getChildren()[0].translate(group_node.getPosition())
-                    group_node.getChildren()[0].setParent(group_node.getParent())
+                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
                     op = RemoveSceneNodeOperation(group_node)
                     op.push()
 
@@ -652,6 +657,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
+            Selection.clear()
 
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()

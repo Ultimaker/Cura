@@ -54,10 +54,7 @@ UM.MainWindow
         Keys.onPressed: {
             if (event.key == Qt.Key_Backspace)
             {
-                if(objectContextMenu.objectId != 0)
-                {
-                    Printer.deleteObject(objectContextMenu.objectId);
-                }
+                Cura.Actions.deleteSelection.trigger()
             }
         }
 
