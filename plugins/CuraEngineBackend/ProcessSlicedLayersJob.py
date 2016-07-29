@@ -56,10 +56,9 @@ class ProcessSlicedLayersJob(Job):
 
         ## Remove old layer data (if any)
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is SceneNode and node.getMeshData():
-                if node.callDecoration("getLayerData"):
-                    self._scene.getRoot().removeChild(node)
-            Job.yieldThread()
+            if node.callDecoration("getLayerData"):
+                node.getParent().removeChild(node)
+                break
             if self._abort_requested:
                 if self._progress:
                     self._progress.hide()
