@@ -55,13 +55,29 @@ Cura.MachineAction
             anchors.horizontalCenter: parent.horizontalCenter
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
+
+            Button
+            {
+                id: startBedLevelingButton
+                text: catalog.i18nc("@action:button","Start Bed Leveling")
+                onClicked:
+                {
+                    startBedLevelingButton.visible = false;
+                    bedlevelingButton.visible = true;
+                    checkupMachineAction.heatupHotendStarted = false;
+                    checkupMachineAction.heatupBedStarted = false;
+                    manager.startCheck();
+                }
+            }
+
             Button
             {
                 id: bedlevelingButton
-                text: catalog.i18nc("@action:button","Move to Next Position");
+                text: catalog.i18nc("@action:button","Move to Next Position")
+                visible: false
                 onClicked:
                 {
-                    manager.moveToNextLevelPosition()
+                    manager.moveToNextLevelPosition();
                 }
             }
         }

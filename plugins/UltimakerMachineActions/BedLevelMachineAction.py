@@ -19,6 +19,11 @@ class BedLevelMachineAction(MachineAction):
 
     def _reset(self):
         self._bed_level_position = 0
+        pass
+
+    @pyqtSlot()
+    def startBedLeveling(self):
+        self._bed_level_position = 0
         printer_output_devices = self._getPrinterOutputDevices()
         if printer_output_devices:
             printer_output_devices[0].homeBed()
@@ -52,4 +57,5 @@ class BedLevelMachineAction(MachineAction):
                 output_device.moveHead(0, 0, -3)
                 self._bed_level_position += 1
             elif self._bed_level_position >= 3:
+                output_device.sendCommand("M18") # Turn off all motors so the user can move the axes
                 self.setFinished()
