@@ -13,6 +13,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Settings.Validator import ValidatorState
+from UM.Settings.SettingRelation import RelationType
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
@@ -213,9 +214,27 @@ class StartSliceJob(Job):
         stack = node.callDecoration("getStack")
         # Check if the node has a stack attached to it and the stack has any settings in the top container.
         if stack:
-            # Because we want to use inheritance correctly, we send all settings as seen from the per object stack.
-            for key in stack.getAllKeys():
+            # Check all settings for relations, so we can also calculate the correct values for dependant settings.
+            changed_setting_keys = set(stack.getTop().getAllKeys())
+            for key in stack.getTop().getAllKeys():
+                instance = stack.getTop().getInstance(key)
+                self._addRelations(changed_setting_keys, instance.definition.relations)
+                Job.yieldThread()
+
+            # Ensure that the engine is aware what the build extruder is
+            changed_setting_keys.add("extruder_nr")
+
+            # Get values for all changed settings
+            for key in changed_setting_keys:
                 setting = message.addRepeatedMessage("settings")
                 setting.name = key
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
                 Job.yieldThread()
+
+    def _addRelations(self, relations_set, relations):
+        for relation in filter(lambda r: r.role == "value", relations):
+            if relation.type == RelationType.RequiresTarget:
+                continue
+
+            relations_set.add(relation.target.key)
+            self._addRelations(relations_set, relation.target.relations)
