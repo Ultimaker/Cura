@@ -53,9 +53,10 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
-                    checkupMachineAction.heatupHotendStarted = false
-                    checkupMachineAction.heatupBedStarted = false
-                    manager.startCheck()
+                    checkupMachineAction.heatupHotendStarted = false;
+                    checkupMachineAction.heatupBedStarted = false;
+                    manager.startCheck();
+                    startCheckButton.visible = false;
                 }
             }
         }
