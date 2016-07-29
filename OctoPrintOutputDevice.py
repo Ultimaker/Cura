@@ -7,11 +7,12 @@ from UM.Message import Message
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
 from PyQt5.QtGui import QImage, QDesktopServices
 
 import json
+from time import time
 
 i18n_catalog = i18nCatalog("cura")
 
