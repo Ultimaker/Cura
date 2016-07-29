@@ -134,6 +134,7 @@ class StartSliceJob(Job):
                 return
 
             self._buildGlobalSettingsMessage(stack)
+            self._buildGlobalInheritsStackMessage(stack)
 
             for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
@@ -215,6 +216,21 @@ class StartSliceJob(Job):
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting_message.value = str(value).encode("utf-8")
+
+    ##  Sends for some settings which extruder they should fallback to if not
+    #   set.
+    #
+    #   This is only set for settings that have the global_inherits_stack
+    #   property.
+    #
+    #   \param stack The global stack with all settings, from which to read the
+    #   global_inherits_stack property.
+    def _buildGlobalInheritsStackMessage(self, stack):
+        for key in stack.getAllKeys():
+            if stack.hasProperty(key, "global_inherits_stack"):
+                setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
+                setting_extruder.name = key
+                setting_extruder.extruder = int(stack.getProperty(key, "global_inherits_stack"))
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
     #   \param node \type{SceneNode} Node to check.
