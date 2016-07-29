@@ -145,7 +145,7 @@ Cura.MachineAction
 
                 Button
                 {
-                    text: catalog.i18nc("@action:button", "Ok")
+                    text: catalog.i18nc("@action:button", "Connect")
                     enabled: base.selectedPrinter
                     onClicked:
                     {
