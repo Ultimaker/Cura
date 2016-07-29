@@ -77,7 +77,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._progress_message = None
         self._error_message = None
-        self._connection_message = None
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
@@ -111,6 +110,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_response_time = time()
         self._response_timeout_time = 5
+        self._not_authenticated_message = None
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
@@ -189,16 +189,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                Logger.log("d", "We did not recieve a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
-                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost.Check your network-connections."))
-                self._connection_message.show()
                 self.setConnectionState(ConnectionState.error)
 
         if self._authentication_state == AuthState.NotAuthenticated:
-            self._verifyAuthentication() # We don't know if we are authenticated; check if we have correct auth.
+            self._verifyAuthentication()  # We don't know if we are authenticated; check if we have correct auth.
         elif self._authentication_state == AuthState.AuthenticationRequested:
-            self._checkAuthentication() # We requested authentication at some point. Check if we got permission.
+            self._checkAuthentication()  # We requested authentication at some point. Check if we got permission.
 
         ## Request 'general' printer data
         url = QUrl("http://" + self._address + self._api_prefix + "printer")
@@ -237,7 +235,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
 
     def close(self):
-        self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
         if self._progress_message:
             self._progress_message.hide()
@@ -284,16 +281,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.start()
         self._camera_timer.start()
 
-    ##  Stop requesting data from printer
-    def disconnect(self):
-        Logger.log("d", "Connection with printer %s with ip %s stopped", self._key, self._address)
-        self.close()
-
     newImage = pyqtSignal()
 
     @pyqtProperty(QUrl, notify = newImage)
     def cameraImage(self):
         self._camera_image_id += 1
+        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
+        # as new (instead of relying on cached version and thus forces an update.
         temp = "image://camera/" + str(self._camera_image_id)
         return QUrl(temp, QUrl.TolerantMode)
 
@@ -310,7 +305,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     ##  Convenience function to get the username from the OS.
     #   The code was copied from the getpass module, as we try to use as little dependencies as possible.
     def _getUserName(self):
-        for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+        for name in ("LOGNAME", "USER", "LNAME", "USERNAME"):
             user = os.environ.get(name)
             if user:
                 return user
@@ -418,8 +413,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.setConnectionState(ConnectionState.error)
             return
 
-        if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  #  There was a timeout, but we got a correct answer again.
-            Logger.log("d", "We got a response from the server after %s of silence", time() - self._last_response_time )
+        if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  # There was a timeout, but we got a correct answer again.
+            Logger.log("d", "We got a response from the server after %s of silence", time() - self._last_response_time)
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
 
@@ -427,10 +422,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._last_response_time = time()
 
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-        if not status_code:
-            # Received no or empty reply
-            return
-
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from printer.
                 if status_code == 200:
@@ -439,11 +430,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
                     self._spliceJSONData()
-
-                    # Hide connection error message if the connection was restored
-                    if self._connection_message:
-                        self._connection_message.hide()
-                        self._connection_message = None
                 else:
                     Logger.log("w", "We got an unexpected status (%s) while requesting printer state", status_code)
                     pass  # TODO: Handle errors
