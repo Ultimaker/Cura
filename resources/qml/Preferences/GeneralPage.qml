@@ -192,6 +192,7 @@ UM.PreferencesPage
             }
         }
 
+
         UM.TooltipArea {
             width: childrenRect.width;
             height: childrenRect.height;
@@ -213,6 +214,19 @@ UM.PreferencesPage
                         UM.Preferences.setValue("view/top_layer_count", 5)
                     }
                 }
+            }
+        }
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should only the top layers be displayed in layerview?")
+
+            CheckBox
+            {
+                id: topLayersOnlyCheckbox
+                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view")
+                checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
+                onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
             }
         }
 
