@@ -56,29 +56,21 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "Cura requires these new features and thus your firmware will most likely need to be upgraded. You can do so now.");
         }
-        Item
+        Row
         {
             anchors.top: upgradeText2.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-            width: upgradeButton.width + skipUpgradeButton.width + UM.Theme.getSize("default_margin").height < upgradeFirmwareMachineAction.width ? upgradeButton.width + skipUpgradeButton.width + UM.Theme.getSize("default_margin").height : upgradeFirmwareMachineAction.width
+            width: childrenRect.width
+            spacing: UM.Theme.getSize("default_margin").width
             Button
             {
                 id: upgradeButton
-                anchors.top: parent.top
-                anchors.left: parent.left
                 text: catalog.i18nc("@action:button","Upgrade to Marlin Firmware");
-                onClicked: Cura.USBPrinterManager.updateAllFirmware()
-            }
-            Button
-            {
-                id: skipUpgradeButton
-                anchors.top: parent.width < upgradeFirmwareMachineAction.width ? parent.top : upgradeButton.bottom
-                anchors.topMargin: parent.width < upgradeFirmwareMachineAction.width ? 0 : UM.Theme.getSize("default_margin").height / 2
-                anchors.left: parent.width < upgradeFirmwareMachineAction.width ? upgradeButton.right : parent.left
-                anchors.leftMargin: parent.width < upgradeFirmwareMachineAction.width ? UM.Theme.getSize("default_margin").width : 0
-                text: catalog.i18nc("@action:button", "Skip Upgrade");
-                onClicked: manager.setFinished()
+                onClicked:
+                {
+                    Cura.USBPrinterManager.updateAllFirmware()
+                }
             }
         }
     }

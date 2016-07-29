@@ -107,6 +107,12 @@ UM.ManagementPage
                 contents = content;
                 content.onCompleted.connect(hide)
             }
+            rightButtons: Button
+            {
+                text: catalog.i18nc("@action:button", "Close")
+                iconName: "dialog-close"
+                onClicked: actionDialog.accept()
+            }
         }
 
         Row
