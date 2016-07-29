@@ -212,7 +212,7 @@ class StartSliceJob(Job):
     def _handlePerObjectSettings(self, node, message):
         stack = node.callDecoration("getStack")
         # Check if the node has a stack attached to it and the stack has any settings in the top container.
-        if stack and stack.getTop().getAllKeys():
+        if stack:
             # Because we want to use inheritance correctly, we send all settings as seen from the per object stack.
             for key in stack.getAllKeys():
                 setting = message.addRepeatedMessage("settings")
