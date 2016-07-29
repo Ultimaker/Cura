@@ -231,7 +231,8 @@ class StartSliceJob(Job):
                 Job.yieldThread()
 
             # Ensure that the engine is aware what the build extruder is
-            changed_setting_keys.add("extruder_nr")
+            if stack.getProperty("machine_extruder_count", "value") > 1:
+                changed_setting_keys.add("extruder_nr")
 
             # Get values for all changed settings
             for key in changed_setting_keys:
