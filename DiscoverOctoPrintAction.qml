@@ -152,35 +152,30 @@ Cura.MachineAction
                         text: manager.apiKey
                     }
                 }
-                Button
+
+                Flow
                 {
-                    text: catalog.i18nc("@action", "Open webpage...")
-                    onClicked: manager.openWebPage("http://%1/".arg(base.selectedPrinter.ipAddress))
+                    visible: base.selectedPrinter
+                    spacing: UM.Theme.getSize("default_margin").width
+
+                    Button
+                    {
+                        text: catalog.i18nc("@action", "Open webpage...")
+                        onClicked: manager.openWebPage("http://%1/".arg(base.selectedPrinter.ipAddress))
+                    }
+
+                    Button
+                    {
+                        text: catalog.i18nc("@action:button", "Connect")
+                        onClicked:
+                        {
+                            manager.setKey(base.selectedPrinter.getKey())
+                            manager.setApiKey(apiKey.text)
+                            completed()
+                        }
+                    }
                 }
             }
-        }
-    }
-    Button
-    {
-        text: catalog.i18nc("@action:button", "Ok")
-        anchors.right: cancelButton.left
-        anchors.bottom: parent.bottom
-        onClicked:
-        {
-            manager.setKey(base.selectedPrinter.getKey())
-            manager.setApiKey(apiKey.text)
-            completed()
-        }
-    }
-    Button
-    {
-        id: cancelButton
-        text: catalog.i18nc("@action:button", "Cancel")
-        anchors.right: discoverOctoPrintAction.right
-        anchors.bottom: parent.bottom
-        onClicked:
-        {
-            completed()
         }
     }
 }
