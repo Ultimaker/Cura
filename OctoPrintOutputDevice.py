@@ -68,6 +68,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._progress_message = None
         self._error_message = None
+        self._connection_message = None
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
@@ -82,6 +83,11 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._camera_image_id = 0
 
         self._camera_image = QImage()
+
+        self._connection_state_before_timeout = None
+
+        self._last_response_time = time()
+        self._response_timeout_time = 5
 
     def getProperties(self):
         return self._properties
@@ -118,6 +124,16 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._image_reply = self._manager.get(self._image_request)
 
     def _update(self):
+        # Check that we aren't in a timeout state
+        if self._last_response_time and not self._connection_state_before_timeout:
+            if time() - self._last_response_time > self._response_timeout_time:
+                # Go into timeout state.
+                Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                self._connection_state_before_timeout = self._connection_state
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost.Check your network-connections."))
+                self._connection_message.show()
+                self.setConnectionState(ConnectionState.error)
+
         ## Request 'general' printer data
         url = QUrl("http://" + self._address + self._api_prefix + "printer")
         self._printer_request = QNetworkRequest(url)
@@ -133,6 +149,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def close(self):
         self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
+        if self._progress_message:
+            self._progress_message.hide()
+        if self._error_message:
+            self._error_message.hide()
         self._update_timer.stop()
         self._camera_timer.stop()
         self._camera_image = QImage()
@@ -252,7 +272,25 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
+        if reply.error() == QNetworkReply.TimeoutError:
+            Logger.log("w", "Received a timeout on a request to the printer")
+            self._connection_state_before_timeout = self._connection_state
+            self.setConnectionState(ConnectionState.error)
+            return
+
+        if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  #  There was a timeout, but we got a correct answer again.
+            Logger.log("d", "We got a response from the server after %s of silence", time() - self._last_response_time )
+            self.setConnectionState(self._connection_state_before_timeout)
+            self._connection_state_before_timeout = None
+
+        if reply.error() == QNetworkReply.NoError:
+            self._last_response_time = time()
+
         http_status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        if not http_status_code:
+            # Received no or empty reply
+            return
+
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from /printer.
                 if http_status_code == 200:
