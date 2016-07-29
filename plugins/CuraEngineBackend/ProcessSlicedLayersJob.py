@@ -73,7 +73,7 @@ class ProcessSlicedLayersJob(Job):
         # instead simply offset all other layers so the lowest layer is always 0.
         min_layer_number = 0
         for layer in self._layers:
-            if(layer.id < min_layer_number):
+            if layer.id < min_layer_number:
                 min_layer_number = layer.id
 
         current_layer = 0
@@ -97,7 +97,7 @@ class ProcessSlicedLayersJob(Job):
                 points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
                 if polygon.point_type == 0: # Point2D
                     points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
-                else: # Point3D
+                else:  # Point3D
                     points = points.reshape((-1,3))
 
                 line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
@@ -107,15 +107,14 @@ class ProcessSlicedLayersJob(Job):
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
                 new_points = numpy.empty((len(points), 3), numpy.float32)
-                if polygon.point_type == 0: # Point2D
-                    new_points[:,0] = points[:,0]
-                    new_points[:,1] = layer.height/1000 # layer height value is in backend representation
-                    new_points[:,2] = -points[:,1]
+                if polygon.point_type == 0:  # Point2D
+                    new_points[:, 0] = points[:, 0]
+                    new_points[:, 1] = layer.height / 1000 # layer height value is in backend representation
+                    new_points[:, 2] = -points[:, 1]
                 else: # Point3D
-                    new_points[:,0] = points[:,0]
-                    new_points[:,1] = points[:,2]
-                    new_points[:,2] = -points[:,1]
-                    
+                    new_points[:, 0] = points[:, 0]
+                    new_points[:, 1] = points[:, 2]
+                    new_points[:, 2] = -points[:, 1]
 
                 this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
                 this_poly.buildCache()
@@ -184,4 +183,3 @@ class ProcessSlicedLayersJob(Job):
             else:
                 if self._progress:
                     self._progress.hide()
-
