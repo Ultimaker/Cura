@@ -25,6 +25,7 @@ class StartJobResult(IntEnum):
     SettingError = 3
     NothingToSlice = 4
 
+
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
     def get_value(self, key, args, kwargs):  # [CodeStyle: get_value is an overridden function from the Formatter class]
@@ -37,6 +38,7 @@ class GcodeStartEndFormatter(Formatter):
         else:
             Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
             return "{" + str(key) + "}"
+
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
@@ -124,6 +126,9 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
+            # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
+            # able to find a possible sequence or because there are no objects on the build plate (or they are outside
+            # the build volume)
             if not object_groups:
                 self.setResult(StartJobResult.NothingToSlice)
                 return
@@ -172,6 +177,7 @@ class StartSliceJob(Job):
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
             return str(value).encode("utf-8")
 
+    ##  Create extruder message from stack
     def _buildExtruderMessage(self, stack):
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
@@ -210,6 +216,9 @@ class StartSliceJob(Job):
             else:
                 setting_message.value = str(value).encode("utf-8")
 
+    ##  Check if a node has per object settings and ensure that they are set correctly in the message
+    #   \param node \type{SceneNode} Node to check.
+    #   \param message object_lists message to put the per object settings in
     def _handlePerObjectSettings(self, node, message):
         stack = node.callDecoration("getStack")
         # Check if the node has a stack attached to it and the stack has any settings in the top container.
@@ -231,6 +240,9 @@ class StartSliceJob(Job):
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
                 Job.yieldThread()
 
+    ##  Recursive function to put all settings that require eachother for value changes in a list
+    #   \param relations_set \type{set} Set of keys (strings) of settings that are influenced
+    #   \param relations list of relation objects that need to be checked.
     def _addRelations(self, relations_set, relations):
         for relation in filter(lambda r: r.role == "value", relations):
             if relation.type == RelationType.RequiresTarget:
