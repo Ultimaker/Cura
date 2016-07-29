@@ -227,10 +227,11 @@ class StartSliceJob(Job):
     #   global_inherits_stack property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            if stack.hasProperty(key, "global_inherits_stack"):
+            extruder = int(stack.getProperty(key, "global_inherits_stack"))
+            if extruder >= 0: #Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
                 setting_extruder.name = key
-                setting_extruder.extruder = int(stack.getProperty(key, "global_inherits_stack"))
+                setting_extruder.extruder = extruder
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
     #   \param node \type{SceneNode} Node to check.
