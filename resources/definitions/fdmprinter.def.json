@@ -2748,6 +2748,16 @@
                         }
                     }
                 },
+                "brim_outside_only":
+                {
+                    "label": "Brim Only on Outside",
+                    "description": "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "adhesion_type == \"brim\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "raft_margin":
                 {
                     "label": "Raft Extra Margin",
