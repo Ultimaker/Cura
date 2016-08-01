@@ -23,7 +23,7 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = Color(35, 35, 35, 192)
+        self._color = Color(0.4, 0.4, 0.4, 1.0)
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
@@ -77,7 +77,7 @@ class ConvexHullNode(SceneNode):
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             convex_hull_head_builder = MeshBuilder()
-            convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height-self._thickness)
+            convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height - self._thickness)
             self._convex_hull_head_mesh = convex_hull_head_builder.build()
 
         if not node:

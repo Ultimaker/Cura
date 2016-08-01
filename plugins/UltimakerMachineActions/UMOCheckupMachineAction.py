@@ -155,6 +155,7 @@ class UMOCheckupMachineAction(MachineAction):
         if output_devices:
             self._output_device = output_devices[0]
             try:
+                self._output_device.sendCommand("M18") # Turn off all motors so the user can move the axes
                 self._output_device.startPollEndstop()
                 self._output_device.bedTemperatureChanged.connect(self.bedTemperatureChanged)
                 self._output_device.hotendTemperaturesChanged.connect(self.hotendTemperatureChanged)

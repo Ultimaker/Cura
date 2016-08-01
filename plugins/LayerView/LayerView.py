@@ -11,6 +11,7 @@ from UM.Math.Color import Color
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 from UM.Preferences import Preferences
+from UM.Logger import Logger
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
@@ -34,7 +35,7 @@ class LayerView(View):
         self._shader = None
         self._selection_shader = None
         self._num_layers = 0
-        self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
+        self._layer_percentage = 0  # what percentage of layers need to be shown (Slider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
         self._max_layers = 0
@@ -43,12 +44,14 @@ class LayerView(View):
         self._current_layer_jumps = None
         self._top_layers_job = None
         self._activity = False
+        self._old_max_layers = 0
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
+        Preferences.getInstance().addPreference("view/only_show_top_layers", False)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
-
+        self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._busy = False
 
     def getActivity(self):
@@ -100,7 +103,7 @@ class LayerView(View):
                         continue
 
                     # Render all layers below a certain number as line mesh instead of vertices.
-                    if self._current_layer_num - self._solid_layers > -1:
+                    if self._current_layer_num - self._solid_layers > -1 and not self._only_show_top_layers:
                         start = 0
                         end = 0
                         element_counts = layer_data.getElementCounts()
@@ -126,14 +129,12 @@ class LayerView(View):
             if self._current_layer_num > self._max_layers:
                 self._current_layer_num = self._max_layers
 
-            self.resetLayerData()
             self._startUpdateTopLayers()
 
             self.currentLayerNumChanged.emit()
 
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
-        renderer = self.getRenderer() # TODO: @UnusedVariable
         self._activity = True
 
         self._old_max_layers = self._max_layers
@@ -199,7 +200,7 @@ class LayerView(View):
 
         if not job.getResult():
             return
-
+        self.resetLayerData()  # Reset the layer data only when job is done. Doing it now prevents "blinking" data.
         self._current_layer_mesh = job.getResult().get("layers")
         self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
@@ -207,13 +208,14 @@ class LayerView(View):
         self._top_layers_job = None
 
     def _onPreferencesChanged(self, preference):
-        if preference != "view/top_layer_count":
+        if preference != "view/top_layer_count" and preference != "view/only_show_top_layers":
             return
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
+        self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
 
-        self.resetLayerData()
         self._startUpdateTopLayers()
+
 
 class _CreateTopLayersJob(Job):
     def __init__(self, scene, layer_number, solid_layers):
@@ -242,20 +244,20 @@ class _CreateTopLayersJob(Job):
 
             try:
                 layer = layer_data.getLayer(layer_number).createMesh()
-            except Exception as e:
-                print(e)
+            except Exception:
+                Logger.logException("w", "An exception occurred while creating layer mesh.")
                 return
 
             if not layer or layer.getVertices() is None:
                 continue
 
-            layer_mesh.addIndices(layer_mesh._vertex_count+layer.getIndices())
+            layer_mesh.addIndices(layer_mesh.getVertexCount() + layer.getIndices())
             layer_mesh.addVertices(layer.getVertices())
 
             # Scale layer color by a brightness factor based on the current layer number
             # This will result in a range of 0.5 - 1.0 to multiply colors by.
-            brightness = numpy.ones((1,4), dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
-            brightness[0, 3] = 1.0;
+            brightness = numpy.ones((1, 4), dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
+            brightness[0, 3] = 1.0
             layer_mesh.addColors(layer.getColors() * brightness)
 
             if self._cancel:
@@ -271,7 +273,7 @@ class _CreateTopLayersJob(Job):
         if not jump_mesh or jump_mesh.getVertices() is None:
             jump_mesh = None
 
-        self.setResult({ "layers": layer_mesh.build(), "jumps": jump_mesh })
+        self.setResult({"layers": layer_mesh.build(), "jumps": jump_mesh})
 
     def cancel(self):
         self._cancel = True

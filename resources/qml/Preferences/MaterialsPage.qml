@@ -67,6 +67,8 @@ UM.ManagementPage
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
             onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
         },
+        /*
+        // disabled because it has a lot of issues
         Button
         {
             text: catalog.i18nc("@action:button", "Duplicate");
@@ -89,7 +91,7 @@ UM.ManagementPage
 
                 Cura.MachineManager.setActiveMaterial(material_id)
             }
-        },
+        }, */
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
@@ -253,7 +255,7 @@ UM.ManagementPage
                 else if(result.status == "success")
                 {
                     messageDialog.icon = StandardIcon.Information
-                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(fileUrl)
+                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(result.path)
                     messageDialog.open()
                 }
                 CuraApplication.setDefaultPath("dialog_material_path", folder)

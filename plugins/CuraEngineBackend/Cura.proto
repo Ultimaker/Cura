@@ -13,6 +13,7 @@ message Slice
     repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
     SettingList global_settings = 2; // The global settings used for the whole print job
     repeated Extruder extruders = 3; // The settings sent to each extruder object
+    repeated SettingExtruder global_inherits_stack = 4; //From which stack the setting would inherit if not defined in a stack.
 }
 
 message Extruder
@@ -108,8 +109,14 @@ message Setting {
     bytes value = 2; // The value of the setting
 }
 
+message SettingExtruder {
+    string name = 1; //The setting key.
+
+    int32 extruder = 2; //From which extruder stack the setting should inherit.
+}
+
 message GCodePrefix {
-    bytes data = 2; // Header string to be prenpended before the rest of the gcode sent from the engine
+    bytes data = 2; //Header string to be prepended before the rest of the g-code sent from the engine.
 }
 
 message SlicingFinished {

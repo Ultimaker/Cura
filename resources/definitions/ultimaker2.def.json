@@ -57,7 +57,7 @@
             "default_value": 2
         },
         "gantry_height": {
-            "default_value": 55
+            "default_value": 48
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true

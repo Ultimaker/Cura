@@ -75,6 +75,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #   \param extruder_stack_id The new extruder stack to print with.
     def setActiveExtruder(self, extruder_stack_id):
         self._extruder_stack = extruder_stack_id
+        self._updateNextStack()
         self.activeExtruderChanged.emit()
 
     def getStack(self):

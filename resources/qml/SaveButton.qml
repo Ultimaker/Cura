@@ -84,6 +84,27 @@ Rectangle {
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
 
+        Row {
+            id: additionalComponentsRow
+            anchors.top: parent.top
+            anchors.right: saveToButton.visible ? saveToButton.left : parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+            spacing: UM.Theme.getSize("default_margin").width
+        }
+
+        Connections {
+            target: Printer
+            onAdditionalComponentsChanged:
+            {
+                if(areaId == "saveButton") {
+                    for (var component in Printer.additionalComponents["saveButton"]) {
+                        Printer.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                    }
+                }
+            }
+        }
+
         Button {
             id: saveToButton
 
@@ -102,8 +123,7 @@ Rectangle {
             }
 
             style: ButtonStyle {
-                background:
-                Rectangle
+                background: Rectangle
                 {
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: !control.enabled ? UM.Theme.getColor("action_button_disabled_border") :
@@ -126,7 +146,7 @@ Rectangle {
                         text: control.text;
                     }
                 }
-            label: Item { }
+                label: Item { }
             }
         }
 

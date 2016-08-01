@@ -30,9 +30,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def setNode(self, node):
         previous_node = self._node
+        # Disconnect from previous node signals
         if previous_node is not None and node is not previous_node:
-            previous_node.transformationChanged.connect(self._onChanged)
-            previous_node.parentChanged.connect(self._onChanged)
+            previous_node.transformationChanged.disconnect(self._onChanged)
+            previous_node.parentChanged.disconnect(self._onChanged)
 
         super().setNode(node)
 
@@ -286,5 +287,5 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     _affected_settings = [
         "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
-        "raft_surface_thickness", "raft_airgap", "print_sequence",
+        "raft_surface_thickness", "raft_airgap", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance"]

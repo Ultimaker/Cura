@@ -27,6 +27,7 @@ Item
 
     property alias multiplyObject: multiplyObjectAction;
 
+    property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
     property alias resetAllTranslation: resetAllTranslationAction;
@@ -119,7 +120,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings");
         onTriggered: Cura.MachineManager.updateQualityContainerFromUserContainer()
     }
@@ -135,7 +136,7 @@ Item
     Action
     {
         id: addProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings...");
     }
 
@@ -228,6 +229,16 @@ Item
         id: multiplyObjectAction;
         text: catalog.i18nc("@action:inmenu","&Duplicate Object");
         iconName: "edit-duplicate"
+    }
+
+    Action
+    {
+        id: selectAllAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Select All Objects");
+        enabled: UM.Controller.toolsEnabled;
+        iconName: "edit-select-all";
+        shortcut: "Ctrl+A";
+        onTriggered: Printer.selectAll();
     }
 
     Action
