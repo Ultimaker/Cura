@@ -9,18 +9,25 @@ from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Math.Quaternion import Quaternion
-
 from UM.Job import Job
+
+from UM.Message import Message
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 
 import math
 import zipfile
 
-import xml.etree.ElementTree as ET
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
     def __init__(self):
-        super(ThreeMFReader, self).__init__()
+        super().__init__()
         self._supported_extensions = [".3mf"]
 
         self._namespaces = {
@@ -116,4 +123,12 @@ class ThreeMFReader(MeshReader):
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
 
+        try: # Selftest - There might be more functions that should fail 
+            boundingBox = result.getBoundingBox()
+            boundingBox.isValid()
+        except:
+            message = Message(catalog.i18nc("@info:status", "Your 3MF file seems to be broken. Please visit https://modelrepair.azurewebsites.net/ and try to repair your model!"), lifetime = 0)
+            message.show()
+            return None
+        
         return result  
