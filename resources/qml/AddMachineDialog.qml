@@ -33,7 +33,7 @@ UM.Dialog
     signal machineAdded(string id)
     function getMachineName()
     {
-        var name = machineList.model.get(machineList.currentIndex) != undefined ? machineList.model.get(machineList.currentIndex).name : ""
+        var name = machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).name : ""
         return name
     }
 
@@ -53,27 +53,15 @@ UM.Dialog
         {
             id: machineList
 
-            model: ListModel
+            model: UM.DefinitionContainersModel
             {
-                id: sortedMachineDefinitionsModel
-                Component.onCompleted: {
-                    // DefinitionContainersModel is sorted alphabetically, but we want the preferred
-                    // category on top so we create a custom-sorted ListModel from it.
-                    var items = [];
-                    for(var i in machineDefinitionsModel.items) {
-                        var item = machineDefinitionsModel.getItem(i);
-                        if (item["category"] == preferredCategory)
-                            sortedMachineDefinitionsModel.append(item);
-                        else
-                            items.push(item);
-                    }
-                    for(var i in items) {
-                        sortedMachineDefinitionsModel.append(items[i]);
-                    }
-                }
+                id: machineDefinitionsModel
+                filter: { "visible": true }
+                sectionProperty: "category"
+                preferredSectionValue: preferredCategory
             }
 
-            section.property: "category"
+            section.property: "section"
             section.delegate: Button
             {
                 text: section
@@ -112,11 +100,11 @@ UM.Dialog
                 onClicked:
                 {
                     base.activeCategory = section;
-                    if (machineList.model.get(machineList.currentIndex).category != section) {
-                        // Find the first machine from this category
+                    if (machineList.model.getItem(machineList.currentIndex).section != section) {
+                        // Find the first machine from this section
                         for(var i = 0; i < sortedMachineDefinitionsModel.count; i++) {
-                            var item = sortedMachineDefinitionsModel.get(i);
-                            if (item.category == section) {
+                            var item = sortedMachineDefinitionsModel.getItem(i);
+                            if (item.section == section) {
                                 machineList.currentIndex = i;
                                 break;
                             }
@@ -151,7 +139,7 @@ UM.Dialog
                 states: State
                 {
                     name: "collapsed";
-                    when: base.activeCategory != model.category;
+                    when: base.activeCategory != model.section;
 
                     PropertyChanges { target: machineButton; opacity: 0; height: 0; }
                 }
@@ -198,7 +186,7 @@ UM.Dialog
         onClicked:
         {
             base.visible = false
-            var item = machineList.model.get(machineList.currentIndex);
+            var item = machineList.model.getItem(machineList.currentIndex);
             Cura.MachineManager.addMachine(machineName.text, item.id)
             base.machineAdded(item.id) // Emit signal that the user added a machine.
         }
@@ -210,11 +198,6 @@ UM.Dialog
         {
             id: catalog;
             name: "cura";
-        }
-        UM.DefinitionContainersModel
-        {
-            id: machineDefinitionsModel
-            filter: { "visible": true }
         }
         SystemPalette { id: palette }
         ExclusiveGroup { id: printerGroup; }
