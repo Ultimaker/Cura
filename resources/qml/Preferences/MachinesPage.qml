@@ -106,6 +106,7 @@ UM.ManagementPage
             {
                 contents = content;
                 content.onCompleted.connect(hide)
+                content.dialog = actionDialog
             }
             rightButtons: Button
             {
