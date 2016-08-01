@@ -27,9 +27,8 @@ class MachineSettingsAction(MachineAction):
 
     def _createVariant(self, global_container_stack, variant_index):
         # Create and switch to a variant to store the settings in
-        new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_machinesettings")
+        new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_variant")
         new_variant.addMetaDataEntry("type", "variant")
-        new_variant.addMetaDataEntry("purpose", "machinesettings")
         new_variant.setDefinition(global_container_stack.getBottom())
         UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
         global_container_stack.replaceContainer(variant_index, new_variant)
