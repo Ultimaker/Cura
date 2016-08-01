@@ -11,6 +11,23 @@ Cura.MachineAction
     id: base
     anchors.fill: parent;
     property var selectedPrinter: null
+
+    Connections
+    {
+        target: dialog ? dialog : null
+        ignoreUnknownSignals: true
+        onNextClicked: connectToPrinter()
+    }
+
+    function connectToPrinter()
+    {
+        if(base.selectedPrinter)
+        {
+            manager.setKey(base.selectedPrinter.getKey())
+            completed()
+        }
+    }
+
     Column
     {
         anchors.fill: parent;
@@ -57,7 +74,7 @@ Cura.MachineAction
                     id: listview
                     model: manager.foundDevices
                     width: parent.width
-                    currentIndex: activeIndex
+                    currentIndex: -1
                     onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
                     Component.onCompleted: manager.startDiscovery()
                     delegate: Rectangle
@@ -147,13 +164,8 @@ Cura.MachineAction
                 {
                     text: catalog.i18nc("@action:button", "Connect")
                     enabled: base.selectedPrinter
-                    onClicked:
-                    {
-                        manager.setKey(base.selectedPrinter.getKey())
-                        completed()
-                    }
+                    onClicked: connectToPrinter()
                 }
-
             }
         }
     }
