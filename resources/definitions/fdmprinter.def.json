@@ -1545,7 +1545,8 @@
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "300",
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "settable_per_mesh": false
                         }
                     }
                 },
@@ -1775,7 +1776,8 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "enabled": "acceleration_enabled",
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "settable_per_mesh": false
                         }
                     }
                 },
@@ -1993,7 +1995,8 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "enabled": "jerk_enabled",
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "settable_per_mesh": false
                         }
                     }
                 },
