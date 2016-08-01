@@ -77,6 +77,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._progress_message = None
         self._error_message = None
+        self._connection_message = None
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(2000)  # TODO; Add preference for update interval
@@ -189,8 +190,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not recieve a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost.Check your network-connections."))
+                self._connection_message.show()
                 self.setConnectionState(ConnectionState.error)
 
         if self._authentication_state == AuthState.NotAuthenticated:
@@ -235,6 +238,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
 
     def close(self):
+        self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
         if self._progress_message:
             self._progress_message.hide()
@@ -280,6 +284,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._update_timer.start()
         self._camera_timer.start()
+
+    ##  Stop requesting data from printer
+    def disconnect(self):
+        Logger.log("d", "Connection with printer %s with ip %s stopped", self._key, self._address)
+        self.close()
 
     newImage = pyqtSignal()
 
@@ -422,6 +431,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._last_response_time = time()
 
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        if not status_code:
+            # Received no or empty reply
+            return
+
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from printer.
                 if status_code == 200:
@@ -430,6 +443,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
 
                     self._spliceJSONData()
+
+                    # Hide connection error message if the connection was restored
+                    if self._connection_message:
+                        self._connection_message.hide()
+                        self._connection_message = None
                 else:
                     Logger.log("w", "We got an unexpected status (%s) while requesting printer state", status_code)
                     pass  # TODO: Handle errors
