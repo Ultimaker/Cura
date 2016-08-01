@@ -16,6 +16,7 @@ UM.Dialog
 {
     id: base
     title: catalog.i18nc("@title:window", "Add Printer")
+    property bool firstRun: false
     property string preferredCategory: "Ultimaker"
     property string activeCategory: preferredCategory
 
@@ -32,7 +33,7 @@ UM.Dialog
     signal machineAdded(string id)
     function getMachineName()
     {
-        var name = machineList.model.get(machineList.currentIndex).name
+        var name = machineList.model.get(machineList.currentIndex) != undefined ? machineList.model.get(machineList.currentIndex).name : ""
         return name
     }
 

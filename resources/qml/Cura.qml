@@ -677,6 +677,7 @@ UM.MainWindow
         id: addMachineDialog
         onMachineAdded:
         {
+            machineActionsWizard.firstRun = addMachineDialog.firstRun
             machineActionsWizard.start(id)
         }
     }

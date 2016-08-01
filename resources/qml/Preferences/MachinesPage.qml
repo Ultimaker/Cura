@@ -83,7 +83,7 @@ UM.ManagementPage
             Repeater
             {
                 id: machineActionRepeater
-                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id))
+                model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
 
                 Button
                 {
@@ -125,8 +125,8 @@ UM.ManagementPage
 
             spacing: UM.Theme.getSize("default_margin").height
 
-            Label { text: catalog.i18nc("@label", "Type") }
-            Label { text: base.currentItem ? base.currentItem.metadata.definition_name : "" }
+            Label { text: catalog.i18nc("@label", "Type"); visible: base.currentItem }
+            Label { text: (base.currentItem && base.currentItem.metadata) ? base.currentItem.metadata.definition_name : "" }
         }
 
         UM.I18nCatalog { id: catalog; name: "uranium"; }
