@@ -34,7 +34,14 @@ _setting_name_translations = {
     "skirt_line_width": "skirt_brim_line_width",
     "skirt_minimal_length": "skirt_brim_minimal_length",
     "skirt_speed": "skirt_brim_speed",
-    "speed_support_lines": "speed_support_infill"
+    "speed_support_lines": "speed_support_infill",
+    "speed_support_roof": "speed_support_interface",
+    "support_roof_density": "support_interface_density",
+    "support_roof_enable": "support_interface_enable",
+    "support_roof_extruder_nr": "support_interface_extruder_nr",
+    "support_roof_line_distance": "support_interface_line_distance",
+    "support_roof_line_width": "support_interface_line_width",
+    "support_roof_pattern": "support_interface_pattern"
 }
 
 ##  How to translate variants of specific machines from the old version to the
