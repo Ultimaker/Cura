@@ -744,10 +744,7 @@ class MachineManager(QObject):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine.
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
 
-        stacks = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
-        if not stacks:
-            return
-        ExtruderManager.getInstance().removeMachineExtruders(stacks[0].getBottom().getId())
+        ExtruderManager.getInstance().removeMachineExtruders(machine_id)
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
         for container in containers:
