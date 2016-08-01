@@ -112,7 +112,7 @@ UM.ManagementPage
             {
                 text: catalog.i18nc("@action:button", "Close")
                 iconName: "dialog-close"
-                onClicked: actionDialog.accept()
+                onClicked: actionDialog.reject()
             }
         }
 
