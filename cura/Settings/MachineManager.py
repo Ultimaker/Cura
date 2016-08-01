@@ -553,7 +553,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtSlot(str, str)
-    def renameQualityContainer(self, container_id, nbalew_name):
+    def renameQualityContainer(self, container_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
             new_name = self._createUniqueName("quality", containers[0].getName(), new_name,
