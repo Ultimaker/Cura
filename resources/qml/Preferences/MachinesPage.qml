@@ -125,8 +125,14 @@ UM.ManagementPage
 
             spacing: UM.Theme.getSize("default_margin").height
 
-            Label { text: catalog.i18nc("@label", "Type"); visible: base.currentItem }
-            Label { text: (base.currentItem && base.currentItem.metadata) ? base.currentItem.metadata.definition_name : "" }
+            Label
+            {
+                text: catalog.i18nc("@label", "Type")
+                visible: base.currentItem && base.currentItem.metadata
+            }
+            Label {
+                text: (base.currentItem && base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
+            }
         }
 
         UM.I18nCatalog { id: catalog; name: "uranium"; }
