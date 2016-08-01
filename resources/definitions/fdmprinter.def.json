@@ -1545,7 +1545,6 @@
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "300",
-                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -1748,7 +1747,37 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "enabled": "acceleration_enabled",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children": {
+                        "acceleration_print_layer_0":
+                        {
+                            "label": "Initial Layer Print Acceleration",
+                            "description": "The acceleration during the printing of the initial layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 3000,
+                            "value": "acceleration_layer_0",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "enabled": "acceleration_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "acceleration_travel_layer_0":
+                        {
+                            "label": "Initial Layer Travel Acceleration",
+                            "description": "The acceleration for travel moves in the initial layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 3000,
+                            "value": "acceleration_layer_0 * acceleration_travel / acceleration_print",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "enabled": "acceleration_enabled",
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "acceleration_skirt_brim": {
                     "label": "Skirt/Brim Acceleration",
@@ -1936,7 +1965,37 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "enabled": "jerk_enabled",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children": {
+                        "jerk_print_layer_0":
+                        {
+                            "label": "Initial Layer Print Jerk",
+                            "description": "The maximum instantaneous velocity change during the printing of the initial layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 20,
+                            "value": "jerk_layer_0",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "5",
+                            "maximum_value_warning": "50",
+                            "enabled": "jerk_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "jerk_travel_layer_0":
+                        {
+                            "label": "Initial Layer Travel Jerk",
+                            "description": "The acceleration for travel moves in the initial layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 20,
+                            "value": "jerk_layer_0 * jerk_travel / jerk_print",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "5",
+                            "maximum_value_warning": "50",
+                            "enabled": "jerk_enabled",
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "jerk_skirt_brim": {
                     "label": "Skirt/Brim Jerk",
