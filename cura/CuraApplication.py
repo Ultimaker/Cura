@@ -28,6 +28,7 @@ from cura.SetParentOperation import SetParentOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.SettingFunction import SettingFunction
 
 from UM.i18n import i18nCatalog
 
@@ -71,7 +72,6 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
 
-
 class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -100,6 +100,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
+        SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")

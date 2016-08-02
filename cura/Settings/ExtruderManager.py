@@ -273,3 +273,25 @@ class ExtruderManager(QObject):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_stack and global_stack.getBottom():
             self.addMachineExtruders(global_stack.getBottom(), global_stack.getId())
+
+    @staticmethod
+    def getExtruderValues(name):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        result = []
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            value = extruder.getRawProperty(name, "value", use_next = False)
+
+            if not value:
+                continue
+
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(extruder)
+
+            result.append(value)
+
+        if not result:
+            result.append(global_stack.getProperty(name, "value"))
+
+        return result
+
