@@ -7,8 +7,8 @@ import UM.Settings.Models
 
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
-##  The per object setting visibility handler ensures that only setting defintions that have a matching instance Container
-#   are returned as visible. 
+##  The per object setting visibility handler ensures that only setting
+#   definitions that have a matching instance Container are returned as visible.
 class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
@@ -57,7 +57,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                     settings.addInstance(SettingInstance(definition, settings))
                     visibility_changed = True
                 else:
-                    Logger.log("w", "Unable to add instance (%s) to perobject visibility because we couldn't find the matching definition", item)
+                    Logger.log("w", "Unable to add instance (%s) to per-object visibility because we couldn't find the matching definition", item)
 
         if visibility_changed:
             self.visibilityChanged.emit()
