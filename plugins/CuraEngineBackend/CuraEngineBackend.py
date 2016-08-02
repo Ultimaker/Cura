@@ -56,7 +56,7 @@ class CuraEngineBackend(Backend):
         if Platform.isLinux() and not default_engine_location:
             if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
-            for pathdir in os.getenv('PATH').split(os.pathsep):
+            for pathdir in os.getenv("PATH").split(os.pathsep):
                 execpath = os.path.join(pathdir, executable_name)
                 if os.path.exists(execpath):
                     default_engine_location = execpath
