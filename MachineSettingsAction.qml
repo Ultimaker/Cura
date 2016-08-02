@@ -40,115 +40,223 @@ Cura.MachineAction
 
         Column
         {
-            id: pageCheckboxes
-            height: childrenRect.height
-            anchors.left: parent.left
-            anchors.top: pageDescription.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            height: parent.height - y
             width: parent.width - UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").height
 
-            Grid
+            anchors.left: parent.left
+            anchors.top: pageDescription.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+            Row
             {
-                columns: 3
-                columnSpacing: UM.Theme.getSize("default_margin").width
+                width: parent.width
+                spacing: UM.Theme.getSize("default_margin").height
 
-                Label
+                Column
                 {
-                    text: catalog.i18nc("@label","X (Width)")
-                }
-                TextField
-                {
-                    id: buildAreaWidthField
-                    text: machineWidthProvider.properties.value
-                    validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                    onEditingFinished: { machineWidthProvider.setPropertyValue("value", text); manager.forceUpdate() }
-                }
-                Label
-                {
-                    text: catalog.i18nc("@label","mm")
+                    width: parent.width / 2
+                    spacing: UM.Theme.getSize("default_margin").height
+
+                    Label
+                    {
+                        text: catalog.i18nc("@label", "Printer Settings")
+                        font.bold: true
+                    }
+
+                    Grid
+                    {
+                        columns: 3
+                        columnSpacing: UM.Theme.getSize("default_margin").width
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","X (Width)")
+                        }
+                        TextField
+                        {
+                            id: buildAreaWidthField
+                            text: machineWidthProvider.properties.value
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: { machineWidthProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","Y (Depth)")
+                        }
+                        TextField
+                        {
+                            id: buildAreaDepthField
+                            text: machineDepthProvider.properties.value
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: { machineDepthProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","Z (Height)")
+                        }
+                        TextField
+                        {
+                            id: buildAreaHeightField
+                            text: machineHeightProvider.properties.value
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: { machineHeightProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+                    }
+
+                    Column
+                    {
+                        CheckBox
+                        {
+                            id: heatedBedCheckBox
+                            text: catalog.i18nc("@option:check","Heated Bed")
+                            checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
+                            onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
+                        }
+                        CheckBox
+                        {
+                            id: centerIsZeroCheckBox
+                            text: catalog.i18nc("@option:check","Machine Center is Zero")
+                            checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
+                            onClicked: machineCenterIsZeroProvider.setPropertyValue("value", checked)
+                        }
+                    }
                 }
 
-                Label
+                Column
                 {
-                    text: catalog.i18nc("@label","Y (Depth)")
-                }
-                TextField
-                {
-                    id: buildAreaDepthField
-                    text: machineDepthProvider.properties.value
-                    validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                    onEditingFinished: { machineDepthProvider.setPropertyValue("value", text); manager.forceUpdate() }
-                }
-                Label
-                {
-                    text: catalog.i18nc("@label","mm")
-                }
+                    width: parent.width / 2
+                    spacing: UM.Theme.getSize("default_margin").height
 
-                Label
-                {
-                    text: catalog.i18nc("@label","Z (Height)")
-                }
-                TextField
-                {
-                    id: buildAreaHeightField
-                    text: machineHeightProvider.properties.value
-                    validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                    onEditingFinished: { machineHeightProvider.setPropertyValue("value", text); manager.forceUpdate() }
-                }
-                Label
-                {
-                    text: catalog.i18nc("@label","mm")
-                }
+                    Label
+                    {
+                        text: catalog.i18nc("@label", "Printhead Settings")
+                        font.bold: true
+                    }
 
-                Item
-                {
-                    width: UM.Theme.getSize("default_margin").width
-                    height: UM.Theme.getSize("default_margin").height
-                }
-                Item
-                {
-                    width: UM.Theme.getSize("default_margin").width
-                    height: UM.Theme.getSize("default_margin").height
-                }
-                Item
-                {
-                    width: UM.Theme.getSize("default_margin").width
-                    height: UM.Theme.getSize("default_margin").height
-                }
+                    Grid
+                    {
+                        columns: 3
+                        columnSpacing: UM.Theme.getSize("default_margin").width
 
-                Label
-                {
-                    text: catalog.i18nc("@label","Nozzle size")
-                }
-                TextField
-                {
-                    id: nozzleSizeField
-                    text: machineNozzleSizeProvider.properties.value
-                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                    onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
-                }
-                Label
-                {
-                    text: catalog.i18nc("@label","mm")
-                }
-            }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","X (Width)")
+                        }
+                        TextField
+                        {
+                            id: printheadXMinField
+                            text: ""
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: {  }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
 
-            Column
-            {
-                CheckBox
-                {
-                    id: heatedBedCheckBox
-                    text: catalog.i18nc("@option:check","Heated Bed")
-                    checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
-                    onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
-                }
-                CheckBox
-                {
-                    id: centerIsZeroCheckBox
-                    text: catalog.i18nc("@option:check","Machine Center is Zero")
-                    checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
-                    onClicked: machineCenterIsZeroProvider.setPropertyValue("value", checked)
+                        Label
+                        {
+                            text: catalog.i18nc("@label","X (Width)")
+                        }
+                        TextField
+                        {
+                            id: printheadYMinField
+                            text: ""
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: {  }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","X (Width)")
+                        }
+                        TextField
+                        {
+                            id: printheadXMaxField
+                            text: ""
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: {  }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","X (Width)")
+                        }
+                        TextField
+                        {
+                            id: printheadYMaxField
+                            text: ""
+                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            onEditingFinished: {  }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","Gantry height")
+                        }
+                        TextField
+                        {
+                            id: gantryHeightField
+                            text: gantryHeightProvider.properties.value
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                            onEditingFinished: { gantryHeightProvider.setPropertyValue("value", text) }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label","Nozzle size")
+                        }
+                        TextField
+                        {
+                            id: nozzleSizeField
+                            text: machineNozzleSizeProvider.properties.value
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                            onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
+                        }
+                        Label
+                        {
+                            text: catalog.i18nc("@label","mm")
+                        }
+                    }
                 }
             }
 
@@ -157,8 +265,10 @@ Cura.MachineAction
                 spacing: UM.Theme.getSize("default_margin").width
                 anchors.left: parent.left
                 anchors.right: parent.right
+                height: parent.height - y
                 Column
                 {
+                    height: parent.height
                     width: parent.width / 2
                     Label
                     {
@@ -168,6 +278,7 @@ Cura.MachineAction
                     {
                         id: machineStartGcodeField
                         width: parent.width
+                        height: parent.height - y
                         text: machineStartGcodeProvider.properties.value
                         onActiveFocusChanged:
                         {
@@ -178,7 +289,8 @@ Cura.MachineAction
                         }
                     }
                 }
-                Column{
+                Column {
+                    height: parent.height
                     width: parent.width / 2
                     Label
                     {
@@ -188,6 +300,7 @@ Cura.MachineAction
                     {
                         id: machineEndGcodeField
                         width: parent.width
+                        height: parent.height - y
                         text: machineEndGcodeProvider.properties.value
                         onActiveFocusChanged:
                         {
@@ -234,16 +347,6 @@ Cura.MachineAction
 
     UM.SettingPropertyProvider
     {
-        id: machineNozzleSizeProvider
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_nozzle_size"
-        watchedProperties: [ "value" ]
-        storeIndex: 3
-    }
-
-    UM.SettingPropertyProvider
-    {
         id: machineHeatedBedProvider
 
         containerStackId: Cura.MachineManager.activeMachineId
@@ -258,6 +361,26 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_center_is_zero"
+        watchedProperties: [ "value" ]
+        storeIndex: 3
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineNozzleSizeProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_nozzle_size"
+        watchedProperties: [ "value" ]
+        storeIndex: 3
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: gantryHeightProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "gantry_height"
         watchedProperties: [ "value" ]
         storeIndex: 3
     }
