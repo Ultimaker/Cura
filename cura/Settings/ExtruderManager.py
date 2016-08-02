@@ -284,13 +284,21 @@ class ExtruderManager(QObject):
         if global_stack and global_stack.getBottom():
             self.addMachineExtruders(global_stack.getBottom(), global_stack.getId())
 
+    ##  Get all extruder values for a certain setting.
+    #
+    #   This is exposed to SettingFunction so it can be used in value functions.
+    #
+    #   \param key The key of the setting to retieve values for.
+    #
+    #   \return A list of values for all extruders. If an extruder does not have a value, it will not be in the list.
+    #           If no extruder has the value, the list will contain the global value.
     @staticmethod
-    def getExtruderValues(name):
+    def getExtruderValues(key):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
 
         result = []
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
-            value = extruder.getRawProperty(name, "value", use_next = False)
+            value = extruder.getRawProperty(key, "value", use_next = False)
 
             if not value:
                 continue
@@ -301,7 +309,7 @@ class ExtruderManager(QObject):
             result.append(value)
 
         if not result:
-            result.append(global_stack.getProperty(name, "value"))
+            result.append(global_stack.getProperty(key, "value"))
 
         return result
 
