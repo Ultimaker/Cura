@@ -30,9 +30,6 @@ Cura.MachineAction
                 connectingToPrinter = printerKey;
                 manager.setKey(printerKey);
                 completed();
-            } else {
-                // reset, so we can connect to the same printer again if needed
-                connectingToPrinter = null;
             }
         }
     }
