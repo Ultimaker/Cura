@@ -40,25 +40,24 @@ class CuraEngineBackend(Backend):
     #   This registers all the signal listeners and prepares for communication
     #   with the back-end in general.
     
-    executableName = "CuraEngine"
-    
     def __init__(self):
         super().__init__()
 
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
+        executable_name = "CuraEngine"
         default_engine_location = None
-        if os.path.exists(os.path.join(Application.getInstallPrefix(), "bin", self.executableName)):
-            default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", self.executableName)
+        if os.path.exists(os.path.join(Application.getInstallPrefix(), "bin", executable_name)):
+            default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", executable_name)
         if hasattr(sys, "frozen"):
-            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), self.executableName)
+            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), executable_name)
         if Platform.isWindows():
             default_engine_location += ".exe"
         if Platform.isLinux() and not default_engine_location:
             if not os.getenv('PATH'):
                 raise OSError("There is something wrong with your Linux installation.")
             for pathdir in os.getenv('PATH').split(os.pathsep):
-                execpath = os.path.join(pathdir, self.executableName)
+                execpath = os.path.join(pathdir, executable_name)
                 if os.path.exists(execpath):
                     default_engine_location = execpath
                     break
