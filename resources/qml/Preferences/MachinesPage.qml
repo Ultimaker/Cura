@@ -87,12 +87,13 @@ UM.ManagementPage
 
                 Button
                 {
-                    text: machineActionRepeater.model[index].label;
+                    text: machineActionRepeater.model[index].label
                     onClicked:
                     {
-                        actionDialog.content = machineActionRepeater.model[index].displayItem
-                        machineActionRepeater.model[index].displayItem.reset()
-                        actionDialog.show()
+                        actionDialog.content = machineActionRepeater.model[index].displayItem;
+                        machineActionRepeater.model[index].displayItem.reset();
+                        actionDialog.title = machineActionRepeater.model[index].label;
+                        actionDialog.show();
                     }
                 }
             }
