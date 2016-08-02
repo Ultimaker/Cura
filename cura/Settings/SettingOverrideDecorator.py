@@ -37,10 +37,15 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._updateNextStack()
 
     def __deepcopy__(self, memo):
+        print("deepcopy settingoverridedecorator")
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
         ## Copy the instance
         deep_copy._instance = copy.deepcopy(self._instance, memo)
+
+        # Properly set the right extruder on the copy
+        deep_copy.setActiveExtruder(self._extruder_stack)
+
         ## Set the copied instance as the first (and only) instance container of the stack.
         deep_copy._stack.replaceContainer(0, deep_copy._instance)
         return deep_copy
