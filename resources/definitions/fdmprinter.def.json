@@ -1066,6 +1066,7 @@
                     "unit": "[[mm³,°C]]",
                     "type": "str",
                     "default_value": "[[3.5,200],[7.0,240]]",
+                    "enabled": "False",
                     "comments": "old enabled function: material_flow_dependent_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
