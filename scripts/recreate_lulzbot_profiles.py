@@ -20,6 +20,7 @@ dir_map = {
 	#Profile location/directory name: machine name in Cura
 	"Mini_single_extruder_v2": ("lulzbot_mini",),
 	"Mini_flexystruder_v2": ("lulzbot_mini_flexystruder",),
+	
 	"TAZ_single_extruder_0.35nozzle": ("lulzbot_TAZ_4_SingleV1",
 									   "lulzbot_TAZ_5_SingleV1",
 									   "lulzbot_TAZ_4_035nozzle",
@@ -38,10 +39,13 @@ dir_map = {
 							"lulzbot_TAZ_5_FlexyDuallyV1"),
 	"TAZ_flexy_dually_v2": ("lulzbot_TAZ_4_FlexyDuallyV2",
 							"lulzbot_TAZ_5_FlexyDuallyV2"),
+	"TAZ5_moarstruder_v2": ("lulzbot_TAZ_5_Moarstruder_v2",),
+		
 	"TAZ6_single_extruder_v2.1": ("lulzbot_TAZ_6_Single_v2.1",),
 	"TAZ6_flexystruder_v2": ("lulzbot_TAZ_6_Flexystruder_v2",),
 	"TAZ6_dual_extruder_v2": ("lulzbot_TAZ_6_Dual_v2",),
 	"TAZ6_flexy_dually_v2": ("lulzbot_TAZ_6_FlexyDually_v2",),
+	"TAZ6_moarstruder_v2": ("lulzbot_TAZ_6_Moarstruder_v2",),
 }
 
 material_map = {
@@ -480,7 +484,8 @@ profile_map = {
 	"high-speed": "High speed",
 	"high-quality": "High detail",
 	"high-clarity": "High clarity",
-	"high-strength": "High strength"
+	"high-strength": "High strength",
+	"spiral-vase": "Spiral vase",
 }
 
 profile_order = {
@@ -488,7 +493,8 @@ profile_order = {
 	"high-speed": 1,
 	"high-quality": 2,
 	"high-clarity": 3,
-	"high-strength": 4
+	"high-strength": 4,
+	"spiral-vase": 5,
 }
 
 disable_materials = {
