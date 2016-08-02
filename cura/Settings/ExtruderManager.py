@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject, QVariant #
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger
 import UM.Settings.ContainerRegistry #Finding containers by ID.
+import UM.Settings.SettingFunction
 
 
 ##  Manages all existing extruder stacks.
@@ -90,6 +91,15 @@ class ExtruderManager(QObject):
             if global_container_stack.getId() in self._extruder_trains:
                 if str(self._active_extruder_index) in self._extruder_trains[global_container_stack.getId()]:
                     return self._extruder_trains[global_container_stack.getId()][str(self._active_extruder_index)]
+        return None
+
+    ##  Get an extruder stack by index
+    def getExtruderStack(self, index):
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            if global_container_stack.getId() in self._extruder_trains:
+                if str(index) in self._extruder_trains[global_container_stack.getId()]:
+                    return self._extruder_trains[global_container_stack.getId()][str(index)]
         return None
 
     ##  Adds all extruders of a specific machine definition to the extruder
@@ -295,3 +305,10 @@ class ExtruderManager(QObject):
 
         return result
 
+    @staticmethod
+    def getExtruderValue(extruder_index, name):
+        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        if extruder:
+            return extruder.getRawProperty(name, "value", use_next = False)
+
+        return None

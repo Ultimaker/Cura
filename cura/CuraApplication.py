@@ -101,6 +101,8 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
+        SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
+
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
