@@ -47,37 +47,37 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "For every position; insert a piece of paper under the nozzle and adjust the print bed height. The print bed height is right when the paper is slightly gripped by the tip of the nozzle.")
         }
 
-        Item
+        Row
         {
             id: bedlevelingWrapper
             anchors.top: bedlevelingText.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-            height: skipBedlevelingButton.height
-            width: bedlevelingButton.width + skipBedlevelingButton.width + UM.Theme.getSize("default_margin").height < bedLevelMachineAction.width ? bedlevelingButton.width + skipBedlevelingButton.width + UM.Theme.getSize("default_margin").height : bedLevelMachineAction.width
+            width: childrenRect.width
+            spacing: UM.Theme.getSize("default_margin").width
+
             Button
             {
-                id: bedlevelingButton
-                anchors.top: parent.top
-                anchors.left: parent.left
-                text: catalog.i18nc("@action:button","Move to Next Position");
+                id: startBedLevelingButton
+                text: catalog.i18nc("@action:button","Start Bed Leveling")
                 onClicked:
                 {
-                    manager.moveToNextLevelPosition()
+                    startBedLevelingButton.visible = false;
+                    bedlevelingButton.visible = true;
+                    checkupMachineAction.heatupHotendStarted = false;
+                    checkupMachineAction.heatupBedStarted = false;
+                    manager.startCheck();
                 }
             }
 
             Button
             {
-                id: skipBedlevelingButton
-                anchors.top: parent.width < bedLevelMachineAction.width ? parent.top : bedlevelingButton.bottom
-                anchors.topMargin: parent.width < bedLevelMachineAction.width ? 0 : UM.Theme.getSize("default_margin").height/2
-                anchors.left: parent.width < bedLevelMachineAction.width ? bedlevelingButton.right : parent.left
-                anchors.leftMargin: parent.width < bedLevelMachineAction.width ? UM.Theme.getSize("default_margin").width : 0
-                text: catalog.i18nc("@action:button","Skip bed leveling");
+                id: bedlevelingButton
+                text: catalog.i18nc("@action:button","Move to Next Position")
+                visible: false
                 onClicked:
                 {
-                    manager.setFinished()
+                    manager.moveToNextLevelPosition();
                 }
             }
         }

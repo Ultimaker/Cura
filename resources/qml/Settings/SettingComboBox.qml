@@ -86,18 +86,18 @@ SettingItem
             }
         }
 
-        onActivated: { forceActiveFocus(); provider.setPropertyValue("value", definition.options[index].key) }
+        onActivated: { forceActiveFocus(); propertyProvider.setPropertyValue("value", definition.options[index].key) }
         onModelChanged: updateCurrentIndex();
 
         Connections
         {
-            target: provider
+            target: propertyProvider
             onPropertiesChanged: control.updateCurrentIndex()
         }
 
         function updateCurrentIndex() {
             for(var i = 0; i < definition.options.length; ++i) {
-                if(definition.options[i].key == provider.properties.value) {
+                if(definition.options[i].key == propertyProvider.properties.value) {
                     currentIndex = i;
                     return;
                 }

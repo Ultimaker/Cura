@@ -138,7 +138,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: base.settablePerExtruder != "True" && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && base.settablePerExtruder != "True" && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;

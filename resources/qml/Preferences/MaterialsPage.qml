@@ -255,7 +255,7 @@ UM.ManagementPage
                 else if(result.status == "success")
                 {
                     messageDialog.icon = StandardIcon.Information
-                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(fileUrl)
+                    messageDialog.text = catalog.i18nc("@info:status", "Successfully exported material to <filename>%1</filename>").arg(result.path)
                     messageDialog.open()
                 }
                 CuraApplication.setDefaultPath("dialog_material_path", folder)

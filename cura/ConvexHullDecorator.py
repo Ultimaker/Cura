@@ -287,5 +287,5 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     _affected_settings = [
         "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
-        "raft_surface_thickness", "raft_airgap", "print_sequence",
+        "raft_surface_thickness", "raft_airgap", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance"]

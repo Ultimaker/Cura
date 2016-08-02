@@ -203,7 +203,7 @@ class CuraApplication(QtApplication):
             "dialog_profile_path",
             "dialog_material_path"]:
 
-            Preferences.getInstance().addPreference("local_file/%s" % key, "~/")
+            Preferences.getInstance().addPreference("local_file/%s" % key, os.path.expanduser("~/"))
 
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
@@ -555,12 +555,18 @@ class CuraApplication(QtApplication):
     def deleteSelection(self):
         if not self.getController().getToolsEnabled():
             return
-
+        removed_group_nodes = []
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
             op.addOperation(RemoveSceneNodeOperation(node))
-
+            group_node = node.getParent()
+            if group_node and group_node.callDecoration("isGroup") and group_node not in removed_group_nodes:
+                remaining_nodes_in_group = list(set(group_node.getChildren()) - set(nodes))
+                if len(remaining_nodes_in_group) == 1:
+                    removed_group_nodes.append(group_node)
+                    op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
         pass
@@ -586,8 +592,7 @@ class CuraApplication(QtApplication):
             op.push()
             if group_node:
                 if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
-                    group_node.getChildren()[0].translate(group_node.getPosition())
-                    group_node.getChildren()[0].setParent(group_node.getParent())
+                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
                     op = RemoveSceneNodeOperation(group_node)
                     op.push()
 
@@ -628,7 +633,23 @@ class CuraApplication(QtApplication):
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
-    
+
+    ##  Select all nodes containing mesh data in the scene.
+    @pyqtSlot()
+    def selectAll(self):
+        if not self.getController().getToolsEnabled():
+            return
+
+        Selection.clear()
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            Selection.add(node)
+
     ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):
@@ -652,6 +673,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
+            Selection.clear()
 
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()

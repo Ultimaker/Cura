@@ -54,13 +54,13 @@
         "speed_travel": { "default_value": 150 },
         "speed_layer_0": {
             "minimum_value": "0.1",
-            "default": 15.0
+            "default_value": 15.0
         },
-        "infill_overlap": { "default": 10 },
-        "cool_fan_enabled": { "default": false },
-        "cool_fan_speed": { "default": 0 },
-        "skirt_line_count": { "default": 3 },
-        "skirt_gap": { "default": 4 },
-        "skirt_brim_minimal_length": { "default": 200 }
+        "infill_overlap": { "default_value": 10 },
+        "cool_fan_enabled": { "default_value": false },
+        "cool_fan_speed": { "default_value": 0 },
+        "skirt_line_count": { "default_value": 3 },
+        "skirt_gap": { "default_value": 4 },
+        "skirt_brim_minimal_length": { "default_value": 200 }
     }
 }

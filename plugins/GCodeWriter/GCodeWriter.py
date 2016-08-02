@@ -9,6 +9,8 @@ import UM.Settings.ContainerRegistry
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 
+from UM.Settings.InstanceContainer import InstanceContainer
+
 import re #For escaping characters in the settings.
 import json
 
@@ -61,6 +63,20 @@ class GCodeWriter(MeshWriter):
 
         return False
 
+    ##  Create a new container with container 2 as base and container 1 written over it.
+    def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
+        flat_container = InstanceContainer(instance_container2.getName())
+        flat_container.setDefinition(instance_container2.getDefinition())
+        flat_container.setMetaData(instance_container2.getMetaData())
+
+        for key in instance_container2.getAllKeys():
+            flat_container.setProperty(key, "value", instance_container2.getProperty(key, "value"))
+
+        for key in instance_container1.getAllKeys():
+            flat_container.setProperty(key, "value", instance_container1.getProperty(key, "value"))
+        return flat_container
+
+
     ##  Serialises a container stack to prepare it for writing at the end of the
     #   g-code.
     #
@@ -74,38 +90,13 @@ class GCodeWriter(MeshWriter):
         prefix_length = len(prefix)
 
         container_with_profile = stack.findContainer({"type": "quality"})
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-
-        # Duplicate the current quality profile and update it with any user settings.
-        flat_quality_id = machine_manager.duplicateContainer(container_with_profile.getId())
-
-        flat_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = flat_quality_id)[0]
-        flat_quality._dirty = False
-        user_settings = stack.getTop()
-
-        # We don't want to send out any signals, so disconnect them.
-        flat_quality.propertyChanged.disconnectAll()
-
-        for key in user_settings.getAllKeys():
-            flat_quality.setProperty(key, "value", user_settings.getProperty(key, "value"))
-
-        serialized = flat_quality.serialize()
-
+        flat_global_container = self._createFlattenedContainerInstance(stack.getTop(),container_with_profile)
+        serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
-        manager = ExtruderManager.getInstance()
-        for extruder in manager.getMachineExtruders(stack.getId()):
+
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
             extruder_quality = extruder.findContainer({"type": "quality"})
-
-            flat_extruder_quality_id = machine_manager.duplicateContainer(extruder_quality.getId())
-            flat_extruder_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=flat_extruder_quality_id)[0]
-            flat_extruder_quality._dirty = False
-            extruder_user_settings = extruder.getTop()
-
-            # We don't want to send out any signals, so disconnect them.
-            flat_extruder_quality.propertyChanged.disconnectAll()
-
-            for key in extruder_user_settings.getAllKeys():
-                flat_extruder_quality.setProperty(key, "value", extruder_user_settings.getProperty(key, "value"))
+            flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)
 
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
