@@ -10,6 +10,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 import UM.Logger
 
+import cura.Settings
+
 from UM.Application import Application
 
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
@@ -26,7 +28,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._stack.setDirty(False)  # This stack does not need to be saved.
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
-        self._extruder_stack = None #Stack upon which our stack is based.
+
+        if cura.Settings.ExtruderManager.getInstance().extruderCount > 1:
+            self._extruder_stack = cura.Settings.ExtruderManager.getInstance().activeExtruderStackId
+        else:
+            self._extruder_stack = None
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
@@ -66,7 +72,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if self._extruder_stack:
             extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_stack)
             if extruder_stack:
-                old_extruder_stack_id = self._stack.getNextStack().getId()
+                if self._stack.getNextStack():
+                    old_extruder_stack_id = self._stack.getNextStack().getId()
+                else:
+                    old_extruder_stack_id = ""
+
                 self._stack.setNextStack(extruder_stack[0])
                 if self._stack.getNextStack().getId() != old_extruder_stack_id: #Only reslice if the extruder changed.
                     Application.getInstance().getBackend().forceSlice()
