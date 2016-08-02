@@ -313,10 +313,23 @@ class ExtruderManager(QObject):
 
         return result
 
+    ##  Get the value for a setting from a specific extruder.
+    #
+    #   This is exposed to SettingFunction to use in value functions.
+    #
+    #   \param extruder_index The index of the extruder to get the value from.
+    #   \param key The key of the setting to get the value of.
+    #
+    #   \return The value of the setting for the specified extruder or None if not found.
     @staticmethod
-    def getExtruderValue(extruder_index, name):
+    def getExtruderValue(extruder_index, key):
         extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-        if extruder:
-            return extruder.getRawProperty(name, "value", use_next = False)
+        value = None
 
-        return None
+        if extruder:
+            value = extruder.getRawProperty(key, "value", use_next = False)
+
+        if isinstance(value, UM.Settings.SettingFunction):
+            value = value(extruder)
+
+        return value
