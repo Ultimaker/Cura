@@ -192,7 +192,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Go into timeout state.
                 Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
-                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost.Check your network-connections."))
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your network-connections."))
                 self._connection_message.show()
                 self.setConnectionState(ConnectionState.error)
 
