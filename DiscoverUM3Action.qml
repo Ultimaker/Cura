@@ -11,7 +11,7 @@ Cura.MachineAction
     id: base
     anchors.fill: parent;
     property var selectedPrinter: null
-    property var connectingWithPrinter: null
+    property var connectingToPrinter: null
 
     Connections
     {
@@ -25,11 +25,14 @@ Cura.MachineAction
         if(base.selectedPrinter)
         {
             var printerKey = base.selectedPrinter.getKey()
-            if(connectingWithPrinter != printerKey) {
+            if(connectingToPrinter != printerKey) {
                 // prevent an infinite loop
-                connectingWithPrinter = printerKey;
+                connectingToPrinter = printerKey;
                 manager.setKey(printerKey);
                 completed();
+            } else {
+                // reset, so we can connect to the same printer again if needed
+                connectingToPrinter = null;
             }
         }
     }
