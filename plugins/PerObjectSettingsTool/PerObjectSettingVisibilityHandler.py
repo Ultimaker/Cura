@@ -1,10 +1,14 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+
 from UM.Application import Application
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
-
 import UM.Settings.Models
 
+from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherits-stack setting values from different extruders.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  The per object setting visibility handler ensures that only setting
@@ -54,7 +58,13 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
             if not settings.getInstance(item):
                 definition = self._stack.getSettingDefinition(item)
                 if definition:
-                    settings.addInstance(SettingInstance(definition, settings))
+                    new_instance = SettingInstance(definition, settings)
+                    if definition.global_inherits_stack:
+                        #Obtain the value from the correct container stack. Only once, upon adding the setting.
+                        stack_nr = self._stack.getProperty(item, "global_inherits_stack") #Stack to get the setting from.
+                        extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                        new_instance.value = extruder_stack.getProperty(item, "value")
+                    settings.addInstance(new_instance)
                     visibility_changed = True
                 else:
                     Logger.log("w", "Unable to add instance (%s) to per-object visibility because we couldn't find the matching definition", item)
