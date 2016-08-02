@@ -44,6 +44,7 @@ class MachineAction(QObject, PluginObject):
     #   /sa _reset
     @pyqtSlot()
     def reset(self):
+        self._component = None
         self._finished = False
         self._reset()
 
