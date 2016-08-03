@@ -155,14 +155,14 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X (Width)")
+                            text: catalog.i18nc("@label","X min")
                         }
                         TextField
                         {
                             id: printheadXMinField
-                            text: ""
+                            text: getHeadPolygonCoord("x", "min")
                             validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                            onEditingFinished: {  }
+                            onEditingFinished: setHeadPolygon()
                         }
                         Label
                         {
@@ -171,14 +171,14 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X (Width)")
+                            text: catalog.i18nc("@label","Y min")
                         }
                         TextField
                         {
                             id: printheadYMinField
-                            text: ""
+                            text: getHeadPolygonCoord("y", "min")
                             validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                            onEditingFinished: {  }
+                            onEditingFinished: setHeadPolygon()
                         }
                         Label
                         {
@@ -187,14 +187,14 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X (Width)")
+                            text: catalog.i18nc("@label","X max")
                         }
                         TextField
                         {
                             id: printheadXMaxField
-                            text: ""
+                            text: getHeadPolygonCoord("x", "max")
                             validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                            onEditingFinished: {  }
+                            onEditingFinished: setHeadPolygon()
                         }
                         Label
                         {
@@ -203,14 +203,14 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X (Width)")
+                            text: catalog.i18nc("@label","Y max")
                         }
                         TextField
                         {
                             id: printheadYMaxField
-                            text: ""
+                            text: getHeadPolygonCoord("y", "max")
                             validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
-                            onEditingFinished: {  }
+                            onEditingFinished: setHeadPolygon()
                         }
                         Label
                         {
@@ -315,6 +315,31 @@ Cura.MachineAction
         }
     }
 
+    function getHeadPolygonCoord(axis, minMax)
+    {
+        var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
+        var item = (axis == "x") ? 0 : 1
+        var result = polygon[0][item];
+        for(var i = 1; i < polygon.length; i++) {
+            if (minMax == "min") {
+                result = Math.min(result, polygon[i][item]);
+            } else {
+                result = Math.max(result, polygon[i][item]);
+            }
+        }
+        return Math.abs(result);
+    }
+
+    function setHeadPolygon()
+    {
+        var polygon = [];
+        polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
+        polygon.push([-parseFloat(printheadXMinField.text), parseFloat(printheadYMaxField.text)]);
+        polygon.push([ parseFloat(printheadXMaxField.text), parseFloat(printheadYMaxField.text)]);
+        polygon.push([ parseFloat(printheadXMaxField.text),-parseFloat(printheadYMinField.text)]);
+        machineHeadPolygonProvider.setPropertyValue("value", JSON.stringify(polygon));
+    }
+
     UM.SettingPropertyProvider
     {
         id: machineWidthProvider
@@ -381,6 +406,16 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "gantry_height"
+        watchedProperties: [ "value" ]
+        storeIndex: 3
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineHeadPolygonProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_head_with_fans_polygon"
         watchedProperties: [ "value" ]
         storeIndex: 3
     }
