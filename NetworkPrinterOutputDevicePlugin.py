@@ -68,6 +68,8 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
+        if key not in self._printers:
+            return
         if self._printers[key].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._printers[key])
         else:
