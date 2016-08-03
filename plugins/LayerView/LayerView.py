@@ -6,7 +6,6 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
 from UM.Event import Event, KeyEvent
-from UM.Signal import Signal
 from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 
@@ -39,20 +38,19 @@ class LayerView(View):
         self._layerview_composite_shader = None
         self._old_composite_shader = None
 
-        self._busy = False
-
     def getLayerPass(self):
+        if not self._layer_pass:
+            # Currently the RenderPass constructor requires a size > 0
+            # This should be fixed in RenderPass's constructor.
+            self._layer_pass = LayerPass.LayerPass(1, 1)
+            self.getRenderer().addRenderPass(self._layer_pass)
+
         return self._layer_pass
 
-    busyChanged = Signal()
-
-    def isBusy(self):
-        return self._busy
-
-    def setBusy(self, busy):
-        if busy != self._busy:
-            self._busy = busy
-            self.busyChanged.emit()
+    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
+    #   as this caused some issues.
+    def getProxy(self, engine, script_engine):
+        return self._proxy
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -72,11 +70,6 @@ class LayerView(View):
                 if node.getMeshData() and node.isVisible():
                     renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
-    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
-    #   as this caused some issues. 
-    def getProxy(self, engine, script_engine):
-        return self._proxy
-
     def endRendering(self):
         pass
 
@@ -85,19 +78,15 @@ class LayerView(View):
         ctrl_is_active = modifiers == Qt.ControlModifier
         if event.type == Event.KeyPressEvent and ctrl_is_active:
             if event.key == KeyEvent.UpKey:
-                self._layer_pass.setLayer(self._current_layer_num + 1)
+                self.getLayerPass().setLayer(self._current_layer_num + 1)
                 return True
             if event.key == KeyEvent.DownKey:
-                self._layer_pass.setLayer(self._current_layer_num - 1)
+                self.getLayerPass().setLayer(self._current_layer_num - 1)
                 return True
 
         if event.type == Event.ViewActivateEvent:
-            if not self._layer_pass:
-                # Currently the RenderPass constructor requires a size > 0
-                # This should be fixed in RenderPass's constructor.
-                self._layer_pass = LayerPass.LayerPass(1, 1)
-                self._layer_pass.setLayerView(self)
-                self.getRenderer().addRenderPass(self._layer_pass)
+            # Make sure the LayerPass is created
+            self.getLayerPass()
 
             if not self._layerview_composite_shader:
                 self._layerview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layerview_composite.shader"))
