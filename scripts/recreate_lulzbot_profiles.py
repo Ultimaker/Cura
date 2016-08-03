@@ -131,6 +131,7 @@ material_map = {
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
 	"silk": "silk",
+	"linen": "linen",
 }
 
 material_order = {
@@ -216,6 +217,7 @@ material_order = {
 	"armadillo":         5007,
 	"brassfill":         5008,
 	"silk":              5009,
+	"linen":             5010,
 }
 
 material_types = {
@@ -376,7 +378,8 @@ material_names = {
 	"polyflex": "Polyflex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
-	"silk": "bioFila Silk (twoBEars)",
+	"silk": "BioFila Silk (twoBEars)",
+	"linen": "BioFila Linen (twoBEars)",
 }
 
 material_url = {
@@ -461,6 +464,7 @@ material_url = {
 #	"armadillo": "",
 #	"brassfill": "",
 #	"silk": "",
+#	"linen": "",
 }
 
 bed_prep_materials = {
