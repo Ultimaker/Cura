@@ -19,20 +19,20 @@ class LayerViewProxy(QObject):
     def getLayerActivity(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            return active_view.getActivity()
+            return active_view.getLayerPass().getActivity()
 
     @pyqtProperty(int, notify = maxLayersChanged)
     def numLayers(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            return active_view.getMaxLayers()
+            return active_view.getLayerPass().getMaxLayers()
         #return 100
     
     @pyqtProperty(int, notify = currentLayerChanged)
     def currentLayer(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            return active_view.getCurrentLayer()
+            return active_view.getLayerPass().getCurrentLayer()
 
     busyChanged = pyqtSignal()
     @pyqtProperty(bool, notify = busyChanged)
@@ -47,7 +47,7 @@ class LayerViewProxy(QObject):
     def setCurrentLayer(self, layer_num):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.setLayer(layer_num)
+            active_view.getLayerPass().setLayer(layer_num)
 
     def _layerActivityChanged(self):
         self.activityChanged.emit()
@@ -65,6 +65,6 @@ class LayerViewProxy(QObject):
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.currentLayerNumChanged.connect(self._onLayerChanged)
-            active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
+            active_view.getLayerPass().currentLayerNumChanged.connect(self._onLayerChanged)
+            active_view.getLayerPass().maxLayersChanged.connect(self._onMaxLayersChanged)
             active_view.busyChanged.connect(self._onBusyChanged)
