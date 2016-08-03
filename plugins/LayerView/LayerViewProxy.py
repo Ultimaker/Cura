@@ -39,7 +39,7 @@ class LayerViewProxy(QObject):
     def busy(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            return active_view.isBusy()
+            return active_view.getLayerPass().isBusy()
 
         return False
     
@@ -67,4 +67,4 @@ class LayerViewProxy(QObject):
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.getLayerPass().currentLayerNumChanged.connect(self._onLayerChanged)
             active_view.getLayerPass().maxLayersChanged.connect(self._onMaxLayersChanged)
-            active_view.busyChanged.connect(self._onBusyChanged)
+            active_view.getLayerPass().busyChanged.connect(self._onBusyChanged)

@@ -30,8 +30,6 @@ class LayerPass(RenderPass):
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = self._controller.getScene()
 
-        self._layer_view = None
-
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
         self._max_layers = 0
         self._current_layer_num = 0
@@ -41,6 +39,8 @@ class LayerPass(RenderPass):
         self._activity = False
         self._old_max_layers = 0
 
+        self._busy = False
+
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
@@ -48,8 +48,15 @@ class LayerPass(RenderPass):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
 
-    def setLayerView(self, layerview):
-        self._layer_view = layerview
+    busyChanged = Signal()
+
+    def isBusy(self):
+        return self._busy
+
+    def setBusy(self, busy):
+        if busy != self._busy:
+            self._busy = busy
+            self.busyChanged.emit()
 
     def getActivity(self):
         return self._activity
@@ -175,14 +182,14 @@ class LayerPass(RenderPass):
             self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
             self._top_layers_job.cancel()
 
-        self._layer_view.setBusy(True)
+        self.setBusy(True)
 
         self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
         self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
         self._top_layers_job.start()
 
     def _updateCurrentLayerMesh(self, job):
-        self._layer_view.setBusy(False)
+        self.setBusy(False)
 
         if not job.getResult():
             return
