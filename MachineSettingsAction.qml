@@ -71,7 +71,7 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X (Width)")
+                            text: catalog.i18nc("@label", "X (Width)")
                         }
                         TextField
                         {
@@ -82,12 +82,12 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Label
                         {
-                            text: catalog.i18nc("@label","Y (Depth)")
+                            text: catalog.i18nc("@label", "Y (Depth)")
                         }
                         TextField
                         {
@@ -98,12 +98,12 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Label
                         {
-                            text: catalog.i18nc("@label","Z (Height)")
+                            text: catalog.i18nc("@label", "Z (Height)")
                         }
                         TextField
                         {
@@ -114,7 +114,7 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
                     }
 
@@ -123,16 +123,33 @@ Cura.MachineAction
                         CheckBox
                         {
                             id: heatedBedCheckBox
-                            text: catalog.i18nc("@option:check","Heated Bed")
+                            text: catalog.i18nc("@option:check", "Heated Bed")
                             checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
                             onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
                         }
                         CheckBox
                         {
                             id: centerIsZeroCheckBox
-                            text: catalog.i18nc("@option:check","Machine Center is Zero")
+                            text: catalog.i18nc("@option:check", "Machine Center is Zero")
                             checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
                             onClicked: machineCenterIsZeroProvider.setPropertyValue("value", checked)
+                        }
+                    }
+
+                    Row
+                    {
+                        spacing: UM.Theme.getSize("default_margin").width
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label", "GCode Flavor")
+                        }
+
+                        ComboBox
+                        {
+                            model: ["RepRap (Marlin/Sprinter)", "UltiGCode"]
+                            currentIndex: machineGCodeFlavorProvider.properties.value != model[1] ? 0 : 1
+                            onActivated: machineGCodeFlavorProvider.setPropertyValue("value", model[index])
                         }
                     }
                 }
@@ -155,7 +172,7 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X min")
+                            text: catalog.i18nc("@label", "X min")
                         }
                         TextField
                         {
@@ -166,12 +183,12 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Label
                         {
-                            text: catalog.i18nc("@label","Y min")
+                            text: catalog.i18nc("@label", "Y min")
                         }
                         TextField
                         {
@@ -182,12 +199,12 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Label
                         {
-                            text: catalog.i18nc("@label","X max")
+                            text: catalog.i18nc("@label", "X max")
                         }
                         TextField
                         {
@@ -198,12 +215,12 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Label
                         {
-                            text: catalog.i18nc("@label","Y max")
+                            text: catalog.i18nc("@label", "Y max")
                         }
                         TextField
                         {
@@ -214,7 +231,7 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
@@ -223,7 +240,7 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","Gantry height")
+                            text: catalog.i18nc("@label", "Gantry height")
                         }
                         TextField
                         {
@@ -234,7 +251,7 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
 
                         Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
@@ -243,7 +260,7 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label","Nozzle size")
+                            text: catalog.i18nc("@label", "Nozzle size")
                         }
                         TextField
                         {
@@ -254,7 +271,7 @@ Cura.MachineAction
                         }
                         Label
                         {
-                            text: catalog.i18nc("@label","mm")
+                            text: catalog.i18nc("@label", "mm")
                         }
                     }
                 }
@@ -272,7 +289,7 @@ Cura.MachineAction
                     width: parent.width / 2
                     Label
                     {
-                        text: catalog.i18nc("@label","Start Gcode")
+                        text: catalog.i18nc("@label", "Start Gcode")
                     }
                     TextArea
                     {
@@ -294,7 +311,7 @@ Cura.MachineAction
                     width: parent.width / 2
                     Label
                     {
-                        text: catalog.i18nc("@label","End Gcode")
+                        text: catalog.i18nc("@label", "End Gcode")
                     }
                     TextArea
                     {
@@ -386,6 +403,16 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_center_is_zero"
+        watchedProperties: [ "value" ]
+        storeIndex: 3
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineGCodeFlavorProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_gcode_flavor"
         watchedProperties: [ "value" ]
         storeIndex: 3
     }
