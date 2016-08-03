@@ -284,7 +284,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             return
 
         if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  #  There was a timeout, but we got a correct answer again.
-            Logger.log("d", "We got a response from the instance after %s of silence", time() - self._last_response_time )
+            if self._last_response_time:
+                Logger.log("d", "We got a response from the instance after %s of silence", time() - self._last_response_time)
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
 
