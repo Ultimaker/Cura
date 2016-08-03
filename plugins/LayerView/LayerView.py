@@ -36,9 +36,6 @@ import os.path
 class LayerView(View):
     def __init__(self):
         super().__init__()
-        self._shader = None
-        self._num_layers = 0
-        self._layer_percentage = 0  # what percentage of layers need to be shown (Slider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
         self._max_layers = 0
@@ -50,7 +47,7 @@ class LayerView(View):
         self._old_max_layers = 0
 
         self._ghost_shader = None
-        self._ghost_pass = None
+        self._layer_pass = None
         self._composite_pass = None
         self._old_layer_bindings = None
         self._layerview_composite_shader = None
@@ -172,12 +169,12 @@ class LayerView(View):
                 return True
 
         if event.type == Event.ViewActivateEvent:
-            if not self._ghost_pass:
+            if not self._layer_pass:
                 # Currently the RenderPass constructor requires a size > 0
                 # This should be fixed in RenderPass's constructor.
-                self._ghost_pass = LayerPass.LayerPass(1, 1)
-                self._ghost_pass.setLayerView(self)
-                self.getRenderer().addRenderPass(self._ghost_pass)
+                self._layer_pass = LayerPass.LayerPass(1, 1)
+                self._layer_pass.setLayerView(self)
+                self.getRenderer().addRenderPass(self._layer_pass)
 
             if not self._layerview_composite_shader:
                 self._layerview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layerview_composite.shader"))
