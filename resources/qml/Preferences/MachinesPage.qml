@@ -129,10 +129,10 @@ UM.ManagementPage
             Label
             {
                 text: catalog.i18nc("@label", "Type")
-                visible: base.currentItem && base.currentItem.metadata
+                visible: base.currentItem && "definition_name" in base.currentItem.metadata
             }
             Label {
-                text: (base.currentItem && base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
+                text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
             }
         }
 
