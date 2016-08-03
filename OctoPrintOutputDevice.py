@@ -179,6 +179,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         Logger.log("d", "Connection with instance %s with ip %s started", self._key, self._address)
         self._update_timer.start()
         self._camera_timer.start()
+        self._last_response_time = None
 
     ##  Stop requesting data from the instance
     def disconnect(self):
