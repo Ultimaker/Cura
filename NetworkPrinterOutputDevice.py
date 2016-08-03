@@ -37,6 +37,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
+        self.setPriority(2) # Make sure the output device gets selected above local file output
+
         self._gcode = None
 
         #   This holds the full JSON file that was received from the last request.
