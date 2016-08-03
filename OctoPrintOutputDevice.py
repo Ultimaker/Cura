@@ -22,9 +22,12 @@ i18n_catalog = i18nCatalog("cura")
 class OctoPrintOutputDevice(PrinterOutputDevice):
     def __init__(self, key, address, properties):
         super().__init__(key)
+
         self._address = address
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
+
+        self.setPriority(2) # Make sure the output device gets selected above local file output
 
         self._gcode = None
 
