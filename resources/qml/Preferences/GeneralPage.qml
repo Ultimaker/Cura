@@ -69,6 +69,7 @@ UM.PreferencesPage
 
         Row
         {
+            spacing: UM.Theme.getSize("default_margin").width
             Label
             {
                 id: languageLabel
