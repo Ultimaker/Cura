@@ -17,15 +17,15 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         super().__init__()
         self._zero_conf = Zeroconf()
         self._browser = None
-        self._printers = {}
+        self._instances = {}
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-        self.addPrinterSignal.connect(self.addPrinter)
-        self.removePrinterSignal.connect(self.removePrinter)
+        self.addInstanceSignal.connect(self.addInstance)
+        self.removeInstanceSignal.connect(self.removeInstance)
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
-    addPrinterSignal = Signal()
-    removePrinterSignal = Signal()
+    addInstanceSignal = Signal()
+    removeInstanceSignal = Signal()
 
     ##  Start looking for devices on network.
     def start(self):
@@ -46,34 +46,34 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf.close()
 
     def getPrinters(self):
-        return self._printers
+        return self._instances
 
     def reCheckConnections(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return
 
-        for key in self._printers:
+        for key in self._instances:
             if key == global_container_stack.getMetaDataEntry("octoprint_id"):
-                self._printers[key].setApiKey(global_container_stack.getMetaDataEntry("octoprint_api_key", ""))
-                self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
-                self._printers[key].connect()
+                self._instances[key].setApiKey(global_container_stack.getMetaDataEntry("octoprint_api_key", ""))
+                self._instances[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+                self._instances[key].connect()
             else:
-                if self._printers[key].isConnected():
-                    self._printers[key].close()
+                if self._instances[key].isConnected():
+                    self._instances[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-    def addPrinter(self, name, address, properties):
+    def addInstance(self, name, address, properties):
         printer = OctoPrintOutputDevice.OctoPrintOutputDevice(name, address, properties)
-        self._printers[printer.getKey()] = printer
+        self._instances[printer.getKey()] = printer
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("octoprint_id"):
             printer.setApiKey(global_container_stack.getMetaDataEntry("octoprint_api_key", ""))
             printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             printer.connect()
 
-    def removePrinter(self, name):
-        printer = self._printers.pop(name, None)
+    def removeInstance(self, name):
+        printer = self._instances.pop(name, None)
         if printer:
             if printer.isConnected():
                 printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
@@ -81,11 +81,11 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
-        if key not in self._printers:
+        if key not in self._instances:
             return
 
-        if self._printers[key].isConnected():
-            self.getOutputDeviceManager().addOutputDevice(self._printers[key])
+        if self._instances[key].isConnected():
+            self.getOutputDeviceManager().addOutputDevice(self._instances[key])
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
 
@@ -103,9 +103,9 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
             if info.address:
                 address = '.'.join(map(lambda n: str(n), info.address))
-                self.addPrinterSignal.emit(str(name), address, info.properties)
+                self.addInstanceSignal.emit(str(name), address, info.properties)
             else:
                 Logger.log("d", "Discovered instance named %s but received no address", name)
 
         elif state_change == ServiceStateChange.Removed:
-            self.removePrinterSignal.emit(str(name))
+            self.removeInstanceSignal.emit(str(name))

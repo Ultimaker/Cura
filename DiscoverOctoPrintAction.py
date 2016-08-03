@@ -23,29 +23,29 @@ class DiscoverOctoPrintAction(MachineAction):
 
         cura.Settings.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
-    printersChanged = pyqtSignal()
+    instancesChanged = pyqtSignal()
 
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("OctoPrintPlugin")
-            self._network_plugin.addPrinterSignal.connect(self._onPrinterDiscoveryChanged)
-            self._network_plugin.removePrinterSignal.connect(self._onPrinterDiscoveryChanged)
-            self.printersChanged.emit()
+            self._network_plugin.addInstanceSignal.connect(self._onInstanceDiscovery)
+            self._network_plugin.removeInstanceSignal.connect(self._onInstanceDiscovery)
+            self.instancesChanged.emit()
         else:
             # Restart bonjour discovery
             self._network_plugin.startDiscovery()
 
-    def _onPrinterDiscoveryChanged(self, *args):
-        self.printersChanged.emit()
+    def _onInstanceDiscovery(self, *args):
+        self.instancesChanged.emit()
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
-    @pyqtProperty("QVariantList", notify = printersChanged)
-    def foundDevices(self):
+    @pyqtProperty("QVariantList", notify = instancesChanged)
+    def discoveredInstances(self):
         if self._network_plugin:
             printers = self._network_plugin.getPrinters()
             return [printers[printer] for printer in printers]

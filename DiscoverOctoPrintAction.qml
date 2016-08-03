@@ -10,7 +10,7 @@ Cura.MachineAction
 {
     id: base
     anchors.fill: parent;
-    property var selectedPrinter: null
+    property var selectedInstance: null
     Column
     {
         anchors.fill: parent;
@@ -64,10 +64,10 @@ Cura.MachineAction
                 ListView
                 {
                     id: listview
-                    model: manager.foundDevices
+                    model: manager.discoveredInstances
                     width: parent.width
                     currentIndex: activeIndex
-                    onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
+                    onCurrentIndexChanged: base.selectedInstance = listview.model[currentIndex]
                     Component.onCompleted: manager.startDiscovery()
                     delegate: Rectangle
                     {
@@ -101,13 +101,13 @@ Cura.MachineAction
             Column
             {
                 width: parent.width * 0.5
-                visible: base.selectedPrinter
+                visible: base.selectedInstance
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
                 {
                     width: parent.width
                     wrapMode: Text.WordWrap
-                    text: base.selectedPrinter ? base.selectedPrinter.name : ""
+                    text: base.selectedInstance ? base.selectedInstance.name : ""
                     font.pointSize: 16
                     elide: Text.ElideRight
                 }
@@ -125,7 +125,7 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.7
                         wrapMode: Text.WordWrap
-                        text: base.selectedPrinter ? base.selectedPrinter.octoprintVersion : ""
+                        text: base.selectedInstance ? base.selectedInstance.octoprintVersion : ""
                     }
                     Label
                     {
@@ -137,7 +137,7 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.7
                         wrapMode: Text.WordWrap
-                        text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
+                        text: base.selectedInstance ? base.selectedInstance.ipAddress : ""
                     }
                     Label
                     {
@@ -155,13 +155,13 @@ Cura.MachineAction
 
                 Flow
                 {
-                    visible: base.selectedPrinter
+                    visible: base.selectedInstance
                     spacing: UM.Theme.getSize("default_margin").width
 
                     Button
                     {
                         text: catalog.i18nc("@action", "Open webpage...")
-                        onClicked: manager.openWebPage("http://%1/".arg(base.selectedPrinter.ipAddress))
+                        onClicked: manager.openWebPage("http://%1/".arg(base.selectedInstance.ipAddress))
                     }
 
                     Button
@@ -169,7 +169,7 @@ Cura.MachineAction
                         text: catalog.i18nc("@action:button", "Connect")
                         onClicked:
                         {
-                            manager.setKey(base.selectedPrinter.getKey())
+                            manager.setKey(base.selectedInstance.getKey())
                             manager.setApiKey(apiKey.text)
                             completed()
                         }
