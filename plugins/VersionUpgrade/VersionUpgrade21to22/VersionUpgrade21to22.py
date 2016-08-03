@@ -34,7 +34,14 @@ _setting_name_translations = {
     "skirt_line_width": "skirt_brim_line_width",
     "skirt_minimal_length": "skirt_brim_minimal_length",
     "skirt_speed": "skirt_brim_speed",
-    "speed_support_lines": "speed_support_infill"
+    "speed_support_lines": "speed_support_infill",
+    "speed_support_roof": "speed_support_interface",
+    "support_roof_density": "support_interface_density",
+    "support_roof_enable": "support_interface_enable",
+    "support_roof_extruder_nr": "support_interface_extruder_nr",
+    "support_roof_line_distance": "support_interface_line_distance",
+    "support_roof_line_width": "support_interface_line_width",
+    "support_roof_pattern": "support_interface_pattern"
 }
 
 ##  How to translate variants of specific machines from the old version to the
@@ -146,32 +153,11 @@ class VersionUpgrade21to22(VersionUpgrade):
         for key, value in settings.items():
             if key == "fill_perimeter_gaps": #Setting is removed.
                 del settings[key]
-            elif key == "remove_overlapping_walls_0_enabled": #Setting is functionally replaced.
-                del settings[key]
-                settings["travel_compensate_overlapping_walls_0_enabled"] = value
-            elif key == "remove_overlapping_walls_enabled": #Setting is functionally replaced.
-                del settings[key]
-                settings["travel_compensate_overlapping_walls_enabled"] = value
-            elif key == "remove_overlapping_walls_x_enabled": #Setting is functionally replaced.
-                del settings[key]
-                settings["travel_compensate_overlapping_walls_x_enabled"] = value
             elif key == "retraction_combing": #Combing was made into an enum instead of a boolean.
                 settings[key] = "off" if (value == "False") else "all"
-            elif key == "retraction_hop": #Setting key was changed.
+            elif key in _setting_name_translations:
                 del settings[key]
-                settings["retraction_hop_enabled"] = value
-            elif key == "skirt_minimal_length": #Setting key was changed.
-                del settings[key]
-                settings["skirt_brim_minimal_length"] = value
-            elif key == "skirt_line_width": #Setting key was changed.
-                del settings[key]
-                settings["skirt_brim_line_width"] = value
-            elif key == "skirt_speed": #Setting key was changed.
-                del settings[key]
-                settings["skirt_brim_speed"] = value
-            elif key == "speed_support_lines": #Setting key was changed.
-                del settings[key]
-                settings["speed_support_infill"] = value
+                settings[_setting_name_translations[key]] = value
         return settings
 
     ##  Translates a setting name for the change from Cura 2.1 to 2.2.
