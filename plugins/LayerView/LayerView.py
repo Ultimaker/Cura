@@ -86,8 +86,7 @@ class LayerView(View):
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._ghost_shader.setUniformValue("u_color", Color(0, 0, 0, 64))
-
+            self._ghost_shader.setUniformValue("u_color", Color(32, 32, 32, 96))
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
             # However, it is somewhat relevant when the node is selected, so do render it then.
@@ -96,13 +95,7 @@ class LayerView(View):
 
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
-                    renderer.queueNode(node,
-                                       shader = self._ghost_shader,
-                                       type = RenderBatch.RenderType.Transparent                    )
-
-        for node in DepthFirstIterator(scene.getRoot()):
-            if type(node) is SceneNode:
-                if node.getMeshData() and node.isVisible():
+                    renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
                     layer_data = node.callDecoration("getLayerData")
                     if not layer_data:
                         continue
@@ -118,13 +111,13 @@ class LayerView(View):
                             end += counts
 
                         # This uses glDrawRangeElements internally to only draw a certain range of lines.
-                        renderer.queueNode(node, mesh = layer_data, mode = RenderBatch.RenderMode.Lines, range = (start, end))
+                        renderer.queueNode(node, mesh = layer_data, mode = RenderBatch.RenderMode.Lines, overlay = True, range = (start, end))
 
                     if self._current_layer_mesh:
-                        renderer.queueNode(node, mesh = self._current_layer_mesh)
+                        renderer.queueNode(node, mesh = self._current_layer_mesh, overlay = True)
 
                     if self._current_layer_jumps:
-                        renderer.queueNode(node, mesh = self._current_layer_jumps)
+                        renderer.queueNode(node, mesh = self._current_layer_jumps, overlay = True)
 
     def setLayer(self, value):
         if self._current_layer_num != value:
