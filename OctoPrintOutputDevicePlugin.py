@@ -10,7 +10,7 @@ import time
 
 ##      This plugin handles the connection detection & creation of output device objects for OctoPrint-connected printers.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
-#       If we discover a printer that has the same key as the active machine instance a connection is made.
+#       If we discover an instance that has the same key as the active machine instance a connection is made.
 @signalemitter
 class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     def __init__(self):
@@ -45,7 +45,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         self._browser = None
         self._zero_conf.close()
 
-    def getPrinters(self):
+    def getInstances(self):
         return self._instances
 
     def reCheckConnections(self):
@@ -56,7 +56,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         for key in self._instances:
             if key == global_container_stack.getMetaDataEntry("octoprint_id"):
                 self._instances[key].setApiKey(global_container_stack.getMetaDataEntry("octoprint_api_key", ""))
-                self._instances[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+                self._instances[key].connectionStateChanged.connect(self._onInstanceConnectionStateChanged)
                 self._instances[key].connect()
             else:
                 if self._instances[key].isConnected():
@@ -64,23 +64,23 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addInstance(self, name, address, properties):
-        printer = OctoPrintOutputDevice.OctoPrintOutputDevice(name, address, properties)
-        self._instances[printer.getKey()] = printer
+        instance = OctoPrintOutputDevice.OctoPrintOutputDevice(name, address, properties)
+        self._instances[instance.getKey()] = instance
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("octoprint_id"):
-            printer.setApiKey(global_container_stack.getMetaDataEntry("octoprint_api_key", ""))
-            printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
-            printer.connect()
+        if global_container_stack and instance.getKey() == global_container_stack.getMetaDataEntry("octoprint_id"):
+            instance.setApiKey(global_container_stack.getMetaDataEntry("octoprint_api_key", ""))
+            instance.connectionStateChanged.connect(self._onInstanceConnectionStateChanged)
+            instance.connect()
 
     def removeInstance(self, name):
-        printer = self._instances.pop(name, None)
-        if printer:
-            if printer.isConnected():
-                printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
-                printer.disconnect()
+        instance = self._instances.pop(name, None)
+        if instance:
+            if instance.isConnected():
+                instance.connectionStateChanged.disconnect(self._onInstanceConnectionStateChanged)
+                instance.disconnect()
 
-    ##  Handler for when the connection state of one of the detected printers changes
-    def _onPrinterConnectionStateChanged(self, key):
+    ##  Handler for when the connection state of one of the detected instances changes
+    def _onInstanceConnectionStateChanged(self, key):
         if key not in self._instances:
             return
 

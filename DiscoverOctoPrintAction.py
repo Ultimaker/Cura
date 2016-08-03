@@ -47,8 +47,8 @@ class DiscoverOctoPrintAction(MachineAction):
     @pyqtProperty("QVariantList", notify = instancesChanged)
     def discoveredInstances(self):
         if self._network_plugin:
-            printers = self._network_plugin.getPrinters()
-            return [printers[printer] for printer in printers]
+            instances = self._network_plugin.getInstances()
+            return [instances[instance] for instance in instances]
         else:
             return []
 

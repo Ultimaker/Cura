@@ -106,7 +106,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def setApiKey(self, api_key):
         self._api_key = api_key
 
-    ##  Name of the printer (as returned from the zeroConf properties)
+    ##  Name of the instance (as returned from the zeroConf properties)
     @pyqtProperty(str, constant = True)
     def name(self):
         return self._key
@@ -116,7 +116,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def octoprintVersion(self):
         return self._properties.get(b"version", b"").decode("utf-8")
 
-    ## IPadress of this printer
+    ## IPadress of this instance
     @pyqtProperty(str, constant=True)
     def ipAddress(self):
         return self._address
@@ -132,9 +132,9 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                Logger.log("d", "We did not receive a response for %s seconds, so it seems OctoPrint is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
-                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your network-connections."))
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with OctoPrint was lost. Check your network-connections."))
                 self._connection_message.show()
                 self.setConnectionState(ConnectionState.error)
 
@@ -171,18 +171,18 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
 
-    ##  Start requesting data from printer
+    ##  Start requesting data from the instance
     def connect(self):
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         self._update_camera()
-        Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
+        Logger.log("d", "Connection with instance %s with ip %s started", self._key, self._address)
         self._update_timer.start()
         self._camera_timer.start()
 
-    ##  Stop requesting data from printer
+    ##  Stop requesting data from the instance
     def disconnect(self):
-        Logger.log("d", "Connection with printer %s with ip %s stopped", self._key, self._address)
+        Logger.log("d", "Connection with instance %s with ip %s stopped", self._key, self._address)
         self.close()
 
     newImage = pyqtSignal()
@@ -220,7 +220,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             return
 
         if self.jobState != "ready" and self.jobState != "":
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is printing. Unable to start a new job."))
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "OctoPrint is printing. Unable to start a new job."))
             self._error_message.show()
             return
         try:
@@ -268,7 +268,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         except IOError:
             self._progress_message.hide()
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data to printer. Is another job still active?"))
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data to OctoPrint."))
             self._error_message.show()
         except Exception as e:
             self._progress_message.hide()
@@ -277,13 +277,13 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     ##  Handler for all requests that have finished.
     def _onFinished(self, reply):
         if reply.error() == QNetworkReply.TimeoutError:
-            Logger.log("w", "Received a timeout on a request to the printer")
+            Logger.log("w", "Received a timeout on a request to the instance")
             self._connection_state_before_timeout = self._connection_state
             self.setConnectionState(ConnectionState.error)
             return
 
         if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  #  There was a timeout, but we got a correct answer again.
-            Logger.log("d", "We got a response from the server after %s of silence", time() - self._last_response_time )
+            Logger.log("d", "We got a response from the instance after %s of silence", time() - self._last_response_time )
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
 
@@ -310,16 +310,16 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                     bed_temperature = json_data["temperature"]["bed"]["actual"]
                     self._setBedTemperature(bed_temperature)
 
-                    printer_state = "offline"
+                    job_state = "offline"
                     if json_data["state"]["flags"]["error"]:
-                        printer_state = "error"
+                        job_state = "error"
                     elif json_data["state"]["flags"]["paused"]:
-                        printer_state = "paused"
+                        job_state = "paused"
                     elif json_data["state"]["flags"]["printing"]:
-                        printer_state = "printing"
+                        job_state = "printing"
                     elif json_data["state"]["flags"]["ready"]:
-                        printer_state = "ready"
-                    self._updateJobState(printer_state)
+                        job_state = "ready"
+                    self._updateJobState(job_state)
                 else:
                     pass  # TODO: Handle errors
 
