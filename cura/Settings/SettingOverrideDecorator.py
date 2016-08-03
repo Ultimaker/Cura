@@ -43,7 +43,6 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._updateNextStack()
 
     def __deepcopy__(self, memo):
-        print("deepcopy settingoverridedecorator")
         ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
         ## Copy the instance
