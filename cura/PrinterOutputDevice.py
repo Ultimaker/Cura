@@ -118,7 +118,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._error_text = error_text
             self.errorTextChanged.emit()
 
-    @pyqtProperty(str, notify = acceptsCommandsChanged)
+    @pyqtProperty(bool, notify = acceptsCommandsChanged)
     def acceptsCommands(self):
         return self._accepts_commands
 
