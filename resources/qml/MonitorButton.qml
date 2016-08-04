@@ -15,13 +15,14 @@ Rectangle
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property real progress: printerConnected ? Cura.MachineManager.printerOutputDevices[0].progress : 0
     property int backendState: UM.Backend.state
 
     property variant statusColor:
     {
-        if(!printerConnected)
-            return UM.Theme.getColor("status_offline");
+        if(!printerConnected || !printerAcceptsCommands)
+            return UM.Theme.getColor("text");
 
         switch(Cura.MachineManager.printerOutputDevices[0].jobState)
         {
@@ -49,7 +50,9 @@ Rectangle
     property string statusText:
     {
         if(!printerConnected)
-            return catalog.i18nc("@label:MonitorStatus", "Not connected to a printer")
+            return catalog.i18nc("@label:MonitorStatus", "Not connected to a printer");
+        if(!printerAcceptsCommands)
+            return catalog.i18nc("@label:MonitorStatus", "Printer does not accept commands");
 
         var printerOutputDevice = Cura.MachineManager.printerOutputDevices[0]
         switch(printerOutputDevice.jobState)
@@ -253,7 +256,7 @@ Rectangle
                             return UM.Theme.getColor("action_button_text");
                     }
                     font: UM.Theme.getFont("action_button")
-                    text: control.text;
+                    text: control.text
                 }
             }
         label: Item { }
