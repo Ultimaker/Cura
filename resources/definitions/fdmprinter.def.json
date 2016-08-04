@@ -2270,7 +2270,7 @@
                     "description": "Connect the ZigZags. This will increase the strength of the zig zag support structure.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "support_enable and (extruderValue(support_extruder_nr, 'support_pattern') == \"zigzag\")",
+                    "enabled": "support_enable and (support_pattern == 'zigzag')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2341,7 +2341,7 @@
                             "value": "0.1 if support_type == 'everywhere' else 0",
                             "global_inherits_stack": "support_extruder_nr",
                             "type": "float",
-                            "enabled": "support_enable and extruderValue(support_extruder_nr, 'support_type') == 'everywhere'",
+                            "enabled": "support_enable and support_type == 'everywhere'",
                             "settable_per_mesh": true
                         }
                     }
