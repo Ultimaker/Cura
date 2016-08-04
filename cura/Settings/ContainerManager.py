@@ -15,6 +15,7 @@ import UM.MimeTypeDatabase
 import UM.Logger
 
 from .ExtruderManager import ExtruderManager
+from .MachineManager import MachineManager
 
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
@@ -359,13 +360,17 @@ class ContainerManager(QObject):
 
         global_quality_changes = global_stack.findContainer(type = "quality_changes")
         if not global_quality_changes or global_quality_changes.isReadOnly():
+            UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
             return False
+
+        MachineManager.getInstance().blurSettings.emit()
 
         containers_to_merge.append((global_quality_changes, global_stack.getTop()))
 
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             quality_changes = extruder.findContainer(type = "quality_changes")
             if not quality_changes or quality_changes.isReadOnly():
+                UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
                 return False
 
             containers_to_merge.append((quality_changes, extruder.getTop()))
@@ -376,6 +381,8 @@ class ContainerManager(QObject):
     @pyqtSlot()
     def clearUserContainers(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        MachineManager.getInstance().blurSettings.emit()
 
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             extruder.getTop().clear()
