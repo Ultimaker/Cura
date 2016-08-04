@@ -7,7 +7,7 @@ import QtQuick.Controls 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
- Menu
+Menu
 {
     id: menu
 
@@ -15,7 +15,7 @@ import Cura 1.0 as Cura
     {
         model: UM.InstanceContainersModel
         {
-            filter: menu.getFilter({ "read_only": true });
+            filter: menu.getFilter({ "type": "quality" });
         }
 
         MenuItem
@@ -38,7 +38,7 @@ import Cura 1.0 as Cura
         id: customProfileInstantiator
         model: UM.InstanceContainersModel
         {
-            filter: menu.getFilter({ "read_only": false });
+            filter: menu.getFilter({ "type": "quality_changes", "extruder": null });
             onModelReset: customSeparator.visible = rowCount() > 0
         }
 
@@ -76,7 +76,6 @@ import Cura 1.0 as Cura
     function getFilter(initial_conditions)
     {
         var result = initial_conditions;
-        result.type = "quality"
 
         if(Cura.MachineManager.filterQualityByMachine)
         {
