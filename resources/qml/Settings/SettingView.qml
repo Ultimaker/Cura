@@ -94,6 +94,7 @@ ScrollView
             {
                 target: provider
                 property: "containerStackId"
+                when: model.settable_per_extruder || (inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
                 value:
                 {
                     if(inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
@@ -127,7 +128,7 @@ ScrollView
 
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key ? model.key : ""
-                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder" ]
+                watchedProperties: [ "value", "enabled", "state", "validationState" ]
                 storeIndex: 0
             }
 
