@@ -253,6 +253,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._camera_timer.stop()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
+        if self._progress != 0:
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
+            self._error_message.show()
+            return
+        elif self._authentication_state != AuthState.Authenticated:
+            self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
+                                                                         "Not authenticated to print with this machine. Unable to start a new job."))
+            self._not_authenticated_message.show()
+            return
+
         Application.getInstance().showPrintMonitor.emit(True)
         self._print_finished = True
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -327,15 +337,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   This function can fail to actually start a print due to not being authenticated or another print already
     #   being in progress.
     def startPrint(self):
-        if self._progress != 0:
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
-            self._error_message.show()
-            return
-        elif self._authentication_state != AuthState.Authenticated:
-            self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
-                                                                         "Not authenticated to print with this machine. Unable to start a new job."))
-            self._not_authenticated_message.show()
-            return
         try:
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
