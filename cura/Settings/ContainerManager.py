@@ -379,6 +379,8 @@ class ContainerManager(QObject):
 
         UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
 
+        return True
+
     @pyqtSlot()
     def clearUserContainers(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
