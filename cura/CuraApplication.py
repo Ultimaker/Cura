@@ -98,6 +98,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
+        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)

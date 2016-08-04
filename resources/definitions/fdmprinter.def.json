@@ -1089,6 +1089,7 @@
                     "description": "The temperature used for the heated bed. Set at 0 to pre-heat the printer manually.",
                     "unit": "°C",
                     "type": "float",
+                    "resolve": "sum(extruderValues('material_bed_temperature')) / len(extruderValues('material_bed_temperature'))",
                     "default_value": 60,
                     "minimum_value": "0",
                     "maximum_value_warning": "260",

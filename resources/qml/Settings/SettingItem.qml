@@ -28,6 +28,9 @@ Item {
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
     property var settablePerExtruder: propertyProvider.properties.settable_per_extruder
+    property var value: propertyProvider.properties.value
+    property var globalValue: globalPropertyProvider.properties.value
+    property var resolve: propertyProvider.properties.resolve
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -150,7 +153,15 @@ Item {
 
                 iconSource: UM.Theme.getIcon("link")
 
-                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders")) }
+                onEntered: {
+                    hoverTimer.stop();
+                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders") + ".";
+                    if ((resolve != "None") && (globalValue == null)) {
+                        // We come here if a setting has a resolve and the setting is not manually edited.
+                        tooltipText += " " + catalog.i18nc("@label", "The value is resolved from the individual value ") + value + ".";
+                    }
+                    base.showTooltip(tooltipText);
+                }
                 onExited: base.showTooltip(base.tooltipText);
             }
 
