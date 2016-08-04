@@ -43,24 +43,30 @@ Rectangle
     {
         if(!printerConnected)
         {
-            return catalog.i18nc("@label:", "Not connected to a printer")
-        } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "offline")
-        {
-            return catalog.i18nc("@label:", "Lost connection with the printer")
-        } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
-        {
-            return catalog.i18nc("@label:", "Printing...")
-        } else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
-        {
-            return catalog.i18nc("@label:", "Paused")
+            return catalog.i18nc("@label:MonitorStatus", "Not connected to a printer")
         }
-        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
+        var printerOutputDevice = Cura.MachineManager.printerOutputDevices[0]
+        if(printerOutputDevice.jobState == "offline")
         {
-            return catalog.i18nc("@label:", "Preparing...")
+            return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer")
+        } else if(printerOutputDevice.jobState == "printing")
+        {
+            return catalog.i18nc("@label:MonitorStatus", "Printing...")
+        } else if(printerOutputDevice.jobState == "paused")
+        {
+            return catalog.i18nc("@label:MonitorStatus", "Paused")
         }
-        else if(Cura.MachineManager.printerOutputDevices[0].jobState == "wait_cleanup")
+        else if(printerOutputDevice.jobState == "pre_print")
         {
-            return catalog.i18nc("@label:", "Waiting for cleanup...")
+            return catalog.i18nc("@label:MonitorStatus", "Preparing...")
+        }
+        else if(printerOutputDevice.jobState == "wait_cleanup")
+        {
+            return catalog.i18nc("@label:MonitorStatus", "Please remove the print")
+        }
+        else if(printerOutputDevice.jobState == "error")
+        {
+            return printerOutputDevice.errorText
         }
         else
         {
