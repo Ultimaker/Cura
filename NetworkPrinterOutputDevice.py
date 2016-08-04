@@ -477,9 +477,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         if self._print_finished:
                             state = "printing"
                         else:
+                            self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Aborting print..."))
                             state = "error"
                     if state == "wait_cleanup" and not self._print_finished:
                         # Keep showing the "aborted" error state until after the buildplate has been cleaned
+                        self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Print aborted. Please check the printer"))
                         state = "error"
 
                     self._updateJobState(state)
@@ -489,6 +491,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 elif status_code == 404:
                     self.setProgress(0)  # No print job found, so there can't be progress or other data.
                     self._updateJobState("")
+                    self.setErrorText("")
                     self.setTimeElapsed(0)
                     self.setTimeTotal(0)
                     self.setJobName("")
