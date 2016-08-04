@@ -135,12 +135,11 @@ class ContainerManager(QObject):
 
         merge = containers[0]
 
-        if type(merge) != type(merge_into):
+        if not isinstance(merge, type(merge_into)):
             UM.Logger.log("w", "Cannot merge two containers of different types")
             return False
 
-        for key in merge.getAllKeys():
-            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+        self._performMerge(merge_into, merge)
 
         return True
 
@@ -350,6 +349,22 @@ class ContainerManager(QObject):
 
         return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
 
+    # Factory function, used by QML
+    @staticmethod
+    def createContainerManager(engine, js_engine):
+        return ContainerManager()
+
+    def _performMerge(self, merge_into, merge):
+        assert isinstance(merge, type(merge_into))
+
+        if merge == merge_into:
+            return
+
+        for key in merge.getAllKeys():
+            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+
+        merge.clear()
+
     def _updateContainerNameFilters(self):
         self._container_name_filters = {}
         for plugin_id, container_type in UM.Settings.ContainerRegistry.getContainerTypes():
@@ -393,8 +408,3 @@ class ContainerManager(QObject):
 
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
-
-    # Factory function, used by QML
-    @staticmethod
-    def createContainerManager(engine, js_engine):
-        return ContainerManager()
