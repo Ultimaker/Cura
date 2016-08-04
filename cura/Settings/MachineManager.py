@@ -438,16 +438,6 @@ class MachineManager(QObject):
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.getTop().setProperty(key, "value", new_value)
 
-    @pyqtSlot(result = str)
-    def newQualityContainerFromQualityAndUser(self):
-        new_container_id = self.duplicateContainer(self.activeQualityId)
-        if new_container_id == "":
-            return
-        self.blurSettings.emit()
-        self.updateQualityContainerFromUserContainer(new_container_id)
-        self.setActiveQuality(new_container_id)
-        return new_container_id
-
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
         if not self._active_container_stack:
@@ -512,29 +502,6 @@ class MachineManager(QObject):
             if containers:
                 self.setActiveQuality(containers[0].getId())
                 self.activeQualityChanged.emit()
-
-    @pyqtSlot(str)
-    @pyqtSlot()
-    def updateQualityContainerFromUserContainer(self, quality_id = None):
-        if not self._active_container_stack:
-            return
-
-        if quality_id:
-            quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id, type = "quality")
-            if quality:
-                quality = quality[0]
-        else:
-            quality = self._active_container_stack.findContainer({"type": "quality"})
-
-        if not quality:
-            return
-
-        user_settings = self._active_container_stack.getTop()
-
-        for key in user_settings.getAllKeys():
-            quality.setProperty(key, "value", user_settings.getProperty(key, "value"))
-        self.clearUserSettings()  # As all users settings are noq a quality, remove them.
-
 
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
