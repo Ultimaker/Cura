@@ -93,10 +93,10 @@ class CuraApplication(QtApplication):
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         # Need to do this before ContainerRegistry tries to load the machines
-        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
