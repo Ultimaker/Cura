@@ -211,6 +211,7 @@ class MachineManager(QObject):
         if self._global_container_stack:
             self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
 
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.disconnect(self._onMaterialNameChanged)
@@ -227,6 +228,7 @@ class MachineManager(QObject):
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
             self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
+            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.connect(self._onMaterialNameChanged)
 
@@ -237,9 +239,11 @@ class MachineManager(QObject):
         self.blurSettings.emit()  # Ensure no-one has focus.
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+            self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_container_stack:
             self._active_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
+            self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
         else:
             self._active_container_stack = self._global_container_stack
         self._active_stack_valid = not self._checkStackForErrors(self._active_container_stack)
@@ -248,14 +252,15 @@ class MachineManager(QObject):
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
 
-
-
         if container_type == "material":
             self.activeMaterialChanged.emit()
         elif container_type == "variant":
             self.activeVariantChanged.emit()
         elif container_type == "quality":
             self.activeQualityChanged.emit()
+
+    def _onPropertyChanged(self, key, property_name):
+        self.activeStackChanged.emit()
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id):
@@ -333,11 +338,17 @@ class MachineManager(QObject):
     ##  Check if the global_container has instances in the user container
     @pyqtProperty(bool, notify = activeStackChanged)
     def hasUserSettings(self):
-        if not self._active_container_stack:
+        if not self._global_container_stack:
             return False
 
-        user_settings = self._active_container_stack.getTop().findInstances(**{})
-        return len(user_settings) != 0
+        if self._global_container_stack.getTop().findInstances():
+            return True
+
+        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+            if stack.getTop().findInstances():
+                return True
+
+        return False
 
     ##  Check if the global profile does not contain error states
     #   Note that the _active_stack_valid is cached due to performance issues
