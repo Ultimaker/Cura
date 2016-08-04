@@ -383,7 +383,6 @@ class MachineManager(QObject):
             current_settings_instance_container.setDefinition(definitions[0])
             container_registry.addContainer(current_settings_instance_container)
 
-            # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definition)
             if variant_instance_container:
                 new_global_stack.addContainer(variant_instance_container)
@@ -391,6 +390,8 @@ class MachineManager(QObject):
                 new_global_stack.addContainer(material_instance_container)
             if quality_instance_container:
                 new_global_stack.addContainer(quality_instance_container)
+
+            new_global_stack.addContainer(self._empty_quality_changes_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
             ExtruderManager.getInstance().addMachineExtruders(definition, new_global_stack.getId())
