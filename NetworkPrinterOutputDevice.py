@@ -162,9 +162,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \param auth_state \type{AuthState} Enum value representing the new auth state
     def setAuthenticationState(self, auth_state):
         if auth_state == AuthState.AuthenticationRequested:
+            self.setAcceptsCommands(False)
             self._authentication_requested_message.show()
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
+            self.setAcceptsCommands(True)
             self._authentication_requested_message.hide()
             authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
             authentication_succeeded_message.show()
@@ -176,6 +178,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Once we are authenticated we need to send all material profiles.
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
+            self.setAcceptsCommands(False)
             self._authentication_requested_message.hide()
             authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed. This can be either due to a timeout or the printer refused the request."))
             authentication_failed_message.show()
