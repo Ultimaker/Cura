@@ -381,6 +381,28 @@ class ContainerManager(QObject):
             extruder.getTop().clear()
 
         global_stack.getTop().clear()
+
+    @pyqtSlot()
+    def createQualityChanges(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        user_container = global_stack.getTop()
+        quality_container = global_stack.findContainer(type = "quality")
+        if not quality_container:
+            return
+
+        unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_container.getName())
+        unique_id = unique_name.lower()
+        unique_id.replace(" ", "_")
+
+        quality_changes = user_container.duplicate()
+        quality_changes.setMetaDataEntry("type", "quality_changes")
+        quality_changes.setMetaDataEntry("quality_base", quality_container.getId())
+
+        UM.Settings.ContainerRegistry.getInstance().addContainer(quality_changes)
+
+
+
     # Factory function, used by QML
     @staticmethod
     def createContainerManager(engine, js_engine):
