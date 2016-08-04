@@ -235,6 +235,9 @@ class ExtruderManager(QObject):
 
         container_stack.addContainer(quality)
 
+        empty_quality_changes = container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+        container_stack.addContainer(empty_quality_changes)
+
         user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
         if user_profile: # There was already a user profile, loaded from settings.
             user_profile = user_profile[0]

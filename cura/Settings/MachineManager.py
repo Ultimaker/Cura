@@ -26,6 +26,10 @@ class MachineManager(QObject):
         self._global_container_stack = None
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self.globalContainerChanged.connect(self.activeMaterialChanged)
+        self.globalContainerChanged.connect(self.activeVariantChanged)
+        self.globalContainerChanged.connect(self.activeQualityChanged)
+
         self._active_stack_valid = None
         self._onGlobalContainerChanged()
 
@@ -33,9 +37,7 @@ class MachineManager(QObject):
         self._onActiveExtruderStackChanged()
 
         ##  When the global container is changed, active material probably needs to be updated.
-        self.globalContainerChanged.connect(self.activeMaterialChanged)
-        self.globalContainerChanged.connect(self.activeVariantChanged)
-        self.globalContainerChanged.connect(self.activeQualityChanged)
+
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeMaterialChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeVariantChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeQualityChanged)
@@ -47,6 +49,7 @@ class MachineManager(QObject):
         self._empty_variant_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_variant")[0]
         self._empty_material_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
         self._empty_quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality")[0]
+        self._empty_quality_changes_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality_changes")[0]
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
@@ -196,107 +199,18 @@ class MachineManager(QObject):
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
 
-    def _onGlobalPropertyChanged(self, key, property_name):
-        if property_name == "value":
-            ## We can get recursion issues. So we store a list of keys that we are still handling to prevent this.
-            if key in self._global_event_keys:
-                return
-            self._global_event_keys.add(key)
-            self.globalValueChanged.emit()
 
-            if self._active_container_stack and self._active_container_stack != self._global_container_stack:
-                # Make the global current settings mirror the stack values appropriate for this setting
-                if self._active_container_stack.getProperty("extruder_nr", "value") == int(self._active_container_stack.getProperty(key, "global_inherits_stack")):
 
-                    new_value = self._active_container_stack.getProperty(key, "value")
-                    self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
-                # Global-only setting values should be set on all extruders and the global stack
-                if not self._global_container_stack.getProperty(key, "settable_per_extruder"):
-                    extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-                    target_stack_position = int(self._active_container_stack.getProperty(key, "global_inherits_stack"))
-                    if target_stack_position == -1:  # Prevent -1 from selecting wrong stack.
-                        target_stack = self._active_container_stack
-                    else:
-                        target_stack = extruder_stacks[target_stack_position]
-                    new_value = target_stack.getProperty(key, "value")
-                    target_stack_has_user_value = target_stack.getTop().getInstance(key) != None
-                    for extruder_stack in extruder_stacks:
-                        if extruder_stack != target_stack:
-                            if target_stack_has_user_value:
-                                extruder_stack.getTop().setProperty(key, "value", new_value)
-                            else:
-                                # Remove from the value from the other stacks as well, unless the
-                                # top value from the other stacklevels is different than the new value
-                                for container in extruder_stack.getContainers():
-                                    if container.__class__ == UM.Settings.InstanceContainer and container.getInstance(key) != None:
-                                        if container.getProperty(key, "value") != new_value:
-                                            # It could be that the setting needs to be removed instead of updated.
-                                            temp = extruder_stack
-                                            containers = extruder_stack.getContainers()
-                                            # Ensure we have the entire 'chain'
-                                            while temp.getNextStack():
-                                                temp = temp.getNextStack()
-                                                containers.extend(temp.getContainers())
-                                            instance_needs_removal = False
 
-                                            if len(containers) > 1:
-                                                for index in range(1, len(containers)):
-                                                    deeper_container = containers[index]
-                                                    if deeper_container.getProperty(key, "value") is None:
-                                                        continue  # Deeper container does not have the value, so continue.
-                                                    if deeper_container.getProperty(key, "value") == new_value:
-                                                        # Removal will result in correct value, so do that.
-                                                        # We do this to prevent the reset from showing up unneeded.
-                                                        instance_needs_removal = True
-                                                        break
-                                                    else:
-                                                        # Container has the value, but it's not the same. Stop looking.
-                                                        break
-                                            if instance_needs_removal:
-                                                extruder_stack.getTop().removeInstance(key)
-                                            else:
-                                                extruder_stack.getTop().setProperty(key, "value", new_value)
-                                        else:
-                                            # Check if we really need to remove something.
-                                            if extruder_stack.getProperty(key, "value") != new_value:
-                                                extruder_stack.getTop().removeInstance(key)
-                                        break
-                    if self._global_container_stack.getProperty(key, "value") != new_value:
-                        self._global_container_stack.getTop().setProperty(key, "value", new_value)
-            self._global_event_keys.remove(key)
 
-        if property_name == "global_inherits_stack":
-            if self._active_container_stack and self._active_container_stack != self._global_container_stack:
-                # Update the global user value when the "global_inherits_stack" function points to a different stack
-                extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-                target_stack_position = int(self._active_container_stack.getProperty(key, "global_inherits_stack"))
-                if target_stack_position == -1:  # Prevent -1 from selecting wrong stack.
-                    target_stack = self._active_container_stack
-                else:
-                    target_stack = extruder_stacks[target_stack_position]
 
-                new_value = target_stack.getProperty(key, "value")
-                if self._global_container_stack.getProperty(key, "value") != new_value:
-                    self._global_container_stack.getTop().setProperty(key, "value", new_value)
 
-        if property_name == "validationState":
-            if self._active_stack_valid:
-                changed_validation_state = self._active_container_stack.getProperty(key, property_name)
-                if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
-                    self._active_stack_valid = False
-                    self.activeValidationChanged.emit()
-            else:
-                has_errors = self._checkStackForErrors(self._active_container_stack)
-                if not has_errors:
-                    self._active_stack_valid = True
-                    self.activeValidationChanged.emit()
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
-            self._global_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
 
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.disconnect(self._onMaterialNameChanged)
@@ -313,7 +227,6 @@ class MachineManager(QObject):
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
             self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
-            self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.connect(self._onMaterialNameChanged)
 
@@ -324,11 +237,9 @@ class MachineManager(QObject):
         self.blurSettings.emit()  # Ensure no-one has focus.
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
-            self._active_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_container_stack:
             self._active_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
-            self._active_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
         else:
             self._active_container_stack = self._global_container_stack
         self._active_stack_valid = not self._checkStackForErrors(self._active_container_stack)
@@ -337,16 +248,7 @@ class MachineManager(QObject):
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
 
-        if self._active_container_stack and self._active_container_stack != self._global_container_stack:
-            if int(self._active_container_stack.getProperty("extruder_nr", "value")) == 0:
-                global_container = self._global_container_stack.findContainer({"type": container_type})
-                if global_container and global_container != container:
-                    container_index = self._global_container_stack.getContainerIndex(global_container)
-                    self._global_container_stack.replaceContainer(container_index, container)
 
-            for key in container.getAllKeys():
-                # Make sure the values in this profile are distributed to other stacks if necessary
-                self._onGlobalPropertyChanged(key, "value")
 
         if container_type == "material":
             self.activeMaterialChanged.emit()
@@ -382,7 +284,6 @@ class MachineManager(QObject):
             current_settings_instance_container.setDefinition(definitions[0])
             container_registry.addContainer(current_settings_instance_container)
 
-            # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definition)
             if variant_instance_container:
                 new_global_stack.addContainer(variant_instance_container)
@@ -390,6 +291,8 @@ class MachineManager(QObject):
                 new_global_stack.addContainer(material_instance_container)
             if quality_instance_container:
                 new_global_stack.addContainer(quality_instance_container)
+
+            new_global_stack.addContainer(self._empty_quality_changes_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
             ExtruderManager.getInstance().addMachineExtruders(definition, new_global_stack.getId())
@@ -492,6 +395,9 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityName(self):
         if self._active_container_stack:
+            quality = self._active_container_stack.findContainer({"type": "quality_changes"})
+            if quality and quality != self._empty_quality_changes_container:
+                return quality.getName()
             quality = self._active_container_stack.findContainer({"type": "quality"})
             if quality:
                 return quality.getName()
@@ -499,8 +405,11 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityId(self):
-        if self._active_container_stack:
-            quality = self._active_container_stack.findContainer({"type": "quality"})
+        if self._global_container_stack:
+            quality = self._global_container_stack.findContainer({"type": "quality_changes"})
+            if quality and quality != self._empty_quality_changes_container:
+                return quality.getId()
+            quality = self._global_container_stack.findContainer({"type": "quality"})
             if quality:
                 return quality.getId()
         return ""
@@ -525,16 +434,6 @@ class MachineManager(QObject):
         for extruder_stack in stacks:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.getTop().setProperty(key, "value", new_value)
-
-    @pyqtSlot(result = str)
-    def newQualityContainerFromQualityAndUser(self):
-        new_container_id = self.duplicateContainer(self.activeQualityId)
-        if new_container_id == "":
-            return
-        self.blurSettings.emit()
-        self.updateQualityContainerFromUserContainer(new_container_id)
-        self.setActiveQuality(new_container_id)
-        return new_container_id
 
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
@@ -602,29 +501,6 @@ class MachineManager(QObject):
                 self.activeQualityChanged.emit()
 
     @pyqtSlot(str)
-    @pyqtSlot()
-    def updateQualityContainerFromUserContainer(self, quality_id = None):
-        if not self._active_container_stack:
-            return
-
-        if quality_id:
-            quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id, type = "quality")
-            if quality:
-                quality = quality[0]
-        else:
-            quality = self._active_container_stack.findContainer({"type": "quality"})
-
-        if not quality:
-            return
-
-        user_settings = self._active_container_stack.getTop()
-
-        for key in user_settings.getAllKeys():
-            quality.setProperty(key, "value", user_settings.getProperty(key, "value"))
-        self.clearUserSettings()  # As all users settings are noq a quality, remove them.
-
-
-    @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
         if not containers or not self._active_container_stack:
@@ -669,32 +545,65 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
-        if not containers or not self._active_container_stack:
+        if not containers or not self._global_container_stack:
             return
 
-        old_quality = self._active_container_stack.findContainer({"type": "quality"})
-        if old_quality and old_quality != containers[0]:
-            old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+        quality_container = None
+        quality_changes_container = self._empty_quality_changes_container
 
-            quality_index = self._active_container_stack.getContainerIndex(old_quality)
+        container_type = containers[0].getMetaDataEntry("type")
 
-            self._active_container_stack.replaceContainer(quality_index, containers[0])
-
-            containers[0].nameChanged.connect(self._onQualityNameChanged)
-
-            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-                # Ask the user if the user profile should be cleared or not (discarding the current settings)
-                # In Simple Mode we assume the user always wants to keep the (limited) current settings
-                details = catalog.i18nc("@label", "You made changes to the following setting(s):")
-                user_settings = self._active_container_stack.getTop().findInstances(**{})
-                for setting in user_settings:
-                    details = details + "\n    " + setting.definition.label
-
-                Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
-                                                     catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
-                                                     buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
+        if container_type == "quality":
+            quality_container = containers[0]
+        elif container_type == "quality_changes":
+            quality_changes_container = containers[0]
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_changes_container.getMetaDataEntry("quality"))
+            if not containers:
+                Logger.log("e", "Could not find quality %s for changes %s, not changing quality", quality_changes_container.getMetaDataEntry("quality"), quality_changes_container.getId())
+                return
+            quality_container = containers[0]
         else:
-            Logger.log("w", "While trying to set the active quality, no quality was found to replace.")
+            Logger.log("e", "Tried to set quality to a container that is not of the right type")
+            return
+
+        stacks = [ s for s in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()) ]
+        stacks.insert(0, self._global_container_stack)
+
+        for stack in stacks:
+            extruder_id = stack.getId() if stack != self._global_container_stack else None
+            stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_container.getName(), extruder = extruder_id)
+            if not stack_quality:
+                stack_quality = quality_container
+            else:
+                stack_quality = stack_quality[0]
+
+            if quality_changes_container != self._empty_quality_changes_container:
+                stack_quality_changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_changes_container.getName(), extruder = extruder_id)[0]
+            else:
+                stack_quality_changes = self._empty_quality_changes_container
+
+            old_quality = stack.findContainer(type = "quality")
+            old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+            old_changes = stack.findContainer(type = "quality_changes")
+            old_changes.nameChanged.disconnect(self._onQualityNameChanged)
+
+            stack.replaceContainer(stack.getContainerIndex(old_quality), stack_quality)
+            stack.replaceContainer(stack.getContainerIndex(old_changes), stack_quality_changes)
+
+            stack_quality.nameChanged.connect(self._onQualityNameChanged)
+            stack_quality_changes.nameChanged.connect(self._onQualityNameChanged)
+
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            # Ask the user if the user profile should be cleared or not (discarding the current settings)
+            # In Simple Mode we assume the user always wants to keep the (limited) current settings
+            details = catalog.i18nc("@label", "You made changes to the following setting(s):")
+            user_settings = self._active_container_stack.getTop().findInstances(**{})
+            for setting in user_settings:
+                details = details + "\n    " + setting.definition.label
+
+            Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
+                                                 catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
+                                                 buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
 
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:

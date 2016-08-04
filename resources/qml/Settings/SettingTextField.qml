@@ -111,6 +111,9 @@ SettingItem
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
                         // (if user has explicitly set this).
+                        if (definition.key == "material_bed_temperature") {
+                            CuraApplication.log("## global value " + globalPropertyProvider.properties.value);
+                        }
                         return (globalPropertyProvider.properties.value != null) ? globalPropertyProvider.properties.value : propertyProvider.properties.resolve;
                     } else {
                         return propertyProvider.properties.value;

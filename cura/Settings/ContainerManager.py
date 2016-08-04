@@ -14,6 +14,8 @@ import UM.Platform
 import UM.MimeTypeDatabase
 import UM.Logger
 
+import cura.Settings
+
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
 from UM.i18n import i18nCatalog
@@ -135,12 +137,11 @@ class ContainerManager(QObject):
 
         merge = containers[0]
 
-        if type(merge) != type(merge_into):
+        if not isinstance(merge, type(merge_into)):
             UM.Logger.log("w", "Cannot merge two containers of different types")
             return False
 
-        for key in merge.getAllKeys():
-            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+        self._performMerge(merge_into, merge)
 
         return True
 
@@ -350,6 +351,105 @@ class ContainerManager(QObject):
 
         return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
 
+    @pyqtSlot(result = bool)
+    def updateQualityChanges(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        containers_to_merge = []
+
+        global_quality_changes = global_stack.findContainer(type = "quality_changes")
+        if not global_quality_changes or global_quality_changes.isReadOnly():
+            UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
+            return False
+
+        cura.Settings.MachineManager.getInstance().blurSettings.emit()
+
+        containers_to_merge.append((global_quality_changes, global_stack.getTop()))
+
+        for extruder in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            quality_changes = extruder.findContainer(type = "quality_changes")
+            if not quality_changes or quality_changes.isReadOnly():
+                UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
+                return False
+
+            containers_to_merge.append((quality_changes, extruder.getTop()))
+
+        for merge_into, merge in containers_to_merge:
+            self._performMerge(merge_into, merge)
+
+    @pyqtSlot()
+    def clearUserContainers(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        cura.Settings.MachineManager.getInstance().blurSettings.emit()
+
+        for extruder in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            extruder.getTop().clear()
+
+        global_stack.getTop().clear()
+
+    @pyqtSlot(result = bool)
+    def createQualityChanges(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        quality_container = global_stack.findContainer(type = "quality")
+        if not quality_container:
+            UM.Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
+            return False
+
+        cura.Settings.MachineManager.getInstance().blurSettings.emit()
+
+        unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_container.getName())
+        unique_id = unique_name.lower()
+        unique_id.replace(" ", "_")
+
+        stacks = [ s for s in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()) ]
+        stacks.insert(0, global_stack)
+
+        for stack in stacks:
+            user_container = stack.getTop()
+            quality_container = stack.findContainer(type = "quality")
+            quality_changes_container = stack.findContainer(type = "quality_changes")
+            if not quality_container or not quality_changes_container:
+                UM.Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
+                return False
+
+            new_quality_changes = user_container.duplicate(stack.getId() + "_" + unique_id, unique_name)
+            new_quality_changes.setMetaDataEntry("type", "quality_changes")
+            new_quality_changes.addMetaDataEntry("quality", quality_container.getId())
+
+            if not global_stack.getMetaDataEntry("has_machine_quality"):
+                new_quality_changes.setDefinition(UM.Settings.ContainerRegistry.getInstance().findContainers(id = "fdmprinter")[0])
+
+            if global_stack.getMetaDataEntry("has_materials"):
+                material = stack.findContainer(type = "material")
+                new_quality_changes.addMetaDataEntry("material", material.getId())
+
+            UM.Settings.ContainerRegistry.getInstance().addContainer(new_quality_changes)
+
+            stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_quality_changes)
+            stack.getTop().clear()
+
+        return True
+
+    # Factory function, used by QML
+    @staticmethod
+    def createContainerManager(engine, js_engine):
+        return ContainerManager()
+
+    def _performMerge(self, merge_into, merge):
+        assert isinstance(merge, type(merge_into))
+
+        if merge == merge_into:
+            return
+
+        for key in merge.getAllKeys():
+            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+
+        merge.clear()
+
     def _updateContainerNameFilters(self):
         self._container_name_filters = {}
         for plugin_id, container_type in UM.Settings.ContainerRegistry.getContainerTypes():
@@ -393,8 +493,3 @@ class ContainerManager(QObject):
 
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
-
-    # Factory function, used by QML
-    @staticmethod
-    def createContainerManager(engine, js_engine):
-        return ContainerManager()

@@ -93,10 +93,10 @@ class CuraApplication(QtApplication):
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         # Need to do this before ContainerRegistry tries to load the machines
-        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
+        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
         SettingDefinition.addSettingType("extruder", None, str, Validator)
@@ -191,6 +191,10 @@ class CuraApplication(QtApplication):
         empty_quality_container._id = "empty_quality"
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+        empty_quality_changes_container = copy.deepcopy(empty_container)
+        empty_quality_changes_container._id = "empty_quality_changes"
+        empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+        ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         ContainerRegistry.getInstance().load()
 
@@ -311,7 +315,7 @@ class CuraApplication(QtApplication):
             path = None
             if instance_type == "material":
                 path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-            elif instance_type == "quality":
+            elif instance_type == "quality" or instance_type == "quality_changes":
                 path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
             elif instance_type == "user":
                 path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
@@ -923,3 +927,8 @@ class CuraApplication(QtApplication):
         self._additional_components[area_id].append(component)
 
         self.additionalComponentsChanged.emit(area_id)
+
+    @pyqtSlot(str)
+    def log(self, msg):
+        from UM.Logger import Logger
+        Logger.log("d", msg)
