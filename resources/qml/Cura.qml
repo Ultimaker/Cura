@@ -459,7 +459,8 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.MachineManager.newQualityContainerFromQualityAndUser();
+//             Cura.MachineManager.newQualityContainerFromQualityAndUser();
+            Cura.ContainerManager.createQualityChanges();
             preferences.setPage(4);
             preferences.show();
 
@@ -763,6 +764,10 @@ UM.MainWindow
         {
             addMachineDialog.visible = true
             addMachineDialog.firstRun = false
+        }
+        onClearAllFocus:
+        {
+            contentItem.focus = true
         }
     }
 
