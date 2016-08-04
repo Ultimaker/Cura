@@ -605,6 +605,8 @@ class MachineManager(QObject):
                                                  catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
                                                  buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
 
+        self.activeQualityChanged.emit()
+
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:
             # Yes, keep the settings in the user profile with this profile

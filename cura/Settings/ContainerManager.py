@@ -377,6 +377,8 @@ class ContainerManager(QObject):
         for merge_into, merge in containers_to_merge:
             self._performMerge(merge_into, merge)
 
+        cura.Settings.MachineManager.getInstance().activeQualityChanged.emit()
+
     @pyqtSlot()
     def clearUserContainers(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
@@ -432,6 +434,7 @@ class ContainerManager(QObject):
             stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_quality_changes)
             stack.getTop().clear()
 
+        cura.Settings.MachineManager.getInstance().activeQualityChanged.emit()
         return True
 
     # Factory function, used by QML
