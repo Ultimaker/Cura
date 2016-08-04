@@ -37,9 +37,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
-        self.setPriority(2) # Make sure the output device gets selected above local file output
-
         self._gcode = None
+        self._print_finished = True # _print_finsihed == False means we're halfway in a print
 
         #   This holds the full JSON file that was received from the last request.
         self._json_printer_state = None
@@ -57,6 +56,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
+        self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
@@ -254,6 +254,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         Application.getInstance().showPrintMonitor.emit(True)
+        self._print_finished = True
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
         # TODO: Implement all checks.
@@ -460,11 +461,27 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     ## If progress is 0 add a bit so another print can't be sent.
                     if progress == 0:
                         progress += 0.001
+                    elif progress == 1:
+                        self._print_finished = True
+                    else:
+                        self._print_finished = False
                     self.setProgress(progress * 100)
 
                     state = json_data["state"]
-                    if state == "none":
-                        state = ""
+
+                    # There is a short period after aborting or finishing a print where the printer
+                    # reports a "none" state (but the printer is not ready to receive a print)
+                    # If this happens before the print has reached progress == 1, the print has
+                    # been aborted.
+                    if state == "none" or state == "":
+                        if self._print_finished:
+                            state = "printing"
+                        else:
+                            state = "error"
+                    if state == "wait_cleanup" and not self._print_finished:
+                        # Keep showing the "aborted" error state until after the buildplate has been cleaned
+                        state = "error"
+
                     self._updateJobState(state)
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])
