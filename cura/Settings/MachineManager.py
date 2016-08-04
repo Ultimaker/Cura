@@ -47,6 +47,7 @@ class MachineManager(QObject):
         self._empty_variant_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_variant")[0]
         self._empty_material_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
         self._empty_quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality")[0]
+        self._empty_quality_changes_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality_changes")[0]
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
 

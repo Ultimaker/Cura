@@ -190,6 +190,10 @@ class CuraApplication(QtApplication):
         empty_quality_container._id = "empty_quality"
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+        empty_quality_changes_container = copy.deepcopy(empty_container)
+        empty_quality_changes_container._id = "empty_quality_changes"
+        empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+        ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         ContainerRegistry.getInstance().load()
 
