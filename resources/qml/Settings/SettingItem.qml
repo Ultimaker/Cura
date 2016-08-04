@@ -27,7 +27,6 @@ Item {
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var settablePerExtruder: propertyProvider.properties.settable_per_extruder
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -138,7 +137,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && base.settablePerExtruder != "True" && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && !definition.settable_per_extruder && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
