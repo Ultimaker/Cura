@@ -126,7 +126,8 @@ Rectangle
         id: abortButton
 
         visible: printerConnected
-        enabled: printerConnected && (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+        enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
+                 (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
 
         height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
@@ -173,7 +174,8 @@ Rectangle
         id: pauseButton
 
         visible: printerConnected
-        enabled: printerConnected && (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+        enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
+                 (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
 
         height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom

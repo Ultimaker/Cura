@@ -73,7 +73,7 @@ Column
             Label
             {
                 text: label
-                color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 width: base.width * 0.4
                 elide: Text.ElideRight
@@ -82,7 +82,7 @@ Column
             Label
             {
                 text: value
-                color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 anchors.verticalCenter: parent.verticalCenter
             }
