@@ -14,8 +14,7 @@ import UM.Platform
 import UM.MimeTypeDatabase
 import UM.Logger
 
-from .ExtruderManager import ExtruderManager
-from .MachineManager import MachineManager
+import cura.Settings
 
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
@@ -363,11 +362,11 @@ class ContainerManager(QObject):
             UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
             return False
 
-        MachineManager.getInstance().blurSettings.emit()
+        cura.Settings.MachineManager.getInstance().blurSettings.emit()
 
         containers_to_merge.append((global_quality_changes, global_stack.getTop()))
 
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+        for extruder in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             quality_changes = extruder.findContainer(type = "quality_changes")
             if not quality_changes or quality_changes.isReadOnly():
                 UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
@@ -382,9 +381,9 @@ class ContainerManager(QObject):
     def clearUserContainers(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
 
-        MachineManager.getInstance().blurSettings.emit()
+        cura.Settings.MachineManager.getInstance().blurSettings.emit()
 
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+        for extruder in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             extruder.getTop().clear()
 
         global_stack.getTop().clear()
@@ -400,13 +399,13 @@ class ContainerManager(QObject):
             UM.Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
             return False
 
-        MachineManager.getInstance().blurSettings.emit()
+        cura.Settings.MachineManager.getInstance().blurSettings.emit()
 
         unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_container.getName())
         unique_id = unique_name.lower()
         unique_id.replace(" ", "_")
 
-        stacks = [ s for s in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()) ]
+        stacks = [ s for s in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()) ]
         stacks.insert(0, global_stack)
 
         for stack in stacks:
