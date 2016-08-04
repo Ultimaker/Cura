@@ -298,7 +298,7 @@ class ExtruderManager(QObject):
 
         result = []
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
-            value = extruder.getRawProperty(key, "value", use_next = False)
+            value = extruder.getRawProperty(key, "value")
 
             if not value:
                 continue
@@ -327,7 +327,7 @@ class ExtruderManager(QObject):
         value = None
 
         if extruder:
-            value = extruder.getRawProperty(key, "value", use_next = False)
+            value = extruder.getRawProperty(key, "value")
 
         if isinstance(value, UM.Settings.SettingFunction):
             value = value(extruder)
