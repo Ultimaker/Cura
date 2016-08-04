@@ -545,32 +545,65 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
-        if not containers or not self._active_container_stack:
+        if not containers or not self._global_container_stack:
             return
 
-        old_quality = self._active_container_stack.findContainer({"type": "quality"})
-        if old_quality and old_quality != containers[0]:
-            old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+        quality_container = None
+        quality_changes_container = self._empty_quality_changes_container
 
-            quality_index = self._active_container_stack.getContainerIndex(old_quality)
+        container_type = containers[0].getMetaDataEntry("type")
 
-            self._active_container_stack.replaceContainer(quality_index, containers[0])
-
-            containers[0].nameChanged.connect(self._onQualityNameChanged)
-
-            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-                # Ask the user if the user profile should be cleared or not (discarding the current settings)
-                # In Simple Mode we assume the user always wants to keep the (limited) current settings
-                details = catalog.i18nc("@label", "You made changes to the following setting(s):")
-                user_settings = self._active_container_stack.getTop().findInstances(**{})
-                for setting in user_settings:
-                    details = details + "\n    " + setting.definition.label
-
-                Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
-                                                     catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
-                                                     buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
+        if container_type == "quality":
+            quality_container = containers[0]
+        elif container_type == "quality_changes":
+            quality_changes_container = containers[0]
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_changes_container.getMetaDataEntry("quality"))
+            if not containers:
+                Logger.log("e", "Could not find quality %s for changes %s, not changing quality", quality_changes_container.getMetaDataEntry("quality"), quality_changes_container.getId())
+                return
+            quality_container = containers[0]
         else:
-            Logger.log("w", "While trying to set the active quality, no quality was found to replace.")
+            Logger.log("e", "Tried to set quality to a container that is not of the right type")
+            return
+
+        stacks = [ s for s in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()) ]
+        stacks.insert(0, self._global_container_stack)
+
+        for stack in stacks:
+            extruder_id = stack.getId() if stack != self._global_container_stack else None
+            stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_container.getName(), extruder = extruder_id)
+            if not stack_quality:
+                stack_quality = quality_container
+            else:
+                stack_quality = stack_quality[0]
+
+            if quality_changes_container != self._empty_quality_changes_container:
+                stack_quality_changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_changes_container.getName(), extruder = extruder_id)[0]
+            else:
+                stack_quality_changes = self._empty_quality_changes_container
+
+            old_quality = stack.findContainer(type = "quality")
+            old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+            old_changes = stack.findContainer(type = "quality_changes")
+            old_changes.nameChanged.disconnect(self._onQualityNameChanged)
+
+            stack.replaceContainer(stack.getContainerIndex(old_quality), stack_quality)
+            stack.replaceContainer(stack.getContainerIndex(old_changes), stack_quality_changes)
+
+            stack_quality.nameChanged.connect(self._onQualityNameChanged)
+            stack_quality_changes.nameChanged.connect(self._onQualityNameChanged)
+
+        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+            # Ask the user if the user profile should be cleared or not (discarding the current settings)
+            # In Simple Mode we assume the user always wants to keep the (limited) current settings
+            details = catalog.i18nc("@label", "You made changes to the following setting(s):")
+            user_settings = self._active_container_stack.getTop().findInstances(**{})
+            for setting in user_settings:
+                details = details + "\n    " + setting.definition.label
+
+            Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
+                                                 catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
+                                                 buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
 
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:
