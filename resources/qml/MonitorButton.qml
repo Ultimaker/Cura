@@ -194,17 +194,17 @@ Rectangle
 
     Button
     {
-        id: pauseButton
-
-        visible: printerConnected
-        enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
-                 (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+        id: pauseResumeButton
 
         height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.right: abortButton.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+        visible: printerConnected
+        enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
+                 (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
 
         text: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? catalog.i18nc("@label:", "Resume") : catalog.i18nc("@label:", "Pause") : ""
         onClicked: Cura.MachineManager.printerOutputDevices[0].setJobState(Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "print" : "pause")
