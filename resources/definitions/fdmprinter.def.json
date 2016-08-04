@@ -2013,6 +2013,29 @@
                     "value": "jerk_layer_0",
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": false
+                },
+                "speed_for_pressure_enabled":
+                {
+                    "label": "Equalize Nozzle Pressure",
+                    "description": "Attempt to dampen nozzle pressure changes by varying printing speed with extrusion width for narrow extrusions",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "speed_pressure_maximum":
+                {
+                    "label": "Maximum Speed for Pressure",
+                    "description": "Maximum print speed when adjusting to equalize nozzle pressure.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "enabled": "speed_for_pressure_enabled",
+                    "default_value": 150,
+                    "minimum_value": "0.1",
+                    "maximum_value": "299792458000",
+                    "maximum_value_warning": "150",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
