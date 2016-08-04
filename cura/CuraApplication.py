@@ -314,7 +314,7 @@ class CuraApplication(QtApplication):
             path = None
             if instance_type == "material":
                 path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-            elif instance_type == "quality":
+            elif instance_type == "quality" or instance_type == "quality_changes":
                 path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
             elif instance_type == "user":
                 path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
