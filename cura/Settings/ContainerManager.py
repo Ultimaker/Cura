@@ -14,6 +14,8 @@ import UM.Platform
 import UM.MimeTypeDatabase
 import UM.Logger
 
+from .ExtruderManager import ExtruderManager
+
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
 from UM.i18n import i18nCatalog
@@ -349,6 +351,36 @@ class ContainerManager(QObject):
 
         return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
 
+    @pyqtSlot(result = bool)
+    def updateQualityChanges(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        containers_to_merge = []
+
+        global_quality_changes = global_stack.findContainer(type = "quality_changes")
+        if not global_quality_changes or global_quality_changes.isReadOnly():
+            return False
+
+        containers_to_merge.append((global_quality_changes, global_stack.getTop()))
+
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            quality_changes = extruder.findContainer(type = "quality_changes")
+            if not quality_changes or quality_changes.isReadOnly():
+                return False
+
+            containers_to_merge.append((quality_changes, extruder.getTop()))
+
+        for merge_into, merge in containers_to_merge:
+            self._performMerge(merge_into, merge)
+
+    @pyqtSlot()
+    def clearUserContainers(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            extruder.getTop().clear()
+
+        global_stack.getTop().clear()
     # Factory function, used by QML
     @staticmethod
     def createContainerManager(engine, js_engine):
