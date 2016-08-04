@@ -362,7 +362,7 @@ class ContainerManager(QObject):
             UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile")
             return False
 
-        cura.Settings.MachineManager.getInstance().blurSettings.emit()
+        UM.Application.getInstance().getMachineManager().blurSettings.emit()
 
         containers_to_merge.append((global_quality_changes, global_stack.getTop()))
 
@@ -377,13 +377,13 @@ class ContainerManager(QObject):
         for merge_into, merge in containers_to_merge:
             self._performMerge(merge_into, merge)
 
-        cura.Settings.MachineManager.getInstance().activeQualityChanged.emit()
+        UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
 
     @pyqtSlot()
     def clearUserContainers(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
 
-        cura.Settings.MachineManager.getInstance().blurSettings.emit()
+        UM.Application.getInstance().getMachineManager().blurSettings.emit()
 
         for extruder in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             extruder.getTop().clear()
@@ -401,7 +401,7 @@ class ContainerManager(QObject):
             UM.Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
             return False
 
-        cura.Settings.MachineManager.getInstance().blurSettings.emit()
+        UM.Application.getInstance().getMachineManager().blurSettings.emit()
 
         unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_container.getName())
         unique_id = unique_name.lower()
@@ -434,7 +434,7 @@ class ContainerManager(QObject):
             stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_quality_changes)
             stack.getTop().clear()
 
-        cura.Settings.MachineManager.getInstance().activeQualityChanged.emit()
+        UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
         return True
 
     # Factory function, used by QML
