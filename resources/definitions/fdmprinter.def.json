@@ -2014,28 +2014,28 @@
                     "enabled": "jerk_enabled",
                     "settable_per_mesh": false
                 },
-                "speed_for_pressure_enabled":
+                "speed_equalize_flow_enabled":
                 {
-                    "label": "Equalize Nozzle Pressure",
-                    "description": "Attempt to dampen nozzle pressure changes by varying printing speed with extrusion width for narrow extrusions",
+                    "label": "Equalize Filament Flow",
+                    "description": "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
-                "speed_pressure_maximum":
+                "speed_equalize_flow_max":
                 {
-                    "label": "Maximum Speed for Pressure",
-                    "description": "Maximum print speed when adjusting to equalize nozzle pressure.",
+                    "label": "Maximum Speed for Flow Equalization",
+                    "description": "Maximum print speed when adjusting in order to equalize flow.",
                     "type": "float",
                     "unit": "mm/s",
-                    "enabled": "speed_for_pressure_enabled",
+                    "enabled": "speed_equalize_flow_enabled",
                     "default_value": 150,
                     "minimum_value": "0.1",
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "150",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 }
             }
         },
