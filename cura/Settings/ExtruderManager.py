@@ -328,8 +328,9 @@ class ExtruderManager(QObject):
 
         if extruder:
             value = extruder.getRawProperty(key, "value")
-
-        if isinstance(value, UM.Settings.SettingFunction):
-            value = value(extruder)
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(extruder)
+        else: #Just a value from global.
+            value = UM.Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
 
         return value
