@@ -61,7 +61,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                     new_instance = SettingInstance(definition, settings)
                     if definition.global_inherits_stack and self._stack.getProperty("machine_extruder_count", "value") > 1:
                         #Obtain the value from the correct container stack. Only once, upon adding the setting.
-                        stack_nr = self._stack.getProperty(item, "global_inherits_stack") #Stack to get the setting from.
+                        stack_nr = str(int(round(float(self._stack.getProperty(item, "global_inherits_stack"))))) #Stack to get the setting from. Round it and remove the fractional part.
                         if stack_nr in ExtruderManager.getInstance().extruderIds: #Only if it defines an extruder stack.
                             extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
                             new_instance.setProperty("value", extruder_stack.getProperty(item, "value"))
