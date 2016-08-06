@@ -8,6 +8,7 @@ from UM.Resources import Resources
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.View.Renderer import Renderer
+from UM.Settings.Validator import ValidatorState
 
 from UM.View.GL.OpenGL import OpenGL
 
@@ -43,7 +44,7 @@ class SolidView(View):
         if Application.getInstance().getGlobalContainerStack():
             if Preferences.getInstance().getValue("view/show_overhang"):
                 angle = Application.getInstance().getGlobalContainerStack().getProperty("support_angle", "value")
-                if angle is not None:
+                if angle is not None and Application.getInstance().getGlobalContainerStack().getProperty("support_angle", "validationState") == ValidatorState.Valid:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.

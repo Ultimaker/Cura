@@ -8,6 +8,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",
         "category": "Ultimaker",
+        "weight": 4,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",

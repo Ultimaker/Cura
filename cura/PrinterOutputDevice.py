@@ -35,6 +35,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._time_total = 0
         self._job_state = ""
         self._job_name = ""
+        self._error_text = ""
+        self._accepts_commands = True
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -77,6 +79,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     jobNameChanged = pyqtSignal()
 
+    errorTextChanged = pyqtSignal()
+
+    acceptsCommandsChanged = pyqtSignal()
+
     @pyqtProperty(str, notify = jobStateChanged)
     def jobState(self):
         return self._job_state
@@ -101,6 +107,26 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._job_name != name:
             self._job_name = name
             self.jobNameChanged.emit()
+
+    @pyqtProperty(str, notify = errorTextChanged)
+    def errorText(self):
+        return self._error_text
+
+    ##  Set the error-text that is shown in the print monitor in case of an error
+    def setErrorText(self, error_text):
+        if self._error_text != error_text:
+            self._error_text = error_text
+            self.errorTextChanged.emit()
+
+    @pyqtProperty(bool, notify = acceptsCommandsChanged)
+    def acceptsCommands(self):
+        return self._accepts_commands
+
+    ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
+    def setAcceptsCommands(self, accepts_commands):
+        if self._accepts_commands != accepts_commands:
+            self._accepts_commands = accepts_commands
+            self.acceptsCommandsChanged.emit()
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)

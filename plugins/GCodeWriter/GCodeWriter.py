@@ -90,12 +90,20 @@ class GCodeWriter(MeshWriter):
         prefix_length = len(prefix)
 
         container_with_profile = stack.findContainer({"type": "quality"})
+        if not container_with_profile:
+            Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
+            return ""
+
         flat_global_container = self._createFlattenedContainerInstance(stack.getTop(),container_with_profile)
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
         for extruder in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
             extruder_quality = extruder.findContainer({"type": "quality"})
+            if not extruder_quality:
+                Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
+                continue
+
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)
 
             extruder_serialized = flat_extruder_quality.serialize()

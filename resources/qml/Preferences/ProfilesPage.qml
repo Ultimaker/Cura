@@ -75,7 +75,7 @@ UM.ManagementPage
             onClicked:
             {
                 var selectedContainer;
-                if (objectList.currentItem.id == Cura.MachineManager.activeQualityId) {
+                if (base.currentItem.id == Cura.MachineManager.activeQualityId) {
                     selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
                 } else {
                     selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
