@@ -144,7 +144,7 @@ class SliceInfo(Extension):
             # Sending slice info non-blocking
             reportJob = SliceInfoJob(self.info_url, binary_data)
             reportJob.start()
-        except:
+        except Exception as e:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
             # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
-            Logger.logException("e", "Exception raised while sending slice info") # But we should be notified about these problems of course.
+            Logger.log("e", "Exception raised while sending slice info: %s" %(repr(e))) # But we should be notified about these problems of course.
