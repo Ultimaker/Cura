@@ -75,8 +75,6 @@ class SliceInfo(Extension):
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
     def _onWriteStarted(self, output_device):
-        self._removeFinishedThreads()
-
         try:
             if not Preferences.getInstance().getValue("info/send_slice_info"):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
