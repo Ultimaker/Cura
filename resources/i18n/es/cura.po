@@ -159,10 +159,10 @@ msgctxt "@label"
 msgid "Removable Drive Output Device Plugin"
 msgstr "Complemento de dispositivo de salida de unidad extraíble"
 
-#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/__init__.py:14
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/__init__.py:14
 msgctxt "@info:whatsthis"
-msgid "Provides removable drive hotplugging and writing support"
-msgstr "Proporciona asistencia para la conexión directa y la escritura de la unidad extraíble"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Proporciona asistencia para la conexión directa y la escritura de la unidad extraíble."
 
 #: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/ChangeLog.py:34
 msgctxt "@item:inmenu"
@@ -174,10 +174,10 @@ msgctxt "@label"
 msgid "Changelog"
 msgstr "Registro de cambios"
 
-#: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/__init__.py:15
+#: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/__init__.py:15
 msgctxt "@info:whatsthis"
-msgid "Shows changes since latest checked version"
-msgstr "Muestra los cambios desde la última versión comprobada"
+msgid "Shows changes since latest checked version."
+msgstr "Muestra los cambios desde la última versión comprobada."
 
 #: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:124
 msgctxt "@info:status"
@@ -195,20 +195,20 @@ msgctxt "@label"
 msgid "CuraEngine Backend"
 msgstr "Backend de CuraEngine"
 
-#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/__init__.py:15
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/__init__.py:15
 msgctxt "@info:whatsthis"
-msgid "Provides the link to the CuraEngine slicing backend"
-msgstr "Proporciona el vínculo para el backend de segmentación de CuraEngine"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "Proporciona el vínculo para el backend de segmentación de CuraEngine."
 
 #: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:12
 msgctxt "@label"
 msgid "GCode Writer"
 msgstr "Escritor de GCode"
 
-#: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:15
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/__init__.py:15
 msgctxt "@info:whatsthis"
-msgid "Writes GCode to a file"
-msgstr "Escribe GCode en un archivo"
+msgid "Writes GCode to a file."
+msgstr "Escribe GCode en un archivo."
 
 #: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:22
 msgctxt "@item:inlistbox"
@@ -1318,3 +1318,23 @@ msgstr "Ver"
 msgctxt "@title:window"
 msgid "Open file"
 msgstr "Abrir archivo"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:102
+msgctxt "@action:inmenu menubar:profile"
+msgid "&Add Profile..."
+msgstr "&Agregar perfil..."
+
+#: /home/ruben/Projects/Cura/resources/qml/GeneralPage.qml:66
+msgctxt "@item:inlistbox"
+msgid "Italian"
+msgstr "Italiano"
+
+#: /home/ruben/Projects/Cura/resources/qml/GeneralPage.qml:67
+msgctxt "@item:inlistbox"
+msgid "Dutch"
+msgstr "Holandés"
+
+#: /home/ruben/Projects/Cura/resources/qml/GeneralPage.qml:68
+msgctxt "@item:inlistbox"
+msgid "Spanish"
+msgstr "Español"

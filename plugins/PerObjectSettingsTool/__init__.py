@@ -2,6 +2,8 @@
 # Uranium is released under the terms of the AGPLv3 or higher.
 
 from . import PerObjectSettingsTool
+from . import PerObjectSettingVisibilityHandler
+from PyQt5.QtQml import qmlRegisterType
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -13,7 +15,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": i18n_catalog.i18nc("@info:whatsthis", "Provides the Per Object Settings."),
-            "api": 2
+            "api": 3
         },
         "tool": {
             "name": i18n_catalog.i18nc("@label", "Per Object Settings"),
@@ -25,4 +27,6 @@ def getMetaData():
     }
 
 def register(app):
+    qmlRegisterType(PerObjectSettingVisibilityHandler.PerObjectSettingVisibilityHandler, "Cura", 1, 0,
+                    "PerObjectSettingVisibilityHandler")
     return { "tool": PerObjectSettingsTool.PerObjectSettingsTool() }

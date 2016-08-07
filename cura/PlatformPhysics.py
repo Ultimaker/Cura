@@ -7,17 +7,13 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
-from UM.Application import Application
 from UM.Scene.Selection import Selection
 from UM.Preferences import Preferences
 
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
-from . import ConvexHullJob
 from . import ZOffsetDecorator
-
-import copy
 
 class PlatformPhysics:
     def __init__(self, controller, volume):
@@ -27,7 +23,6 @@ class PlatformPhysics:
         self._controller.toolOperationStarted.connect(self._onToolOperationStarted)
         self._controller.toolOperationStopped.connect(self._onToolOperationStopped)
         self._build_volume = volume
-
         self._enabled = True
 
         self._change_timer = QTimer()
@@ -45,17 +40,22 @@ class PlatformPhysics:
             return
 
         root = self._controller.getScene().getRoot()
+
         for node in BreadthFirstIterator(root):
-            if node is root or type(node) is not SceneNode:
+            if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()
-            if not bbox or not bbox.isValid():
-                self._change_timer.start()
-                continue
 
-            build_volume_bounding_box = copy.deepcopy(self._build_volume.getBoundingBox())
-            build_volume_bounding_box.setBottom(-9001) # Ignore intersections with the bottom
+            # Ignore intersections with the bottom
+            build_volume_bounding_box = self._build_volume.getBoundingBox()
+            if build_volume_bounding_box:
+                # It's over 9000!
+                build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+            else:
+                # No bounding box. This is triggered when running Cura from command line with a model for the first time
+                # In that situation there is a model, but no machine (and therefore no build volume.
+                return
             node._outside_buildarea = False
 
             # Mark the node as outside the build volume if the bounding box test fails.
@@ -66,67 +66,52 @@ class PlatformPhysics:
             move_vector = Vector()
             if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                if bbox.bottom > 0:
-                    move_vector.setY(-bbox.bottom + z_offset)
-                elif bbox.bottom < z_offset:
-                    move_vector.setY((-bbox.bottom) - z_offset)
-
-            #if not Float.fuzzyCompare(bbox.bottom, 0.0):
-            #   pass#move_vector.setY(-bbox.bottom)
+                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
-            
-            if not node.callDecoration("getConvexHull"):
-                if not node.callDecoration("getConvexHullJob"):
-                    job = ConvexHullJob.ConvexHullJob(node)
-                    job.start()
-                    node.callDecoration("setConvexHullJob", job)
-                    
-            elif Preferences.getInstance().getValue("physics/automatic_push_free"):
+
+            if Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
                     if other_node is root or type(other_node) is not SceneNode or other_node is node:
                         continue
                     
-                    # Ignore colissions of a group with it's own children
+                    # Ignore collisions of a group with it's own children
                     if other_node in node.getAllChildren() or node in other_node.getAllChildren():
                         continue
                     
-                    # Ignore colissions within a group
+                    # Ignore collisions within a group
                     if other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None:
                         continue
-                        #if node.getParent().callDecoration("isGroup") is other_node.getParent().callDecoration("isGroup"):
-                        #    continue
                     
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue
 
-                    # Check to see if the bounding boxes intersect. If not, we can ignore the node as there is no way the hull intersects.
-                    #if node.getBoundingBox().intersectsBox(other_node.getBoundingBox()) == AxisAlignedBox.IntersectionResult.NoIntersection:
-                    #    continue
-
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
-                    try:
-                        head_hull = node.callDecoration("getConvexHullHead")
-                        if head_hull:
-                            overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
-                            if not overlap:
-                                other_head_hull = other_node.callDecoration("getConvexHullHead")
-                                if other_head_hull:
-                                    overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
+                    head_hull = node.callDecoration("getConvexHullHead")
+                    if head_hull:
+                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHullHead"))
+                        if not overlap:
+                            other_head_hull = other_node.callDecoration("getConvexHullHead")
+                            if other_head_hull:
+                                overlap = node.callDecoration("getConvexHullHead").intersectsPolygon(other_head_hull)
+                    else:
+                        own_convex_hull = node.callDecoration("getConvexHull")
+                        other_convex_hull = other_node.callDecoration("getConvexHull")
+                        if own_convex_hull and other_convex_hull:
+                            overlap = own_convex_hull.intersectsPolygon(other_convex_hull)
                         else:
-                            overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
-                    except:
-                        overlap = None #It can sometimes occur that the calculated convex hull has no size, in which case there is no overlap.
+                            # This can happen in some cases if the object is not yet done with being loaded.
+                            #  Simply waiting for the next tick seems to resolve this correctly.
+                            overlap = None
 
                     if overlap is None:
                         continue
-                    move_vector.setX(overlap[0] * 1.1)
-                    move_vector.setZ(overlap[1] * 1.1)
+                    move_vector = move_vector.set(x=overlap[0] * 1.1, z=overlap[1] * 1.1)
             convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
                 if not convex_hull.isValid():
@@ -139,7 +124,7 @@ class PlatformPhysics:
 
                     node._outside_buildarea = True
 
-            if move_vector != Vector():
+            if not Vector.Null.equals(move_vector, epsilon=1e-5):
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 

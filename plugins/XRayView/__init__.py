@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Provides the X-Ray view."),
-            "api": 2
+            "api": 3
         },
         "view": {
             "name": catalog.i18nc("@item:inlistbox", "X-Ray"),

@@ -8,6 +8,9 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
+from UM.Platform import Platform
+from UM.Qt.Duration import DurationFormat
 
 import collections
 import json
@@ -17,6 +20,7 @@ import platform
 import math
 import urllib.request
 import urllib.parse
+import ssl
 
 catalog = i18nCatalog("cura")
 
@@ -25,6 +29,8 @@ catalog = i18nCatalog("cura")
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
+    info_url = "https://stats.youmagine.com/curastats/slice"
+
     def __init__(self):
         super().__init__()
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
@@ -42,80 +48,83 @@ class SliceInfo(Extension):
         Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
     def _onWriteStarted(self, output_device):
-        if not Preferences.getInstance().getValue("info/send_slice_info"):
-            return # Do nothing, user does not want to send data
-        settings = Application.getInstance().getMachineManager().getWorkingProfile()
-
-        # Load all machine definitions and put them in machine_settings dict
-        #setting_file_name = Application.getInstance().getActiveMachineInstance().getMachineSettings()._json_file
-        machine_settings = {}
-        #with open(setting_file_name, "rt", -1, "utf-8") as f:
-        #    data = json.load(f, object_pairs_hook = collections.OrderedDict)
-        #machine_settings[os.path.basename(setting_file_name)] = copy.deepcopy(data)
-        active_machine_definition= Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition()
-        data = active_machine_definition._json_data
-        # Loop through inherited json files
-        setting_file_name = active_machine_definition._path
-        while True:
-            if "inherits" in data:
-                inherited_setting_file_name = os.path.dirname(setting_file_name) + "/" + data["inherits"]
-                with open(inherited_setting_file_name, "rt", -1, "utf-8") as f:
-                    data = json.load(f, object_pairs_hook = collections.OrderedDict)
-                machine_settings[os.path.basename(inherited_setting_file_name)] = copy.deepcopy(data)
-            else:
-                break
-
-
-        profile_values = settings.getChangedSettings() # TODO: @UnusedVariable
-
-        # Get total material used (in mm^3)
-        print_information = Application.getInstance().getPrintInformation()
-        material_radius = 0.5 * settings.getSettingValue("material_diameter")
-        material_used = math.pi * material_radius * material_radius * print_information.materialAmount #Volume of material used
-
-        # Get model information (bounding boxes, hashes and transformation matrix)
-        models_info = []
-        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-            if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                if not getattr(node, "_outside_buildarea", False):
-                    model_info = {}
-                    model_info["hash"] = node.getMeshData().getHash()
-                    model_info["bounding_box"] = {}
-                    model_info["bounding_box"]["minimum"] = {}
-                    model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
-                    model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
-                    model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
-
-                    model_info["bounding_box"]["maximum"] = {}
-                    model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
-                    model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
-                    model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
-                    model_info["transformation"] = str(node.getWorldTransformation().getData())
-
-                    models_info.append(model_info)
-
-        # Bundle the collected data
-        submitted_data = {
-            "processor": platform.processor(),
-            "machine": platform.machine(),
-            "platform": platform.platform(),
-            "machine_settings": json.dumps(machine_settings),
-            "version": Application.getInstance().getVersion(),
-            "modelhash": "None",
-            "printtime": str(print_information.currentPrintTime),
-            "filament": material_used,
-            "language": Preferences.getInstance().getValue("general/language"),
-            "materials_profiles ": {}
-        }
-
-        # Convert data to bytes
-        submitted_data = urllib.parse.urlencode(submitted_data)
-        binary_data = submitted_data.encode("utf-8")
-
-        # Submit data
         try:
-            f = urllib.request.urlopen("https://stats.youmagine.com/curastats/slice", data = binary_data, timeout = 1)
-        except Exception as e:
-            print("Exception occured", e)
+            if not Preferences.getInstance().getValue("info/send_slice_info"):
+                Logger.log("d", "'info/send_slice_info' is turned off.")
+                return # Do nothing, user does not want to send data
 
-        f.close()
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+            # Get total material used (in mm^3)
+            print_information = Application.getInstance().getPrintInformation()
+            material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
+
+            # TODO: Send material per extruder instead of mashing it on a pile
+            material_used = math.pi * material_radius * material_radius * sum(print_information.materialLengths) #Volume of all materials used
+
+            # Get model information (bounding boxes, hashes and transformation matrix)
+            models_info = []
+            for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
+                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    if not getattr(node, "_outside_buildarea", False):
+                        model_info = {}
+                        model_info["hash"] = node.getMeshData().getHash()
+                        model_info["bounding_box"] = {}
+                        model_info["bounding_box"]["minimum"] = {}
+                        model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
+                        model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
+                        model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
+
+                        model_info["bounding_box"]["maximum"] = {}
+                        model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
+                        model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
+                        model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
+                        model_info["transformation"] = str(node.getWorldTransformation().getData())
+
+                        models_info.append(model_info)
+
+            # Bundle the collected data
+            submitted_data = {
+                "processor": platform.processor(),
+                "machine": platform.machine(),
+                "platform": platform.platform(),
+                "settings": global_container_stack.serialize(), # global_container with references on used containers
+                "version": Application.getInstance().getVersion(),
+                "modelhash": "None",
+                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
+                "filament": material_used,
+                "language": Preferences.getInstance().getValue("general/language"),
+            }
+            for container in global_container_stack.getContainers():
+                container_id = container.getId()
+                try:
+                    container_serialized = container.serialize()
+                except NotImplementedError:
+                    Logger.log("w", "Container %s could not be serialized!", container_id)
+                    continue
+
+                if container_serialized:
+                    submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
+                else:
+                    Logger.log("i", "No data found in %s to be serialized!", container_id)
+
+            # Convert data to bytes
+            submitted_data = urllib.parse.urlencode(submitted_data)
+            binary_data = submitted_data.encode("utf-8")
+
+            # Submit data
+            kwoptions = {"data" : binary_data,
+                         "timeout" : 1
+                         }
+            if Platform.isOSX():
+                kwoptions["context"] = ssl._create_unverified_context()
+            try:
+                f = urllib.request.urlopen(self.info_url, **kwoptions)
+                Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
+                f.close()
+            except Exception as e:
+                Logger.logException("e", "An exception occurred while trying to send slice information")
+        except:
+            # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
+            # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
+            pass

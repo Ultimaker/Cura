@@ -10,3 +10,8 @@ class ZOffsetDecorator(SceneNodeDecorator):
 
     def getZOffset(self):
         return self._z_offset
+
+    def __deepcopy__(self, memo):
+        copied_decorator = ZOffsetDecorator()
+        copied_decorator.setZOffset(self.getZOffset())
+        return copied_decorator

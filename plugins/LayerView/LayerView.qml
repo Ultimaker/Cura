@@ -54,9 +54,13 @@ Item
                 horizontalAlignment: TextInput.AlignRight;
                 onEditingFinished:
                 {
+                    // Ensure that the cursor is at the first position. On some systems the text isn't fully visible
+                    // Seems to have to do something with different dpi densities that QML doesn't quite handle.
+                    // Another option would be to increase the size even further, but that gives pretty ugly results.
+                    cursorPosition = 0;
                     if(valueLabel.text != '')
                     {
-                        slider.value = valueLabel.text - 1
+                        slider.value = valueLabel.text - 1;
                     }
                 }
                 validator: IntValidator { bottom: 1; top: slider.maximumValue + 1; }
@@ -66,10 +70,6 @@ Item
                 anchors.verticalCenter: parent.verticalCenter;
 
                 width: Math.max(UM.Theme.getSize("line").width * maxValue.length + 2, 20);
-                // Ensure that the cursor is at the first position. On some systems the text isnt fully visible
-                // Seems to have to do something with different dpi densities that QML doesn't quite handle.
-                // Another option would be to increase the size even further, but that gives pretty ugly results.
-                onTextChanged: cursorPosition = 0
                 style: TextFieldStyle
                 {
                     textColor: UM.Theme.getColor("setting_control_text");

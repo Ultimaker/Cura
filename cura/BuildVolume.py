@@ -1,6 +1,9 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from cura.Settings.ExtruderManager import ExtruderManager
+from UM.i18n import i18nCatalog
+from UM.Scene.Platform import Platform
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Resources import Resources
@@ -9,16 +12,45 @@ from UM.Math.Vector import Vector
 from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
+from UM.Message import Message
+from UM.Signal import Signal
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+catalog = i18nCatalog("cura")
 
 import numpy
+import copy
+
+
+# Setting for clearance around the prime
+PRIME_CLEARANCE = 10
+
+
+def approximatedCircleVertices(r):
+    """
+    Return vertices from an approximated circle.
+    :param r: radius
+    :return: numpy 2-array with the vertices
+    """
+
+    return numpy.array([
+        [-r, 0],
+        [-r * 0.707, r * 0.707],
+        [0, r],
+        [r * 0.707, r * 0.707],
+        [r, 0],
+        [r * 0.707, -r * 0.707],
+        [0, -r],
+        [-r * 0.707, -r * 0.707]
+    ], numpy.float32)
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
     VolumeOutlineColor = Color(12, 169, 227, 255)
+
+    raftThicknessChanged = Signal()
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -36,14 +68,15 @@ class BuildVolume(SceneNode):
         self._disallowed_area_mesh = None
 
         self.setCalculateBoundingBox(False)
+        self._volume_aabb = None
 
-        self._active_profile = None
-        self._active_instance = None
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveInstanceChanged)
-        self._onActiveInstanceChanged()
+        self._raft_thickness = 0.0
+        self._adhesion_type = None
+        self._platform = Platform(self)
 
-        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
-        self._onActiveProfileChanged()
+        self._active_container_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self._onGlobalContainerStackChanged()
 
     def setWidth(self, width):
         if width: self._width = width
@@ -72,11 +105,12 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
+
         return True
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
-        if self._width == 0 or self._height == 0 or self._depth == 0:
+        if not self._width or not self._height or not self._depth:
             return
 
         min_w = -self._width / 2
@@ -88,6 +122,7 @@ class BuildVolume(SceneNode):
 
         mb = MeshBuilder()
 
+        # Outline 'cube' of the build volume
         mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
@@ -103,7 +138,7 @@ class BuildVolume(SceneNode):
         mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        self.setMeshData(mb.getData())
+        self.setMeshData(mb.build())
 
         mb = MeshBuilder()
         mb.addQuad(
@@ -112,10 +147,11 @@ class BuildVolume(SceneNode):
             Vector(max_w, min_h - 0.2, max_d),
             Vector(min_w, min_h - 0.2, max_d)
         )
-        self._grid_mesh = mb.getData()
+
         for n in range(0, 6):
-            v = self._grid_mesh.getVertex(n)
-            self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
+            v = mb.getVertex(n)
+            mb.setVertexUVCoordinates(n, v[0], v[2])
+        self._grid_mesh = mb.build()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -140,150 +176,204 @@ class BuildVolume(SceneNode):
                     size = 0
                 disallowed_area_size = max(size, disallowed_area_size)
 
-            self._disallowed_area_mesh = mb.getData()
+            self._disallowed_area_mesh = mb.build()
         else:
             self._disallowed_area_mesh = None
 
-        self._aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
+        self._volume_aabb = AxisAlignedBox(
+            minimum = Vector(min_w, min_h - 1.0, min_d),
+            maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
 
-        skirt_size = 0.0
+        bed_adhesion_size = 0.0
 
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            skirt_size = self._getSkirtSize(profile)
+        container_stack = Application.getInstance().getGlobalContainerStack()
+        if container_stack:
+            bed_adhesion_size = self._getBedAdhesionSize(container_stack)
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + skirt_size + 1, min_h, min_d + disallowed_area_size - skirt_size + 1),
-            maximum = Vector(max_w - skirt_size - 1, max_h, max_d - disallowed_area_size + skirt_size - 1)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
-    def _onActiveInstanceChanged(self):
-        self._active_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
+    def getBoundingBox(self):
+        return self._volume_aabb
 
-        if self._active_instance:
-            self._width = self._active_instance.getMachineSettingValue("machine_width")
-            if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
-                self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
+    def _buildVolumeMessage(self):
+        Message(catalog.i18nc(
+            "@info:status",
+            "The build volume height has been reduced due to the value of the"
+            " \"Print Sequence\" setting to prevent the gantry from colliding"
+            " with printed objects."), lifetime=10).show()
+
+    def getRaftThickness(self):
+        return self._raft_thickness
+
+    def _updateRaftThickness(self):
+        old_raft_thickness = self._raft_thickness
+        self._adhesion_type = self._active_container_stack.getProperty("adhesion_type", "value")
+        self._raft_thickness = 0.0
+        if self._adhesion_type == "raft":
+            self._raft_thickness = (
+                self._active_container_stack.getProperty("raft_base_thickness", "value") +
+                self._active_container_stack.getProperty("raft_interface_thickness", "value") +
+                self._active_container_stack.getProperty("raft_surface_layers", "value") *
+                    self._active_container_stack.getProperty("raft_surface_thickness", "value") +
+                self._active_container_stack.getProperty("raft_airgap", "value"))
+
+        # Rounding errors do not matter, we check if raft_thickness has changed at all
+        if old_raft_thickness != self._raft_thickness:
+            self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
+            self.raftThicknessChanged.emit()
+
+    def _onGlobalContainerStackChanged(self):
+        if self._active_container_stack:
+            self._active_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+
+        self._active_container_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._active_container_stack:
+            self._active_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
+
+            self._width = self._active_container_stack.getProperty("machine_width", "value")
+            if self._active_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                self._height = self._active_container_stack.getProperty("gantry_height", "value")
+                self._buildVolumeMessage()
             else:
-                self._height = self._active_instance.getMachineSettingValue("machine_height")
-            self._depth = self._active_instance.getMachineSettingValue("machine_depth")
+                self._height = self._active_container_stack.getProperty("machine_height", "value")
+            self._depth = self._active_container_stack.getProperty("machine_depth", "value")
 
             self._updateDisallowedAreas()
+            self._updateRaftThickness()
 
             self.rebuild()
 
-    def _onActiveProfileChanged(self):
-        if self._active_profile:
-            self._active_profile.settingValueChanged.disconnect(self._onSettingValueChanged)
+    def _onSettingPropertyChanged(self, setting_key, property_name):
+        if property_name != "value":
+            return
 
-        self._active_profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if self._active_profile:
-            self._active_profile.settingValueChanged.connect(self._onSettingValueChanged)
-            self._updateDisallowedAreas()
-            self.rebuild()
-
-    def _onSettingValueChanged(self, setting_key):
+        rebuild_me = False
         if setting_key == "print_sequence":
-            if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
-                self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
+            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
+                self._height = self._active_container_stack.getProperty("gantry_height", "value")
+                self._buildVolumeMessage()
             else:
-                self._height = self._active_instance.getMachineSettingValue("machine_depth")
-            self.rebuild()
+                self._height = self._active_container_stack.getProperty("machine_height", "value")
+            rebuild_me = True
+
         if setting_key in self._skirt_settings:
             self._updateDisallowedAreas()
+            rebuild_me = True
+
+        if setting_key in self._raft_settings:
+            self._updateRaftThickness()
+            rebuild_me = True
+
+        if rebuild_me:
             self.rebuild()
 
     def _updateDisallowedAreas(self):
-        if not self._active_instance or not self._active_profile:
+        if not self._active_container_stack:
             return
 
-        disallowed_areas = self._active_instance.getMachineSettingValue("machine_disallowed_areas")
+        disallowed_areas = copy.deepcopy(
+            self._active_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
 
-        skirt_size = 0.0
-        if self._active_profile:
-            skirt_size = self._getSkirtSize(self._active_profile)
+        # Add extruder prime locations as disallowed areas.
+        # Probably needs some rework after coordinate system change.
+        extruder_manager = ExtruderManager.getInstance()
+        extruders = extruder_manager.getMachineExtruders(self._active_container_stack.getId())
+        machine_width = self._active_container_stack.getProperty("machine_width", "value")
+        machine_depth = self._active_container_stack.getProperty("machine_depth", "value")
+        for single_extruder in extruders:
+            extruder_prime_pos_x = single_extruder.getProperty("extruder_prime_pos_x", "value")
+            extruder_prime_pos_y = single_extruder.getProperty("extruder_prime_pos_y", "value")
+            # TODO: calculate everything in CuraEngine/Firmware/lower left as origin coordinates.
+            # Here we transform the extruder prime pos (lower left as origin) to Cura coordinates
+            # (center as origin, y from back to front)
+            prime_x = extruder_prime_pos_x - machine_width / 2
+            prime_y = machine_depth / 2 - extruder_prime_pos_y
+            disallowed_areas.append([
+                [prime_x - PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
+                [prime_x + PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
+                [prime_x + PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
+                [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
+            ])
+
+        bed_adhesion_size = self._getBedAdhesionSize(self._active_container_stack)
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
             for area in disallowed_areas:
                 poly = Polygon(numpy.array(area, numpy.float32))
-                poly = poly.getMinkowskiHull(Polygon(numpy.array([
-                    [-skirt_size, 0],
-                    [-skirt_size * 0.707, skirt_size * 0.707],
-                    [0, skirt_size],
-                    [skirt_size * 0.707, skirt_size * 0.707],
-                    [skirt_size, 0],
-                    [skirt_size * 0.707, -skirt_size * 0.707],
-                    [0, -skirt_size],
-                    [-skirt_size * 0.707, -skirt_size * 0.707]
-                ], numpy.float32)))
+                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(bed_adhesion_size)))
 
                 areas.append(poly)
 
         # Add the skirt areas around the borders of the build plate.
-        if skirt_size > 0:
-            half_machine_width = self._active_instance.getMachineSettingValue("machine_width") / 2
-            half_machine_depth = self._active_instance.getMachineSettingValue("machine_depth") / 2
+        if bed_adhesion_size > 0:
+            half_machine_width = self._active_container_stack.getProperty("machine_width", "value") / 2
+            half_machine_depth = self._active_container_stack.getProperty("machine_depth", "value") / 2
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, -half_machine_depth],
                 [-half_machine_width, half_machine_depth],
-                [-half_machine_width + skirt_size, half_machine_depth - skirt_size],
-                [-half_machine_width + skirt_size, -half_machine_depth + skirt_size]
+                [-half_machine_width + bed_adhesion_size, half_machine_depth - bed_adhesion_size],
+                [-half_machine_width + bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [half_machine_width, half_machine_depth],
                 [half_machine_width, -half_machine_depth],
-                [half_machine_width - skirt_size, -half_machine_depth + skirt_size],
-                [half_machine_width - skirt_size, half_machine_depth - skirt_size]
+                [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size],
+                [half_machine_width - bed_adhesion_size, half_machine_depth - bed_adhesion_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, half_machine_depth],
                 [half_machine_width, half_machine_depth],
-                [half_machine_width - skirt_size, half_machine_depth - skirt_size],
-                [-half_machine_width + skirt_size, half_machine_depth - skirt_size]
+                [half_machine_width - bed_adhesion_size, half_machine_depth - bed_adhesion_size],
+                [-half_machine_width + bed_adhesion_size, half_machine_depth - bed_adhesion_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [half_machine_width, -half_machine_depth],
                 [-half_machine_width, -half_machine_depth],
-                [-half_machine_width + skirt_size, -half_machine_depth + skirt_size],
-                [half_machine_width - skirt_size, -half_machine_depth + skirt_size]
+                [-half_machine_width + bed_adhesion_size, -half_machine_depth + bed_adhesion_size],
+                [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
             ], numpy.float32)))
 
         self._disallowed_areas = areas
 
-    ##  Convenience function to calculate the size of the bed adhesion.
-    def _getSkirtSize(self, profile):
+    ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
+    def _getBedAdhesionSize(self, container_stack):
         skirt_size = 0.0
 
-        adhesion_type = profile.getSettingValue("adhesion_type")
+        adhesion_type = container_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt":
-            skirt_distance = profile.getSettingValue("skirt_gap")
-            skirt_line_count = profile.getSettingValue("skirt_line_count")
-            skirt_size = skirt_distance + (skirt_line_count * profile.getSettingValue("skirt_line_width"))
+            skirt_distance = container_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = container_stack.getProperty("skirt_line_count", "value")
+            skirt_size = skirt_distance + (skirt_line_count * container_stack.getProperty("skirt_brim_line_width", "value"))
         elif adhesion_type == "brim":
-            skirt_size = profile.getSettingValue("brim_line_count") * profile.getSettingValue("skirt_line_width")
+            skirt_size = container_stack.getProperty("brim_line_count", "value") * container_stack.getProperty("skirt_brim_line_width", "value")
         elif adhesion_type == "raft":
-            skirt_size = profile.getSettingValue("raft_margin")
+            skirt_size = container_stack.getProperty("raft_margin", "value")
 
-        if profile.getSettingValue("draft_shield_enabled"):
-            skirt_size += profile.getSettingValue("draft_shield_dist")
+        if container_stack.getProperty("draft_shield_enabled", "value"):
+            skirt_size += container_stack.getProperty("draft_shield_dist", "value")
 
-        if profile.getSettingValue("xy_offset"):
-            skirt_size += profile.getSettingValue("xy_offset")
+        if container_stack.getProperty("xy_offset", "value"):
+            skirt_size += container_stack.getProperty("xy_offset", "value")
 
         return skirt_size
 
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
+    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic PLA profile. Serves as an example file, data in this file is not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>ABS</material>
+            <color>Generic</color>
+        </name>
+        <GUID>60636bb4-518f-42e7-8237-fe77b194ebe0</GUID>
+        <version>0</version>
+        <color_code>#FF0000</color_code>
+    </metadata>
+    <properties>
+        <density>1.07</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">80</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+    </settings>
+</fdmmaterial>
