@@ -43,7 +43,7 @@ class CuraEngineBackend(Backend):
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
         executable_name = "CuraEngine"
-        default_engine_location = None
+        default_engine_location = ""
         if os.path.exists(os.path.join(Application.getInstallPrefix(), "bin", executable_name)):
             default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", executable_name)
         if hasattr(sys, "frozen"):
