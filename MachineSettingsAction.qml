@@ -149,7 +149,11 @@ Cura.MachineAction
                         {
                             model: ["RepRap (Marlin/Sprinter)", "UltiGCode"]
                             currentIndex: machineGCodeFlavorProvider.properties.value != model[1] ? 0 : 1
-                            onActivated: machineGCodeFlavorProvider.setPropertyValue("value", model[index])
+                            onActivated:
+                            {
+                                machineGCodeFlavorProvider.setPropertyValue("value", model[index]);
+                                manager.updateHasMaterialsMetadata();
+                            }
                         }
                     }
                 }

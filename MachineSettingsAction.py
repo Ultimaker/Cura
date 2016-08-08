@@ -50,3 +50,25 @@ class MachineSettingsAction(MachineAction):
         # Force rebuilding the build volume by reloading the global container stack.
         # This is a bit of a hack, but it seems quick enough.
         UM.Application.getInstance().globalContainerStackChanged.emit()
+
+    @pyqtSlot()
+    def updateHasMaterialsMetadata(self):
+        # Updates the has_materials metadata flag after switching gcode flavor
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            definition = global_container_stack.getBottom()
+            if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
+                has_materials = global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
+
+                # NB: this metadata entry is stored in an ini, and ini files are parsed as strings only.
+                # because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
+                if has_materials:
+                    if "has_materials" in global_container_stack.getMetaData():
+                        global_container_stack.setMetaDataEntry("has_materials", True)
+                    else:
+                        global_container_stack.addMetaDataEntry("has_materials", True)
+                else:
+                    if "has_materials" in global_container_stack.getMetaData():
+                        global_container_stack.removeMetaDataEntry("has_materials")
+
+                UM.Application.getInstance().globalContainerStackChanged.emit()
