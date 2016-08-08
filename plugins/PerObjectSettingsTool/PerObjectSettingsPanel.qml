@@ -257,7 +257,7 @@ Item {
             height: UM.Theme.getSize("setting").height;
             visible: parseInt(UM.Preferences.getValue("cura/active_mode")) == 1
 
-            text: catalog.i18nc("@action:button", "Add Setting");
+            text: catalog.i18nc("@action:button", "Select settings");
 
             style: ButtonStyle
             {
@@ -297,16 +297,19 @@ Item {
     UM.Dialog {
         id: settingPickDialog
 
-        title: catalog.i18nc("@title:window", "Pick a Setting to Customize")
+        title: catalog.i18nc("@title:window", "Select Settings to Customize for this object")
+        width: screenScaleFactor * 360;
+
         property string labelFilter: ""
 
         TextField {
-            id: filter;
+            id: filter
 
             anchors {
-                top: parent.top;
-                left: parent.left;
-                right: parent.right;
+                top: parent.top
+                left: parent.left
+                right: toggleShowAll.left
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
@@ -321,6 +324,23 @@ Item {
                 {
                     listview.model.filter = {"settable_per_mesh": true}
                 }
+            }
+        }
+
+        CheckBox
+        {
+            id: toggleShowAll
+
+            anchors {
+                top: parent.top
+                right: parent.right
+            }
+
+            text: catalog.i18nc("@label:checkbox", "Show all")
+            checked: listview.model.showAll
+            onClicked:
+            {
+                listview.model.showAll = checked;
             }
         }
 
