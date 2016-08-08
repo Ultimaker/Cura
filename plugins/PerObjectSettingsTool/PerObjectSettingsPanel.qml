@@ -377,7 +377,7 @@ Item {
 
         rightButtons: [
             Button {
-                text: catalog.i18nc("@action:button", "Cancel");
+                text: catalog.i18nc("@action:button", "Close");
                 onClicked: {
                     settingPickDialog.visible = false;
                 }
