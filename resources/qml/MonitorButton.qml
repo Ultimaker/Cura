@@ -134,9 +134,8 @@ Rectangle
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        text: catalog.i18nc("@label:", "Abort Print")
-        onClicked: Cura.MachineManager.printerOutputDevices[0].setJobState("abort")
-
+        text: catalog.i18nc("@label:", "Abort Print");
+        onClicked: Cura.MachineManager.printerOutputDevices[0].setJobState("abort");
 
         style: ButtonStyle
         {
@@ -206,8 +205,36 @@ Rectangle
         enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
                  (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
 
-        text: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? catalog.i18nc("@label:", "Resume") : catalog.i18nc("@label:", "Pause") : ""
-        onClicked: Cura.MachineManager.printerOutputDevices[0].setJobState(Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "print" : "pause")
+        property bool userClicked: false
+
+        text: {
+            var result = "";
+            if (!printerConnected) {
+              return "";
+            }
+
+            if (Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+            {
+              if (userClicked) {
+                result = catalog.i18nc("@label:", "Resuming...");
+              } else {
+                result = catalog.i18nc("@label:", "Resume");
+              }
+            } else {
+              if (userClicked) {
+                result = catalog.i18nc("@label:", "Pausing...");
+              } else {
+                result = catalog.i18nc("@label:", "Pause");
+              }
+            }
+            userClicked = false;
+            return result;
+        }
+        onClicked: {
+          var newJobState = Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "print" : "pause";
+          Cura.MachineManager.printerOutputDevices[0].setJobState(newJobState);
+          userClicked = true;
+        }
 
         style: ButtonStyle
         {
