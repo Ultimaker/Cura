@@ -320,11 +320,11 @@ class ExtruderManager(QObject):
     #   \param extruder_index The index of the extruder to get the value from.
     #   \param key The key of the setting to get the value of.
     #
-    #   \return The value of the setting for the specified extruder or None if not found.
+    #   \return The value of the setting for the specified extruder or for the
+    #   global stack if not found.
     @staticmethod
     def getExtruderValue(extruder_index, key):
         extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-        value = None
 
         if extruder:
             value = extruder.getRawProperty(key, "value")
