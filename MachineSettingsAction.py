@@ -60,15 +60,28 @@ class MachineSettingsAction(MachineAction):
             if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
                 has_materials = global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
-                # NB: this metadata entry is stored in an ini, and ini files are parsed as strings only.
-                # because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
+                material_container = global_container_stack.findContainer({"type": "material"})
+                material_index = global_container_stack.getContainerIndex(material_container)
+
                 if has_materials:
                     if "has_materials" in global_container_stack.getMetaData():
                         global_container_stack.setMetaDataEntry("has_materials", True)
                     else:
                         global_container_stack.addMetaDataEntry("has_materials", True)
+
+                    # Set the material container to a sane default
+                    if material_container.getId() == "empty_material":
+                        search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*" }
+                        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+                        if containers:
+                            global_container_stack.replaceContainer(material_index, containers[0])
                 else:
+                    # The metadata entry is stored in an ini, and ini files are parsed as strings only.
+                    # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
                     if "has_materials" in global_container_stack.getMetaData():
                         global_container_stack.removeMetaDataEntry("has_materials")
+
+                    empty_material = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
+                    global_container_stack.replaceContainer(material_index, empty_material)
 
                 UM.Application.getInstance().globalContainerStackChanged.emit()
