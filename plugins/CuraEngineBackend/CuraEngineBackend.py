@@ -37,7 +37,6 @@ class CuraEngineBackend(Backend):
     #
     #   This registers all the signal listeners and prepares for communication
     #   with the back-end in general.
-    
     def __init__(self):
         super().__init__()
 
