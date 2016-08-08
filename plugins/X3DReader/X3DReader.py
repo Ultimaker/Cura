@@ -32,11 +32,31 @@ class X3DReader(MeshReader):
         try:
             self.sceneNodes = []
             self.fileName = file_name
-            self.transform = Matrix()
-            self.transform.setByScaleVector(Vector(1000, 1000, 1000))
             
             tree = ET.parse(file_name)
-            self.processNode(tree.getroot())
+            root = tree.getroot()
+            
+            if root.tag != "X3D":
+                return None
+
+            scale = 1000 # Default X3D unit it one meter, while Cura's is one mm            
+            if root[0].tag == "head":
+                for headNode in root[0]:
+                    if headNode.tag == "unit" and headNode.attrib.get("category") == "length":
+                        scale *= float.parse(headNode.attrib["conversionFactor"])
+                        break 
+                scene = root[1]
+            else:
+                scene = root[0]
+                
+            if scene.tag != "Scene":
+                return None 
+            
+            self.transform = Matrix()
+            self.transform.setByScaleVector(Vector(scale, scale, scale))
+            
+            # This will populate the sceneNodes array
+            self.processChildNodes(scene)
             
             if len(self.sceneNodes) > 1:
                 theScene = SceneNode()
@@ -68,7 +88,7 @@ class X3DReader(MeshReader):
             return
         
         tag = xmlNode.tag
-        if tag in ("X3D", "Scene", "Group", "StaticGroup", "CADAssembly", "CADFace", "CADLayer", "CADPart", "Collision"):
+        if tag in ("Group", "StaticGroup", "CADAssembly", "CADFace", "CADLayer", "CADPart", "Collision"):
             self.processChildNodes(xmlNode)
         elif tag == "LOD":
             self.processNode(xmlNode[0])
