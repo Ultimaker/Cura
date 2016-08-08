@@ -5,6 +5,7 @@ import wx
 import threading
 import sys
 import time
+import textwrap
 
 from Cura.util import serialWrapper as serial
 
@@ -22,26 +23,22 @@ def getDefaultFirmware(machineIndex = None):
 			'ultimaker2go':"MarlinUltimaker2go.hex",
 			'Witbox':"MarlinWitbox.hex",
 			
-			#Mini
-			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
-			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
-			
 			#TAZ Budaschnozzle
-			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_5_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_4_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_5_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_SingleV1':       "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_SingleV1':       "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_FlexystruderV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			
-			'lulzbot_TAZ_4_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_5_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_4_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_5_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_DualV1':        "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_DualV1':        "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_FlexyDuallyV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_FlexyDuallyV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 
 			#TAZ Hexagon
-			'lulzbot_TAZ_4_05nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
+			'lulzbot_TAZ_4_05nozzle':  "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			'lulzbot_TAZ_4_035nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			
-			'lulzbot_TAZ_5_05nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
+			'lulzbot_TAZ_5_05nozzle':  "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			'lulzbot_TAZ_5_035nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 
 			'lulzbot_TAZ_4_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.1.hex",
@@ -58,6 +55,10 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.19.hex",
+			
+			#Mini
+			'lulzbot_mini':              "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
 	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
@@ -107,11 +108,12 @@ def InstallFirmware(parent = None, filename = None, port = None, machineIndex = 
 
 class InstallFirmwareDialog(wx.Dialog):
 	def __init__(self, parent = None, filename = None, port = None, machineIndex = None):
-		super(InstallFirmwareDialog, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex).title()), size=(250, 100))
+		super(InstallFirmwareDialog, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex)), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
 			filename = getDefaultFirmware(machineIndex)
+		self._machineIndex = machineIndex
 		self._machine_type = profile.getMachineSetting('machine_type', machineIndex)
 		if self._machine_type == 'reprap':
 			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
@@ -122,10 +124,16 @@ class InstallFirmwareDialog(wx.Dialog):
 		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.progressGauge = wx.Gauge(self, -1)
 		sizer.Add(self.progressGauge, 0, flag=wx.EXPAND)
-		self.okButton = wx.Button(self, -1, _("OK"))
-		self.okButton.Disable()
-		self.okButton.Bind(wx.EVT_BUTTON, self.OnOk)
-		sizer.Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+		self.buttonPanel = wx.Panel(self)
+
+		self.buttonPanel.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
+		self.okButton = wx.Button(self.buttonPanel, -1, _("Start"))
+		self.okButton.Bind(wx.EVT_BUTTON, self.OnFlash)
+		self.buttonPanel.GetSizer().Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+		self.cancelButton = wx.Button(self.buttonPanel, -1, _("Cancel"))
+		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
+		self.buttonPanel.GetSizer().Add(self.cancelButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+		sizer.Add(self.buttonPanel, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.SetSizer(sizer)
 
 		self.filename = filename
@@ -133,6 +141,7 @@ class InstallFirmwareDialog(wx.Dialog):
 
 		self.Layout()
 		self.Fit()
+		self.thread = None
 		self.success = False
 		self.show_connect_dialog = False
 
@@ -141,9 +150,12 @@ class InstallFirmwareDialog(wx.Dialog):
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			return False
 		self.success = False
-		self.thread = threading.Thread(target=self.OnRun)
-		self.thread.daemon = True
-		self.thread.start()
+		firmware_file_name = os.path.basename(self.filename)
+		text = '''\
+		About to update firmware with file: 
+		{}
+		This process cannot be interrupted once started.'''.format(firmware_file_name)
+		self.updateLabel(_(textwrap.dedent(text)))
 
 		self.ShowModal()
 		# Creating a MessageBox in a separate thread while main thread is locked inside a ShowModal
@@ -152,6 +164,15 @@ class InstallFirmwareDialog(wx.Dialog):
 			wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
 						  _("Firmware update"), wx.OK | wx.ICON_ERROR)
 		return self.success
+
+	def OnFlash(self, e):
+		if self.thread:
+			self.OnOk(e)
+		else:
+			self.okButton.Disable()
+			self.thread = threading.Thread(target=self.OnRun)
+			self.thread.daemon = True
+			self.thread.start()
 
 	def OnRun(self):
 		wx.CallAfter(self.updateLabel, _("Reading firmware..."))
@@ -181,10 +202,14 @@ class InstallFirmwareDialog(wx.Dialog):
 				#Window destroyed
 				return
 
+		self.cancelButton.Disable()
+		self.okButton.SetLabel(_('Ok'))
+
 		if not programmer.isConnected():
 			self.show_connect_dialog = True
 			wx.CallAfter(self.Close)
 			return
+
 
 		if self._machine_type == 'ultimaker':
 			if programmer.hasChecksumFunction():
@@ -203,7 +228,7 @@ class InstallFirmwareDialog(wx.Dialog):
 		try:
 			programmer.programChip(hexFile)
 			self.success = True
-			wx.CallAfter(self.updateLabel, _("Done!\nInstalled firmware: %s") % (os.path.basename(self.filename)))
+			wx.CallAfter(self.updateLabel, _("Done!"))
 		except ispBase.IspError as e:
 			wx.CallAfter(self.updateLabel, _("Failed to write firmware.\n") + str(e))
 
@@ -223,6 +248,9 @@ class InstallFirmwareDialog(wx.Dialog):
 	def OnOk(self, e):
 		self.Close()
 		taskbar.setBusy(self.GetParent(), False)
+
+	def OnCancel(self, e):
+		self.Close()
 
 	def OnClose(self, e):
 		self.Destroy()

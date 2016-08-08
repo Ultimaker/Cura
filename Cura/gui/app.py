@@ -115,6 +115,10 @@ class CuraApp(wx.App):
 		from Cura.util import resources
 		from Cura.util import version
 
+		# Looks like on Windows, for some reason (wx inspector?), stdout is redirected to a wx.py.pseudo.PsuedoFile object, which
+		# prevents any prints/exceptions/etc.. from appearing on a console. This fixes it so we can have a normal stdout on windows.
+		sys.stdout = sys.__stdout__
+
 		resources.setupLocalization(profile.getPreference('language'))  # it's important to set up localization at very beginning to install _
 
 		try:

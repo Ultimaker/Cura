@@ -130,7 +130,7 @@ class simpleModePanel(wx.Panel):
 			self.printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 			self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 			self.materialCombo = None
-		else:
+		else: #There are some material types
 			boxsizer = wx.BoxSizer(wx.VERTICAL)
 			boxsizer.SetMinSize((80, 20))
 			label = wx.StaticText(self.printMaterialPanel, label=_("Material:"))
@@ -186,7 +186,8 @@ class simpleModePanel(wx.Panel):
 		   selection == -1:
 			materials = self._all_print_materials
 			for material in materials:
-				choices.append(material.full_name)
+				if not material.name.startswith("*"):
+					choices.append(material.full_name)
 		else:
 			materials = self._print_material_types[materialType]
 			for material in materials:
@@ -233,7 +234,6 @@ class simpleModePanel(wx.Panel):
 				if button.GetValue():
 					return button.profile
 			return None
-
 
 	def _materialSelected(self, e):
 		material = self._getSelectedMaterial()
