@@ -48,9 +48,9 @@ class SliceInfoJob(Job):
             Logger.log("i", "Sent anonymous slice info to %s", self.url)
             f.close()
         except urllib.error.HTTPError as http_exception:
-            Logger.log("e", "An exception occurred while trying to send slice information: %s" %(repr(http_exception)))
-        except Exception: # Includes urllib.error.HTTPError, was discussed to be handled like any other exception 
-            Logger.logException("e", "An exception occurred while trying to send slice information")
+            Logger.log("e", "An HTTP error occurred while trying to send slice information: %s" % http_exception)
+        except Exception as e: # We don't want any exception to cause problems
+            Logger.log("e", "An exception occurred while trying to send slice information: %s" % e)
 
 ##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
