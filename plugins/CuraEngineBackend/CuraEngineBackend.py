@@ -13,7 +13,6 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 
-
 import cura.Settings
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
@@ -32,7 +31,6 @@ import Arcus
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
-
 
 class CuraEngineBackend(Backend):
     ##  Starts the back-end plug-in.
