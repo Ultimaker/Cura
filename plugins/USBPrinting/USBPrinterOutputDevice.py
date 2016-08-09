@@ -27,6 +27,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self.setShortDescription(catalog.i18nc("@action:button", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
+        self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected via USB"))
 
         self._serial = None
         self._serial_port = serial_port

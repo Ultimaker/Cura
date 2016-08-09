@@ -31,6 +31,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._head_y = 0
         self._head_z = 0
         self._connection_state = ConnectionState.closed
+        self._connection_text = ""
         self._time_elapsed = 0
         self._time_total = 0
         self._job_state = ""
@@ -70,6 +71,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Signal that is emitted every time connection state is changed.
     # it also sends it's own device_id (for convenience sake)
     connectionStateChanged = pyqtSignal(str)
+
+    connectionTextChanged = pyqtSignal()
 
     timeElapsedChanged = pyqtSignal()
 
@@ -291,6 +294,16 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def setConnectionState(self, connection_state):
         self._connection_state = connection_state
         self.connectionStateChanged.emit(self._id)
+
+    @pyqtProperty(str, notify = connectionTextChanged)
+    def connectionText(self):
+        return self._connection_text
+
+    ##  Set a text that is shown on top of the print monitor tab
+    def setConnectionText(self, connection_text):
+        if self._connection_text != connection_text:
+            self._connection_text = connection_text
+            self.connectionTextChanged.emit()
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
