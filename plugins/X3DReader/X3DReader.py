@@ -43,7 +43,7 @@ class X3DReader(MeshReader):
             if root[0].tag == "head":
                 for headNode in root[0]:
                     if headNode.tag == "unit" and headNode.attrib.get("category") == "length":
-                        scale *= float.parse(headNode.attrib["conversionFactor"])
+                        scale *= float(headNode.attrib["conversionFactor"])
                         break 
                 scene = root[1]
             else:
