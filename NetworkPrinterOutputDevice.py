@@ -182,10 +182,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def setAuthenticationState(self, auth_state):
         if auth_state == AuthState.AuthenticationRequested:
             self.setAcceptsCommands(False)
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0} without access to control the printer.").format(self.name))
             self._authentication_requested_message.show()
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
             self.setAcceptsCommands(True)
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
             self._authentication_requested_message.hide()
             authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
             authentication_succeeded_message.show()
