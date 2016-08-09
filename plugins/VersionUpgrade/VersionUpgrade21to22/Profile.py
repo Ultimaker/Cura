@@ -99,7 +99,7 @@ class Profile:
             translated_machine = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._machine_type_id)
             config.set("general", "definition", translated_machine)
         else:
-            config.set("general", "definition", "fdmprinter")
+            config.set("general", "definition", "fdmprinter") #In this case, the machine definition is unknown, and it might now have machine-specific profiles, in which case this will fail.
 
         config.add_section("metadata")
         if self._type:

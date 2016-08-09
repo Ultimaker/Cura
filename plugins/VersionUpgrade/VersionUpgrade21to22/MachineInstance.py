@@ -79,9 +79,13 @@ class MachineInstance:
         if self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality(): #This machine now has machine-quality profiles.
             active_profile += "_" + active_material #That means that the profile was split into multiple.
         variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
+        if self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality(): #The current settings profile is now machine-specific.
+            current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
+        else:
+            current_settings = self._name + "_current_settings"
 
         containers = [
-            self._name + "_current_settings",
+            current_settings,
             active_profile,
             active_material,
             variant,
