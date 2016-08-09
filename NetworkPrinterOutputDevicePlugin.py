@@ -81,6 +81,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         if state_change == ServiceStateChange.Added:
             Logger.log("d", "Bonjour service added: %s" % name)
 
+            # First try getting info from zeroconf cache
             info = ServiceInfo(service_type, name, properties = {})
             for record in zeroconf.cache.entries_with_name(name.lower()):
                 info.update_record(zeroconf, time.time(), record)
@@ -90,6 +91,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                 if info.address:
                     break
 
+            # Request more data if info is not complete
             if not info.address:
                 Logger.log("d", "Trying to get address of %s", name)
                 info = zeroconf.get_service_info(service_type, name)
