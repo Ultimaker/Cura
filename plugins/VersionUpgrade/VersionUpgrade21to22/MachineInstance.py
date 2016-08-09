@@ -75,10 +75,10 @@ class MachineInstance:
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         type_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._type_name)
         active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
+        variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
         active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
         if self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality(): #This machine now has machine-quality profiles.
-            active_profile += "_" + active_material #That means that the profile was split into multiple.
-        variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
+            active_profile += "_" + active_material + "_" + variant #That means that the profile was split into multiple.
         if self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality(): #The current settings profile is now machine-specific.
             current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
         else:

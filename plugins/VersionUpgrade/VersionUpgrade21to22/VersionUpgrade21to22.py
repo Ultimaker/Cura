@@ -13,12 +13,24 @@ from . import Profile # To upgrade profiles.
 #
 #   These are the 2.1 machine identities with "has_machine_materials": true in
 #   their definitions in Cura 2.2. So these are the machines for which profiles
-#   need to split into multiple profiles, one for each material.
+#   need to split into multiple profiles, one for each material and variant.
+#
+#   Each machine has the materials and variants listed in which it needs to
+#   split, since those might be different per machine.
 #
 #   This should contain the definition as they are stated in the profiles. The
 #   inheritance structure cannot be found at this stage, since the definitions
 #   may have changed in later versions than 2.2.
-_machines_with_machine_quality = {"ultimaker2plus", "ultimaker2_extended_plus"}
+_machines_with_machine_quality = {
+    "ultimaker2plus": {
+        "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva" },
+        "variants": { "0.25 mm", "0.4 mm", "0.6 mm", "0.8 mm" }
+    },
+    "ultimaker2_extended_plus": {
+        "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva" },
+        "variants": { "0.25 mm", "0.4 mm", "0.6 mm", "0.8 mm" }
+    }
+}
 
 ##  How to translate printer names from the old version to the new.
 _printer_translations = {
@@ -69,6 +81,24 @@ _variant_translations = {
         "0.4 mm": "ultimaker2_extended_plus_0.4",
         "0.6 mm": "ultimaker2_extended_plus_0.6",
         "0.8 mm": "ultimaker2_extended_plus_0.8"
+    }
+}
+
+##  Cura 2.2's material profiles use a different naming scheme for variants.
+#
+#   Getting pretty stressed out by this sort of thing...
+_variant_translations_materials = {
+    "ultimaker2_plus": {
+        "0.25 mm": "ultimaker2_plus_0.25_mm",
+        "0.4 mm": "ultimaker2_plus_0.4_mm",
+        "0.6 mm": "ultimaker2_plus_0.6_mm",
+        "0.8 mm": "ultimaker2_plus_0.8_mm"
+    },
+    "ultimaker2_extended_plus": {
+        "0.25 mm": "ultimaker2_plus_0.25_mm",
+        "0.4 mm": "ultimaker2_plus_0.4_mm",
+        "0.6 mm": "ultimaker2_plus_0.6_mm",
+        "0.8 mm": "ultimaker2_plus_0.8_mm"
     }
 }
 
@@ -198,4 +228,18 @@ class VersionUpgrade21to22(VersionUpgrade):
     def translateVariant(variant, machine):
         if machine in _variant_translations and variant in _variant_translations[machine]:
             return _variant_translations[machine][variant]
+        return variant
+
+    ##  Translates a variant name for the change from Cura 2.1 to 2.2 in
+    #   material profiles.
+    #
+    #   \param variant The name of the variant in Cura 2.1.
+    #   \param machine The name of the machine this variant is part of in Cura
+    #   2.2's naming.
+    #   \return The name of the corresponding variant for in material profiles
+    #   in Cura 2.2.
+    @staticmethod
+    def translateVariantForMaterials(variant, machine):
+        if machine in _variant_translations_materials and variant in _variant_translations_materials[machine]:
+            return _variant_translations_materials[machine][variant]
         return variant

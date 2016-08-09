@@ -6,14 +6,6 @@ import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
 
-##  The materials in Cura 2.2.
-#
-#   This is required to know how to split old profiles if the old machine didn't
-#   have material-specific profiles but the new machine has. This cannot be read
-#   from the current source directory since the current source directory may be
-#   a later version than Cura 2.2, so it must be stored in the upgrade plug-in.
-_new_materials = {"generic_abs", "generic_cpe", "generic_pla", "generic_pva"}
-
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
 #
@@ -143,12 +135,19 @@ class Profile:
             configs.append(config)
         elif self._type != "material" and self._machine_type_id in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality():
             #Split this profile into multiple profiles, one for each material.
+            _new_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()[self._machine_type_id]["materials"]
+            _new_variants = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()[self._machine_type_id]["variants"]
+            translated_machine = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._machine_type_id)
             for material_id in _new_materials:
-                filenames.append("{profile}_{material}".format(profile = self._filename, material = material_id))
-                config_copy = configparser.ConfigParser(interpolation = None)
-                config_copy.read_dict(config) #Copy the config to a new ConfigParser instance.
-                config_copy.set("metadata", "material", material_id)
-                configs.append(config_copy)
+                for variant_id in _new_variants:
+                    variant_id_new = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(variant_id, translated_machine)
+                    filenames.append("{profile}_{material}_{variant}".format(profile = self._filename, material = material_id, variant = variant_id_new))
+                    config_copy = configparser.ConfigParser(interpolation = None)
+                    config_copy.read_dict(config) #Copy the config to a new ConfigParser instance.
+                    variant_id_new_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(variant_id, translated_machine)
+                    config_copy.set("metadata", "material", "{material}_{variant}".format(material = material_id, variant = variant_id_new_materials))
+                    config_copy.set("general", "name", self._name + " " + material_id + " " + variant_id) #DEBUG
+                    configs.append(config_copy)
         else:
             configs.append(config)
             filenames.append(self._filename)
