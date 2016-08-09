@@ -251,7 +251,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # If the programmer connected, we know its an atmega based version.
         # Not all that useful, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
-            Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
+            Logger.log("d", "Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
@@ -260,7 +260,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     continue
             else:
                 if not self.setBaudRate(baud_rate):
-                    continue # Could not set the baud rate, go to the next
+                    continue  # Could not set the baud rate, go to the next
 
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 seconds seems to be the magic number
             sucesfull_responses = 0
@@ -270,11 +270,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             while timeout_time > time.time():
                 line = self._readline()
                 if line is None:
+                    Logger.log("d", "No response from serial connection received.")
                     # Something went wrong with reading, could be that close was called.
                     self.setConnectionState(ConnectionState.closed)
                     return
 
                 if b"T:" in line:
+                    Logger.log("d", "Correct response for auto-baudrate detection received.")
                     self._serial.timeout = 0.5
                     sucesfull_responses += 1
                     if sucesfull_responses >= self._required_responses_auto_baud:
