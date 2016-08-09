@@ -2297,6 +2297,7 @@
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable",
+                    "global_inherits_stack": "support_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
