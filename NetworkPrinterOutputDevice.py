@@ -266,11 +266,21 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setConnectionState(ConnectionState.closed)
         if self._progress_message:
             self._progress_message.hide()
+
+        # Reset authentication state
         self._authentication_requested_message.hide()
-        if self._error_message:
-            self._error_message.hide()
+        self._authentication_state = AuthState.NotAuthenticated
         self._authentication_counter = 0
         self._authentication_timer.stop()
+
+        if self._error_message:
+            self._error_message.hide()
+
+        # Reset timeout state
+        self._connection_state_before_timeout = None
+        self._last_response_time = time()
+
+        # Stop update timers
         self._update_timer.stop()
         self._camera_timer.stop()
 
@@ -313,6 +323,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from printer
     def connect(self):
+        self.close()  # Ensure that previous connection (if any) is killed.
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         self._update_camera()
