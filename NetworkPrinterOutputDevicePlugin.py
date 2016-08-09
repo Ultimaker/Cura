@@ -1,11 +1,12 @@
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import NetworkPrinterOutputDevice
 
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
 
+import time
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -79,7 +80,20 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
             Logger.log("d", "Bonjour service added: %s" % name)
-            info = zeroconf.get_service_info(service_type, name)
+
+            info = ServiceInfo(service_type, name, properties = {})
+            for record in zeroconf.cache.entries_with_name(name.lower()):
+                info.update_record(zeroconf, time.time(), record)
+
+            for record in zeroconf.cache.entries_with_name(info.server):
+                info.update_record(zeroconf, time.time(), record)
+                if info.address:
+                    break
+
+            if not info.address:
+                Logger.log("d", "Trying to get address of %s", name)
+                info = zeroconf.get_service_info(service_type, name)
+
             if info:
                 if info.properties.get(b"type", None) == b'printer':
                     address = '.'.join(map(lambda n: str(n), info.address))
