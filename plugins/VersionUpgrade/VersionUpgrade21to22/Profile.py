@@ -130,4 +130,4 @@ class Profile:
 
         output = io.StringIO()
         config.write(output)
-        return self._filename, output.getvalue()
+        return [self._filename], [output.getvalue()]

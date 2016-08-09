@@ -77,4 +77,4 @@ class Preferences:
         #Output the result as a string.
         output = io.StringIO()
         self._config.write(output)
-        return self._filename, output.getvalue()
+        return [self._filename], [output.getvalue()]
