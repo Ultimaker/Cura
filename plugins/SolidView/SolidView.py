@@ -61,7 +61,7 @@ class SolidView(View):
                     uniforms = {}
                     if self._extruders_model.rowCount() == 0:
                         material = Application.getInstance().getGlobalContainerStack().findContainer({ "type": "material" })
-                        material_color = material.getMetaDataEntry("color_code", default = self._extruders_model.defaultColours[0]) if material else self._extruders_model.defaultColours[0]
+                        material_color = material.getMetaDataEntry("color_code", default = self._extruders_model.defaultColors[0]) if material else self._extruders_model.defaultColors[0]
                     else:
                         # Get color to render this mesh in from ExtrudersModel
                         extruder_index = 0
@@ -69,7 +69,7 @@ class SolidView(View):
                         if extruder_id:
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
 
-                        material_color = self._extruders_model.getItem(extruder_index)["colour"]
+                        material_color = self._extruders_model.getItem(extruder_index)["color"]
                     try:
                         # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
                         # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])

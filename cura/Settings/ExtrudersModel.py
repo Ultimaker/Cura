@@ -20,7 +20,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     NameRole = Qt.UserRole + 2
 
     ##  Colour of the material loaded in the extruder.
-    ColourRole = Qt.UserRole + 3
+    ColorRole = Qt.UserRole + 3
 
     ##  Index of the extruder, which is also the value of the setting itself.
     #
@@ -31,7 +31,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
-    defaultColours = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
+    defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
 
     ##  Initialises the extruders model, defining the roles and listening for
     #   changes in the data.
@@ -42,7 +42,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.NameRole, "name")
-        self.addRoleName(self.ColourRole, "colour")
+        self.addRoleName(self.ColorRole, "color")
         self.addRoleName(self.IndexRole, "index")
 
         self._add_global = False
@@ -104,11 +104,11 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         if global_container_stack:
             if self._add_global:
                 material = global_container_stack.findContainer({ "type": "material" })
-                colour = material.getMetaDataEntry("color_code", default = self.defaultColours[0]) if material else self.defaultColours[0]
+                color = material.getMetaDataEntry("color_code", default = self.defaultColors[0]) if material else self.defaultColors[0]
                 item = {
                     "id": global_container_stack.getId(),
                     "name": "Global",
-                    "colour": colour,
+                    "color": color,
                     "index": -1
                 }
                 self.appendItem(item)
@@ -125,12 +125,12 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     position = int(position)
                 except ValueError: #Not a proper int.
                     position = -1
-                default_colour = self.defaultColours[position] if position >= 0 and position < len(self.defaultColours) else self.defaultColours[0]
-                colour = material.getMetaDataEntry("color_code", default = default_colour) if material else default_colour
+                default_color = self.defaultColors[position] if position >= 0 and position < len(self.defaultColors) else self.defaultColors[0]
+                color = material.getMetaDataEntry("color_code", default = default_color) if material else default_color
                 item = { #Construct an item with only the relevant information.
                     "id": extruder.getId(),
                     "name": extruder_name,
-                    "colour": colour,
+                    "color": color,
                     "index": position
                 }
                 self.appendItem(item)
