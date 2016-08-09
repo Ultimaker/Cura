@@ -2,9 +2,29 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import configparser #To read config files.
+import copy #To split config files into multiple config files.
 import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
+
+##  Which machines have material-specific profiles in the new version?
+#
+#   These are the 2.1 machine identities with "has_machine_materials": true in
+#   their definitions in Cura 2.2. So these are the machines for which profiles
+#   need to split into multiple profiles, one for each material.
+#
+#   This should contain the definition as they are stated in the profiles. The
+#   inheritance structure cannot be found at this stage, since the definitions
+#   may have changed in later versions than 2.2.
+_machines_with_machine_quality = {"ultimaker2plus", "ultimaker2_extended_plus"}
+
+##  The materials in Cura 2.2.
+#
+#   This is required to know how to split old profiles if the old machine didn't
+#   have material-specific profiles but the new machine has. This cannot be read
+#   from the current source directory since the current source directory may be
+#   a later version than Cura 2.2, so it must be stored in the upgrade plug-in.
+_new_materials = {"generic_abs", "generic_cpe", "generic_pla", "generic_pva"}
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
@@ -105,8 +125,6 @@ class Profile:
                 config.set("metadata", "variant", VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._machine_variant_name, self._machine_type_id))
             else:
                 config.set("metadata", "variant", self._machine_variant_name)
-        if self._material_name and self._type != "material":
-            config.set("metadata", "material", self._material_name)
 
         if self._settings:
             VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
@@ -128,6 +146,24 @@ class Profile:
             for item in disabled_settings_defaults[1:]:
                 disabled_defaults_string += "," + str(item)
 
-        output = io.StringIO()
-        config.write(output)
-        return [self._filename], [output.getvalue()]
+        #Material metadata may cause the file to split, so do it last to minimise processing time (do more with the copy).
+        filenames = []
+        configs = []
+        if self._material_name and self._type != "material":
+            config.set("metadata", "material", self._material_name)
+            filenames.append(self._filename)
+            configs.append(config)
+        elif self._type != "material" and self._machine_type_id in _machines_with_machine_quality:
+            #Split this profile into multiple profiles, one for each material.
+            for material_id in _new_materials:
+                filenames.append("{profile}_{material}".format(profile = self._filename, material = material_id))
+                config_copy = copy.copy(config)
+                config_copy.set("metadata", "material", material_id)
+                configs.append(config_copy)
+
+        outputs = []
+        for config in configs:
+            output = io.StringIO()
+            config.write(output)
+            outputs.append(output.getvalue())
+        return filenames, outputs
