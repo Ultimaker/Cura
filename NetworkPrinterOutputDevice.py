@@ -40,8 +40,28 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._gcode = None
         self._print_finished = True # _print_finsihed == False means we're halfway in a print
 
-        #   This holds the full JSON file that was received from the last request.
-        self._json_printer_state = None
+        # This holds the full JSON file that was received from the last request.
+        # The JSON looks like:
+        # {'led': {'saturation': 0.0, 'brightness': 100.0, 'hue': 0.0},
+        # 'beep': {}, 'network': {'wifi_networks': [],
+        # 'ethernet': {'connected': True, 'enabled': True},
+        # 'wifi': {'ssid': 'xxxx', 'connected': False, 'enabled': False}},
+        # 'diagnostics': {},
+        # 'bed': {'temperature': {'target': 60.0, 'current': 44.4}},
+        # 'heads': [{'max_speed': {'z': 40.0, 'y': 300.0, 'x': 300.0},
+        # 'position': {'z': 20.0, 'y': 6.0, 'x': 180.0},
+        # 'fan': 0.0,
+        # 'jerk': {'z': 0.4, 'y': 20.0, 'x': 20.0},
+        # 'extruders': [
+        # {'feeder': {'max_speed': 45.0, 'jerk': 5.0, 'acceleration': 3000.0},
+        # 'active_material': {'GUID': 'xxxxxxx', 'length_remaining': -1.0},
+        # 'hotend': {'temperature': {'target': 0.0, 'current': 22.8}, 'id': 'AA 0.4'}},
+        # {'feeder': {'max_speed': 45.0, 'jerk': 5.0, 'acceleration': 3000.0},
+        # 'active_material': {'GUID': 'xxxx', 'length_remaining': -1.0},
+        # 'hotend': {'temperature': {'target': 0.0, 'current': 22.8}, 'id': 'BB 0.4'}}],
+        # 'acceleration': 3000.0}],
+        # 'status': 'printing'}
+        self._json_printer_state = {}
 
         ##  Todo: Hardcoded value now; we should probably read this from the machine file.
         ##  It's okay to leave this for now, as this plugin is um3 only (and has 2 extruders by definition)
@@ -72,7 +92,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._post_reply = None
         self._post_multi_part = None
         self._post_part = None
-
 
         self._material_multi_part = None
         self._material_part = None
@@ -195,7 +214,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not receive a response for %s seconds, so it seems the printer is no longer accesible.", time() - self._last_response_time)
+                Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your network-connections."))
                 self._connection_message.show()
@@ -258,6 +277,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         if self._progress != 0:
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
+            self._error_message.show()
+            return
+        if self._json_printer_state["status"] != "idle":
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is not idle. Current printer status is %s.") % self._json_printer_state["status"])
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
@@ -430,7 +454,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             return
 
         if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  # There was a timeout, but we got a correct answer again.
-            Logger.log("d", "We got a response from the server after %s of silence", time() - self._last_response_time)
+            Logger.log("d", "We got a response from the server after %0.1f of silence", time() - self._last_response_time)
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
 
@@ -441,14 +465,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if not status_code:
             # Received no or empty reply
             return
+        reply_url = reply.url().toString()
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if "printer" in reply.url().toString():  # Status update from printer.
+            if "printer" in reply_url:  # Status update from printer.
                 if status_code == 200:
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
                     self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
-
                     self._spliceJSONData()
 
                     # Hide connection error message if the connection was restored
@@ -458,7 +482,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 else:
                     Logger.log("w", "We got an unexpected status (%s) while requesting printer state", status_code)
                     pass  # TODO: Handle errors
-            elif "print_job" in reply.url().toString():  # Status update from print_job:
+            elif "print_job" in reply_url:  # Status update from print_job:
                 if status_code == 200:
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     progress = json_data["progress"]
@@ -501,11 +525,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.setJobName("")
                 else:
                     Logger.log("w", "We got an unexpected status (%s) while requesting print job state", status_code)
-            elif "snapshot" in reply.url().toString():  # Status update from image:
+            elif "snapshot" in reply_url:  # Status update from image:
                 if status_code == 200:
                     self._camera_image.loadFromData(reply.readAll())
                     self.newImage.emit()
-            elif "auth/verify" in reply.url().toString():  # Answer when requesting authentication
+            elif "auth/verify" in reply_url:  # Answer when requesting authentication
                 if status_code == 401:
                     if self._authentication_state != AuthState.AuthenticationRequested:
                         # Only request a new authentication when we have not already done so.
@@ -531,7 +555,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     Logger.log("w", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
                     self.setAuthenticationState(AuthState.NotAuthenticated)
 
-            elif "auth/check" in reply.url().toString():  # Check if we are authenticated (user can refuse this!)
+            elif "auth/check" in reply_url:  # Check if we are authenticated (user can refuse this!)
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                 if data.get("message", "") == "authorized":
                     Logger.log("i", "Authentication was approved")
@@ -543,7 +567,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     pass
 
         elif reply.operation() == QNetworkAccessManager.PostOperation:
-            if "/auth/request" in reply.url().toString():
+            if "/auth/request" in reply_url:
                 # We got a response to requesting authentication.
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
                 self._authentication_key = data["key"]
@@ -552,10 +576,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()
-            elif "materials" in reply.url().toString():
+            elif "materials" in reply_url:
                 # Remove cached post request items.
                 del self._material_post_objects[id(reply)]
-            elif "print_job" in reply.url().toString():
+            elif "print_job" in reply_url:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 self._progress_message.hide()
 
@@ -563,7 +587,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if status_code == 204:
                 pass  # Request was successful!
             else:
-                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply.url().toString(), reply.readAll(), reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
+                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply_url, reply.readAll(), status_code)
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 
