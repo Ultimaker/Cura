@@ -7,17 +7,6 @@ import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
 
-##  Which machines have material-specific profiles in the new version?
-#
-#   These are the 2.1 machine identities with "has_machine_materials": true in
-#   their definitions in Cura 2.2. So these are the machines for which profiles
-#   need to split into multiple profiles, one for each material.
-#
-#   This should contain the definition as they are stated in the profiles. The
-#   inheritance structure cannot be found at this stage, since the definitions
-#   may have changed in later versions than 2.2.
-_machines_with_machine_quality = {"ultimaker2plus", "ultimaker2_extended_plus"}
-
 ##  The materials in Cura 2.2.
 #
 #   This is required to know how to split old profiles if the old machine didn't
@@ -153,7 +142,7 @@ class Profile:
             config.set("metadata", "material", self._material_name)
             filenames.append(self._filename)
             configs.append(config)
-        elif self._type != "material" and self._machine_type_id in _machines_with_machine_quality:
+        elif self._type != "material" and self._machine_type_id in VersionUpgrade21to22.machines_with_machine_quality():
             #Split this profile into multiple profiles, one for each material.
             for material_id in _new_materials:
                 filenames.append("{profile}_{material}".format(profile = self._filename, material = material_id))

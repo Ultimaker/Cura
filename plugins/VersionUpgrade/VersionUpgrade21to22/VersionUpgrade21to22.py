@@ -9,6 +9,17 @@ from . import MachineInstance # To upgrade machine instances.
 from . import Preferences #To upgrade preferences.
 from . import Profile # To upgrade profiles.
 
+##  Which machines have material-specific profiles in the new version?
+#
+#   These are the 2.1 machine identities with "has_machine_materials": true in
+#   their definitions in Cura 2.2. So these are the machines for which profiles
+#   need to split into multiple profiles, one for each material.
+#
+#   This should contain the definition as they are stated in the profiles. The
+#   inheritance structure cannot be found at this stage, since the definitions
+#   may have changed in later versions than 2.2.
+_machines_with_machine_quality = {"ultimaker2plus", "ultimaker2_extended_plus"}
+
 ##  How to translate printer names from the old version to the new.
 _printer_translations = {
     "ultimaker2plus": "ultimaker2_plus"
@@ -76,6 +87,13 @@ class VersionUpgrade21to22(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+
+    ##  Gets a set of the machines which now have per-material quality profiles.
+    #
+    #   \return A set of machine identifiers.
+    @staticmethod
+    def machines_with_machine_quality(self):
+        return _machines_with_machine_quality
 
     ##  Converts machine instances from format version 1 to version 2.
     #
