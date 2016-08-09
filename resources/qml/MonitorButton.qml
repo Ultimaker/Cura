@@ -22,8 +22,9 @@ Rectangle
 
     property bool showProgress: {
         // determine if we need to show the progress bar + percentage
-        if(!printerConnected || !printerAcceptsCommands)
+        if(!printerConnected || !printerAcceptsCommands) {
             return false;
+        }
 
         switch(Cura.MachineManager.printerOutputDevices[0].jobState)
         {
@@ -36,7 +37,7 @@ Rectangle
             case "offline":
             case "abort":  // note sure if this jobState actually occurs in the wild
             case "error":  // after clicking abort you apparently get "error"
-            case "":  // ready to print
+            case "":  // ready to print or getting ready
             default:
                 return false;
         }
