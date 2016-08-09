@@ -84,6 +84,8 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                 if info.properties.get(b"type", None) == b'printer':
                     address = '.'.join(map(lambda n: str(n), info.address))
                     self.addPrinterSignal.emit(str(name), address, info.properties)
+            else:
+                Logger.log("w", "Could not get information about %s" % name)
 
         elif state_change == ServiceStateChange.Removed:
             Logger.log("d", "Bonjour service removed: %s" % name)
