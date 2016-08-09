@@ -17,7 +17,14 @@ Cura.MachineAction
     {
         target: dialog ? dialog : null
         ignoreUnknownSignals: true
-        onNextClicked: connectToPrinter()
+        onNextClicked:
+        {
+            // Connect to the printer if the MachineAction is currently shown
+            if(base.parent == dialog)
+            {
+                connectToPrinter();
+            }
+        }
     }
 
     function connectToPrinter()
