@@ -26,10 +26,12 @@ class X3DReader(MeshReader):
         super().__init__()
         self._supported_extensions = [".x3d"]
         self._namespaces = {}
-        self.defs = {}
-        
+    
+    # Main entry point
+    # Reads the file, returns a SceneNode (possibly with nested ones), or None
     def read(self, file_name):
         try:
+            self.defs = {}
             self.sceneNodes = []
             self.fileName = file_name
             
@@ -39,7 +41,7 @@ class X3DReader(MeshReader):
             if root.tag != "X3D":
                 return None
 
-            scale = 1000 # Default X3D unit it one meter, while Cura's is one mm            
+            scale = 1000 # Default X3D unit it one meter, while Cura's is one millimeters            
             if root[0].tag == "head":
                 for headNode in root[0]:
                     if headNode.tag == "unit" and headNode.attrib.get("category") == "length":
@@ -53,9 +55,9 @@ class X3DReader(MeshReader):
                 return None 
             
             self.transform = Matrix()
-            self.transform.setByScaleVector(Vector(scale, scale, scale))
+            self.transform.setByScaleFactor(scale)
             
-            # This will populate the sceneNodes array
+            # Traverse the scene tree, populate the sceneNodes array
             self.processChildNodes(scene)
             
             if len(self.sceneNodes) > 1:
@@ -132,7 +134,8 @@ class X3DReader(MeshReader):
     # Returns the referenced node if the node has USE, the same node otherwise.
     # May return None is USE points at a nonexistent node
     # In X3DOM, when both DEF and USE are in the same node, DEF is ignored.
-    # Big caveat: XML node objects may evaluate to boolean False!!! 
+    # Big caveat: XML element objects may evaluate to boolean False!!!
+    # Don't ever use "if node:", use "if not node is None:" instead
     def resolveDefUse(self, node):
         USE = node.attrib.get("USE")
         if USE:
@@ -210,12 +213,10 @@ class X3DReader(MeshReader):
         else:
             nr = ns = DEFAULT_SUBDIV
             
-        
         lau = pi / nr  # Unit angle of latitude (rings) for the given tesselation
         lou = 2 * pi / ns  # Unit angle of longitude (segments)
         
         bui.reserveFaceAndVertexCount(ns*(nr*2 - 2), 2 + (nr + 1)*ns)
-    
         
         # +y and -y poles
         bui.addVertex(0, r, 0)
@@ -434,13 +435,13 @@ class X3DReader(MeshReader):
             z = z.normalized()
             y = y.normalized()
             x = y.cross(z) # Already normalized
-            m = numpy.array((x.getData(), y.getData(), z.getData()))
+            m = numpy.array(((x.x, y.x, z.x), (x.y, y.y, z.y), (x.z, y.z, z.z)))
             
             # Columns are the unit vectors for the xz plane for the cross-section
             if orient:
                 mrot = orient[i] if len(orient) > 1 else orient[0]
                 if not mrot is None:
-                    m = m.dot(mrot)  # Not sure about this. Counterexample???
+                    m = m.dot(mrot)  # Tested against X3DOM, the result matches, still not sure :(
                     
             if scale:
                 mscale = scale[i] if len(scale) > 1 else scale[0]
@@ -451,10 +452,10 @@ class X3DReader(MeshReader):
             # then rotated (which may make it a 3-vector),
             # then applied to the xz plane unit vectors
                     
+            sptv3 = numpy.array(spt.getData()[:3])
             for cpt in cross:
-                v = numpy.array(spt.getData()[:3]) + m.dot(cpt)
+                v = sptv3 + m.dot(cpt)
                 bui.addVertex(*v)
-                # Could've done this with a single 4x4 matrix... Oh well
     
         if beginCap:
             addFace(bui, [x for x in range(nc - 1, -1, -1)], ccw)
@@ -521,7 +522,6 @@ class X3DReader(MeshReader):
         for fan in fans:
             for i in range(1, len(fan) - 1):
                 addTriFlip(bui, fan[0], fan[i], fan[i+1], ccw)
-    
    
     def geomTriangleSet(self, node, bui):
         ccw = self.startCoordMesh(node, bui, lambda coord: len(coord) // 3)
