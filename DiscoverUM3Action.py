@@ -55,3 +55,13 @@ class DiscoverUM3Action(MachineAction):
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
             self._network_plugin.reCheckConnections()
+
+    @pyqtSlot(result = str)
+    def getStoredKey(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            meta_data = global_container_stack.getMetaData()
+            if "um_network_key" in meta_data:
+                return global_container_stack.getMetaDataEntry("um_network_key")
+
+        return ""

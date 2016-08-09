@@ -97,6 +97,18 @@ Cura.MachineAction
                 {
                     id: listview
                     model: manager.foundDevices
+                    onModelChanged:
+                    {
+                        var selectedKey = manager.getStoredKey();
+                        for(var i = 0; i < model.length; i++) {
+                            if(model[i].getKey() == selectedKey)
+                            {
+                                currentIndex = i;
+                                return
+                            }
+                        }
+                        currentIndex = -1;
+                    }
                     width: parent.width
                     currentIndex: -1
                     onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
@@ -134,6 +146,7 @@ Cura.MachineAction
             {
                 width: parent.width * 0.5
                 visible: base.selectedPrinter
+                spacing: UM.Theme.getSize("default_margin").height
                 Label
                 {
                     width: parent.width
