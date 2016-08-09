@@ -150,7 +150,7 @@ Rectangle
 
         visible: printerConnected
         enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
-                 (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+                 (["paused", "printing", "pre_print"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
 
         height: UM.Theme.getSize("save_button_save_to_button").height
         anchors.top: progressBar.bottom
@@ -227,7 +227,7 @@ Rectangle
 
         visible: printerConnected
         enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
-                 (Cura.MachineManager.printerOutputDevices[0].jobState == "paused" || Cura.MachineManager.printerOutputDevices[0].jobState == "printing")
+                 (["paused", "printing"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
 
         property bool userClicked: false
 
