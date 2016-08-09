@@ -33,8 +33,9 @@ class DiscoverUM3Action(MachineAction):
     @pyqtProperty("QVariantList", notify = printersChanged)
     def foundDevices(self):
         if self._network_plugin:
-            printers = self._network_plugin.getPrinters()
-            return list(printers.values())
+            printers = list(self._network_plugin.getPrinters().values())
+            printers.sort(key = lambda k: k.name)
+            return printers
         else:
             return []
 
