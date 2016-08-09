@@ -149,6 +149,9 @@ class Profile:
                 config_copy = copy.copy(config)
                 config_copy.set("metadata", "material", material_id)
                 configs.append(config_copy)
+        else:
+            configs.append(config)
+            filenames.append(self._filename)
 
         outputs = []
         for config in configs:
