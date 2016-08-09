@@ -47,9 +47,9 @@ Item {
                     id: extruders_model
                     onRowsInserted: extruderSelector.visible = extruders_model.rowCount() > 1
                     onModelReset:   extruderSelector.visible = extruders_model.rowCount() > 1
-                    onModelChanged: extruderSelector.color = extruders_model.getItem(extruderSelector.currentIndex).colour
+                    onModelChanged: extruderSelector.color = extruders_model.getItem(extruderSelector.currentIndex).color
                 }
-                property string color: extruders_model.getItem(extruderSelector.currentIndex).colour
+                property string color: extruders_model.getItem(extruderSelector.currentIndex).color
                 visible: extruders_model.rowCount() > 1
                 textRole: "name"
                 width: UM.Theme.getSize("setting_control").width
@@ -138,7 +138,7 @@ Item {
                         if(extruders_model.getItem(i).id == UM.ActiveTool.properties.getValue("SelectedActiveExtruder"))
                         {
                             extruderSelector.currentIndex = i;
-                            extruderSelector.color = extruders_model.getItem(i).colour;
+                            extruderSelector.color = extruders_model.getItem(i).color;
                             return;
                         }
                     }
