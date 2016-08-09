@@ -92,6 +92,9 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
+            Logger.log("d", "Bonjour service added: %s" % name)
+
+            # First try getting info from zeroconf cache
             info = ServiceInfo(service_type, name, properties = {})
             for record in zeroconf.cache.entries_with_name(name.lower()):
                 info.update_record(zeroconf, time.time(), record)
@@ -100,6 +103,15 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
                 info.update_record(zeroconf, time.time(), record)
                 if info.address:
                     break
+
+            # Request more data if info is not complete
+            if not info.address:
+                Logger.log("d", "Trying to get address of %s", name)
+                info = zeroconf.get_service_info(service_type, name)
+
+                if not info:
+                    Logger.log("w", "Could not get information about %s" % name)
+                    return
 
             if info.address:
                 address = '.'.join(map(lambda n: str(n), info.address))
