@@ -142,7 +142,7 @@ class Profile:
             config.set("metadata", "material", self._material_name)
             filenames.append(self._filename)
             configs.append(config)
-        elif self._type != "material" and self._machine_type_id in VersionUpgrade21to22.machines_with_machine_quality():
+        elif self._type != "material" and self._machine_type_id in VersionUpgrade21to22.machinesWithMachineQuality():
             #Split this profile into multiple profiles, one for each material.
             for material_id in _new_materials:
                 filenames.append("{profile}_{material}".format(profile = self._filename, material = material_id))
