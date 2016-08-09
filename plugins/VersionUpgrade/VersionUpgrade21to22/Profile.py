@@ -2,7 +2,6 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import configparser #To read config files.
-import copy #To split config files into multiple config files.
 import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
@@ -146,7 +145,8 @@ class Profile:
             #Split this profile into multiple profiles, one for each material.
             for material_id in _new_materials:
                 filenames.append("{profile}_{material}".format(profile = self._filename, material = material_id))
-                config_copy = copy.copy(config)
+                config_copy = configparser.ConfigParser(interpolation = None)
+                config_copy.read_dict(config) #Copy the config to a new ConfigParser instance.
                 config_copy.set("metadata", "material", material_id)
                 configs.append(config_copy)
         else:
