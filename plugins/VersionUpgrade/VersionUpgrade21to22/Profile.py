@@ -146,7 +146,6 @@ class Profile:
                     config_copy.read_dict(config) #Copy the config to a new ConfigParser instance.
                     variant_id_new_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(variant_id, translated_machine)
                     config_copy.set("metadata", "material", "{material}_{variant}".format(material = material_id, variant = variant_id_new_materials))
-                    config_copy.set("general", "name", self._name + " " + material_id + " " + variant_id) #DEBUG
                     configs.append(config_copy)
         else:
             configs.append(config)
