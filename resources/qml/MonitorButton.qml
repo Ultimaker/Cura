@@ -226,33 +226,42 @@ Rectangle
         anchors.right: abortButton.left
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        visible: printerConnected
-        enabled: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
-                 (["paused", "printing"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
-
         property bool userClicked: false
+        property string lastJobState: ""
+
+        visible: printerConnected
+        enabled: (!userClicked) && printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands &&
+                 (["paused", "printing"].indexOf(Cura.MachineManager.printerOutputDevices[0].jobState) >= 0)
 
         text: {
             var result = "";
+            var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
             if (!printerConnected) {
               return "";
             }
 
-            if (Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
+            if (lastJobState !== jobState) {
+                // the userClicked message must disappear when an "automated" jobState comes by
+                userClicked = false;
+                lastJobState = jobState;
+            }
+
+            if (jobState == "paused")
             {
               if (userClicked) {
-                result = catalog.i18nc("@label:", "Resuming...");
+                // User feedback for pretending we're already in "printing" mode.
+                result = catalog.i18nc("@label:", "Pause");
               } else {
                 result = catalog.i18nc("@label:", "Resume");
               }
             } else {
               if (userClicked) {
-                result = catalog.i18nc("@label:", "Pausing...");
+                // User feedback for pretending we're already in "pause" mode.
+                result = catalog.i18nc("@label:", "Resume");
               } else {
                 result = catalog.i18nc("@label:", "Pause");
               }
             }
-            userClicked = false;
             return result;
         }
         onClicked: {
