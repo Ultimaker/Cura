@@ -29,6 +29,15 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Start looking for devices on network.
     def start(self):
+        self.startDiscovery()
+
+    def startDiscovery(self):
+        if self._browser:
+            self._browser.cancel()
+            self._browser = None
+            self._printers = {}
+        self._zero_conf.__init__()
+
         self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
     ##  Stop looking for devices on network.

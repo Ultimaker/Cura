@@ -23,6 +23,9 @@ class DiscoverUM3Action(MachineAction):
             self._network_plugin.addPrinterSignal.connect(self._onPrinterDiscoveryChanged)
             self._network_plugin.removePrinterSignal.connect(self._onPrinterDiscoveryChanged)
             self.printersChanged.emit()
+        else:
+            # Restart bonjour discovery
+            self._network_plugin.startDiscovery()
 
     def _onPrinterDiscoveryChanged(self, *args):
         self.printersChanged.emit()

@@ -45,6 +45,8 @@ Cura.MachineAction
     {
         anchors.fill: parent;
         id: discoverUM3Action
+        spacing: UM.Theme.getSize("default_margin").height
+
         SystemPalette { id: palette }
         UM.I18nCatalog { id: catalog; name:"cura" }
         Label
@@ -61,7 +63,16 @@ Cura.MachineAction
             id: pageDescription
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. \n\nIf you don't want to connect Cura with your Ultimaker 3 now, you can always use a USB drive to transfer g-code files to your printer.\n\nSelect your Ultimaker 3 from the list below:")
+            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your Ultimaker 3, you can still use a USB drive to transfer g-code files to your printer.\n\nSelect your Ultimaker 3 from the list below:")
+        }
+
+        Button
+        {
+            id: rediscoverButton
+            text: catalog.i18nc("@title", "Refresh")
+            onClicked: manager.startDiscovery()
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * 0.5
         }
 
         Row
