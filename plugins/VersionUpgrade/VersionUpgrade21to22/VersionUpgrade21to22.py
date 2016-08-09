@@ -92,7 +92,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #
     #   \return A set of machine identifiers.
     @staticmethod
-    def machinesWithMachineQuality(self):
+    def machinesWithMachineQuality():
         return _machines_with_machine_quality
 
     ##  Converts machine instances from format version 1 to version 2.
