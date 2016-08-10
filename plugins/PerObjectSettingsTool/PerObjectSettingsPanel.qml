@@ -128,7 +128,11 @@ Item {
                     }
                 }
 
-                onActivated: UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                onActivated:
+                {
+                    UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                    extruderSelector.color = extruders_model.getItem(index).color;
+                }
                 onModelChanged: updateCurrentIndex();
 
                 function updateCurrentIndex()
