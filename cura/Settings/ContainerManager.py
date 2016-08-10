@@ -454,11 +454,25 @@ class ContainerManager(QObject):
         if not quality_name or not new_name:
             return False
 
+        if quality_name == new_name:
+            return True
+
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        UM.Application.getInstance().getMachineManager().blurSettings.emit()
+
         new_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(new_name)
+        new_id = new_name.lower()
+        new_id.replace(" ", "_")
 
         for container in self._getQualityContainers(quality_name):
-            UM.Settings.ContainerRegistry.getInstance().renameContainer(container.getId(), new_name, new_name)
+            stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
 
+            UM.Settings.ContainerRegistry.getInstance().renameContainer(container.getId(), new_name, stack_id + "_" + new_id)
+
+        UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
         return True
 
     @pyqtSlot(str, result = str)
