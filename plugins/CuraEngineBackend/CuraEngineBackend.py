@@ -236,7 +236,7 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable objects found."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable models found."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:

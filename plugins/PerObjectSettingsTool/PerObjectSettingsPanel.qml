@@ -31,7 +31,7 @@ Item {
             spacing: UM.Theme.getSize("default_margin").width
             Label
             {
-                text: catalog.i18nc("@label", "Print object with")
+                text: catalog.i18nc("@label", "Print model with")
                 anchors.verticalCenter: extruderSelector.verticalCenter
 
                 color: UM.Theme.getColor("setting_control_text")
@@ -306,7 +306,7 @@ Item {
     UM.Dialog {
         id: settingPickDialog
 
-        title: catalog.i18nc("@title:window", "Select Settings to Customize for this object")
+        title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
         width: screenScaleFactor * 360;
 
         property string labelFilter: ""

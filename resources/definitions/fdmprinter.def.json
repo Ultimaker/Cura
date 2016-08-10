@@ -784,7 +784,7 @@
                 "wall_0_inset":
                 {
                     "label": "Outer Wall Inset",
-                    "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
+                    "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -1582,7 +1582,7 @@
                 "speed_slowdown_layers":
                 {
                     "label": "Number of Slower Layers",
-                    "description": "The first few layers are printed slower than the rest of the object, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers.",
+                    "description": "The first few layers are printed slower than the rest of the model, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers.",
                     "type": "int",
                     "default_value": 2,
                     "minimum_value": "0",
@@ -2667,7 +2667,7 @@
                 "adhesion_type":
                 {
                     "label": "Platform Adhesion Type",
-                    "description": "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your object to prevent warping. Raft adds a thick grid with a roof below the object. Skirt is a line printed around the object, but not connected to the model.",
+                    "description": "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model.",
                     "type": "enum",
                     "options":
                     {
@@ -2682,7 +2682,7 @@
                 "skirt_line_count":
                 {
                     "label": "Skirt Line Count",
-                    "description": "Multiple skirt lines help to prime your extrusion better for small objects. Setting this to 0 will disable the skirt.",
+                    "description": "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt.",
                     "type": "int",
                     "default_value": 1,
                     "minimum_value": "0",
@@ -2750,7 +2750,7 @@
                 "raft_margin":
                 {
                     "label": "Raft Extra Margin",
-                    "description": "If the raft is enabled, this is the extra raft area around the object which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                    "description": "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 15,
@@ -2761,7 +2761,7 @@
                 "raft_airgap":
                 {
                     "label": "Raft Air Gap",
-                    "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
+                    "description": "The gap between the final raft layer and the first layer of the model. Only the first layer is raised by this amount to lower the bonding between the raft layer and the model. Makes it easier to peel off the raft.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
@@ -2773,7 +2773,7 @@
                 },
                 "layer_0_z_overlap": {
                     "label": "Initial Layer Z Overlap",
-                    "description": "Make the first and second layer of the object overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
+                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.22,
@@ -2787,7 +2787,7 @@
                 "raft_surface_layers":
                 {
                     "label": "Raft Top Layers",
-                    "description": "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers result in a smoother top surface than 1.",
+                    "description": "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1.",
                     "type": "int",
                     "default_value": 2,
                     "minimum_value": "0",
@@ -3299,7 +3299,7 @@
                 "multiple_mesh_overlap":
                 {
                     "label": "Dual Extrusion Overlap",
-                    "description": "Make the objects printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
+                    "description": "Make the models printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.15,
@@ -3310,7 +3310,7 @@
                 "ooze_shield_enabled":
                 {
                     "label": "Enable Ooze Shield",
-                    "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
+                    "description": "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
@@ -3397,7 +3397,7 @@
                 "print_sequence":
                 {
                     "label": "Print Sequence",
-                    "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
+                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
                     "type": "enum",
                     "options":
                     {
@@ -3451,7 +3451,7 @@
                 "magic_spiralize":
                 {
                     "label": "Spiralize Outer Contour",
-                    "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom. This feature used to be called Joris in older versions.",
+                    "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature used to be called Joris in older versions.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
@@ -3469,7 +3469,7 @@
                 "draft_shield_enabled":
                 {
                     "label": "Enable Draft Shield",
-                    "description": "This will create a wall around the object, which traps (hot) air and shields against exterior airflow. Especially useful for materials which warp easily.",
+                    "description": "This will create a wall around the model, which traps (hot) air and shields against exterior airflow. Especially useful for materials which warp easily.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
@@ -3491,7 +3491,7 @@
                 "draft_shield_height_limitation":
                 {
                     "label": "Draft Shield Limitation",
-                    "description": "Set the height of the draft shield. Choose to print the draft shield at the full height of the object or at a limited height.",
+                    "description": "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height.",
                     "type": "enum",
                     "options":
                     {
@@ -3795,7 +3795,7 @@
                         "wireframe_printspeed_flat":
                         {
                             "label": "WP Horizontal Printing Speed",
-                            "description": "Speed of printing the horizontal contours of the object. Only applies to Wire Printing.",
+                            "description": "Speed of printing the horizontal contours of the model. Only applies to Wire Printing.",
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 5,
