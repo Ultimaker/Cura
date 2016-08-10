@@ -631,7 +631,12 @@ class MachineManager(QObject):
             pass
         elif button == QMessageBox.No:
             # No, discard the settings in the user profile
-            self.clearUserSettings()
+            global_stack = Application.getInstance().getGlobalContainerStack()
+
+            for extruder in ExtruderManager.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                extruder.getTop().clear()
+
+            global_stack.getTop().clear()
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self):
