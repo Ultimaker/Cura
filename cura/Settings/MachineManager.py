@@ -417,6 +417,22 @@ class MachineManager(QObject):
                 return quality.getId()
         return ""
 
+    @pyqtProperty(str, notify = activeQualityChanged)
+    def activeQualityType(self):
+        if self._global_container_stack:
+            quality = self._global_container_stack.findContainer(type = "quality")
+            if quality:
+                return quality.getMetaDataEntry("quality_type")
+        return ""
+
+    @pyqtProperty(str, notify = activeQualityChanged)
+    def activeQualityChangesId(self):
+        if self._global_container_stack:
+            changes = self._global_container_stack.findContainer(type = "quality_changes")
+            if changes:
+                return changes.getId()
+        return ""
+
     ## Check if a container is read_only
     @pyqtSlot(str, result = bool)
     def isReadOnly(self, container_id):
