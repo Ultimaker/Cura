@@ -199,14 +199,6 @@ class MachineManager(QObject):
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
 
-
-
-
-
-
-
-
-
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
@@ -577,14 +569,29 @@ class MachineManager(QObject):
             Logger.log("e", "Tried to set quality to a container that is not of the right type")
             return
 
+        quality_type = quality_container.getMetaDataEntry("quality_type")
+        if not quality_type:
+            quality_type = quality_changes_container.getName()
+
         stacks = [ s for s in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()) ]
         stacks.insert(0, self._global_container_stack)
 
         for stack in stacks:
             extruder_id = stack.getId() if stack != self._global_container_stack else None
-            stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_container.getName(), extruder = extruder_id)
+
+            criteria = { "quality_type": quality_type, "extruder": extruder_id }
+
+            if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
+                material = stack.findContainer(type = "material")
+                criteria["material"] = material.getId()
+
+            stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if not stack_quality:
-                stack_quality = quality_container
+                criteria.pop("extruder")
+                stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+                if not stack_quality:
+                    stack_quality = quality_container
+                stack_quality = stack_quality[0]
             else:
                 stack_quality = stack_quality[0]
 
