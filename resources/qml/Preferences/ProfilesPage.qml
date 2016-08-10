@@ -18,13 +18,13 @@ UM.ManagementPage
     {
         filter:
         {
-            var result = { "type": "quality" };
+            var result = { "type": "quality*", "extruder": null };
             if(Cura.MachineManager.filterQualityByMachine)
             {
                 result.definition = Cura.MachineManager.activeDefinitionId;
                 if(Cura.MachineManager.hasMaterials)
                 {
-                    result.material = Cura.MachineManager.activeMaterialId;
+                    result.material = Cura.MachineManager.allActiveMaterialIds.global;
                 }
             }
             else
