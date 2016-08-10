@@ -485,6 +485,8 @@ class ContainerManager(QObject):
             return ""
 
         new_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_name)
+        new_id = new_name.lower()
+        new_id.replace(" ", "_")
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_name)
         if not containers:
@@ -494,11 +496,8 @@ class ContainerManager(QObject):
         if container_type == "quality":
             for container in self._getQualityContainers(quality_name, "quality"):
                 stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
-                new_id = new_name.lower()
-                new_id.replace(" ", "_")
-                new_id = stack_id + "_" + new_id
 
-                quality_changes = UM.Settings.InstanceContainer(new_id)
+                quality_changes = UM.Settings.InstanceContainer(stack_id + "_" + new_id)
                 quality_changes.setName(new_name)
                 quality_changes.addMetaDataEntry("type", "quality_changes")
                 quality_changes.addMetaDataEntry("quality", container.getMetaDataEntry("quality_type"))
@@ -514,21 +513,15 @@ class ContainerManager(QObject):
 
             UM.Settings.ContainerRegistry.getInstance().addContainer(quality_changes)
 
-
         elif container_type == "quality_changes":
             for container in self._getQualityContainers(quality_name):
                 stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
-                new_id = new_name.lower()
-                new_id.replace(" ", "_")
-                new_id = stack_id + "_" + new_id
-
-                new_container = container.duplicate(new_id, new_name)
+                new_container = container.duplicate(stack_id + "_" + new_id, new_name)
                 UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
         else:
             return ""
 
         return new_name
-
 
     # Factory function, used by QML
     @staticmethod
