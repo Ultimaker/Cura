@@ -1569,7 +1569,7 @@
                 "max_feedrate_z_override":
                 {
                     "label": "Maximum Z Speed",
-                    "description": "The maximal speed with which the bed is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed.",
+                    "description": "The maximum speed with which the bed is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 0,
