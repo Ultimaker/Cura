@@ -67,8 +67,8 @@
                 },
                 "material_bed_temp_wait":
                 {
-                    "label": "Wait for bed heatup",
-                    "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
+                    "label": "Wait for build plate heatup",
+                    "description": "Whether to insert a command to wait until the build plate temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -1085,7 +1085,7 @@
                     "settable_per_extruder": true
                 },
                 "material_bed_temperature": {
-                    "label": "Bed Temperature",
+                    "label": "Build Plate Temperature",
                     "description": "The temperature used for the heated bed. Set at 0 to pre-heat the printer manually.",
                     "unit": "°C",
                     "type": "float",

@@ -44,7 +44,7 @@ Column
         delegate: Loader
         {
             sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Bed Temperature")
+            property string label: catalog.i18nc("@label", "Build plate")
             property string value: printerConnected ? Math.round(connectedPrinter.bedTemperature) + "°C" : ""
         }
     }

@@ -220,7 +220,7 @@ Cura.MachineAction
                 anchors.left: parent.left
                 anchors.top: nozzleTempLabel.bottom
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","Bed temperature check:")
+                text: catalog.i18nc("@label","Build plate temperature check:")
                 visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
             }
 
