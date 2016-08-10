@@ -175,7 +175,7 @@ UM.ManagementPage
 
             Label {
                 id: defaultsMessage
-                visible: currentItem && !currentItem.metadata.has_settings
+                visible: false
                 text: catalog.i18nc("@action:label", "This profile has no settings and uses the defaults specified by the printer.")
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -197,13 +197,24 @@ UM.ManagementPage
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            ProfileTab { title: catalog.i18nc("@title:tab", "Global Settings"); quality: base.currentItem != null ? base.currentItem.id : ""; material: Cura.MachineManager.allActiveMaterialIds.global }
+            ProfileTab
+            {
+                title: catalog.i18nc("@title:tab", "Global Settings");
+                quality: base.currentItem != null ? base.currentItem.id : "";
+                material: Cura.MachineManager.allActiveMaterialIds.global
+            }
 
             Repeater
             {
                 model: Cura.ExtrudersModel { }
 
-                ProfileTab { title: model.name; extruderId: model.id; quality: base.currentItem.id; material: Cura.MachineManager.allActiveMaterialIds[model.id] }
+                ProfileTab
+                {
+                    title: model.name;
+                    extruderId: model.id;
+                    quality: base.currentItem != null ? base.currentItem.id : null;
+                    material: Cura.MachineManager.allActiveMaterialIds[model.id]
+                }
             }
         }
     }

@@ -28,6 +28,11 @@ Tab
         section.property: "category"
         section.delegate: Label { text: section }
 
-        model: Cura.QualitySettingsModel { extruderId: base.extruderId != "" ? base.extruderId : null; quality: base.quality; material: base.material }
+        model: Cura.QualitySettingsModel
+        {
+            extruderId: base.extruderId != "" ? base.extruderId : null;
+            quality: base.quality != null ? base.quality : "";
+            material: base.material
+        }
     }
 }
