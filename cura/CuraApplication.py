@@ -482,6 +482,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
 
         qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
