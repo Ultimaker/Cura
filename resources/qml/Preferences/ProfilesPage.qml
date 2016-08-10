@@ -223,12 +223,12 @@ UM.ManagementPage
             id: renameDialog;
             object: base.currentItem != null ? base.currentItem.name : ""
             property bool removeWhenRejected: false
+            onAccepted: Cura.ContainerManager.renameQualityChanges(base.currentItem.name, newName)
             onRejected: {
                 if(removeWhenRejected) {
-                    Cura.MachineManager.removeQualityContainer(base.currentItem.id)
+                    Cura.ContainerManager.removeQualityChanges(base.currentItem.name)
                 }
             }
-            onAccepted: Cura.ContainerManager.renameQualityChanges(base.currentItem.name, newName)
         }
         MessageDialog
         {
