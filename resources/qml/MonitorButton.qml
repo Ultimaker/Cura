@@ -159,8 +159,8 @@ Rectangle
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-        text: catalog.i18nc("@label:", "Abort Print");
-        onClicked: Cura.MachineManager.printerOutputDevices[0].setJobState("abort");
+        text: catalog.i18nc("@label:", "Abort Print")
+        onClicked: Cura.MachineManager.printerOutputDevices[0].setJobState("abort")
 
         style: ButtonStyle
         {
