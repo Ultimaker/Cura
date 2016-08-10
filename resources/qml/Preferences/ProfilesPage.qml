@@ -187,70 +187,21 @@ UM.ManagementPage
             }
         }
 
-        ScrollView {
-            id: scrollView
-
+        TabView
+        {
             anchors.left: parent.left
             anchors.top: profileNotices.visible ? profileNotices.bottom : profileNotices.anchors.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            ListView {
-                model: Cura.ContainerSettingsModel{ containers:
-                    {
-                        if (!currentItem) {
-                            return []
-                        } else if (currentItem.id == Cura.MachineManager.activeQualityId) {
-                            return [base.currentItem.id, Cura.MachineManager.activeUserProfileId]
-                        } else {
-                            return [base.currentItem.id]
-                        }
-                    }
-                }
-                delegate: Row {
-                    property variant setting: model
-                    spacing: UM.Theme.getSize("default_margin").width/2
-                    Label {
-                        text: model.label
-                        elide: Text.ElideMiddle
-                        width: scrollView.width / 100 * 40
-                    }
-                    Repeater {
-                        model: setting.values.length
-                        Label {
-                            text: setting.values[index].toString()
-                            width: scrollView.width / 100 * 15
-                            elide: Text.ElideRight
-                            font.strikeout: index < setting.values.length - 1 && setting.values[index + 1] != ""
-                            opacity: font.strikeout ? 0.5 : 1
-                        }
-                    }
-                    Label {
-                        text: model.unit
-                    }
-                }
-                header: Row {
-                    visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId
-                    spacing: UM.Theme.getSize("default_margin").width
-                    Label {
-                        text: catalog.i18nc("@action:label", "Profile:")
-                        width: scrollView.width / 100 * 55
-                        horizontalAlignment: Text.AlignRight
-                        font.bold: true
-                    }
-                    Label {
-                        text: catalog.i18nc("@action:label", "Current:")
-                        visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId
-                        font.bold: true
-                    }
-                }
-                section.property: "category"
-                section.criteria: ViewSection.FullString
-                section.delegate: Label {
-                    text: section
-                    font.bold: true
-                }
+            ProfileTab { title: catalog.i18nc("@title:tab", "Global Settings"); quality: base.currentItem != null ? base.currentItem.id : ""; material: Cura.MachineManager.allActiveMaterialIds.global }
+
+            Repeater
+            {
+                model: Cura.ExtrudersModel { }
+
+                ProfileTab { title: model.name; extruderId: model.id; quality: base.currentItem.id; material: Cura.MachineManager.allActiveMaterialIds[model.id] }
             }
         }
     }
