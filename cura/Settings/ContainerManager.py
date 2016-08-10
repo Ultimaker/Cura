@@ -439,6 +439,83 @@ class ContainerManager(QObject):
         UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
         return True
 
+    @pyqtSlot(str, result = bool)
+    def removeQualityChanges(self, quality_name):
+        if not quality_name:
+            return False
+
+        for container in self._getQualityContainers(quality_name):
+            UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
+
+        return True
+
+    @pyqtSlot(str, str, result = bool)
+    def renameQualityChanges(self, quality_name, new_name):
+        if not quality_name or not new_name:
+            return False
+
+        new_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(new_name)
+
+        for container in self._getQualityContainers(quality_name):
+            UM.Settings.ContainerRegistry.getInstance().renameContainer(container.getId(), new_name, new_name)
+
+        return True
+
+    @pyqtSlot(str, result = str)
+    def duplicateQuality(self, quality_name):
+        if not quality_name:
+            return ""
+
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return ""
+
+        new_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_name)
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_name)
+        if not containers:
+            return ""
+
+        container_type = containers[0].getMetaDataEntry("type")
+        if container_type == "quality":
+            for container in self._getQualityContainers(quality_name, "quality"):
+                stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
+                new_id = new_name.lower()
+                new_id.replace(" ", "_")
+                new_id = stack_id + "_" + new_id
+
+                quality_changes = UM.Settings.InstanceContainer(new_id)
+                quality_changes.setName(new_name)
+                quality_changes.addMetaDataEntry("type", "quality_changes")
+                quality_changes.addMetaDataEntry("quality", container.getMetaDataEntry("quality_type"))
+
+                if not global_stack.getMetaDataEntry("has_machine_quality"):
+                    quality_changes.setDefinition(UM.Settings.ContainerRegistry.getInstance().findContainers(id = "fdmprinter")[0])
+                else:
+                    quality_changes.setDefinition(global_stack.getBottom())
+
+                    if global_stack.getMetaDataEntry("has_materials"):
+                        material = container.getMetaDataEntry("material")
+                        quality_changes.addMetaDataEntry("material", material)
+
+            UM.Settings.ContainerRegistry.getInstance().addContainer(quality_changes)
+
+
+        elif container_type == "quality_changes":
+            for container in self._getQualityContainers(quality_name):
+                stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
+                new_id = new_name.lower()
+                new_id.replace(" ", "_")
+                new_id = stack_id + "_" + new_id
+
+                new_container = container.duplicate(new_id, new_name)
+                UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
+        else:
+            return ""
+
+        return new_name
+
+
     # Factory function, used by QML
     @staticmethod
     def createContainerManager(engine, js_engine):
@@ -498,3 +575,35 @@ class ContainerManager(QObject):
 
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
+
+    def _getQualityContainers(self, quality_name, container_type = "quality_changes"):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        criteria = { "type": container_type, "name": quality_name }
+
+        filter_by_material = False
+
+        if global_stack.getMetaDataEntry("has_machine_quality"):
+            criteria["definition"] = global_stack.getBottom().getId()
+
+            filter_by_material = global_stack.getMetaDataEntry("has_materials")
+
+        material_ids = []
+        if filter_by_material:
+            stacks = [ s for s in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()) ]
+            stacks.insert(0, global_stack)
+
+            for stack in stacks:
+                material_ids.append(stack.findContainer(type = "material").getId())
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+        for container in containers:
+            if filter_by_material and container.getMetaDataEntry("material") not in material_ids:
+                continue
+
+            if container.isReadOnly():
+                continue
+
+            yield container
