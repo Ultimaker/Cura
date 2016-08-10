@@ -2109,8 +2109,8 @@
             {
                 "cool_fan_enabled":
                 {
-                    "label": "Enable Cooling Fans",
-                    "description": "Enables the cooling fans while printing. The fans improve print quality on layers with short layer times and bridging / overhangs.",
+                    "label": "Enable Print Cooling",
+                    "description": "Enables the print cooling fans while printing. The fans improve print quality on layers with short layer times and bridging / overhangs.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -2119,7 +2119,7 @@
                 "cool_fan_speed":
                 {
                     "label": "Fan Speed",
-                    "description": "The speed at which the cooling fans spin.",
+                    "description": "The speed at which the print cooling fans spin.",
                     "unit": "%",
                     "type": "float",
                     "minimum_value": "0",
