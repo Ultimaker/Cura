@@ -553,18 +553,17 @@ class X3DReader(MeshReader):
     # Quad geometries from the CAD module, might be relevant for printing
     
     def geomQuadSet(self, node, bui):
-        ccw = self.startCoordMesh(node, bui, lambda coord: len(coord) // 4)
+        ccw = self.startCoordMesh(node, bui, lambda coord: 2*(len(coord) // 4))
         for i in range(0, len(bui.getVertices()), 4):
-            addQuadFlip(bui, i, i+1, i+2, i+4, ccw)
+            addQuadFlip(bui, i, i+1, i+2, i+3, ccw)
             
     def geomIndexedQuadSet(self, node, bui):
         index = readIntArray(node, "index", [])
-        nFaces = len(index) // 4
-        ccw = self.startCoordMesh(node, bui, nFaces)
+        nQuads = len(index) // 4
+        ccw = self.startCoordMesh(node, bui, nQuads*2)
         
-        for i in range(0, nFaces*4, 4):
+        for i in range(0, nQuads*4, 4):
             addQuadFlip(bui, index[i], index[i+1], index[i+2], index[i+3], ccw)
-
     
     # General purpose polygon mesh
 
