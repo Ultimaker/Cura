@@ -227,7 +227,15 @@ UM.ManagementPage
         {
             id: confirmDialog
             object: base.currentItem != null ? base.currentItem.name : ""
-            onYes: Cura.ContainerManager.removeQualityChanges(base.currentItem.name)
+            onYes:
+            {
+                var name = base.currentItem.name;
+                Cura.ContainerManager.removeQualityChanges(name)
+                if(Cura.MachineManager.activeQualityName == name)
+                {
+                    Cura.MachineManager.setActiveQuality(base.model.getItem(0).name)
+                }
+            }
         }
         UM.RenameDialog
         {
