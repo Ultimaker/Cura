@@ -608,6 +608,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
             if new_progress > self._progress_message.getProgress():
+                self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
         else:
             self._progress_message.setProgress(0)
+            self._progress_message.hide()
