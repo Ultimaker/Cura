@@ -76,9 +76,9 @@ UM.ManagementPage
             {
                 var selectedContainer;
                 if (base.currentItem.id == Cura.MachineManager.activeQualityId) {
-                    selectedContainer = Cura.MachineManager.newQualityContainerFromQualityAndUser();
+                    selectedContainer = Cura.ContainerManager.createQualityChanges();
                 } else {
-                    selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
+                    selectedContainer = Cura.ContainerManager.duplicateQuality(base.currentItem.name);
                 }
                 base.selectContainer(selectedContainer);
 
@@ -106,13 +106,15 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
+            enabled: false
         },
         Button
         {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             onClicked: exportDialog.open()
-            enabled: currentItem != null
+//             enabled: currentItem != null
+            enabled: false
         }
     ]
 
@@ -152,14 +154,14 @@ UM.ManagementPage
                     return catalog.i18nc("@action:button", "Update profile with current settings");
                 }
                 enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
-                onClicked: Cura.MachineManager.updateQualityContainerFromUserContainer()
+                onClicked: Cura.ContainerManager.updateQualityChanges()
             }
 
             Button
             {
                 text: catalog.i18nc("@action:button", "Discard current settings");
                 enabled: Cura.MachineManager.hasUserSettings
-                onClicked: Cura.MachineManager.clearUserSettings();
+                onClicked: Cura.ContainerManager.clearUserContainers();
             }
         }
 
@@ -214,19 +216,19 @@ UM.ManagementPage
         {
             id: confirmDialog
             object: base.currentItem != null ? base.currentItem.name : ""
-            onYes: Cura.MachineManager.removeQualityContainer(base.currentItem.id)
+            onYes: Cura.ContainerManager.removeQualityChanges(base.currentItem.name)
         }
         UM.RenameDialog
         {
             id: renameDialog;
             object: base.currentItem != null ? base.currentItem.name : ""
             property bool removeWhenRejected: false
-            onAccepted: Cura.MachineManager.renameQualityContainer(base.currentItem.id, newName)
             onRejected: {
                 if(removeWhenRejected) {
                     Cura.MachineManager.removeQualityContainer(base.currentItem.id)
                 }
             }
+            onAccepted: Cura.ContainerManager.renameQualityChanges(base.currentItem.name, newName)
         }
         MessageDialog
         {
