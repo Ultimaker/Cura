@@ -765,10 +765,6 @@ UM.MainWindow
             addMachineDialog.visible = true
             addMachineDialog.firstRun = false
         }
-        onClearAllFocus:
-        {
-            contentItem.focus = true
-        }
     }
 
     Timer
