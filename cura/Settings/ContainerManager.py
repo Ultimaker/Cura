@@ -422,7 +422,7 @@ class ContainerManager(QObject):
 
             new_quality_changes = user_container.duplicate(stack.getId() + "_" + unique_id, unique_name)
             new_quality_changes.setMetaDataEntry("type", "quality_changes")
-            new_quality_changes.addMetaDataEntry("quality", quality_container.getId())
+            new_quality_changes.addMetaDataEntry("quality", quality_container.getMetaDataEntry("quality_type"))
 
             if not global_stack.getMetaDataEntry("has_machine_quality"):
                 new_quality_changes.setDefinition(UM.Settings.ContainerRegistry.getInstance().findContainers(id = "fdmprinter")[0])
