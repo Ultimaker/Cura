@@ -1,0 +1,19 @@
+{
+    "id": "ultimaker_original_dual_right",
+    "version": 2, 
+    "name": "Right Extruder",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "ultimaker_original_dual",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 21.6 }
+    }
+}
