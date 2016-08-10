@@ -216,7 +216,7 @@ Item
             anchors.verticalCenter: brimCheckBox.verticalCenter
             width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
             //: Bed adhesion label
-            text: catalog.i18nc("@label:listbox", "Bed Adhesion:");
+            text: catalog.i18nc("@label:listbox", "Build Plate Adhesion:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }

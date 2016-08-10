@@ -127,8 +127,8 @@
                 },
                 "machine_heated_bed":
                 {
-                    "label": "Has heated bed",
-                    "description": "Whether the machine has a heated bed present.",
+                    "label": "Has heated build plate",
+                    "description": "Whether the machine has a heated build plate present.",
                     "default_value": false,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -1086,7 +1086,7 @@
                 },
                 "material_bed_temperature": {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated bed. Set at 0 to pre-heat the printer manually.",
+                    "description": "The temperature used for the heated build plate. Set at 0 to pre-heat the printer manually.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 60,
@@ -1569,7 +1569,7 @@
                 "max_feedrate_z_override":
                 {
                     "label": "Maximum Z Speed",
-                    "description": "The maximum speed with which the bed is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed.",
+                    "description": "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 0,
@@ -2632,7 +2632,7 @@
         },
         "platform_adhesion":
         {
-            "label": "Platform Adhesion",
+            "label": "Build Plate Adhesion",
             "type": "category",
             "icon": "category_adhesion",
             "description": "Adhesion",
@@ -2666,7 +2666,7 @@
                 },
                 "adhesion_type":
                 {
-                    "label": "Platform Adhesion Type",
+                    "label": "Build Plate Adhesion Type",
                     "description": "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model.",
                     "type": "enum",
                     "options":
@@ -2855,7 +2855,7 @@
                 "raft_interface_line_width":
                 {
                     "label": "Raft Middle Line Width",
-                    "description": "Width of the lines in the middle raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
+                    "description": "Width of the lines in the middle raft layer. Making the second layer extrude more causes the lines to stick to the build plate.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.7,
@@ -2883,7 +2883,7 @@
                 "raft_base_thickness":
                 {
                     "label": "Raft Base Thickness",
-                    "description": "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer bed.",
+                    "description": "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
@@ -2897,7 +2897,7 @@
                 "raft_base_line_width":
                 {
                     "label": "Raft Base Line Width",
-                    "description": "Width of the lines in the base raft layer. These should be thick lines to assist in bed adhesion.",
+                    "description": "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.8,
@@ -3170,7 +3170,7 @@
             {
                 "adhesion_extruder_nr":
                 {
-                    "label": "Platform Adhesion Extruder",
+                    "label": "Build Plate Adhesion Extruder",
                     "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",

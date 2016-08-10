@@ -161,7 +161,7 @@
         },
         "platform_adhesion":
         {
-            "label": "Platform Adhesion",
+            "label": "Build Plate Adhesion",
             "type": "category",
             "icon": "category_adhesion",
             "description": "Adhesion",
