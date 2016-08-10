@@ -32,15 +32,15 @@ UM.Dialog
             }
 
             text: {
-                if (manager.progress == 0)
-                {
-                    //: Firmware update status label
-                    return catalog.i18nc("@label","Starting firmware update, this may take a while.")
-                }
-                else if (manager.progress > 99)
+                if (manager.firmwareUpdateCompleteStatus)
                 {
                     //: Firmware update status label
                     return catalog.i18nc("@label","Firmware update completed.")
+                }
+                else if (manager.progress == 0)
+                {
+                    //: Firmware update status label
+                    return catalog.i18nc("@label","Starting firmware update, this may take a while.")
                 }
                 else
                 {
@@ -55,10 +55,10 @@ UM.Dialog
         ProgressBar
         {
             id: prog
-            value: manager.progress
+            value: manager.firmwareUpdateCompleteStatus ? 100 : manager.progress
             minimumValue: 0
             maximumValue: 100
-            indeterminate: manager.progress < 100
+            indeterminate: (manager.progress < 1) && (!manager.firmwareUpdateCompleteStatus)
             anchors
             {
                 left: parent.left;
@@ -79,7 +79,7 @@ UM.Dialog
         Button
         {
             text: catalog.i18nc("@action:button","Close");
-            enabled: manager.progress >= 100;
+            enabled: manager.firmwareUpdateCompleteStatus;
             onClicked: base.visible = false;
         }
     ]

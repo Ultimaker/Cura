@@ -21,6 +21,7 @@ catalog = i18nCatalog("cura")
 
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
+
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
@@ -86,12 +87,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._updating_firmware = False
 
         self._firmware_file_name = None
+        self._firmware_update_finished = False
 
         self._error_message = None
 
     onError = pyqtSignal()
 
     firmwareUpdateComplete = pyqtSignal()
+    firmwareUpdateChange = pyqtSignal()
 
     endstopStateChanged = pyqtSignal(str ,bool, arguments = ["key","state"])
 
@@ -171,6 +174,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
         self.setProgress(0, 100)
+        self._firmware_update_finished = False
 
         if self._connection_state != ConnectionState.closed:
             self.close()
@@ -181,7 +185,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             return 
 
         programmer = stk500v2.Stk500v2()
-        programmer.progressCallback = self.setProgress 
+        programmer.progressCallback = self.setProgress
 
         try:
             programmer.connect(self._serial_port)
@@ -207,8 +211,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         programmer.close()
 
         self.setProgress(100, 100)
+        self._firmware_update_finished = True
 
         self.firmwareUpdateComplete.emit()
+        self.firmwareUpdateChange.emit()
 
     ##  Upload new firmware to machine
     #   \param filename full path of firmware file to be uploaded
@@ -216,6 +222,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("i", "Updating firmware of %s using %s", self._serial_port, file_name)
         self._firmware_file_name = file_name
         self._update_firmware_thread.start()
+
+    @property
+    def firmwareUpdateFinished(self):
+        return self._firmware_update_finished
+
+    def resetFirmwareUpdateFinished(self):
+        self._firmware_update_finished = False
+        self.firmwareUpdateChange.emit()
 
     @pyqtSlot()
     def startPollEndstop(self):

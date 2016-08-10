@@ -20,7 +20,7 @@ class Stk500v2(ispBase.IspBase):
         self.serial = None
         self.seq = 1
         self.last_addr = -1
-        self.progress_callback = None
+        self.progressCallback = None
         
     def connect(self, port = "COM22", speed = 115200):
         if self.serial is not None:
@@ -92,11 +92,11 @@ class Stk500v2(ispBase.IspBase):
         load_count = (len(flash_data) + page_size - 1) / page_size   
         for i in range(0, int(load_count)):
             recv = self.sendMessage([0x13, page_size >> 8, page_size & 0xFF, 0xc1, 0x0a, 0x40, 0x4c, 0x20, 0x00, 0x00] + flash_data[(i * page_size):(i * page_size + page_size)])
-            if self.progress_callback is not None:
+            if self.progressCallback is not None:
                 if self._has_checksum:
-                    self.progress_callback(i + 1, load_count)
+                    self.progressCallback(i + 1, load_count)
                 else:
-                    self.progress_callback(i + 1, load_count*2)
+                    self.progressCallback(i + 1, load_count * 2)
     
     def verifyFlash(self, flash_data):
         if self._has_checksum:
@@ -120,8 +120,8 @@ class Stk500v2(ispBase.IspBase):
             load_count = (len(flash_data) + 0xFF) / 0x100
             for i in range(0, int(load_count)):
                 recv = self.sendMessage([0x14, 0x01, 0x00, 0x20])[2:0x102]
-                if self.progress_callback is not None:
-                    self.progress_callback(load_count + i + 1, load_count*2)
+                if self.progressCallback is not None:
+                    self.progressCallback(load_count + i + 1, load_count * 2)
                 for j in range(0, 0x100):
                     if i * 0x100 + j < len(flash_data) and flash_data[i * 0x100 + j] != recv[j]:
                         raise ispBase.IspError("Verify error at: 0x%x" % (i * 0x100 + j))
