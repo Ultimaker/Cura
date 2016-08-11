@@ -26,6 +26,7 @@ class MachineManager(QObject):
         self._global_container_stack = None
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
         self.globalContainerChanged.connect(self.activeVariantChanged)
         self.globalContainerChanged.connect(self.activeQualityChanged)
@@ -35,8 +36,6 @@ class MachineManager(QObject):
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
-
-        ##  When the global container is changed, active material probably needs to be updated.
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeMaterialChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeVariantChanged)
