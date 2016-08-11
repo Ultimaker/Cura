@@ -70,7 +70,7 @@ Cura.MachineAction
         {
             id: rediscoverButton
             text: catalog.i18nc("@title", "Refresh")
-            onClicked: manager.startDiscovery()
+            onClicked: manager.restartDiscovery()
             anchors.right: parent.right
             anchors.rightMargin: parent.width * 0.5
         }
