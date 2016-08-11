@@ -1586,6 +1586,7 @@
                     "type": "int",
                     "default_value": 2,
                     "minimum_value": "0",
+                    "maximum_value_warning": "1.0 / layer_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
