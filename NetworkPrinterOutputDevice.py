@@ -205,8 +205,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif auth_state == AuthState.AuthenticationDenied:
             self.setAcceptsCommands(False)
             self._authentication_requested_message.hide()
-            self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed. This can be either due to a timeout or the printer refused the request."))
-            self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, "Re-send the authentication request")
+            self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed due to a timeout or the printer refused the request."))
+            self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the authentication request"))
             self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
             self._authentication_failed_message.show()
 
