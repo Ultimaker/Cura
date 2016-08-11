@@ -182,10 +182,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if len(hex_file) == 0:
             Logger.log("e", "Unable to read provided hex file. Could not update firmware")
-            return 
+            return
 
         programmer = stk500v2.Stk500v2()
-        programmer.progressCallback = self.setProgress
+        programmer.progress_callback = self.setProgress
 
         try:
             programmer.connect(self._serial_port)
@@ -197,7 +197,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
-            return 
+            return
 
         self._updating_firmware = True
 
@@ -299,7 +299,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self.setConnectionState(ConnectionState.connected)
                         self._listen_thread.start()  # Start listening
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
-                        return 
+                        return
 
                 self._sendCommand("M105")  # Send M105 as long as we are listening, otherwise we end up in an undefined state
 
@@ -327,7 +327,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._connect_thread = threading.Thread(target = self._connect)
         self._connect_thread.daemon = True
-        
+
         self.setConnectionState(ConnectionState.closed)
         if self._serial is not None:
             try:
@@ -556,7 +556,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             ret = self._serial.readline()
         except Exception as e:
             Logger.log("e", "Unexpected error while reading serial port. %s" % e)
-            self._setErrorState("Printer has been disconnected") 
+            self._setErrorState("Printer has been disconnected")
             self.close()
             return None
         return ret
