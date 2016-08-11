@@ -19,6 +19,10 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self._browser = None
         self._printers = {}
 
+        # List of old printer names. This is used to ensure that a refresh of zeroconf does not needlessly forces
+        # authentication requests.
+        self._old_printers = []
+
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
         self.addPrinterSignal.connect(self.addPrinter)
         self.removePrinterSignal.connect(self.removePrinter)
@@ -35,6 +39,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         if self._browser:
             self._browser.cancel()
             self._browser = None
+            self._old_printers = [printer_name for printer_name in self._printers]
             self._printers = {}
         self._zero_conf.__init__()
 
@@ -66,8 +71,9 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self._printers[printer.getKey()] = printer
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
-            self._printers[printer.getKey()].connect()
-            printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+            if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
+                self._printers[printer.getKey()].connect()
+                printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
     def removePrinter(self, name):
         printer = self._printers.pop(name, None)
