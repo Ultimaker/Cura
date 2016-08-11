@@ -47,8 +47,9 @@ class DiscoverOctoPrintAction(MachineAction):
     @pyqtProperty("QVariantList", notify = instancesChanged)
     def discoveredInstances(self):
         if self._network_plugin:
-            instances = self._network_plugin.getInstances()
-            return [instances[instance] for instance in instances]
+            instances = list(self._network_plugin.getInstances().values())
+            instances.sort(key = lambda k: k.name)
+            return instances
         else:
             return []
 
@@ -64,6 +65,16 @@ class DiscoverOctoPrintAction(MachineAction):
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
             self._network_plugin.reCheckConnections()
+
+    @pyqtSlot(result = str)
+    def getStoredKey(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            meta_data = global_container_stack.getMetaData()
+            if "octoprint_id" in meta_data:
+                return global_container_stack.getMetaDataEntry("octoprint_id")
+
+        return ""
 
     @pyqtSlot(str)
     def setApiKey(self, api_key):

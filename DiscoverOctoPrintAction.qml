@@ -15,6 +15,9 @@ Cura.MachineAction
     {
         anchors.fill: parent;
         id: discoverOctoPrintAction
+
+        spacing: UM.Theme.getSize("default_margin").height
+
         SystemPalette { id: palette }
         UM.I18nCatalog { id: catalog; name:"cura" }
         Label
@@ -65,6 +68,18 @@ Cura.MachineAction
                 {
                     id: listview
                     model: manager.discoveredInstances
+                    onModelChanged:
+                    {
+                        var selectedKey = manager.getStoredKey();
+                        for(var i = 0; i < model.length; i++) {
+                            if(model[i].getKey() == selectedKey)
+                            {
+                                currentIndex = i;
+                                return
+                            }
+                        }
+                        currentIndex = -1;
+                    }
                     width: parent.width
                     currentIndex: activeIndex
                     onCurrentIndexChanged: base.selectedInstance = listview.model[currentIndex]
@@ -119,7 +134,7 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.3
                         wrapMode: Text.WordWrap
-                        text: catalog.i18nc("@label", "OctoPrint version")
+                        text: catalog.i18nc("@label", "Version")
                     }
                     Label
                     {
