@@ -1472,52 +1472,117 @@ class LulzbotTazBedSelectPage(InfoPage):
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
 
+class LulzbotTazToolheadTypeSelectPage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotTazToolheadTypeSelectPage, self).__init__(parent, _("LulzBot TAZ Tool Head Selection"))
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.single = self.AddImageButton(self.panel, 0, 0, _('Single Extruder'),
+										'LulzBot_SingleExtruder_icon.jpg', image_size,
+										style=ImageButton.IB_GROUP)
+		self.dual = self.AddImageButton(self.panel, 0, 1, _('Dual Extruder'),
+										'LulzBot_DualExtruder_icon.jpg', image_size)
+		self.single.SetValue(True) #Set the default selection
+
+	def StoreData(self):
+		if self.single.GetValue():
+			self.GetParent().lulzbotTazToolheadPage.SetSingleType()
+		else:
+			self.GetParent().lulzbotTazToolheadPage.SetDualType()
+
 class LulzbotTazToolheadSelectPage(InfoPage):
 	def __init__(self, parent):
 		super(LulzbotTazToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ Tool Head Selection"))
 
-		self.panel = self.AddPanel()
-		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.single = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v1'),
-											'Lulzbot_Toolhead_TAZ_Single_v1.jpg', image_size,
-											style=ImageButton.IB_GROUP)
-		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v1'),
-											'Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg', image_size)
-		self.dually = self.AddImageButton(self.panel, 1, 0, _('Dual Extruder v1'),
-											'Lulzbot_Toolhead_TAZ_Dual_Extruder_v1.jpg', image_size)
-		self.flexydually = self.AddImageButton(self.panel, 1, 1, _('FlexyDually v1'),
-											'Lulzbot_Toolhead_TAZ_FlexyDually_v1.jpg', image_size)
+		self.panel = None
+		self.version = 1
+		self.type = ["single", "dual"]
 		self.SetVersion(1)
 		self.single.SetValue(True)
 
-	def SetVersion(self, version):
+	def _deletePanel(self):
+		if self.panel:
+			self.panel.GetSizer().Clear(True)
+			self.GetSizer().Detach(self.panel)
+			self.panel.Destroy()
+			self.rowNr -= 1
+		self.panel = None
+		self.single = None
+		self.flexy = None
+		self.moar = None
+		self.dually = None
+		self.flexydually = None
+
+	def _buildPanel(self):
+		self._deletePanel()
+		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.single.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Single_v%d.jpg' % version, image_size))
-		self.single.SetLabel(_('Single Extruder v%d' % version))
-		self.flexy.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Flexystruder_v%d.jpg' % version, image_size))
-		self.flexy.SetLabel(_('Flexystruder v%d' % version))
-		self.dually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Dual_Extruder_v%d.jpg' % version, image_size))
-		self.dually.SetLabel(_('Dual Extruder v%d' % version))
-		self.flexydually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_FlexyDually_v%d.jpg' % version, image_size))
-		self.flexydually.SetLabel(_('FlexyDually v%d' % version))
-		self.version = version
-		if version == 1:
+		shift = 0
+		if "single" in self.type or self.version == 1:
+			self.single = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v%d'% self.version),
+											  'Lulzbot_Toolhead_TAZ_Single_v%d.jpg' % self.version, image_size,
+											  style=ImageButton.IB_GROUP)
+			self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v%d'% self.version),
+											 'Lulzbot_Toolhead_TAZ_Flexystruder_v%d.jpg'% self.version, image_size)
+			if self.version == 2 and "dual" not in self.type and \
+			   profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5'):
+				self.moar = self.AddImageButton(self.panel, 1, 0, _('MOARstruder v2'),
+												'Lulzbot_Toolhead_TAZ_MOARstruder-v2.jpg', image_size)
+			shift = 1
+		if "dual" in self.type or self.version == 1:
+			self.dually = self.AddImageButton(self.panel, shift, 0, _('Dual Extruder v%d' % self.version),
+											  'Lulzbot_Toolhead_TAZ_Dual_Extruder_v%d.jpg' % self.version, image_size)
+			self.flexydually = self.AddImageButton(self.panel, shift, 1, _('FlexyDually v%d' % self.version),
+												   'Lulzbot_Toolhead_TAZ_FlexyDually_v%d.jpg' % self.version, image_size)
+		if (self.single is None or self.single.GetValue() == False) and \
+		   (self.flexy is None or self.flexy.GetValue() == False) and \
+		   (self.moar is None or self.moar.GetValue() == False) and \
+		   (self.dually is None or self.dually.GetValue() == False) and \
+		   (self.flexydually is None or self.flexydually.GetValue() == False):
+			if self.single:
+				self.single.SetValue(True) #Set the default selection
+			else:
+				self.dually.SetValue(True) #Set the default selection
+		self.Layout()
+		if self.version == 1:
 			self.single.OnSelected(None)
 			self.flexy.OnSelected(None)
 			self.dually.OnSelected(None)
 			self.flexydually.OnSelected(None)
 			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
-		elif version == 2:
-			self.single.OnSelected(self.OnSingleV2)
-			self.flexy.OnSelected(self.OnNonSingle)
-			self.dually.OnSelected(self.OnNonSingle)
-			self.flexydually.OnSelected(self.OnNonSingle)
-			if self.single.GetValue():
-				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
-				wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
+		elif self.version == 2:
+			if "single" in self.type:
+				self.single.OnSelected(self.OnSingleV2)
+				self.flexy.OnSelected(self.OnNonSingle)
+				if self.moar:
+					self.moar.OnSelected(self.OnNonSingle)
+				if self.single.GetValue():
+					wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
+					wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
+				else:
+					wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
 			else:
+				self.dually.OnSelected(self.OnNonSingle)
+				self.flexydually.OnSelected(self.OnNonSingle)
 				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
 		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotFirmwarePage, self.GetParent().lulzbotReadyPage)
+
+	def SetSingleType(self):
+		self.type = ["single"]
+		self._buildPanel()
+
+	def SetDualType(self):
+		self.type = ["dual"]
+		self._buildPanel()
+
+	def SetBothType(self):
+		self.type = ["dual", "single"]
+		self._buildPanel()
+
+	def SetVersion(self, version):
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.version = version
+		self._buildPanel()
 
 	def OnSingleV2(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
@@ -1532,19 +1597,25 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 		else:
 			taz_version = 5
 		version = (taz_version, self.version)
-		if self.single.GetValue():
+		if self.single and self.single.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.5' if self.version == 2 else '0.35')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Single Extruder V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', '')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_SingleV%d' % version)
-		elif self.flexy.GetValue():
+		elif self.flexy and self.flexy.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Flexystruder V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', 'Flexystruder v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexystruderV%d' % version)
-		elif self.dually.GetValue():
+		elif self.moar and self.moar.GetValue():
+			profile.putProfileSetting('nozzle_size', '1.2')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'MOARstruder V2')
+			profile.putMachineSetting('toolhead_shortname', 'MOARstruder v2')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_Moarstruder_v2' % version)
+		elif self.dually and self.dually.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '2')
 			profile.putMachineSetting('extruder_offset_x1', '0.0')
@@ -1552,7 +1623,7 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead', 'Dual Extruder V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', 'Dual v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_DualV%d' % version)
-		elif self.flexydually.GetValue():
+		elif self.flexydually and self.flexydually.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '2')
 			profile.putMachineSetting('extruder_offset_x1', '0.0')
@@ -1573,7 +1644,26 @@ class LulzbotHotendSelectPage(InfoPage):
 											style=ImageButton.IB_GROUP)
 		self.v2 = self.AddImageButton(self.panel, 0, 1, _('v2 (LulzBot Hexagon)'),
 											'Lulzbot_Toolhead_v2.jpg', image_size)
+		self.v1.OnSelected(self.OnV1Selected)
+		self.v2.OnSelected(self.OnV2Selected)
 		self.v1.SetValue(True)
+
+	def OnV1Selected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazToolheadPage)
+
+	def OnV2Selected(self):
+		if profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
+			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazToolheadPage)
+			self.GetParent().lulzbotTazToolheadPage.SetBothType()
+		else:
+			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazToolheadTypePage)
+			wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTazToolheadTypePage, self.GetParent().lulzbotTazToolheadPage)
+
+	def OnPageShown(self):
+		if self.v1.GetValue():
+			self.OnV1Selected()
+		else:
+			self.OnV2Selected()
 
 	def AllowBack(self):
 		return self.allowBack
@@ -1670,14 +1760,17 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self, False)
 		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
 		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self, True)
+		self.lulzbotTazToolheadTypePage = LulzbotTazToolheadTypeSelectPage(self)
 		self.lulzbotTaz6ToolheadTypePage = LulzbotTaz6ToolheadTypeSelectPage(self, False)
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
 		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
 
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadTypePage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazToolheadTypePage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTaz6ToolheadTypePage, self.lulzbotTaz6ToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazToolheadTypePage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTaz6ToolheadPage, self.lulzbotFirmwarePage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotFirmwarePage, self.lulzbotReadyPage)
 
@@ -1743,6 +1836,7 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
 		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self)
 		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
+		self.lulzbotTazToolheadTypePage = LulzbotTazToolheadTypeSelectPage(self)
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self)
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 		self.lulzbotMachineSelectPage = LulzbotMachineSelectPage(self)
