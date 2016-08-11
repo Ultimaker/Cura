@@ -311,6 +311,15 @@ Item {
 
         property string labelFilter: ""
 
+        onVisibilityChanged:
+        {
+            // force updating the model to sync it with addedSettingsModel
+            if(visible)
+            {
+                listview.model.forceUpdate()
+            }
+        }
+
         TextField {
             id: filter
 
