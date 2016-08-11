@@ -27,8 +27,6 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
-        self.setPriority(2) # Make sure the output device gets selected above local file output
-
         self._gcode = None
 
         ##  Todo: Hardcoded value now; we should probably read this from the machine definition and octoprint.
@@ -42,10 +40,12 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._api_header = "X-Api-Key"
         self._api_key = None
 
+        self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with OctoPrint"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print with OctoPrint"))
         self.setIconName("print")
+        self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected to OctoPrint on {0}").format(self._key))
 
         #   QNetwork manager needs to be created in advance. If we don't it can happen that it doesn't correctly
         #   hook itself into the event loop, which results in events never being fired / done.
@@ -180,6 +180,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._update_timer.start()
         self._camera_timer.start()
         self._last_response_time = None
+        self.setAcceptsCommands(False)
 
     ##  Stop requesting data from the instance
     def disconnect(self):
@@ -300,6 +301,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from /printer.
                 if http_status_code == 200:
+                    self.setAcceptsCommands(True)
+
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
@@ -322,6 +325,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                     elif json_data["state"]["flags"]["ready"]:
                         job_state = "ready"
                     self._updateJobState(job_state)
+                elif http_status_code == 401:
+                    self.setAcceptsCommands(False)
                 else:
                     pass  # TODO: Handle errors
 
