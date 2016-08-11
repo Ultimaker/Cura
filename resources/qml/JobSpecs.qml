@@ -209,7 +209,7 @@ Rectangle {
                         lengths = ["0.00"];
                         weights = ["0"];
                     }
-                    return catalog.i18nc("@label", "%1 m / %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                    return catalog.i18nc("@label", "≈ %1 m / %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
                 }
             }
         }
