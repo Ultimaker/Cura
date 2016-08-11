@@ -70,6 +70,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                     else:
                         stack = UM.Application.getInstance().getGlobalContainerStack()
                     new_instance.setProperty("value", stack.getProperty(item, "value"))
+                    new_instance.resetState()  # Ensute that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     visibility_changed = True
                 else:
