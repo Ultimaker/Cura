@@ -35,6 +35,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         if self._browser:
             self._browser.cancel()
             self._browser = None
+            self._printers = {}
         self._zero_conf.__init__()
 
         self._browser = ServiceBrowser(self._zero_conf, u'_octoprint._tcp.local.', [self._onServiceChanged])
@@ -92,11 +93,13 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
+            key = name
+            name = name.replace("OctoPrint instance ", "")
             Logger.log("d", "Bonjour service added: %s" % name)
 
             # First try getting info from zeroconf cache
-            info = ServiceInfo(service_type, name, properties = {})
-            for record in zeroconf.cache.entries_with_name(name.lower()):
+            info = ServiceInfo(service_type, key, properties = {})
+            for record in zeroconf.cache.entries_with_name(key.lower()):
                 info.update_record(zeroconf, time.time(), record)
 
             for record in zeroconf.cache.entries_with_name(info.server):
@@ -107,7 +110,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
             # Request more data if info is not complete
             if not info.address:
                 Logger.log("d", "Trying to get address of %s", name)
-                info = zeroconf.get_service_info(service_type, name)
+                info = zeroconf.get_service_info(service_type, key)
 
                 if not info:
                     Logger.log("w", "Could not get information about %s" % name)
@@ -115,7 +118,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
             if info.address:
                 address = '.'.join(map(lambda n: str(n), info.address))
-                self.addInstanceSignal.emit(str(name), address, info.properties)
+                self.addInstanceSignal.emit(name, address, info.properties)
             else:
                 Logger.log("d", "Discovered instance named %s but received no address", name)
 
