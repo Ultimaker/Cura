@@ -24,7 +24,7 @@ UM.ManagementPage
                 result.definition = Cura.MachineManager.activeDefinitionId;
                 if(Cura.MachineManager.hasMaterials)
                 {
-                    result.material = Cura.MachineManager.allActiveMaterialIds.global;
+                    result.material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId];
                 }
             }
             else
@@ -78,7 +78,7 @@ UM.ManagementPage
                 if (base.currentItem.id == Cura.MachineManager.activeQualityId) {
                     selectedContainer = Cura.ContainerManager.createQualityChanges();
                 } else {
-                    selectedContainer = Cura.ContainerManager.duplicateQuality(base.currentItem.name);
+                    selectedContainer = Cura.ContainerManager.duplicateQualityOrQualityChanges(base.currentItem.name);
                 }
                 base.selectContainer(selectedContainer);
 
