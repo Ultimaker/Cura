@@ -459,7 +459,6 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-//             Cura.MachineManager.newQualityContainerFromQualityAndUser();
             Cura.ContainerManager.createQualityChanges();
             preferences.setPage(4);
             preferences.show();
