@@ -66,6 +66,7 @@ class X3DReader(MeshReader):
                 theScene.addDecorator(group_decorator)
                 for node in self.sceneNodes:
                     theScene.addChild(node)
+                theScene.setSelectable(True)
             elif len(self.sceneNodes) == 1:
                 theScene = self.sceneNodes[0]
             else: # No shapes read :(
@@ -700,7 +701,6 @@ def addQuadFlip(bui, a, b, c, d, ccw):
 # - Find an outer vertex with the smallest angle and no vertices inside its adjacent triangle
 # - Remove the triangle at that vertex
 # - Repeat until done
-# Note that n is the count of vertices in the face, but the `face` array is one element bigger, with nth element same as the 0th one
 # Vertex coordinates are supposed to be already in the mesh builder object
 def addFace(bui, indices, ccw):
     # Resolve indices to coordinates for faster math
