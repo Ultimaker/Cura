@@ -134,6 +134,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._response_timeout_time = 5
         self._not_authenticated_message = None
 
+        self._last_command = ""
+
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
         self._authentication_requested_message.setProgress(self._authentication_counter / self._max_authentication_counter * 100)
@@ -358,6 +360,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return self._camera_image
 
     def _setJobState(self, job_state):
+        self._last_command = job_state
         url = QUrl("http://" + self._address + self._api_prefix + "print_job/state")
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
@@ -515,12 +518,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     # If this happens before the print has reached progress == 1, the print has
                     # been aborted.
                     if state == "none" or state == "":
-                        if self._print_finished:
-                            state = "printing"
-                        else:
+                        if self._last_command == "abort":
                             self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Aborting print..."))
                             state = "error"
-                    if state == "wait_cleanup" and not self._print_finished:
+                        else:
+                            state = "printing"
+                    if state == "wait_cleanup" and self._last_command == "abort":
                         # Keep showing the "aborted" error state until after the buildplate has been cleaned
                         self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Print aborted. Please check the printer"))
                         state = "error"
