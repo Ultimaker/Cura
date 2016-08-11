@@ -125,6 +125,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_key = None
 
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please aprove the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
+        self._authentication_failed_message = None
+
         self._camera_image = QImage()
 
         self._material_post_objects = {}
@@ -203,14 +205,24 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif auth_state == AuthState.AuthenticationDenied:
             self.setAcceptsCommands(False)
             self._authentication_requested_message.hide()
-            authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed. This can be either due to a timeout or the printer refused the request."))
-            authentication_failed_message.show()
+            self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed. This can be either due to a timeout or the printer refused the request."))
+            self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, "Re-send the authentication request")
+            self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
+            self._authentication_failed_message.show()
 
             # Stop waiting for a response
             self._authentication_timer.stop()
             self._authentication_counter = 0
 
         self._authentication_state = auth_state
+
+    def messageActionTriggered(self, message_id, action_id):
+        self._authentication_failed_message.hide()
+        self._authentication_state = AuthState.NotAuthenticated
+        self._authentication_counter = 0
+        self._authentication_requested_message.setProgress(0)
+        self._authentication_id = None
+        self._authentication_key = None
 
     ##  Request data from the connected device.
     def _update(self):
