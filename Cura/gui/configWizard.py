@@ -1616,6 +1616,9 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead', 'MOARstruder V2')
 			profile.putMachineSetting('toolhead_shortname', 'MOARstruder v2')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_Moarstruder_v2')
+			# on TAZ5, MOARstruder reduces the build volume
+			profile.putMachineSetting('machine_width', '280')
+			profile.putMachineSetting('machine_height', '242')
 		elif self.dually and self.dually.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '2')
