@@ -1604,12 +1604,18 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead', 'Single Extruder V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', '')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_SingleV%d' % version)
+			# on TAZ5, MOARstruder reduces the build volume, so we need to restore it
+			profile.putMachineSetting('machine_width', '290')
+			profile.putMachineSetting('machine_height', '250')
 		elif self.flexy and self.flexy.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Flexystruder V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', 'Flexystruder v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexystruderV%d' % version)
+			# on TAZ5, MOARstruder reduces the build volume, so we need to restore it
+			profile.putMachineSetting('machine_width', '290')
+			profile.putMachineSetting('machine_height', '250')
 		elif self.moar and self.moar.GetValue():
 			profile.putProfileSetting('nozzle_size', '1.2')
 			profile.putMachineSetting('extruder_amount', '1')
@@ -1627,6 +1633,9 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead', 'Dual Extruder V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', 'Dual v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_DualV%d' % version)
+			# on TAZ5, MOARstruder reduces the build volume, so we need to restore it
+			profile.putMachineSetting('machine_width', '290')
+			profile.putMachineSetting('machine_height', '250')
 		elif self.flexydually and self.flexydually.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '2')
@@ -1635,6 +1644,9 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead', 'FlexyDually V%d' % self.version)
 			profile.putMachineSetting('toolhead_shortname', 'FlexyDually v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexyDuallyV%d' % version)
+			# on TAZ5, MOARstruder reduces the build volume, so we need to restore it
+			profile.putMachineSetting('machine_width', '290')
+			profile.putMachineSetting('machine_height', '250')
 
 class LulzbotHotendSelectPage(InfoPage):
 	def __init__(self, parent, allowBack = True):
