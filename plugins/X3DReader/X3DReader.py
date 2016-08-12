@@ -605,8 +605,7 @@ class X3DReader(MeshReader):
         
         angle = 2 * pi / n
         
-        if innerRadius:
-            self.reserveFaceAndVertexCount(n*4 if innerRadius else n-2, n*2 if innerRadius else n)
+        self.reserveFaceAndVertexCount(n*4 if innerRadius else n-2, n*2 if innerRadius else n)
             
         for i in range(n):
             s = sin(angle * i)
