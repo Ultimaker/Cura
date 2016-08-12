@@ -1531,7 +1531,8 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			shift = 1
 		if "dual" in self.type or self.version == 1:
 			self.dually = self.AddImageButton(self.panel, shift, 0, _('Dual Extruder v%d' % self.version),
-											  'Lulzbot_Toolhead_TAZ_Dual_Extruder_v%d.jpg' % self.version, image_size)
+											  'Lulzbot_Toolhead_TAZ_Dual_Extruder_v%d.jpg' % self.version, image_size,
+											  style=ImageButton.IB_GROUP if shift == 0 else None)
 			self.flexydually = self.AddImageButton(self.panel, shift, 1, _('FlexyDually v%d' % self.version),
 												   'Lulzbot_Toolhead_TAZ_FlexyDually_v%d.jpg' % self.version, image_size)
 		if (self.single is None or self.single.GetValue() == False) and \
