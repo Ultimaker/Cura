@@ -11,6 +11,7 @@ from UM.Job import Job
 from math import pi, sin, cos, sqrt
 import numpy
 
+
 EPSILON = 0.000001 # So very crude. :(
 
 try:
@@ -18,9 +19,19 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
     
+# TODO: preserve the structure of scenes that contain several objects
+# Use CADPart, for example, to distinguish between separate objects    
     
-DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders    
+DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders
 
+class Shape:
+    def __init__(self, v, f, ib, n):
+        self.verts = v
+        self.faces = f
+        # Those are here for debugging purposes only
+        self.index_base = ib 
+        self.name = n
+        
 class X3DReader(MeshReader):
     def __init__(self):
         super().__init__()
@@ -32,102 +43,97 @@ class X3DReader(MeshReader):
     def read(self, file_name):
         try:
             self.defs = {}
-            self.sceneNodes = []
-            self.fileName = file_name
+            self.shapes = []
             
             tree = ET.parse(file_name)
-            root = tree.getroot()
+            xml_root = tree.getroot()
             
-            if root.tag != "X3D":
+            if xml_root.tag != "X3D":
                 return None
 
             scale = 1000 # Default X3D unit it one meter, while Cura's is one millimeters            
-            if root[0].tag == "head":
-                for headNode in root[0]:
-                    if headNode.tag == "unit" and headNode.attrib.get("category") == "length":
-                        scale *= float(headNode.attrib["conversionFactor"])
+            if xml_root[0].tag == "head":
+                for head_node in xml_root[0]:
+                    if head_node.tag == "unit" and head_node.attrib.get("category") == "length":
+                        scale *= float(head_node.attrib["conversionFactor"])
                         break 
-                scene = root[1]
+                xml_scene = xml_root[1]
             else:
-                scene = root[0]
+                xml_scene = xml_root[0]
                 
-            if scene.tag != "Scene":
+            if xml_scene.tag != "Scene":
                 return None 
             
             self.transform = Matrix()
             self.transform.setByScaleFactor(scale)
+            self.index_base = 0
             
-            # Traverse the scene tree, populate the sceneNodes array
-            self.processChildNodes(scene)
+            # Traverse the scene tree, populate the shapes list
+            self.processChildNodes(xml_scene)
             
-            if len(self.sceneNodes) > 1:
-                theScene = SceneNode()
-                group_decorator = GroupDecorator()
-                theScene.addDecorator(group_decorator)
-                for node in self.sceneNodes:
-                    theScene.addChild(node)
-                theScene.setSelectable(True)
-            elif len(self.sceneNodes) == 1:
-                theScene = self.sceneNodes[0]
-            else: # No shapes read :(
+            if self.shapes:
+                bui = MeshBuilder()
+                bui.setVertices(numpy.concatenate([shape.verts for shape in self.shapes]))
+                bui.setIndices(numpy.concatenate([shape.faces for shape in self.shapes]))
+                bui.calculateNormals()
+                bui.setFileName(file_name)
+                    
+                scene = SceneNode()
+                scene.setMeshData(bui.build().getTransformed(Matrix()))
+                scene.setSelectable(True)
+                scene.setName(file_name)
+            else:
                 return None
-            theScene.setName(file_name)
+            
         except Exception as e:
             Logger.log("e", "exception occured in x3d reader: %s", e)
 
         try:
-            boundingBox = theScene.getBoundingBox()
+            boundingBox = scene.getBoundingBox()
             boundingBox.isValid()
         except:
             return None
 
-        return theScene
+        return scene
     
     # ------------------------- XML tree traversal
   
-    def processNode(self, xmlNode):
-        xmlNode =  self.resolveDefUse(xmlNode)
-        if xmlNode is None:
+    def processNode(self, xml_node):
+        xml_node =  self.resolveDefUse(xml_node)
+        if xml_node is None:
             return
         
-        tag = xmlNode.tag
-        if tag in ("Group", "StaticGroup", "CADAssembly", "CADFace", "CADLayer", "CADPart", "Collision"):
-            self.processChildNodes(xmlNode)
+        tag = xml_node.tag
+        if tag in ("Group", "StaticGroup", "CADAssembly", "CADFace", "CADLayer", "Collision"):
+            self.processChildNodes(xml_node)
+        if tag == "CADPart":
+            self.processTransform(xml_node) # TODO: split the parts
         elif tag == "LOD":
-            self.processNode(xmlNode[0])
+            self.processNode(xml_node[0])
         elif tag == "Transform":
-            self.processTransform(xmlNode)
+            self.processTransform(xml_node)
         elif tag == "Shape":
-            self.processShape(xmlNode)
+            self.processShape(xml_node)
             
             
-    def processShape(self, xmlNode):
+    def processShape(self, xml_node):
         # Find the geometry and the appearance inside the Shape
         geometry = appearance = None
-        for subNode in xmlNode:
+        for subNode in xml_node:
             if subNode.tag == "Appearance" and not appearance:
                 appearance = self.resolveDefUse(subNode)
-            elif subNode.tag in self.geometryImporters and not geometry:
+            elif subNode.tag in self.geometry_importers and not geometry:
                 geometry = self.resolveDefUse(subNode)
         
         # TODO: appearance is completely ignored. At least apply the material color...        
         if not geometry is None:
             try:
-                bui = MeshBuilder()
-                self.geometryImporters[geometry.tag](self, geometry, bui)
-                
-                bui.calculateNormals()
-                bui.setFileName(self.fileName)
-                
-                sceneNode = SceneNode()
-                if "DEF" in geometry.attrib:
-                    sceneNode.setName(geometry.tag + "#" + geometry.attrib["DEF"])
-                else:
-                    sceneNode.setName(geometry.tag)
-                     
-                sceneNode.setMeshData(bui.build().getTransformed(self.transform))
-                sceneNode.setSelectable(True)
-                self.sceneNodes.append(sceneNode)
+                self.verts = self.faces = [] # Safeguard 
+                self.geometry_importers[geometry.tag](self, geometry)
+                m = self.transform.getData()
+                verts = numpy.array([m.dot(vert)[:3] for vert in self.verts])
+                self.shapes.append(Shape(verts, self.faces, self.index_base, geometry.tag))
+                self.index_base += len(verts)
                 
             except Exception as e:
                 Logger.log("e", "exception occured in x3d reader while reading %s: %s", geometry.tag, e)
@@ -198,12 +204,33 @@ class X3DReader(MeshReader):
     
     # Primitives
 
-    def geomBox(self, node, bui):
-        size = readFloatArray(node, "size", [2, 2, 2])
-        bui.addCube(size[0], size[1], size[2])
+    def geomBox(self, node):
+        (dx, dy, dz) = readFloatArray(node, "size", [2, 2, 2])
+        dx /= 2
+        dy /= 2
+        dz /= 2
+        self.reserveFaceAndVertexCount(12, 8)
+
+        # xz plane at +y, ccw
+        self.addVertex(dx, dy, dz)
+        self.addVertex(-dx, dy, dz)
+        self.addVertex(-dx, dy, -dz)
+        self.addVertex(dx, dy, -dz)
+        # xz plane at -y
+        self.addVertex(dx, -dy, dz)
+        self.addVertex(-dx, -dy, dz)
+        self.addVertex(-dx, -dy, -dz)
+        self.addVertex(dx, -dy, -dz)
+        
+        self.addQuad(0, 1, 2, 3)   # +y
+        self.addQuad(4, 0, 3, 7)   # +x
+        self.addQuad(7, 3, 2, 6)   # -z
+        self.addQuad(6, 2, 1, 5)   # -x
+        self.addQuad(5, 1, 0, 4)   # +z
+        self.addQuad(7, 6, 5, 4)  # -y
     
     # The sphere is subdivided into nr rings and ns segments
-    def geomSphere(self, node, bui):
+    def geomSphere(self, node):
         r = readFloat(node, "radius", 0.5)
         subdiv = readIntArray(node, 'subdivision', None)
         if subdiv:
@@ -217,17 +244,17 @@ class X3DReader(MeshReader):
         lau = pi / nr  # Unit angle of latitude (rings) for the given tesselation
         lou = 2 * pi / ns  # Unit angle of longitude (segments)
         
-        bui.reserveFaceAndVertexCount(ns*(nr*2 - 2), 2 + (nr + 1)*ns)
+        self.reserveFaceAndVertexCount(ns*(nr*2 - 2), 2 + (nr - 1)*ns)
         
         # +y and -y poles
-        bui.addVertex(0, r, 0)
-        bui.addVertex(0, -r, 0)
+        self.addVertex(0, r, 0)
+        self.addVertex(0, -r, 0)
         
         # The non-polar vertices go from x=0, negative z plane counterclockwise -
         # to -x, to +z, to +x, back to -z
         for ring in range(1, nr):
             for seg in range(ns):
-                bui.addVertex(-r*sin(lou * seg) * sin(lau * ring),
+                self.addVertex(-r*sin(lou * seg) * sin(lau * ring),
                           r*cos(lau * ring),
                           -r*cos(lou * seg) * sin(lau * ring))
                 
@@ -241,8 +268,8 @@ class X3DReader(MeshReader):
         # (starting from +y pole)
         # Bottom cap goes: up left down (starting from -y pole)
         for seg in range(ns):
-            addTri(bui, 0, seg + 2, (seg + 1) % ns + 2)
-            addTri(bui, 1, vb + (seg + 1) % ns, vb + seg)
+            self.addTri(0, seg + 2, (seg + 1) % ns + 2)
+            self.addTri(1, vb + (seg + 1) % ns, vb + seg)
     
         # Sides
         # Side face vertices go in order:  down right upleft, downright up left
@@ -253,9 +280,9 @@ class X3DReader(MeshReader):
             # First vertex index for the bottom edge of the ring
             for seg in range(ns):
                 nseg = (seg + 1) % ns
-                addQuad(bui, tvb + seg, bvb + seg, bvb + nseg, tvb + nseg)
+                self.addQuad(tvb + seg, bvb + seg, bvb + nseg, tvb + nseg)
         
-    def geomCone(self, node, bui):
+    def geomCone(self, node):
         r = readFloat(node, "bottomRadius", 1)
         height = readFloat(node, "height", 2)
         bottom = readBoolean(node, "bottom", True)
@@ -265,21 +292,22 @@ class X3DReader(MeshReader):
         d = height / 2
         angle = 2 * pi / n
     
-        bui.reserveFaceAndVertexCount((n if side else 0) + (n-1 if bottom else 0), n+1)
+        self.reserveFaceAndVertexCount((n if side else 0) + (n-2 if bottom else 0), n+1)
     
-        bui.addVertex(0, d, 0)
+        # Vertex 0 is the apex, vertices 1..n are the bottom
+        self.addVertex(0, d, 0)
         for i in range(n):
-            bui.addVertex(-r * sin(angle * i), -d, -r * cos(angle * i))
+            self.addVertex(-r * sin(angle * i), -d, -r * cos(angle * i))
                     
         # Side face vertices go: up down right
         if side:
             for i in range(n):
-                addTri(bui, 1 + (i + 1) % n, 0, 1 + i)
+                self.addTri(1 + (i + 1) % n, 0, 1 + i)
         if bottom:
             for i in range(2, n):
-                addTri(bui, 1, i, i+1)
+                self.addTri(1, i, i+1)
     
-    def geomCylinder(self, node, bui):
+    def geomCylinder(self, node):
         r = readFloat(node, "radius", 1)
         height = readFloat(node, "height", 2)
         bottom = readBoolean(node, "bottom", True)
@@ -291,30 +319,30 @@ class X3DReader(MeshReader):
         angle = 2 * pi / n
         hh = height/2
         
-        bui.reserveFaceAndVertexCount((nn if side else 0) + (n - 2 if top else 0) + (n - 2 if bottom else 0), nn)
+        self.reserveFaceAndVertexCount((nn if side else 0) + (n - 2 if top else 0) + (n - 2 if bottom else 0), nn)
         
         # The seam is at x=0, z=-r, vertices go ccw -
         # to pos x, to neg z, to neg x, back to neg z
         for i in range(n):
             rs = -r * sin(angle * i)
             rc = -r * cos(angle * i)
-            bui.addVertex(rs, hh, rc)
-            bui.addVertex(rs, -hh, rc)
+            self.addVertex(rs, hh, rc)
+            self.addVertex(rs, -hh, rc)
         
         if side:
             for i in range(n):
                 ni = (i + 1) % n
-                addQuad(bui, ni * 2 + 1, ni * 2, i * 2, i * 2 + 1)
+                self.addQuad(ni * 2 + 1, ni * 2, i * 2, i * 2 + 1)
             
         for i in range(2, nn-3, 2):
             if top:
-                addTri(bui, 0, i, i+2)
+                self.addTri(0, i, i+2)
             if bottom:
-                addTri(bui, 1, i+1, i+3)
+                self.addTri(1, i+1, i+3)
     
-# Semi-primitives
+    # Semi-primitives
 
-    def geomElevationGrid(self, node, bui):
+    def geomElevationGrid(self, node):
         dx = readFloat(node, "xSpacing", 1)
         dz = readFloat(node, "zSpacing", 1)
         nx = readInt(node, "xDimension", 0)
@@ -325,18 +353,18 @@ class X3DReader(MeshReader):
         if nx <= 0 or nz <= 0 or len(height) < nx*nz:
             return # That's weird, the wording of the standard suggests grids with zero quads are somehow valid
         
-        bui.reserveFaceAndVertexCount(2*(nx-1)*(nz-1), nx*nz)
+        self.reserveFaceAndVertexCount(2*(nx-1)*(nz-1), nx*nz)
         
         for z in range(nz):
             for x in range(nx):
-                bui.addVertex(x * dx, height[z*nx + x], z * dz)
+                self.addVertex(x * dx, height[z*nx + x], z * dz)
                 
         for z in range(1, nz):
             for x in range(1, nx):
-                addTriFlip(bui, (z - 1)*nx + x - 1, z*nx + x, (z - 1)*nx + x, ccw)
-                addTriFlip(bui, (z - 1)*nx + x - 1, z*nx + x - 1, z*nx + x, ccw)
+                self.addTriFlip((z - 1)*nx + x - 1, z*nx + x, (z - 1)*nx + x, ccw)
+                self.addTriFlip((z - 1)*nx + x - 1, z*nx + x - 1, z*nx + x, ccw)
     
-    def geomExtrusion(self, node, bui):
+    def geomExtrusion(self, node):
         ccw = readBoolean(node, "ccw", True)
         beginCap = readBoolean(node, "beginCap", True)
         endCap = readBoolean(node, "endCap", True)
@@ -403,7 +431,7 @@ class X3DReader(MeshReader):
                 orig_z = Vector(*m.dot(orig_z.getData()))
             return orig_z
     
-        bui.reserveFaceAndVertexCount(2*nsf*ncf + (nc - 2 if beginCap else 0) + (nc - 2 if endCap else 0), ns*nc)
+        self.reserveFaceAndVertexCount(2*nsf*ncf + (nc - 2 if beginCap else 0) + (nc - 2 if endCap else 0), ns*nc)
 
         z = None
         for i, spt in enumerate(spine):
@@ -456,10 +484,10 @@ class X3DReader(MeshReader):
             sptv3 = numpy.array(spt.getData()[:3])
             for cpt in cross:
                 v = sptv3 + m.dot(cpt)
-                bui.addVertex(*v)
+                self.addVertex(*v)
     
         if beginCap:
-            addFace(bui, [x for x in range(nc - 1, -1, -1)], ccw)
+            self.addFace([x for x in range(nc - 1, -1, -1)], ccw)
     
         # Order of edges in the face: forward along cross, forward along spine,
         # backward along cross, backward along spine, flipped if now ccw.
@@ -468,117 +496,167 @@ class X3DReader(MeshReader):
     
         for s in range(ns - 1):
             for c in range(ncf):
-                addQuadFlip(bui, s * nc + c, s * nc + (c + 1) % nc,
+                self.addQuadFlip(s * nc + c, s * nc + (c + 1) % nc,
                     (s + 1) * nc + (c + 1) % nc, (s + 1) * nc + c, ccw)
     
         if spineClosed:
             # The faces between the last and the first spine points
             b = (ns - 1) * nc
             for c in range(ncf):
-                addQuadFlip(bui, b + c, b + (c + 1) % nc,
+                self.addQuadFlip(b + c, b + (c + 1) % nc,
                     (c + 1) % nc, c, ccw)
                         
         if endCap:
-            addFace(bui, [(ns - 1) * nc + x for x in range(0, nc)], ccw)
+            self.addFace([(ns - 1) * nc + x for x in range(0, nc)], ccw)
     
 # Triangle meshes
 
     # Helper for numerous nodes with a Coordinate subnode holding vertices
     # That all triangle meshes and IndexedFaceSet
-    # nFaces can be a function, in case the face count is a function of coord 
-    def startCoordMesh(self, node, bui, nFaces):
+    # num_faces can be a function, in case the face count is a function of coord 
+    def startCoordMesh(self, node, num_faces):
         ccw = readBoolean(node, "ccw", True)
         coord = self.readVertices(node)
-        if hasattr(nFaces, '__call__'):
-            nFaces = nFaces(coord)
-        bui.reserveFaceAndVertexCount(nFaces, len(coord))
+        if hasattr(num_faces, '__call__'):
+            num_faces = num_faces(coord)
+        self.reserveFaceAndVertexCount(num_faces, len(coord))
         for pt in coord:
-            bui.addVertex(*pt)
+            self.addVertex(*pt)
             
         return ccw
         
 
-    def geomIndexedTriangleSet(self, node, bui):
+    def geomIndexedTriangleSet(self, node):
         index = readIntArray(node, "index", [])
-        nFaces = len(index) // 3
-        ccw = self.startCoordMesh(node, bui, nFaces)
+        num_faces = len(index) // 3
+        ccw = self.startCoordMesh(node, num_faces)
         
-        for i in range(0, nFaces*3, 3):
-            addTriFlip(bui, index[i], index[i+1], index[i+2], ccw)
+        for i in range(0, num_faces*3, 3):
+            self.addTriFlip(index[i], index[i+1], index[i+2], ccw)
     
-    def geomIndexedTriangleStripSet(self, node, bui):
+    def geomIndexedTriangleStripSet(self, node):
         strips = readIndex(node, "index")
-        ccw = self.startCoordMesh(node, bui, sum([len(strip) - 2 for strip in strips]))
+        ccw = self.startCoordMesh(node, sum([len(strip) - 2 for strip in strips]))
             
         for strip in strips:
             sccw = ccw # Running CCW value, reset for each strip
             for i in range(len(strip) - 2):
-                addTriFlip(bui, strip[i], strip[i+1], strip[i+2], sccw)
+                self.addTriFlip(strip[i], strip[i+1], strip[i+2], sccw)
                 sccw = not sccw
     
-    def geomIndexedTriangleFanSet(self, node, bui):
+    def geomIndexedTriangleFanSet(self, node):
         fans = readIndex(node, "index")
-        ccw = self.startCoordMesh(node, bui, sum([len(fan) - 2 for fan in fans]))
+        ccw = self.startCoordMesh(node, sum([len(fan) - 2 for fan in fans]))
         
         for fan in fans:
             for i in range(1, len(fan) - 1):
-                addTriFlip(bui, fan[0], fan[i], fan[i+1], ccw)
+                self.addTriFlip(fan[0], fan[i], fan[i+1], ccw)
    
-    def geomTriangleSet(self, node, bui):
-        ccw = self.startCoordMesh(node, bui, lambda coord: len(coord) // 3)
-        for i in range(0, len(bui.getVertices()), 3):
-            addTriFlip(bui, i, i+1, i+2, ccw)
+    def geomTriangleSet(self, node):
+        ccw = self.startCoordMesh(node, lambda coord: len(coord) // 3)
+        for i in range(0, len(self.verts), 3):
+            self.addTriFlip(i, i+1, i+2, ccw)
     
-    def geomTriangleStripSet(self, node, bui):
+    def geomTriangleStripSet(self, node):
         strips = readIntArray(node, "stripCount", [])
-        ccw = self.startCoordMesh(node, bui, sum([n-2 for n in strips]))
+        ccw = self.startCoordMesh(node, sum([n-2 for n in strips]))
             
         vb = 0
         for n in strips:
             sccw = ccw
             for i in range(n-2): 
-                addTriFlip(bui, vb+i, vb+i+1, vb+i+2, sccw)
+                self.addTriFlip(vb+i, vb+i+1, vb+i+2, sccw)
                 sccw = not sccw
             vb += n
     
-    def geomTriangleFanSet(self, node, bui):
+    def geomTriangleFanSet(self, node):
         fans = readIntArray(node, "fanCount", [])
-        ccw = self.startCoordMesh(node, bui, sum([n-2 for n in fans]))
+        ccw = self.startCoordMesh(node, sum([n-2 for n in fans]))
         
         vb = 0
         for n in fans:
             for i in range(1, n-1): 
-                addTriFlip(bui, vb, vb+i, vb+i+1, ccw)
+                self.addTriFlip(vb, vb+i, vb+i+1, ccw)
             vb += n
             
     # Quad geometries from the CAD module, might be relevant for printing
     
-    def geomQuadSet(self, node, bui):
-        ccw = self.startCoordMesh(node, bui, lambda coord: 2*(len(coord) // 4))
-        for i in range(0, len(bui.getVertices()), 4):
-            addQuadFlip(bui, i, i+1, i+2, i+3, ccw)
+    def geomQuadSet(self, node):
+        ccw = self.startCoordMesh(node, lambda coord: 2*(len(coord) // 4))
+        for i in range(0, len(self.verts), 4):
+            self.addQuadFlip(i, i+1, i+2, i+3, ccw)
             
-    def geomIndexedQuadSet(self, node, bui):
+    def geomIndexedQuadSet(self, node):
         index = readIntArray(node, "index", [])
         nQuads = len(index) // 4
-        ccw = self.startCoordMesh(node, bui, nQuads*2)
+        ccw = self.startCoordMesh(node, nQuads*2)
         
         for i in range(0, nQuads*4, 4):
-            addQuadFlip(bui, index[i], index[i+1], index[i+2], index[i+3], ccw)
+            self.addQuadFlip(index[i], index[i+1], index[i+2], index[i+3], ccw)
+            
+    # 2D polygon geometries
+    # Won't work for now, since Cura expects every mesh to have a nontrivial convex hull
+    # The only way around that is merging meshes.
+    
+    def geomDisk2D(self, node):
+        innerRadius = readFloat(node, "innerRadius", 0)
+        outerRadius = readFloat(node, "outerRadius", 1)
+        n = readInt(node, "subdivision", DEFAULT_SUBDIV)
+        
+        angle = 2 * pi / n
+        
+        if innerRadius:
+            self.reserveFaceAndVertexCount(n*4 if innerRadius else n-2, n*2 if innerRadius else n)
+            
+        for i in range(n):
+            s = sin(angle * i)
+            c = cos(angle * i)
+            self.addVertex(outerRadius*c, outerRadius*s, 0)
+            if innerRadius:
+                self.addVertex(innerRadius*c, innerRadius*s, 0)
+                ni = (i+1) % n
+                self.addQuad(2*i, 2*ni, 2*ni+1, 2*i+1)
+                
+        if not innerRadius:
+            for i in range(2, n):
+                self.addTri(0, i-1, i)
+                
+    def geomRectangle2D(self, node):
+        (x, y) = readFloatArray(node, "size", (2, 2))
+        self.reserveFaceAndVertexCount(2, 4)
+        self.addVertex(-x/2, -y/2, 0)
+        self.addVertex(x/2, -y/2, 0)
+        self.addVertex(x/2, y/2, 0)
+        self.addVertex(-x/2, y/2, 0)
+        self.addQuad(0, 1, 2, 3)
+        
+    def geomTriangleSet2D(self, node):
+        verts = readFloatArray(node, "vertices", ())
+        num_faces = len(verts) // 6;
+        verts = [(verts[i], verts[i+1], 0) for i in range(0, 6 * num_faces, 2)]
+        self.reserveFaceAndVertexCount(num_faces, num_faces * 3)
+        for vert in verts:
+            self.addVertex(*vert)
+        
+        # The front face is on the +Z side, so CCW is a variable
+        for i in range(0, num_faces*3, 3):
+            a = Vector(*verts[i+2]) - Vector(*verts[i])
+            b = Vector(*verts[i+1]) - Vector(*verts[i])
+            self.addTriFlip(i, i+1, i+2, a.x*b.y > a.y*b.x)
     
     # General purpose polygon mesh
 
-    def geomIndexedFaceSet(self, node, bui):
+    def geomIndexedFaceSet(self, node):
         faces = readIndex(node, "coordIndex")
-        ccw = self.startCoordMesh(node, bui, sum([len(face) - 2 for face in faces]))
+        ccw = self.startCoordMesh(node, sum([len(face) - 2 for face in faces]))
             
         for face in faces:
             if len(face) == 3:
-                addTriFlip(bui, face[0], face[1], face[2], ccw)
+                self.addTriFlip(face[0], face[1], face[2], ccw)
             elif len(face) > 3:
-                addFace(bui, face, ccw)
+                self.addFace(face, ccw)
                 
-    geometryImporters = {
+    geometry_importers = {
         'IndexedFaceSet': geomIndexedFaceSet,
         'IndexedTriangleSet': geomIndexedTriangleSet,
         'IndexedTriangleStripSet': geomIndexedTriangleStripSet,
@@ -588,6 +666,9 @@ class X3DReader(MeshReader):
         'TriangleFanSet': geomTriangleFanSet,
         'QuadSet': geomQuadSet,
         'IndexedQuadSet': geomIndexedQuadSet,
+        'TriangleSet2D': geomTriangleSet2D,
+        'Rectangle2D': geomRectangle2D,
+        'Disk2D': geomDisk2D,
         'ElevationGrid': geomElevationGrid,
         'Extrusion': geomExtrusion,
         'Sphere': geomSphere,
@@ -608,6 +689,103 @@ class X3DReader(MeshReader):
                         # Group by three
                         return [(co[i], co[i+1], co[i+2]) for i in range(0, (len(co) // 3)*3, 3)]
         return []
+    
+    # Mesh builder helpers
+    
+    def reserveFaceAndVertexCount(self, num_faces, num_verts):
+        # Unlike the Cura MeshBuilder, we use 4-vectors here for easier transform
+        self.verts = numpy.array([(0,0,0,1) for i in range(num_verts)], dtype=numpy.float32)
+        self.faces = numpy.zeros((num_faces, 3), dtype=numpy.int32)
+        self.num_faces = 0
+        self.num_verts = 0
+        
+    def addVertex(self, x, y, z):
+        self.verts[self.num_verts, 0] = x
+        self.verts[self.num_verts, 1] = y
+        self.verts[self.num_verts, 2] = z
+        self.num_verts += 1
+    
+    # Indices are 0-based for this shape, but they won't be zero-based in the merged mesh
+    def addTri(self, a, b, c):
+        self.faces[self.num_faces, 0] = self.index_base + a
+        self.faces[self.num_faces, 1] = self.index_base + b
+        self.faces[self.num_faces, 2] = self.index_base + c
+        self.num_faces += 1
+        
+    def addTriFlip(self, a, b, c, ccw):
+        if ccw:
+            self.addTri(a, b, c)
+        else:
+            self.addTri(b, a, c)
+        
+    # Needs to be convex, but not necessaily planar
+    # Assumed ccw, cut along the ac diagonal
+    def addQuad(self, a, b, c, d):
+        self.addTri(a, b, c)
+        self.addTri(c, d, a)
+        
+    def addQuadFlip(self, a, b, c, d, ccw):
+        if ccw:
+            self.addTri(a, b, c)
+            self.addTri(c, d, a)
+        else:
+            self.addTri(a, c, b)
+            self.addTri(c, a, d)    
+    
+    
+    # Arbitrary polygon triangulation.
+    # Doesn't assume convexity and doesn't check the "convex" flag in the file.
+    # Works by the "cutting of ears" algorithm:
+    # - Find an outer vertex with the smallest angle and no vertices inside its adjacent triangle
+    # - Remove the triangle at that vertex
+    # - Repeat until done
+    # Vertex coordinates are supposed to be already set
+    def addFace(self, indices, ccw):
+        # Resolve indices to coordinates for faster math
+        n = len(indices)
+        verts = self.verts
+        face = [Vector(verts[i, 0], verts[i, 1], verts[i, 2]) for i in indices]
+        
+        # Need a normal to the plane so that we can know which vertices form inner angles
+        normal = findOuterNormal(face)
+            
+        if not normal: # Couldn't find an outer edge, non-planar polygon maybe?
+            return
+        
+        # Find the vertex with the smallest inner angle and no points inside, cut off. Repeat until done
+        m = len(face)
+        vi = [i for i in range(m)] # We'll be using this to kick vertices from the face
+        while m > 3:
+            max_cos = EPSILON # We don't want to check anything on Pi angles
+            i_min = 0 # max cos corresponds to min angle
+            for i in range(m):
+                inext = (i + 1) % m
+                iprev = (i + m - 1) % m
+                v = face[vi[i]]
+                next = face[vi[inext]] - v
+                prev = face[vi[iprev]] - v
+                nextXprev = next.cross(prev)
+                if nextXprev.dot(normal) > EPSILON: # If it's an inner angle
+                    cos = next.dot(prev) / (next.length() * prev.length())
+                    if cos > max_cos:
+                        # Check if there are vertices inside the triangle
+                        no_points_inside = True
+                        for j in range(m):
+                            if j != i and j != iprev and j != inext:
+                                vx = face[vi[j]] - v
+                                if pointInsideTriangle(vx, next, prev, nextXprev):
+                                    no_points_inside = False
+                                    break
+                                
+                        if no_points_inside:
+                            max_cos = cos
+                            i_min = i
+                            
+            self.addTriFlip(indices[vi[(i_min + m - 1) % m]], indices[vi[i_min]], indices[vi[(i_min + 1) % m]], ccw)
+            vi.pop(i_min)
+            m -= 1
+        self.addTriFlip(indices[vi[0]], indices[vi[1]], indices[vi[2]], ccw)
+
     
 # ------------------------------------------------------------
 # X3D field parsers
@@ -665,89 +843,6 @@ def readIndex(node, attr):
     if chunk:
         chunks.append(chunk)
     return chunks  
-    
-# Mesh builder helpers
-
-def addTri(bui, a, b, c):
-    bui._indices[bui._face_count, 0] = a
-    bui._indices[bui._face_count, 1] = b
-    bui._indices[bui._face_count, 2] = c
-    bui._face_count += 1
-    
-def addTriFlip(bui, a, b, c, ccw):
-    if ccw:
-        addTri(bui, a, b, c)
-    else:
-        addTri(bui, b, a, c)
-    
-# Needs to be convex, but not necessaily planar
-# Assumed ccw, cut along the ac diagonal
-def addQuad(bui, a, b, c, d):
-    addTri(bui, a, b, c)
-    addTri(bui, c, d, a)
-    
-def addQuadFlip(bui, a, b, c, d, ccw):
-    if ccw:
-        addTri(bui, a, b, c)
-        addTri(bui, c, d, a)
-    else:
-        addTri(bui, a, c, b)
-        addTri(bui, c, a, d)
-    
-    
-# Arbitrary polygon triangulation.
-# Doesn't assume convexity and doesn't check the "convex" flag in the file.
-# Works by the "cutting of ears" algorithm:
-# - Find an outer vertex with the smallest angle and no vertices inside its adjacent triangle
-# - Remove the triangle at that vertex
-# - Repeat until done
-# Vertex coordinates are supposed to be already in the mesh builder object
-def addFace(bui, indices, ccw):
-    # Resolve indices to coordinates for faster math
-    n = len(indices)
-    verts = bui.getVertices()
-    face = [Vector(verts[i, 0], verts[i, 1], verts[i, 2]) for i in indices]
-    
-    # Need a normal to the plane so that we can know which vertices form inner angles
-    normal = findOuterNormal(face)
-        
-    if not normal: # Couldn't find an outer edge, non-planar polygon maybe?
-        return
-    
-    # Find the vertex with the smallest inner angle and no points inside, cut off. Repeat until done
-    m = len(face)
-    vi = [i for i in range(m)] # We'll be using this to kick vertices from the face
-    while m > 3:
-        maxCos = EPSILON # We don't want to check anything on Pi angles
-        iMin = 0 # max cos corresponds to min angle
-        for i in range(m):
-            inext = (i + 1) % m
-            iprev = (i + m - 1) % m
-            v = face[vi[i]]
-            next = face[vi[inext]] - v
-            prev = face[vi[iprev]] - v
-            nextXprev = next.cross(prev)
-            if nextXprev.dot(normal) > EPSILON: # If it's an inner angle
-                cos = next.dot(prev) / (next.length() * prev.length())
-                if cos > maxCos:
-                    # Check if there are vertices inside the triangle
-                    noPointsInside = True
-                    for j in range(m):
-                        if j != i and j != iprev and j != inext:
-                            vx = face[vi[j]] - v
-                            if pointInsideTriangle(vx, next, prev, nextXprev):
-                                noPointsInside = False
-                                break
-                            
-                    if noPointsInside:
-                        maxCos = cos
-                        iMin = i
-                        
-        addTriFlip(bui, indices[vi[(iMin + m - 1) % m]], indices[vi[iMin]], indices[vi[(iMin + 1) % m]], ccw)
-        vi.pop(iMin)
-        m -= 1
-    addTriFlip(bui, indices[vi[0]], indices[vi[1]], indices[vi[2]], ccw)
-  
   
 # Given a face as a sequence of vectors, returns a normal to the polygon place that forms a right triple
 # with a vector along the polygon sequence and a vector backwards
@@ -758,21 +853,21 @@ def findOuterNormal(face):
             edge = face[j] - face[i]
             if edge.length() > EPSILON:
                 edge = edge.normalized()
-                prevRejection = Vector()
-                isOuter = True
+                prev_rejection = Vector()
+                is_outer = True
                 for k in range(n):
                     if k != i and k != j:
                         pt = face[k] - face[i]
                         pte = pt.dot(edge)
                         rejection = pt - edge*pte
-                        if rejection.dot(prevRejection) < -EPSILON: # points on both sides of the edge - not an outer one
-                            isOuter = False
+                        if rejection.dot(prev_rejection) < -EPSILON: # points on both sides of the edge - not an outer one
+                            is_outer = False
                             break
-                        elif rejection.length() > prevRejection.length(): # Pick a greater rejection for numeric stability 
-                            prevRejection = rejection
+                        elif rejection.length() > prev_rejection.length(): # Pick a greater rejection for numeric stability 
+                            prev_rejection = rejection
                         
-                if isOuter: # Found an outer edge, prevRejection is the rejection inside the face. Generate a normal.
-                    return edge.cross(prevRejection)
+                if is_outer: # Found an outer edge, prev_rejection is the rejection inside the face. Generate a normal.
+                    return edge.cross(prev_rejection)
 
     return False
     
@@ -780,9 +875,9 @@ def findOuterNormal(face):
 # No error handling.
 # For stability, taking the ration between the biggest coordinates would be better; none of that, either.   
 def ratio(a, b):
-    if b.x > EPSILON:
+    if b.x > EPSILON or b.x < -EPSILON:
         return a.x / b.x
-    elif b.y > EPSILON:
+    elif b.y > EPSILON or b.y < -EPSILON:
         return a.y / b.y
     else:
         return a.z / b.z    
@@ -806,6 +901,3 @@ def toNumpyRotation(rot):
         (x * x * t + c,  x * y * t - z*s, x * z * t + y * s),
         (x * y * t + z*s, y * y * t + c, y * z * t - x * s),
         (x * z * t - y * s, y * z * t + x * s, z * z * t + c)))    
-
-    
-    
