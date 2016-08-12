@@ -1614,7 +1614,7 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'MOARstruder V2')
 			profile.putMachineSetting('toolhead_shortname', 'MOARstruder v2')
-			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_Moarstruder_v2' % version)
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_Moarstruder_v2')
 		elif self.dually and self.dually.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '2')
