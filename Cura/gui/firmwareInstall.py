@@ -53,12 +53,12 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_5_Moarstruder_v2': "TAZ5-Moarstruder-LBHexagon-1.0.0.2.hex",
 
 			#TAZ 6
-			'lulzbot_TAZ_6_Single_v2.1':     "TAZ6_Single_v1.0.2.19.hex",
-			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_Single_v2.1':     "TAZ6_Single_Extruder_v1.0.2.20.hex",
+			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.20.hex",
 			'lulzbot_TAZ_6_Moarstruder_v2':  "TAZ6_Moarstruder_v1.0.2.20.hex",
 			
-			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.19.hex",
-			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.20.hex",
+			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.20.hex",
 			
 			#Mini
 			'lulzbot_mini':              "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
