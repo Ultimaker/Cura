@@ -23,6 +23,7 @@ fragment =
 
     uniform vec2 u_offset[9];
 
+    uniform vec4 u_background_color;
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
 
@@ -40,7 +41,7 @@ fragment =
         kernel[3] = 1.0; kernel[4] = -4.0; kernel[5] = 1.0;
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
 
-        vec4 result = vec4(0.965, 0.965, 0.965, 1.0);
+        vec4 result = u_background_color;
         vec4 layer0 = texture2D(u_layer0, v_uvs);
         vec4 layer2 = texture2D(u_layer2, v_uvs);
 
@@ -70,6 +71,7 @@ u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
 u_layer3 = 3
+u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
 
