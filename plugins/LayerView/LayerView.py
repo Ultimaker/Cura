@@ -96,7 +96,7 @@ class LayerView(View):
 
             self._old_layer_bindings = self._composite_pass.getLayerBindings()[:] # make a copy so we can restore to it later
             self._composite_pass.getLayerBindings().append("layerview")
-                        self._old_composite_shader = self._composite_pass.getCompositeShader()
+            self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
         if event.type == Event.ViewDeactivateEvent:
