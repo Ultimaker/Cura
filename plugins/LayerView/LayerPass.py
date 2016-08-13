@@ -30,7 +30,7 @@ class LayerPass(RenderPass):
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = self._controller.getScene()
 
-        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+        self._scene.getRoot().childrenChanged.connect(self._onSceneChanged)
         self._max_layers = 0
         self._current_layer_num = 0
         self._current_layer_mesh = None
@@ -84,13 +84,12 @@ class LayerPass(RenderPass):
             self.currentLayerNumChanged.emit()
 
     def calculateMaxLayers(self):
-        scene = self._controller.getScene()
         self._activity = True
 
         self._old_max_layers = self._max_layers
         ## Recalculate num max layers
         new_max_layers = 0
-        for node in DepthFirstIterator(scene.getRoot()):
+        for node in DepthFirstIterator(self._scene.getRoot()):
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
                 continue
@@ -122,7 +121,6 @@ class LayerPass(RenderPass):
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
 
         self.bind()
-        self._gl.glDisable(self._gl.GL_DEPTH_TEST)
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay)
         tool_handle_has_items = False
@@ -132,7 +130,7 @@ class LayerPass(RenderPass):
                 tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
                 tool_handle_has_items = True
 
-            if type(node) is SceneNode and node.getMeshData() and node.isVisible():
+            elif isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
                 layer_data = node.callDecoration("getLayerData")
                 if not layer_data:
                     continue
@@ -148,12 +146,12 @@ class LayerPass(RenderPass):
                         end += counts
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
-                    batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, mode = RenderBatch.RenderMode.Lines, range = (start, end))
+                    batch = RenderBatch(self._shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end))
                     batch.addItem(node.getWorldTransformation(), layer_data)
                     batch.render(self._scene.getActiveCamera())
 
                 # Create a new batch that is not range-limited
-                batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, mode = RenderBatch.RenderMode.Lines)
+                batch = RenderBatch(self._shader, type = RenderBatch.RenderType.Solid)
                 batch_has_items = False
 
                 if self._current_layer_mesh:
@@ -171,7 +169,6 @@ class LayerPass(RenderPass):
         if tool_handle_has_items:
             tool_handle_batch.render(self._scene.getActiveCamera())
 
-        self._gl.glEnable(self._gl.GL_DEPTH_TEST)
         self.release()
 
     def _onSceneChanged(self, node):
