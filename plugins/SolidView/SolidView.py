@@ -62,8 +62,11 @@ class SolidView(View):
 
                     uniforms = {}
                     if not multi_extrusion:
-                        material = global_container_stack.findContainer({ "type": "material" })
-                        material_color = material.getMetaDataEntry("color_code", default = self._extruders_model.defaultColors[0]) if material else self._extruders_model.defaultColors[0]
+                        if global_container_stack:
+                            material = global_container_stack.findContainer({ "type": "material" })
+                            material_color = material.getMetaDataEntry("color_code", default = self._extruders_model.defaultColors[0]) if material else self._extruders_model.defaultColors[0]
+                        else:
+                            material_color = self._extruders_model.defaultColors[0]
                     else:
                         # Get color to render this mesh in from ExtrudersModel
                         extruder_index = 0

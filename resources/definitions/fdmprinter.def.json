@@ -1586,6 +1586,7 @@
                     "type": "int",
                     "default_value": 2,
                     "minimum_value": "0",
+                    "maximum_value_warning": "1.0 / layer_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -2747,6 +2748,16 @@
                         }
                     }
                 },
+                "brim_outside_only":
+                {
+                    "label": "Brim Only on Outside",
+                    "description": "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "adhesion_type == \"brim\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "raft_margin":
                 {
                     "label": "Raft Extra Margin",
@@ -3736,7 +3747,7 @@
                     "type": "float",
                     "default_value": 5,
                     "minimum_value": "0.1",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
                     "maximum_value_warning": "50",
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
@@ -3768,7 +3779,7 @@
                             "type": "float",
                             "default_value": 5,
                             "minimum_value": "0.1",
-                            "maximum_value": "math.max(max_feedrate_z_override, machine_max_feedrate_z)",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
                             "value": "wireframe_printspeed",
@@ -3784,7 +3795,7 @@
                             "type": "float",
                             "default_value": 5,
                             "minimum_value": "0.1",
-                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
                             "value": "wireframe_printspeed",

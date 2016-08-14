@@ -328,7 +328,7 @@ Item
                 } else {
                     supportEnabled.setPropertyValue("value", true);
                     // Send the extruder nr as a string.
-                    supportExtruderNr.setPropertyValue("value", parseInt(index - 1) + "");
+                    supportExtruderNr.setPropertyValue("value", String(index - 1));
                 }
             }
             MouseArea {
