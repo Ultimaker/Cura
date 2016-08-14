@@ -182,7 +182,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if len(hex_file) == 0:
             Logger.log("e", "Unable to read provided hex file. Could not update firmware")
-            return 
+            self._updateFirmware_completed()
+            return
 
         programmer = stk500v2.Stk500v2()
         programmer.progressCallback = self.setProgress
@@ -197,6 +198,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
+            self._updateFirmware_completed()
             return 
 
         self._updating_firmware = True
@@ -206,15 +208,21 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._updating_firmware = False
         except Exception as e:
             Logger.log("e", "Exception while trying to update firmware %s" %e)
-            self._updating_firmware = False
+            self._updateFirmware_completed()
             return
         programmer.close()
 
+        self._updateFirmware_completed()
+        return
+
+    ##  Private function which makes sure that firmware update process has completed/ended
+    def _updateFirmware_completed(self):
         self.setProgress(100, 100)
         self._firmware_update_finished = True
-
+        self.resetFirmwareUpdate(update_has_finished=True)
         self.firmwareUpdateComplete.emit()
-        self.firmwareUpdateChange.emit()
+        
+        return
 
     ##  Upload new firmware to machine
     #   \param filename full path of firmware file to be uploaded
@@ -227,8 +235,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def firmwareUpdateFinished(self):
         return self._firmware_update_finished
 
-    def resetFirmwareUpdateFinished(self):
-        self._firmware_update_finished = False
+    def resetFirmwareUpdate(self, update_has_finished = False):
+        self._firmware_update_finished = update_has_finished
         self.firmwareUpdateChange.emit()
 
     @pyqtSlot()
