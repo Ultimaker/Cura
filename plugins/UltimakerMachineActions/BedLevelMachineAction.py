@@ -10,7 +10,7 @@ catalog = i18nCatalog("cura")
 
 class BedLevelMachineAction(MachineAction):
     def __init__(self):
-        super().__init__("BedLevel", catalog.i18nc("@action", "Level bed"))
+        super().__init__("BedLevel", catalog.i18nc("@action", "Level build plate"))
         self._qml_url = "BedLevelMachineAction.qml"
         self._bed_level_position = 0
 

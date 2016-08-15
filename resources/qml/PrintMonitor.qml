@@ -14,6 +14,8 @@ Column
     id: printMonitor
     property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
 
+    Cura.ExtrudersModel { id: extrudersModel }
+
     Label
     {
         text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@label", "The printer is not connected.")
@@ -34,7 +36,7 @@ Column
         delegate: Loader
         {
             sourceComponent: monitorItem
-            property string label: machineExtruderCount.properties.value > 1 ? catalog.i18nc("@label", "Hotend Temperature %1").arg(index + 1) : catalog.i18nc("@label", "Hotend Temperature")
+            property string label: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
             property string value: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
         }
     }
@@ -44,7 +46,7 @@ Column
         delegate: Loader
         {
             sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Bed Temperature")
+            property string label: catalog.i18nc("@label", "Build plate")
             property string value: printerConnected ? Math.round(connectedPrinter.bedTemperature) + "°C" : ""
         }
     }
