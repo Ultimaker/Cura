@@ -197,7 +197,9 @@ UM.ManagementPage
             anchors.bottom: parent.bottom
 
             ListView {
-                model: Cura.ContainerSettingsModel{ containers:
+                model: Cura.ContainerSettingsModel
+                {
+                    containers:
                     {
                         if (!currentItem) {
                             return []
