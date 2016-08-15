@@ -103,7 +103,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             return
 
         for printer_connection in self._usb_output_devices:
-            self._usb_output_devices[printer_connection].resetFirmwareUpdateFinished()
+            self._usb_output_devices[printer_connection].resetFirmwareUpdate()
         self.spawnFirmwareInterface("")
         for printer_connection in self._usb_output_devices:
             try:
@@ -111,7 +111,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             except FileNotFoundError:
                 # Should only happen in dev environments where the resources/firmware folder is absent.
                 self._usb_output_devices[printer_connection].setProgress(100, 100)
-                Logger.log("w", "No firmware found for printer %s", printer_connection)
+                Logger.log("w", "No firmware found for printer %s called '%s'" %(printer_connection, self._getDefaultFirmwareName()))
                 Message(i18n_catalog.i18nc("@info",
                     "Could not find firmware required for the printer at %s.") % printer_connection).show()
                 self._firmware_view.close()
@@ -126,7 +126,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 self._usb_output_devices[serial_port].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
                 self._firmware_view.close()
-                Logger.log("e", "Could not find firmware required for this machine")
+                Logger.log("e", "Could not find firmware required for this machine called '%s'" %(self._getDefaultFirmwareName()))
                 return False
             return True
         return False
