@@ -12,6 +12,16 @@ import Cura 1.0 as Cura
 Column
 {
     id: printMonitor
+    property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
+
+    Label
+    {
+        text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@label", "The printer is not connected.")
+        color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+        font: UM.Theme.getFont("default")
+        wrapMode: Text.WordWrap
+        width: base.width
+    }
 
     Loader
     {
@@ -25,7 +35,7 @@ Column
         {
             sourceComponent: monitorItem
             property string label: machineExtruderCount.properties.value > 1 ? catalog.i18nc("@label", "Hotend Temperature %1").arg(index + 1) : catalog.i18nc("@label", "Hotend Temperature")
-            property string value: printerConnected ? Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[index]) + "°C" : ""
+            property string value: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
         }
     }
     Repeater
@@ -35,7 +45,7 @@ Column
         {
             sourceComponent: monitorItem
             property string label: catalog.i18nc("@label", "Bed Temperature")
-            property string value: printerConnected ? Math.round(Cura.MachineManager.printerOutputDevices[0].bedTemperature) + "°C" : ""
+            property string value: printerConnected ? Math.round(connectedPrinter.bedTemperature) + "°C" : ""
         }
     }
 
@@ -48,19 +58,19 @@ Column
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Job Name")
-        property string value: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobName : ""
+        property string value: printerConnected ? connectedPrinter.jobName : ""
     }
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Printing Time")
-        property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal) : ""
+        property string value: printerConnected ? getPrettyTime(connectedPrinter.timeTotal) : ""
     }
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Estimated time left")
-        property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed) : ""
+        property string value: printerConnected ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
     }
 
     Component
@@ -73,7 +83,7 @@ Column
             Label
             {
                 text: label
-                color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 width: base.width * 0.4
                 elide: Text.ElideRight
@@ -82,7 +92,7 @@ Column
             Label
             {
                 text: value
-                color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 anchors.verticalCenter: parent.verticalCenter
             }

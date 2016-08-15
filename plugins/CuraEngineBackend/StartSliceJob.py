@@ -233,7 +233,7 @@ class StartSliceJob(Job):
     #   global_inherits_stack property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(stack.getProperty(key, "global_inherits_stack"))
+            extruder = int(round(float(stack.getProperty(key, "global_inherits_stack"))))
             if extruder >= 0: #Set to a specific extruder.
                 setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
                 setting_extruder.name = key

@@ -301,7 +301,7 @@ class ExtruderManager(QObject):
 
         result = []
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
-            value = extruder.getRawProperty(key, "value", use_next = False)
+            value = extruder.getRawProperty(key, "value")
 
             if not value:
                 continue
@@ -334,16 +334,17 @@ class ExtruderManager(QObject):
     #   \param extruder_index The index of the extruder to get the value from.
     #   \param key The key of the setting to get the value of.
     #
-    #   \return The value of the setting for the specified extruder or None if not found.
+    #   \return The value of the setting for the specified extruder or for the
+    #   global stack if not found.
     @staticmethod
     def getExtruderValue(extruder_index, key):
         extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-        value = None
 
         if extruder:
-            value = extruder.getRawProperty(key, "value", use_next = False)
-
-        if isinstance(value, UM.Settings.SettingFunction):
-            value = value(extruder)
+            value = extruder.getRawProperty(key, "value")
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(extruder)
+        else: #Just a value from global.
+            value = UM.Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
 
         return value

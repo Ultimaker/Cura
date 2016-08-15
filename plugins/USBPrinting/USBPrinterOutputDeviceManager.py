@@ -48,14 +48,23 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     connectionStateChanged = pyqtSignal()
 
     progressChanged = pyqtSignal()
+    firmwareUpdateChange = pyqtSignal()
 
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
         progress = 0
         for printer_name, device in self._usb_output_devices.items(): # TODO: @UnusedVariable "printer_name"
             progress += device.progress
-
         return progress / len(self._usb_output_devices)
+
+    ##  Return True if all printers finished firmware update
+    @pyqtProperty(float, notify = firmwareUpdateChange)
+    def firmwareUpdateCompleteStatus(self):
+        complete = True
+        for printer_name, device in self._usb_output_devices.items(): # TODO: @UnusedVariable "printer_name"
+            if not device.firmwareUpdateFinished:
+                complete = False
+        return complete
 
     def start(self):
         self._check_updates = True
@@ -93,13 +102,20 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             Message(i18n_catalog.i18nc("@info","Cannot update firmware, there were no connected printers found.")).show()
             return
 
+        for printer_connection in self._usb_output_devices:
+            self._usb_output_devices[printer_connection].resetFirmwareUpdateFinished()
         self.spawnFirmwareInterface("")
         for printer_connection in self._usb_output_devices:
             try:
                 self._usb_output_devices[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
+                # Should only happen in dev environments where the resources/firmware folder is absent.
                 self._usb_output_devices[printer_connection].setProgress(100, 100)
                 Logger.log("w", "No firmware found for printer %s", printer_connection)
+                Message(i18n_catalog.i18nc("@info",
+                    "Could not find firmware required for the printer at %s.") % printer_connection).show()
+                self._firmware_view.close()
+
                 continue
 
     @pyqtSlot(str, result = bool)
@@ -200,6 +216,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         device.connectionStateChanged.connect(self._onConnectionStateChanged)
         device.connect()
         device.progressChanged.connect(self.progressChanged)
+        device.firmwareUpdateChange.connect(self.firmwareUpdateChange)
         self._usb_output_devices[serial_port] = device
 
     ##  If one of the states of the connected devices change, we might need to add / remove them from the global list.

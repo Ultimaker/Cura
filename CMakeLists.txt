@@ -14,6 +14,7 @@ add_custom_command(TARGET tests POST_BUILD COMMAND "PYTHONPATH=${CMAKE_SOURCE_DI
 
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
+configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 # Macro needed to list all sub-directory of a directory.
@@ -76,7 +77,7 @@ if(NOT APPLE AND NOT WIN32)
             FILES_MATCHING PATTERN *.py)
     install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
-    install(FILES cura.desktop
+    install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/

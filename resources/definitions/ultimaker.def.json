@@ -7,5 +7,16 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",
         "visible": false
+    },
+    "overrides": {
+        "material_print_temperature": {
+            "minimum_value": "0"
+        },
+        "material_bed_temperature": {
+            "minimum_value": "0"
+        },
+        "material_standby_temperature": {
+            "minimum_value": "0"
+        }
     }
 }

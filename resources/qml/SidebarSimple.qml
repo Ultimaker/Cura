@@ -327,7 +327,8 @@ Item
                     supportEnabled.setPropertyValue("value", false);
                 } else {
                     supportEnabled.setPropertyValue("value", true);
-                    supportExtruderNr.setPropertyValue("value", index - 1);
+                    // Send the extruder nr as a string.
+                    supportExtruderNr.setPropertyValue("value", String(index - 1));
                 }
             }
             MouseArea {
@@ -372,7 +373,7 @@ Item
         for(var extruderNumber = 0; extruderNumber < extruders.model.rowCount() ; extruderNumber++) {
             extruderModel.append({
                 text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNumber).name),
-                color: extruders.model.getItem(extruderNumber).colour
+                color: extruders.model.getItem(extruderNumber).color
             })
         }
     }

@@ -58,14 +58,6 @@ import copy
 import urllib
 numpy.seterr(all="ignore")
 
-#WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
-if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
-    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
-        import ctypes
-        from ctypes.util import find_library
-        ctypes.CDLL(find_library('GL'), ctypes.RTLD_GLOBAL)
-
 try:
     from cura.CuraVersion import CuraVersion, CuraBuildType
 except ImportError:

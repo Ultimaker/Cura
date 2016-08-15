@@ -68,6 +68,7 @@ class ChangeLog(Extension, QObject,):
                     line = line.replace("[","")
                     line = line.replace("]","")
                     open_version = Version(line)
+                    open_header = ""
                     self._change_logs[open_version] = collections.OrderedDict()
                 elif line.startswith("*"):
                     open_header = line.replace("*","")

@@ -47,9 +47,9 @@ Item {
                     id: extruders_model
                     onRowsInserted: extruderSelector.visible = extruders_model.rowCount() > 1
                     onModelReset:   extruderSelector.visible = extruders_model.rowCount() > 1
-                    onModelChanged: extruderSelector.color = extruders_model.getItem(extruderSelector.currentIndex).colour
+                    onModelChanged: extruderSelector.color = extruders_model.getItem(extruderSelector.currentIndex).color
                 }
-                property string color: extruders_model.getItem(extruderSelector.currentIndex).colour
+                property string color: extruders_model.getItem(extruderSelector.currentIndex).color
                 visible: extruders_model.rowCount() > 1
                 textRole: "name"
                 width: UM.Theme.getSize("setting_control").width
@@ -128,7 +128,11 @@ Item {
                     }
                 }
 
-                onActivated: UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                onActivated:
+                {
+                    UM.ActiveTool.setProperty("SelectedActiveExtruder", extruders_model.getItem(index).id);
+                    extruderSelector.color = extruders_model.getItem(index).color;
+                }
                 onModelChanged: updateCurrentIndex();
 
                 function updateCurrentIndex()
@@ -138,7 +142,7 @@ Item {
                         if(extruders_model.getItem(i).id == UM.ActiveTool.properties.getValue("SelectedActiveExtruder"))
                         {
                             extruderSelector.currentIndex = i;
-                            extruderSelector.color = extruders_model.getItem(i).colour;
+                            extruderSelector.color = extruders_model.getItem(i).color;
                             return;
                         }
                     }
@@ -147,106 +151,111 @@ Item {
             }
         }
 
-        Repeater
+        Column
         {
-            id: contents
-            height: childrenRect.height;
+            spacing: UM.Theme.getSize("default_lining").height
 
-            model: UM.SettingDefinitionsModel
+            Repeater
             {
-                id: addedSettingsModel;
-                containerId: Cura.MachineManager.activeDefinitionId
-                expanded: [ "*" ]
+                id: contents
+                height: childrenRect.height;
 
-                visibilityHandler: Cura.PerObjectSettingVisibilityHandler
+                model: UM.SettingDefinitionsModel
                 {
-                    selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
-                }
-            }
+                    id: addedSettingsModel;
+                    containerId: Cura.MachineManager.activeDefinitionId
+                    expanded: [ "*" ]
 
-            delegate: Row
-            {
-                Loader
-                {
-                    id: settingLoader
-                    width: UM.Theme.getSize("setting").width;
-                    height: UM.Theme.getSize("section").height;
-
-                    property var definition: model
-                    property var settingDefinitionsModel: addedSettingsModel
-                    property var propertyProvider: provider
-
-                    //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-                    //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-                    //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                    asynchronous: model.type != "enum" && model.type != "extruder"
-
-                    onLoaded: {
-                        settingLoader.item.showRevertButton = false
-                        settingLoader.item.showInheritButton = false
-                        settingLoader.item.showLinkedSettingIcon = false
-                        settingLoader.item.doDepthIndentation = false
-                        settingLoader.item.doQualityUserSettingEmphasis = false
-                    }
-
-                    sourceComponent:
+                    visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                     {
-                        switch(model.type)
-                        {
-                            case "int":
-                                return settingTextField
-                            case "float":
-                                return settingTextField
-                            case "enum":
-                                return settingComboBox
-                            case "extruder":
-                                return settingExtruder
-                            case "bool":
-                                return settingCheckBox
-                            case "str":
-                                return settingTextField
-                            case "category":
-                                return settingCategory
-                            default:
-                                return settingUnknown
+                        selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
+                    }
+                }
+
+                delegate: Row
+                {
+                    Loader
+                    {
+                        id: settingLoader
+                        width: UM.Theme.getSize("setting").width
+                        height: UM.Theme.getSize("section").height
+
+                        property var definition: model
+                        property var settingDefinitionsModel: addedSettingsModel
+                        property var propertyProvider: provider
+
+                        //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                        //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                        //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                        asynchronous: model.type != "enum" && model.type != "extruder"
+
+                        onLoaded: {
+                            settingLoader.item.showRevertButton = false
+                            settingLoader.item.showInheritButton = false
+                            settingLoader.item.showLinkedSettingIcon = false
+                            settingLoader.item.doDepthIndentation = false
+                            settingLoader.item.doQualityUserSettingEmphasis = false
                         }
-                    }
-                }
 
-                Button
-                {
-                    width: UM.Theme.getSize("setting").height;
-                    height: UM.Theme.getSize("setting").height;
-
-                    onClicked: addedSettingsModel.setVisible(model.key, false);
-
-                    style: ButtonStyle
-                    {
-                        background: Item
+                        sourceComponent:
                         {
-                            UM.RecolorImage
+                            switch(model.type)
                             {
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: parent.width/2
-                                height: parent.height/2
-                                sourceSize.width: width
-                                sourceSize.height: width
-                                color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                source: UM.Theme.getIcon("cross1")
+                                case "int":
+                                    return settingTextField
+                                case "float":
+                                    return settingTextField
+                                case "enum":
+                                    return settingComboBox
+                                case "extruder":
+                                    return settingExtruder
+                                case "bool":
+                                    return settingCheckBox
+                                case "str":
+                                    return settingTextField
+                                case "category":
+                                    return settingCategory
+                                default:
+                                    return settingUnknown
                             }
                         }
                     }
-                }
-                UM.SettingPropertyProvider
-                {
-                    id: provider
 
-                    containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
-                    key: model.key
-                    watchedProperties: [ "value", "enabled", "validationState" ]
-                    storeIndex: 0
-                    removeUnusedValue: false
+                    Button
+                    {
+                        width: UM.Theme.getSize("setting").height / 2;
+                        height: UM.Theme.getSize("setting").height;
+
+                        onClicked: addedSettingsModel.setVisible(model.key, false);
+
+                        style: ButtonStyle
+                        {
+                            background: Item
+                            {
+                                UM.RecolorImage
+                                {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: parent.width
+                                    height: parent.height / 2
+                                    sourceSize.width: width
+                                    sourceSize.height: width
+                                    color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                    source: UM.Theme.getIcon("minus")
+                                }
+                            }
+                        }
+                    }
+
+                    UM.SettingPropertyProvider
+                    {
+                        id: provider
+
+                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                        key: model.key
+                        watchedProperties: [ "value", "enabled", "validationState" ]
+                        storeIndex: 0
+                        removeUnusedValue: false
+                    }
                 }
             }
         }
@@ -257,7 +266,7 @@ Item {
             height: UM.Theme.getSize("setting").height;
             visible: parseInt(UM.Preferences.getValue("cura/active_mode")) == 1
 
-            text: catalog.i18nc("@action:button", "Add Setting");
+            text: catalog.i18nc("@action:button", "Select settings");
 
             style: ButtonStyle
             {
@@ -297,16 +306,28 @@ Item {
     UM.Dialog {
         id: settingPickDialog
 
-        title: catalog.i18nc("@title:window", "Pick a Setting to Customize")
+        title: catalog.i18nc("@title:window", "Select Settings to Customize for this object")
+        width: screenScaleFactor * 360;
+
         property string labelFilter: ""
 
+        onVisibilityChanged:
+        {
+            // force updating the model to sync it with addedSettingsModel
+            if(visible)
+            {
+                listview.model.forceUpdate()
+            }
+        }
+
         TextField {
-            id: filter;
+            id: filter
 
             anchors {
-                top: parent.top;
-                left: parent.left;
-                right: parent.right;
+                top: parent.top
+                left: parent.left
+                right: toggleShowAll.left
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
@@ -321,6 +342,23 @@ Item {
                 {
                     listview.model.filter = {"settable_per_mesh": true}
                 }
+            }
+        }
+
+        CheckBox
+        {
+            id: toggleShowAll
+
+            anchors {
+                top: parent.top
+                right: parent.right
+            }
+
+            text: catalog.i18nc("@label:checkbox", "Show all")
+            checked: listview.model.showAll
+            onClicked:
+            {
+                listview.model.showAll = checked;
             }
         }
 
@@ -377,7 +415,7 @@ Item {
 
         rightButtons: [
             Button {
-                text: catalog.i18nc("@action:button", "Cancel");
+                text: catalog.i18nc("@action:button", "Close");
                 onClicked: {
                     settingPickDialog.visible = false;
                 }
