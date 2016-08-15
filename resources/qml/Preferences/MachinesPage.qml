@@ -142,7 +142,14 @@ UM.ManagementPage
         {
             id: confirmDialog;
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
-            onYes: Cura.MachineManager.removeMachine(base.currentItem.id);
+            onYes:
+            {
+                Cura.MachineManager.removeMachine(base.currentItem.id);
+                //Reselect current item to update details panel
+                var index = objectList.currentIndex
+                objectList.currentIndex = -1
+                objectList.currentIndex = index
+            }
         }
 
         UM.RenameDialog
