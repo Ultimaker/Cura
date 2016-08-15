@@ -265,7 +265,7 @@ class BuildVolume(SceneNode):
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
             rebuild_me = True
 
-        if setting_key in self._skirt_settings:
+        if setting_key in self._skirt_settings or setting_key in self._prime_settings:
             self._updateDisallowedAreas()
             rebuild_me = True
 
@@ -377,3 +377,4 @@ class BuildVolume(SceneNode):
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
+    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
