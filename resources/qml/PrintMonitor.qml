@@ -82,21 +82,24 @@ Column
         Row
         {
             height: UM.Theme.getSize("setting_control").height
+            width: base.width - 2 * UM.Theme.getSize("default_margin").width
             Label
             {
+                width: parent.width * 0.4
+                anchors.verticalCenter: parent.verticalCenter
                 text: label
                 color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
-                width: base.width * 0.4
                 elide: Text.ElideRight
-                anchors.verticalCenter: parent.verticalCenter
             }
             Label
             {
+                width: parent.width * 0.6
+                anchors.verticalCenter: parent.verticalCenter
                 text: value
                 color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
-                anchors.verticalCenter: parent.verticalCenter
+                elide: Text.ElideRight
             }
         }
     }
