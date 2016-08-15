@@ -124,7 +124,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_id = None
         self._authentication_key = None
 
-        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please aprove the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
+        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
         self._authentication_failed_message = None
 
         self._camera_image = QImage()
