@@ -237,6 +237,13 @@ class CuraApplication(QtApplication):
                 raft_airgap
                 layer_0_z_overlap
                 raft_surface_layers
+            dual
+                adhesion_extruder_nr
+                support_extruder_nr
+                prime_tower_enable
+                prime_tower_size
+                prime_tower_position_x
+                prime_tower_position_y
             meshfix
             blackmagic
                 print_sequence
