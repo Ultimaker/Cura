@@ -147,12 +147,12 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             Logger.log("e", "There is no global container stack. Can not update firmware.")
             self._firmware_view.close()
             return ""
-        
+
         # The bottom of the containerstack is the machine definition
         machine_id = global_container_stack.getBottom().id
-        
+
         machine_has_heated_bed = global_container_stack.getProperty("machine_heated_bed", "value")
-        
+
         if platform.system() == "Linux":
             baudrate = 115200
         else:
@@ -166,13 +166,15 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                                    "bq_hephestos_2"           : "MarlinHephestos2.hex",
                                    "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
                                    "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
+                                   "ultimaker_original_dual"  : "MarlinUltimaker-{baudrate}-dual.hex",
                                    "ultimaker2"               : "MarlinUltimaker2.hex",
                                    "ultimaker2_go"            : "MarlinUltimaker2go.hex",
-                                   "ultimaker2_plus"           : "MarlinUltimaker2plus.hex",
+                                   "ultimaker2_plus"          : "MarlinUltimaker2plus.hex",
                                    "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
                                    "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
                                    }
         machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
+                                   "ultimaker_original_dual"  : "MarlinUltimaker-HBK-{baudrate}-dual.hex",
                                    }
         ##TODO: Add check for multiple extruders
         hex_file = None
