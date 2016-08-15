@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package cura.proto;
+
+message ObjectList
+{
+    repeated Object objects = 1;
+    repeated Setting settings = 2; // meshgroup settings (for one-at-a-time printing)
+}
+
+message Slice
+{
+    repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
+    SettingList global_settings = 2; // The global settings used for the whole print job
+    repeated Extruder extruders = 3; // The settings sent to each extruder object
+    repeated SettingExtruder global_inherits_stack = 4; //From which stack the setting would inherit if not defined in a stack.
+}
+
+message Extruder
+{
+    int32 id = 1;
+    SettingList settings = 2;
+}
+
+message Object
+{
+    int64 id = 1;
+    bytes vertices = 2; //An array of 3 floats.
+    bytes normals = 3; //An array of 3 floats.
+    bytes indices = 4; //An array of ints.
+    repeated Setting settings = 5; // Setting override per object, overruling the global settings.
+}
+
+message Progress
+{
+    float amount = 1;
+}
+
+message Layer {
+    int32 id = 1;
+    float height = 2; // Z position
+    float thickness = 3; // height of a single layer
+
+    repeated Polygon polygons = 4; // layer data
+}
+
+message Polygon {
+    enum Type {
+        NoneType = 0;
+        Inset0Type = 1;
+        InsetXType = 2;
+        SkinType = 3;
+        SupportType = 4;
+        SkirtType = 5;
+        InfillType = 6;
+        SupportInfillType = 7;
+        MoveCombingType = 8;
+        MoveRetractionType = 9;
+    }
+    Type type = 1; // Type of move
+    bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
+    float line_width = 3; // The width of the line being laid down
+}
+
+message LayerOptimized {
+    int32 id = 1;
+    float height = 2; // Z position
+    float thickness = 3; // height of a single layer
+
+    repeated PathSegment path_segment = 4; // layer data
+}
+
+
+message PathSegment {
+    int32 extruder = 1; // The extruder used for this path segment
+    enum PointType {
+        Point2D = 0;
+        Point3D = 1;
+    }
+    PointType point_type = 2;
+    bytes points = 3; // The points defining the line segments, bytes of float[2/3] array of length N+1
+    bytes line_type = 4; // Type of line segment as an unsigned char array of length 1 or N, where N is the number of line segments in this path
+    bytes line_width = 5; // The widths of the line segments as bytes of a float array of length 1 or N
+}
+
+
+message GCodeLayer {
+    bytes data = 2;
+}
+
+
+message PrintTimeMaterialEstimates { // The print time for the whole print and material estimates for the extruder
+    float time = 1; // Total time estimate
+    repeated MaterialEstimates materialEstimates = 2; // materialEstimates data
+}
+
+message MaterialEstimates {
+    int64 id = 1;
+    float material_amount = 2; // material used in the extruder
+}
+
+message SettingList {
+    repeated Setting settings = 1;
+}
+
+message Setting {
+    string name = 1; // Internal key to signify a setting
+
+    bytes value = 2; // The value of the setting
+}
+
+message SettingExtruder {
+    string name = 1; //The setting key.
+
+    int32 extruder = 2; //From which extruder stack the setting should inherit.
+}
+
+message GCodePrefix {
+    bytes data = 2; //Header string to be prepended before the rest of the g-code sent from the engine.
+}
+
+message SlicingFinished {
+}

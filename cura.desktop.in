@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1
+Name=Cura
+Name[de]=Cura
+GenericName=3D Printing Software
+GenericName[de]=3D-Druck-Software
+Comment=Cura converts 3D models into paths for a 3D printer. It prepares your print for maximum accuracy, minimum printing time and good reliability with many extra features that make your print come out great.
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/cura %F
+TryExec=@CMAKE_INSTALL_FULL_BINDIR@/cura
+Icon=@CMAKE_INSTALL_FULL_DATADIR@/cura/resources/images/cura-icon.png
+Terminal=false
+Type=Application
+MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png
+Categories=Graphics;
+Keywords=3D;Printing;

@@ -1,0 +1,16 @@
+set(CPACK_PACKAGE_VENDOR "Ultimaker B.V.")
+set(CPACK_PACKAGE_CONTACT "Arjen Hiemstra <a.hiemstra@ultimaker.com>")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cura application to drive the CuraEngine")
+set(CPACK_PACKAGE_VERSION_MAJOR 15)
+set(CPACK_PACKAGE_VERSION_MINOR 05)
+set(CPACK_PACKAGE_VERSION_PATCH 90)
+set(CPACK_PACKAGE_VERSION_REVISION 1)
+set(CPACK_GENERATOR "DEB")
+
+set(DEB_DEPENDS
+    "uranium (>= 15.05.93)"
+)
+string(REPLACE ";" ", " DEB_DEPENDS "${DEB_DEPENDS}")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS ${DEB_DEPENDS})
+
+include(CPack)

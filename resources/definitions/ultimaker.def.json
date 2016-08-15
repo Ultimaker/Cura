@@ -1,0 +1,22 @@
+{
+    "id": "ultimaker_base",
+    "version": 2,
+    "name": "Ultimaker",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker",
+        "visible": false
+    },
+    "overrides": {
+        "material_print_temperature": {
+            "minimum_value": "0"
+        },
+        "material_bed_temperature": {
+            "minimum_value": "0"
+        },
+        "material_standby_temperature": {
+            "minimum_value": "0"
+        }
+    }
+}
