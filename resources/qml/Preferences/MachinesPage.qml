@@ -18,7 +18,10 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMachineId
-    activeIndex: {
+    activeIndex: activeMachineIndex()
+
+    function activeMachineIndex()
+    {
         for(var i = 0; i < model.rowCount(); i++) {
             if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
                 return i;
@@ -145,10 +148,12 @@ UM.ManagementPage
             onYes:
             {
                 Cura.MachineManager.removeMachine(base.currentItem.id);
-                //Reselect current item to update details panel
-                var index = objectList.currentIndex
-                objectList.currentIndex = -1
-                objectList.currentIndex = index
+                if(!base.currentItem)
+                {
+                    objectList.currentIndex = activeMachineIndex()
+                }
+                //Force updating currentItem and the details panel
+                objectList.onCurrentIndexChanged()
             }
         }
 
@@ -159,11 +164,20 @@ UM.ManagementPage
             onAccepted:
             {
                 Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim());
-                //Reselect current item to update details panel
-                var index = objectList.currentIndex
-                objectList.currentIndex = -1
-                objectList.currentIndex = index
+                //Force updating currentItem and the details panel
+                objectList.onCurrentIndexChanged()
             }
         }
+
+        Connections
+        {
+            target: Cura.MachineManager
+            onGlobalContainerChanged:
+            {
+                objectList.currentIndex = activeMachineIndex()
+                objectList.onCurrentIndexChanged()
+            }
+        }
+
     }
 }
