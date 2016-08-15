@@ -95,6 +95,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "material_bed_temp_prepend":
+                {
+                    "label": "Include build plate temperature",
+                    "description": "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting.",
+                    "default_value": true,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_width":
                 {
                     "label": "Machine width",
