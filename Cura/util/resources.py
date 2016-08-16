@@ -190,12 +190,17 @@ class ProfileIni(object):
 		return profile_dict
 
 	def __cmp__(self, cmp):
-		if self.name < cmp.name:
+		if self.order < cmp.order:
 			return -1
-		elif self.name == cmp.name:
-			return 0
-		else:
+		elif self.order > cmp.order:
 			return 1
+		else:
+			if self.name < cmp.name:
+				return -1
+			elif self.name == cmp.name:
+				return 0
+			else:
+				return 1
 
 	def __str__ (self):
 		return "%s%s: %d" % (self.name, "(disabled)" if self.disabled else "", self.order)
