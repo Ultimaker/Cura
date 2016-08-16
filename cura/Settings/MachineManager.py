@@ -596,8 +596,7 @@ class MachineManager(QObject):
         elif button == QMessageBox.No:
             # No, discard the settings in the user profile
             global_stack = Application.getInstance().getGlobalContainerStack()
-
-            for extruder in ExtruderManager.ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
                 extruder.getTop().clear()
 
             global_stack.getTop().clear()
