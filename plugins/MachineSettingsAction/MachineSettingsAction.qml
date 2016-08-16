@@ -354,11 +354,12 @@ Cura.MachineAction
     function setHeadPolygon()
     {
         var polygon = [];
-        polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
         polygon.push([-parseFloat(printheadXMinField.text), parseFloat(printheadYMaxField.text)]);
+        polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
         polygon.push([ parseFloat(printheadXMaxField.text), parseFloat(printheadYMaxField.text)]);
         polygon.push([ parseFloat(printheadXMaxField.text),-parseFloat(printheadYMinField.text)]);
         machineHeadPolygonProvider.setPropertyValue("value", JSON.stringify(polygon));
+        manager.forceUpdate();
     }
 
     UM.SettingPropertyProvider
