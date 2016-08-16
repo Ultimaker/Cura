@@ -4,9 +4,17 @@
 New material profiles for CPE+, PC, Nylon and TPU for the Ultimaker 2+ family.
 
 *Bug fixes
-- Solved the issue that printers from the Ultimaker 2(+) family occasionally hit the right side of the machine or the glass retainer clips during printing.
-- Solved the issue that a raft was able to go outside of the print area.
-- Solved the issue that platform adhesion material could overlap when printing one object at a time.
+- Fixed an issue where a raft goes outside the print area.
+- Fixed a bug where rafts overlap in the one-at-a-time mode.
+- Fixed a bug in the gantry height for the Ultimaker 2, Ultimaker 2 Extended and Ultimaker 2 Go machines.
+
+*New Firmware
+- Fixed an issue where printers from the Ultimaker 2 and Ultimaker 2+ families occasionally hit the right side of the machine or the glass retainer clips during printing.
+- The maximum bed temperature increased from 100 °C to 115 °C for the Ultimaker Original+, Ultimaker Original (with the Heated Bed upgrade kit), Ultimaker 2+ and Ultimaker 2 Extended+ printers.
+- Added an option to specify retraction settings per material and per nozzle for the Ultimaker 2+ family.
+- During the heating phase of the 3D printer, the heated bed is positioned as far away from the nozzle as possible for safety reasons.
+- Improved the material change procedure to ensure that the nozzle temperature always matches the requirements of the to-be-loaded filament.
+
 
 [2.1.2]
 
