@@ -32,7 +32,7 @@ UM.Dialog
             }
 
             text: {
-                if (manager.firmwareUpdateCompleteStatus)
+                if (manager.firmwareUpdateCompleteStatus && !manager.progress > 0)
                 {
                     //: Firmware update status label
                     return catalog.i18nc("@label","Firmware update completed.")
