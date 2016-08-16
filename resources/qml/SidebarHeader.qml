@@ -183,8 +183,23 @@ Column
         Label
         {
             id: variantLabel
-            text: (Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
-                    Cura.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
+            text:
+            {
+                var label;
+                if(Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials)
+                {
+                    label = "%1 & %2".arg(Cura.MachineManager.activeDefinitionVariantsName).arg(catalog.i18nc("@label","Material"));
+                }
+                else if(Cura.MachineManager.hasVariants)
+                {
+                    label = Cura.MachineManager.activeDefinitionVariantsName;
+                }
+                else
+                {
+                    label = catalog.i18nc("@label","Material");
+                }
+                return "%1:".arg(label);
+            }
 
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width

@@ -731,6 +731,16 @@ class MachineManager(QObject):
 
         return ""
 
+    ##  Gets how the active definition calls variants
+    #   Caveat: per-definition-variant-title is currently not translated (though the fallback is)
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeDefinitionVariantsName(self):
+        fallback_title = catalog.i18nc("@label", "Nozzle")
+        if self._global_container_stack:
+            return self._global_container_stack.getBottom().getMetaDataEntry("variants_name", fallback_title)
+
+        return fallback_title
+
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
