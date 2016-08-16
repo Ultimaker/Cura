@@ -126,7 +126,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_key = None
 
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
-        self._authentication_failed_message = None
+        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed due to a timeout or the printer refused the request."))
+        self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the authentication request"))
+        self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
+        self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
 
         self._camera_image = QImage()
 
@@ -194,8 +197,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.setAcceptsCommands(True)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
             self._authentication_requested_message.hide()
-            authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
-            authentication_succeeded_message.show()
+            self._authentication_succeeded_message.show()
 
             # Stop waiting for a response
             self._authentication_timer.stop()
@@ -206,9 +208,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif auth_state == AuthState.AuthenticationDenied:
             self.setAcceptsCommands(False)
             self._authentication_requested_message.hide()
-            self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed due to a timeout or the printer refused the request."))
-            self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the authentication request"))
-            self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
             self._authentication_failed_message.show()
 
             # Stop waiting for a response
@@ -289,6 +288,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_state = AuthState.NotAuthenticated
         self._authentication_counter = 0
         self._authentication_timer.stop()
+
+        self._authentication_requested_message.hide()
+        self._authentication_failed_message.hide()
+        self._authentication_succeeded_message.hide()
 
         if self._error_message:
             self._error_message.hide()
