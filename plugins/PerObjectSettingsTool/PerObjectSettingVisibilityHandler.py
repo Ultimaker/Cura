@@ -59,12 +59,18 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                 definition = self._stack.getSettingDefinition(item)
                 if definition:
                     new_instance = SettingInstance(definition, settings)
-                    if definition.global_inherits_stack:
+                    stack_nr = -1
+                    if definition.global_inherits_stack and self._stack.getProperty("machine_extruder_count", "value") > 1:
                         #Obtain the value from the correct container stack. Only once, upon adding the setting.
-                        stack_nr = self._stack.getProperty(item, "global_inherits_stack") #Stack to get the setting from.
-                        if int(stack_nr) >= 0: #Only if it defines an extruder stack.
-                            extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
-                            new_instance.value = extruder_stack.getProperty(item, "value")
+                        stack_nr = str(int(round(float(self._stack.getProperty(item, "global_inherits_stack"))))) #Stack to get the setting from. Round it and remove the fractional part.
+                    if stack_nr not in ExtruderManager.getInstance().extruderIds and self._stack.getProperty("extruder_nr", "value"): #Property not defined, but we have an extruder number.
+                        stack_nr = str(int(round(float(self._stack.getProperty("extruder_nr", "value")))))
+                    if stack_nr in ExtruderManager.getInstance().extruderIds: #We have either a global_inherits_stack or an extruder_nr.
+                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                    else:
+                        stack = UM.Application.getInstance().getGlobalContainerStack()
+                    new_instance.setProperty("value", stack.getProperty(item, "value"))
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     visibility_changed = True
                 else:

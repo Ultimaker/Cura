@@ -183,13 +183,17 @@ UM.Dialog
         text: catalog.i18nc("@action:button", "Add Printer")
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        onClicked:
-        {
-            base.visible = false
-            var item = machineList.model.getItem(machineList.currentIndex);
-            Cura.MachineManager.addMachine(machineName.text, item.id)
-            base.machineAdded(item.id) // Emit signal that the user added a machine.
-        }
+        onClicked: addMachine()
+    }
+
+    onAccepted: addMachine()
+
+    function addMachine()
+    {
+        base.visible = false
+        var item = machineList.model.getItem(machineList.currentIndex);
+        Cura.MachineManager.addMachine(machineName.text, item.id)
+        base.machineAdded(item.id) // Emit signal that the user added a machine.
     }
 
     Item

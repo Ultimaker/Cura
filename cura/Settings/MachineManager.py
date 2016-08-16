@@ -167,7 +167,7 @@ class MachineManager(QObject):
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
                 self._auto_materials_changed[str(index)] = containers[0].getId()
                 Application.getInstance().messageBox(catalog.i18nc("@window:title", "Changes on the Printer"), catalog.i18nc("@label", "Do you want to change the materials and hotends to match the material in your printer?"),
-                                                 catalog.i18nc("@label", "The materials and / or hotends on your printer were changed. For best results always slice for the materials . hotends that are inserted in your printer."),
+                                                 catalog.i18nc("@label", "The materials and / or hotends on your printer were changed. For best results always slice for the materials and hotends that are inserted in your printer."),
                                                  buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._materialHotendChangedCallback)
 
         else:
@@ -628,6 +628,16 @@ class MachineManager(QObject):
                 return definition.id
 
         return ""
+
+    ##  Gets how the active definition calls variants
+    #   Caveat: per-definition-variant-title is currently not translated (though the fallback is)
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeDefinitionVariantsName(self):
+        fallback_title = catalog.i18nc("@label", "Nozzle")
+        if self._global_container_stack:
+            return self._global_container_stack.getBottom().getMetaDataEntry("variants_name", fallback_title)
+
+        return fallback_title
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):

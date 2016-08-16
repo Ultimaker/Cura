@@ -12,6 +12,18 @@ import Cura 1.0 as Cura
 Column
 {
     id: printMonitor
+    property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
+
+    Cura.ExtrudersModel { id: extrudersModel }
+
+    Label
+    {
+        text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@label", "The printer is not connected.")
+        color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+        font: UM.Theme.getFont("default")
+        wrapMode: Text.WordWrap
+        width: base.width
+    }
 
     Loader
     {
@@ -24,8 +36,8 @@ Column
         delegate: Loader
         {
             sourceComponent: monitorItem
-            property string label: machineExtruderCount.properties.value > 1 ? catalog.i18nc("@label", "Hotend Temperature %1").arg(index + 1) : catalog.i18nc("@label", "Hotend Temperature")
-            property string value: printerConnected ? Math.round(Cura.MachineManager.printerOutputDevices[0].hotendTemperatures[index]) + "°C" : ""
+            property string label: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
+            property string value: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
         }
     }
     Repeater
@@ -34,8 +46,8 @@ Column
         delegate: Loader
         {
             sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Bed Temperature")
-            property string value: printerConnected ? Math.round(Cura.MachineManager.printerOutputDevices[0].bedTemperature) + "°C" : ""
+            property string label: catalog.i18nc("@label", "Build plate")
+            property string value: printerConnected ? Math.round(connectedPrinter.bedTemperature) + "°C" : ""
         }
     }
 
@@ -48,19 +60,19 @@ Column
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Job Name")
-        property string value: printerConnected ? Cura.MachineManager.printerOutputDevices[0].jobName : ""
+        property string value: printerConnected ? connectedPrinter.jobName : ""
     }
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Printing Time")
-        property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal) : ""
+        property string value: printerConnected ? getPrettyTime(connectedPrinter.timeTotal) : ""
     }
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Estimated time left")
-        property string value: printerConnected ? getPrettyTime(Cura.MachineManager.printerOutputDevices[0].timeTotal - Cura.MachineManager.printerOutputDevices[0].timeElapsed) : ""
+        property string value: printerConnected ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
     }
 
     Component
@@ -70,21 +82,24 @@ Column
         Row
         {
             height: UM.Theme.getSize("setting_control").height
+            width: base.width - 2 * UM.Theme.getSize("default_margin").width
             Label
             {
-                text: label
-                color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-                font: UM.Theme.getFont("default")
-                width: base.width * 0.4
-                elide: Text.ElideRight
+                width: parent.width * 0.4
                 anchors.verticalCenter: parent.verticalCenter
+                text: label
+                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                font: UM.Theme.getFont("default")
+                elide: Text.ElideRight
             }
             Label
             {
-                text: value
-                color: printerConnected ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-                font: UM.Theme.getFont("default")
+                width: parent.width * 0.6
                 anchors.verticalCenter: parent.verticalCenter
+                text: value
+                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                font: UM.Theme.getFont("default")
+                elide: Text.ElideRight
             }
         }
     }

@@ -13,7 +13,6 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 
-
 import cura.Settings
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
@@ -33,7 +32,6 @@ import Arcus
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-
 class CuraEngineBackend(Backend):
     ##  Starts the back-end plug-in.
     #
@@ -41,14 +39,30 @@ class CuraEngineBackend(Backend):
     #   with the back-end in general.
     def __init__(self):
         super().__init__()
-
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
-        default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", "CuraEngine")
-        if hasattr(sys, "frozen"):
-            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "CuraEngine")
+        executable_name = "CuraEngine"
         if Platform.isWindows():
-            default_engine_location += ".exe"
+            executable_name += ".exe"
+        default_engine_location = executable_name
+        if os.path.exists(os.path.join(Application.getInstallPrefix(), "bin", executable_name)):
+            default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", executable_name)
+        if hasattr(sys, "frozen"):
+            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), executable_name)
+        if Platform.isLinux() and not default_engine_location:
+            if not os.getenv("PATH"):
+                raise OSError("There is something wrong with your Linux installation.")
+            for pathdir in os.getenv("PATH").split(os.pathsep):
+                execpath = os.path.join(pathdir, executable_name)
+                if os.path.exists(execpath):
+                    default_engine_location = execpath
+                    break
+
+        if not default_engine_location:
+            raise EnvironmentError("Could not find CuraEngine")
+
+        Logger.log("i", "Found CuraEngine at: %s" %(default_engine_location))
+
         default_engine_location = os.path.abspath(default_engine_location)
         Preferences.getInstance().addPreference("backend/location", default_engine_location)
 
@@ -222,7 +236,7 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable objects found."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable models found."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
