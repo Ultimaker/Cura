@@ -265,7 +265,7 @@ class BuildVolume(SceneNode):
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
             rebuild_me = True
 
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings:
+        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings:
             self._updateDisallowedAreas()
             rebuild_me = True
 
@@ -284,12 +284,26 @@ class BuildVolume(SceneNode):
             self._active_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
 
+        machine_width = self._active_container_stack.getProperty("machine_width", "value")
+        machine_depth = self._active_container_stack.getProperty("machine_depth", "value")
+
+        # Add prima tower location as disallowed area.
+        if self._active_container_stack.getProperty("prime_tower_enable", "value"):
+            half_prime_tower_size = self._active_container_stack.getProperty("prime_tower_size", "value") / 2
+            prime_tower_x = self._active_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
+            prime_tower_y = - self._active_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
+
+            disallowed_areas.append([
+                [prime_tower_x - half_prime_tower_size, prime_tower_y - half_prime_tower_size],
+                [prime_tower_x + half_prime_tower_size, prime_tower_y - half_prime_tower_size],
+                [prime_tower_x + half_prime_tower_size, prime_tower_y + half_prime_tower_size],
+                [prime_tower_x - half_prime_tower_size, prime_tower_y + half_prime_tower_size],
+            ])
+
         # Add extruder prime locations as disallowed areas.
         # Probably needs some rework after coordinate system change.
         extruder_manager = ExtruderManager.getInstance()
         extruders = extruder_manager.getMachineExtruders(self._active_container_stack.getId())
-        machine_width = self._active_container_stack.getProperty("machine_width", "value")
-        machine_depth = self._active_container_stack.getProperty("machine_depth", "value")
         for single_extruder in extruders:
             extruder_prime_pos_x = single_extruder.getProperty("extruder_prime_pos_x", "value")
             extruder_prime_pos_y = single_extruder.getProperty("extruder_prime_pos_y", "value")
@@ -378,3 +392,4 @@ class BuildVolume(SceneNode):
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
