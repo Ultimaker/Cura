@@ -526,7 +526,8 @@ class MachineManager(QObject):
             quality_container = containers[0]
         elif container_type == "quality_changes":
             quality_changes_container = containers[0]
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_changes_container.getMetaDataEntry("quality"))
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(
+                quality_type = quality_changes_container.getMetaDataEntry("quality"))
             if not containers:
                 Logger.log("e", "Could not find quality %s for changes %s, not changing quality", quality_changes_container.getMetaDataEntry("quality"), quality_changes_container.getId())
                 return
