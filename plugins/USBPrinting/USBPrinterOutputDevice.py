@@ -242,7 +242,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Private common function which makes sure that firmware update process has completed/ended with a set progress state
     def _updateFirmware_completed_common(self, progress, max_progress = 100):
         if not progress:
-            raise Exception("Progresss not set!")
+            raise Exception("Progress not set!")
         
         self.setProgress(progress, max_progress = max_progress)
         self._firmware_update_finished = True
