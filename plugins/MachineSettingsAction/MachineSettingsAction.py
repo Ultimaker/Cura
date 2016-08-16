@@ -9,6 +9,7 @@ import cura.Settings.CuraContainerRegistry
 import UM.Application
 import UM.Settings.InstanceContainer
 import UM.Settings.DefinitionContainer
+import UM.Logger
 
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
@@ -41,9 +42,11 @@ class MachineSettingsAction(MachineAction):
         if isinstance(container, UM.Settings.DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             if container.getProperty("machine_extruder_count", "value") > 1:
                 # Multiextruder printers are not currently supported
+                UM.Logger.log("d", "Not attaching MachineSettingsAction to %s; Multi-extrusion printers are not supported", container.getId())
                 return
             if container.getMetaDataEntry("has_variants", False):
                 # Machines that use variants are not currently supported
+                UM.Logger.log("d", "Not attaching MachineSettingsAction to %s; Machines that use variants are not supported", container.getId())
                 return
 
             UM.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
