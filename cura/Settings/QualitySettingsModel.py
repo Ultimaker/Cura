@@ -10,6 +10,7 @@ import UM.Logger
 import UM.Qt
 import UM.Settings
 
+
 class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
@@ -149,7 +150,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "key": definition.key,
                 "label": definition.label,
                 "unit": definition.unit,
-                "profile_value": profile_value,
-                "user_value": user_value,
+                "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
+                "user_value": "" if user_value is None else str(user_value),
                 "category": current_category
             })
