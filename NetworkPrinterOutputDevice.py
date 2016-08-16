@@ -12,6 +12,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
 from PyQt5.QtGui import QImage
+from PyQt5.QtWidgets import QMessageBox
 
 import json
 import os
@@ -628,3 +629,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         else:
             self._progress_message.setProgress(0)
             self._progress_message.hide()
+
+    ##  Let the user decide if the hotends and/or material should be synced with the printer
+    def materialHotendChangedMessage(self, callback):
+        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Changes on the Printer"),
+            i18n_catalog.i18nc("@label",
+                "Do you want to change the PrintCores and materials to match your printer?"),
+            i18n_catalog.i18nc("@label",
+                "The materials and / or hotends on your printer were changed. For best results always slice for the PrintCores and materials that are inserted in your printer."),
+            buttons=QMessageBox.Yes + QMessageBox.No,
+            icon=QMessageBox.Question,
+            callback=callback
+        )
