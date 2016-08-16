@@ -37,6 +37,26 @@ UM.Dialog
                     //: Firmware update status label
                     return catalog.i18nc("@label","Firmware update completed.")
                 }
+                else if (manager.progress == -4)
+                {
+                    //: Firmware update status label
+                    return catalog.i18nc("@label","Firmware update failed due to missing firmware.")
+                }
+                else if (manager.progress == -3)
+                {
+                    //: Firmware update status label
+                    return catalog.i18nc("@label","Firmware update failed due to an input/output error.")
+                }
+                else if (manager.progress == -2)
+                {
+                    //: Firmware update status label
+                    return catalog.i18nc("@label","Firmware update failed due to an communication error.")
+                }
+                else if (manager.progress == -1)
+                {
+                    //: Firmware update status label
+                    return catalog.i18nc("@label","Firmware update failed due to an unknown error.")
+                }
                 else if (manager.progress == 0)
                 {
                     //: Firmware update status label
