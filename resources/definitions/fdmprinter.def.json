@@ -3249,6 +3249,7 @@
                     "label": "Enable Prime Tower",
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
                     "type": "bool",
+                    "enabled": "machine_extruder_count > 1",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
