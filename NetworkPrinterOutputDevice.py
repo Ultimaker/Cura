@@ -234,6 +234,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_state_before_timeout = self._connection_state
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your network-connections."))
                 self._connection_message.show()
+                # Check if we were uploading something. Abort if this is the case.
+                # Some operating systems handle this themselves, others give weird issues.
+                if self._post_reply:
+                    self._post_reply.abort()
+                    self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                    self._progress_message.hide()
                 self.setConnectionState(ConnectionState.error)
 
         if self._authentication_state == AuthState.NotAuthenticated:
@@ -486,6 +492,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Some operating systems handle this themselves, others give weird issues.
             if self._post_reply:
                 self._post_reply.abort()
+                self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                self._progress_message.hide()
+
             self.setConnectionState(ConnectionState.error)
             return
 
