@@ -508,7 +508,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if not status_code:
-            Logger.log("d", "A reply from %s did not have status code.", reply.url().toString())
+            if self._connection_state != ConnectionState.error:
+                Logger.log("d", "A reply from %s did not have status code.", reply.url().toString())
             # Received no or empty reply
             return
         reply_url = reply.url().toString()
