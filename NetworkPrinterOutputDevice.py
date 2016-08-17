@@ -482,6 +482,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Received a timeout on a request to the printer")
             self._connection_state_before_timeout = self._connection_state
+            # Check if we were uploading something. Abort if this is the case.
+            # Some operating systems handle this themselves, others give weird issues.
+            if self._post_reply:
+                self._post_reply.abort()
             self.setConnectionState(ConnectionState.error)
             return
 
