@@ -90,6 +90,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._firmware_update_finished = False
 
         self._error_message = None
+        
+        self._error_code = 0
 
     onError = pyqtSignal()
 
@@ -173,7 +175,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
-        self._errorCode = 0
+        self._error_code = 0
         self.setProgress(0, 100)
         self._firmware_update_finished = False
 
@@ -183,7 +185,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if len(hex_file) == 0:
             Logger.log("e", "Unable to read provided hex file. Could not update firmware")
-            self._updateFirmware_completed_missing_firmware()
+            self._updateFirmwareFailedMissingFirmware()
             return
 
         programmer = stk500v2.Stk500v2()
@@ -199,7 +201,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
-            self._updateFirmware_failed_communication_error()
+            self._updateFirmwareFailedCommunicationError()
             return 
 
         self._updating_firmware = True
@@ -209,52 +211,52 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._updating_firmware = False
         except serial.SerialException as e:
             Logger.log("e", "SerialException while trying to update firmware: <%s>" %(repr(e)))
-            self._updateFirmware_failed_io_error()
+            self._updateFirmwareFailedIOError()
             return
         except Exception as e:
             Logger.log("e", "Exception while trying to update firmware: <%s>" %(repr(e)))
-            self._updateFirmware_failed_unknown()
+            self._updateFirmwareFailedUnknown()
             return
         programmer.close()
 
-        self._updateFirmware_completed_sucessfully()
+        self._updateFirmwareCompletedSucessfully()
         return
 
     ##  Private function which makes sure that firmware update process has failed by missing firmware
-    def _updateFirmware_failed_missing_firmware(self):
-        return self._updateFirmware_failed_common(4)
+    def _updateFirmwareFailedMissingFirmware(self):
+        return self._updateFirmwareFailedCommon(4)
     
     ##  Private function which makes sure that firmware update process has failed by an IO error
-    def _updateFirmware_failed_io_error(self):
-        return self._updateFirmware_failed_common(3)
+    def _updateFirmwareFailedIOError(self):
+        return self._updateFirmwareFailedCommon(3)
     
     ##  Private function which makes sure that firmware update process has failed by a communication problem
-    def _updateFirmware_failed_communication_error(self):
-        return self._updateFirmware_failed_common(2)
+    def _updateFirmwareFailedCommunicationError(self):
+        return self._updateFirmwareFailedCommon(2)
     
     ##  Private function which makes sure that firmware update process has failed by an unknown error
-    def _updateFirmware_failed_unknown(self):
-        return self._updateFirmware_failed_common(1)
+    def _updateFirmwareFailedUnknown(self):
+        return self._updateFirmwareFailedCommon(1)
     
-    ##  Private function which makes sure that firmware update process has successfully completed
-    def _updateFirmware_completed_sucessfully(self):
-        self.setProgress(100, 100)
-        self._firmware_update_finished = True
-        self.resetFirmwareUpdate(update_has_finished = True)
-        self.firmwareUpdateComplete.emit()
-
-        return
-
     ##  Private common function which makes sure that firmware update process has completed/ended with a set progress state
-    def _updateFirmware_failed_common(self, code):
+    def _updateFirmwareFailedCommon(self, code):
         if not code:
             raise Exception("Error code not set!")
 
-        self._errorCode = code
+        self._error_code = code
 
         self._firmware_update_finished = True
         self.resetFirmwareUpdate(update_has_finished = True)
         self.progressChanged.emit()
+        self.firmwareUpdateComplete.emit()
+
+        return
+
+    ##  Private function which makes sure that firmware update process has successfully completed
+    def _updateFirmwareCompletedSucessfully(self):
+        self.setProgress(100, 100)
+        self._firmware_update_finished = True
+        self.resetFirmwareUpdate(update_has_finished = True)
         self.firmwareUpdateComplete.emit()
 
         return
