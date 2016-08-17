@@ -639,7 +639,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             i18n_catalog.i18nc("@label",
                 "Do you want to change the PrintCores and materials to match your printer?"),
             i18n_catalog.i18nc("@label",
-                "The materials and / or hotends on your printer were changed. For best results always slice for the PrintCores and materials that are inserted in your printer."),
+                "The PrintCores and/or materials on your printer were changed. For best results always slice for the PrintCores and materials that are inserted in your printer."),
             buttons=QMessageBox.Yes + QMessageBox.No,
             icon=QMessageBox.Question,
             callback=callback
