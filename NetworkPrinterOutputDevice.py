@@ -490,7 +490,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             return
 
         if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  # There was a timeout, but we got a correct answer again.
-            Logger.log("d", "We got a response from the server after %0.1f of silence", time() - self._last_response_time)
+            Logger.log("d", "We got a response from the server after %0.1f of silence. Going back to previous state %s", time() - self._last_response_time, self._connection_state_before_timeout)
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
 
@@ -499,7 +499,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
         if not status_code:
-            Logger.log("d", "A reply without a status code was received. Dropping the message")
+            Logger.log("d", "A reply from %s did not have status code.", reply.url().toString())
             # Received no or empty reply
             return
         reply_url = reply.url().toString()
