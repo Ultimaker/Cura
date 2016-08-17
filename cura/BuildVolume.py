@@ -243,7 +243,7 @@ class BuildVolume(SceneNode):
             machine_height = self._active_container_stack.getProperty("machine_height", "value")
             if self._active_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = min(self._active_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if(self._height < machine_height):
+                if self._height < machine_height:
                     self._buildVolumeMessage()
             else:
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
@@ -263,7 +263,7 @@ class BuildVolume(SceneNode):
             machine_height = self._active_container_stack.getProperty("machine_height", "value")
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = min(self._active_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if(self._height < machine_height):
+                if self._height < machine_height:
                     self._buildVolumeMessage()
             else:
                 self._height = self._active_container_stack.getProperty("machine_height", "value")
