@@ -1,0 +1,16 @@
+{
+    "id": "custom",
+    "version": 2,
+    "name": "Custom FDM printer",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Ultimaker",
+        "manufacturer": "Custom",
+        "category": "Custom",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "preferred_material": "*pla*",
+        "first_start_actions": ["MachineSettingsAction"]
+    }
+}
