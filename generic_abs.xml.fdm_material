@@ -23,8 +23,8 @@ Generic ABS profile. Serves as an example file, data in this file is not correct
         <setting key="standby temperature">200</setting>
 
         <machine>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2+"/>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2extended+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
 
             <hotend id="0.25 mm" />
             <hotend id="0.4 mm" />
