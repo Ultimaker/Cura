@@ -78,6 +78,10 @@ class BuildVolume(SceneNode):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
 
+        self._active_extruder_stack = None
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
+        self._onActiveExtruderStackChanged()
+
     def setWidth(self, width):
         if width: self._width = width
 
@@ -253,6 +257,13 @@ class BuildVolume(SceneNode):
             self._updateRaftThickness()
 
             self.rebuild()
+
+    def _onActiveExtruderStackChanged(self):
+        if self._active_extruder_stack:
+            self._active_extruder_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        if self._active_extruder_stack:
+            self._active_extruder_stack.propertyChanged.connect(self._onSettingPropertyChanged)
 
     def _onSettingPropertyChanged(self, setting_key, property_name):
         if property_name != "value":
