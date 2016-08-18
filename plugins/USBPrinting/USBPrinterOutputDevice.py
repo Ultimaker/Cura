@@ -90,7 +90,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._firmware_update_finished = False
 
         self._error_message = None
-        
         self._error_code = 0
 
     onError = pyqtSignal()
@@ -202,7 +201,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
             self._updateFirmwareFailedCommunicationError()
-            return 
+            return
 
         self._updating_firmware = True
 
@@ -225,19 +224,19 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Private function which makes sure that firmware update process has failed by missing firmware
     def _updateFirmwareFailedMissingFirmware(self):
         return self._updateFirmwareFailedCommon(4)
-    
+
     ##  Private function which makes sure that firmware update process has failed by an IO error
     def _updateFirmwareFailedIOError(self):
         return self._updateFirmwareFailedCommon(3)
-    
+
     ##  Private function which makes sure that firmware update process has failed by a communication problem
     def _updateFirmwareFailedCommunicationError(self):
         return self._updateFirmwareFailedCommon(2)
-    
+
     ##  Private function which makes sure that firmware update process has failed by an unknown error
     def _updateFirmwareFailedUnknown(self):
         return self._updateFirmwareFailedCommon(1)
-    
+
     ##  Private common function which makes sure that firmware update process has completed/ended with a set progress state
     def _updateFirmwareFailedCommon(self, code):
         if not code:
