@@ -10,7 +10,7 @@ Generic CPE profile. Serves as an example file, data in this file is not correct
             <color>Generic</color>
         </name>
         <GUID>12f41353-1a33-415e-8b4f-a775a6c70cc6</GUID>
-        <version>0</version>
+        <version>1</version>
         <color_code>#159499</color_code>
     </metadata>
     <properties>
