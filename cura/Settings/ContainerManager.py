@@ -472,9 +472,10 @@ class ContainerManager(QObject):
 
         new_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(new_name)
 
+        container_registry = UM.Settings.ContainerRegistry.getInstance()
         for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
             stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
-            UM.Settings.ContainerRegistry.getInstance().renameContainer(container.getId(), new_name, self._createUniqueId(stack_id, new_name))
+            container_registry.renameContainer(container.getId(), new_name, self._createUniqueId(stack_id, new_name))
 
         UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
         return True
