@@ -57,6 +57,13 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             progress += device.progress
         return progress / len(self._usb_output_devices)
 
+    @pyqtProperty(int, notify = progressChanged)
+    def errorCode(self):
+        for printer_name, device in self._usb_output_devices.items(): # TODO: @UnusedVariable "printer_name"
+            if device._error_code:
+                return device._error_code
+        return 0
+
     ##  Return True if all printers finished firmware update
     @pyqtProperty(float, notify = firmwareUpdateChange)
     def firmwareUpdateCompleteStatus(self):
