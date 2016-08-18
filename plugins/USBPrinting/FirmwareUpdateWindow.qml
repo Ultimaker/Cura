@@ -50,27 +50,22 @@ UM.Dialog
                         return catalog.i18nc("@label","Updating firmware.")
                     }
                 }
-                else 
+                else
                 {
                     switch (manager.errorCode)
                     {
                         case 1:
                             //: Firmware update status label
                             return catalog.i18nc("@label","Firmware update failed due to an unknown error.")
-
                         case 2:
                             //: Firmware update status label
                             return catalog.i18nc("@label","Firmware update failed due to an communication error.")
-
-
                         case 3:
                             //: Firmware update status label
                             return catalog.i18nc("@label","Firmware update failed due to an input/output error.")
-
                         case 4:
                             //: Firmware update status label
                             return catalog.i18nc("@label","Firmware update failed due to missing firmware.")
-
                         default:
                             //: Firmware update status label
                             return catalog.i18nc("@label", "Unknown error code: %1").arg(manager.errorCode)
