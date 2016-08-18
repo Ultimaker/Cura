@@ -11,7 +11,7 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
         </name>
         <GUID>506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9</GUID>
         <version>0</version>
-        <color_code>#FFFFFF</color_code>
+        <color_code>#ffc924</color_code>
     </metadata>
     <properties>
         <density>1.24</density>
@@ -21,6 +21,16 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
         <setting key="print temperature">200</setting>
         <setting key="heated bed temperature">60</setting>
         <setting key="standby temperature">175</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
 
         <machine>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker2"/>

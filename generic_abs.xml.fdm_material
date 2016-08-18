@@ -11,7 +11,7 @@ Generic ABS profile. Serves as an example file, data in this file is not correct
         </name>
         <GUID>60636bb4-518f-42e7-8237-fe77b194ebe0</GUID>
         <version>0</version>
-        <color_code>#FFFFFF</color_code>
+        <color_code>#8cb219</color_code>
     </metadata>
     <properties>
         <density>1.10</density>
@@ -21,5 +21,15 @@ Generic ABS profile. Serves as an example file, data in this file is not correct
         <setting key="print temperature">240</setting>
         <setting key="heated bed temperature">80</setting>
         <setting key="standby temperature">200</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
     </settings>
 </fdmmaterial>
