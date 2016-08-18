@@ -35,6 +35,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant)
                     if variant_containers:
                         new_id += "_" + variant_containers[0].getName().replace(" ", "_")
+
+        new_id = UM.Settings.ContainerRegistry.getInstance().createUniqueName("material", self._id, new_id, "")
         result = super().duplicate(new_id, new_name)
         if result.getMetaDataEntry("base_file", None):
             result.setMetaDataEntry("base_file", base_file)
