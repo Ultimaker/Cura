@@ -74,7 +74,7 @@ class BuildVolume(SceneNode):
         self._adhesion_type = None
         self._platform = Platform(self)
 
-        self._active_container_stack = None
+        self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
 
@@ -215,15 +215,15 @@ class BuildVolume(SceneNode):
 
     def _updateRaftThickness(self):
         old_raft_thickness = self._raft_thickness
-        self._adhesion_type = self._active_container_stack.getProperty("adhesion_type", "value")
+        self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
         self._raft_thickness = 0.0
         if self._adhesion_type == "raft":
             self._raft_thickness = (
-                self._active_container_stack.getProperty("raft_base_thickness", "value") +
-                self._active_container_stack.getProperty("raft_interface_thickness", "value") +
-                self._active_container_stack.getProperty("raft_surface_layers", "value") *
-                    self._active_container_stack.getProperty("raft_surface_thickness", "value") +
-                self._active_container_stack.getProperty("raft_airgap", "value"))
+                self._global_container_stack.getProperty("raft_base_thickness", "value") +
+                self._global_container_stack.getProperty("raft_interface_thickness", "value") +
+                self._global_container_stack.getProperty("raft_surface_layers", "value") *
+                    self._global_container_stack.getProperty("raft_surface_thickness", "value") +
+                self._global_container_stack.getProperty("raft_airgap", "value"))
 
         # Rounding errors do not matter, we check if raft_thickness has changed at all
         if old_raft_thickness != self._raft_thickness:
@@ -231,23 +231,23 @@ class BuildVolume(SceneNode):
             self.raftThicknessChanged.emit()
 
     def _onGlobalContainerStackChanged(self):
-        if self._active_container_stack:
-            self._active_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
 
-        self._active_container_stack = Application.getInstance().getGlobalContainerStack()
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
-        if self._active_container_stack:
-            self._active_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
 
-            self._width = self._active_container_stack.getProperty("machine_width", "value")
-            machine_height = self._active_container_stack.getProperty("machine_height", "value")
-            if self._active_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
-                self._height = min(self._active_container_stack.getProperty("gantry_height", "value"), machine_height)
+            self._width = self._global_container_stack.getProperty("machine_width", "value")
+            machine_height = self._global_container_stack.getProperty("machine_height", "value")
+            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._buildVolumeMessage()
             else:
-                self._height = self._active_container_stack.getProperty("machine_height", "value")
-            self._depth = self._active_container_stack.getProperty("machine_depth", "value")
+                self._height = self._global_container_stack.getProperty("machine_height", "value")
+            self._depth = self._global_container_stack.getProperty("machine_depth", "value")
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
@@ -260,13 +260,13 @@ class BuildVolume(SceneNode):
 
         rebuild_me = False
         if setting_key == "print_sequence":
-            machine_height = self._active_container_stack.getProperty("machine_height", "value")
+            machine_height = self._global_container_stack.getProperty("machine_height", "value")
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
-                self._height = min(self._active_container_stack.getProperty("gantry_height", "value"), machine_height)
+                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._buildVolumeMessage()
             else:
-                self._height = self._active_container_stack.getProperty("machine_height", "value")
+                self._height = self._global_container_stack.getProperty("machine_height", "value")
             rebuild_me = True
 
         if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings:
@@ -281,21 +281,21 @@ class BuildVolume(SceneNode):
             self.rebuild()
 
     def _updateDisallowedAreas(self):
-        if not self._active_container_stack:
+        if not self._global_container_stack:
             return
 
         disallowed_areas = copy.deepcopy(
-            self._active_container_stack.getProperty("machine_disallowed_areas", "value"))
+            self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
 
-        machine_width = self._active_container_stack.getProperty("machine_width", "value")
-        machine_depth = self._active_container_stack.getProperty("machine_depth", "value")
+        machine_width = self._global_container_stack.getProperty("machine_width", "value")
+        machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
 
         # Add prima tower location as disallowed area.
-        if self._active_container_stack.getProperty("prime_tower_enable", "value"):
-            half_prime_tower_size = self._active_container_stack.getProperty("prime_tower_size", "value") / 2
-            prime_tower_x = self._active_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
-            prime_tower_y = - self._active_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
+        if self._global_container_stack.getProperty("prime_tower_enable", "value"):
+            half_prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value") / 2
+            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
+            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
 
             disallowed_areas.append([
                 [prime_tower_x - half_prime_tower_size, prime_tower_y - half_prime_tower_size],
@@ -307,7 +307,7 @@ class BuildVolume(SceneNode):
         # Add extruder prime locations as disallowed areas.
         # Probably needs some rework after coordinate system change.
         extruder_manager = ExtruderManager.getInstance()
-        extruders = extruder_manager.getMachineExtruders(self._active_container_stack.getId())
+        extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
         for single_extruder in extruders:
             extruder_prime_pos_x = single_extruder.getProperty("extruder_prime_pos_x", "value")
             extruder_prime_pos_y = single_extruder.getProperty("extruder_prime_pos_y", "value")
@@ -323,7 +323,7 @@ class BuildVolume(SceneNode):
                 [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
             ])
 
-        bed_adhesion_size = self._getBedAdhesionSize(self._active_container_stack)
+        bed_adhesion_size = self._getBedAdhesionSize(self._global_container_stack)
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
@@ -335,8 +335,8 @@ class BuildVolume(SceneNode):
 
         # Add the skirt areas around the borders of the build plate.
         if bed_adhesion_size > 0:
-            half_machine_width = self._active_container_stack.getProperty("machine_width", "value") / 2
-            half_machine_depth = self._active_container_stack.getProperty("machine_depth", "value") / 2
+            half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
+            half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, -half_machine_depth],
