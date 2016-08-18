@@ -238,9 +238,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Some operating systems handle this themselves, others give weird issues.
                 if self._post_reply:
                     self._post_reply.abort()
-                    self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                    try:
+                        self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                    except TypeError:
+                        pass  # The disconnection can fail on mac in some cases. Ignore that.
                     self._progress_message.hide()
                 self.setConnectionState(ConnectionState.error)
+                return
 
         if self._authentication_state == AuthState.NotAuthenticated:
             self._verifyAuthentication()  # We don't know if we are authenticated; check if we have correct auth.
