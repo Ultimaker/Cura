@@ -46,11 +46,11 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
-        if (plugins.model.find("id", "SliceInfoPlugin") > -1) {
+        if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
             sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         }
-        if (plugins.model.find("id", "UpdateChecker") > -1) {
+        if (plugins.find("id", "UpdateChecker") > -1) {
             UM.Preferences.resetPreference("info/automatic_update_check")
             checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
         }
@@ -58,6 +58,9 @@ UM.PreferencesPage
 
     Column
     {
+        //: Model used to check if a plugin exists
+        UM.PluginsModel { id: plugins }
+
         //: Language selection label
         UM.I18nCatalog{id: catalog; name:"cura"}
 
@@ -301,7 +304,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "UpdateChecker") > -1
+            visible: plugins.find("id", "UpdateChecker") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -316,7 +319,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "SliceInfoPlugin") > -1
+            visible: plugins.find("id", "SliceInfoPlugin") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -328,14 +331,6 @@ UM.PreferencesPage
                 checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
             }
-        }
-
-        //: Invisible list used to check if a plugin exists
-        ListView
-        {
-            id: plugins
-            model: UM.PluginsModel { }
-            visible: false
         }
     }
 }
