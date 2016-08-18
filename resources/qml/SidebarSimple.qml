@@ -354,12 +354,11 @@ Item
             Component.onCompleted: populateExtruderModel()
         }
 
-        //: Invisible list used to populate the extrudelModel
-        ListView
+        //: Model used to populate the extrudelModel
+        Cura.ExtrudersModel
         {
             id: extruders
-            model: Cura.ExtrudersModel { onModelChanged: populateExtruderModel() }
-            visible: false
+            onModelChanged: populateExtruderModel()
         }
     }
 
@@ -370,10 +369,10 @@ Item
             text: catalog.i18nc("@label", "Don't print support"),
             color: ""
         })
-        for(var extruderNumber = 0; extruderNumber < extruders.model.rowCount() ; extruderNumber++) {
+        for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++) {
             extruderModel.append({
-                text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNumber).name),
-                color: extruders.model.getItem(extruderNumber).color
+                text: catalog.i18nc("@label", "Print support using %1").arg(extruders.getItem(extruderNumber).name),
+                color: extruders.getItem(extruderNumber).color
             })
         }
     }
