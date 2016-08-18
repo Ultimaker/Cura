@@ -67,8 +67,6 @@ UM.ManagementPage
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
             onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
         },
-        /*
-        // disabled because it has a lot of issues
         Button
         {
             text: catalog.i18nc("@action:button", "Duplicate");
@@ -91,7 +89,7 @@ UM.ManagementPage
 
                 Cura.MachineManager.setActiveMaterial(material_id)
             }
-        }, */
+        },
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
@@ -188,7 +186,7 @@ UM.ManagementPage
             object: base.currentItem != null ? base.currentItem.name : ""
             onYes:
             {
-                var containers = Cura.ContainerManager.findInstanceContainers({"GUID": base.currentItem.metadata.GUID})
+                var containers = Cura.ContainerManager.findInstanceContainers({"id": base.currentItem.id})
                 for(var i in containers)
                 {
                     Cura.ContainerManager.removeContainer(containers[i])

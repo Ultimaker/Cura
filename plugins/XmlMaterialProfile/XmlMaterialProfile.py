@@ -21,13 +21,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     ##  Overridden from InstanceContainer
     def duplicate(self, new_id, new_name = None):
         base_file = self.getMetaDataEntry("base_file", None)
-        new_uuid = str(uuid.uuid4())
 
         if base_file:
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = base_file)
             if containers:
                 new_basefile = containers[0].duplicate(self.getMetaDataEntry("brand") + "_" + new_id, new_name)
-                new_basefile.setMetaDataEntry("GUID", new_uuid)
                 base_file = new_basefile.id
                 UM.Settings.ContainerRegistry.getInstance().addContainer(new_basefile)
 
@@ -39,7 +37,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                         new_id += "_" + variant_containers[0].getName().replace(" ", "_")
 
         result = super().duplicate(new_id, new_name)
-        result.setMetaDataEntry("GUID", new_uuid)
         if result.getMetaDataEntry("base_file", None):
             result.setMetaDataEntry("base_file", base_file)
         return result
