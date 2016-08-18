@@ -23,8 +23,8 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
         <setting key="standby temperature">175</setting>
 
         <machine>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2+"/>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2extended+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
 
             <hotend id="0.25 mm" />
             <hotend id="0.4 mm" />
@@ -33,9 +33,9 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
         </machine>
 
         <machine>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2"/>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2go"/>
-            <machine_identifier manufacturer="Ultimaker" product="Ultimaker2extended"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Go"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended"/>
             <setting key="standby temperature">150</setting>
             <setting key="processing temperature graph">
                 <point flow="2" temperature="180"/>
