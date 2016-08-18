@@ -95,9 +95,5 @@
         "infill_overlap": {
             "default_value": 10.0
         }
-    },
-    "machine_preferences": {
-              "prefered_profile": "Normal Quality",
-              "prefered_material": "PLA"
-      }
+    }
 }
