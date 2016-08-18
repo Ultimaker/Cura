@@ -35,7 +35,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant)
                     if variant_containers:
                         new_id += "_" + variant_containers[0].getName().replace(" ", "_")
-
         result = super().duplicate(new_id, new_name)
         if result.getMetaDataEntry("base_file", None):
             result.setMetaDataEntry("base_file", base_file)
@@ -57,8 +56,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         if key == "material":
             self.setName(value)
-
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        # Update all containers that share GUID and basefile
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
             if key == "material":
                 container.setName(value)
