@@ -88,6 +88,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self._onFinished)
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+        self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
 
         self._post_request = None
         self._post_reply = None
@@ -141,6 +142,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._not_authenticated_message = None
 
         self._last_command = ""
+
+    def _onNetworkAccesibleChanged(self, accessible):
+        Logger.log("d", "Network accessible state changed to: %s", accessible)
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
