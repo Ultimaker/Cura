@@ -237,6 +237,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status",
                                                                       "The connection with the network was lost."))
                 self._connection_message.show()
+                # Check if we were uploading something. Abort if this is the case.
+                # Some operating systems handle this themselves, others give weird issues.
+                if self._post_reply:
+                    self._post_reply.abort()
+                    try:
+                        self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                    except TypeError:
+                        pass  # The disconnection can fail on mac in some cases. Ignore that.
+                    self._progress_message.hide()
             return
 
         # Check that we aren't in a timeout state
