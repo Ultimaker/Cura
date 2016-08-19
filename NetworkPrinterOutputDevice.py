@@ -137,7 +137,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._connection_state_before_timeout = None
 
         self._last_response_time = time()
-        self._response_timeout_time = 5
+        self._response_timeout_time = 10
         self._not_authenticated_message = None
 
         self._last_command = ""
