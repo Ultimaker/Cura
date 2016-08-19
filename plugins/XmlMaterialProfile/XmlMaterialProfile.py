@@ -292,7 +292,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             for identifier in identifiers:
                 machine_id = self.__product_id_map.get(identifier.get("product"), None)
                 if machine_id is None:
-                    Logger.log("w", "Cannot create material for unknown machine %s", machine_id)
+                    Logger.log("w", "Cannot create material for unknown machine %s", identifier.get("product"))
                     continue
 
                 definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
@@ -373,6 +373,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         "print temperature": "material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
+        "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
         "retraction amount": "retraction_amount",
         "retraction speed": "retraction_speed",
@@ -381,11 +382,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     # Map XML file product names to internal ids
     # TODO: Move this to definition's metadata
     __product_id_map = {
-        "Ultimaker2": "ultimaker2",
-        "Ultimaker2+": "ultimaker2_plus",
-        "Ultimaker2go": "ultimaker2_go",
-        "Ultimaker2extended": "ultimaker2_extended",
-        "Ultimaker2extended+": "ultimaker2_extended_plus",
+        "Ultimaker 2": "ultimaker2",
+        "Ultimaker 2+": "ultimaker2_plus",
+        "Ultimaker 2 Go": "ultimaker2_go",
+        "Ultimaker 2 Extended": "ultimaker2_extended",
+        "Ultimaker 2 Extended+": "ultimaker2_extended_plus",
         "Ultimaker Original": "ultimaker_original",
         "Ultimaker Original+": "ultimaker_original_plus"
     }
