@@ -180,6 +180,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return self._address
 
     def _update_camera(self):
+        if not self._manager.networkAccessible():
+            return
         ## Request new image
         url = QUrl("http://" + self._address + ":8080/?action=snapshot")
         image_request = QNetworkRequest(url)
@@ -226,13 +228,24 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Request data from the connected device.
     def _update(self):
+        # Check if we have an connection in the first place.
+        if not self._manager.networkAccessible():
+            if not self._connection_state_before_timeout:
+                Logger.log("d", "The network connection seems to be disabled. Going into timeout mode")
+                self._connection_state_before_timeout = self._connection_state
+                self.setConnectionState(ConnectionState.error)
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status",
+                                                                      "The connection with the network was lost."))
+                self._connection_message.show()
+            return
+
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
                 # Go into timeout state.
                 Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
-                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your network-connections."))
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your printer to see if it is connected."))
                 self._connection_message.show()
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
