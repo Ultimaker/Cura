@@ -1,6 +1,6 @@
 {
     "id": "ultimaker_original_dual_left",
-    "version": 2, 
+    "version": 2,
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
@@ -14,6 +14,13 @@
             "maximum_value": "1"
         },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
-        "machine_nozzle_offset_y": { "default_value": 0.0 }
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "default_value": 185 },
+        "machine_extruder_start_pos_y": { "default_value": 155 },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "default_value": 185 },
+        "machine_extruder_end_pos_y": { "default_value": 155 }
     }
 }
