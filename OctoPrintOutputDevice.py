@@ -30,10 +30,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._gcode = None
 
         ##  Todo: Hardcoded value now; we should probably read this from the machine definition and octoprint.
+        self._num_extruders_set = False
         self._num_extruders = 1
-
-        self._hotend_temperatures = [0] * self._num_extruders
-        self._target_hotend_temperatures = [0] * self._num_extruders
 
         self._api_version = "1"
         self._api_prefix = "/api/"
@@ -306,6 +304,17 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
                     json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                    if not self._num_extruders_set:
+                        self._num_extruders = 0
+                        while "tool%d" % self._num_extruders in json_data["temperature"]:
+                            self._num_extruders = self._num_extruders + 1
+
+                        # Reinitialise from PrinterOutputDevice to match the new _num_extruders
+                        self._hotend_temperatures = [0] * self._num_extruders
+                        self._target_hotend_temperatures = [0] * self._num_extruders
+
+                        self._num_extruders_set = True
 
                     # Check for hotend temperatures
                     for index in range(0, self._num_extruders):
