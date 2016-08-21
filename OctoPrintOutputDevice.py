@@ -48,7 +48,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         #   QNetwork manager needs to be created in advance. If we don't it can happen that it doesn't correctly
         #   hook itself into the event loop, which results in events never being fired / done.
         self._manager = QNetworkAccessManager()
-        self._manager.finished.connect(self._onFinished)
+        self._manager.finished.connect(self._onRequestFinished)
 
         ##  Hack to ensure that the qt networking stuff isn't garbage collected (unless we want it to)
         self._printer_request = None
@@ -67,6 +67,9 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._job_request = None
         self._job_reply = None
+
+        self._command_request = None
+        self._command_reply = None
 
         self._progress_message = None
         self._error_message = None
@@ -197,10 +200,6 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         return self._camera_image
 
     def _setJobState(self, job_state):
-        url = QUrl("http://" + self._address + self._api_prefix + "job")
-        self._job_request = QNetworkRequest(url)
-        self._job_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
-        self._job_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         if job_state == "abort":
             command = "cancel"
         elif job_state == "print":
@@ -210,9 +209,9 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 command = "start"
         elif job_state == "pause":
             command = "pause"
-        data = "{\"command\": \"%s\"}" % command
-        self._job_reply = self._manager.post(self._job_request, data.encode())
-        Logger.log("d", "Sent command to OctoPrint instance: %s", data)
+
+        if command:
+            self._sendCommand(command)
 
     def startPrint(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -274,8 +273,18 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             self._progress_message.hide()
             Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
+    def _sendCommand(self, command):
+        url = QUrl("http://" + self._address + self._api_prefix + "job")
+        self._command_request = QNetworkRequest(url)
+        self._command_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
+        self._command_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+
+        data = "{\"command\": \"%s\"}" % command
+        self._command_reply = self._manager.post(self._command_request, data.encode())
+        Logger.log("d", "Sent command to OctoPrint instance: %s", data)
+
     ##  Handler for all requests that have finished.
-    def _onFinished(self, reply):
+    def _onRequestFinished(self, reply):
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Received a timeout on a request to the instance")
             self._connection_state_before_timeout = self._connection_state
