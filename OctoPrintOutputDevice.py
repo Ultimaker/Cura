@@ -283,6 +283,37 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._command_reply = self._manager.post(self._command_request, data.encode())
         Logger.log("d", "Sent command to OctoPrint instance: %s", data)
 
+    def _setTargetBedTemperature(self, temperature):
+        Logger.log("d", "Setting bed temperature to %s", temperature)
+        self._sendCommand("M140 S%s" % temperature)
+
+    def _setTargetHotendTemperature(self, index, temperature):
+        Logger.log("d", "Setting hotend %s temperature to %s", index, temperature)
+        self._sendCommand("M104 T%s S%s" % (index, temperature))
+
+    def _setHeadPosition(self, x, y , z, speed):
+        self._sendCommand("G0 X%s Y%s Z%s F%s" % (x, y, z, speed))
+
+    def _setHeadX(self, x, speed):
+        self._sendCommand("G0 X%s F%s" % (x, speed))
+
+    def _setHeadY(self, y, speed):
+        self._sendCommand("G0 Y%s F%s" % (y, speed))
+
+    def _setHeadZ(self, z, speed):
+        self._sendCommand("G0 Y%s F%s" % (z, speed))
+
+    def _homeHead(self):
+        self._sendCommand("G28")
+
+    def _homeBed(self):
+        self._sendCommand("G28 Z")
+
+    def _moveHead(self, x, y, z, speed):
+        self._sendCommand("G91")
+        self._sendCommand("G0 X%s Y%s Z%s F%s" % (x, y, z, speed))
+        self._sendCommand("G90")
+
     ##  Handler for all requests that have finished.
     def _onRequestFinished(self, reply):
         if reply.error() == QNetworkReply.TimeoutError:
