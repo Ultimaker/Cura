@@ -11,9 +11,6 @@ from UM.Job import Job
 from math import pi, sin, cos, sqrt
 import numpy
 
-
-EPSILON = 0.000001 # So very crude. :(
-
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
@@ -23,8 +20,12 @@ except ImportError:
 # Use CADPart, for example, to distinguish between separate objects    
     
 DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders
+EPSILON = 0.000001
 
 class Shape:
+    
+    # Expects verts in MeshBuilder-ready format, as a n by 3 mdarray
+    # with vertices stored in rows
     def __init__(self, verts, faces, index_base, name):
         self.verts = verts
         self.faces = faces
@@ -62,7 +63,7 @@ class X3DReader(MeshReader):
                 xml_scene = xml_root[0]
                 
             if xml_scene.tag != "Scene":
-                return None 
+                return None
             
             self.transform = Matrix()
             self.transform.setByScaleFactor(scale)
@@ -127,8 +128,8 @@ class X3DReader(MeshReader):
                 self.verts = self.faces = [] # Safeguard 
                 self.geometry_importers[geometry.tag](self, geometry)
                 m = self.transform.getData()
-                # TODO: can this be done with one dot() call?
-                verts = numpy.array([m.dot(vert)[:3] for vert in self.verts])
+                verts = m.dot(self.verts)[:3].transpose()
+                
                 self.shapes.append(Shape(verts, self.faces, self.index_base, geometry.tag))
                 self.index_base += len(verts)
                 
@@ -526,12 +527,10 @@ class X3DReader(MeshReader):
     # num_faces can be a function, in case the face count is a function of vertex count 
     def startCoordMesh(self, node, num_faces):
         ccw = readBoolean(node, "ccw", True)
-        coord = self.readVertices(node)
+        self.readVertices(node) # This will allocate and fill the vertex array
         if hasattr(num_faces, "__call__"):
-            num_faces = num_faces(len(coord))
-        self.reserveFaceAndVertexCount(num_faces, len(coord))
-        for pt in coord:
-            self.addVertex(*pt)
+            num_faces = num_faces(self.getVertexCount())
+        self.reserveFaceCount(num_faces)
             
         return ccw
         
@@ -539,61 +538,61 @@ class X3DReader(MeshReader):
     def processGeometryIndexedTriangleSet(self, node):
         index = readIntArray(node, "index", [])
         num_faces = len(index) // 3
-        ccw = self.startCoordMesh(node, num_faces)
+        ccw = int(self.startCoordMesh(node, num_faces))
         
         for i in range(0, num_faces*3, 3):
-            self.addTriFlip(index[i], index[i+1], index[i+2], ccw)
+            self.addTri(index[i + 1 - ccw], index[i + ccw], index[i+2])
     
     def processGeometryIndexedTriangleStripSet(self, node):
         strips = readIndex(node, "index")
-        ccw = self.startCoordMesh(node, sum([len(strip) - 2 for strip in strips]))
+        ccw = int(self.startCoordMesh(node, sum([len(strip) - 2 for strip in strips])))
             
         for strip in strips:
             sccw = ccw # Running CCW value, reset for each strip
             for i in range(len(strip) - 2):
-                self.addTriFlip(strip[i], strip[i+1], strip[i+2], sccw)
-                sccw = not sccw
+                self.addTri(strip[i + 1 - sccw], strip[i + sccw], strip[i+2])
+                sccw = 1 - sccw
     
     def processGeometryIndexedTriangleFanSet(self, node):
         fans = readIndex(node, "index")
-        ccw = self.startCoordMesh(node, sum([len(fan) - 2 for fan in fans]))
+        ccw = int(self.startCoordMesh(node, sum([len(fan) - 2 for fan in fans])))
         
         for fan in fans:
             for i in range(1, len(fan) - 1):
-                self.addTriFlip(fan[0], fan[i], fan[i+1], ccw)
+                self.addTri(fan[0], fan[i + 1 - ccw], fan[i + ccw])
    
     def processGeometryTriangleSet(self, node):
-        ccw = self.startCoordMesh(node, lambda num_vert: num_vert // 3)
-        for i in range(0, len(self.verts), 3):
-            self.addTriFlip(i, i+1, i+2, ccw)
+        ccw = int(self.startCoordMesh(node, lambda num_vert: num_vert // 3))
+        for i in range(0, self.getVertexCount(), 3):
+            self.addTri(i + 1 - ccw, i + ccw, i+2)
     
     def processGeometryTriangleStripSet(self, node):
         strips = readIntArray(node, "stripCount", [])
-        ccw = self.startCoordMesh(node, sum([n-2 for n in strips]))
+        ccw = int(self.startCoordMesh(node, sum([n-2 for n in strips])))
             
         vb = 0
         for n in strips:
             sccw = ccw
             for i in range(n-2): 
-                self.addTriFlip(vb+i, vb+i+1, vb+i+2, sccw)
-                sccw = not sccw
+                self.addTri(vb + i + 1 - sccw, vb + i + sccw, vb + i + 2)
+                sccw = 1 - sccw
             vb += n
     
     def processGeometryTriangleFanSet(self, node):
         fans = readIntArray(node, "fanCount", [])
-        ccw = self.startCoordMesh(node, sum([n-2 for n in fans]))
+        ccw = int(self.startCoordMesh(node, sum([n-2 for n in fans])))
         
         vb = 0
         for n in fans:
             for i in range(1, n-1): 
-                self.addTriFlip(vb, vb+i, vb+i+1, ccw)
+                self.addTri(vb, vb + i + 1 - ccw, vb + i + ccw)
             vb += n
             
     # Quad geometries from the CAD module, might be relevant for printing
     
     def processGeometryQuadSet(self, node):
         ccw = self.startCoordMesh(node, lambda num_vert: 2*(num_vert // 4))
-        for i in range(0, len(self.verts), 4):
+        for i in range(0, self.getVertexCount(), 4):
             self.addQuadFlip(i, i+1, i+2, i+3, ccw)
             
     def processGeometryIndexedQuadSet(self, node):
@@ -686,7 +685,7 @@ class X3DReader(MeshReader):
         "Cone": processGeometryCone
     }
     
-    # Parses the Coordinate.@point field
+    # Parses the Coordinate.@point field, fills the verts array.
     def readVertices(self, node):
         for c in node:
             if c.tag == "Coordinate":
@@ -695,23 +694,33 @@ class X3DReader(MeshReader):
                     pt = c.attrib.get("point")
                     if pt:
                         co = [float(x) for x in pt.split()]
+                        num_verts = len(co) // 3
+                        self.verts = numpy.empty((4, num_verts), dtype=numpy.float32)
+                        self.verts[3,:] = numpy.ones((num_verts), dtype=numpy.float32)
                         # Group by three
-                        return [(co[i], co[i+1], co[i+2]) for i in range(0, (len(co) // 3)*3, 3)]
-        return []
+                        for i in range(num_verts):
+                            self.verts[:3,i] = co[3*i:3*i+3]
     
     # Mesh builder helpers
     
     def reserveFaceAndVertexCount(self, num_faces, num_verts):
-        # Unlike the Cura MeshBuilder, we use 4-vectors here for easier transform
-        self.verts = numpy.array([(0,0,0,1) for i in range(num_verts)], dtype=numpy.float32)
+        # Unlike the Cura MeshBuilder, we use 4-vectors stored as columns for easier transform
+        self.verts = numpy.zeros((4, num_verts), dtype=numpy.float32)
+        self.verts[3,:] = numpy.ones((num_verts), dtype=numpy.float32)
+        self.num_verts = 0
+        self.reserveFaceCount(num_faces)
+        
+    def reserveFaceCount(self, num_faces):
         self.faces = numpy.zeros((num_faces, 3), dtype=numpy.int32)
         self.num_faces = 0
-        self.num_verts = 0
+        
+    def getVertexCount(self):
+        return self.verts.shape[1]
         
     def addVertex(self, x, y, z):
-        self.verts[self.num_verts, 0] = x
-        self.verts[self.num_verts, 1] = y
-        self.verts[self.num_verts, 2] = z
+        self.verts[0, self.num_verts] = x
+        self.verts[1, self.num_verts] = y
+        self.verts[2, self.num_verts] = z
         self.num_verts += 1
     
     # Indices are 0-based for this shape, but they won't be zero-based in the merged mesh
@@ -751,9 +760,7 @@ class X3DReader(MeshReader):
     # Vertex coordinates are supposed to be already set
     def addFace(self, indices, ccw):
         # Resolve indices to coordinates for faster math
-        n = len(indices)
-        verts = self.verts
-        face = [Vector(verts[i, 0], verts[i, 1], verts[i, 2]) for i in indices]
+        face = [Vector(data=self.verts[0:3, i]) for i in indices]
         
         # Need a normal to the plane so that we can know which vertices form inner angles
         normal = findOuterNormal(face)
@@ -762,14 +769,14 @@ class X3DReader(MeshReader):
             return
         
         # Find the vertex with the smallest inner angle and no points inside, cut off. Repeat until done
-        m = len(face)
-        vi = [i for i in range(m)] # We'll be using this to kick vertices from the face
-        while m > 3:
+        n = len(face)
+        vi = [i for i in range(n)] # We'll be using this to kick vertices from the face
+        while n > 3:
             max_cos = EPSILON # We don't want to check anything on Pi angles
             i_min = 0 # max cos corresponds to min angle
-            for i in range(m):
-                inext = (i + 1) % m
-                iprev = (i + m - 1) % m
+            for i in range(n):
+                inext = (i + 1) % n
+                iprev = (i + n - 1) % n
                 v = face[vi[i]]
                 next = face[vi[inext]] - v
                 prev = face[vi[iprev]] - v
@@ -779,7 +786,7 @@ class X3DReader(MeshReader):
                     if cos > max_cos:
                         # Check if there are vertices inside the triangle
                         no_points_inside = True
-                        for j in range(m):
+                        for j in range(n):
                             if j != i and j != iprev and j != inext:
                                 vx = face[vi[j]] - v
                                 if pointInsideTriangle(vx, next, prev, nextXprev):
@@ -790,9 +797,9 @@ class X3DReader(MeshReader):
                             max_cos = cos
                             i_min = i
                             
-            self.addTriFlip(indices[vi[(i_min + m - 1) % m]], indices[vi[i_min]], indices[vi[(i_min + 1) % m]], ccw)
+            self.addTriFlip(indices[vi[(i_min + n - 1) % n]], indices[vi[i_min]], indices[vi[(i_min + 1) % n]], ccw)
             vi.pop(i_min)
-            m -= 1
+            n -= 1
         self.addTriFlip(indices[vi[0]], indices[vi[1]], indices[vi[2]], ccw)
 
     
@@ -895,7 +902,7 @@ def pointInsideTriangle(vx, next, prev, nextXprev):
     vxXprev = vx.cross(prev)
     r = ratio(vxXprev, nextXprev)
     if r < 0:
-        return False;
+        return False
     vxXnext = vx.cross(next);
     s = -ratio(vxXnext, nextXprev)
     return s > 0 and (s + r) < 1
