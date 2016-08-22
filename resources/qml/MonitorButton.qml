@@ -235,12 +235,12 @@ Rectangle
 
         text: {
             var result = "";
-            var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
             if (!printerConnected) {
               return "";
             }
 
-            if (lastJobState !== jobState) {
+            var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
+            if (lastJobState != jobState) {
                 // the userClicked message must disappear when an "automated" jobState comes by
                 userClicked = false;
                 lastJobState = jobState;
