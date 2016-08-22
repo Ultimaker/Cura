@@ -362,7 +362,7 @@ class MachineManager(QObject):
 
             variant_instance_container = self._updateVariantContainer(definition)
             material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
-            quality_instance_container = self._updateQualityContainer(definition, material_instance_container)
+            quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
@@ -618,6 +618,7 @@ class MachineManager(QObject):
         if not containers or not self._active_container_stack:
             return
 
+        old_variant = self._active_container_stack.findContainer({"type":"variant"})
         old_material = self._active_container_stack.findContainer({"type":"material"})
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
         if old_material:
@@ -632,7 +633,7 @@ class MachineManager(QObject):
             if old_quality:
                 preferred_quality_name = old_quality.getName()
 
-            self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), containers[0], preferred_quality_name).id)
+            self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], preferred_quality_name).id)
         else:
             Logger.log("w", "While trying to set the active material, no material was found to replace.")
 
@@ -852,7 +853,8 @@ class MachineManager(QObject):
 
         return self._empty_material_container
 
-    def _updateQualityContainer(self, definition, material_container = None, preferred_quality_name = None):
+    def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
+        container_registry = UM.Settings.ContainerRegistry.getInstance()
         search_criteria = { "type": "quality" }
 
         if definition.getMetaDataEntry("has_machine_quality"):
@@ -863,23 +865,42 @@ class MachineManager(QObject):
         else:
             search_criteria["definition"] = "fdmprinter"
 
-        if preferred_quality_name:
+        if preferred_quality_name and preferred_quality_name != "empty":
             search_criteria["name"] = preferred_quality_name
         else:
             preferred_quality = definition.getMetaDataEntry("preferred_quality")
             if preferred_quality:
                 search_criteria["id"] = preferred_quality
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        containers = container_registry.findInstanceContainers(**search_criteria)
         if containers:
             return containers[0]
+
+        if "material" in search_criteria:
+            # If a quality for this specific material cannot be found, try finding qualities for a generic version of the material
+            material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic" }
+            if definition.getMetaDataEntry("has_machine_quality"):
+                material_search_criteria["definition"] = definition.id
+
+                if definition.getMetaDataEntry("has_variants") and variant_container:
+                    material_search_criteria["variant"] = variant_container.id
+            else:
+                material_search_criteria["definition"] = "fdmprinter"
+
+            material_containers = container_registry.findInstanceContainers(**material_search_criteria)
+            if material_containers:
+                search_criteria["material"] = material_containers[0].getId()
+
+                containers = container_registry.findInstanceContainers(**search_criteria)
+                if containers:
+                    return containers[0]
 
         if "name" in search_criteria or "id" in search_criteria:
             # If a quality by this name can not be found, try a wider set of search criteria
             search_criteria.pop("name", None)
             search_criteria.pop("id", None)
 
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+            containers = container_registry.findInstanceContainers(**search_criteria)
             if containers:
                 return containers[0]
 
