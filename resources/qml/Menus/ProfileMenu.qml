@@ -83,7 +83,7 @@ import Cura 1.0 as Cura
             result.definition = Cura.MachineManager.activeDefinitionId;
             if(Cura.MachineManager.hasMaterials)
             {
-                result.material = Cura.MachineManager.activeMaterialId;
+                result.material = Cura.MachineManager.activeQualityMaterialId;
             }
         }
         else

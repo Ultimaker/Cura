@@ -478,6 +478,15 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
+    def activeQualityMaterialId(self):
+        if self._active_container_stack:
+            quality = self._active_container_stack.findContainer({"type": "quality"})
+            if quality:
+                return quality.getMetaDataEntry("material")
+
+        return ""
+
+    @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityName(self):
         if self._active_container_stack:
             quality = self._active_container_stack.findContainer({"type": "quality"})
