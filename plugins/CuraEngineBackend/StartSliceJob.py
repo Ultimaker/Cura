@@ -150,7 +150,7 @@ class StartSliceJob(Job):
                     obj.id = id(object)
                     verts = mesh_data.getVertices()
                     indices = mesh_data.getIndices()
-                    if not indices is None:
+                    if indices is not None:
                         verts = numpy.array([verts[vert_index] for face in indices for vert_index in face])
                     else:
                         verts = numpy.array(verts)
