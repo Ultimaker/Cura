@@ -83,12 +83,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
         self.setIconName("print")
 
-        #   QNetwork manager needs to be created in advance. If we don't it can happen that it doesn't correctly
-        #   hook itself into the event loop, which results in events never being fired / done.
-        self._manager = QNetworkAccessManager()
-        self._manager.finished.connect(self._onFinished)
-        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
-        self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
+        self._manager = None
 
         self._post_request = None
         self._post_reply = None
@@ -380,6 +375,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     ##  Start requesting data from printer
     def connect(self):
         self.close()  # Ensure that previous connection (if any) is killed.
+
+        if self._manager:
+            self._manager.finished.disconnect(self._onFinished)
+            self._manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+            self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
+
+        self._manager = QNetworkAccessManager()
+        self._manager.finished.connect(self._onFinished)
+        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+        self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
+
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         self._update_camera()
