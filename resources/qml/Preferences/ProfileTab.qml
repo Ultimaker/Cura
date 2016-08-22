@@ -20,13 +20,37 @@ Tab
         anchors.fill: parent
         anchors.margins: UM.Theme.getSize("default_margin").width
 
-        TableViewColumn { role: "label"; title: catalog.i18nc("@title:column", "Setting") }
-        TableViewColumn { role: "profile_value"; title: catalog.i18nc("@title:column", "Profile Value"); }
-        TableViewColumn { role: "user_value"; title: catalog.i18nc("@title:column", "User Value"); visible: quality == Cura.MachineManager.activeQualityId }
-        TableViewColumn { role: "unit"; title: catalog.i18nc("@title:column", "Unit") }
+        TableViewColumn
+        {
+            role: "label"
+            title: catalog.i18nc("@title:column", "Setting")
+            width: parent.width * 0.4
+        }
+        TableViewColumn
+        {
+            role: "profile_value"
+            title: catalog.i18nc("@title:column", "Profile")
+            width: parent.width * 0.18
+        }
+        TableViewColumn
+        {
+            role: "user_value"
+            title: catalog.i18nc("@title:column", "Current"); visible: quality == Cura.MachineManager.activeQualityId
+            width: parent.width * 0.18
+        }
+        TableViewColumn
+        {
+            role: "unit"
+            title: catalog.i18nc("@title:column", "Unit")
+            width: parent.width * 0.14
+        }
 
         section.property: "category"
-        section.delegate: Label { text: section }
+        section.delegate: Label
+        {
+            text: section
+            font.bold: true
+        }
 
         model: Cura.QualitySettingsModel
         {
