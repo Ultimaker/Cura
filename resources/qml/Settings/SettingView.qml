@@ -94,21 +94,29 @@ ScrollView
             {
                 target: provider
                 property: "containerStackId"
-                when: model.settable_per_extruder || (inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
+                when: {
+                    var now = model.settable_per_extruder || model.settable_per_mesh || (inheritStackProvider.properties.global_inherits_stack == null && inheritStackProvider.properties.global_inherits_stack < 0);
+                    return now;
+                }
                 value:
                 {
-                    if(inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
+                    if(!model.settable_per_extruder && !model.settable_per_mesh)
                     {
-                        if( ExtruderManager.activeExtruderStackId)
-                        {
-                            return ExtruderManager.activeExtruderStackId
-                        }
-                        else
-                        {
-                            return Cura.MachineManager.activeMachineId
-                        }
+                        //Not settable per extruder, so we must pick global.
+                        return Cura.MachineManager.activeMachineId;
                     }
-                    return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)]
+                    if(inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0)
+                    {
+                        //We have global_inherits_stack, so pick that stack.
+                        return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)];
+                    }
+                    if(ExtruderManager.activeExtruderStackId)
+                    {
+                        //We're on an extruder tab. Pick the current extruder.
+                        return ExtruderManager.activeExtruderStackId;
+                    }
+                    //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
+                    return Cura.MachineManager.activeMachineId;
                 }
             }
 
@@ -119,7 +127,7 @@ ScrollView
                 id: inheritStackProvider
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key
-                watchedProperties: [ "global_inherits_stack"]
+                watchedProperties: [ "global_inherits_stack" ]
             }
 
             UM.SettingPropertyProvider
