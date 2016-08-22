@@ -54,9 +54,9 @@ Tab
 
         model: Cura.QualitySettingsModel
         {
-            extruderId: base.extruderId != "" ? base.extruderId : null;
-            quality: base.quality != null ? base.quality : "";
-            material: base.material
+            extruderId: base.extruderId != "" ? base.extruderId : ""
+            quality: base.quality != null ? base.quality : ""
+            material: base.material != null ? base.material : ""
         }
     }
 }

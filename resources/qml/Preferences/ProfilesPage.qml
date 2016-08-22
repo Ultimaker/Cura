@@ -201,7 +201,7 @@ UM.ManagementPage
             {
                 title: catalog.i18nc("@title:tab", "Global Settings");
                 quality: base.currentItem != null ? base.currentItem.id : "";
-                material: Cura.MachineManager.allActiveMaterialIds.global
+                material: Cura.MachineManager.allActiveMaterialIds.global ? Cura.MachineManager.allActiveMaterialIds.global : ""
             }
 
             Repeater
