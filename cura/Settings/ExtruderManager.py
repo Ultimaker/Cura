@@ -235,6 +235,9 @@ class ExtruderManager(QObject):
 
         container_stack.addContainer(quality)
 
+        empty_quality_changes = container_registry.findInstanceContainers(id = "empty_quality_changes")[0]
+        container_stack.addContainer(empty_quality_changes)
+
         user_profile = container_registry.findInstanceContainers(type = "user", extruder = extruder_stack_id)
         if user_profile: # There was already a user profile, loaded from settings.
             user_profile = user_profile[0]
@@ -273,6 +276,20 @@ class ExtruderManager(QObject):
             return
         for name in self._extruder_trains[machine_id]:
             yield self._extruder_trains[machine_id][name]
+
+    ##  Returns a generator that will iterate over the global stack and per-extruder stacks.
+    #
+    #   The first generated element is the global container stack. After that any extruder stacks are generated.
+    def getActiveGlobalAndExtruderStacks(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+
+        yield global_stack
+
+        global_id = global_stack.getId()
+        for name in self._extruder_trains[global_id]:
+            yield self._extruder_trains[global_id][name]
 
     def __globalContainerStackChanged(self):
         self._addCurrentMachineExtruders()

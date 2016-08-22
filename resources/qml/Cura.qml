@@ -150,7 +150,7 @@ UM.MainWindow
 
                         MenuSeparator { }
 
-                        MenuItem { text: "Set as Active Extruder" }
+                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index) }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
@@ -459,7 +459,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.MachineManager.newQualityContainerFromQualityAndUser();
+            Cura.ContainerManager.createQualityChanges();
             preferences.setPage(4);
             preferences.show();
 
