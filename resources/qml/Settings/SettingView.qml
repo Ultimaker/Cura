@@ -94,10 +94,7 @@ ScrollView
             {
                 target: provider
                 property: "containerStackId"
-                when: {
-                    var now = model.settable_per_extruder || model.settable_per_mesh || (inheritStackProvider.properties.global_inherits_stack == null && inheritStackProvider.properties.global_inherits_stack < 0);
-                    return now;
-                }
+                when: model.settable_per_extruder || model.settable_per_mesh || (inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0);
                 value:
                 {
                     if(!model.settable_per_extruder && !model.settable_per_mesh)
