@@ -56,14 +56,14 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
-        if key == "material":
-            self.setName(value)
+        if key == "material" or key == "color_name":
+            self.setName(self._profile_name(self.getMetaDataEntry("material"), self.getMetaDataEntry("color_name")))
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
         # Update all containers that share GUID and basefile
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
-            if key == "material":
-                container.setName(value)
+            if key == "material" or key == "color_name":
+                container.setName(self.getName())
 
     ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):
@@ -236,7 +236,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 material = entry.find("./um:material", self.__namespaces)
                 color = entry.find("./um:color", self.__namespaces)
 
-                self.setName(material.text)
+                self.setName(self._profile_name(material.text, color.text))
 
                 self.addMetaDataEntry("brand", brand.text)
                 self.addMetaDataEntry("material", material.text)
@@ -367,6 +367,12 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         builder.start("setting", { "key": key })
         builder.data(str(instance.value))
         builder.end("setting")
+
+    def _profile_name(self, material_name, color_name):
+        if color_name != "Generic":
+            return "%s %s" % (color_name, material_name)
+        else:
+            return material_name
 
     # Map XML file setting names to internal names
     __material_property_setting_map = {
