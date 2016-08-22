@@ -195,7 +195,7 @@ class CuraEngineBackend(Backend):
         self.slicingCancelled.emit()
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
-        self._createSocket()  # Ensure that we have a fresh socket. 
+        self._createSocket()  # Ensure that we have a fresh socket.
         if Application.getInstance().getCommandLineOption("external-backend", False):
             return
 
