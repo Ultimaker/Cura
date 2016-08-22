@@ -139,7 +139,7 @@
                 {
                     "label": "Has heated build plate",
                     "description": "Whether the machine has a heated build plate present.",
-                    "default_value": true,
+                    "default_value": false,
                     "type": "bool",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
