@@ -121,7 +121,7 @@ ScrollView
             }
 
             // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
-            // so we bypass that to make a dedicated provider.
+            // so we bypass that to make a dedicated provider).
             UM.SettingPropertyProvider
             {
                 id: inheritStackProvider
