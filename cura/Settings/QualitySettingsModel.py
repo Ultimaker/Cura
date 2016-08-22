@@ -111,7 +111,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
         if not containers:
             # Try again, this time without extruder
-            new_criteria = criteria[:]
+            new_criteria = criteria.copy()
             new_criteria.pop("extruder")
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**new_criteria)
 
