@@ -104,7 +104,7 @@ class TitleRow(object):
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
 		self.title = wx.StaticText(panel, -1, name.replace('&', '&&'))
-		self.title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
+		self.title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		sizer.Add(self.title, (x,0), (1,3), flag=wx.EXPAND|wx.TOP|wx.LEFT, border=10)
 		sizer.Add(wx.StaticLine(panel), (x+1,0), (1,4), flag=wx.EXPAND|wx.LEFT,border=10)
 		sizer.SetRows(x + 2)
@@ -172,7 +172,7 @@ class SettingRow(object):
 		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
 		if self.setting.getExpertSubCategory() is not None:
 			self._expert_button = wx.Button(panel, -1, '...', style=wx.BU_EXACTFIT)
-			self._expert_button.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize() * 0.8, wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_NORMAL))
+			self._expert_button.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize() * 0.8, wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_NORMAL))
 			self._expert_button.Bind(wx.EVT_BUTTON, self.OnExpertOpen)
 			sizer.Add(self._expert_button, (x,y+2), flag=wx.ALIGN_CENTER_VERTICAL)
 		sizer.SetRows(x+1)

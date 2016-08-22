@@ -45,7 +45,7 @@ class preferencesDialog(wx.Dialog):
 		configBase.SettingRow(right, 'sdcard_rootfolder')
 		#same as the expert settings button.
 		self.browseButton = wx.Button(right, -1, '...', style=wx.BU_EXACTFIT)
-		self.browseButton.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize() * 0.8, wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_NORMAL))
+		self.browseButton.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize() * 0.8, wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_NORMAL))
 		self.browseButton.Bind(wx.EVT_BUTTON, self.OnBrowseSDRootFolder)
 		right.GetSizer().Add(self.browseButton, (right.GetSizer().GetRows()-1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
 

@@ -13,8 +13,8 @@ class GcodeTextArea(wx.stc.StyledTextCtrl):
 		self.SetLexer(wx.stc.STC_LEX_CONTAINER)
 		self.Bind(wx.stc.EVT_STC_STYLENEEDED, self.OnStyle)
 	
-		fontSize = wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize()
-		fontName = wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL).GetFaceName()
+		fontSize = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+		fontName = wx.Font(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize(), wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL).GetFaceName()
 		self.SetStyleBits(5)
 		self.StyleSetSpec(0, "face:%s,size:%d" % (fontName, fontSize))
 		self.StyleSetSpec(1, "fore:#006000,face:%s,size:%d" % (fontName, fontSize))
