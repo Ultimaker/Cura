@@ -251,6 +251,20 @@ class MachineManager(QObject):
             self.activeQualityChanged.emit()
 
     def _onPropertyChanged(self, key, property_name):
+        if property_name == "validationState":
+            if self._active_stack_valid:
+                if self._active_container_stack.getProperty(key, "settable_per_extruder"):
+                    changed_validation_state = self._active_container_stack.getProperty(key, property_name)
+                else:
+                    changed_validation_state = self._global_container_stack.getProperty(key, property_name)
+                if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
+                    self._active_stack_valid = False
+                    self.activeValidationChanged.emit()
+            else:
+                if not self._checkStackForErrors(self._active_container_stack) and not self._checkStackForErrors(self._global_container_stack):
+                    self._active_stack_valid = True
+                    self.activeValidationChanged.emit()
+
         self.activeStackChanged.emit()
 
     @pyqtSlot(str)
