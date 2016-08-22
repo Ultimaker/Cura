@@ -47,7 +47,17 @@ UM.ManagementPage
         return -1;
     }
 
-    scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
+    scrollviewCaption:
+    {
+        if (Cura.MachineManager.hasVariants)
+        {
+            catalog.i18nc("@action:label %1 is printer name, %2 is how this printer names variants, %3 is variant name", "Printer: %1, %2: %3").arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeDefinitionVariantsName).arg(Cura.MachineManager.activeVariantName)
+        }
+        else
+        {
+            catalog.i18nc("@action:label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
+        }
+    }
     detailsVisible: true
 
     section.property: "section"
