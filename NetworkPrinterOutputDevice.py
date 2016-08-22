@@ -134,6 +134,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_response_time = time()
         self._response_timeout_time = 10
+        self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
+        self._recreate_network_manager_count = 1
         self._not_authenticated_message = None
 
         self._last_command = ""
@@ -227,6 +229,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Request data from the connected device.
     def _update(self):
+        # Connection is in timeout, check if we need to re-start the connection.
+        # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
+        # Re-creating the QNetworkManager seems to fix this issue.
+        if self._last_response_time and self._connection_state_before_timeout:
+            if time() - self._last_response_time > self._recreate_network_manager_time * self._recreate_network_manager_count:
+                self._recreate_network_manager_count += 1
+                Logger.log("d", "Timeout lasted over 30 seconds, re-checking connection.")
+                self._createNetworkManager()
+                return
+
         # Check if we have an connection in the first place.
         if not self._manager.networkAccessible():
             if not self._connection_state_before_timeout:
@@ -246,6 +258,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         pass  # The disconnection can fail on mac in some cases. Ignore that.
                     self._progress_message.hide()
             return
+        else:
+            self._recreate_network_manager_count = 1
 
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
@@ -281,6 +295,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "print_job")
         print_job_request = QNetworkRequest(url)
         self._manager.get(print_job_request)
+
+    def _createNetworkManager(self):
+        if self._manager:
+            self._manager.finished.disconnect(self._onFinished)
+            self._manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
+            self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
+
+        self._manager = QNetworkAccessManager()
+        self._manager.finished.connect(self._onFinished)
+        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
+        self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
 
     ##  Convenience function that gets information from the received json data and converts it to the right internal
     #   values / variables
@@ -376,15 +401,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def connect(self):
         self.close()  # Ensure that previous connection (if any) is killed.
 
-        if self._manager:
-            self._manager.finished.disconnect(self._onFinished)
-            self._manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
-            self._manager.authenticationRequired.disconnect(self._onAuthenticationRequired)
-
-        self._manager = QNetworkAccessManager()
-        self._manager.finished.connect(self._onFinished)
-        self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
-        self._manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)  # for debug purposes
+        self._createNetworkManager()
 
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
