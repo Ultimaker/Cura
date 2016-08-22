@@ -111,12 +111,23 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
         if not containers:
             # Try again, this time without extruder
-            criteria.pop("extruder")
+            new_criteria = criteria[:]
+            new_criteria.pop("extruder")
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**new_criteria)
+
+        if not containers:
+            # Try again, this time without material
+            criteria.pop("material")
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
-            if not containers:
-                UM.Logger.log("Could not find any quality containers matching the search criteria %s", criteria)
-                return
+        if not containers:
+            # Try again, this time without material or extruder
+            criteria.pop("extruder") # "material" has already been popped
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+
+        if not containers:
+            UM.Logger.log("Could not find any quality containers matching the search criteria %s" % str(criteria))
+            return
 
         if quality_changes_container:
             changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "quality_changes", quality = quality_type, extruder = self._extruder_id)
