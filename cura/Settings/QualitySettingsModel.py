@@ -88,7 +88,11 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         else:
             quality_changes_container = containers[0]
 
-            criteria = { "type": "quality", "quality_type": quality_changes_container.getMetaDataEntry("quality"), "definition": quality_changes_container.getDefinition().getId() }
+            criteria = {
+                "type": "quality",
+                "quality_type": quality_changes_container.getMetaDataEntry("quality"),
+                "definition": quality_changes_container.getDefinition().getId()
+            }
 
             if self._material:
                 criteria["material"] = self._material
@@ -100,8 +104,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
+        definition_id = quality_container.getDefinition().getId()
 
-        criteria = { "type": "quality", "quality_type": quality_type }
+        criteria = { "type": "quality", "quality_type": quality_type, "definition": definition_id }
 
         if self._material:
             criteria["material"] = self._material
@@ -130,7 +135,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             return
 
         if quality_changes_container:
-            changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "quality_changes", quality = quality_type, extruder = self._extruder_id)
+            criteria = {"type": "quality_changes", "quality": quality_type, "extruder": self._extruder_id, "definition": definition_id }
+            changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if changes:
                 containers.extend(changes)
 
