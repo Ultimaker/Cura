@@ -1,4 +1,5 @@
-# Seva Alekseyev with National Institutes of Health, 2016
+# Contributed by Seva Alekseyev <sevaa@nih.gov> with National Institutes of Health, 2016
+# Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.Mesh.MeshBuilder import MeshBuilder
@@ -6,7 +7,6 @@ from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
-from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Job import Job
 from math import pi, sin, cos, sqrt
 import numpy
@@ -25,12 +25,12 @@ except ImportError:
 DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders
 
 class Shape:
-    def __init__(self, v, f, ib, n):
-        self.verts = v
-        self.faces = f
+    def __init__(self, verts, faces, index_base, name):
+        self.verts = verts
+        self.faces = faces
         # Those are here for debugging purposes only
-        self.index_base = ib 
-        self.name = n
+        self.index_base = index_base 
+        self.name = name
         
 class X3DReader(MeshReader):
     def __init__(self):
@@ -72,26 +72,22 @@ class X3DReader(MeshReader):
             self.processChildNodes(xml_scene)
             
             if self.shapes:
-                bui = MeshBuilder()
-                bui.setVertices(numpy.concatenate([shape.verts for shape in self.shapes]))
-                bui.setIndices(numpy.concatenate([shape.faces for shape in self.shapes]))
-                bui.calculateNormals()
-                bui.setFileName(file_name)
+                builder = MeshBuilder()
+                builder.setVertices(numpy.concatenate([shape.verts for shape in self.shapes]))
+                builder.setIndices(numpy.concatenate([shape.faces for shape in self.shapes]))
+                builder.calculateNormals()
+                builder.setFileName(file_name)
                     
                 scene = SceneNode()
-                scene.setMeshData(bui.build().getTransformed(Matrix()))
+                scene.setMeshData(builder.build())
                 scene.setSelectable(True)
                 scene.setName(file_name)
+                scene.getBoundingBox()
             else:
                 return None
             
-        except Exception as e:
-            Logger.log("e", "exception occured in x3d reader: %s", e)
-
-        try:
-            boundingBox = scene.getBoundingBox()
-            boundingBox.isValid()
-        except:
+        except Exception:
+            Logger.logException("e", "Exception in X3D reader")
             return None
 
         return scene
@@ -119,11 +115,11 @@ class X3DReader(MeshReader):
     def processShape(self, xml_node):
         # Find the geometry and the appearance inside the Shape
         geometry = appearance = None
-        for subNode in xml_node:
-            if subNode.tag == "Appearance" and not appearance:
-                appearance = self.resolveDefUse(subNode)
-            elif subNode.tag in self.geometry_importers and not geometry:
-                geometry = self.resolveDefUse(subNode)
+        for sub_node in xml_node:
+            if sub_node.tag == "Appearance" and not appearance:
+                appearance = self.resolveDefUse(sub_node)
+            elif sub_node.tag in self.geometry_importers and not geometry:
+                geometry = self.resolveDefUse(sub_node)
         
         # TODO: appearance is completely ignored. At least apply the material color...        
         if not geometry is None:
@@ -131,12 +127,13 @@ class X3DReader(MeshReader):
                 self.verts = self.faces = [] # Safeguard 
                 self.geometry_importers[geometry.tag](self, geometry)
                 m = self.transform.getData()
+                # TODO: can this be done with one dot() call?
                 verts = numpy.array([m.dot(vert)[:3] for vert in self.verts])
                 self.shapes.append(Shape(verts, self.faces, self.index_base, geometry.tag))
                 self.index_base += len(verts)
                 
-            except Exception as e:
-                Logger.log("e", "exception occured in x3d reader while reading %s: %s", geometry.tag, e)
+            except Exception:
+                Logger.logException("e", "Exception in X3D reader while reading %s", geometry.tag)
         
     # Returns the referenced node if the node has USE, the same node otherwise.
     # May return None is USE points at a nonexistent node
@@ -168,43 +165,43 @@ class X3DReader(MeshReader):
         trans = readVector(node, "translation", (0, 0, 0)) # Vector
         scale = readVector(node, "scale", (1, 1, 1)) # Vector
         center = readVector(node, "center", (0, 0, 0)) # Vector
-        scaleOrient = readRotation(node, "scaleOrientation", (0, 0, 1, 0)) # (angle, axisVactor) tuple
+        scale_orient = readRotation(node, "scaleOrientation", (0, 0, 1, 0)) # (angle, axisVactor) tuple
         
         # Store the previous transform; in Cura, the default matrix multiplication is in place        
         prev = Matrix(self.transform.getData()) # It's deep copy, I've checked
         
         # The rest of transform manipulation will be applied in place
-        gotCenter = (center.x != 0 or center.y != 0 or center.z != 0)
+        got_center = (center.x != 0 or center.y != 0 or center.z != 0)
         
         T = self.transform
         if trans.x != 0 or trans.y != 0 or trans.z !=0:
             T.translate(trans)
-        if gotCenter:
+        if got_center:
             T.translate(center)
         if rot[0] != 0:
             T.rotateByAxis(*rot)
         if scale.x != 1 or scale.y != 1 or scale.z != 1:
-            gotScaleOrient = scaleOrient[0] != 0
-            if gotScaleOrient:
-                T.rotateByAxis(*scaleOrient)
+            got_scale_orient = scale_orient[0] != 0
+            if got_scale_orient:
+                T.rotateByAxis(*scale_orient)
             # No scale by vector in place operation in UM
             S = Matrix()
             S.setByScaleVector(scale)
             T.multiply(S)
-            if gotScaleOrient:
-                T.rotateByAxis(-scaleOrient[0], scaleOrient[1])
-        if gotCenter:
+            if got_scale_orient:
+                T.rotateByAxis(-scale_orient[0], scale_orient[1])
+        if got_center:
             T.translate(-center)
             
         self.processChildNodes(node)
         self.transform = prev
     
     # ------------------------- Geometry importers
-    # They are supposed to fill the MeshBuilder object with vertices and faces, the caller will do the rest
+    # They are supposed to fill the self.verts and self.faces arrays, the caller will do the rest
     
     # Primitives
 
-    def geomBox(self, node):
+    def processGeometryBox(self, node):
         (dx, dy, dz) = readFloatArray(node, "size", [2, 2, 2])
         dx /= 2
         dy /= 2
@@ -230,9 +227,9 @@ class X3DReader(MeshReader):
         self.addQuad(7, 6, 5, 4)  # -y
     
     # The sphere is subdivided into nr rings and ns segments
-    def geomSphere(self, node):
+    def processGeometrySphere(self, node):
         r = readFloat(node, "radius", 0.5)
-        subdiv = readIntArray(node, 'subdivision', None)
+        subdiv = readIntArray(node, "subdivision", None)
         if subdiv:
             if len(subdiv) == 1:
                 nr = ns = subdiv[0]
@@ -282,12 +279,12 @@ class X3DReader(MeshReader):
                 nseg = (seg + 1) % ns
                 self.addQuad(tvb + seg, bvb + seg, bvb + nseg, tvb + nseg)
         
-    def geomCone(self, node):
+    def processGeometryCone(self, node):
         r = readFloat(node, "bottomRadius", 1)
         height = readFloat(node, "height", 2)
         bottom = readBoolean(node, "bottom", True)
         side = readBoolean(node, "side", True)
-        n = readInt(node, 'subdivision', DEFAULT_SUBDIV)
+        n = readInt(node, "subdivision", DEFAULT_SUBDIV)
         
         d = height / 2
         angle = 2 * pi / n
@@ -307,7 +304,7 @@ class X3DReader(MeshReader):
             for i in range(2, n):
                 self.addTri(1, i, i+1)
     
-    def geomCylinder(self, node):
+    def processGeometryCylinder(self, node):
         r = readFloat(node, "radius", 1)
         height = readFloat(node, "height", 2)
         bottom = readBoolean(node, "bottom", True)
@@ -342,7 +339,7 @@ class X3DReader(MeshReader):
     
     # Semi-primitives
 
-    def geomElevationGrid(self, node):
+    def processGeometryElevationGrid(self, node):
         dx = readFloat(node, "xSpacing", 1)
         dz = readFloat(node, "zSpacing", 1)
         nx = readInt(node, "xDimension", 0)
@@ -364,17 +361,30 @@ class X3DReader(MeshReader):
                 self.addTriFlip((z - 1)*nx + x - 1, z*nx + x, (z - 1)*nx + x, ccw)
                 self.addTriFlip((z - 1)*nx + x - 1, z*nx + x - 1, z*nx + x, ccw)
     
-    def geomExtrusion(self, node):
+    def processGeometryExtrusion(self, node):
         ccw = readBoolean(node, "ccw", True)
-        beginCap = readBoolean(node, "beginCap", True)
-        endCap = readBoolean(node, "endCap", True)
+        begin_cap = readBoolean(node, "beginCap", True)
+        end_cap = readBoolean(node, "endCap", True)
         cross = readFloatArray(node, "crossSection", (1, 1, 1, -1, -1, -1, -1, 1, 1, 1))
         cross = [(cross[i], cross[i+1]) for i in range(0, len(cross), 2)]
         spine = readFloatArray(node, "spine", (0, 0, 0, 0, 1, 0))
         spine = [(spine[i], spine[i+1], spine[i+2]) for i in range(0, len(spine), 3)]
-        orient = readFloatArray(node, 'orientation', None)
+        orient = readFloatArray(node, "orientation", None)
         if orient:
-            orient = [toNumpyRotation(orient[i:i+4]) if orient[i+3] != 0 else None for i in range(0, len(orient), 4)]
+            # This converts X3D's axis/angle rotation to a 3x3 numpy matrix
+            def toRotationMatrix(rot):
+                (x, y, z) = rot[:3]
+                a = rot[3]  
+                s = sin(a)
+                c = cos(a)
+                t = 1-c
+                return numpy.array((
+                    (x * x * t + c,  x * y * t - z*s, x * z * t + y * s),
+                    (x * y * t + z*s, y * y * t + c, y * z * t - x * s),
+                    (x * z * t - y * s, y * z * t + x * s, z * z * t + c)))   
+            
+            orient = [toRotationMatrix(orient[i:i+4]) if orient[i+3] != 0 else None for i in range(0, len(orient), 4)]
+            
         scale = readFloatArray(node, "scale", None)
         if scale:
             scale = [numpy.array(((scale[i], 0, 0), (0, 1, 0), (0, 0, scale[i+1])))
@@ -394,12 +404,12 @@ class X3DReader(MeshReader):
         # Face count along the cross; for closed cross, it's the same as the
         # respective vertex count
     
-        spineClosed = spine[0] == spine[-1]
-        if spineClosed:
+        spine_closed = spine[0] == spine[-1]
+        if spine_closed:
             spine = spine[:-1]
         ns = len(spine)
         spine = [Vector(*s) for s in spine]
-        nsf = ns if spineClosed else ns - 1
+        nsf = ns if spine_closed else ns - 1
     
         # This will be used for fallback, where the current spine point joins
         # two collinear spine segments. No need to recheck the case of the
@@ -431,11 +441,11 @@ class X3DReader(MeshReader):
                 orig_z = Vector(*m.dot(orig_z.getData()))
             return orig_z
     
-        self.reserveFaceAndVertexCount(2*nsf*ncf + (nc - 2 if beginCap else 0) + (nc - 2 if endCap else 0), ns*nc)
+        self.reserveFaceAndVertexCount(2*nsf*ncf + (nc - 2 if begin_cap else 0) + (nc - 2 if end_cap else 0), ns*nc)
 
         z = None
         for i, spt in enumerate(spine):
-            if (i > 0 and i < ns - 1) or spineClosed:
+            if (i > 0 and i < ns - 1) or spine_closed:
                 snext = spine[(i + 1) % ns]
                 sprev = spine[(i - 1 + ns) % ns]
                 y = snext - sprev
@@ -486,7 +496,7 @@ class X3DReader(MeshReader):
                 v = sptv3 + m.dot(cpt)
                 self.addVertex(*v)
     
-        if beginCap:
+        if begin_cap:
             self.addFace([x for x in range(nc - 1, -1, -1)], ccw)
     
         # Order of edges in the face: forward along cross, forward along spine,
@@ -499,26 +509,26 @@ class X3DReader(MeshReader):
                 self.addQuadFlip(s * nc + c, s * nc + (c + 1) % nc,
                     (s + 1) * nc + (c + 1) % nc, (s + 1) * nc + c, ccw)
     
-        if spineClosed:
+        if spine_closed:
             # The faces between the last and the first spine points
             b = (ns - 1) * nc
             for c in range(ncf):
                 self.addQuadFlip(b + c, b + (c + 1) % nc,
                     (c + 1) % nc, c, ccw)
                         
-        if endCap:
+        if end_cap:
             self.addFace([(ns - 1) * nc + x for x in range(0, nc)], ccw)
     
 # Triangle meshes
 
     # Helper for numerous nodes with a Coordinate subnode holding vertices
     # That all triangle meshes and IndexedFaceSet
-    # num_faces can be a function, in case the face count is a function of coord 
+    # num_faces can be a function, in case the face count is a function of vertex count 
     def startCoordMesh(self, node, num_faces):
         ccw = readBoolean(node, "ccw", True)
         coord = self.readVertices(node)
-        if hasattr(num_faces, '__call__'):
-            num_faces = num_faces(coord)
+        if hasattr(num_faces, "__call__"):
+            num_faces = num_faces(len(coord))
         self.reserveFaceAndVertexCount(num_faces, len(coord))
         for pt in coord:
             self.addVertex(*pt)
@@ -526,7 +536,7 @@ class X3DReader(MeshReader):
         return ccw
         
 
-    def geomIndexedTriangleSet(self, node):
+    def processGeometryIndexedTriangleSet(self, node):
         index = readIntArray(node, "index", [])
         num_faces = len(index) // 3
         ccw = self.startCoordMesh(node, num_faces)
@@ -534,7 +544,7 @@ class X3DReader(MeshReader):
         for i in range(0, num_faces*3, 3):
             self.addTriFlip(index[i], index[i+1], index[i+2], ccw)
     
-    def geomIndexedTriangleStripSet(self, node):
+    def processGeometryIndexedTriangleStripSet(self, node):
         strips = readIndex(node, "index")
         ccw = self.startCoordMesh(node, sum([len(strip) - 2 for strip in strips]))
             
@@ -544,7 +554,7 @@ class X3DReader(MeshReader):
                 self.addTriFlip(strip[i], strip[i+1], strip[i+2], sccw)
                 sccw = not sccw
     
-    def geomIndexedTriangleFanSet(self, node):
+    def processGeometryIndexedTriangleFanSet(self, node):
         fans = readIndex(node, "index")
         ccw = self.startCoordMesh(node, sum([len(fan) - 2 for fan in fans]))
         
@@ -552,12 +562,12 @@ class X3DReader(MeshReader):
             for i in range(1, len(fan) - 1):
                 self.addTriFlip(fan[0], fan[i], fan[i+1], ccw)
    
-    def geomTriangleSet(self, node):
-        ccw = self.startCoordMesh(node, lambda coord: len(coord) // 3)
+    def processGeometryTriangleSet(self, node):
+        ccw = self.startCoordMesh(node, lambda num_vert: num_vert // 3)
         for i in range(0, len(self.verts), 3):
             self.addTriFlip(i, i+1, i+2, ccw)
     
-    def geomTriangleStripSet(self, node):
+    def processGeometryTriangleStripSet(self, node):
         strips = readIntArray(node, "stripCount", [])
         ccw = self.startCoordMesh(node, sum([n-2 for n in strips]))
             
@@ -569,7 +579,7 @@ class X3DReader(MeshReader):
                 sccw = not sccw
             vb += n
     
-    def geomTriangleFanSet(self, node):
+    def processGeometryTriangleFanSet(self, node):
         fans = readIntArray(node, "fanCount", [])
         ccw = self.startCoordMesh(node, sum([n-2 for n in fans]))
         
@@ -581,24 +591,24 @@ class X3DReader(MeshReader):
             
     # Quad geometries from the CAD module, might be relevant for printing
     
-    def geomQuadSet(self, node):
-        ccw = self.startCoordMesh(node, lambda coord: 2*(len(coord) // 4))
+    def processGeometryQuadSet(self, node):
+        ccw = self.startCoordMesh(node, lambda num_vert: 2*(num_vert // 4))
         for i in range(0, len(self.verts), 4):
             self.addQuadFlip(i, i+1, i+2, i+3, ccw)
             
-    def geomIndexedQuadSet(self, node):
+    def processGeometryIndexedQuadSet(self, node):
         index = readIntArray(node, "index", [])
-        nQuads = len(index) // 4
-        ccw = self.startCoordMesh(node, nQuads*2)
+        num_quads = len(index) // 4
+        ccw = self.startCoordMesh(node, num_quads*2)
         
-        for i in range(0, nQuads*4, 4):
+        for i in range(0, num_quads*4, 4):
             self.addQuadFlip(index[i], index[i+1], index[i+2], index[i+3], ccw)
             
     # 2D polygon geometries
     # Won't work for now, since Cura expects every mesh to have a nontrivial convex hull
     # The only way around that is merging meshes.
     
-    def geomDisk2D(self, node):
+    def processGeometryDisk2D(self, node):
         innerRadius = readFloat(node, "innerRadius", 0)
         outerRadius = readFloat(node, "outerRadius", 1)
         n = readInt(node, "subdivision", DEFAULT_SUBDIV)
@@ -620,7 +630,7 @@ class X3DReader(MeshReader):
             for i in range(2, n):
                 self.addTri(0, i-1, i)
                 
-    def geomRectangle2D(self, node):
+    def processGeometryRectangle2D(self, node):
         (x, y) = readFloatArray(node, "size", (2, 2))
         self.reserveFaceAndVertexCount(2, 4)
         self.addVertex(-x/2, -y/2, 0)
@@ -629,7 +639,7 @@ class X3DReader(MeshReader):
         self.addVertex(-x/2, y/2, 0)
         self.addQuad(0, 1, 2, 3)
         
-    def geomTriangleSet2D(self, node):
+    def processGeometryTriangleSet2D(self, node):
         verts = readFloatArray(node, "vertices", ())
         num_faces = len(verts) // 6;
         verts = [(verts[i], verts[i+1], 0) for i in range(0, 6 * num_faces, 2)]
@@ -645,7 +655,7 @@ class X3DReader(MeshReader):
     
     # General purpose polygon mesh
 
-    def geomIndexedFaceSet(self, node):
+    def processGeometryIndexedFaceSet(self, node):
         faces = readIndex(node, "coordIndex")
         ccw = self.startCoordMesh(node, sum([len(face) - 2 for face in faces]))
             
@@ -656,24 +666,24 @@ class X3DReader(MeshReader):
                 self.addFace(face, ccw)
                 
     geometry_importers = {
-        'IndexedFaceSet': geomIndexedFaceSet,
-        'IndexedTriangleSet': geomIndexedTriangleSet,
-        'IndexedTriangleStripSet': geomIndexedTriangleStripSet,
-        'IndexedTriangleFanSet': geomIndexedTriangleFanSet,
-        'TriangleSet': geomTriangleSet,
-        'TriangleStripSet': geomTriangleStripSet,
-        'TriangleFanSet': geomTriangleFanSet,
-        'QuadSet': geomQuadSet,
-        'IndexedQuadSet': geomIndexedQuadSet,
-        'TriangleSet2D': geomTriangleSet2D,
-        'Rectangle2D': geomRectangle2D,
-        'Disk2D': geomDisk2D,
-        'ElevationGrid': geomElevationGrid,
-        'Extrusion': geomExtrusion,
-        'Sphere': geomSphere,
-        'Box': geomBox,
-        'Cylinder': geomCylinder,
-        'Cone': geomCone
+        "IndexedFaceSet": processGeometryIndexedFaceSet,
+        "IndexedTriangleSet": processGeometryIndexedTriangleSet,
+        "IndexedTriangleStripSet": processGeometryIndexedTriangleStripSet,
+        "IndexedTriangleFanSet": processGeometryIndexedTriangleFanSet,
+        "TriangleSet": processGeometryTriangleSet,
+        "TriangleStripSet": processGeometryTriangleStripSet,
+        "TriangleFanSet": processGeometryTriangleFanSet,
+        "QuadSet": processGeometryQuadSet,
+        "IndexedQuadSet": processGeometryIndexedQuadSet,
+        "TriangleSet2D": processGeometryTriangleSet2D,
+        "Rectangle2D": processGeometryRectangle2D,
+        "Disk2D": processGeometryDisk2D,
+        "ElevationGrid": processGeometryElevationGrid,
+        "Extrusion": processGeometryExtrusion,
+        "Sphere": processGeometrySphere,
+        "Box": processGeometryBox,
+        "Cylinder": processGeometryCylinder,
+        "Cone": processGeometryCone
     }
     
     # Parses the Coordinate.@point field
@@ -869,10 +879,10 @@ def findOuterNormal(face):
                     return edge.cross(prev_rejection)
 
     return False
-    
-# Assumes the vectors are either parallel or antiparallel and the denominator is nonzero.
+
+# Given two *collinear* vectors a and b, returns the coefficient that takes b to a.    
 # No error handling.
-# For stability, taking the ration between the biggest coordinates would be better; none of that, either.   
+# For stability, taking the ration between the biggest coordinates would be better...   
 def ratio(a, b):
     if b.x > EPSILON or b.x < -EPSILON:
         return a.x / b.x
@@ -889,14 +899,4 @@ def pointInsideTriangle(vx, next, prev, nextXprev):
     vxXnext = vx.cross(next);
     s = -ratio(vxXnext, nextXprev)
     return s > 0 and (s + r) < 1
-    
-def toNumpyRotation(rot):
-    (x, y, z) = rot[:3]
-    a = rot[3]  
-    s = sin(a)
-    c = cos(a)
-    t = 1-c
-    return numpy.array((
-        (x * x * t + c,  x * y * t - z*s, x * z * t + y * s),
-        (x * y * t + z*s, y * y * t + c, y * z * t - x * s),
-        (x * z * t - y * s, y * z * t + x * s, z * z * t + c)))    
+     
