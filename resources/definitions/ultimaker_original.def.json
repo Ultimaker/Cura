@@ -13,8 +13,6 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
-        "preferred_material": "*pla*",
-        "preferred_quality": "*normal*",
         "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
         "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel", "UpgradeFirmware"]
     },

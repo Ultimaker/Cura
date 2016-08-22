@@ -13,8 +13,6 @@
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
-        "preferred_material": "*pla*",
-        "preferred_quality": "*normal*",
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_dual_1st",

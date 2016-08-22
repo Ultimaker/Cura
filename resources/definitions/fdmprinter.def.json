@@ -10,8 +10,8 @@
         "manufacturer": "Ultimaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
-        "preferred_material": "pla",
-        "preferred_quality": "normal",
+        "preferred_material": "*generic_pla*",
+        "preferred_quality": "*normal*",
         "machine_extruder_trains":
         {
             "0": "fdmextruder"
@@ -139,7 +139,7 @@
                 {
                     "label": "Has heated build plate",
                     "description": "Whether the machine has a heated build plate present.",
-                    "default_value": false,
+                    "default_value": true,
                     "type": "bool",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
