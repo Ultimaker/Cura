@@ -265,6 +265,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         self.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
 
+        global_compatibility = True
         global_setting_values = {}
         settings = data.iterfind("./um:settings/um:setting", self.__namespaces)
         for entry in settings:
@@ -272,6 +273,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             if key in self.__material_property_setting_map:
                 self.setProperty(self.__material_property_setting_map[key], "value", entry.text, self._definition)
                 global_setting_values[self.__material_property_setting_map[key]] = entry.text
+            elif key in self.__unmapped_settings:
+                if key == "hardware compatible":
+                    global_compatibility = entry.text.lower() not in ["no", "false", "0"]
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
 
@@ -279,12 +283,16 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
+            machine_compatibility = global_compatibility
             machine_setting_values = {}
             settings = machine.iterfind("./um:setting", self.__namespaces)
             for entry in settings:
                 key = entry.get("key")
                 if key in self.__material_property_setting_map:
                     machine_setting_values[self.__material_property_setting_map[key]] = entry.text
+                elif key in self.__unmapped_settings:
+                    if key == "hardware compatible":
+                        machine_compatibility = entry.text.lower() not in ["no", "false", "0"]
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
 
@@ -302,21 +310,22 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
                 definition = definitions[0]
 
-                new_material = XmlMaterialProfile(self.id + "_" + machine_id)
-                new_material.setName(self.getName())
-                new_material.setMetaData(copy.deepcopy(self.getMetaData()))
-                new_material.setDefinition(definition)
-                new_material.addMetaDataEntry("base_file", self.id)
+                if machine_compatibility:
+                    new_material = XmlMaterialProfile(self.id + "_" + machine_id)
+                    new_material.setName(self.getName())
+                    new_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_material.setDefinition(definition)
+                    new_material.addMetaDataEntry("base_file", self.id)
 
-                for key, value in global_setting_values.items():
-                    new_material.setProperty(key, "value", value, definition)
+                    for key, value in global_setting_values.items():
+                        new_material.setProperty(key, "value", value, definition)
 
-                for key, value in machine_setting_values.items():
-                    new_material.setProperty(key, "value", value, definition)
+                    for key, value in machine_setting_values.items():
+                        new_material.setProperty(key, "value", value, definition)
 
-                new_material._dirty = False
+                    new_material._dirty = False
 
-                UM.Settings.ContainerRegistry.getInstance().addContainer(new_material)
+                    UM.Settings.ContainerRegistry.getInstance().addContainer(new_material)
 
                 hotends = machine.iterfind("./um:hotend", self.__namespaces)
                 for hotend in hotends:
@@ -333,12 +342,27 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                         Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
                         continue
 
+                    hotend_compatibility = machine_compatibility
+                    hotend_setting_values = {}
+                    settings = hotend.iterfind("./um:setting", self.__namespaces)
+                    for entry in settings:
+                        key = entry.get("key")
+                        if key in self.__material_property_setting_map:
+                            hotend_setting_values[self.__material_property_setting_map[key]] = entry.text
+                        elif key in self.__unmapped_settings:
+                            if key == "hardware compatible":
+                                hotend_compatibility = entry.text.lower() not in ["no", "false", "0"]
+                        else:
+                            Logger.log("d", "Unsupported material setting %s", key)
+
+                    if not hotend_compatibility:
+                        continue
+
                     new_hotend_material = XmlMaterialProfile(self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_"))
                     new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
                     new_hotend_material.addMetaDataEntry("base_file", self.id)
-
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
 
                     for key, value in global_setting_values.items():
@@ -347,13 +371,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     for key, value in machine_setting_values.items():
                         new_hotend_material.setProperty(key, "value", value, definition)
 
-                    settings = hotend.iterfind("./um:setting", self.__namespaces)
-                    for entry in settings:
-                        key = entry.get("key")
-                        if key in self.__material_property_setting_map:
-                            new_hotend_material.setProperty(self.__material_property_setting_map[key], "value", entry.text, definition)
-                        else:
-                            Logger.log("d", "Unsupported material setting %s", key)
+                    for key, value in hotend_setting_values.items():
+                        new_hotend_material.setProperty(key, "value", value, definition)
 
                     new_hotend_material._dirty = False
                     UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
@@ -382,8 +401,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
         "retraction amount": "retraction_amount",
-        "retraction speed": "retraction_speed",
+        "retraction speed": "retraction_speed"
     }
+    __unmapped_settings = [
+        "hardware compatible"
+    ]
 
     # Map XML file product names to internal ids
     # TODO: Move this to definition's metadata
