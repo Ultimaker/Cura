@@ -493,6 +493,8 @@ class MachineManager(QObject):
         if not old_material:
             Logger.log("w", "While trying to set the active material, no material was found to replace it.")
             return
+        if old_quality_changes.getId() == "empty_quality_changes": #Don't want the empty one.
+            old_quality_changes = None
 
         old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
