@@ -176,7 +176,7 @@ UM.ManagementPage
             Label {
                 id: defaultsMessage
                 visible: false
-                text: catalog.i18nc("@action:label", "This profile has no settings and uses the defaults specified by the printer.")
+                text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings in the list below.")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }
