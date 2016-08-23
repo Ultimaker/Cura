@@ -1,9 +1,14 @@
+from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtWidgets import QMessageBox
+
 from enum import IntEnum  # For the connection state tracking.
 from UM.Logger import Logger
-
+from UM.Application import Application
 from UM.Signal import signalemitter
+
+i18n_catalog = i18nCatalog("cura")
 
 ##  Printer output device adds extra interface options on top of output device.
 #
@@ -276,6 +281,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._hotend_ids[index] = hotend_id
             self.hotendIdChanged.emit(index, hotend_id)
 
+    ##  Let the user decide if the hotends and/or material should be synced with the printer
+    #   NB: the UX needs to be implemented by the plugin
+    def materialHotendChangedMessage(self, callback):
+        Logger.log("w", "materialHotendChangedMessage needs to be implemented, returning 'Yes'")
+        callback(QMessageBox.Yes)
 
     ##  Attempt to establish connection
     def connect(self):
@@ -329,7 +339,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._head_z
 
     ##  Update the saved position of the head
-    #   This function should be called when a new position for the head is recieved. 
+    #   This function should be called when a new position for the head is received.
     def _updateHeadPosition(self, x, y ,z):
         position_changed = False
         if self._head_x != x:

@@ -195,9 +195,8 @@ class CuraEngineBackend(Backend):
         self.slicingCancelled.emit()
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
-
+        self._createSocket()  # Ensure that we have a fresh socket.
         if Application.getInstance().getCommandLineOption("external-backend", False):
-            self._createSocket()
             return
 
         if self._process is not None:
@@ -206,6 +205,7 @@ class CuraEngineBackend(Backend):
                 self._process.terminate()
                 Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait())
                 self._process = None
+
             except Exception as e:  # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
 
@@ -236,7 +236,7 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable objects found."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable models found."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:

@@ -213,42 +213,54 @@ Item
             id: adhesionHelperLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: brimCheckBox.verticalCenter
+            anchors.verticalCenter: adhesionCheckBox.verticalCenter
             width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
             //: Bed adhesion label
-            text: catalog.i18nc("@label:listbox", "Bed Adhesion:");
+            text: catalog.i18nc("@label", "Helper Parts:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
 
         CheckBox{
-            id: brimCheckBox
-            property alias _hovered: brimMouseArea.containsMouse
+            id: adhesionCheckBox
+            property alias _hovered: adhesionMouseArea.containsMouse
 
             anchors.top: parent.top
             anchors.left: adhesionHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check", "Print Brim");
+            //: Setting enable printing build-plate adhesion helper checkbox
+            text: catalog.i18nc("@option:check", "Print Build Plate Adhesion");
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
 
-            checked: platformAdhesionType.properties.value == "brim"
+            checked: platformAdhesionType.properties.value != "skirt"
 
             MouseArea {
-                id: brimMouseArea
+                id: adhesionMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 enabled: base.settingsEnabled
                 onClicked:
                 {
-                    platformAdhesionType.setPropertyValue("value", !parent.checked ? "brim" : "skirt")
+                    var adhesionType = "skirt";
+                    if(!parent.checked)
+                    {
+                        // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
+                        platformAdhesionType.removeFromContainer(0);
+                        adhesionType = platformAdhesionType.properties.value;
+                        if(adhesionType == "skirt")
+                        {
+                            // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
+                            adhesionType = "brim";
+                        }
+                    }
+                    platformAdhesionType.setPropertyValue("value", adhesionType);
                 }
                 onEntered:
                 {
-                    base.showTooltip(brimCheckBox, Qt.point(-brimCheckBox.x, 0),
-                        catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
+                    base.showTooltip(adhesionCheckBox, Qt.point(-adhesionCheckBox.x, 0),
+                        catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
                 }
                 onExited:
                 {
@@ -264,7 +276,7 @@ Item
             anchors.verticalCenter: supportCheckBox.verticalCenter
             width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
             //: Support label
-            text: catalog.i18nc("@label:listbox", "Support:");
+            text: "";
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -274,7 +286,7 @@ Item
             visible: machineExtruderCount.properties.value <= 1
             property alias _hovered: supportMouseArea.containsMouse
 
-            anchors.top: brimCheckBox.bottom
+            anchors.top: adhesionCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -311,7 +323,7 @@ Item
             visible: machineExtruderCount.properties.value > 1
             model: extruderModel
 
-            anchors.top: brimCheckBox.bottom
+            anchors.top: adhesionCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -354,12 +366,11 @@ Item
             Component.onCompleted: populateExtruderModel()
         }
 
-        //: Invisible list used to populate the extrudelModel
-        ListView
+        //: Model used to populate the extrudelModel
+        Cura.ExtrudersModel
         {
             id: extruders
-            model: Cura.ExtrudersModel { onModelChanged: populateExtruderModel() }
-            visible: false
+            onModelChanged: populateExtruderModel()
         }
     }
 
@@ -370,10 +381,10 @@ Item
             text: catalog.i18nc("@label", "Don't print support"),
             color: ""
         })
-        for(var extruderNumber = 0; extruderNumber < extruders.model.rowCount() ; extruderNumber++) {
+        for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++) {
             extruderModel.append({
-                text: catalog.i18nc("@label", "Print using %1").arg(extruders.model.getItem(extruderNumber).name),
-                color: extruders.model.getItem(extruderNumber).color
+                text: catalog.i18nc("@label", "Print support using %1").arg(extruders.getItem(extruderNumber).name),
+                color: extruders.getItem(extruderNumber).color
             })
         }
     }

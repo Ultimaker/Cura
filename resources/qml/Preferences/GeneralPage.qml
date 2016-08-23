@@ -46,11 +46,11 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
-        if (plugins.model.find("id", "SliceInfoPlugin") > -1) {
+        if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
             sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         }
-        if (plugins.model.find("id", "UpdateChecker") > -1) {
+        if (plugins.find("id", "UpdateChecker") > -1) {
             UM.Preferences.resetPreference("info/automatic_update_check")
             checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
         }
@@ -58,6 +58,9 @@ UM.PreferencesPage
 
     Column
     {
+        //: Model used to check if a plugin exists
+        UM.PluginsModel { id: plugins }
+
         //: Language selection label
         UM.I18nCatalog{id: catalog; name:"cura"}
 
@@ -168,7 +171,7 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width;
             height: childrenRect.height;
-            text: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
+            text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when an model is selected")
 
             CheckBox
             {
@@ -182,12 +185,12 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should objects on the platform be moved so that they no longer intersect?")
+            text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved so that they no longer intersect?")
 
             CheckBox
             {
                 id: pushFreeCheckbox
-                text: catalog.i18nc("@option:check", "Ensure objects are kept apart")
+                text: catalog.i18nc("@option:check", "Ensure models are kept apart")
                 checked: boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
                 onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
             }
@@ -247,12 +250,12 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","Should objects be scaled to the build volume if they are too large?")
+            text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
 
             CheckBox
             {
                 id: scaleToFitCheckbox
-                text: catalog.i18nc("@option:check","Scale large objects")
+                text: catalog.i18nc("@option:check","Scale large models")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_to_fit", checked)
             }
@@ -261,12 +264,12 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","An object may appear extremely small if its unit is for example in meters rather than millimeters. Should these objects be scaled up?")
+            text: catalog.i18nc("@info:tooltip","An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?")
 
             CheckBox
             {
                 id: scaleTinyCheckbox
-                text: catalog.i18nc("@option:check","Scale extremely small objects")
+                text: catalog.i18nc("@option:check","Scale extremely small models")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
             }
@@ -301,7 +304,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "UpdateChecker") > -1
+            visible: plugins.find("id", "UpdateChecker") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -316,7 +319,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "SliceInfoPlugin") > -1
+            visible: plugins.find("id", "SliceInfoPlugin") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -328,14 +331,6 @@ UM.PreferencesPage
                 checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
             }
-        }
-
-        //: Invisible list used to check if a plugin exists
-        ListView
-        {
-            id: plugins
-            model: UM.PluginsModel { }
-            visible: false
         }
     }
 }

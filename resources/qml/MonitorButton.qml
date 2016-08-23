@@ -29,14 +29,14 @@ Rectangle
         switch(Cura.MachineManager.printerOutputDevices[0].jobState)
         {
             case "printing":
-            case "pre_print":  // heating, etc.
             case "paused":
                 return true;
+            case "pre_print":  // heating, etc.
             case "wait_cleanup":
-            case "ready":  // nut sure if this occurs, "" seems to be the ready state.
             case "offline":
             case "abort":  // note sure if this jobState actually occurs in the wild
             case "error":  // after clicking abort you apparently get "error"
+            case "ready":  // ready to print or getting ready
             case "":  // ready to print or getting ready
             default:
                 return false;
@@ -235,12 +235,12 @@ Rectangle
 
         text: {
             var result = "";
-            var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
             if (!printerConnected) {
               return "";
             }
 
-            if (lastJobState !== jobState) {
+            var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
+            if (lastJobState != jobState) {
                 // the userClicked message must disappear when an "automated" jobState comes by
                 userClicked = false;
                 lastJobState = jobState;

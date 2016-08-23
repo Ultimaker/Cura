@@ -41,6 +41,10 @@ class PlatformPhysics:
 
         root = self._controller.getScene().getRoot()
 
+        # Keep a list of nodes that are moving. We use this so that we don't move two intersecting objects in the
+        # same direction.
+        transformed_nodes = []
+
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
@@ -91,6 +95,9 @@ class PlatformPhysics:
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue
 
+                    if other_node in transformed_nodes:
+                        continue # Other node is already moving, wait for next pass.
+
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     head_hull = node.callDecoration("getConvexHullHead")
                     if head_hull:
@@ -125,6 +132,7 @@ class PlatformPhysics:
                     node._outside_buildarea = True
 
             if not Vector.Null.equals(move_vector, epsilon=1e-5):
+                transformed_nodes.append(node)
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 

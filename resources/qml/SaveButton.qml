@@ -14,9 +14,7 @@ Rectangle {
 
     property real progress: UM.Backend.progress;
     property int backendState: UM.Backend.state;
-
     property bool activity: Printer.getPlatformActivity;
-    //Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:
@@ -26,21 +24,18 @@ Rectangle {
             return catalog.i18nc("@label:PrintjobStatus", "Please load a 3d model");
         }
 
-        if(base.backendState == 1)
+        switch(base.backendState)
         {
-            return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
-        }
-        else if(base.backendState == 2)
-        {
-            return catalog.i18nc("@label:PrintjobStatus", "Slicing...");
-        }
-        else if(base.backendState == 3)
-        {
-            return catalog.i18nc("@label:PrintjobStatus %1 is target operation","Ready to %1").arg(UM.OutputDeviceManager.activeDeviceShortDescription);
-        }
-        else if(base.backendState == 4)
-        {
-            return catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
+            case 1:
+                return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
+            case 2:
+                return catalog.i18nc("@label:PrintjobStatus", "Slicing...");
+            case 3:
+                return catalog.i18nc("@label:PrintjobStatus %1 is target operation","Ready to %1").arg(UM.OutputDeviceManager.activeDeviceShortDescription);
+            case 4:
+                return catalog.i18nc("@label:PrintjobStatus", "Unable to Slice");
+            default:
+                return "";
         }
     }
 
@@ -126,12 +121,29 @@ Rectangle {
                 background: Rectangle
                 {
                     border.width: UM.Theme.getSize("default_lining").width
-                    border.color: !control.enabled ? UM.Theme.getColor("action_button_disabled_border") :
-                                      control.pressed ? UM.Theme.getColor("action_button_active_border") :
-                                      control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-                    color: !control.enabled ? UM.Theme.getColor("action_button_disabled") :
-                               control.pressed ? UM.Theme.getColor("action_button_active") :
-                               control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+                    border.color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled_border");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active_border");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered_border");
+                        else
+                            return UM.Theme.getColor("action_button_border");
+                    }
+                    color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered");
+                        else
+                            return UM.Theme.getColor("action_button");
+                    }
+
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
@@ -139,9 +151,17 @@ Rectangle {
                     Label {
                         id: actualLabel
                         anchors.centerIn: parent
-                        color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
-                                   control.pressed ? UM.Theme.getColor("action_button_active_text") :
-                                   control.hovered ? UM.Theme.getColor("action_button_hovered_text") : UM.Theme.getColor("action_button_text")
+                        color:
+                        {
+                            if(!control.enabled)
+                                return UM.Theme.getColor("action_button_disabled_text");
+                            else if(control.pressed)
+                                return UM.Theme.getColor("action_button_active_text");
+                            else if(control.hovered)
+                                return UM.Theme.getColor("action_button_hovered_text");
+                            else
+                                return UM.Theme.getColor("action_button_text");
+                        }
                         font: UM.Theme.getFont("action_button")
                         text: control.text;
                     }
@@ -167,12 +187,28 @@ Rectangle {
                 background: Rectangle {
                     id: deviceSelectionIcon
                     border.width: UM.Theme.getSize("default_lining").width
-                    border.color: !control.enabled ? UM.Theme.getColor("action_button_disabled_border") :
-                                      control.pressed ? UM.Theme.getColor("action_button_active_border") :
-                                      control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-                    color: !control.enabled ? UM.Theme.getColor("action_button_disabled") :
-                               control.pressed ? UM.Theme.getColor("action_button_active") :
-                               control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+                    border.color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled_border");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active_border");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered_border");
+                        else
+                            return UM.Theme.getColor("action_button_border");
+                    }
+                    color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered");
+                        else
+                            return UM.Theme.getColor("action_button");
+                    }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("save_button_text_margin").width / 2;
@@ -186,9 +222,17 @@ Rectangle {
                         height: UM.Theme.getSize("standard_arrow").height
                         sourceSize.width: width
                         sourceSize.height: height
-                        color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
-                                   control.pressed ? UM.Theme.getColor("action_button_active_text") :
-                                   control.hovered ? UM.Theme.getColor("action_button_hovered_text") : UM.Theme.getColor("action_button_text");
+                        color:
+                        {
+                            if(!control.enabled)
+                                return UM.Theme.getColor("action_button_disabled_text");
+                            else if(control.pressed)
+                                return UM.Theme.getColor("action_button_active_text");
+                            else if(control.hovered)
+                                return UM.Theme.getColor("action_button_hovered_text");
+                            else
+                                return UM.Theme.getColor("action_button_text");
+                        }
                         source: UM.Theme.getIcon("arrow_bottom");
                     }
                 }

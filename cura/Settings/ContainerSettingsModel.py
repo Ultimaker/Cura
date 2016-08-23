@@ -41,7 +41,6 @@ class ContainerSettingsModel(ListModel):
             keys = keys + list(container.getAllKeys())
 
         keys = list(set(keys)) # remove duplicate keys
-        keys.sort()
 
         for key in keys:
             definition = None
@@ -72,6 +71,7 @@ class ContainerSettingsModel(ListModel):
                 "unit": definition.unit,
                 "category": category.label
             })
+        self.sort(lambda k: (k["category"], k["key"]))
 
     ##  Set the ids of the containers which have the settings this model should list.
     #   Also makes sure the model updates when the containers have property changes

@@ -170,6 +170,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 profile.addMetaDataEntry("material", self._activeMaterialId())
         else:
             profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
+
         ContainerRegistry.getInstance().addContainer(profile)
 
     ##  Gets a list of profile writer plugins

@@ -22,7 +22,7 @@ Menu
         {
             text: model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityId == model.id
+            checked: Cura.MachineManager.activeQualityChangesId == "empty_quality_changes" && Cura.MachineManager.activeQualityType == model.metadata.quality_type
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
         }
@@ -38,7 +38,7 @@ Menu
         id: customProfileInstantiator
         model: UM.InstanceContainersModel
         {
-            filter: menu.getFilter({ "type": "quality_changes", "extruder": null });
+            filter: { "type": "quality_changes", "extruder": null, "definition": Cura.MachineManager.filterQualityByMachine ? Cura.MachineManager.activeDefinitionId : "fdmprinter" };
             onModelReset: customSeparator.visible = rowCount() > 0
         }
 
@@ -82,7 +82,7 @@ Menu
             result.definition = Cura.MachineManager.activeDefinitionId;
             if(Cura.MachineManager.hasMaterials)
             {
-                result.material = Cura.MachineManager.activeMaterialId;
+                result.material = Cura.MachineManager.activeQualityMaterialId;
             }
         }
         else

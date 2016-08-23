@@ -18,7 +18,10 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMachineId
-    activeIndex: {
+    activeIndex: activeMachineIndex()
+
+    function activeMachineIndex()
+    {
         for(var i = 0; i < model.rowCount(); i++) {
             if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
                 return i;
@@ -142,7 +145,16 @@ UM.ManagementPage
         {
             id: confirmDialog;
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
-            onYes: Cura.MachineManager.removeMachine(base.currentItem.id);
+            onYes:
+            {
+                Cura.MachineManager.removeMachine(base.currentItem.id);
+                if(!base.currentItem)
+                {
+                    objectList.currentIndex = activeMachineIndex()
+                }
+                //Force updating currentItem and the details panel
+                objectList.onCurrentIndexChanged()
+            }
         }
 
         UM.RenameDialog
@@ -152,11 +164,20 @@ UM.ManagementPage
             onAccepted:
             {
                 Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim());
-                //Reselect current item to update details panel
-                var index = objectList.currentIndex
-                objectList.currentIndex = -1
-                objectList.currentIndex = index
+                //Force updating currentItem and the details panel
+                objectList.onCurrentIndexChanged()
             }
         }
+
+        Connections
+        {
+            target: Cura.MachineManager
+            onGlobalContainerChanged:
+            {
+                objectList.currentIndex = activeMachineIndex()
+                objectList.onCurrentIndexChanged()
+            }
+        }
+
     }
 }

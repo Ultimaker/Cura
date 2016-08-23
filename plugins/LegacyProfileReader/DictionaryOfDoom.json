@@ -1,6 +1,6 @@
 {
     "source_version": "15.04",
-    "target_version": 1,
+    "target_version": 2,
 
     "translation": {
         "machine_nozzle_size": "nozzle_size",
@@ -21,7 +21,7 @@
         "retraction_amount": "retraction_amount",
         "retraction_speed": "retraction_speed",
         "retraction_min_travel": "retraction_min_travel",
-        "retraction_hop": "retraction_hop",
+        "retraction_hop_enabled": "retraction_hop != 0",
         "speed_print": "print_speed",
         "speed_infill": "infill_speed if (float(infill_speed) != 0) else print_speed",
         "speed_wall_0": "inset0_speed if (float(inset0_speed) != 0) else print_speed",
@@ -29,7 +29,7 @@
         "speed_topbottom": "solidarea_speed if (float(solidarea_speed) != 0) else print_speed",
         "speed_travel": "travel_speed if (float(travel_speed) != 0) else travel_speed",
         "speed_layer_0": "bottom_layer_speed",
-        "retraction_combing": "True if (retraction_combing == \"All\" or retraction_combing == \"No Skin\") else False",
+        "retraction_combing": "\"all\" if retraction_combing == \"All\" else \"noskin\" if retraction_combing == \"No Skin\" else \"off\"",
         "cool_fan_enabled": "fan_enabled",
         "cool_fan_speed_min": "fan_speed",
         "cool_fan_speed_max": "fan_speed_max",
@@ -66,7 +66,7 @@
         "meshfix_union_all_remove_holes": "fix_horrible_union_all_type_b",
         "meshfix_extensive_stitching": "fix_horrible_extensive_stitching",
         "meshfix_keep_open_polygons": "fix_horrible_use_open_bits",
-        "magic_mesh_surface_mode": "simple_mode",
+        "magic_mesh_surface_mode": "\"surface\" if simple_mode else \"normal\"",
         "magic_spiralize": "spiralize",
         "prime_tower_enable": "wipe_tower",
         "prime_tower_size": "math.sqrt(float(wipe_tower_volume) / float(layer_height))",

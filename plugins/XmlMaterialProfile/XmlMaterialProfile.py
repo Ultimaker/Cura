@@ -21,13 +21,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     ##  Overridden from InstanceContainer
     def duplicate(self, new_id, new_name = None):
         base_file = self.getMetaDataEntry("base_file", None)
-        new_uuid = str(uuid.uuid4())
 
         if base_file:
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = base_file)
             if containers:
                 new_basefile = containers[0].duplicate(self.getMetaDataEntry("brand") + "_" + new_id, new_name)
-                new_basefile.setMetaDataEntry("GUID", new_uuid)
                 base_file = new_basefile.id
                 UM.Settings.ContainerRegistry.getInstance().addContainer(new_basefile)
 
@@ -38,8 +36,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     if variant_containers:
                         new_id += "_" + variant_containers[0].getName().replace(" ", "_")
 
+        new_id = UM.Settings.ContainerRegistry.getInstance().createUniqueName("material", self._id, new_id, "")
         result = super().duplicate(new_id, new_name)
-        result.setMetaDataEntry("GUID", new_uuid)
         if result.getMetaDataEntry("base_file", None):
             result.setMetaDataEntry("base_file", base_file)
         return result
@@ -58,13 +56,14 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
-        if key == "material":
-            self.setName(value)
-
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+        if key == "material" or key == "color_name":
+            self.setName(self._profile_name(self.getMetaDataEntry("material"), self.getMetaDataEntry("color_name")))
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        # Update all containers that share GUID and basefile
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
-            if key == "material":
-                container.setName(value)
+            if key == "material" or key == "color_name":
+                container.setName(self.getName())
 
     ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):
@@ -237,7 +236,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 material = entry.find("./um:material", self.__namespaces)
                 color = entry.find("./um:color", self.__namespaces)
 
-                self.setName(material.text)
+                self.setName(self._profile_name(material.text, color.text))
 
                 self.addMetaDataEntry("brand", brand.text)
                 self.addMetaDataEntry("material", material.text)
@@ -293,7 +292,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             for identifier in identifiers:
                 machine_id = self.__product_id_map.get(identifier.get("product"), None)
                 if machine_id is None:
-                    Logger.log("w", "Cannot create material for unknown machine %s", machine_id)
+                    Logger.log("w", "Cannot create material for unknown machine %s", identifier.get("product"))
                     continue
 
                 definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
@@ -369,11 +368,18 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         builder.data(str(instance.value))
         builder.end("setting")
 
+    def _profile_name(self, material_name, color_name):
+        if color_name != "Generic":
+            return "%s %s" % (color_name, material_name)
+        else:
+            return material_name
+
     # Map XML file setting names to internal names
     __material_property_setting_map = {
         "print temperature": "material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
+        "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
         "retraction amount": "retraction_amount",
         "retraction speed": "retraction_speed",
@@ -382,11 +388,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     # Map XML file product names to internal ids
     # TODO: Move this to definition's metadata
     __product_id_map = {
-        "Ultimaker2": "ultimaker2",
-        "Ultimaker2+": "ultimaker2_plus",
-        "Ultimaker2go": "ultimaker2_go",
-        "Ultimaker2extended": "ultimaker2_extended",
-        "Ultimaker2extended+": "ultimaker2_extended_plus",
+        "Ultimaker 2": "ultimaker2",
+        "Ultimaker 2+": "ultimaker2_plus",
+        "Ultimaker 2 Go": "ultimaker2_go",
+        "Ultimaker 2 Extended": "ultimaker2_extended",
+        "Ultimaker 2 Extended+": "ultimaker2_extended_plus",
         "Ultimaker Original": "ultimaker_original",
         "Ultimaker Original+": "ultimaker_original_plus"
     }

@@ -131,9 +131,9 @@ class ExtruderManager(QObject):
 
                 # Make sure the next stack is a stack that contains only the machine definition
                 if not extruder_train.getNextStack():
-                    shallowStack = UM.Settings.ContainerStack(machine_id + "_shallow")
-                    shallowStack.addContainer(machine_definition)
-                    extruder_train.setNextStack(shallowStack)
+                    shallow_stack = UM.Settings.ContainerStack(machine_id + "_shallow")
+                    shallow_stack.addContainer(machine_definition)
+                    extruder_train.setNextStack(shallow_stack)
                 changed = True
         if changed:
             self.extrudersChanged.emit(machine_id)
@@ -251,9 +251,9 @@ class ExtruderManager(QObject):
 
         # Make sure the next stack is a stack that contains only the machine definition
         if not container_stack.getNextStack():
-            shallowStack = UM.Settings.ContainerStack(machine_id + "_shallow")
-            shallowStack.addContainer(machine_definition)
-            container_stack.setNextStack(shallowStack)
+            shallow_stack = UM.Settings.ContainerStack(machine_id + "_shallow")
+            shallow_stack.addContainer(machine_definition)
+            container_stack.setNextStack(shallow_stack)
 
         container_registry.addContainer(container_stack)
 
@@ -276,6 +276,20 @@ class ExtruderManager(QObject):
             return
         for name in self._extruder_trains[machine_id]:
             yield self._extruder_trains[machine_id][name]
+
+    ##  Returns a generator that will iterate over the global stack and per-extruder stacks.
+    #
+    #   The first generated element is the global container stack. After that any extruder stacks are generated.
+    def getActiveGlobalAndExtruderStacks(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+
+        yield global_stack
+
+        global_id = global_stack.getId()
+        for name in self._extruder_trains[global_id]:
+            yield self._extruder_trains[global_id][name]
 
     def __globalContainerStackChanged(self):
         self._addCurrentMachineExtruders()

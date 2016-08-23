@@ -20,31 +20,25 @@ class UMOUpgradeSelection(MachineAction):
     @pyqtProperty(bool, notify = heatedBedChanged)
     def hasHeatedBed(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        return global_container_stack.getProperty("machine_heated_bed", "value")
+        if global_container_stack:
+            return global_container_stack.getProperty("machine_heated_bed", "value")
 
-    @pyqtSlot()
-    def addHeatedBed(self):
+    @pyqtSlot(bool)
+    def setHeatedBed(self, heated_bed = True):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             variant = global_container_stack.findContainer({"type": "variant"})
             if variant:
                 if variant.getId() == "empty_variant":
                     variant_index = global_container_stack.getContainerIndex(variant)
-                    stack_name = global_container_stack.getName()
-                    new_variant = UM.Settings.InstanceContainer(stack_name + "_variant")
-                    new_variant.addMetaDataEntry("type", "variant")
-                    new_variant.setDefinition(global_container_stack.getBottom())
-                    UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
-                    global_container_stack.replaceContainer(variant_index, new_variant)
-                    variant = new_variant
-            variant.setProperty("machine_heated_bed", "value", True)
-            self.heatedBedChanged.emit()
-
-    @pyqtSlot()
-    def removeHeatedBed(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            variant = global_container_stack.findContainer({"type": "variant"})
-            if variant:
-                variant.setProperty("machine_heated_bed", "value", False)
+                    self._createVariant(global_container_stack, variant_index)
+                variant.setProperty("machine_heated_bed", "value", heated_bed)
                 self.heatedBedChanged.emit()
+
+    def _createVariant(self, global_container_stack, variant_index):
+        # Create and switch to a variant to store the settings in
+        new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_variant")
+        new_variant.addMetaDataEntry("type", "variant")
+        new_variant.setDefinition(global_container_stack.getBottom())
+        UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
+        global_container_stack.replaceContainer(variant_index, new_variant)

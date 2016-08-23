@@ -242,11 +242,17 @@ class CuraApplication(QtApplication):
                 raft_airgap
                 layer_0_z_overlap
                 raft_surface_layers
+            dual
+                adhesion_extruder_nr
+                support_extruder_nr
+                prime_tower_enable
+                prime_tower_size
+                prime_tower_position_x
+                prime_tower_position_y
             meshfix
             blackmagic
                 print_sequence
                 infill_mesh
-                dual
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
@@ -475,6 +481,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
 
         qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
