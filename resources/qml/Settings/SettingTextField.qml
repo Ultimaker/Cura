@@ -107,9 +107,6 @@ SettingItem
                 target: input
                 property: "text"
                 value:  {
-                    if (definition.key === "material_bed_temperature") {
-                        CuraApplication.log("## " + propertyProvider.properties.resolve + " " + stackLevel);
-                    }
                     if ((propertyProvider.properties.resolve != "None") && (stackLevel != 0)) {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
