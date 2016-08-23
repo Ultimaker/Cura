@@ -127,7 +127,6 @@ class CuraEngineBackend(Backend):
     def close(self):
         # Terminate CuraEngine if it is still running at this point
         self._terminate()
-        super().close()
 
     ##  Get the command that is used to call the engine.
     #   This is useful for debugging and used to actually start the engine.
@@ -195,7 +194,8 @@ class CuraEngineBackend(Backend):
         self.slicingCancelled.emit()
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
-        self._createSocket()  # Ensure that we have a fresh socket.
+        if self._enabled:
+            self._createSocket()  # Ensure that we have a fresh socket.
         if Application.getInstance().getCommandLineOption("external-backend", False):
             return
 
@@ -374,8 +374,9 @@ class CuraEngineBackend(Backend):
     #
     #   \param tool The tool that the user is using.
     def _onToolOperationStarted(self, tool):
-        self._terminate()  # Do not continue slicing once a tool has started
         self._enabled = False  # Do not reslice when a tool is doing it's 'thing'
+        self._terminate()  # Do not continue slicing once a tool has started
+
 
     ##  Called when the user stops using some tool.
     #
@@ -384,6 +385,7 @@ class CuraEngineBackend(Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._enabled = True  # Tool stop, start listening for changes again.
+        self._terminate()
 
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
@@ -407,7 +409,6 @@ class CuraEngineBackend(Backend):
         if not self._restart and self._process:
             Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
             self._process = None
-            self._createSocket()
 
     ##  Called when the global container stack changes
     def _onGlobalStackChanged(self):
