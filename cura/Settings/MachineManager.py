@@ -486,24 +486,25 @@ class MachineManager(QObject):
         if not containers or not self._active_container_stack:
             return
 
-        old_variant = self._active_container_stack.findContainer({"type":"variant"})
-        old_material = self._active_container_stack.findContainer({"type":"material"})
+        old_variant = self._active_container_stack.findContainer({"type": "variant"})
+        old_material = self._active_container_stack.findContainer({"type": "material"})
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
-        if old_material:
-            old_material.nameChanged.disconnect(self._onMaterialNameChanged)
+        if not old_material:
+            Logger.log("w", "While trying to set the active material, no material was found to replace it.")
+            return
 
-            material_index = self._active_container_stack.getContainerIndex(old_material)
-            self._active_container_stack.replaceContainer(material_index, containers[0])
+        old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
-            containers[0].nameChanged.connect(self._onMaterialNameChanged)
+        material_index = self._active_container_stack.getContainerIndex(old_material)
+        self._active_container_stack.replaceContainer(material_index, containers[0])
 
-            preferred_quality_name = None
-            if old_quality:
-                preferred_quality_name = old_quality.getName()
+        containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-            self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], preferred_quality_name).id)
-        else:
-            Logger.log("w", "While trying to set the active material, no material was found to replace.")
+        preferred_quality_name = None
+        if old_quality:
+            preferred_quality_name = old_quality.getName()
+
+        self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], preferred_quality_name).id)
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
@@ -826,6 +827,33 @@ class MachineManager(QObject):
                 return containers[0]
 
         return self._empty_quality_container
+
+    ##  Finds a quality-changes container to use if any other container
+    #   changes.
+    #
+    #   \param quality_type The quality type to find a quality-changes for.
+    #   \param preferred_quality_changes_name The name of the quality-changes to
+    #   pick, if any such quality-changes profile is available.
+    def _updateQualityChangesContainer(self, quality_type, preferred_quality_changes_name = None):
+        container_registry = UM.Settings.ContainerRegistry.getInstance() # Cache.
+        search_criteria = { "type": "quality_changes" }
+
+        search_criteria["quality"] = quality_type
+        if preferred_quality_changes_name:
+            search_criteria["name"] = preferred_quality_changes_name
+
+        # Try to search with the name in the criteria first, since we prefer to have the correct name.
+        containers = container_registry.findInstanceContainers(**search_criteria)
+        if containers: # Found one!
+            return containers[0]
+
+        if "name" in search_criteria:
+            del search_criteria["name"] # Not found, then drop the name requirement (if we had one) and search again.
+            containers = container_registry.findInstanceContainers(**search_criteria)
+            if containers:
+                return containers[0]
+
+        return self._empty_quality_changes_container # Didn't find anything with the required quality_type.
 
     def _onMachineNameChanged(self):
         self.globalContainerChanged.emit()
