@@ -15,7 +15,7 @@ Column
     id: base;
 
     property int totalHeightHeader: childrenRect.height
-    property int currentExtruderIndex:ExtruderManager.activeExtruderIndex;
+    property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -92,8 +92,8 @@ Column
             onGlobalContainerChanged:
             {
                 forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                base.currentExtruderIndex = (machineExtruderCount.properties.value == 1) ? -1 : 0;
-                ExtruderManager.setActiveExtruderIndex(base.currentExtruderIndex);
+                var extruder_index = (machineExtruderCount.properties.value == 1) ? -1 : 0
+                ExtruderManager.setActiveExtruderIndex(extruder_index);
             }
         }
 
@@ -105,13 +105,11 @@ Column
             text: model.name
             tooltip: model.name
             exclusiveGroup: extruderMenuGroup
-            checkable: true
             checked: base.currentExtruderIndex == index
 
             onClicked:
             {
                 forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                base.currentExtruderIndex = index;
                 ExtruderManager.setActiveExtruderIndex(index);
             }
 
