@@ -23,11 +23,11 @@ from . import Profile # To upgrade profiles.
 #   may have changed in later versions than 2.2.
 _machines_with_machine_quality = {
     "ultimaker2plus": {
-        "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva" },
+        "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva", "generic_cpe_plus", "generic_nylon", "generic_pc", "generic_tpu" },
         "variants": { "0.25 mm", "0.4 mm", "0.6 mm", "0.8 mm" }
     },
     "ultimaker2_extended_plus": {
-        "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva" },
+        "materials": { "generic_abs", "generic_cpe", "generic_pla", "generic_pva", "generic_cpe_plus", "generic_nylon", "generic_pc", "generic_tpu" },
         "variants": { "0.25 mm", "0.4 mm", "0.6 mm", "0.8 mm" }
     }
 }
@@ -42,6 +42,10 @@ _profile_translations = {
     "PLA": "generic_pla",
     "ABS": "generic_abs",
     "CPE": "generic_cpe",
+    "CPE+": "generic_cpe_plus",
+    "Nylon": "generic_nylon",
+    "PC": "generic_pc",
+    "TPU": "generic_tpu",
     "Low Quality": "low",
     "Normal Quality": "normal",
     "High Quality": "high",
