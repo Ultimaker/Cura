@@ -137,6 +137,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
         self._recreate_network_manager_count = 1
         self._not_authenticated_message = None
+        self._send_gcode_start = time()  # Time when the sending of the g-code started.
 
         self._last_command = ""
 
@@ -456,6 +457,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   being in progress.
     def startPrint(self):
         try:
+            self._send_gcode_start = time()
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
 
@@ -546,6 +548,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if self._post_reply:
                 self._post_reply.abort()
                 self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                Logger.log("d", "Uploading of print failed after %s", time() - self._send_gcode_start)
                 self._progress_message.hide()
 
             self.setConnectionState(ConnectionState.error)
@@ -681,6 +684,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 del self._material_post_objects[id(reply)]
             elif "print_job" in reply_url:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
+                Logger.log("d", "Uploading of print succeeded after %s", time() - self._send_gcode_start)
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
