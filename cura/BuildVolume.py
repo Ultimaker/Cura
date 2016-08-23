@@ -302,17 +302,17 @@ class BuildVolume(SceneNode):
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
 
-        # Add prima tower location as disallowed area.
+        # Add prime tower location as disallowed area.
         if self._global_container_stack.getProperty("prime_tower_enable", "value"):
-            half_prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value") / 2
+            prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
 
             disallowed_areas.append([
-                [prime_tower_x - half_prime_tower_size, prime_tower_y - half_prime_tower_size],
-                [prime_tower_x + half_prime_tower_size, prime_tower_y - half_prime_tower_size],
-                [prime_tower_x + half_prime_tower_size, prime_tower_y + half_prime_tower_size],
-                [prime_tower_x - half_prime_tower_size, prime_tower_y + half_prime_tower_size],
+                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y],
+                [prime_tower_x - prime_tower_size, prime_tower_y],
             ])
 
         # Add extruder prime locations as disallowed areas.
