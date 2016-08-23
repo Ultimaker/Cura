@@ -377,6 +377,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material._dirty = False
                     UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
+        if not global_compatibility:
+            super().setMetaDataEntry("type", "incompatible_material")
+
     def _addSettingElement(self, builder, instance):
         try:
             key = UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key)
