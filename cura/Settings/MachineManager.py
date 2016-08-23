@@ -489,6 +489,7 @@ class MachineManager(QObject):
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
         old_material = self._active_container_stack.findContainer({"type": "material"})
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
+        old_quality_changes = self._active_container_stack.findContainer({"type": "quality_changes"})
         if not old_material:
             Logger.log("w", "While trying to set the active material, no material was found to replace it.")
             return
@@ -500,11 +501,15 @@ class MachineManager(QObject):
 
         containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        preferred_quality_name = None
         if old_quality:
-            preferred_quality_name = old_quality.getName()
+            if old_quality_changes:
+                new_quality = self._updateQualityChangesContainer(old_quality.getMetaDataEntry("quality_type"), old_quality_changes.getMetaDataEntry("name"))
+            else:
+                new_quality = self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], old_quality.getName())
+        else:
+            new_quality = self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0])
 
-        self.setActiveQuality(self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], preferred_quality_name).id)
+        self.setActiveQuality(new_quality.getId())
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
