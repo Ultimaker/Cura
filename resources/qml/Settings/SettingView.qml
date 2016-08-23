@@ -94,10 +94,10 @@ ScrollView
             {
                 target: provider
                 property: "containerStackId"
-                when: model.settable_per_extruder || model.settable_per_mesh || (inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0);
+                when: model.settable_per_extruder || (inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0);
                 value:
                 {
-                    if(!model.settable_per_extruder && !model.settable_per_mesh)
+                    if(!model.settable_per_extruder)
                     {
                         //Not settable per extruder, so we must pick global.
                         return Cura.MachineManager.activeMachineId;
