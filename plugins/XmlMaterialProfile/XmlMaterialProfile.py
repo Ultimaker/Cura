@@ -378,6 +378,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
         if not global_compatibility:
+            # Change the type of this container so it is not shown as an option in menus.
+            # This uses InstanceContainer.setMetaDataEntry because otherwise all containers that
+            # share this basefile are also updated.
             super().setMetaDataEntry("type", "incompatible_material")
 
     def _addSettingElement(self, builder, instance):
