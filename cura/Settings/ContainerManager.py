@@ -458,10 +458,12 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, str, result = bool)
     def renameQualityChanges(self, quality_name, new_name):
+        UM.Logger.log("d", "User requested QualityChanges container rename of %s to %s", quality_name, new_name)
         if not quality_name or not new_name:
             return False
 
         if quality_name == new_name:
+            UM.Logger.log("w", "Unable to rename %s to %s, because they are the same.", quality_name, new_name)
             return True
 
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
