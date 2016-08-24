@@ -242,9 +242,12 @@ class CuraEngineBackend(Backend):
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             return
-
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
+
+        # Notify the user that it's now up to the backend to do it's job
+        self.backendStateChange.emit(BackendState.Processing)
+
         Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
     ##  Listener for when the scene has changed.
