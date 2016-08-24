@@ -32,13 +32,8 @@ _machines_with_machine_quality = {
     }
 }
 
-##  How to translate printer names from the old version to the new.
-_printer_translations = {
-    "ultimaker2plus": "ultimaker2_plus"
-}
-
-##  How to translate profile names from the old version to the new.
-_profile_translations = {
+##  How to translate material names from the old version to the new.
+_material_translations = {
     "PLA": "generic_pla",
     "ABS": "generic_abs",
     "CPE": "generic_cpe",
@@ -46,6 +41,15 @@ _profile_translations = {
     "Nylon": "generic_nylon",
     "PC": "generic_pc",
     "TPU": "generic_tpu",
+}
+
+##  How to translate printer names from the old version to the new.
+_printer_translations = {
+    "ultimaker2plus": "ultimaker2_plus"
+}
+
+##  How to translate profile names from the old version to the new.
+_profile_translations = {
     "Low Quality": "low",
     "Normal Quality": "normal",
     "High Quality": "high",
