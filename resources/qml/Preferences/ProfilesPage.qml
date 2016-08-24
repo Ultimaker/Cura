@@ -123,9 +123,9 @@ UM.ManagementPage
     signal showProfileNameDialog()
     onShowProfileNameDialog: { renameDialog.removeWhenRejected = true; renameDialog.open(); renameDialog.selectText(); }
 
-    signal selectContainer(string id)
+    signal selectContainer(string name)
     onSelectContainer: {
-        objectList.currentIndex = objectList.model.find("id", id);
+        objectList.currentIndex = objectList.model.find("name", name);
     }
 
     Item {
