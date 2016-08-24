@@ -235,6 +235,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveQuality(base.model.getItem(0).name)
                 }
+                objectList.currentIndex = -1 //Reset selection. 
             }
         }
         UM.RenameDialog
