@@ -235,7 +235,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveQuality(base.model.getItem(0).name)
                 }
-                objectList.currentIndex = -1 //Reset selection. 
+                objectList.currentIndex = -1 //Reset selection.
             }
         }
         UM.RenameDialog
@@ -243,7 +243,11 @@ UM.ManagementPage
             id: renameDialog;
             object: base.currentItem != null ? base.currentItem.name : ""
             property bool removeWhenRejected: false
-            onAccepted: Cura.ContainerManager.renameQualityChanges(base.currentItem.name, newName)
+            onAccepted:
+            {
+                Cura.ContainerManager.renameQualityChanges(base.currentItem.name, newName)
+                objectList.currentIndex = -1 //Reset selection.
+            }
             onRejected: {
                 if(removeWhenRejected) {
                     Cura.ContainerManager.removeQualityChanges(base.currentItem.name)
