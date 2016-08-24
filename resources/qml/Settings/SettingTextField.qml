@@ -106,7 +106,16 @@ SettingItem
             {
                 target: input
                 property: "text"
-                value: propertyProvider.properties.value
+                value:  {
+                    if ((propertyProvider.properties.resolve != "None") && (stackLevel != 0) && (stackLevel != 1)) {
+                        // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                        // we have to choose between the resolved value (default) and the global value
+                        // (if user has explicitly set this).
+                        return propertyProvider.properties.resolve;
+                    } else {
+                        return propertyProvider.properties.value;
+                    }
+                }
                 when: !input.activeFocus
             }
         }

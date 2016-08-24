@@ -203,7 +203,13 @@ class StartSliceJob(Job):
         keys = stack.getAllKeys()
         settings = {}
         for key in keys:
-            settings[key] = stack.getProperty(key, "value")
+            # Use resolvement value if available, or take the value
+            resolved_value = stack.getProperty(key, "resolve")
+            if resolved_value is not None:
+                settings[key] = resolved_value
+            else:
+                # Normal case
+                settings[key] = stack.getProperty(key, "value")
 
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend

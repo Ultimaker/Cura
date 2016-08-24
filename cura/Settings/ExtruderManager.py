@@ -330,6 +330,17 @@ class ExtruderManager(QObject):
 
         return result
 
+    ##  Get all extruder values for a certain setting.
+    #
+    #   This is exposed to qml for display purposes
+    #
+    #   \param key The key of the setting to retieve values for.
+    #
+    #   \return String representing the extruder values
+    @pyqtSlot(str, result="QList<int>")
+    def getInstanceExtruderValues(self, key):
+        return ExtruderManager.getExtruderValues(key)
+
     ##  Get the value for a setting from a specific extruder.
     #
     #   This is exposed to SettingFunction to use in value functions.
