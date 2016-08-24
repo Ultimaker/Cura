@@ -438,13 +438,17 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if successful, False if not.
     @pyqtSlot(str, result = bool)
     def removeQualityChanges(self, quality_name):
+        UM.Logger.log("d", "Attempting to remove the container %s", quality_name)
+        containers_found = False
+
         if not quality_name:
-            return False
+            return containers_found  # Without a name we will never find a container to remove.
 
         for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
+            containers_found = True
             UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
 
-        return True
+        return containers_found
 
     ##  Rename a set of quality changes containers.
     #
