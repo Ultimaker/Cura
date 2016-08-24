@@ -794,12 +794,19 @@ class CuraApplication(QtApplication):
             return
         multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
         group_node.addDecorator(multi_material_decorator)
-        # Reset the position of each node
-        for node in group_node.getChildren():
-            new_position = node.getMeshData().getCenterPosition()
-            new_position = new_position.scale(node.getScale())
-            node.setPosition(new_position)
-        
+
+        # Compute the center of the objects when their origins are aligned.
+        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren()]
+        middle_x = sum([v.x for v in object_centers]) / len(object_centers)
+        middle_y = sum([v.y for v in object_centers]) / len(object_centers)
+        middle_z = sum([v.z for v in object_centers]) / len(object_centers)
+        offset = Vector(middle_x, middle_y, middle_z)
+
+        # Move each node to the same position.
+        for center, node in zip(object_centers, group_node.getChildren()):
+            # Align the object and also apply the offset to center it inside the group.
+            node.setPosition(center - offset)
+
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
 
