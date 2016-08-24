@@ -56,8 +56,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
-        if key == "material" or key == "color_name":
-            self.setName(self._profile_name(self.getMetaDataEntry("material"), self.getMetaDataEntry("color_name")))
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
         # Update all containers that share GUID and basefile
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = basefile):
