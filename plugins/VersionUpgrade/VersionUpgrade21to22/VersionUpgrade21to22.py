@@ -32,13 +32,8 @@ _machines_with_machine_quality = {
     }
 }
 
-##  How to translate printer names from the old version to the new.
-_printer_translations = {
-    "ultimaker2plus": "ultimaker2_plus"
-}
-
-##  How to translate profile names from the old version to the new.
-_profile_translations = {
+##  How to translate material names from the old version to the new.
+_material_translations = {
     "PLA": "generic_pla",
     "ABS": "generic_abs",
     "CPE": "generic_cpe",
@@ -46,6 +41,31 @@ _profile_translations = {
     "Nylon": "generic_nylon",
     "PC": "generic_pc",
     "TPU": "generic_tpu",
+}
+
+##  How to translate material names for in the profile names.
+_material_translations_profiles = {
+    "PLA": "pla",
+    "ABS": "abs",
+    "CPE": "cpe",
+    "CPE+": "cpep",
+    "Nylon": "nylon",
+    "PC": "pc",
+    "TPU": "tpu",
+}
+
+##  How to translate printer names from the old version to the new.
+_printer_translations = {
+    "ultimaker2plus": "ultimaker2_plus"
+}
+
+_printer_translations_profiles = {
+    "ultimaker2plus": "um2p", #Does NOT get included in PLA profiles!
+    "ultimaker2_extended_plus": "um2ep" #Has no profiles for CPE+, Nylon, PC and TPU!
+}
+
+##  How to translate profile names from the old version to the new.
+_profile_translations = {
     "Low Quality": "low",
     "Normal Quality": "normal",
     "High Quality": "high",
@@ -88,6 +108,14 @@ _variant_translations = {
     }
 }
 
+##  How to translate variant names for in the profile names.
+_variant_translations_profiles = {
+    "0.25 mm": "0.25",
+    "0.4 mm": "0.4",
+    "0.6 mm": "0.6",
+    "0.8 mm": "0.8"
+}
+
 ##  Cura 2.2's material profiles use a different naming scheme for variants.
 #
 #   Getting pretty stressed out by this sort of thing...
@@ -122,6 +150,14 @@ class VersionUpgrade21to22(VersionUpgrade):
         parser.read_string(serialised)
         return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
 
+    ##  Gets the set of built-in profile names in Cura 2.1.
+    #
+    #   This is required to test if profiles should be converted to a quality
+    #   profile or a quality-changes profile.
+    @staticmethod
+    def builtInProfiles():
+        return _profile_translations.keys()
+
     ##  Gets a set of the machines which now have per-material quality profiles.
     #
     #   \return A set of machine identifiers.
@@ -146,7 +182,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     ##  Converts preferences from format version 2 to version 3.
     #
     #   \param serialised The serialised preferences file in version 2.
-    #   \param filename THe supposed file name of the preferences file, without
+    #   \param filename The supposed file name of the preferences file, without
     #   extension.
     #   \return A tuple containing the new filename and the serialised
     #   preferences in version 3, or None if the input was not of the correct
@@ -170,6 +206,28 @@ class VersionUpgrade21to22(VersionUpgrade):
             return filename, None
         return profile.export()
 
+    ##  Translates a material name for the change from Cura 2.1 to 2.2.
+    #
+    #   \param material A material name in Cura 2.1.
+    #   \return The name of the corresponding material in Cura 2.2.
+    @staticmethod
+    def translateMaterial(material):
+        if material in _material_translations:
+            return _material_translations[material]
+        return material
+
+    ##  Translates a material name for the change from Cura 2.1 to 2.2 in
+    #   quality profile names.
+    #
+    #   \param material A material name in Cura 2.1.
+    #   \return The name of the corresponding material in the quality profiles
+    #   in Cura 2.2.
+    @staticmethod
+    def translateMaterialForProfiles(material):
+        if material in _material_translations_profiles:
+            return _material_translations_profiles[material]
+        return material
+
     ##  Translates a printer name that might have changed since the last
     #   version.
     #
@@ -180,6 +238,17 @@ class VersionUpgrade21to22(VersionUpgrade):
         if printer in _printer_translations:
             return _printer_translations[printer]
         return printer #Doesn't need to be translated.
+
+    ##  Translates a printer name for the change from Cura 2.1 to 2.2 in quality
+    #   profile names.
+    #
+    #   \param printer A printer name in 2.1.
+    #   \return The name of the corresponding printer in Cura 2.2.
+    @staticmethod
+    def translatePrinterForProfile(printer):
+        if printer in _printer_translations_profiles:
+            return _printer_translations_profiles[printer]
+        return printer
 
     ##  Translates a built-in profile name that might have changed since the
     #   last version.
@@ -246,4 +315,16 @@ class VersionUpgrade21to22(VersionUpgrade):
     def translateVariantForMaterials(variant, machine):
         if machine in _variant_translations_materials and variant in _variant_translations_materials[machine]:
             return _variant_translations_materials[machine][variant]
+        return variant
+
+    ##  Translates a variant name for the change from Cura 2.1 to 2.2 in quality
+    #   profiles.
+    #
+    #   \param variant The name of the variant in Cura 2.1.
+    #   \return The name of the corresponding variant for in quality profiles in
+    #   Cura 2.2.
+    @staticmethod
+    def translateVariantForProfiles(variant):
+        if variant in _variant_translations_profiles:
+            return _variant_translations_profiles[variant]
         return variant
