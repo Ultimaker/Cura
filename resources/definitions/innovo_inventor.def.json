@@ -91,6 +91,10 @@
         "speed_topbottom": {
             "default_value": 30
         },
+        "speed_support_interface":
+        {
+            "default_value": 20
+        },
         "speed_travel": {
             "default_value": 150
         },
