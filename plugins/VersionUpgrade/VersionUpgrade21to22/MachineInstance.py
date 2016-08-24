@@ -69,7 +69,6 @@ class MachineInstance:
         config.add_section("general")
         config.set("general", "name", self._name)
         config.set("general", "id", self._name)
-        config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
