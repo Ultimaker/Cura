@@ -13,7 +13,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
-from UM.Platform import Platform
 from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
@@ -50,12 +49,12 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-import platform
 import sys
 import os.path
 import numpy
 import copy
 import urllib
+
 numpy.seterr(all="ignore")
 
 try:
@@ -929,5 +928,4 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str)
     def log(self, msg):
-        from UM.Logger import Logger
         Logger.log("d", msg)

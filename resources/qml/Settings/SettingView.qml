@@ -125,7 +125,7 @@ ScrollView
                 id: inheritStackProvider
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key
-                watchedProperties: [ "global_inherits_stack", "value" ]
+                watchedProperties: [ "global_inherits_stack" ]
             }
 
             UM.SettingPropertyProvider
