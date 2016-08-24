@@ -117,6 +117,10 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         builder.data(metadata.pop("color_name", ""))
         builder.end("color")
 
+        builder.start("label")
+        builder.data(self._name)
+        builder.end("label")
+
         builder.end("name")
         ## End Name Block
 
@@ -235,8 +239,12 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 brand = entry.find("./um:brand", self.__namespaces)
                 material = entry.find("./um:material", self.__namespaces)
                 color = entry.find("./um:color", self.__namespaces)
+                label = entry.find("./um:label", self.__namespaces)
 
-                self.setName(self._profile_name(material.text, color.text))
+                if label:
+                    self.setName(label.text)
+                else:
+                    self.setName(self._profile_name(material.text, color.text))
 
                 self.addMetaDataEntry("brand", brand.text)
                 self.addMetaDataEntry("material", material.text)

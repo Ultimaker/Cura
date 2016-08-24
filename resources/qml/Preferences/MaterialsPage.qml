@@ -282,7 +282,6 @@ UM.ManagementPage
         {
             return
         }
-
         materialProperties.name = currentItem.name;
 
         if(currentItem.metadata != undefined && currentItem.metadata != null)
@@ -305,6 +304,7 @@ UM.ManagementPage
                 materialProperties.density = 0.0;
                 materialProperties.diameter = 0.0;
             }
+
         }
     }
 }
