@@ -1765,7 +1765,13 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self._nozzle_size = profile.getProfileSettingFloat('nozzle_size')
 		self._machine_name = profile.getMachineSetting('machine_name')
 		self._machine_type = profile.getMachineSetting('machine_type')
+		self._toolhead = profile.getMachineSetting('toolhead')
+		self._toolhead_shortname = profile.getMachineSetting('toolhead_shortname')
 		self._extruder_amount = int(profile.getMachineSettingFloat('extruder_amount'))
+		self._extruder_offset_x1 = float(profile.getMachineSettingFloat('extruder_offset_x1'))
+		self._extruder_offset_y1 = float(profile.getMachineSettingFloat('extruder_offset_y1'))
+		self._machine_width = float(profile.getMachineSettingFloat('machine_width'))
+		self._machine_height = float(profile.getMachineSettingFloat('machine_height'))
 
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
@@ -1821,6 +1827,12 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		profile.putMachineSetting('machine_name', self._machine_name)
 		profile.putMachineSetting('machine_type', self._machine_type)
 		profile.putMachineSetting('extruder_amount', self._extruder_amount)
+		profile.putMachineSetting('toolhead', self._toolhead)
+		profile.putMachineSetting('toolhead_shortname', self._toolhead_shortname)
+		profile.putMachineSetting('extruder_offset_x1', self._extruder_offset_x1)
+		profile.putMachineSetting('extruder_offset_y1', self._extruder_offset_y1)
+		profile.putMachineSetting('machine_width', self._machine_width)
+		profile.putMachineSetting('machine_height', self._machine_height)
 
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
