@@ -241,7 +241,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 color = entry.find("./um:color", self.__namespaces)
                 label = entry.find("./um:label", self.__namespaces)
 
-                if label:
+                if label is not None:
                     self.setName(label.text)
                 else:
                     self.setName(self._profile_name(material.text, color.text))
