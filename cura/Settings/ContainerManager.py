@@ -496,9 +496,10 @@ class ContainerManager(QObject):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         if not global_stack or not quality_name:
             return ""
-
+        UM.Logger.log("d", "Attempting to duplicate the quality %s", quality_name)
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_name)
         if not containers:
+            UM.Logger.log("d", "Unable to duplicate the quality %s, because it doesn't exist.", quality_name)
             return ""
 
         new_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_name)
