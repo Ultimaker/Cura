@@ -60,8 +60,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         # Update all containers that share GUID and basefile
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
-            if key == "material" or key == "color_name":
-                container.setName(self.getName())
 
     ##  Overridden from InstanceContainer
     def setProperty(self, key, property_name, property_value, container = None):
