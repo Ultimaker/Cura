@@ -225,6 +225,15 @@ class ContainerManager(QObject):
 
         return result
 
+    @pyqtSlot(str, result = bool)
+    def isContainerUsed(self, container_id):
+        UM.Logger.log("d", "Checking if container %s is currently used in the active stacks", container_id)
+        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            if container_id in [child.getId() for child in stack.getContainers()]:
+                UM.Logger.log("d", "The container is in use by %s", stack.getId())
+                return True
+        return False
+
     ##  Get a list of string that can be used as name filters for a Qt File Dialog
     #
     #   This will go through the list of available container types and generate a list of strings
