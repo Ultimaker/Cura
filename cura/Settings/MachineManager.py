@@ -241,6 +241,8 @@ class MachineManager(QObject):
     def _onPropertyChanged(self, key, property_name):
         # HACK CURA-2173
         if property_name == "value":
+            # If a setting is not settable per extruder but at the same time settable per mesh, the engine needs a value in the extruder stack
+            # This is mainly the case for the "support_enable" setting.
             if self._active_container_stack.getProperty(key, "settable_per_mesh") and not self._active_container_stack.getProperty(key, "settable_per_extruder"):
                 if self._active_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                     new_value = self._global_container_stack.getProperty(key, "value")
