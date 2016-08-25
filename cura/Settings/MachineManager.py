@@ -809,10 +809,13 @@ class MachineManager(QObject):
             # If a quality for this specific material cannot be found, try finding qualities for a generic version of the material
             material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic" }
             if definition.getMetaDataEntry("has_machine_quality"):
-                material_search_criteria["definition"] = definition.id
+                if material_container:
+                    material_search_criteria["definition"] = material_container.getDefinition().id
+                else:
+                    material_search_criteria["definition"] = definition.id
 
-                if definition.getMetaDataEntry("has_variants") and variant_container:
-                    material_search_criteria["variant"] = variant_container.id
+                    if definition.getMetaDataEntry("has_variants") and variant_container:
+                        material_search_criteria["variant"] = variant_container.id
             else:
                 material_search_criteria["definition"] = "fdmprinter"
 
