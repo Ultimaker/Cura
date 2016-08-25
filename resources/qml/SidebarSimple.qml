@@ -426,7 +426,7 @@ Item
     {
         id: platformAdhesionType
 
-        containerStackId: Cura.MachineManager.activeStackId
+        containerStackId: Cura.MachineManager.activeMachineId
         key: "adhesion_type"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -436,7 +436,7 @@ Item
     {
         id: supportEnabled
 
-        containerStackId: Cura.MachineManager.activeStackId
+        containerStackId: Cura.MachineManager.activeMachineId
         key: "support_enable"
         watchedProperties: [ "value" ]
         storeIndex: 0
@@ -456,7 +456,7 @@ Item
     {
         id: supportExtruderNr
 
-        containerStackId: Cura.MachineManager.activeStackId
+        containerStackId: Cura.MachineManager.activeMachineId
         key: "support_extruder_nr"
         watchedProperties: [ "value" ]
         storeIndex: 0
