@@ -390,8 +390,7 @@ class CuraEngineBackend(Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._enabled = True  # Tool stop, start listening for changes again.
-        self._terminate()
-
+        
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
