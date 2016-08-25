@@ -292,7 +292,7 @@ Item
     Action
     {
         id: configureSettingVisibilityAction
-        text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
+        text: catalog.i18nc("@action:menu", "Configure setting visibility...");
         iconName: "configure"
     }
 }
