@@ -239,6 +239,17 @@ class MachineManager(QObject):
             self.activeQualityChanged.emit()
 
     def _onPropertyChanged(self, key, property_name):
+        if property_name == "value":
+            # If a setting is not settable per extruder but at the same time settable per mesh, the engine needs a value in the extruder stack
+            # This is mainly the case for the "support_enable" setting.
+            if self._active_container_stack.getProperty(key, "settable_per_mesh") and not self._active_container_stack.getProperty(key, "settable_per_extruder"):
+                if self._active_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+                    new_value = self._global_container_stack.getProperty(key, "value")
+                    stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+                    for extruder_stack in stacks:
+                        if extruder_stack.getProperty(key, "value") != new_value:
+                            extruder_stack.getTop().setProperty(key, "value", new_value)
+
         if property_name == "validationState":
             if self._active_stack_valid:
                 if self._active_container_stack.getProperty(key, "settable_per_extruder"):

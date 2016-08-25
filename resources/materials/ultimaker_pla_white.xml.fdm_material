@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Automatically generated PLA profile. Data in this file may not be not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Ultimaker</brand>
+            <material>PLA</material>
+            <color>White</color>
+        </name>
+        <GUID>e509f649-9fe6-4b14-ac45-d441438cb4ef</GUID>
+        <version>0</version>
+        <color_code>#f1ece1</color_code>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">200</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">175</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Go"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended"/>
+            <setting key="standby temperature">150</setting>
+            <setting key="processing temperature graph">
+                <point flow="2" temperature="180"/>
+                <point flow="10" temperature="230"/>
+            </setting>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker Original"/>
+            <setting key="standby temperature">150</setting>
+        </machine>
+    </settings>
+</fdmmaterial>
