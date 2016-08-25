@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Automatically generated ABS profile. Data in this file may not be not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Ultimaker</brand>
+            <material>ABS</material>
+            <color>White</color>
+        </name>
+        <GUID>5253a75a-27dc-4043-910f-753ae11bc417</GUID>
+        <version>0</version>
+        <color_code>#ecece7</color_code>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">240</setting>
+        <setting key="heated bed temperature">80</setting>
+        <setting key="standby temperature">200</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+    </settings>
+</fdmmaterial>

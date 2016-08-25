@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Automatically generated CPE profile. Data in this file may not be not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Ultimaker</brand>
+            <material>CPE</material>
+            <color>Transparent</color>
+        </name>
+        <GUID>bd0d9eb3-a920-4632-84e8-dcd6086746c5</GUID>
+        <version>0</version>
+        <color_code>#d0d0d0</color_code>
+    </metadata>
+    <properties>
+        <density>1.27</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">70</setting>
+        <setting key="standby temperature">175</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+    </settings>
+</fdmmaterial>
