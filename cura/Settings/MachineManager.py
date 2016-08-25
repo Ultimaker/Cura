@@ -239,7 +239,6 @@ class MachineManager(QObject):
             self.activeQualityChanged.emit()
 
     def _onPropertyChanged(self, key, property_name):
-        # HACK CURA-2173
         if property_name == "value":
             # If a setting is not settable per extruder but at the same time settable per mesh, the engine needs a value in the extruder stack
             # This is mainly the case for the "support_enable" setting.
@@ -250,7 +249,6 @@ class MachineManager(QObject):
                     for extruder_stack in stacks:
                         if extruder_stack.getProperty(key, "value") != new_value:
                             extruder_stack.getTop().setProperty(key, "value", new_value)
-        # /HACK
 
         if property_name == "validationState":
             if self._active_stack_valid:

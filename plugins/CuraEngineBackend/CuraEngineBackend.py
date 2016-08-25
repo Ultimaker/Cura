@@ -207,6 +207,9 @@ class CuraEngineBackend(Backend):
 
             except Exception as e:  # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
+        else:
+            # Process is none, but something did went wrong here. Try and re-create the socket
+            self._createSocket()
 
     ##  Event handler to call when the job to initiate the slicing process is
     #   completed.
@@ -387,8 +390,7 @@ class CuraEngineBackend(Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._enabled = True  # Tool stop, start listening for changes again.
-        self._terminate()
-
+        
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
