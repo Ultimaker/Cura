@@ -273,6 +273,8 @@ TabView
         if(old_value != new_value)
         {
             Cura.ContainerManager.setContainerName(base.containerId, new_value);
+            // update material name label. not so pretty, but it works
+            materialProperties.name = new_value;
         }
     }
 }
