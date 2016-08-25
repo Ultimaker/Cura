@@ -181,7 +181,7 @@ class ContainerManager(QObject):
     def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
         if not containers:
-            UM.Logger.log("w", "Could set metadata of container %s because it was not found.", container_id)
+            UM.Logger.log("w", "Could not set metadata of container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
@@ -207,6 +207,24 @@ class ContainerManager(QObject):
             entry_value = root
 
         container.setMetaDataEntry(entry_name, entry_value)
+
+        return True
+
+    ##  Set the name of the specified container.
+    @pyqtSlot(str, str, result = bool)
+    def setContainerName(self, container_id, new_name):
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
+        if not containers:
+            UM.Logger.log("w", "Could not set name of container %s because it was not found.", container_id)
+            return False
+
+        container = containers[0]
+
+        if container.isReadOnly():
+            UM.Logger.log("w", "Cannot set name of read-only container %s.", container_id)
+            return False
+
+        container.setName(new_name)
 
         return True
 
