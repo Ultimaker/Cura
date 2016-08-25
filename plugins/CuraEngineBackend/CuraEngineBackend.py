@@ -194,8 +194,7 @@ class CuraEngineBackend(Backend):
         self.slicingCancelled.emit()
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
-        if self._enabled:
-            self._createSocket()  # Ensure that we have a fresh socket.
+
         if Application.getInstance().getCommandLineOption("external-backend", False):
             return
 
@@ -409,9 +408,11 @@ class CuraEngineBackend(Backend):
     #
     #   We should reset our state and start listening for new connections.
     def _onBackendQuit(self):
-        if not self._restart and self._process:
-            Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
-            self._process = None
+        if not self._restart:
+            if self._process:
+                Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
+                self._process = None
+            self._createSocket()
 
     ##  Called when the global container stack changes
     def _onGlobalStackChanged(self):
