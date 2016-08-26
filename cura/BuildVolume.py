@@ -212,7 +212,7 @@ class BuildVolume(SceneNode):
             "@info:status",
             "The build volume height has been reduced due to the value of the"
             " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."), lifetime=10).show()
+            " with printed models.")).show()
 
     def getRaftThickness(self):
         return self._raft_thickness
