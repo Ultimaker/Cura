@@ -47,7 +47,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def setReadOnly(self, read_only):
         super().setReadOnly(read_only)
 
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container._read_only = read_only
 
     ##  Overridden from InstanceContainer
@@ -59,7 +60,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
         # Update all containers that share GUID and basefile
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = basefile):
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
@@ -78,8 +79,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is none, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=basefile) + UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(
-                GUID=self.getMetaDataEntry("GUID"), base_file=basefile)
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
         for container in containers:
             container.setName(new_name)
 
@@ -90,7 +90,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setProperty(key, property_name, property_value)
 
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(GUID = self.getMetaDataEntry("GUID")):
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container._dirty = True
 
     ##  Overridden from InstanceContainer
@@ -245,6 +246,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         data = ET.fromstring(serialized)
 
         self.addMetaDataEntry("type", "material")
+        self.addMetaDataEntry("base_file", self.id)
 
         # TODO: Add material verfication
         self.addMetaDataEntry("status", "unknown")
@@ -341,7 +343,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_material.setName(self.getName())
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
-                    new_material.addMetaDataEntry("base_file", self.id)
 
                     for key, value in global_setting_values.items():
                         new_material.setProperty(key, "value", value, definition)
@@ -388,7 +389,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
-                    new_hotend_material.addMetaDataEntry("base_file", self.id)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
 
                     for key, value in global_setting_values.items():
