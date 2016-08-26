@@ -4,8 +4,10 @@
 import os.path
 
 from UM.Logger import Logger
-from UM.Settings.InstanceContainer import InstanceContainer #The new profile to make.
+from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ProfileReader import ProfileReader
+
+import zipfile
 
 ##  A plugin that reads profile data from Cura profile files.
 #
@@ -24,19 +26,19 @@ class CuraProfileReader(ProfileReader):
     #   not be read or didn't contain a valid profile, \code None \endcode is
     #   returned.
     def read(self, file_name):
-        # Create an empty profile.
-        profile = InstanceContainer(os.path.basename(os.path.splitext(file_name)[0]))
-        profile.addMetaDataEntry("type", "quality")
-        try:
-            with open(file_name) as f:  # Open file for reading.
+        archive = zipfile.ZipFile(file_name, "r")
+        results = []
+        for profile_id in archive.namelist():
+            # Create an empty profile.
+            profile = InstanceContainer(profile_id)
+            profile.addMetaDataEntry("type", "quality_changes")
+            serialized = ""
+            with archive.open(profile_id) as f:
                 serialized = f.read()
-        except IOError as e:
-            Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
-            return None
-        
-        try:
-            profile.deserialize(serialized)
-        except Exception as e:  # Parsing error. This is not a (valid) Cura profile then.
-            Logger.log("e", "Error while trying to parse profile: %s", str(e))
-            return None
-        return profile
+            try:
+                profile.deserialize(serialized.decode("utf-8") )
+            except Exception as e:  # Parsing error. This is not a (valid) Cura profile then.
+                Logger.log("e", "Error while trying to parse profile: %s", str(e))
+                continue
+            results.append(profile)
+        return results

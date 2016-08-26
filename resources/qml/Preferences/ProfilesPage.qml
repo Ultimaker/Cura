@@ -108,7 +108,6 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
-            enabled: false
         },
         Button
         {

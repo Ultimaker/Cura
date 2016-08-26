@@ -144,7 +144,10 @@ class CuraContainerRegistry(ContainerRegistry):
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
                     for profile in profile_or_list:
-                        self._configureProfile(profile, name_seed)
+                        if profile.getId() != "":
+                            ContainerRegistry.getInstance().addContainer(profile)
+                        else:
+                            self._configureProfile(profile, name_seed)
 
                     if len(profile_or_list) == 1:
                         return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
@@ -158,7 +161,7 @@ class CuraContainerRegistry(ContainerRegistry):
     def _configureProfile(self, profile, name_seed):
         profile.setReadOnly(False)
 
-        new_name = self.createUniqueName("quality", "", name_seed, catalog.i18nc("@label", "Custom profile"))
+        new_name = self.createUniqueName("quality_changes", "", name_seed, catalog.i18nc("@label", "Custom profile"))
         profile.setName(new_name)
         profile._id = new_name
 
