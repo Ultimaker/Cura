@@ -13,6 +13,8 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Profiles");
+    property var extrudersModel: Cura.ExtrudersModel{}
+    //Cura.ExtrudersModel { id: extrudersModel}
 
     model: UM.InstanceContainersModel
     {
@@ -106,15 +108,13 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
-            enabled: false
         },
         Button
         {
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             onClicked: exportDialog.open()
-//             enabled: currentItem != null
-            enabled: false
+            enabled: currentItem != null
         }
     ]
 
@@ -206,7 +206,7 @@ UM.ManagementPage
 
             Repeater
             {
-                model: Cura.ExtrudersModel { }
+                model: base.extrudersModel
 
                 ProfileTab
                 {
@@ -299,7 +299,12 @@ UM.ManagementPage
             folder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var result = base.model.exportProfile(base.currentItem.id, fileUrl, selectedNameFilter)
+                var profiles_to_export = [base.currentItem.id]
+                for(var extruder_nr in base.extrudersModel.items)
+                {
+                    profiles_to_export.push(ExtruderManager.getQualityChangesIdByExtruderStackId(base.extrudersModel.items[extruder_nr].id))
+                }
+                var result = base.model.exportProfile(profiles_to_export, fileUrl, selectedNameFilter)
                 if(result && result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical

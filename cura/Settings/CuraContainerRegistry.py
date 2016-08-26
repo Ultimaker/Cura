@@ -58,12 +58,10 @@ class CuraContainerRegistry(ContainerRegistry):
 
     ##  Exports an profile to a file
     #
-    #   \param instance_id \type{str} the ID of the profile to export.
+    #   \param instance_ids \type{list} the IDs of the profiles to export.
     #   \param file_name \type{str} the full path and filename to export to.
     #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
-    def exportProfile(self, instance_id, file_name, file_type):
-        Logger.log('d', 'exportProfile instance_id: '+str(instance_id))
-
+    def exportProfile(self, instance_ids, file_name, file_type):
         # Parse the fileType to deduce what plugin can save the file format.
         # fileType has the format "<description> (*.<extension>)"
         split = file_type.rfind(" (*.")  # Find where the description ends and the extension starts.
@@ -82,16 +80,16 @@ class CuraContainerRegistry(ContainerRegistry):
                                               catalog.i18nc("@label", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
                 if result == QMessageBox.No:
                     return
-
-        containers = ContainerRegistry.getInstance().findInstanceContainers(id=instance_id)
-        if not containers:
-            return
-        container = containers[0]
+        found_containers = []
+        for instance_id in instance_ids:
+            containers = ContainerRegistry.getInstance().findInstanceContainers(id=instance_id)
+            if containers:
+                found_containers.append(containers[0])
 
         profile_writer = self._findProfileWriter(extension, description)
 
         try:
-            success = profile_writer.write(file_name, container)
+            success = profile_writer.write(file_name, found_containers)
         except Exception as e:
             Logger.log("e", "Failed to export profile to %s: %s", file_name, str(e))
             m = Message(catalog.i18nc("@info:status", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)), lifetime = 0)
@@ -146,7 +144,10 @@ class CuraContainerRegistry(ContainerRegistry):
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
                     for profile in profile_or_list:
-                        self._configureProfile(profile, name_seed)
+                        if profile.getId() != "":
+                            ContainerRegistry.getInstance().addContainer(profile)
+                        else:
+                            self._configureProfile(profile, name_seed)
 
                     if len(profile_or_list) == 1:
                         return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
@@ -160,7 +161,7 @@ class CuraContainerRegistry(ContainerRegistry):
     def _configureProfile(self, profile, name_seed):
         profile.setReadOnly(False)
 
-        new_name = self.createUniqueName("quality", "", name_seed, catalog.i18nc("@label", "Custom profile"))
+        new_name = self.createUniqueName("quality_changes", "", name_seed, catalog.i18nc("@label", "Custom profile"))
         profile.setName(new_name)
         profile._id = new_name
 
