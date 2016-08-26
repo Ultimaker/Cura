@@ -55,6 +55,13 @@ class ExtruderManager(QObject):
             map[position] = self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][position].getId()
         return map
 
+    @pyqtSlot(str, result = str)
+    def getQualityChangesIdByExtruderStackId(self, id):
+        for position in self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()]:
+            extruder = self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][position]
+            if extruder.getId() == id:
+                return extruder.findContainer(type = "quality_changes").getId()
+
     ##  The instance of the singleton pattern.
     #
     #   It's None if the extruder manager hasn't been created yet.
