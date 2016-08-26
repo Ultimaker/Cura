@@ -64,8 +64,6 @@ Cura.MachineAction
                 {
                     startBedLevelingButton.visible = false;
                     bedlevelingButton.visible = true;
-                    checkupMachineAction.heatupHotendStarted = false;
-                    checkupMachineAction.heatupBedStarted = false;
                     manager.startCheck();
                 }
             }
