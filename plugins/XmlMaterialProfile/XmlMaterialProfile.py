@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 import uuid
 
 from UM.Logger import Logger
+from UM.Util import parseBool
 
 import UM.Dictionary
 
@@ -300,7 +301,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 global_setting_values[self.__material_property_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
-                    global_compatibility = entry.text.lower() not in ["no", "false", "0"]
+                    global_compatibility = parseBool(entry.text)
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
 
@@ -317,7 +318,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     machine_setting_values[self.__material_property_setting_map[key]] = entry.text
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
-                        machine_compatibility = entry.text.lower() not in ["no", "false", "0"]
+                        machine_compatibility = parseBool(entry.text)
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
 
@@ -376,7 +377,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                             hotend_setting_values[self.__material_property_setting_map[key]] = entry.text
                         elif key in self.__unmapped_settings:
                             if key == "hardware compatible":
-                                hotend_compatibility = entry.text.lower() not in ["no", "false", "0"]
+                                hotend_compatibility = parseBool(entry.text)
                         else:
                             Logger.log("d", "Unsupported material setting %s", key)
 
