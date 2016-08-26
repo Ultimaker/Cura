@@ -39,24 +39,38 @@ Menu
         Menu
         {
             id: brandMenu
-            title: model.brandName
-            property string brand: model.brandName
+            title: brandName
+            property string brandName: model.brandName
+            property var brandMaterials: model.materials
 
             Instantiator
             {
-                model: UM.InstanceContainersModel
+                model: brandMaterials
+                Menu
                 {
-                    filter: materialFilter(brandMenu.brandName)
-                }
-                MenuItem
-                {
-                    text: model.name
-                    checkable: true;
-                    checked: model.id == Cura.MachineManager.activeMaterialId;
-                    exclusiveGroup: group;
-                    onTriggered:
+                    id: brandMaterialsMenu
+                    title: materialName
+                    property string materialName: model.materialName
+
+                    Instantiator
                     {
-                        Cura.MachineManager.setActiveMaterial(model.id);
+                        model: UM.InstanceContainersModel
+                        {
+                            filter: materialFilter(brandMenu.brandName, brandMaterialsMenu.materialName)
+                        }
+                        MenuItem
+                        {
+                            text: model.name
+                            checkable: true;
+                            checked: model.id == Cura.MachineManager.activeMaterialId;
+                            exclusiveGroup: group;
+                            onTriggered:
+                            {
+                                Cura.MachineManager.setActiveMaterial(model.id);
+                            }
+                        }
+                        onObjectAdded: brandMaterialsMenu.insertItem(index, object)
+                        onObjectRemoved: brandMaterialsMenu.removeItem(object)
                     }
                 }
                 onObjectAdded: brandMenu.insertItem(index, object)
@@ -87,46 +101,68 @@ Menu
 
     MenuItem { action: Cura.Actions.manageMaterials }
 
-    function populateBrandModel()
-    {
-        var brands = materialsModel.getUniqueValues("brand")
-        var material_types = materialsModel.getUniqueValues("material")
-        brandModel.clear();
-        for (var i in brands)
-        {
-            if(brands[i] != "Generic")
-            {
-                brandModel.append({
-                    brandName: brands[i],
-                    materials: []
-                })
-            }
-        }
-    }
-
     function materialFilter(brand, material)
     {
-        var result = { "type": "material" }
-        if(brand != undefined)
+        var result = { "type": "material" };
+        if(brand)
         {
-            result.brand = brand
+            result.brand = brand;
         }
-        if(material != undefined)
+        if(material)
         {
-            result.material = material
+            result.material = material;
         }
         if(Cura.MachineManager.filterMaterialsByMachine)
         {
-            result.definition = Cura.MachineManager.activeDefinitionId
+            result.definition = Cura.MachineManager.activeDefinitionId;
             if(Cura.MachineManager.hasVariants)
             {
-                result.variant = Cura.MachineManager.activeVariantId
+                result.variant = Cura.MachineManager.activeVariantId;
             }
         }
         else
         {
-            result.definition = "fdmprinter"
+            result.definition = "fdmprinter";
         }
-        return result
+        return result;
+    }
+
+    function populateBrandModel()
+    {
+        // Create a structure of unique brands and their material-types
+        var items = materialsModel.items;
+        var materialsByBrand = {}
+        for (var i in items) {
+            var brandName = items[i]["metadata"]["brand"];
+            var materialName = items[i]["metadata"]["material"];
+
+            if (brandName == "Generic")
+            {
+                continue;
+            }
+            if (!materialsByBrand.hasOwnProperty(brandName))
+            {
+                materialsByBrand[brandName] = [];
+            }
+            if (materialsByBrand[brandName].indexOf(materialName) == -1)
+            {
+                materialsByBrand[brandName].push(materialName);
+            }
+        }
+
+        brandModel.clear();
+        for (var brand in materialsByBrand)
+        {
+            var materialsByBrandModel = [];
+            var materials = materialsByBrand[brand];
+            for (var material in materials)
+            {
+                materialsByBrandModel.push({materialName: materials[material]})
+            }
+            brandModel.append({
+                brandName: brand,
+                materials: materialsByBrandModel
+            });
+        }
     }
 }
