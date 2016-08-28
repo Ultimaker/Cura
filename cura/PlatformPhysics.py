@@ -31,6 +31,7 @@ class PlatformPhysics:
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
 
         Preferences.getInstance().addPreference("physics/automatic_push_free", True)
+        Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
 
     def _onSceneChanged(self, source):
         self._change_timer.start()
@@ -68,7 +69,7 @@ class PlatformPhysics:
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
-            if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
+            if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 

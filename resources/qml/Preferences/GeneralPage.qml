@@ -33,6 +33,8 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
+        UM.Preferences.resetPreference("physics/automatic_drop_down")
+        dropDownCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
         UM.Preferences.resetPreference("mesh/scale_to_fit")
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         UM.Preferences.resetPreference("mesh/scale_tiny_meshes")
@@ -195,7 +197,19 @@ UM.PreferencesPage
                 onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
             }
         }
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved down to touch the build plate?")
 
+            CheckBox
+            {
+                id: dropDownCheckbox
+                text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
+                checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
+                onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+            }
+        }
 
         UM.TooltipArea {
             width: childrenRect.width;
