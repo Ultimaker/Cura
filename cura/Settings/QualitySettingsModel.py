@@ -70,7 +70,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         if not self._quality:
             return
 
-        self.clear()
+        items = []
 
         settings = collections.OrderedDict()
         definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
@@ -163,7 +163,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if not profile_value and not user_value:
                 continue
 
-            self.appendItem({
+            items.append({
                 "key": definition.key,
                 "label": definition.label,
                 "unit": definition.unit,
@@ -171,3 +171,5 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "user_value": "" if user_value is None else str(user_value),
                 "category": current_category
             })
+
+        self.setItems(items)
