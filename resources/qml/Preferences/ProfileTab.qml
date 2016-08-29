@@ -35,7 +35,8 @@ Tab
         TableViewColumn
         {
             role: "user_value"
-            title: catalog.i18nc("@title:column", "Current"); visible: quality == Cura.MachineManager.activeQualityId
+            title: catalog.i18nc("@title:column", "Current");
+            visible: quality == Cura.MachineManager.activeQualityId
             width: parent.width * 0.18
         }
         TableViewColumn
