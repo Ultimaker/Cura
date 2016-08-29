@@ -128,6 +128,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
 
         plugin_registry = PluginRegistry.getInstance()
+        container_registry = ContainerRegistry.getInstance()
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
@@ -145,7 +146,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 else:
                     for profile in profile_or_list:
                         if profile.getId() != "":
-                            ContainerRegistry.getInstance().addContainer(profile)
+                            container_registry.addContainer(profile)
                         else:
                             self._configureProfile(profile, name_seed)
 
