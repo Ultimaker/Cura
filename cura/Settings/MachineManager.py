@@ -8,6 +8,8 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 
+from UM.Settings.SettingRelation import RelationType
+
 import UM.Settings
 
 from cura.PrinterOutputDevice import PrinterOutputDevice
@@ -240,15 +242,19 @@ class MachineManager(QObject):
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
-            # If a setting is not settable per extruder but at the same time settable per mesh, the engine needs a value in the extruder stack
-            # This is mainly the case for the "support_enable" setting.
-            if self._active_container_stack.getProperty(key, "settable_per_mesh") and not self._active_container_stack.getProperty(key, "settable_per_extruder"):
-                if self._active_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
-                    new_value = self._global_container_stack.getProperty(key, "value")
-                    stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
-                    for extruder_stack in stacks:
-                        if extruder_stack.getProperty(key, "value") != new_value:
-                            extruder_stack.getTop().setProperty(key, "value", new_value)
+            # If a setting is not settable per extruder, but "has enabled relations" that are settable per extruder
+            # we need to copy the value to global, so that the front-end displays the right settings.
+            if not self._active_container_stack.getProperty(key, "settable_per_extruder"):
+                relations = self._global_container_stack.getBottom()._getDefinition(key).relations
+                for relation in filter(lambda r: r.role == "enabled" and r.type == RelationType.RequiredByTarget, relations):
+                    # Target setting is settable per extruder
+                    if self._active_container_stack.getProperty(relation.target.key, "settable_per_extruder"):
+                        new_value = self._global_container_stack.getProperty(key, "value")
+                        stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
+                        for extruder_stack in stacks:
+                            if extruder_stack.getProperty(key, "value") != new_value:
+                                extruder_stack.getTop().setProperty(key, "value", new_value)
+                        break
 
         if property_name == "validationState":
             if self._active_stack_valid:
@@ -576,9 +582,14 @@ class MachineManager(QObject):
 
             criteria = { "quality_type": quality_type, "extruder": extruder_id }
 
-            if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
-                material = stack.findContainer(type = "material")
+            material = stack.findContainer(type = "material")
+            if material and material is not self._empty_material_container:
                 criteria["material"] = material.getId()
+
+            if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
+                criteria["definition"] = self._global_container_stack.getBottom().getId()
+            else:
+                criteria["definition"] = "fdmprinter"
 
             stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if not stack_quality:
@@ -822,6 +833,9 @@ class MachineManager(QObject):
             if definition.getMetaDataEntry("has_machine_quality"):
                 if material_container:
                     material_search_criteria["definition"] = material_container.getDefinition().id
+
+                    if definition.getMetaDataEntry("has_variants"):
+                        material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
                 else:
                     material_search_criteria["definition"] = definition.id
 
