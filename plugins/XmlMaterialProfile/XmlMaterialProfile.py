@@ -52,9 +52,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def setReadOnly(self, read_only):
         super().setReadOnly(read_only)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._read_only = read_only
+            container._read_only = read_only  # prevent loop instead of calling setReadOnly
 
     ##  Overridden from InstanceContainer
     def setMetaDataEntry(self, key, value):
@@ -63,7 +63,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
         # Update all containers that share GUID and basefile
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
@@ -89,15 +89,15 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             container.setName(new_name)
 
     ##  Overridden from InstanceContainer
-    def setProperty(self, key, property_name, property_value, container = None):
-        if self.isReadOnly():
-            return
-
-        super().setProperty(key, property_name, property_value)
-
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._dirty = True
+    # def setProperty(self, key, property_name, property_value, container = None):
+    #     if self.isReadOnly():
+    #         return
+    #
+    #     super().setProperty(key, property_name, property_value)
+    #
+    #     basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
+    #     for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+    #         container._dirty = True
 
     ##  Overridden from InstanceContainer
     def serialize(self):
