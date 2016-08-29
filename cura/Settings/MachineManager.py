@@ -827,6 +827,9 @@ class MachineManager(QObject):
             if definition.getMetaDataEntry("has_machine_quality"):
                 if material_container:
                     material_search_criteria["definition"] = material_container.getDefinition().id
+
+                    if definition.getMetaDataEntry("has_variants"):
+                        material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
                 else:
                     material_search_criteria["definition"] = definition.id
 
