@@ -14,10 +14,7 @@ Menu
 
     Instantiator
     {
-        model: UM.InstanceContainersModel
-        {
-            filter: materialFilter("Generic")
-        }
+        model: genericMaterialsModel
         MenuItem
         {
             text: model.name
@@ -40,7 +37,7 @@ Menu
         {
             id: brandMenu
             title: brandName
-            property string brandName: model.brandName
+            property string brandName: model.name
             property var brandMaterials: model.materials
 
             Instantiator
@@ -50,14 +47,12 @@ Menu
                 {
                     id: brandMaterialsMenu
                     title: materialName
-                    property string materialName: model.materialName
+                    property string materialName: model.name
+                    property var brandMaterialColors: model.colors
 
                     Instantiator
                     {
-                        model: UM.InstanceContainersModel
-                        {
-                            filter: materialFilter(brandMenu.brandName, brandMaterialsMenu.materialName)
-                        }
+                        model: brandMaterialColors
                         MenuItem
                         {
                             text: model.name
@@ -83,8 +78,13 @@ Menu
 
     ListModel
     {
+        id: genericMaterialsModel
+        Component.onCompleted: populateMenuModels()
+    }
+
+    ListModel
+    {
         id: brandModel
-        Component.onCompleted: populateBrandModel()
     }
 
     //: Model used to populate the brandModel
@@ -92,7 +92,7 @@ Menu
     {
         id: materialsModel
         filter: materialFilter()
-        onDataChanged: populateBrandModel()
+        onDataChanged: populateMenuModels()
     }
 
     ExclusiveGroup { id: group }
@@ -127,40 +127,58 @@ Menu
         return result;
     }
 
-    function populateBrandModel()
+    function populateMenuModels()
     {
         // Create a structure of unique brands and their material-types
+        genericMaterialsModel.clear()
+        brandModel.clear();
+
         var items = materialsModel.items;
-        var materialsByBrand = {}
+        var materialsByBrand = {};
         for (var i in items) {
             var brandName = items[i]["metadata"]["brand"];
             var materialName = items[i]["metadata"]["material"];
 
             if (brandName == "Generic")
             {
-                continue;
+                // Add to top section
+                var materialId = items[i].id;
+                genericMaterialsModel.append({
+                    id:materialId,
+                    name:materialName
+                });
             }
-            if (!materialsByBrand.hasOwnProperty(brandName))
+            else
             {
-                materialsByBrand[brandName] = [];
-            }
-            if (materialsByBrand[brandName].indexOf(materialName) == -1)
-            {
-                materialsByBrand[brandName].push(materialName);
+                // Add to per-brand, per-material menu
+                if (!materialsByBrand.hasOwnProperty(brandName))
+                {
+                    materialsByBrand[brandName] = {};
+                }
+                if (!materialsByBrand[brandName].hasOwnProperty(materialName))
+                {
+                    materialsByBrand[brandName][materialName] = [];
+                }
+                materialsByBrand[brandName][materialName].push({
+                    name: items[i].name,
+                    id: items[i].id
+                });
             }
         }
 
-        brandModel.clear();
         for (var brand in materialsByBrand)
         {
             var materialsByBrandModel = [];
             var materials = materialsByBrand[brand];
             for (var material in materials)
             {
-                materialsByBrandModel.push({materialName: materials[material]})
+                materialsByBrandModel.push({
+                    name: material,
+                    colors: materials[material]
+                })
             }
             brandModel.append({
-                brandName: brand,
+                name: brand,
                 materials: materialsByBrandModel
             });
         }
