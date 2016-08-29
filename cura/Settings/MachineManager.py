@@ -576,9 +576,14 @@ class MachineManager(QObject):
 
             criteria = { "quality_type": quality_type, "extruder": extruder_id }
 
-            if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
-                material = stack.findContainer(type = "material")
+            material = stack.findContainer(type = "material")
+            if material and material is not self._empty_material_container:
                 criteria["material"] = material.getId()
+
+            if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
+                criteria["definition"] = self._global_container_stack.getBottom().getId()
+            else:
+                criteria["definition"] = "fdmprinter"
 
             stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if not stack_quality:
@@ -822,6 +827,9 @@ class MachineManager(QObject):
             if definition.getMetaDataEntry("has_machine_quality"):
                 if material_container:
                     material_search_criteria["definition"] = material_container.getDefinition().id
+
+                    if definition.getMetaDataEntry("has_variants"):
+                        material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
                 else:
                     material_search_criteria["definition"] = definition.id
 
