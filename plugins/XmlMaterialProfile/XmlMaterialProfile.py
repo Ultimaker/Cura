@@ -93,20 +93,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container._dirty = True
-    # Is never used???
-    # def setProperty(self, key, property_name, property_value, container = None):
-    #     if self.isReadOnly():
-    #         return
-    #
-    #     super().setProperty(key, property_name, property_value)
-    #
-    #     basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is none, this is a basefile.
-    #     # Update the basefile as well, this is actually what we're trying to do
-    #     # Update all containers that share GUID and basefile
-    #     containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=basefile) + UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(
-    #         GUID=self.getMetaDataEntry("GUID"), base_file=basefile)
-    #     for container in containers:
-    #         container.setDirty(True)
 
     ##  Overridden from InstanceContainer
     def serialize(self):
