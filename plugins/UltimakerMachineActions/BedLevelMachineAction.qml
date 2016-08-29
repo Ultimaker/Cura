@@ -64,7 +64,7 @@ Cura.MachineAction
                 {
                     startBedLevelingButton.visible = false;
                     bedlevelingButton.visible = true;
-                    manager.startCheck();
+                    manager.startBedLeveling();
                 }
             }
 
