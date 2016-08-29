@@ -37,6 +37,58 @@ UM.ManagementPage
         sectionProperty: "brand"
     }
 
+    delegate: Rectangle
+    {
+        width: objectList.width;
+        height: childrenRect.height;
+        color: isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+        property bool isCurrentItem: ListView.isCurrentItem
+
+        Row
+        {
+            spacing: UM.Theme.getSize("default_margin").width / 2;
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.right: parent.right;
+            Rectangle
+            {
+                width: parent.height * 0.8
+                height: parent.height * 0.8
+                color: model.metadata.color_code
+                border.color: isCurrentItem ? palette.highlightedText : palette.text;
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Label
+            {
+                width: parent.width * 0.3
+                text: model.metadata.material
+                elide: Text.ElideRight
+                font.italic: model.id == activeId
+                color: isCurrentItem ? palette.highlightedText : palette.text;
+            }
+            Label
+            {
+                text: (model.name != model.metadata.material) ? model.metadata.color_name : ""
+                elide: Text.ElideRight
+                font.italic: model.id == activeId
+                color: isCurrentItem ? palette.highlightedText : palette.text;
+            }
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent;
+            onClicked:
+            {
+                if(!parent.ListView.isCurrentItem)
+                {
+                    parent.ListView.view.currentIndex = index;
+                    base.itemActivated();
+                }
+            }
+        }
+    }
+
     activeId: Cura.MachineManager.activeMaterialId
     activeIndex: {
         for(var i = 0; i < model.rowCount(); i++) {
@@ -123,8 +175,6 @@ UM.ManagementPage
     ]
 
     Item {
-        UM.I18nCatalog { id: catalog; name: "cura"; }
-
         visible: base.currentItem != null
         anchors.fill: parent
 
@@ -274,6 +324,9 @@ UM.ManagementPage
         {
             id: messageDialog
         }
+
+        UM.I18nCatalog { id: catalog; name: "cura"; }
+        SystemPalette { id: palette }
     }
 
     onCurrentItemChanged:
