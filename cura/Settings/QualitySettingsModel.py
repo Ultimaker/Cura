@@ -70,7 +70,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         if not self._quality:
             return
 
-        self.clear()
+        items = []
 
         settings = collections.OrderedDict()
         definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
@@ -142,7 +142,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 criteria["extruder"] = None
 
             changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
-
             if changes:
                 containers.extend(changes)
 
@@ -177,7 +176,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if self._extruder_id == "" and UM.Application.getInstance().getGlobalContainerStack().getProperty(definition.key, "settable_per_extruder"):
                 continue
 
-            self.appendItem({
+            items.append({
                 "key": definition.key,
                 "label": definition.label,
                 "unit": definition.unit,
@@ -185,3 +184,5 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "user_value": "" if user_value is None else str(user_value),
                 "category": current_category
             })
+
+        self.setItems(items)
