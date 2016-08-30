@@ -427,14 +427,14 @@ class ContainerManager(QObject):
         if not global_stack:
             return False
 
-        quality_container = global_stack.findContainer(type = "quality")
-        if not quality_container:
+        active_quality_name = UM.Application.getInstance().getMachineManager().activeQualityName
+        if active_quality_name == "":
             UM.Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
             return False
 
         UM.Application.getInstance().getMachineManager().blurSettings.emit()
 
-        unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_container.getName())
+        unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(active_quality_name)
 
         # Go through the active stacks and create quality_changes containers from the user containers.
         for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
