@@ -42,15 +42,13 @@ Item {
             {
                 id: extruderSelector
 
-                model: Cura.ExtrudersModel
+                model: Cura.extruders_model
                 {
                     id: extruders_model
-                    onRowsInserted: extruderSelector.visible = extruders_model.rowCount() > 1
-                    onModelReset:   extruderSelector.visible = extruders_model.rowCount() > 1
                     onModelChanged: extruderSelector.color = extruders_model.getItem(extruderSelector.currentIndex).color
                 }
                 property string color: extruders_model.getItem(extruderSelector.currentIndex).color
-                visible: extruders_model.rowCount() > 1
+                visible: machineExtruderCount.properties.value > 1
                 textRole: "name"
                 width: UM.Theme.getSize("setting_control").width
                 height: UM.Theme.getSize("section").height
@@ -428,6 +426,16 @@ Item {
                 }
             }
         ]
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 
     SystemPalette { id: palette; }
