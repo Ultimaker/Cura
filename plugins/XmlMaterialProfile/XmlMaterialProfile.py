@@ -7,8 +7,10 @@ import io
 import xml.etree.ElementTree as ET
 import uuid
 
+from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.Util import parseBool
+from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
 
@@ -18,6 +20,7 @@ import UM.Settings
 class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
+        self._inherited_files = []
 
     ##  Overridden from InstanceContainer
     def duplicate(self, new_id, new_name = None):
@@ -47,6 +50,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         else:
             result.setMetaDataEntry("base_file", result.id)
         return result
+
+    def getInheritedFiles(self):
+        return self._inherited_files
 
     ##  Overridden from InstanceContainer
     def setReadOnly(self, read_only):
@@ -246,6 +252,50 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         return stream.getvalue()
 
+    # Recursively resolve loading inherited files
+    def _resolveInheritance(self, file_name):
+        xml = self._loadFile(file_name)
+
+        inherits = xml.find("./um:inherits", self.__namespaces)
+        if inherits is not None:
+            inherited = self._resolveInheritance(inherits.text)
+            xml = self._mergeXML(inherited, xml)
+
+        return xml
+
+    def _loadFile(self, file_name):
+        path = Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, file_name + ".xml.fdm_material")
+
+        with open(path, encoding="utf-8") as f:
+            contents = f.read()
+
+        self._inherited_files.append(path)
+        return ET.fromstring(contents)
+
+    def _mergeXML(self, first, second):
+        result = copy.deepcopy(first)
+        self._combineElement(result, second)
+        return result
+
+    # Recursively merges XML elements. Updates either the text or children if another element is found in first.
+    # If it does not exist, copies it from second.
+    def _combineElement(self, first, second):
+        # Create a mapping from tag name to element.
+        mapping = {el.tag: el for el in first}
+        for el in second:
+            if len(el):  # Check if element has children.
+                try:
+                    self._combineElement(mapping[el.tag], el)  # Multiple elements, handle those.
+                except KeyError:
+                    mapping[el.tag] = el
+                    first.append(el)
+            else:
+                try:
+                    mapping[el.tag].text = el.text
+                except KeyError:  # Not in the mapping, so simply add it
+                    mapping[el.tag] = el
+                    first.append(el)
+
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
         data = ET.fromstring(serialized)
@@ -255,6 +305,11 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         # TODO: Add material verfication
         self.addMetaDataEntry("status", "unknown")
+        #for inherit in data.findall("./um:inherits", self.__namespaces):
+        inherits = data.find("./um:inherits", self.__namespaces)
+        if inherits is not None:
+            inherited = self._resolveInheritance(inherits.text)
+            data = self._mergeXML(inherited, data)
 
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
