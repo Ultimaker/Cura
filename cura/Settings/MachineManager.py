@@ -502,7 +502,7 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
         if not containers or not self._active_container_stack:
             return
-
+        Logger.log("d", "Attempting to change the active material to %s", material_id)
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
         old_material = self._active_container_stack.findContainer({"type": "material"})
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
@@ -535,6 +535,7 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
         if not containers or not self._active_container_stack:
             return
+        Logger.log("d", "Attempting to change the active variant to %s", variant_id)
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
         old_material = self._active_container_stack.findContainer({"type": "material"})
         if old_variant:
@@ -554,6 +555,9 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
         if not containers or not self._global_container_stack:
             return
+
+        Logger.log("d", "Attempting to change the active quality to %s", quality_id)
+
         self.blurSettings.emit()
         quality_container = None
         quality_changes_container = self._empty_quality_changes_container
