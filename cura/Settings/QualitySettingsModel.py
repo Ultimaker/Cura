@@ -169,6 +169,14 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if not profile_value and not user_value:
                 continue
 
+            # If a setting is global (not settable per extruder) and we're looking at an extruder stack, ignore this value.
+            if not UM.Application.getInstance().getGlobalContainerStack().getProperty(definition.key, "settable_per_extruder") and self._extruder_id != "":
+                continue
+
+            # If a setting is settable per extruder and we're looking at global tab, ignore this value.
+            if self._extruder_id == "" and UM.Application.getInstance().getGlobalContainerStack().getProperty(definition.key, "settable_per_extruder"):
+                continue
+
             self.appendItem({
                 "key": definition.key,
                 "label": definition.label,
