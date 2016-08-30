@@ -20,6 +20,7 @@ import UM.Settings
 class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
+        self._inherited_files = []
 
     ##  Overridden from InstanceContainer
     def duplicate(self, new_id, new_name = None):
@@ -262,11 +263,10 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def _loadFile(self, file_name):
         path = Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, file_name + ".xml.fdm_material")
 
-        contents = {}
         with open(path, encoding="utf-8") as f:
             contents = f.read()
 
-        #self._inherited_files.append(path)
+        self._inherited_files.append(path)
         return ET.fromstring(contents)
 
     def _mergeXML(self, first, second):
