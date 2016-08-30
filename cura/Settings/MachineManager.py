@@ -512,7 +512,7 @@ class MachineManager(QObject):
             return
         if old_quality_changes.getId() == "empty_quality_changes": #Don't want the empty one.
             old_quality_changes = None
-
+        self.blurSettings.emit()
         old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
         material_index = self._active_container_stack.getContainerIndex(old_material)
@@ -538,6 +538,7 @@ class MachineManager(QObject):
         old_variant = self._active_container_stack.findContainer({"type": "variant"})
         old_material = self._active_container_stack.findContainer({"type": "material"})
         if old_variant:
+            self.blurSettings.emit()
             variant_index = self._active_container_stack.getContainerIndex(old_variant)
             self._active_container_stack.replaceContainer(variant_index, containers[0])
 
@@ -553,7 +554,7 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
         if not containers or not self._global_container_stack:
             return
-
+        self.blurSettings.emit()
         quality_container = None
         quality_changes_container = self._empty_quality_changes_container
 
