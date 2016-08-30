@@ -51,6 +51,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             result.setMetaDataEntry("base_file", result.id)
         return result
 
+    def getInheritedFiles(self):
+        return self._inherited_files
+
     ##  Overridden from InstanceContainer
     def setReadOnly(self, read_only):
         super().setReadOnly(read_only)
