@@ -22,6 +22,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     def __init__(self, parent = None):
         super().__init__(parent = parent)
 
+        self._container_registry = UM.Settings.ContainerRegistry.getInstance()
+
         self._extruder_id = None
         self._quality = None
         self._material = None
@@ -75,7 +77,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         settings = collections.OrderedDict()
         definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = self._quality)
+        containers = self._container_registry.findInstanceContainers(id = self._quality)
         if not containers:
             UM.Logger.log("w", "Could not find a quality container with id %s", self._quality)
             return
@@ -97,7 +99,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if self._material:
                 criteria["material"] = self._material
 
-            quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
                 UM.Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
                 return
@@ -113,22 +115,22 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         criteria["extruder"] = self._extruder_id
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+        containers = self._container_registry.findInstanceContainers(**criteria)
         if not containers:
             # Try again, this time without extruder
             new_criteria = criteria.copy()
             new_criteria.pop("extruder")
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**new_criteria)
+            containers = self._container_registry.findInstanceContainers(**new_criteria)
 
         if not containers:
             # Try again, this time without material
             criteria.pop("material")
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
             # Try again, this time without material or extruder
             criteria.pop("extruder") # "material" has already been popped
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
             UM.Logger.log("Could not find any quality containers matching the search criteria %s" % str(criteria))
@@ -141,10 +143,11 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             else:
                 criteria["extruder"] = None
 
-            changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            changes = self._container_registry.findInstanceContainers(**criteria)
             if changes:
                 containers.extend(changes)
 
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         current_category = ""
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
@@ -159,21 +162,22 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
             user_value = None
             if not self._extruder_id:
-                user_value = UM.Application.getInstance().getGlobalContainerStack().getTop().getProperty(definition.key, "value")
+                user_value = global_container_stack.getTop().getProperty(definition.key, "value")
             else:
-                extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_id)
+                extruder_stack = self._container_registry.findContainerStacks(id = self._extruder_id)
                 if extruder_stack:
                     user_value = extruder_stack[0].getTop().getProperty(definition.key, "value")
 
             if not profile_value and not user_value:
                 continue
 
-            # If a setting is global (not settable per extruder) and we're looking at an extruder stack, ignore this value.
-            if not UM.Application.getInstance().getGlobalContainerStack().getProperty(definition.key, "settable_per_extruder") and self._extruder_id != "":
+            settable_per_extruder = global_container_stack.getProperty(definition.key, "settable_per_extruder")
+            # If a setting is not settable per extruder (global) and we're looking at an extruder tab, don't show this value.
+            if self._extruder_id != "" and not settable_per_extruder:
                 continue
 
-            # If a setting is settable per extruder and we're looking at global tab, ignore this value.
-            if self._extruder_id == "" and UM.Application.getInstance().getGlobalContainerStack().getProperty(definition.key, "settable_per_extruder"):
+            # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
+            if self._extruder_id == "" and settable_per_extruder:
                 continue
 
             items.append({
