@@ -145,6 +145,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
                     for profile in profile_or_list:
+                        profile.setDirty(True)  # Ensure the profiles are correctly saved
                         if profile.getId() != "":
                             container_registry.addContainer(profile)
                         else:
