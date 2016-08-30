@@ -92,7 +92,7 @@ Menu
     {
         id: materialsModel
         filter: materialFilter()
-        onDataChanged: populateMenuModels()
+        onModelReset: populateMenuModels()
     }
 
     ExclusiveGroup { id: group }
@@ -101,17 +101,9 @@ Menu
 
     MenuItem { action: Cura.Actions.manageMaterials }
 
-    function materialFilter(brand, material)
+    function materialFilter()
     {
         var result = { "type": "material" };
-        if(brand)
-        {
-            result.brand = brand;
-        }
-        if(material)
-        {
-            result.material = material;
-        }
         if(Cura.MachineManager.filterMaterialsByMachine)
         {
             result.definition = Cura.MachineManager.activeDefinitionId;
