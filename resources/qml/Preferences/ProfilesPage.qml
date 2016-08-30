@@ -71,13 +71,13 @@ UM.ManagementPage
         },
         Button
         {
-            text: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
+            text: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) && Cura.MachineManager.hasUserSettings ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
             iconName: "list-add";
 
             onClicked:
             {
                 var selectedContainer;
-                if (base.currentItem.id == Cura.MachineManager.activeQualityId) {
+                if (base.currentItem.id == Cura.MachineManager.activeQualityId && Cura.MachineManager.hasUserSettings) {
                     selectedContainer = Cura.ContainerManager.createQualityChanges();
                 } else {
                     selectedContainer = Cura.ContainerManager.duplicateQualityOrQualityChanges(base.currentItem.name);
