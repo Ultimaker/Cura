@@ -137,7 +137,7 @@ Menu
                 var materialId = items[i].id;
                 genericMaterialsModel.append({
                     id:materialId,
-                    name:materialName
+                    name:items[i].name
                 });
             }
             else
@@ -152,8 +152,8 @@ Menu
                     materialsByBrand[brandName][materialName] = [];
                 }
                 materialsByBrand[brandName][materialName].push({
-                    name: items[i].name,
-                    id: items[i].id
+                    id: items[i].id,
+                    name: items[i].name
                 });
             }
         }
