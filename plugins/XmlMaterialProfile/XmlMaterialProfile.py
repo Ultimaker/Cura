@@ -305,7 +305,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         # TODO: Add material verfication
         self.addMetaDataEntry("status", "unknown")
-        #for inherit in data.findall("./um:inherits", self.__namespaces):
+        
         inherits = data.find("./um:inherits", self.__namespaces)
         if inherits is not None:
             inherited = self._resolveInheritance(inherits.text)
