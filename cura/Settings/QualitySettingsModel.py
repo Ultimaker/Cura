@@ -148,6 +148,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 containers.extend(changes)
 
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        is_multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+
         current_category = ""
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
@@ -171,14 +173,15 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if not profile_value and not user_value:
                 continue
 
-            settable_per_extruder = global_container_stack.getProperty(definition.key, "settable_per_extruder")
-            # If a setting is not settable per extruder (global) and we're looking at an extruder tab, don't show this value.
-            if self._extruder_id != "" and not settable_per_extruder:
-                continue
+            if is_multi_extrusion:
+                settable_per_extruder = global_container_stack.getProperty(definition.key, "settable_per_extruder")
+                # If a setting is not settable per extruder (global) and we're looking at an extruder tab, don't show this value.
+                if self._extruder_id != "" and not settable_per_extruder:
+                    continue
 
-            # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
-            if self._extruder_id == "" and settable_per_extruder:
-                continue
+                # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
+                if self._extruder_id == "" and settable_per_extruder:
+                    continue
 
             items.append({
                 "key": definition.key,

@@ -12,7 +12,7 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-
+from UM.Scene.SceneNode import SceneNode
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
@@ -33,7 +33,7 @@ class LayerView(View):
     def __init__(self):
         super().__init__()
         self._shader = None
-        self._selection_shader = None
+        self._ghost_shader = None
         self._num_layers = 0
         self._layer_percentage = 0  # what percentage of layers need to be shown (Slider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
@@ -84,9 +84,9 @@ class LayerView(View):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
-        if not self._selection_shader:
-            self._selection_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._selection_shader.setUniformValue("u_color", Color(32, 32, 32, 128))
+        if not self._ghost_shader:
+            self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
+            self._ghost_shader.setUniformValue("u_color", Color(0, 0, 0, 72))
 
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
@@ -96,8 +96,13 @@ class LayerView(View):
 
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
-                    if Selection.isSelected(node):
-                        renderer.queueNode(node, transparent = True, shader = self._selection_shader)
+                    renderer.queueNode(node,
+                                       shader = self._ghost_shader,
+                                       state_setup_callback = lambda gl: gl.glDepthMask(gl.GL_FALSE),
+                                       state_teardown_callback = lambda gl: gl.glDepthMask(gl.GL_TRUE)
+                    )
+
+                if node.getMeshData() and node.isVisible():
                     layer_data = node.callDecoration("getLayerData")
                     if not layer_data:
                         continue

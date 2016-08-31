@@ -68,7 +68,7 @@ UM.ManagementPage
             }
             Label
             {
-                text: (model.name != model.metadata.material) ? model.metadata.color_name : ""
+                text: (model.name != model.metadata.material) ? model.name : ""
                 elide: Text.ElideRight
                 font.italic: model.id == activeId
                 color: isCurrentItem ? palette.highlightedText : palette.text;
