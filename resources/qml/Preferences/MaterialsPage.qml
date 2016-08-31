@@ -151,6 +151,7 @@ UM.ManagementPage
 
                 Cura.MachineManager.setActiveMaterial(material_id)
             }
+            visible: false;
         },
         Button
         {
@@ -164,6 +165,7 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
+            visible: false;
         },
         Button
         {
