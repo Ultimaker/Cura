@@ -31,7 +31,9 @@ Generic TPU 95A profile. Serves as an example file, data in this file is not cor
             <hotend id="0.25 mm" />
             <hotend id="0.4 mm" />
             <hotend id="0.6 mm" />
-            <hotend id="0.8 mm" />
+            <hotend id="0.8 mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
         </machine>
     </settings>
 </fdmmaterial>

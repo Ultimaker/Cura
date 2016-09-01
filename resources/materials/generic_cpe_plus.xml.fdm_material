@@ -28,7 +28,9 @@ Generic CPE+ profile. Serves as an example file, data in this file is not correc
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
             <setting key="hardware compatible">yes</setting>
 
-            <hotend id="0.25 mm" />
+            <hotend id="0.25 mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
             <hotend id="0.4 mm" />
             <hotend id="0.6 mm" />
             <hotend id="0.8 mm" />
