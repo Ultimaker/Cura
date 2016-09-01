@@ -272,9 +272,44 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         self._inherited_files.append(path)
         return ET.fromstring(contents)
 
+    # The XML material profile can have specific settings for machines.
+    # Some machines share profiles, so they are only created once.
+    # This function duplicates those elements so that each machine tag only has one identifier.
+    def _flattenMachinesXML(self, element):
+        settings_element = element.find("./um:settings", self.__namespaces)
+        machines = settings_element.iterfind("./um:machine", self.__namespaces)
+        machines_to_add = []
+        machines_to_remove = []
+        for machine in machines:
+            identifiers = list(machine.iterfind("./um:machine_identifier", self.__namespaces))
+            has_multiple_identifiers = len(identifiers) > 1
+            if has_multiple_identifiers:
+                # Multiple identifiers found. We need to create a new machine element and copy all it's settings there.
+                for identifier in identifiers:
+                    new_machine = copy.deepcopy(machine)
+                    # Create list of identifiers that need to be removed from the copied element.
+                    other_identifiers = [self._createKey(other_identifier) for other_identifier in identifiers if other_identifier is not identifier]
+                    # As we can only remove by exact object reference, we need to look through the identifiers of copied machine.
+                    new_machine_identifiers = list(new_machine.iterfind("./um:machine_identifier", self.__namespaces))
+                    for new_machine_identifier in new_machine_identifiers:
+                        key = self._createKey(new_machine_identifier)
+                        # Key was in identifiers to remove, so this element needs to be purged
+                        if key in other_identifiers:
+                            new_machine.remove(new_machine_identifier)
+                    machines_to_add.append(new_machine)
+                machines_to_remove.append(machine)
+            else:
+                pass  # Machine only has one identifier. Nothing to do.
+        # Remove & add all required machines.
+        for machine_to_remove in machines_to_remove:
+            settings_element.remove(machine_to_remove)
+        for machine_to_add in machines_to_add:
+            settings_element.append(machine_to_add)
+        return element
+
     def _mergeXML(self, first, second):
         result = copy.deepcopy(first)
-        self._combineElement(result, second)
+        self._combineElement(self._flattenMachinesXML(result), self._flattenMachinesXML(second))
         return result
 
     def _createKey(self, element):
