@@ -3,6 +3,7 @@
 Automatically generated PLA profile. Data in this file may not be not correct.
 -->
 <fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <inherits>generic_pla</inherits>
     <metadata>
         <name>
             <brand>Ultimaker</brand>
@@ -36,16 +37,15 @@ Automatically generated PLA profile. Data in this file may not be not correct.
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2"/>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Go"/>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended"/>
-            <setting key="standby temperature">150</setting>
             <setting key="processing temperature graph">
-                <point flow="2" temperature="180"/>
-                <point flow="10" temperature="230"/>
+                <point flow="2" temperature="20"/>
+                <point flow="10" temperature="20"/>
             </setting>
         </machine>
 
         <machine>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker Original"/>
-            <setting key="standby temperature">150</setting>
+            <setting key="standby temperature">180</setting>
         </machine>
     </settings>
 </fdmmaterial>
