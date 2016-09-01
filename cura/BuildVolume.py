@@ -303,7 +303,7 @@ class BuildVolume(SceneNode):
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
 
         # Add prime tower location as disallowed area.
-        if self._global_container_stack.getProperty("prime_tower_enable", "value"):
+        if self._global_container_stack.getProperty("prime_tower_enable", "value") == True:
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2

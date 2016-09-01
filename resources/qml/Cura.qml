@@ -463,7 +463,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.ContainerManager.createQualityChanges();
+            Cura.ContainerManager.createQualityChanges(null);
             preferences.setPage(4);
             preferences.show();
 
