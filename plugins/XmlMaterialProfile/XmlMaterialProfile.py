@@ -58,9 +58,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def setReadOnly(self, read_only):
         super().setReadOnly(read_only)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._read_only = read_only
+            container._read_only = read_only  # prevent loop instead of calling setReadOnly
 
     ##  Overridden from InstanceContainer
     def setMetaDataEntry(self, key, value):
@@ -69,7 +69,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setMetaDataEntry(key, value)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
         # Update all containers that share GUID and basefile
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container.setMetaData(copy.deepcopy(self._metadata))
@@ -95,15 +95,15 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             container.setName(new_name)
 
     ##  Overridden from InstanceContainer
-    def setProperty(self, key, property_name, property_value, container = None):
-        if self.isReadOnly():
-            return
-
-        super().setProperty(key, property_name, property_value)
-
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._dirty = True
+    # def setProperty(self, key, property_name, property_value, container = None):
+    #     if self.isReadOnly():
+    #         return
+    #
+    #     super().setProperty(key, property_name, property_value)
+    #
+    #     basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
+    #     for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+    #         container._dirty = True
 
     ##  Overridden from InstanceContainer
     def serialize(self):
@@ -272,29 +272,90 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         self._inherited_files.append(path)
         return ET.fromstring(contents)
 
+    # The XML material profile can have specific settings for machines.
+    # Some machines share profiles, so they are only created once.
+    # This function duplicates those elements so that each machine tag only has one identifier.
+    def _flattenMachinesXML(self, element):
+        settings_element = element.find("./um:settings", self.__namespaces)
+        machines = settings_element.iterfind("./um:machine", self.__namespaces)
+        machines_to_add = []
+        machines_to_remove = []
+        for machine in machines:
+            identifiers = list(machine.iterfind("./um:machine_identifier", self.__namespaces))
+            has_multiple_identifiers = len(identifiers) > 1
+            if has_multiple_identifiers:
+                # Multiple identifiers found. We need to create a new machine element and copy all it's settings there.
+                for identifier in identifiers:
+                    new_machine = copy.deepcopy(machine)
+                    # Create list of identifiers that need to be removed from the copied element.
+                    other_identifiers = [self._createKey(other_identifier) for other_identifier in identifiers if other_identifier is not identifier]
+                    # As we can only remove by exact object reference, we need to look through the identifiers of copied machine.
+                    new_machine_identifiers = list(new_machine.iterfind("./um:machine_identifier", self.__namespaces))
+                    for new_machine_identifier in new_machine_identifiers:
+                        key = self._createKey(new_machine_identifier)
+                        # Key was in identifiers to remove, so this element needs to be purged
+                        if key in other_identifiers:
+                            new_machine.remove(new_machine_identifier)
+                    machines_to_add.append(new_machine)
+                machines_to_remove.append(machine)
+            else:
+                pass  # Machine only has one identifier. Nothing to do.
+        # Remove & add all required machines.
+        for machine_to_remove in machines_to_remove:
+            settings_element.remove(machine_to_remove)
+        for machine_to_add in machines_to_add:
+            settings_element.append(machine_to_add)
+        return element
+
     def _mergeXML(self, first, second):
         result = copy.deepcopy(first)
-        self._combineElement(result, second)
+        self._combineElement(self._flattenMachinesXML(result), self._flattenMachinesXML(second))
         return result
+
+    def _createKey(self, element):
+        key = element.tag.split("}")[-1]
+        if "key" in element.attrib:
+            key += " key:" + element.attrib["key"]
+        if "manufacturer" in element.attrib:
+            key += " manufacturer:" + element.attrib["manufacturer"]
+        if "product" in element.attrib:
+            key += " product:" + element.attrib["product"]
+        if key == "machine":
+            for item in element:
+                if "machine_identifier" in item.tag:
+                    key += " " + item.attrib["product"]
+        return key
 
     # Recursively merges XML elements. Updates either the text or children if another element is found in first.
     # If it does not exist, copies it from second.
     def _combineElement(self, first, second):
         # Create a mapping from tag name to element.
-        mapping = {el.tag: el for el in first}
-        for el in second:
-            if len(el):  # Check if element has children.
+
+        mapping = {}
+        for element in first:
+            key = self._createKey(element)
+            mapping[key] = element
+        for element in second:
+            key = self._createKey(element)
+            if len(element):  # Check if element has children.
                 try:
-                    self._combineElement(mapping[el.tag], el)  # Multiple elements, handle those.
+                    if "setting " in key:
+                        # Setting can have points in it. In that case, delete all values and override them.
+                        for child in list(mapping[key]):
+                            mapping[key].remove(child)
+                        for child in element:
+                            mapping[key].append(child)
+                    else:
+                        self._combineElement(mapping[key], element)  # Multiple elements, handle those.
                 except KeyError:
-                    mapping[el.tag] = el
-                    first.append(el)
+                    mapping[key] = element
+                    first.append(element)
             else:
                 try:
-                    mapping[el.tag].text = el.text
+                    mapping[key].text = element.text
                 except KeyError:  # Not in the mapping, so simply add it
-                    mapping[el.tag] = el
-                    first.append(el)
+                    mapping[key] = element
+                    first.append(element)
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
@@ -305,7 +366,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         # TODO: Add material verfication
         self.addMetaDataEntry("status", "unknown")
-        
+
         inherits = data.find("./um:inherits", self.__namespaces)
         if inherits is not None:
             inherited = self._resolveInheritance(inherits.text)
