@@ -102,11 +102,11 @@ class PlatformPhysics:
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     head_hull = node.callDecoration("getConvexHullHead")
                     if head_hull:
-                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHullHead"))
+                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
                         if not overlap:
                             other_head_hull = other_node.callDecoration("getConvexHullHead")
                             if other_head_hull:
-                                overlap = node.callDecoration("getConvexHullHead").intersectsPolygon(other_head_hull)
+                                overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
                     else:
                         own_convex_hull = node.callDecoration("getConvexHull")
                         other_convex_hull = other_node.callDecoration("getConvexHull")

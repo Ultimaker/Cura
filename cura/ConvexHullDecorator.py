@@ -56,6 +56,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._global_stack and self._node:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
+                hull = self._add2DAdhesionMargin(hull)
         return hull
 
     ##  Get the convex hull of the node with the full head size
@@ -229,17 +230,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
         machine_head_coords = numpy.array(
             self._global_stack.getProperty("machine_head_with_fans_polygon", "value"),
             numpy.float32)
-        head_y_size = abs(machine_head_coords).min()  # safe margin to take off in all directions
 
         if adhesion_type == "raft":
-            extra_margin = max(0, self._global_stack.getProperty("raft_margin", "value") - head_y_size)
+            extra_margin = max(0, self._global_stack.getProperty("raft_margin", "value"))
         elif adhesion_type == "brim":
-            extra_margin = max(0, self._global_stack.getProperty("brim_width", "value") - head_y_size)
+            extra_margin = max(0, self._global_stack.getProperty("brim_line_count", "value") * self._global_stack.getProperty("skirt_brim_line_width", "value"))
         elif adhesion_type == "skirt":
             extra_margin = max(
                 0, self._global_stack.getProperty("skirt_gap", "value") +
-                   self._global_stack.getProperty("skirt_line_count", "value") * self._global_stack.getProperty("skirt_brim_line_width", "value") -
-                   head_y_size)
+                   self._global_stack.getProperty("skirt_line_count", "value") * self._global_stack.getProperty("skirt_brim_line_width", "value"))
+
         # adjust head_and_fans with extra margin
         if extra_margin > 0:
             # In Cura 2.2+, there is a function to create this circle-like polygon.
@@ -288,4 +288,4 @@ class ConvexHullDecorator(SceneNodeDecorator):
     _affected_settings = [
         "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
         "raft_surface_thickness", "raft_airgap", "raft_margin", "print_sequence",
-        "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance"]
+        "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
