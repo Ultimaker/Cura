@@ -518,19 +518,24 @@ def find_files_for_material(files, material):
 					result.append((file, material, profile))
 	return result
 
-def is_experimental(material):
-	return material not in material_types
+def is_experimental(material, toolhead_type):
+	answer = material not in material_types
+	if "Moar" in toolhead_type:
+		special_exclusions = {"PCTPE", "Alloy910", "PC_VP"}
+		if material in special_exclusions:
+			answer = True
+	return answer
 
-def get_material_display_name(material):
+def get_material_display_name(material, machine_type):
 	material_name = ""
-	if is_experimental(material):
+	if is_experimental(material, machine_type):
 		material_name += "* "
 	material_name += material_names[material]
 	return material_name
 
-def get_description(material):
+def get_description(material, machine_type):
 	description_data = ""
-	if is_experimental(material):
+	if is_experimental(material, machine_type):
 		description_data = \
 			"* Experimental profile, use at \n" + \
 			" your own risk! Newer profiles \n" + \
@@ -557,7 +562,7 @@ def create_machine_type(machine_type, path, dir):
 				os.makedirs(os.path.join(path, material, profile))
 			with open(os.path.join(path, material, "material.ini"), "w") as f:
 				f.write("[info]\n")
-				f.write("name = %s\n" % get_material_display_name(material))
+				f.write("name = %s\n" % get_material_display_name(material, machine_type))
 				order = material_order[material]
 				if material_types.has_key(material):
 					types = material_types[material]
@@ -568,17 +573,17 @@ def create_machine_type(machine_type, path, dir):
 						types = types + "|First Run"
 						order = 0
 						f.write("default = 1\n")
-				if is_experimental(material):
+				if is_experimental(material, machine_type):
 					types = "Experimental"
 				f.write("material_types = %s\n" % types)
 				f.write("order = %d\n" % order)
-				description_data = get_description(material)
+				description_data = get_description(material, machine_type)
 				if description_data is not "":
 					f.write("description = %s\n" % description_data)
 				if material_url.has_key(material):
 					referer = "?pk_campaign=software-cura"
 					f.write("url = %s%s\n" %(material_url[material], referer) )
-				elif is_experimental(material):
+				elif is_experimental(material, machine_type):
 					f.write("url = %s\n" %("code.alephobjects.com/diffusion/P/") )
 			with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
 				f.write("[info]\n")
