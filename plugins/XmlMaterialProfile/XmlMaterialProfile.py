@@ -87,7 +87,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setName(new_name)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
