@@ -86,7 +86,7 @@ class LayerView(View):
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._ghost_shader.setUniformValue("u_color", Color(0, 0, 0, 72))
+            self._ghost_shader.setUniformValue("u_color", Color(0, 0, 0, 64))
 
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
@@ -98,10 +98,10 @@ class LayerView(View):
                 if node.getMeshData() and node.isVisible():
                     renderer.queueNode(node,
                                        shader = self._ghost_shader,
-                                       state_setup_callback = lambda gl: gl.glDepthMask(gl.GL_FALSE),
-                                       state_teardown_callback = lambda gl: gl.glDepthMask(gl.GL_TRUE)
-                    )
+                                       type = RenderBatch.RenderType.Transparent                    )
 
+        for node in DepthFirstIterator(scene.getRoot()):
+            if type(node) is SceneNode:
                 if node.getMeshData() and node.isVisible():
                     layer_data = node.callDecoration("getLayerData")
                     if not layer_data:
