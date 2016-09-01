@@ -61,6 +61,10 @@ UM.ManagementPage
         return -1;
     }
 
+    function canCreateProfile() {
+        return base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) && Cura.MachineManager.hasUserSettings;
+    }
+
     buttons: [
         Button
         {
@@ -69,26 +73,39 @@ UM.ManagementPage
             enabled: base.currentItem != null ? base.currentItem.id != Cura.MachineManager.activeQualityId : false;
             onClicked: Cura.MachineManager.setActiveQuality(base.currentItem.id)
         },
+
+        // Create button
         Button
         {
-            text: base.currentItem && (base.currentItem.id == Cura.MachineManager.activeQualityId) && Cura.MachineManager.hasUserSettings ? catalog.i18nc("@label", "Create") : catalog.i18nc("@label", "Duplicate")
+            text: catalog.i18nc("@label", "Create")
+            enabled: base.canCreateProfile()
+            visible: base.canCreateProfile()
             iconName: "list-add";
 
             onClicked:
             {
-                var selectedContainer;
-                if (base.currentItem.id == Cura.MachineManager.activeQualityId && Cura.MachineManager.hasUserSettings) {
-                    selectedContainer = Cura.ContainerManager.createQualityChanges();
-                } else {
-                    selectedContainer = Cura.ContainerManager.duplicateQualityOrQualityChanges(base.currentItem.name);
-                }
-                base.selectContainer(selectedContainer);
-
-                renameDialog.removeWhenRejected = true;
-                renameDialog.open();
-                renameDialog.selectText();
+                newNameDialog.object = base.currentItem != null ? base.currentItem.name : "";
+                newNameDialog.open();
+                newNameDialog.selectText();
             }
         },
+
+        // Duplicate button
+        Button
+        {
+            text: catalog.i18nc("@label", "Duplicate")
+            enabled: ! base.canCreateProfile()
+            visible: ! base.canCreateProfile()
+            iconName: "list-add";
+
+            onClicked:
+            {
+                newDuplicateNameDialog.object = base.currentItem.name;
+                newDuplicateNameDialog.open();
+                newDuplicateNameDialog.selectText();
+            }
+        },
+
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
@@ -103,7 +120,6 @@ UM.ManagementPage
             enabled: base.currentItem != null ? !base.currentItem.readOnly : false;
             onClicked:
             {
-                renameDialog.removeWhenRejected = false;
                 renameDialog.open();
                 renameDialog.selectText();
             }
@@ -212,7 +228,7 @@ UM.ManagementPage
             {
                 title: catalog.i18nc("@title:tab", "Global Settings");
                 quality: base.currentItem != null ? base.currentItem.id : "";
-                material: Cura.MachineManager.allActiveMaterialIds.global ? Cura.MachineManager.allActiveMaterialIds.global : ""
+                material: Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId]
             }
 
             Repeater
@@ -249,24 +265,44 @@ UM.ManagementPage
                 objectList.currentIndex = -1 //Reset selection.
             }
         }
+
         UM.RenameDialog
         {
             id: renameDialog;
             object: base.currentItem != null ? base.currentItem.name : ""
-            property bool removeWhenRejected: false
             onAccepted:
             {
                 Cura.ContainerManager.renameQualityChanges(base.currentItem.name, newName)
                 objectList.currentIndex = -1 //Reset selection.
             }
-            onRejected:
+        }
+
+        // Dialog to request a name when creating a new profile
+        UM.RenameDialog
+        {
+            id: newNameDialog;
+            object: "<new name>";
+            onAccepted:
             {
-                if(removeWhenRejected)
-                {
-                    Cura.ContainerManager.removeQualityChanges(base.currentItem.name)
-                }
+                var selectedContainer = Cura.ContainerManager.createQualityChanges(newName);
+                base.selectContainer(selectedContainer);
+                objectList.currentIndex = -1 //Reset selection.
             }
         }
+
+        // Dialog to request a name when duplicating a new profile
+        UM.RenameDialog
+        {
+            id: newDuplicateNameDialog;
+            object: "<new name>";
+            onAccepted:
+            {
+                var selectedContainer = Cura.ContainerManager.duplicateQualityOrQualityChanges(base.currentItem.name, newName);
+                base.selectContainer(selectedContainer);
+                objectList.currentIndex = -1 //Reset selection.
+            }
+        }
+
         MessageDialog
         {
             id: messageDialog

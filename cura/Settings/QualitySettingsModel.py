@@ -182,7 +182,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
-
             items.append({
                 "key": definition.key,
                 "label": definition.label,

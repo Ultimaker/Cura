@@ -423,8 +423,8 @@ class ContainerManager(QObject):
     #   stack and clear the user settings.
     #
     #   \return \type{bool} True if the operation was successfully, False if not.
-    @pyqtSlot(result = bool)
-    def createQualityChanges(self):
+    @pyqtSlot(str, result = bool)
+    def createQualityChanges(self, base_name):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return False
@@ -436,7 +436,9 @@ class ContainerManager(QObject):
 
         self._machine_manager.blurSettings.emit()
 
-        unique_name = self._container_registry.uniqueName(active_quality_name)
+        if base_name is None:
+            base_name = active_quality_name
+        unique_name = self._container_registry.uniqueName(base_name)
 
         # Go through the active stacks and create quality_changes containers from the user containers.
         for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
@@ -540,8 +542,8 @@ class ContainerManager(QObject):
     #   \param quality_name The name of the quality to duplicate.
     #
     #   \return A string containing the name of the duplicated containers, or an empty string if it failed.
-    @pyqtSlot(str, result = str)
-    def duplicateQualityOrQualityChanges(self, quality_name):
+    @pyqtSlot(str, str, result = str)
+    def duplicateQualityOrQualityChanges(self, quality_name, base_name):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         if not global_stack or not quality_name:
             return ""
@@ -551,7 +553,10 @@ class ContainerManager(QObject):
             UM.Logger.log("d", "Unable to duplicate the quality %s, because it doesn't exist.", quality_name)
             return ""
 
-        new_name = self._container_registry.uniqueName(quality_name)
+        if base_name is None:
+            base_name = quality_name
+
+        new_name = self._container_registry.uniqueName(base_name)
 
         container_type = containers[0].getMetaDataEntry("type")
         if container_type == "quality":

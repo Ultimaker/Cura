@@ -129,6 +129,7 @@ UM.ManagementPage
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
             onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
         },
+        /*  // apparently visible does not work on OS X
         Button
         {
             text: catalog.i18nc("@action:button", "Duplicate");
@@ -151,7 +152,9 @@ UM.ManagementPage
 
                 Cura.MachineManager.setActiveMaterial(material_id)
             }
+            visible: false;
         },
+        */
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
@@ -159,12 +162,15 @@ UM.ManagementPage
             enabled: base.currentItem != null && !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id)
             onClicked: confirmDialog.open()
         },
+        /*  // apparently visible does not work on OS X
         Button
         {
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
+            visible: false;
         },
+        */
         Button
         {
             text: catalog.i18nc("@action:button", "Export")
