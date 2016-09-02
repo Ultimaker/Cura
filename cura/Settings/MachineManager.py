@@ -614,9 +614,16 @@ class MachineManager(QObject):
                 stack_quality_changes = self._empty_quality_changes_container
 
             old_quality = stack.findContainer(type = "quality")
-            old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+            if old_quality:
+                old_quality.nameChanged.disconnect(self._onQualityNameChanged)
+            else:
+                Logger.log("w", "Could not find old quality while changing active quality.")
+
             old_changes = stack.findContainer(type = "quality_changes")
-            old_changes.nameChanged.disconnect(self._onQualityNameChanged)
+            if old_changes:
+                old_changes.nameChanged.disconnect(self._onQualityNameChanged)
+            else:
+                Logger.log("w", "Could not find old quality_changes while changing active quality.")
 
             stack.replaceContainer(stack.getContainerIndex(old_quality), stack_quality)
             stack.replaceContainer(stack.getContainerIndex(old_changes), stack_quality_changes)
