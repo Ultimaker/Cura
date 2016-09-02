@@ -36,7 +36,6 @@ from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
-from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
@@ -792,8 +791,6 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("d", "mergeSelected: Exception:", e)
             return
-        multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
-        group_node.addDecorator(multi_material_decorator)
 
         # Compute the center of the objects when their origins are aligned.
         object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren()]
