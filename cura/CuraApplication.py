@@ -23,6 +23,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
@@ -699,8 +700,7 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
             for node in nodes:
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
-
+                op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
             op.push()
     
     ## Reset all transformations on nodes with mesh data. 
