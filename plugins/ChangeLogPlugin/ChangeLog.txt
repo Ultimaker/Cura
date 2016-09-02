@@ -59,9 +59,6 @@ Set the travel speed of the initial layer(s) to reduce risk of extruder pulling 
 *Support Bottoms
 This new feature duplicates the Support Roofs feature in the places where the support rests on the model.
 
-*Auto Temperature
-Automatically change the temperature of a layer based on the average flow of material in the layer.
-
 *Bug fixes & minor changes
 Deleting grouped objects works as intended again.
 Duplicating groups works as intended again.
