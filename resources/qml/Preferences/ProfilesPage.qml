@@ -144,7 +144,6 @@ UM.ManagementPage
     signal showProfileNameDialog()
     onShowProfileNameDialog:
     {
-        renameDialog.removeWhenRejected = true;
         renameDialog.open();
         renameDialog.selectText();
     }
@@ -161,7 +160,7 @@ UM.ManagementPage
 
         Label {
             id: profileName
-            text: base.currentItem ? base.currentItem.name : ""
+            text: base.currentItem ? base.currentItem.name r: ""
             font: UM.Theme.getFont("large")
             width: parent.width
             elide: Text.ElideRight
