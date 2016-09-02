@@ -26,7 +26,11 @@ class CuraProfileReader(ProfileReader):
     #   not be read or didn't contain a valid profile, \code None \endcode is
     #   returned.
     def read(self, file_name):
-        archive = zipfile.ZipFile(file_name, "r")
+        try:
+            archive = zipfile.ZipFile(file_name, "r")
+        except Exception:
+            # zipfile doesn't give proper exceptions, so we can only catch broad ones
+            return []
         results = []
         for profile_id in archive.namelist():
             # Create an empty profile.
