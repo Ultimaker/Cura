@@ -723,7 +723,8 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
+
+                op.addOperation(SetTransformOperation(node, Vector(0, node.getMeshData().getCenterPosition().y, 0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
