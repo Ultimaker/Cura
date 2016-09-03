@@ -1,6 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from cura.CuraApplication import CuraApplication
+
 from UM.Extension import Extension
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -18,6 +20,7 @@ import math
 import urllib.request
 import urllib.parse
 import ssl
+import hashlib
 
 catalog = i18nCatalog("cura")
 
@@ -80,6 +83,22 @@ class SliceInfo(Extension):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
                 return # Do nothing, user does not want to send data
 
+            # Listing all files placed on the buildplate
+            filenames = []
+            for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
+                if type(node) is not SceneNode or not node.getMeshData():
+                    continue    
+                filenames.append(node.getMeshData().getFileName())
+
+            # Creating md5sums and formatting them as discussed on JIRA
+            modelhashes = [hashlib.md5(open(filename, 'rb').read()).hexdigest() for filename in filenames]            
+            modelhash_formatted = ""
+            if modelhashes:
+                modelhash_formatted = str(modelhashes[0])
+                if len(modelhashes) > 1:
+                    for modelhash in modelhashes[1:]:
+                        modelhash_formatted += ",%s" %(modelhash)
+
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
             # Get total material used (in mm^3)
@@ -117,7 +136,7 @@ class SliceInfo(Extension):
                 "platform": platform.platform(),
                 "settings": global_container_stack.serialize(), # global_container with references on used containers
                 "version": Application.getInstance().getVersion(),
-                "modelhash": "None",
+                "modelhash": modelhash_formatted,
                 "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
                 "filament": material_used,
                 "language": Preferences.getInstance().getValue("general/language"),
