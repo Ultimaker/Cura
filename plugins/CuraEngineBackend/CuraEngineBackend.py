@@ -44,27 +44,28 @@ class CuraEngineBackend(Backend):
         executable_name = "CuraEngine"
         if Platform.isWindows():
             executable_name += ".exe"
-        default_engine_location = executable_name
+
+        engine_location = executable_name
         if os.path.exists(os.path.join(Application.getInstallPrefix(), "bin", executable_name)):
-            default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", executable_name)
+            engine_location = os.path.join(Application.getInstallPrefix(), "bin", executable_name)
         if hasattr(sys, "frozen"):
-            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), executable_name)
-        if Platform.isLinux() and not default_engine_location:
+            engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), executable_name)
+        if Platform.isLinux() and not os.path.exists(engine_location):
             if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
             for pathdir in os.getenv("PATH").split(os.pathsep):
-                execpath = os.path.join(pathdir, executable_name)
+                execpath = os.path.join(pathdir, engine_location)
                 if os.path.exists(execpath):
-                    default_engine_location = execpath
+                    engine_location = execpath
                     break
 
-        if not default_engine_location:
+        if not os.path.exists(engine_location):
             raise EnvironmentError("Could not find CuraEngine")
 
-        Logger.log("i", "Found CuraEngine at: %s" %(default_engine_location))
+        Logger.log("i", "Found CuraEngine at: %s" %(engine_location))
 
-        default_engine_location = os.path.abspath(default_engine_location)
-        Preferences.getInstance().addPreference("backend/location", default_engine_location)
+        engine_location = os.path.abspath(engine_location)
+        Preferences.getInstance().addPreference("backend/location", engine_location)
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
