@@ -107,27 +107,6 @@ class SliceInfo(Extension):
             # TODO: Send material per extruder instead of mashing it on a pile
             material_used = math.pi * material_radius * material_radius * sum(print_information.materialLengths) #Volume of all materials used
 
-            # Get model information (bounding boxes, hashes and transformation matrix)
-            models_info = []
-            for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        model_info = {}
-                        model_info["hash"] = node.getMeshData().getHash()
-                        model_info["bounding_box"] = {}
-                        model_info["bounding_box"]["minimum"] = {}
-                        model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
-                        model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
-                        model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
-
-                        model_info["bounding_box"]["maximum"] = {}
-                        model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
-                        model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
-                        model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
-                        model_info["transformation"] = str(node.getWorldTransformation().getData())
-
-                        models_info.append(model_info)
-
             # Bundle the collected data
             submitted_data = {
                 "processor": platform.processor(),
