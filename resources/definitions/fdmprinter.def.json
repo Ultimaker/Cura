@@ -137,6 +137,21 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_shape":
+                {
+                    "label": "Build plate shape",
+                    "description": "The shape of the build plate without taking unprintable areas into account.",
+                    "default_value": "Rectangular",
+                    "type": "enum",
+                    "options":
+                    {
+                        "rectangular": "Rectangular",
+                        "elliptic": "Elliptic"
+                    },
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_height":
                 {
                     "label": "Machine height",

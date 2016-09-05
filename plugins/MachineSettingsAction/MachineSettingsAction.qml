@@ -120,12 +120,25 @@ Cura.MachineAction
 
                     Column
                     {
-                        CheckBox
+                        Row
                         {
-                            id: heatedBedCheckBox
-                            text: catalog.i18nc("@option:check", "Heated Bed")
-                            checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
-                            onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
+                            spacing: UM.Theme.getSize("default_margin").width
+
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "Build Plate Shape")
+                            }
+
+                            ComboBox
+                            {
+                                model: ["Rectangular", "Elliptic"]
+                                currentIndex: machineShapeProvider.properties.value.toLowerCase() != model[1].toLowerCase() ? 0 : 1
+                                onActivated:
+                                {
+                                    machineShapeProvider.setPropertyValue("value", model[index]);
+                                    manager.forceUpdate();
+                                }
+                            }
                         }
                         CheckBox
                         {
@@ -133,6 +146,13 @@ Cura.MachineAction
                             text: catalog.i18nc("@option:check", "Machine Center is Zero")
                             checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
                             onClicked: machineCenterIsZeroProvider.setPropertyValue("value", checked)
+                        }
+                        CheckBox
+                        {
+                            id: heatedBedCheckBox
+                            text: catalog.i18nc("@option:check", "Heated Bed")
+                            checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
+                            onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
                         }
                     }
 
@@ -424,6 +444,16 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_height"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineShapeProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_shape"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
     }
