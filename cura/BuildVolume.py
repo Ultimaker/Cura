@@ -45,6 +45,7 @@ class BuildVolume(SceneNode):
         self._width = 0
         self._height = 0
         self._depth = 0
+        self._shape = ""
 
         self._shader = None
 
@@ -139,6 +140,9 @@ class BuildVolume(SceneNode):
     def setDepth(self, depth):
         if depth: self._depth = depth
 
+    def setShape(self, shape):
+        if shape: self._shape = shape
+
     def getDisallowedAreas(self):
         return self._disallowed_areas
 
@@ -177,25 +181,59 @@ class BuildVolume(SceneNode):
         min_d = -self._depth / 2
         max_d = self._depth / 2
 
-        mb = MeshBuilder()
+        if self._shape.lower() != "elliptic":
+            # Outline 'cube' of the build volume
+            mb = MeshBuilder()
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
 
-        # Outline 'cube' of the build volume
-        mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            self.setMeshData(mb.build())
 
-        self.setMeshData(mb.build())
+            # Build plate grid mesh
+            mb = MeshBuilder()
+            mb.addQuad(
+                Vector(min_w, min_h - 0.2, min_d),
+                Vector(max_w, min_h - 0.2, min_d),
+                Vector(max_w, min_h - 0.2, max_d),
+                Vector(min_w, min_h - 0.2, max_d)
+            )
+
+            for n in range(0, 6):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+            self._grid_mesh = mb.build()
+
+        else:
+            # Bottom and top 'ellipse' of the build volume
+            mb = MeshBuilder()
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - 0.2, 0), color = self.VolumeOutlineColor)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0), color = self.VolumeOutlineColor)
+            self.setMeshData(mb.build())
+
+            # Build plate grid mesh
+            mb = MeshBuilder()
+            mb.addArc(max_w, Vector.Unit_Y)
+            sections = mb.getVertexCount()
+            mb.addVertex(0, 0, 0)
+            for n in range(0, sections-1):
+                mb.addIndices([sections, n + 1, n])
+
+            for n in range(0, mb.getVertexCount()):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+            self._grid_mesh = mb.build()
 
         mb = MeshBuilder()
 
@@ -227,19 +265,6 @@ class BuildVolume(SceneNode):
             color = self.ZAxisColor
         )
         self._origin_mesh = mb.build()
-
-        mb = MeshBuilder()
-        mb.addQuad(
-            Vector(min_w, min_h - 0.2, min_d),
-            Vector(max_w, min_h - 0.2, min_d),
-            Vector(max_w, min_h - 0.2, max_d),
-            Vector(min_w, min_h - 0.2, max_d)
-        )
-
-        for n in range(0, 6):
-            v = mb.getVertex(n)
-            mb.setVertexUVCoordinates(n, v[0], v[2])
-        self._grid_mesh = mb.build()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -353,6 +378,7 @@ class BuildVolume(SceneNode):
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
             self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+            self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
