@@ -105,7 +105,7 @@ class PlatformPhysics:
                     move_vector = move_vector.set(x=overlap[0] * self._move_factor, z=overlap[1] * self._move_factor)
                     current_overlap_checks = 0
                     # Continue to check the overlap until we no longer find one.
-                    while overlap and current_overlap_checks <= self._max_overlap_checks:
+                    while overlap and current_overlap_checks < self._max_overlap_checks:
                         current_overlap_checks += 1
                         head_hull = node.callDecoration("getConvexHullHead")
                         if head_hull:  # One at a time intersection.
