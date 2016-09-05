@@ -84,14 +84,13 @@ class SliceInfo(Extension):
                 return # Do nothing, user does not want to send data
 
             # Listing all files placed on the buildplate
-            filenames = []
+            modelhashes = []
             for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
                 if type(node) is not SceneNode or not node.getMeshData():
-                    continue    
-                filenames.append(node.getMeshData().getFileName())
+                    continue
+                modelhashes.append(node.getMeshData().getHash())
 
             # Creating md5sums and formatting them as discussed on JIRA
-            modelhashes = [hashlib.md5(open(filename, 'rb').read()).hexdigest() for filename in filenames]            
             modelhash_formatted = ""
             if modelhashes:
                 modelhash_formatted = str(modelhashes[0])
