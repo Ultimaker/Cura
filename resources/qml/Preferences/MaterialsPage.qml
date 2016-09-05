@@ -37,6 +37,58 @@ UM.ManagementPage
         sectionProperty: "brand"
     }
 
+    delegate: Rectangle
+    {
+        width: objectList.width;
+        height: childrenRect.height;
+        color: isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+        property bool isCurrentItem: ListView.isCurrentItem
+
+        Row
+        {
+            spacing: UM.Theme.getSize("default_margin").width / 2;
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.right: parent.right;
+            Rectangle
+            {
+                width: parent.height * 0.8
+                height: parent.height * 0.8
+                color: model.metadata.color_code
+                border.color: isCurrentItem ? palette.highlightedText : palette.text;
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Label
+            {
+                width: parent.width * 0.3
+                text: model.metadata.material
+                elide: Text.ElideRight
+                font.italic: model.id == activeId
+                color: isCurrentItem ? palette.highlightedText : palette.text;
+            }
+            Label
+            {
+                text: (model.name != model.metadata.material) ? model.name : ""
+                elide: Text.ElideRight
+                font.italic: model.id == activeId
+                color: isCurrentItem ? palette.highlightedText : palette.text;
+            }
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent;
+            onClicked:
+            {
+                if(!parent.ListView.isCurrentItem)
+                {
+                    parent.ListView.view.currentIndex = index;
+                    base.itemActivated();
+                }
+            }
+        }
+    }
+
     activeId: Cura.MachineManager.activeMaterialId
     activeIndex: {
         for(var i = 0; i < model.rowCount(); i++) {
@@ -47,7 +99,17 @@ UM.ManagementPage
         return -1;
     }
 
-    scrollviewCaption: "Printer: %1, Nozzle: %2".arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeVariantName)
+    scrollviewCaption:
+    {
+        if (Cura.MachineManager.hasVariants)
+        {
+            catalog.i18nc("@action:label %1 is printer name, %2 is how this printer names variants, %3 is variant name", "Printer: %1, %2: %3").arg(Cura.MachineManager.activeMachineName).arg(Cura.MachineManager.activeDefinitionVariantsName).arg(Cura.MachineManager.activeVariantName)
+        }
+        else
+        {
+            catalog.i18nc("@action:label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
+        }
+    }
     detailsVisible: true
 
     section.property: "section"
@@ -67,8 +129,7 @@ UM.ManagementPage
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
             onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
         },
-        /*
-        // disabled because it has a lot of issues
+        /*  // apparently visible does not work on OS X
         Button
         {
             text: catalog.i18nc("@action:button", "Duplicate");
@@ -91,20 +152,25 @@ UM.ManagementPage
 
                 Cura.MachineManager.setActiveMaterial(material_id)
             }
-        }, */
+            visible: false;
+        },
+        */
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
-            enabled: base.currentItem != null && !base.currentItem.readOnly
+            enabled: base.currentItem != null && !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id)
             onClicked: confirmDialog.open()
         },
+        /*  // apparently visible does not work on OS X
         Button
         {
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
+            visible: false;
         },
+        */
         Button
         {
             text: catalog.i18nc("@action:button", "Export")
@@ -115,8 +181,6 @@ UM.ManagementPage
     ]
 
     Item {
-        UM.I18nCatalog { id: catalog; name: "cura"; }
-
         visible: base.currentItem != null
         anchors.fill: parent
 
@@ -188,7 +252,7 @@ UM.ManagementPage
             object: base.currentItem != null ? base.currentItem.name : ""
             onYes:
             {
-                var containers = Cura.ContainerManager.findInstanceContainers({"GUID": base.currentItem.metadata.GUID})
+                var containers = Cura.ContainerManager.findInstanceContainers({"id": base.currentItem.id})
                 for(var i in containers)
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
@@ -266,6 +330,9 @@ UM.ManagementPage
         {
             id: messageDialog
         }
+
+        UM.I18nCatalog { id: catalog; name: "cura"; }
+        SystemPalette { id: palette }
     }
 
     onCurrentItemChanged:
@@ -274,7 +341,6 @@ UM.ManagementPage
         {
             return
         }
-
         materialProperties.name = currentItem.name;
 
         if(currentItem.metadata != undefined && currentItem.metadata != null)
@@ -297,6 +363,7 @@ UM.ManagementPage
                 materialProperties.density = 0.0;
                 materialProperties.diameter = 0.0;
             }
+
         }
     }
 }

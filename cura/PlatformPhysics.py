@@ -31,6 +31,7 @@ class PlatformPhysics:
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
 
         Preferences.getInstance().addPreference("physics/automatic_push_free", True)
+        Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
 
     def _onSceneChanged(self, source):
         self._change_timer.start()
@@ -40,6 +41,10 @@ class PlatformPhysics:
             return
 
         root = self._controller.getScene().getRoot()
+
+        # Keep a list of nodes that are moving. We use this so that we don't move two intersecting objects in the
+        # same direction.
+        transformed_nodes = []
 
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
@@ -64,7 +69,7 @@ class PlatformPhysics:
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
-            if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
+            if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
@@ -90,6 +95,9 @@ class PlatformPhysics:
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue
+
+                    if other_node in transformed_nodes:
+                        continue # Other node is already moving, wait for next pass.
 
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     head_hull = node.callDecoration("getConvexHullHead")
@@ -125,6 +133,7 @@ class PlatformPhysics:
                     node._outside_buildarea = True
 
             if not Vector.Null.equals(move_vector, epsilon=1e-5):
+                transformed_nodes.append(node)
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 

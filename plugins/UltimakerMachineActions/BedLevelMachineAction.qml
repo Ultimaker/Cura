@@ -24,7 +24,7 @@ Cura.MachineAction
         {
             id: pageTitle
             width: parent.width
-            text: catalog.i18nc("@title", "Bed Leveling")
+            text: catalog.i18nc("@title", "Build Plate Leveling")
             wrapMode: Text.WordWrap
             font.pointSize: 18;
         }
@@ -44,7 +44,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "For every position; insert a piece of paper under the nozzle and adjust the print bed height. The print bed height is right when the paper is slightly gripped by the tip of the nozzle.")
+            text: catalog.i18nc("@label", "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle.")
         }
 
         Row
@@ -59,14 +59,12 @@ Cura.MachineAction
             Button
             {
                 id: startBedLevelingButton
-                text: catalog.i18nc("@action:button","Start Bed Leveling")
+                text: catalog.i18nc("@action:button","Start Build Plate Leveling")
                 onClicked:
                 {
                     startBedLevelingButton.visible = false;
                     bedlevelingButton.visible = true;
-                    checkupMachineAction.heatupHotendStarted = false;
-                    checkupMachineAction.heatupBedStarted = false;
-                    manager.startCheck();
+                    manager.startBedLeveling();
                 }
             }
 

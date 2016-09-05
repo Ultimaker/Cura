@@ -32,20 +32,44 @@ UM.Dialog
             }
 
             text: {
-                if (manager.firmwareUpdateCompleteStatus)
+                if (manager.errorCode == 0)
                 {
-                    //: Firmware update status label
-                    return catalog.i18nc("@label","Firmware update completed.")
-                }
-                else if (manager.progress == 0)
-                {
-                    //: Firmware update status label
-                    return catalog.i18nc("@label","Starting firmware update, this may take a while.")
+                    if (manager.firmwareUpdateCompleteStatus)
+                    {
+                        //: Firmware update status label
+                        return catalog.i18nc("@label","Firmware update completed.")
+                    }
+                    else if (manager.progress == 0)
+                    {
+                        //: Firmware update status label
+                        return catalog.i18nc("@label","Starting firmware update, this may take a while.")
+                    }
+                    else
+                    {
+                        //: Firmware update status label
+                        return catalog.i18nc("@label","Updating firmware.")
+                    }
                 }
                 else
                 {
-                    //: Firmware update status label
-                    return catalog.i18nc("@label","Updating firmware.")
+                    switch (manager.errorCode)
+                    {
+                        case 1:
+                            //: Firmware update status label
+                            return catalog.i18nc("@label","Firmware update failed due to an unknown error.")
+                        case 2:
+                            //: Firmware update status label
+                            return catalog.i18nc("@label","Firmware update failed due to an communication error.")
+                        case 3:
+                            //: Firmware update status label
+                            return catalog.i18nc("@label","Firmware update failed due to an input/output error.")
+                        case 4:
+                            //: Firmware update status label
+                            return catalog.i18nc("@label","Firmware update failed due to missing firmware.")
+                        default:
+                            //: Firmware update status label
+                            return catalog.i18nc("@label", "Unknown error code: %1").arg(manager.errorCode)
+                    }
                 }
             }
 

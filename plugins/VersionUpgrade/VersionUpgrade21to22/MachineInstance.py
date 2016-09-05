@@ -69,18 +69,42 @@ class MachineInstance:
         config.add_section("general")
         config.set("general", "name", self._name)
         config.set("general", "id", self._name)
-        config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         has_machine_qualities = self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()
         type_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._type_name)
-        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
+        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateMaterial(self._active_material_name)
         variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
         variant_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(self._variant_name, type_name)
-        active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+
+        #Convert to quality profile if we have one of the built-in profiles, otherwise convert to a quality-changes profile.
+        if has_machine_qualities:
+            material_name_in_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateMaterialForProfiles(self._active_material_name)
+            variant_name_in_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForProfiles(self._variant_name)
+            if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles(): #This is a built-in profile name. Convert to quality.
+                quality_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+            else:
+                quality_name = "normal" #We have a quality-changes profile. Base it on normal, since we have no information to indicate which one it should be based on.
+            if self._active_material_name == "PLA" and self._type_name == "ultimaker2plus": #UM2+ uses a different naming scheme for PLA profiles.
+                active_quality = material_name_in_quality + "_" + variant_name_in_quality + "_" + quality_name
+            else:
+                printer_name_in_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinterForProfile(self._type_name)
+                active_quality = printer_name_in_quality + "_" + material_name_in_quality + "_" + variant_name_in_quality + "_" + quality_name
+
+            if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
+                active_quality_changes = "empty_quality_changes"
+            else: #No built-in profile. Translate this profile to quality-changes.
+                active_quality_changes = material_name_in_quality + "_" + variant_name_in_quality + "_" + quality_name
+        else:
+            if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
+                active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+                active_quality_changes = "empty_quality_changes"
+            else:
+                active_quality = "normal"
+                active_quality_changes = self._active_profile_name
+
         if has_machine_qualities: #This machine now has machine-quality profiles.
-            active_profile += "_" + active_material + "_" + variant
             active_material += "_" + variant_materials #That means that the profile was split into multiple.
             current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
         else:
@@ -88,7 +112,8 @@ class MachineInstance:
 
         containers = [
             current_settings,
-            active_profile,
+            active_quality_changes,
+            active_quality,
             active_material,
             variant,
             type_name

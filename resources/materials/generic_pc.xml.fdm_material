@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic PC profile. Serves as an example file, data in this file is not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>PC</material>
+            <color>Generic</color>
+        </name>
+        <GUID>98c05714-bf4e-4455-ba27-57d74fe331e4</GUID>
+        <version>1</version>
+        <color_code>#F29030</color_code>
+    </metadata>
+    <properties>
+        <density>1.18</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="hardware compatible">no</setting><!-- This material is not supported on most printers due to high temperatures -->
+        <setting key="print temperature">260</setting>
+        <setting key="heated bed temperature">110</setting>
+        <setting key="standby temperature">175</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
+            <setting key="hardware compatible">yes</setting>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+    </settings>
+</fdmmaterial>

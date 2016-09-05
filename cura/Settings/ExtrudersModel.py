@@ -97,8 +97,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         changed = False
 
         if self.rowCount() != 0:
-            self.clear()
             changed = True
+
+        items = []
 
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -111,7 +112,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "color": color,
                     "index": -1
                 }
-                self.appendItem(item)
+                items.append(item)
                 changed = True
 
             manager = ExtruderManager.getInstance()
@@ -133,9 +134,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "color": color,
                     "index": position
                 }
-                self.appendItem(item)
+                items.append(item)
                 changed = True
 
         if changed:
-            self.sort(lambda item: item["index"])
+            items.sort(key = lambda i: i["index"])
+            self.setItems(items)
             self.modelChanged.emit()

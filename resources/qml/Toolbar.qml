@@ -81,8 +81,6 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         color: UM.Theme.getColor("lining");
-        //border.width: UM.Theme.getSize("default_lining").width
-        //border.color: UM.Theme.getColor("lining")
 
         UM.PointingRectangle {
             id: panelBackground;

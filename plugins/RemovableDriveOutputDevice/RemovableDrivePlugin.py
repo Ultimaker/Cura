@@ -51,6 +51,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
         else:
             message = Message(catalog.i18nc("@info:status", "Failed to eject {0}. Maybe it is still in use?").format(device.getName()))
             message.show()
+        return result
 
     def performEjectDevice(self, device):
         raise NotImplementedError()

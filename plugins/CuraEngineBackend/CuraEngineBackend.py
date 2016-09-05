@@ -127,7 +127,6 @@ class CuraEngineBackend(Backend):
     def close(self):
         # Terminate CuraEngine if it is still running at this point
         self._terminate()
-        super().close()
 
     ##  Get the command that is used to call the engine.
     #   This is useful for debugging and used to actually start the engine.
@@ -197,7 +196,6 @@ class CuraEngineBackend(Backend):
         Logger.log("d", "Attempting to kill the engine process")
 
         if Application.getInstance().getCommandLineOption("external-backend", False):
-            self._createSocket()
             return
 
         if self._process is not None:
@@ -206,8 +204,12 @@ class CuraEngineBackend(Backend):
                 self._process.terminate()
                 Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait())
                 self._process = None
+
             except Exception as e:  # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
+        else:
+            # Process is none, but something did went wrong here. Try and re-create the socket
+            self._createSocket()
 
     ##  Event handler to call when the job to initiate the slicing process is
     #   completed.
@@ -236,15 +238,18 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable objects found."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable models found."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             return
-
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
+
+        # Notify the user that it's now up to the backend to do it's job
+        self.backendStateChange.emit(BackendState.Processing)
+
         Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
     ##  Listener for when the scene has changed.
@@ -374,8 +379,9 @@ class CuraEngineBackend(Backend):
     #
     #   \param tool The tool that the user is using.
     def _onToolOperationStarted(self, tool):
-        self._terminate()  # Do not continue slicing once a tool has started
         self._enabled = False  # Do not reslice when a tool is doing it's 'thing'
+        self._terminate()  # Do not continue slicing once a tool has started
+
 
     ##  Called when the user stops using some tool.
     #
@@ -384,7 +390,7 @@ class CuraEngineBackend(Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._enabled = True  # Tool stop, start listening for changes again.
-
+        
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
@@ -404,9 +410,10 @@ class CuraEngineBackend(Backend):
     #
     #   We should reset our state and start listening for new connections.
     def _onBackendQuit(self):
-        if not self._restart and self._process:
-            Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
-            self._process = None
+        if not self._restart:
+            if self._process:
+                Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
+                self._process = None
             self._createSocket()
 
     ##  Called when the global container stack changes

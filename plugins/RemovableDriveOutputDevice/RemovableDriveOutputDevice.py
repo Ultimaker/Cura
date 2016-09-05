@@ -112,5 +112,5 @@ class RemovableDriveOutputDevice(OutputDevice):
 
     def _onActionTriggered(self, message, action):
         if action == "eject":
-            Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("RemovableDriveOutputDevice").ejectDevice(self)
-
+            if Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("RemovableDriveOutputDevice").ejectDevice(self):
+                message.hide()

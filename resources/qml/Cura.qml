@@ -143,20 +143,21 @@ UM.MainWindow
                     model: Cura.ExtrudersModel { }
                     Menu {
                         title: model.name
+                        visible: machineExtruderCount.properties.value > 1
 
-                        NozzleMenu { title: catalog.i18nc("@title:menu", "&Nozzle"); visible: Cura.MachineManager.hasVariants }
+                        NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants }
                         MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials }
                         ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                         MenuSeparator { }
 
-                        MenuItem { text: "Set as Active Extruder" }
+                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: ExtruderManager.setActiveExtruderIndex(model.index) }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                NozzleMenu { title: catalog.i18nc("@title:menu", "&Nozzle"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
+                NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
                 MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasMaterials }
                 ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); visible: machineExtruderCount.properties.value <= 1 }
 
@@ -401,7 +402,7 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
-                source: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+                source: Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
             }
 
             UM.MessageStack
@@ -426,6 +427,9 @@ UM.MainWindow
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
             insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
+
+            removePage(1);
+            insertPage(1, catalog.i18nc("@title:tab","Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
 
             insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
 
@@ -459,7 +463,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.MachineManager.newQualityContainerFromQualityAndUser();
+            Cura.ContainerManager.createQualityChanges(null);
             preferences.setPage(4);
             preferences.show();
 

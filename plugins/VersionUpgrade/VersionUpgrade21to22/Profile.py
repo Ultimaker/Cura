@@ -99,7 +99,7 @@ class Profile:
         else:
             config.set("metadata", "type", "quality")
         if self._weight:
-            config.set("metadata", "weight", self._weight)
+            config.set("metadata", "weight", str(self._weight))
         if self._machine_variant_name:
             if self._machine_type_id:
                 config.set("metadata", "variant", VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._machine_variant_name, self._machine_type_id))

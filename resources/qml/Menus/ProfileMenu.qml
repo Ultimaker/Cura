@@ -7,7 +7,7 @@ import QtQuick.Controls 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
- Menu
+Menu
 {
     id: menu
 
@@ -15,14 +15,14 @@ import Cura 1.0 as Cura
     {
         model: UM.InstanceContainersModel
         {
-            filter: menu.getFilter({ "read_only": true });
+            filter: menu.getFilter({ "type": "quality" });
         }
 
         MenuItem
         {
             text: model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityId == model.id
+            checked: Cura.MachineManager.activeQualityChangesId == "empty_quality_changes" && Cura.MachineManager.activeQualityType == model.metadata.quality_type
             exclusiveGroup: group
             onTriggered: Cura.MachineManager.setActiveQuality(model.id)
         }
@@ -38,7 +38,7 @@ import Cura 1.0 as Cura
         id: customProfileInstantiator
         model: UM.InstanceContainersModel
         {
-            filter: menu.getFilter({ "read_only": false });
+            filter: { "type": "quality_changes", "extruder": null, "definition": Cura.MachineManager.filterQualityByMachine ? Cura.MachineManager.activeDefinitionId : "fdmprinter" };
             onModelReset: customSeparator.visible = rowCount() > 0
         }
 
@@ -76,14 +76,13 @@ import Cura 1.0 as Cura
     function getFilter(initial_conditions)
     {
         var result = initial_conditions;
-        result.type = "quality"
 
         if(Cura.MachineManager.filterQualityByMachine)
         {
             result.definition = Cura.MachineManager.activeDefinitionId;
             if(Cura.MachineManager.hasMaterials)
             {
-                result.material = Cura.MachineManager.activeMaterialId;
+                result.material = Cura.MachineManager.activeQualityMaterialId;
             }
         }
         else

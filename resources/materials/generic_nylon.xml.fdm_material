@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic Nylon profile. Serves as an example file, data in this file is not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>Nylon</material>
+            <color>Generic</color>
+        </name>
+        <GUID>35ebb8df-66d2-41cd-9662-b7d96b9c2cbd</GUID>
+        <version>1</version>
+        <color_code>#3DF266</color_code>
+    </metadata>
+    <properties>
+        <density>1.19</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="hardware compatible">no</setting><!-- This material is not supported on most printers due to high temperatures -->
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">175</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
+            <setting key="hardware compatible">yes</setting>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+    </settings>
+</fdmmaterial>
