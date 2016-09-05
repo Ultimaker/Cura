@@ -16,7 +16,7 @@ class LayerPolygon:
     MoveRetractionType = 9
     SupportInterfaceType = 10
     
-    __jump_map = numpy.logical_or( numpy.arange(10) == NoneType, numpy.arange(10) >= MoveCombingType )
+    __jump_map = numpy.logical_or( numpy.arange(11) == NoneType, numpy.arange(11) >= MoveCombingType )
     
     def __init__(self, mesh, extruder, line_types, data, line_widths):
         self._mesh = mesh
