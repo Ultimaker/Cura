@@ -547,6 +547,7 @@ class MachineManager(QObject):
             preferred_material = None
             if old_material:
                 preferred_material_name = old_material.getName()
+
             self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
         else:
             Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
@@ -806,11 +807,11 @@ class MachineManager(QObject):
         if containers:
             return containers[0]
 
-        if "name" in search_criteria or "id" in search_criteria:
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if "variant" in search_criteria or "id" in search_criteria:
             # If a material by this name can not be found, try a wider set of search criteria
-            search_criteria.pop("name", None)
+            search_criteria.pop("variant", None)
             search_criteria.pop("id", None)
-
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
             if containers:
                 return containers[0]
@@ -858,7 +859,7 @@ class MachineManager(QObject):
 
             # We still weren't able to find a quality for this specific material.
             # Try to find qualities for a generic version of the material.
-            material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic" }
+            material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
             if definition.getMetaDataEntry("has_machine_quality"):
                 if material_container:
                     material_search_criteria["definition"] = material_container.getDefinition().id
