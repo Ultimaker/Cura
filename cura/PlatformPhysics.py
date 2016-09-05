@@ -29,6 +29,8 @@ class PlatformPhysics:
         self._change_timer.setInterval(100)
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
+        self._move_factor = 1.1  # By how much should we multiply overlap to calculate a new spot?
+        self._max_overlap_checks = 10  # How many times should we try to find a new spot per tick?
 
         Preferences.getInstance().addPreference("physics/automatic_push_free", True)
         Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
@@ -97,29 +99,42 @@ class PlatformPhysics:
                         continue
 
                     if other_node in transformed_nodes:
-                        continue # Other node is already moving, wait for next pass.
+                        continue  # Other node is already moving, wait for next pass.
 
-                    # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
-                    head_hull = node.callDecoration("getConvexHullHead")
-                    if head_hull:
-                        overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
-                        if not overlap:
-                            other_head_hull = other_node.callDecoration("getConvexHullHead")
-                            if other_head_hull:
-                                overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_head_hull)
-                    else:
-                        own_convex_hull = node.callDecoration("getConvexHull")
-                        other_convex_hull = other_node.callDecoration("getConvexHull")
-                        if own_convex_hull and other_convex_hull:
-                            overlap = own_convex_hull.intersectsPolygon(other_convex_hull)
+                    overlap = (0, 0)  # Start loop with no overlap
+                    move_vector = move_vector.set(x=overlap[0] * self._move_factor, z=overlap[1] * self._move_factor)
+                    current_overlap_checks = 0
+                    # Continue to check the overlap until we no longer find one.
+                    while overlap and current_overlap_checks <= self._max_overlap_checks:
+                        current_overlap_checks += 1
+                        head_hull = node.callDecoration("getConvexHullHead")
+                        if head_hull:  # One at a time intersection.
+                            overlap = head_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                            if not overlap:
+                                other_head_hull = other_node.callDecoration("getConvexHullHead")
+                                if other_head_hull:
+                                    overlap = node.callDecoration("getConvexHull").translate(move_vector.x, move_vector.z).intersectsPolygon(other_head_hull)
+                                    if overlap:
+                                        # Moving ensured that overlap was still there. Try anew!
+                                        move_vector = move_vector.set(x=move_vector.x + overlap[0] * self._move_factor,
+                                                                      z=move_vector.z + overlap[1] * self._move_factor)
+                            else:
+                                # Moving ensured that overlap was still there. Try anew!
+                                move_vector = move_vector.set(x=move_vector.x + overlap[0] * self._move_factor,
+                                                              z=move_vector.z + overlap[1] * self._move_factor)
                         else:
-                            # This can happen in some cases if the object is not yet done with being loaded.
-                            #  Simply waiting for the next tick seems to resolve this correctly.
-                            overlap = None
+                            own_convex_hull = node.callDecoration("getConvexHull")
+                            other_convex_hull = other_node.callDecoration("getConvexHull")
+                            if own_convex_hull and other_convex_hull:
+                                overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
+                                if overlap:  # Moving ensured that overlap was still there. Try anew!
+                                    move_vector = move_vector.set(x=move_vector.x + overlap[0] * self._move_factor,
+                                                                  z=move_vector.z + overlap[1] * self._move_factor)
+                            else:
+                                # This can happen in some cases if the object is not yet done with being loaded.
+                                #  Simply waiting for the next tick seems to resolve this correctly.
+                                overlap = None
 
-                    if overlap is None:
-                        continue
-                    move_vector = move_vector.set(x=overlap[0] * 1.1, z=overlap[1] * 1.1)
             convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
                 if not convex_hull.isValid():
