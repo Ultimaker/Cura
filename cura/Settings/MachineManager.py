@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMessageBox
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-
+from UM.Message import Message
 from UM.Settings.SettingRelation import RelationType
 
 import UM.Settings
@@ -856,7 +856,6 @@ class MachineManager(QObject):
                     containers = container_registry.findInstanceContainers(**search_criteria)
                     if containers:
                         return containers[0]
-
             # We still weren't able to find a quality for this specific material.
             # Try to find qualities for a generic version of the material.
             material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
@@ -873,7 +872,6 @@ class MachineManager(QObject):
                         material_search_criteria["variant"] = variant_container.id
             else:
                 material_search_criteria["definition"] = "fdmprinter"
-
             material_containers = container_registry.findInstanceContainers(**material_search_criteria)
             if material_containers:
                 search_criteria["material"] = material_containers[0].getId()
@@ -891,6 +889,9 @@ class MachineManager(QObject):
             if containers:
                 return containers[0]
 
+        # Notify user that we were unable to find a matching quality
+        message = Message(catalog.i18nc("@info:status", "Unable to find a quality profile for this combination, using an empty one instead."))
+        message.show()
         return self._empty_quality_container
 
     ##  Finds a quality-changes container to use if any other container
