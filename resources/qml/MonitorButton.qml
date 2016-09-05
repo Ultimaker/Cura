@@ -221,9 +221,9 @@ Rectangle
     {
         id: confirmationDialog
 
-        title: catalog.i18nc("@text:MessageDialog", "Abort print")
+        title: catalog.i18nc("@window:title", "Abort print")
         icon: StandardIcon.Warning
-        text: catalog.i18nc("@text:MessageDialog", "Do you really want to abort the print?")
+        text: catalog.i18nc("@label", "Are you sure you want to abort the print?")
         standardButtons: StandardButton.Yes | StandardButton.No
         Component.onCompleted: visible = false
         onYes: Cura.MachineManager.printerOutputDevices[0].setJobState("abort")
