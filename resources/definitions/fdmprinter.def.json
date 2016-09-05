@@ -15,7 +15,8 @@
         "machine_extruder_trains":
         {
             "0": "fdmextruder"
-        }
+        },
+        "supports_usb_connection": true
     },
     "settings":
     {

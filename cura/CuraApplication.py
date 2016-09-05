@@ -511,8 +511,6 @@ class CuraApplication(QtApplication):
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
-            else:
-                self._previous_active_tool = None
 
     def _onToolOperationStopped(self, event):
         if self._center_after_select:
