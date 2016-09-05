@@ -280,7 +280,7 @@ class BuildVolume(SceneNode):
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
             rebuild_me = True
 
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings:
+        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence":
             self._updateDisallowedAreas()
             rebuild_me = True
 
@@ -382,6 +382,10 @@ class BuildVolume(SceneNode):
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
     def _getBedAdhesionSize(self, container_stack):
         skirt_size = 0.0
+
+        # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
+        if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt":

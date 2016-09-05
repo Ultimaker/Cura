@@ -160,7 +160,7 @@ UM.ManagementPage
 
         Label {
             id: profileName
-            text: base.currentItem ? base.currentItem.name r: ""
+            text: base.currentItem ? base.currentItem.name: ""
             font: UM.Theme.getFont("large")
             width: parent.width
             elide: Text.ElideRight

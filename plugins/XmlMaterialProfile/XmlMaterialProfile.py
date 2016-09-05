@@ -87,7 +87,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         super().setName(new_name)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
@@ -275,7 +275,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     # The XML material profile can have specific settings for machines.
     # Some machines share profiles, so they are only created once.
     # This function duplicates those elements so that each machine tag only has one identifier.
-    def _flattenMachinesXML(self, element):
+    def _expandMachinesXML(self, element):
         settings_element = element.find("./um:settings", self.__namespaces)
         machines = settings_element.iterfind("./um:machine", self.__namespaces)
         machines_to_add = []
@@ -309,7 +309,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
     def _mergeXML(self, first, second):
         result = copy.deepcopy(first)
-        self._combineElement(self._flattenMachinesXML(result), self._flattenMachinesXML(second))
+        self._combineElement(self._expandMachinesXML(result), self._expandMachinesXML(second))
         return result
 
     def _createKey(self, element):
@@ -339,7 +339,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             key = self._createKey(element)
             if len(element):  # Check if element has children.
                 try:
-                    if "setting " in key:
+                    if "setting" in element.tag and not "settings" in element.tag:
                         # Setting can have points in it. In that case, delete all values and override them.
                         for child in list(mapping[key]):
                             mapping[key].remove(child)

@@ -1,7 +1,7 @@
 [2.3.0]
 
 *Speed improvements
-The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layer time is significantly faster and slicing speed is slightly improved.
+The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layerview is significantly faster and slicing speed is slightly improved.
 
 *Multi Extrusion Support
 Machines with multiple extruders are now supported. If you’ve got the Ultimaker Original with the dual extrusion upgrade kit, we’ve got you covered.
@@ -58,9 +58,6 @@ Set the travel speed of the initial layer(s) to reduce risk of extruder pulling 
 
 *Support Bottoms
 This new feature duplicates the Support Roofs feature in the places where the support rests on the model.
-
-*Auto Temperature
-Automatically change the temperature of a layer based on the average flow of material in the layer.
 
 *Bug fixes & minor changes
 Deleting grouped objects works as intended again.

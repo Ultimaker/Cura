@@ -23,6 +23,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
@@ -36,7 +37,6 @@ from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
-from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
@@ -700,8 +700,7 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
             for node in nodes:
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
-
+                op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
             op.push()
     
     ## Reset all transformations on nodes with mesh data. 
@@ -724,7 +723,8 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
+
+                op.addOperation(SetTransformOperation(node, Vector(0, node.getMeshData().getCenterPosition().y, 0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
@@ -792,8 +792,6 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("d", "mergeSelected: Exception:", e)
             return
-        multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
-        group_node.addDecorator(multi_material_decorator)
 
         # Compute the center of the objects when their origins are aligned.
         object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren()]

@@ -435,8 +435,7 @@ class ContainerManager(QObject):
             return False
 
         self._machine_manager.blurSettings.emit()
-
-        if base_name is None:
+        if base_name is None or base_name == "":
             base_name = active_quality_name
         unique_name = self._container_registry.uniqueName(base_name)
 
