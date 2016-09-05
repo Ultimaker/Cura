@@ -363,12 +363,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         if self._progress != 0:
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
             self._error_message.show()
             return
         if self._json_printer_state["status"] != "idle":
             self._error_message = Message(
-                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is not idle. Current printer status is %s.") % self._json_printer_state["status"])
+                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._json_printer_state["status"])
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
