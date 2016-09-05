@@ -3519,7 +3519,7 @@
         },
         "experimental":
         {
-            "label": "Experimental Modes",
+            "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
             "description": "experimental!",
