@@ -181,6 +181,7 @@ class CuraApplication(QtApplication):
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
         empty_quality_container.setName("Not supported")
+        empty_quality_container.addMetaDataEntry("quality_type", "normal")
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
         empty_quality_changes_container = copy.deepcopy(empty_container)
