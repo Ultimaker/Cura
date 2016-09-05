@@ -815,7 +815,7 @@ class MachineManager(QObject):
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
             if containers:
                 return containers[0]
-
+        Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
         return self._empty_material_container
 
     def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
