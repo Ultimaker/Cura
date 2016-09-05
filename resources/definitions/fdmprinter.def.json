@@ -3764,6 +3764,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 3,
+                    "value": "machine_nozzle_head_distance",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "20",
                     "enabled": "wireframe_enabled",
