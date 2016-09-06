@@ -2,8 +2,6 @@
 project(cura NONE)
 cmake_minimum_required(VERSION 2.8.12)
 
-include(UraniumTranslationTools)
-
 include(GNUInstallDirs)
 
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
@@ -20,6 +18,7 @@ configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desk
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
+    include(UraniumTranslationTools)
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
     # Build Translations
