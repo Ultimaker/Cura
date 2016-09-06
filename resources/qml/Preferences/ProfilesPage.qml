@@ -267,6 +267,7 @@ UM.ManagementPage
 
         UM.RenameDialog
         {
+            title: catalog.i18nc("@title:window", "Rename Profile")
             id: renameDialog;
             object: base.currentItem != null ? base.currentItem.name : ""
             onAccepted:
@@ -279,6 +280,7 @@ UM.ManagementPage
         // Dialog to request a name when creating a new profile
         UM.RenameDialog
         {
+            title: catalog.i18nc("@title:window", "Create Profile")
             id: newNameDialog;
             object: "<new name>";
             onAccepted:
@@ -292,6 +294,7 @@ UM.ManagementPage
         // Dialog to request a name when duplicating a new profile
         UM.RenameDialog
         {
+            title: catalog.i18nc("@title:window", "Duplicate Profile")
             id: newDuplicateNameDialog;
             object: "<new name>";
             onAccepted:
