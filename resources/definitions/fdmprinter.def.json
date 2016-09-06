@@ -403,7 +403,7 @@
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 25,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
