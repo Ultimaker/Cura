@@ -890,7 +890,7 @@ class MachineManager(QObject):
                 return containers[0]
 
         # Notify user that we were unable to find a matching quality
-        message = Message(catalog.i18nc("@info:status", "Unable to find a quality profile for this combination, using an empty one instead."))
+        message = Message(catalog.i18nc("@info:status", "Unable to find a quality profile for this combination. Default settings will be used instead."))
         message.show()
         return self._empty_quality_container
 
