@@ -381,12 +381,40 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._print_finished = True
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
-        # TODO: Implement all checks.
-        # Check if cartridges are loaded at all (Error)
-        #self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] != ""
+        print_information = Application.getInstance().getPrintInformation()
 
-        # Check if there is material loaded at all (Error)
-        #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] != ""
+        # TODO: Implement all checks.
+        # Check if PrintCores / materials  are loaded at all (Error)
+        if print_information.materialLengths[0] != 0:  # We need to print with extruder slot 1
+            if self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] == "":
+                Logger.log("e", "No cartridge loaded in slot 1, unable to start print")
+                self._error_message = Message(
+                    i18n_catalog.i18nc("@info:status", "Unable to start a new print job, no PowerCore loaded in slot 1"))
+                self._error_message.show()
+                return
+            if self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] == "":
+                Logger.log("e", "No material loaded in slot 1, unable to start print")
+                self._error_message = Message(
+                    i18n_catalog.i18nc("@info:status",
+                                       "Unable to start a new print job, no material loaded in slot 1"))
+                self._error_message.show()
+                return
+
+        if print_information.materialLengths[1] != 0: # We need to print with extruder slot 2
+            if self._json_printer_state["heads"][0]["extruders"][1]["hotend"]["id"] == "":
+                Logger.log("e", "No cartridge loaded in slot 2, unable to start print")
+                self._error_message = Message(
+                    i18n_catalog.i18nc("@info:status",
+                                       "Unable to start a new print job, no PowerCore loaded in slot 2"))
+                self._error_message.show()
+                return
+            if self._json_printer_state["heads"][0]["extruders"][1]["active_material"]["GUID"] == "":
+                Logger.log("e", "No material loaded in slot 2, unable to start print")
+            self._error_message = Message(
+                i18n_catalog.i18nc("@info:status",
+                                   "Unable to start a new print job, no material loaded in slot 2"))
+            self._error_message.show()
+            return
 
         # Check if there is enough material (Warning)
         #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["length_remaining"]
