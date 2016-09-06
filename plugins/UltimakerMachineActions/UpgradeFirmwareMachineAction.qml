@@ -45,7 +45,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "The firmware shipping with new Printers works, but new versions tend to have more features and improvements.");
+            text: catalog.i18nc("@label", "The firmware shipping with new printers works, but new versions tend to have more features and improvements.");
         }
 
         Row

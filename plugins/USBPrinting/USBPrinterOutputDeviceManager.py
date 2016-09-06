@@ -119,7 +119,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             except FileNotFoundError:
                 # Should only happen in dev environments where the resources/firmware folder is absent.
                 self._usb_output_devices[printer_connection].setProgress(100, 100)
-                Logger.log("w", "No firmware found for printer %s called '%s'" % (printer_connection, file_name)
+                Logger.log("w", "No firmware found for printer %s called '%s'", printer_connection, file_name)
                 Message(i18n_catalog.i18nc("@info",
                     "Could not find firmware required for the printer at %s.") % printer_connection).show()
                 self._firmware_view.close()
