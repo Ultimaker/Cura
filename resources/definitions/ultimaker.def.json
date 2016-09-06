@@ -9,6 +9,9 @@
         "visible": false
     },
     "overrides": {
+        "machine_max_feedrate_e": {
+            "default_value": 45
+        },
         "material_print_temperature": {
             "minimum_value": "0"
         },
