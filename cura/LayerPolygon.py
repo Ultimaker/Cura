@@ -16,7 +16,7 @@ class LayerPolygon:
     MoveRetractionType = 9
     SupportInterfaceType = 10
     
-    __jump_map = numpy.logical_or( numpy.arange(11) == NoneType, numpy.arange(11) >= MoveRetractionType )
+    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
     
     def __init__(self, mesh, extruder, line_types, data, line_widths):
         self._mesh = mesh
@@ -42,7 +42,7 @@ class LayerPolygon:
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0], dtype=numpy.bool)
+        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1], dtype=numpy.bool)
         
         self._build_cache_line_mesh_mask = None
         self._build_cache_needed_points = None

@@ -464,12 +464,11 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.ContainerManager.createQualityChanges(null);
             preferences.setPage(4);
             preferences.show();
 
-            // Show the renameDialog after a very short delay so the preference page has time to initiate
-            showProfileNameDialogTimer.start();
+            // Create a new profile after a very short delay so the preference page has time to initiate
+            createProfileTimer.start();
         }
     }
 
@@ -516,11 +515,11 @@ UM.MainWindow
 
     Timer
     {
-        id: showProfileNameDialogTimer
+        id: createProfileTimer
         repeat: false
         interval: 1
 
-        onTriggered: preferences.getCurrentItem().showProfileNameDialog()
+        onTriggered: preferences.getCurrentItem().createProfile()
     }
 
     // BlurSettings is a way to force the focus away from any of the setting items.
