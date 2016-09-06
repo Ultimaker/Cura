@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMessageBox
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-
+from UM.Message import Message
 from UM.Settings.SettingRelation import RelationType
 
 import UM.Settings
@@ -547,6 +547,7 @@ class MachineManager(QObject):
             preferred_material = None
             if old_material:
                 preferred_material_name = old_material.getName()
+
             self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
         else:
             Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
@@ -806,15 +807,15 @@ class MachineManager(QObject):
         if containers:
             return containers[0]
 
-        if "name" in search_criteria or "id" in search_criteria:
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if "variant" in search_criteria or "id" in search_criteria:
             # If a material by this name can not be found, try a wider set of search criteria
-            search_criteria.pop("name", None)
+            search_criteria.pop("variant", None)
             search_criteria.pop("id", None)
-
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
             if containers:
                 return containers[0]
-
+        Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
         return self._empty_material_container
 
     def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
@@ -855,10 +856,9 @@ class MachineManager(QObject):
                     containers = container_registry.findInstanceContainers(**search_criteria)
                     if containers:
                         return containers[0]
-
             # We still weren't able to find a quality for this specific material.
             # Try to find qualities for a generic version of the material.
-            material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic" }
+            material_search_criteria = { "type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
             if definition.getMetaDataEntry("has_machine_quality"):
                 if material_container:
                     material_search_criteria["definition"] = material_container.getDefinition().id
@@ -872,7 +872,6 @@ class MachineManager(QObject):
                         material_search_criteria["variant"] = variant_container.id
             else:
                 material_search_criteria["definition"] = "fdmprinter"
-
             material_containers = container_registry.findInstanceContainers(**material_search_criteria)
             if material_containers:
                 search_criteria["material"] = material_containers[0].getId()
@@ -890,6 +889,9 @@ class MachineManager(QObject):
             if containers:
                 return containers[0]
 
+        # Notify user that we were unable to find a matching quality
+        message = Message(catalog.i18nc("@info:status", "Unable to find a quality profile for this combination. Default settings will be used instead."))
+        message.show()
         return self._empty_quality_container
 
     ##  Finds a quality-changes container to use if any other container

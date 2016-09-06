@@ -15,7 +15,8 @@
         "machine_extruder_trains":
         {
             "0": "fdmextruder"
-        }
+        },
+        "supports_usb_connection": true
     },
     "settings":
     {
@@ -402,7 +403,7 @@
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 25,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1160,7 +1161,7 @@
                     "default_value": 25,
                     "minimum_value": "0",
                     "maximum_value": "machine_max_feedrate_e",
-                    "maximum_value_warning": "100",
+                    "maximum_value_warning": "25",
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -1173,7 +1174,7 @@
                             "default_value": 25,
                             "minimum_value": "0",
                             "maximum_value": "machine_max_feedrate_e",
-                            "maximum_value_warning": "100",
+                            "maximum_value_warning": "25",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
                             "settable_per_mesh": false,
@@ -1187,7 +1188,7 @@
                             "default_value": 25,
                             "minimum_value": "0",
                             "maximum_value": "machine_max_feedrate_e",
-                            "maximum_value_warning": "100",
+                            "maximum_value_warning": "25",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
                             "settable_per_mesh": false,
@@ -3518,7 +3519,7 @@
         },
         "experimental":
         {
-            "label": "Experimental Modes",
+            "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
             "description": "experimental!",
@@ -3763,6 +3764,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 3,
+                    "value": "machine_nozzle_head_distance",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "20",
                     "enabled": "wireframe_enabled",

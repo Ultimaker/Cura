@@ -346,6 +346,7 @@ UM.MainWindow
                     bottom: parent.bottom;
                     right: parent.right;
                 }
+                z: 1
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
             }

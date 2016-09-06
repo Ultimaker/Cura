@@ -277,7 +277,7 @@ Column
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
-
+            property var valueWarning: Cura.MachineManager.activeQualityId == "empty_quality"
             menu: ProfileMenu { }
 
             UM.SimpleButton

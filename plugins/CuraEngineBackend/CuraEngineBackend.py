@@ -229,7 +229,7 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. Please check your settings for errors."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -238,7 +238,7 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable models found."))
+                self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:

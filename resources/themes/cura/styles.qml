@@ -11,7 +11,22 @@ QtObject {
     property Component sidebar_header_button: Component {
         ButtonStyle {
             background: Rectangle {
-                color: control.enabled ? Theme.getColor("setting_control") : Theme.getColor("setting_control_disabled")
+                color:
+                {
+                    if(control.enabled)
+                    {
+                        if(control.valueWarning)
+                        {
+                            return Theme.getColor("setting_validation_warning");
+                        } else
+                        {
+                            return Theme.getColor("setting_control");
+                        }
+                    } else {
+                        return Theme.getColor("setting_control_disabled");
+                    }
+                }
+
                 border.width: Theme.getSize("default_lining").width
                 border.color: !control.enabled ? Theme.getColor("setting_control_disabled_border") :
                                 control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border")
