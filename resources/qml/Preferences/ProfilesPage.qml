@@ -141,11 +141,12 @@ UM.ManagementPage
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
-    signal showProfileNameDialog()
-    onShowProfileNameDialog:
+    signal createProfile()
+    onCreateProfile:
     {
-        renameDialog.open();
-        renameDialog.selectText();
+        newNameDialog.object = base.currentItem != null ? base.currentItem.name : "";
+        newNameDialog.open();
+        newNameDialog.selectText();
     }
 
     signal selectContainer(string name)
