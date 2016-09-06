@@ -48,6 +48,8 @@ class PlatformPhysics:
         # same direction.
         transformed_nodes = []
 
+        group_nodes = []
+
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
@@ -68,6 +70,9 @@ class PlatformPhysics:
             # Mark the node as outside the build volume if the bounding box test fails.
             if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
                 node._outside_buildarea = True
+
+            if node.callDecoration("isGroup"):
+                group_nodes.append(node)  # Keep list of affected group_nodes
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
@@ -144,13 +149,18 @@ class PlatformPhysics:
                     overlap = convex_hull.intersectsPolygon(area)
                     if overlap is None:
                         continue
-
                     node._outside_buildarea = True
 
             if not Vector.Null.equals(move_vector, epsilon=1e-5):
                 transformed_nodes.append(node)
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
+
+        # Group nodes should override the _outside_buildarea property of their children.
+        for group_node in group_nodes:
+            for child_node in group_node.getAllChildren():
+                child_node._outside_buildarea = group_node._outside_buildarea
+
 
     def _onToolOperationStarted(self, tool):
         self._enabled = False
