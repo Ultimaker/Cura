@@ -254,6 +254,10 @@ class ContainerManager(QObject):
                 return True
         return False
 
+    @pyqtSlot(str, result = str)
+    def makeUniqueName(self, original_name):
+        return self._container_registry.uniqueName(original_name)
+
     ##  Get a list of string that can be used as name filters for a Qt File Dialog
     #
     #   This will go through the list of available container types and generate a list of strings
