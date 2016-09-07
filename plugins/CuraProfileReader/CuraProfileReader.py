@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 import configparser
 
@@ -53,10 +53,10 @@ class CuraProfileReader(ProfileReader):
         parser.read_string(serialized)
 
         if not "general" in parser:
-            Logger.log('w', "Missing required section 'general'.")
+            Logger.log("w", "Missing required section 'general'.")
             return None
         if not "version" in parser["general"]:
-            Logger.log('w', "Missing required 'version' property")
+            Logger.log("w", "Missing required 'version' property")
             return None
 
         version = int(parser["general"]["version"])
