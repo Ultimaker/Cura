@@ -85,6 +85,8 @@ class BuildVolume(SceneNode):
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
 
+        self._has_errors = False
+
     def setWidth(self, width):
         if width: self._width = width
 
@@ -316,10 +318,13 @@ class BuildVolume(SceneNode):
         if rebuild_me:
             self.rebuild()
 
+    def hasErrors(self):
+        return self._has_errors
+
     def _updateDisallowedAreas(self):
         if not self._global_container_stack:
             return
-
+        self._has_errors = False  # Reset.
         disallowed_areas = copy.deepcopy(
             self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
@@ -424,7 +429,7 @@ class BuildVolume(SceneNode):
             if not collision:
                 areas.append(self._prime_tower_area)
                 self._prime_tower_area = None
-
+        self._has_errors = collision
         self._disallowed_areas = areas
 
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
