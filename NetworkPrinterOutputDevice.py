@@ -252,13 +252,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_message.show()
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
-                if self._post_reply:
-                    self._post_reply.abort()
-                    try:
-                        self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
-                    except TypeError:
-                        pass  # The disconnection can fail on mac in some cases. Ignore that.
-                    self._progress_message.hide()
+                try:
+                    if self._post_reply:
+                        self._post_reply.abort()
+                        try:
+                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                        except TypeError:
+                            pass  # The disconnection can fail on mac in some cases. Ignore that.
+                        self._progress_message.hide()
+                except RuntimeError:
+                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
             return
         else:
             self._recreate_network_manager_count = 1
@@ -273,13 +276,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_message.show()
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
-                if self._post_reply:
-                    self._post_reply.abort()
-                    try:
-                        self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
-                    except TypeError:
-                        pass  # The disconnection can fail on mac in some cases. Ignore that.
-                    self._progress_message.hide()
+                try:
+                    if self._post_reply:
+                        self._post_reply.abort()
+                        try:
+                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                        except TypeError:
+                            pass  # The disconnection can fail on mac in some cases. Ignore that.
+                        self._progress_message.hide()
+                except RuntimeError:
+                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
                 self.setConnectionState(ConnectionState.error)
                 return
 
