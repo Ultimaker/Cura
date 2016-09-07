@@ -66,7 +66,10 @@ class GCodeWriter(MeshWriter):
     ##  Create a new container with container 2 as base and container 1 written over it.
     def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
         flat_container = InstanceContainer(instance_container2.getName())
-        flat_container.setDefinition(instance_container2.getDefinition())
+        if instance_container1.getDefinition():
+            flat_container.setDefinition(instance_container1.getDefinition())
+        else:
+            flat_container.setDefinition(instance_container2.getDefinition())
         flat_container.setMetaData(instance_container2.getMetaData())
 
         for key in instance_container2.getAllKeys():
