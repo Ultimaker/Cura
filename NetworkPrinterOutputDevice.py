@@ -232,6 +232,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_requested_message.setProgress(0)
         self._authentication_id = None
         self._authentication_key = None
+        self._createNetworkManager() # Re-create network manager to force re-authentication.
 
     ##  Request data from the connected device.
     def _update(self):
@@ -394,6 +395,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
                                                                          "Not authenticated to print with this machine. Unable to start a new job."))
             self._not_authenticated_message.show()
+            Logger.log("d", "Attempting to perform an action without authentication. Auth state is %s", self._authentication_state)
             return
 
         Application.getInstance().showPrintMonitor.emit(True)
@@ -747,7 +749,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         Logger.log("i", "Not authenticated. Attempting to request authentication")
                         self._requestAuthentication()
                 elif status_code == 403:
-                    pass
+                    # If we already had an auth (eg; didn't request one), we only need a single 403 to see it as denied.
+                    if self._authentication_state != AuthState.AuthenticationRequested:
+                        self.setAuthenticationState(AuthState.AuthenticationDenied)
                 elif status_code == 200:
                     self.setAuthenticationState(AuthState.Authenticated)
                     global_container_stack = Application.getInstance().getGlobalContainerStack()
