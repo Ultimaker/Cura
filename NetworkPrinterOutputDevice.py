@@ -432,7 +432,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if print_information.materialLengths[0] != 0:
             variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
             if variant:
-                if variant.getId() != self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"]:
+                if variant.getName() != self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"]:
                     warnings.append("hotend_1")
 
             material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
@@ -443,7 +443,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if print_information.materialLengths[1] != 0:
             variant = extruder_manager.getExtruderStack(1).findContainer({"type": "variant"})
             if variant:
-                if variant.getId() != self._json_printer_state["heads"][0]["extruders"][1]["hotend"]["id"]:
+                if variant.getName() != self._json_printer_state["heads"][0]["extruders"][1]["hotend"]["id"]:
                     warnings.append("hotend_2")
 
             material = extruder_manager.getExtruderStack(1).findContainer({"type": "material"})
