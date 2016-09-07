@@ -1,4 +1,4 @@
-project(OctoPrintPlugin)
+project(OctoPrintPlugin NONE)
 cmake_minimum_required(VERSION 2.8.12)
 
 install(FILES
