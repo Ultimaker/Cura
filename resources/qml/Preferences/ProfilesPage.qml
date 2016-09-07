@@ -84,7 +84,7 @@ UM.ManagementPage
 
             onClicked:
             {
-                newNameDialog.object = base.currentItem != null ? base.currentItem.name : "";
+                newNameDialog.object = base.currentItem != null ? Cura.ContainerManager.makeUniqueName(base.currentItem.name) : "";
                 newNameDialog.open();
                 newNameDialog.selectText();
             }
@@ -100,7 +100,7 @@ UM.ManagementPage
 
             onClicked:
             {
-                newDuplicateNameDialog.object = base.currentItem.name;
+                newDuplicateNameDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
                 newDuplicateNameDialog.open();
                 newDuplicateNameDialog.selectText();
             }
@@ -144,7 +144,7 @@ UM.ManagementPage
     signal createProfile()
     onCreateProfile:
     {
-        newNameDialog.object = base.currentItem != null ? base.currentItem.name : "";
+        newNameDialog.object = base.currentItem != null ? Cura.ContainerManager.makeUniqueName(base.currentItem.name) : "";
         newNameDialog.open();
         newNameDialog.selectText();
     }
