@@ -69,7 +69,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                         stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
                     else:
                         stack = UM.Application.getInstance().getGlobalContainerStack()
-                    new_instance.setProperty("value", stack.getProperty(item, "value"))
+                    new_instance.setProperty("value", stack.getRawProperty(item, "value"))
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     visibility_changed = True
