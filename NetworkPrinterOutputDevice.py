@@ -155,6 +155,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
+            Logger.log("d", "Authentication was required. Setting up authenticator.")
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
 
@@ -194,11 +195,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \param auth_state \type{AuthState} Enum value representing the new auth state
     def setAuthenticationState(self, auth_state):
         if auth_state == AuthState.AuthenticationRequested:
+            Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0} without access to control the printer.").format(self.name))
             self._authentication_requested_message.show()
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
+            Logger.log("d", "Authentication state changed to authenticated")
             self.setAcceptsCommands(True)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
             self._authentication_requested_message.hide()
@@ -211,6 +214,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Once we are authenticated we need to send all material profiles.
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
+            Logger.log("d", "Authentication state changed to authentication denied")
             self.setAcceptsCommands(False)
             self._authentication_requested_message.hide()
             self._authentication_failed_message.show()
@@ -606,6 +610,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
+        Logger.log("d", "Checking if authentication is correct.")
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
@@ -801,6 +806,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
+            # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
+            # timeout responses if this happens.
+            self._last_response_time = time()
             if new_progress > self._progress_message.getProgress():
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
