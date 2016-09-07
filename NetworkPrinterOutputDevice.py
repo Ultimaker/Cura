@@ -405,91 +405,48 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         print_information = Application.getInstance().getPrintInformation()
 
         # Check if PrintCores / materials  are loaded at all. Any failure in these results in an Error.
-        if print_information.materialLengths[0] != 0:  # We need to print with extruder slot 1
-            if self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] == "":
-                Logger.log("e", "No cartridge loaded in slot 1, unable to start print")
-                self._error_message = Message(
-                    i18n_catalog.i18nc("@info:status", "Unable to start a new print job, no PowerCore loaded in slot 1"))
-                self._error_message.show()
-                return
-            if self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] == "":
-                Logger.log("e", "No material loaded in slot 1, unable to start print")
-                self._error_message = Message(
-                    i18n_catalog.i18nc("@info:status",
-                                       "Unable to start a new print job, no material loaded in slot 1"))
-                self._error_message.show()
-                return
-
-        if print_information.materialLengths[1] != 0: # We need to print with extruder slot 2
-            if self._json_printer_state["heads"][0]["extruders"][1]["hotend"]["id"] == "":
-                Logger.log("e", "No cartridge loaded in slot 2, unable to start print")
-                self._error_message = Message(
-                    i18n_catalog.i18nc("@info:status",
-                                       "Unable to start a new print job, no PowerCore loaded in slot 2"))
-                self._error_message.show()
-                return
-            if self._json_printer_state["heads"][0]["extruders"][1]["active_material"]["GUID"] == "":
-                Logger.log("e", "No material loaded in slot 2, unable to start print")
-            self._error_message = Message(
-                i18n_catalog.i18nc("@info:status",
-                                   "Unable to start a new print job, no material loaded in slot 2"))
-            self._error_message.show()
-            return
+        for index in range(0, self._num_extruders):
+            if print_information.materialLengths[index] != 0:
+                if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
+                    Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
+                    self._error_message = Message(
+                        i18n_catalog.i18nc("@info:status", "Unable to start a new print job; no PrinterCore loaded in slot {0}".format(index + 1)))
+                    self._error_message.show()
+                    return
+                if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"] == "":
+                    Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
+                    self._error_message = Message(
+                        i18n_catalog.i18nc("@info:status",
+                                           "Unable to start a new print job; no material loaded in slot {0}".format(index + 1)))
+                    self._error_message.show()
+                    return
 
         warnings = []  # There might be multiple things wrong. Keep a list of all the stuff we need to warn about.
 
-        # Check if there is enough material. Any failure in these results in a warning.
-        material_length_1 = self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["length_remaining"]
-        if material_length_1 != -1 and print_information.materialLengths[0] > material_length_1:
-            warnings.append("not_enough_material_1")
+        for index in range(0, self._num_extruders):
+            # Check if there is enough material. Any failure in these results in a warning.
+            material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
+            if material_length != -1 and print_information.materialLengths[index] > material_length:
+                warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
-        material_length_2 = self._json_printer_state["heads"][0]["extruders"][1]["active_material"]["length_remaining"]
-        if material_length_2 != -1 and print_information.materialLengths[1] > material_length_2:
-            warnings.append("not_enough_material_2")
-
-        # Check if the right cartridges are loaded. Any failure in these results in a warning.
-        extruder_manager = cura.Settings.ExtruderManager.getInstance()
-        if print_information.materialLengths[0] != 0:
-            variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
-            if variant:
-                if variant.getName() != self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"]:
-                    warnings.append("hotend_1")
+            # Check if the right cartridges are loaded. Any failure in these results in a warning.
+            extruder_manager = cura.Settings.ExtruderManager.getInstance()
+            if print_information.materialLengths[index] != 0:
+                variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
+                if variant:
+                    if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
+                        warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore selected for extruder {0}".format(index + 1)))
 
             material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
             if material:
-                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"]:
-                    warnings.append("wrong_material_1")
-
-        if print_information.materialLengths[1] != 0:
-            variant = extruder_manager.getExtruderStack(1).findContainer({"type": "variant"})
-            if variant:
-                if variant.getName() != self._json_printer_state["heads"][0]["extruders"][1]["hotend"]["id"]:
-                    warnings.append("hotend_2")
-
-            material = extruder_manager.getExtruderStack(1).findContainer({"type": "material"})
-            if material:
-                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][1]["active_material"]["GUID"]:
-                    warnings.append("wrong_material_2")
+                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
+                    warnings.append(i18n_catalog.i18nc("@label", "Different material  selected for extruder {0}").format(index + 1))
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "A number of configurations are mismatched. Are you sure you wish to print with the selected configuration?")
             detailed_text = "<ul>"
-            if "not_enough_material_1" in warnings:
-                detailed_text += "<li>" + i18n_catalog.i18nc("@label", "Not enough material for spool 1.") + "</li>"
-            if "not_enough_material_2" in warnings:
-                detailed_text += "<li>" + i18n_catalog.i18nc("@label", "Not enough material for spool 2.") + "</li>"
-            if "hotend_1" in warnings:
-                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
-                                                             "Different PrintCore selected for extruder 1") + "</li>"
-            if "hotend_2" in warnings:
-                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
-                                                             "Different PrintCore selected for extruder 2") + "</li>"
-            if "wrong_material_1" in warnings:
-                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
-                                                             "Different material  selected for extruder 1") + "</li>"
-            if "wrong_material_2" in warnings:
-                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
-                                                             "Different material  selected for extruder 1") + "</li>"
+            for warning in warnings:
+                detailed_text += "<li>" + warning + "</li>"
 
             detailed_text += "</ul>"
             Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
