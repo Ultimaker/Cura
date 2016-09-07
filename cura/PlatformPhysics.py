@@ -107,7 +107,6 @@ class PlatformPhysics:
                         continue  # Other node is already moving, wait for next pass.
 
                     overlap = (0, 0)  # Start loop with no overlap
-                    move_vector = move_vector.set(x=overlap[0] * self._move_factor, z=overlap[1] * self._move_factor)
                     current_overlap_checks = 0
                     # Continue to check the overlap until we no longer find one.
                     while overlap and current_overlap_checks < self._max_overlap_checks:
