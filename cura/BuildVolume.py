@@ -67,6 +67,9 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
 
+        self._prime_tower_area = None
+        self._prime_tower_area_mesh = None
+
         self.setCalculateBoundingBox(False)
         self._volume_aabb = None
 
@@ -81,6 +84,8 @@ class BuildVolume(SceneNode):
         self._active_extruder_stack = None
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
         self._onActiveExtruderStackChanged()
+
+        self._has_errors = False
 
     def setWidth(self, width):
         if width: self._width = width
@@ -109,6 +114,10 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
+
+        if self._prime_tower_area_mesh:
+            renderer.queueNode(self, mesh = self._prime_tower_area_mesh, shader = self._shader, transparent=True,
+                               backface_cull=True, sort=-8)
 
         return True
 
@@ -183,6 +192,24 @@ class BuildVolume(SceneNode):
             self._disallowed_area_mesh = mb.build()
         else:
             self._disallowed_area_mesh = None
+
+        if self._prime_tower_area:
+            mb = MeshBuilder()
+            color = Color(1.0, 0.0, 0.0, 0.5)
+            points = self._prime_tower_area.getPoints()
+            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                           self._clamp(points[0][1], min_d, max_d))
+            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                                    self._clamp(points[0][1], min_d, max_d))
+            for point in points:
+                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
+                                   self._clamp(point[1], min_d, max_d))
+                mb.addFace(first, previous_point, new_point, color=color)
+                previous_point = new_point
+
+            self._prime_tower_area_mesh = mb.build()
+        else:
+            self._prime_tower_area_mesh = None
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
@@ -291,24 +318,34 @@ class BuildVolume(SceneNode):
         if rebuild_me:
             self.rebuild()
 
+    def hasErrors(self):
+        return self._has_errors
+
     def _updateDisallowedAreas(self):
         if not self._global_container_stack:
             return
-
+        self._has_errors = False  # Reset.
         disallowed_areas = copy.deepcopy(
             self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-
+        self._prime_tower_area = None
         # Add prime tower location as disallowed area.
         if self._global_container_stack.getProperty("prime_tower_enable", "value") == True:
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
 
-            disallowed_areas.append([
+            '''disallowed_areas.append([
+                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y],
+                [prime_tower_x - prime_tower_size, prime_tower_y],
+            ])'''
+
+            self._prime_tower_area = Polygon([
                 [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
                 [prime_tower_x, prime_tower_y - prime_tower_size],
                 [prime_tower_x, prime_tower_y],
@@ -344,6 +381,9 @@ class BuildVolume(SceneNode):
 
                 areas.append(poly)
 
+        if self._prime_tower_area:
+            self._prime_tower_area = self._prime_tower_area.getMinkowskiHull(Polygon(approximatedCircleVertices(bed_adhesion_size)))
+
         # Add the skirt areas around the borders of the build plate.
         if bed_adhesion_size > 0:
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
@@ -377,6 +417,19 @@ class BuildVolume(SceneNode):
                 [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
             ], numpy.float32)))
 
+        # Check if the prime tower area intersects with any of the other areas.
+        # If this is the case, keep the polygon seperate, so it can be drawn in red.
+        # If not, add it back to disallowed area's, so it's rendered as normal.
+        collision = False
+        if self._prime_tower_area:
+            for area in areas:
+                if self._prime_tower_area.intersectsPolygon(area) is not None:
+                    collision = True
+                    break
+            if not collision:
+                areas.append(self._prime_tower_area)
+                self._prime_tower_area = None
+        self._has_errors = collision
         self._disallowed_areas = areas
 
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.

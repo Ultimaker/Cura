@@ -31,7 +31,7 @@ class UMOUpgradeSelection(MachineAction):
             if variant:
                 if variant.getId() == "empty_variant":
                     variant_index = global_container_stack.getContainerIndex(variant)
-                    self._createVariant(global_container_stack, variant_index)
+                    variant = self._createVariant(global_container_stack, variant_index)
                 variant.setProperty("machine_heated_bed", "value", heated_bed)
                 self.heatedBedChanged.emit()
 
@@ -42,3 +42,4 @@ class UMOUpgradeSelection(MachineAction):
         new_variant.setDefinition(global_container_stack.getBottom())
         UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
         global_container_stack.replaceContainer(variant_index, new_variant)
+        return new_variant

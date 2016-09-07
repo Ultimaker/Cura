@@ -10,6 +10,7 @@
         "manufacturer": "Ultimaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
+        "has_materials": true,
         "preferred_material": "*generic_pla*",
         "preferred_quality": "*normal*",
         "machine_extruder_trains":
@@ -3297,6 +3298,7 @@
                     "default_value": 15,
                     "value": "15 if prime_tower_enable else 0",
                     "minimum_value": "0",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "maximum_value_warning": "20",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
