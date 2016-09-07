@@ -237,7 +237,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and self._connection_state_before_timeout:
             if time() - self._last_response_time > self._recreate_network_manager_time * self._recreate_network_manager_count:
                 self._recreate_network_manager_count += 1
-                Logger.log("d", "Timeout lasted over 30 seconds, re-checking connection.")
+                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", (time() - self._last_response_time))
                 self._createNetworkManager()
                 return
 
