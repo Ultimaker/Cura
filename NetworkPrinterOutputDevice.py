@@ -231,13 +231,21 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Request data from the connected device.
     def _update(self):
+        if self._last_response_time:
+            time_since_last_response = time() - self._last_response_time
+        else:
+            time_since_last_response = 0
+
         # Connection is in timeout, check if we need to re-start the connection.
         # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
         # Re-creating the QNetworkManager seems to fix this issue.
         if self._last_response_time and self._connection_state_before_timeout:
-            if time() - self._last_response_time > self._recreate_network_manager_time * self._recreate_network_manager_count:
-                self._recreate_network_manager_count += 1
-                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", (time() - self._last_response_time))
+            if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
+                # It can happen that we had a very long timeout (multiple times the recreate time).
+                # In that case we should jump through the point that the next update won't be right away.
+                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
+                    self._recreate_network_manager_count += 1
+                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", time_since_last_response)
                 self._createNetworkManager()
                 return
 
@@ -268,9 +276,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
-            if time() - self._last_response_time > self._response_timeout_time:
+            if time_since_last_response > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time() - self._last_response_time)
+                Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time_since_last_response)
                 self._connection_state_before_timeout = self._connection_state
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your printer to see if it is connected."))
                 self._connection_message.show()
