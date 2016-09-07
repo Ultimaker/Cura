@@ -8,6 +8,7 @@ from UM.Message import Message
 import UM.Settings
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+import cura.Settings.ExtruderManager
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
@@ -154,6 +155,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
+            Logger.log("d", "Authentication was required. Setting up authenticator.")
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
 
@@ -193,11 +195,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \param auth_state \type{AuthState} Enum value representing the new auth state
     def setAuthenticationState(self, auth_state):
         if auth_state == AuthState.AuthenticationRequested:
+            Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0} without access to control the printer.").format(self.name))
             self._authentication_requested_message.show()
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
+            Logger.log("d", "Authentication state changed to authenticated")
             self.setAcceptsCommands(True)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
             self._authentication_requested_message.hide()
@@ -210,6 +214,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Once we are authenticated we need to send all material profiles.
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
+            Logger.log("d", "Authentication state changed to authentication denied")
             self.setAcceptsCommands(False)
             self._authentication_requested_message.hide()
             self._authentication_failed_message.show()
@@ -227,16 +232,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_requested_message.setProgress(0)
         self._authentication_id = None
         self._authentication_key = None
+        self._createNetworkManager() # Re-create network manager to force re-authentication.
 
     ##  Request data from the connected device.
     def _update(self):
+        if self._last_response_time:
+            time_since_last_response = time() - self._last_response_time
+        else:
+            time_since_last_response = 0
+
         # Connection is in timeout, check if we need to re-start the connection.
         # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
         # Re-creating the QNetworkManager seems to fix this issue.
         if self._last_response_time and self._connection_state_before_timeout:
-            if time() - self._last_response_time > self._recreate_network_manager_time * self._recreate_network_manager_count:
-                self._recreate_network_manager_count += 1
-                Logger.log("d", "Timeout lasted over 30 seconds, re-checking connection.")
+            if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
+                # It can happen that we had a very long timeout (multiple times the recreate time).
+                # In that case we should jump through the point that the next update won't be right away.
+                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
+                    self._recreate_network_manager_count += 1
+                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", time_since_last_response)
                 self._createNetworkManager()
                 return
 
@@ -251,34 +265,40 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_message.show()
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
-                if self._post_reply:
-                    self._post_reply.abort()
-                    try:
-                        self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
-                    except TypeError:
-                        pass  # The disconnection can fail on mac in some cases. Ignore that.
-                    self._progress_message.hide()
+                try:
+                    if self._post_reply:
+                        self._post_reply.abort()
+                        try:
+                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                        except TypeError:
+                            pass  # The disconnection can fail on mac in some cases. Ignore that.
+                        self._progress_message.hide()
+                except RuntimeError:
+                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
             return
         else:
             self._recreate_network_manager_count = 1
 
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
-            if time() - self._last_response_time > self._response_timeout_time:
+            if time_since_last_response > self._response_timeout_time:
                 # Go into timeout state.
-                Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time() - self._last_response_time)
+                Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time_since_last_response)
                 self._connection_state_before_timeout = self._connection_state
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your printer to see if it is connected."))
                 self._connection_message.show()
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
-                if self._post_reply:
-                    self._post_reply.abort()
-                    try:
-                        self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
-                    except TypeError:
-                        pass  # The disconnection can fail on mac in some cases. Ignore that.
-                    self._progress_message.hide()
+                try:
+                    if self._post_reply:
+                        self._post_reply.abort()
+                        try:
+                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                        except TypeError:
+                            pass  # The disconnection can fail on mac in some cases. Ignore that.
+                        self._progress_message.hide()
+                except RuntimeError:
+                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
                 self.setConnectionState(ConnectionState.error)
                 return
 
@@ -363,35 +383,81 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         if self._progress != 0:
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
             self._error_message.show()
             return
         if self._json_printer_state["status"] != "idle":
             self._error_message = Message(
-                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is not idle. Current printer status is %s.") % self._json_printer_state["status"])
+                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._json_printer_state["status"])
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
             self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
                                                                          "Not authenticated to print with this machine. Unable to start a new job."))
             self._not_authenticated_message.show()
+            Logger.log("d", "Attempting to perform an action without authentication. Auth state is %s", self._authentication_state)
             return
 
         Application.getInstance().showPrintMonitor.emit(True)
         self._print_finished = True
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
-        # TODO: Implement all checks.
-        # Check if cartridges are loaded at all (Error)
-        #self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] != ""
+        print_information = Application.getInstance().getPrintInformation()
 
-        # Check if there is material loaded at all (Error)
-        #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"] != ""
+        # Check if PrintCores / materials  are loaded at all. Any failure in these results in an Error.
+        for index in range(0, self._num_extruders):
+            if print_information.materialLengths[index] != 0:
+                if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
+                    Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
+                    self._error_message = Message(
+                        i18n_catalog.i18nc("@info:status", "Unable to start a new print job; no PrinterCore loaded in slot {0}".format(index + 1)))
+                    self._error_message.show()
+                    return
+                if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"] == "":
+                    Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
+                    self._error_message = Message(
+                        i18n_catalog.i18nc("@info:status",
+                                           "Unable to start a new print job; no material loaded in slot {0}".format(index + 1)))
+                    self._error_message.show()
+                    return
 
-        # Check if there is enough material (Warning)
-        #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["length_remaining"]
+        warnings = []  # There might be multiple things wrong. Keep a list of all the stuff we need to warn about.
 
-        #TODO: Check if the cartridge is the right ID (give warning otherwise)
+        for index in range(0, self._num_extruders):
+            # Check if there is enough material. Any failure in these results in a warning.
+            material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
+            if material_length != -1 and print_information.materialLengths[index] > material_length:
+                warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
+
+            # Check if the right cartridges are loaded. Any failure in these results in a warning.
+            extruder_manager = cura.Settings.ExtruderManager.getInstance()
+            if print_information.materialLengths[index] != 0:
+                variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
+                if variant:
+                    if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
+                        warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore selected for extruder {0}".format(index + 1)))
+
+            material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
+            if material:
+                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
+                    warnings.append(i18n_catalog.i18nc("@label", "Different material  selected for extruder {0}").format(index + 1))
+
+        if warnings:
+            text = i18n_catalog.i18nc("@label", "A number of configurations are mismatched. Are you sure you wish to print with the selected configuration?")
+            detailed_text = "<ul>"
+            for warning in warnings:
+                detailed_text += "<li>" + warning + "</li>"
+
+            detailed_text += "</ul>"
+            Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
+                                                 text,
+                                                 detailed_text,
+                                                 buttons=QMessageBox.Yes + QMessageBox.No,
+                                                 icon=QMessageBox.Question,
+                                                 callback=self._configurationCallback
+                                                 )
+
+            return
 
         self.startPrint()
 
@@ -460,7 +526,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._send_gcode_start = time()
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
-
+            Logger.log("d", "Started sending g-code to remote printer.")
             ## Mash the data into single string
             single_string_file_data = ""
             for line in self._gcode:
@@ -503,6 +569,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
+        Logger.log("d", "Checking if authentication is correct.")
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
@@ -639,7 +706,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         Logger.log("i", "Not authenticated. Attempting to request authentication")
                         self._requestAuthentication()
                 elif status_code == 403:
-                    pass
+                    # If we already had an auth (eg; didn't request one), we only need a single 403 to see it as denied.
+                    if self._authentication_state != AuthState.AuthenticationRequested:
+                        self.setAuthenticationState(AuthState.AuthenticationDenied)
                 elif status_code == 200:
                     self.setAuthenticationState(AuthState.Authenticated)
                     global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -698,6 +767,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
+            # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
+            # timeout responses if this happens.
+            self._last_response_time = time()
             if new_progress > self._progress_message.getProgress():
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
@@ -716,3 +788,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             icon=QMessageBox.Question,
             callback=callback
         )
+
+    def _configurationCallback(self, button):
+        if button == QMessageBox.Yes:
+            self.startPrint()
