@@ -563,7 +563,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._send_gcode_start = time()
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
-
+            Logger.log("d", "Started sending g-code to remote printer.")
             ## Mash the data into single string
             single_string_file_data = ""
             for line in self._gcode:
