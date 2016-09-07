@@ -8,6 +8,7 @@ from UM.Message import Message
 import UM.Settings
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+import cura.Settings.ExtruderManager
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
@@ -383,8 +384,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         print_information = Application.getInstance().getPrintInformation()
 
-        # TODO: Implement all checks.
-        # Check if PrintCores / materials  are loaded at all (Error)
+        # Check if PrintCores / materials  are loaded at all. Any failure in these results in an Error.
         if print_information.materialLengths[0] != 0:  # We need to print with extruder slot 1
             if self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"] == "":
                 Logger.log("e", "No cartridge loaded in slot 1, unable to start print")
@@ -416,10 +416,71 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message.show()
             return
 
-        # Check if there is enough material (Warning)
-        #self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["length_remaining"]
+        warnings = []  # There might be multiple things wrong. Keep a list of all the stuff we need to warn about.
 
-        #TODO: Check if the cartridge is the right ID (give warning otherwise)
+        # Check if there is enough material. Any failure in these results in a warning.
+        material_length_1 = self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["length_remaining"]
+        if material_length_1 != -1 and print_information.materialLengths[0] > material_length_1:
+            warnings.append("not_enough_material_1")
+
+        material_length_2 = self._json_printer_state["heads"][0]["extruders"][1]["active_material"]["length_remaining"]
+        if material_length_2 != -1 and print_information.materialLengths[1] > material_length_2:
+            warnings.append("not_enough_material_2")
+
+        # Check if the right cartridges are loaded. Any failure in these results in a warning.
+        extruder_manager = cura.Settings.ExtruderManager.getInstance()
+        if print_information.materialLengths[0] != 0:
+            variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
+            if variant:
+                if variant.getId() != self._json_printer_state["heads"][0]["extruders"][0]["hotend"]["id"]:
+                    warnings.append("hotend_1")
+
+            material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
+            if material:
+                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][0]["active_material"]["GUID"]:
+                    warnings.append("wrong_material_1")
+
+        if print_information.materialLengths[1] != 0:
+            variant = extruder_manager.getExtruderStack(1).findContainer({"type": "variant"})
+            if variant:
+                if variant.getId() != self._json_printer_state["heads"][0]["extruders"][1]["hotend"]["id"]:
+                    warnings.append("hotend_2")
+
+            material = extruder_manager.getExtruderStack(1).findContainer({"type": "material"})
+            if material:
+                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][1]["active_material"]["GUID"]:
+                    warnings.append("wrong_material_2")
+
+        if warnings:
+            text = i18n_catalog.i18nc("@label", "A number of configurations are mismatched. Are you sure you wish to print with the selected configuration?")
+            detailed_text = "<ul>"
+            if "not_enough_material_1" in warnings:
+                detailed_text += "<li>" + i18n_catalog.i18nc("@label", "Not enough material for spool 1.") + "</li>"
+            if "not_enough_material_2" in warnings:
+                detailed_text += "<li>" + i18n_catalog.i18nc("@label", "Not enough material for spool 2.") + "</li>"
+            if "hotend_1" in warnings:
+                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
+                                                             "Different PrintCore selected for extruder 1") + "</li>"
+            if "hotend_2" in warnings:
+                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
+                                                             "Different PrintCore selected for extruder 2") + "</li>"
+            if "wrong_material_1" in warnings:
+                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
+                                                             "Different material  selected for extruder 1") + "</li>"
+            if "wrong_material_2" in warnings:
+                detailed_text += "<li>" + i18n_catalog.i18nc("@label",
+                                                             "Different material  selected for extruder 1") + "</li>"
+
+            detailed_text += "</ul>"
+            Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
+                                                 text,
+                                                 detailed_text,
+                                                 buttons=QMessageBox.Yes + QMessageBox.No,
+                                                 icon=QMessageBox.Question,
+                                                 callback=self._configurationCallback
+                                                 )
+
+            return
 
         self.startPrint()
 
@@ -744,3 +805,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             icon=QMessageBox.Question,
             callback=callback
         )
+
+    def _configurationCallback(self, button):
+        if button == QMessageBox.Yes:
+            self.startPrint()
