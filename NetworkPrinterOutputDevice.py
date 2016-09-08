@@ -246,6 +246,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Re-creating the QNetworkManager seems to fix this issue.
         if self._last_response_time and self._connection_state_before_timeout:
             if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
+                self._recreate_network_manager_count += 1
                 # It can happen that we had a very long timeout (multiple times the recreate time).
                 # In that case we should jump through the point that the next update won't be right away.
                 while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
@@ -440,26 +441,34 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
             if material:
                 if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
-                    warnings.append(i18n_catalog.i18nc("@label", "Different material  selected for extruder {0}").format(index + 1))
+                    warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
 
         if warnings:
-            text = i18n_catalog.i18nc("@label", "A number of configurations are mismatched. Are you sure you wish to print with the selected configuration?")
-            detailed_text = "<ul>"
+            text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
+            informative_text = i18n_catalog.i18nc("@label", "There is a mismatch between the configuration of the printer and Cura. "
+                                                "For the best result, always slice for the PrintCores and materials that are inserted in your printer.")
+            detailed_text = ""
             for warning in warnings:
-                detailed_text += "<li>" + warning + "</li>"
+                detailed_text += warning + "\n"
 
-            detailed_text += "</ul>"
             Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Mismatched configuration"),
                                                  text,
+                                                 informative_text,
                                                  detailed_text,
                                                  buttons=QMessageBox.Yes + QMessageBox.No,
                                                  icon=QMessageBox.Question,
-                                                 callback=self._configurationCallback
+                                                 callback=self._configurationMismatchMessageCallback
                                                  )
 
             return
 
         self.startPrint()
+
+    def _configurationMismatchMessageCallback(self, button):
+        if button == QMessageBox.Yes:
+            self.startPrint()
+        else:
+            Application.getInstance().showPrintMonitor.emit(False)
 
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
@@ -788,7 +797,3 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             icon=QMessageBox.Question,
             callback=callback
         )
-
-    def _configurationCallback(self, button):
-        if button == QMessageBox.Yes:
-            self.startPrint()
