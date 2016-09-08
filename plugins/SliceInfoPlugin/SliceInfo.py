@@ -91,12 +91,7 @@ class SliceInfo(Extension):
                 modelhashes.append(node.getMeshData().getHash())
 
             # Creating md5sums and formatting them as discussed on JIRA
-            modelhash_formatted = ""
-            if modelhashes:
-                modelhash_formatted = str(modelhashes[0])
-                if len(modelhashes) > 1:
-                    for modelhash in modelhashes[1:]:
-                        modelhash_formatted += ",%s" %(modelhash)
+            modelhash_formatted = ",".join(modelhashes)
 
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
