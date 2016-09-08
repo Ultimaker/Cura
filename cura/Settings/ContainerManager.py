@@ -167,6 +167,19 @@ class ContainerManager(QObject):
 
         return True
 
+    @pyqtSlot(str, str, result=str)
+    def getContainerMetaDataEntry(self, container_id, entry_name):
+        containers = self._container_registry.findContainers(None, id=container_id)
+        if not containers:
+            UM.Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
+            return False
+
+        result = containers[0].getMetaDataEntry(entry_name)
+        if result:
+            return result
+        else:
+            return ""
+
     ##  Set a metadata entry of the specified container.
     #
     #   This will set the specified entry of the container's metadata to the specified
@@ -576,6 +589,29 @@ class ContainerManager(QObject):
             return ""
 
         return new_name
+
+    @pyqtSlot(str, result = str)
+    def duplicateMaterial(self, material_id):
+        containers = self._container_registry.findInstanceContainers(id=material_id)
+        if not containers:
+            UM.Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", material_id)
+            return ""
+
+        # Ensure all settings are saved.
+        UM.Application.getInstance().saveSettings()
+
+        # Create a new ID & container to hold the data.
+        new_id = self._container_registry.uniqueName(material_id)
+        container_type = type(containers[0])  # Could be either a XMLMaterialProfile or a InstanceContainer
+        duplicated_container = container_type(new_id)
+
+        # Instead of duplicating we load the data from the basefile again.
+        # This ensures that the inheritance goes well and all "cut up" subclasses of the xmlMaterial profile
+        # are also correctly created.
+        with open(containers[0].getPath(), encoding="utf-8") as f:
+            duplicated_container.deserialize(f.read())
+        duplicated_container.setDirty(True)
+        self._container_registry.addContainer(duplicated_container)
 
     # Factory function, used by QML
     @staticmethod

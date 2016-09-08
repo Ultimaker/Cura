@@ -129,7 +129,6 @@ UM.ManagementPage
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
             onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
         },
-        /*  // apparently visible does not work on OS X
         Button
         {
             text: catalog.i18nc("@action:button", "Duplicate");
@@ -137,24 +136,17 @@ UM.ManagementPage
             enabled: base.currentItem != null
             onClicked:
             {
-                var material_id = Cura.ContainerManager.duplicateContainer(base.currentItem.id)
+                var base_file = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "base_file")
+                // We need to copy the base container instead of the specific variant.
+                var material_id = base_file == "" ? Cura.ContainerManager.duplicateMaterial(base.currentItem.id): Cura.ContainerManager.duplicateMaterial(base_file)
                 if(material_id == "")
                 {
                     return
                 }
 
-                if(Cura.MachineManager.filterQualityByMachine)
-                {
-                    var quality_id = Cura.ContainerManager.duplicateContainer(Cura.MachineManager.activeQualityId)
-                    Cura.ContainerManager.setContainerMetaDataEntry(quality_id, "material", material_id)
-                    Cura.MachineManager.setActiveQuality(quality_id)
-                }
-
                 Cura.MachineManager.setActiveMaterial(material_id)
             }
-            visible: false;
         },
-        */
         Button
         {
             text: catalog.i18nc("@action:button", "Remove");
@@ -162,15 +154,13 @@ UM.ManagementPage
             enabled: base.currentItem != null && !base.currentItem.readOnly && !Cura.ContainerManager.isContainerUsed(base.currentItem.id)
             onClicked: confirmDialog.open()
         },
-        /*  // apparently visible does not work on OS X
         Button
         {
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
-            visible: false;
+            visible: true;
         },
-        */
         Button
         {
             text: catalog.i18nc("@action:button", "Export")
