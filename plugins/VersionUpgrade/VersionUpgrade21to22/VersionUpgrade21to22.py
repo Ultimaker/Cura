@@ -65,11 +65,57 @@ _printer_translations_profiles = {
 }
 
 ##  How to translate profile names from the old version to the new.
+#
+#   This must have an entry for every built-in profile, since it also services
+#   as a set for which profiles were built-in.
 _profile_translations = {
     "Low Quality": "low",
     "Normal Quality": "normal",
     "High Quality": "high",
-    "Ulti Quality": "high" #This one doesn't have an equivalent. Map it to high.
+    "Ulti Quality": "high", #This one doesn't have an equivalent. Map it to high.
+    "abs_0.25_normal": "um2p_abs_0.25_normal",
+    "abs_0.4_fast": "um2p_abs_0.4_fast",
+    "abs_0.4_high": "um2p_abs_0.4_high",
+    "abs_0.4_normal": "um2p_abs_0.4_normal",
+    "abs_0.6_normal": "um2p_abs_0.6_normal",
+    "abs_0.8_normal": "um2p_abs_0.8_normal",
+    "cpe_0.25_normal": "um2p_cpe_0.25_normal",
+    "cpe_0.4_fast": "um2p_cpe_0.4_fast",
+    "cpe_0.4_high": "um2p_cpe_0.4_high",
+    "cpe_0.4_normal": "um2p_cpe_0.4_normal",
+    "cpe_0.6_normal": "um2p_cpe_0.6_normal",
+    "cpe_0.8_normal": "um2p_cpe_0.8_normal",
+    "cpep_0.4_draft": "um2p_cpep_0.4_draft",
+    "cpep_0.4_normal": "um2p_cpep_0.4_normal",
+    "cpep_0.6_draft": "um2p_cpep_0.6_draft",
+    "cpep_0.6_normal": "um2p_cpep_0.6_normal",
+    "cpep_0.8_draft": "um2p_cpep_0.8_draft",
+    "cpep_0.8_normal": "um2p_cpep_0.8_normal",
+    "nylon_0.25_high": "um2p_nylon_0.25_high",
+    "nylon_0.25_normal": "um2p_nylon_0.25_normal",
+    "nylon_0.4_fast": "um2p_nylon_0.4_fast",
+    "nylon_0.4_normal": "um2p_nylon_0.4_normal",
+    "nylon_0.6_fast": "um2p_nylon_0.6_fast",
+    "nylon_0.6_normal": "um2p_nylon_0.6_normal",
+    "nylon_0.8_draft": "um2p_nylon_0.8_draft",
+    "nylon_0.8_normal": "um2p_nylon_0.8_normal",
+    "pc_0.25_high": "um2p_pc_0.25_high",
+    "pc_0.25_normal": "um2p_pc_0.25_normal",
+    "pc_0.4_fast": "um2p_pc_0.4_fast",
+    "pc_0.4_normal": "um2p_pc_0.4_normal",
+    "pc_0.6_fast": "um2p_pc_0.6_fast",
+    "pc_0.6_normal": "um2p_pc_0.6_normal",
+    "pc_0.8_draft": "um2p_pc_0.8_draft",
+    "pc_0.8_normal": "um2p_pc_0.8_normal",
+    "pla_0.25_normal": "pla_0.25_normal", #Note that the PLA profiles don't get the um2p_ prefix, though they are for UM2+.
+    "pla_0.4_fast": "pla_0.4_fast",
+    "pla_0.4_high": "pla_0.4_high",
+    "pla_0.4_normal": "pla_0.4_normal",
+    "pla_0.6_normal": "pla_0.6_normal",
+    "pla_0.8_normal": "pla_0.8_normal",
+    "tpu_0.25_high": "um2p_tpu_0.25_high",
+    "tpu_0.4_normal": "um2p_tpu_0.4_normal",
+    "tpu_0.6_fast": "um2p_tpu_0.6_fast"
 }
 
 ##  How to translate setting names from the old version to the new.
