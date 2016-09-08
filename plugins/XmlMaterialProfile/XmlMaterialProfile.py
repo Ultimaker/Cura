@@ -22,35 +22,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
 
-    ##  Overridden from InstanceContainer
-    def duplicate(self, new_id, new_name = None):
-        base_file = self.getMetaDataEntry("base_file", None)
-
-        if base_file != self.id:
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = base_file)
-            if containers:
-                new_basefile = containers[0].duplicate(self.getMetaDataEntry("brand") + "_" + new_id, new_name)
-                base_file = new_basefile.id
-                UM.Settings.ContainerRegistry.getInstance().addContainer(new_basefile)
-
-                new_id = self.getMetaDataEntry("brand") + "_" + new_id + "_" + self.getDefinition().getId()
-                variant = self.getMetaDataEntry("variant")
-                if variant:
-                    variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant)
-                    if variant_containers:
-                        new_id += "_" + variant_containers[0].getName().replace(" ", "_")
-            has_base_file = True
-        else:
-            has_base_file = False
-
-        new_id = UM.Settings.ContainerRegistry.getInstance().createUniqueName("material", self._id, new_id, "")
-        result = super().duplicate(new_id, new_name)
-        if has_base_file:
-            result.setMetaDataEntry("base_file", base_file)
-        else:
-            result.setMetaDataEntry("base_file", result.id)
-        return result
-
     def getInheritedFiles(self):
         return self._inherited_files
 
@@ -63,6 +34,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             container._read_only = read_only  # prevent loop instead of calling setReadOnly
 
     ##  Overridden from InstanceContainer
+    #   set the meta data for all machine / variant combinations
     def setMetaDataEntry(self, key, value):
         if self.isReadOnly():
             return
@@ -103,10 +75,17 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     #
     #     basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
     #     for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-    #         container._dirty = True
+    #         if not container.isReadOnly():
+    #             container.setDirty(True)
 
     ##  Overridden from InstanceContainer
+    # base file: global settings + supported machines
+    # machine / variant combination: only changes for itself.
     def serialize(self):
+        if self._read_only:
+            Logger.log("w", "Serializing read-only container [%s], probably a programming error." % self.id)
+            return
+
         registry = UM.Settings.ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -114,7 +93,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
             # we should only serialize the "base" material definition, since that can then take care of
             # serializing the machine/nozzle specific profiles.
-            raise NotImplementedError("Cannot serialize non-root XML materials")
+            raise NotImplementedError("Ignoring serializing non-root XML materials, the data is contained in the base material")
 
         builder = ET.TreeBuilder()
 
