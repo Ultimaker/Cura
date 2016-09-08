@@ -15,6 +15,9 @@ from cura.ConvexHullDecorator import ConvexHullDecorator
 from . import PlatformPhysicsOperation
 from . import ZOffsetDecorator
 
+import random  # used for list shuffling
+
+
 class PlatformPhysics:
     def __init__(self, controller, volume):
         super().__init__()
@@ -48,7 +51,12 @@ class PlatformPhysics:
         # same direction.
         transformed_nodes = []
 
-        for node in BreadthFirstIterator(root):
+        group_nodes = []
+        # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
+        # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
+        nodes = list(BreadthFirstIterator(root))
+        random.shuffle(nodes)
+        for node in nodes:
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
 
@@ -68,6 +76,9 @@ class PlatformPhysics:
             # Mark the node as outside the build volume if the bounding box test fails.
             if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
                 node._outside_buildarea = True
+
+            if node.callDecoration("isGroup"):
+                group_nodes.append(node)  # Keep list of affected group_nodes
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
@@ -102,7 +113,6 @@ class PlatformPhysics:
                         continue  # Other node is already moving, wait for next pass.
 
                     overlap = (0, 0)  # Start loop with no overlap
-                    move_vector = move_vector.set(x=overlap[0] * self._move_factor, z=overlap[1] * self._move_factor)
                     current_overlap_checks = 0
                     # Continue to check the overlap until we no longer find one.
                     while overlap and current_overlap_checks < self._max_overlap_checks:
@@ -144,13 +154,18 @@ class PlatformPhysics:
                     overlap = convex_hull.intersectsPolygon(area)
                     if overlap is None:
                         continue
-
                     node._outside_buildarea = True
 
             if not Vector.Null.equals(move_vector, epsilon=1e-5):
                 transformed_nodes.append(node)
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
+
+        # Group nodes should override the _outside_buildarea property of their children.
+        for group_node in group_nodes:
+            for child_node in group_node.getAllChildren():
+                child_node._outside_buildarea = group_node._outside_buildarea
+
 
     def _onToolOperationStarted(self, tool):
         self._enabled = False

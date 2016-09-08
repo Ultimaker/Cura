@@ -78,6 +78,10 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.SettingError)
             return
 
+        if Application.getInstance().getBuildVolume().hasErrors():
+            self.setResult(StartJobResult.SettingError)
+            return
+
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is not SceneNode or not node.isSelectable():

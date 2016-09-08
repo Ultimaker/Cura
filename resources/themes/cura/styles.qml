@@ -199,18 +199,32 @@ QtObject {
 
     property Component progressbar: Component{
         ProgressBarStyle {
-            background:Rectangle {
+            background: Rectangle {
                 implicitWidth: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2)
                 implicitHeight: Theme.getSize("progressbar").height
                 radius: Theme.getSize("progressbar_radius").width
-                color: Theme.getColor("progressbar_background")
+                color: control.hasOwnProperty("backgroundColor") ? control.backgroundColor : Theme.getColor("progressbar_background")
             }
             progress: Rectangle {
-                color: control.indeterminate ? "transparent" : Theme.getColor("progressbar_control")
+                color:
+                {
+                    if(control.indeterminate)
+                    {
+                        return "transparent";
+                    }
+                    else if(control.hasOwnProperty("controlColor"))
+                    {
+                        return  control.controlColor;
+                    }
+                    else
+                    {
+                        return Theme.getColor("progressbar_control");
+                    }
+                }
                 radius: Theme.getSize("progressbar_radius").width
                 Rectangle{
                     radius: Theme.getSize("progressbar_radius").width
-                    color: Theme.getColor("progressbar_control")
+                    color: control.hasOwnProperty("controlColor") ? control.controlColor : Theme.getColor("progressbar_control")
                     width: Theme.getSize("progressbar_control").width
                     height: Theme.getSize("progressbar_control").height
                     visible: control.indeterminate

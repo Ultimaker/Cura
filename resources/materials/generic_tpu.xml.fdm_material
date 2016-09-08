@@ -14,7 +14,7 @@ Generic TPU 95A profile. Serves as an example file, data in this file is not cor
         <color_code>#B22744</color_code>
     </metadata>
     <properties>
-        <density>1.19</density>
+        <density>1.22</density>
         <diameter>2.85</diameter>
     </properties>
     <settings>

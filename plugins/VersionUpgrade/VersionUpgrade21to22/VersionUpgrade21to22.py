@@ -279,6 +279,8 @@ class VersionUpgrade21to22(VersionUpgrade):
             elif key in _setting_name_translations:
                 del settings[key]
                 settings[_setting_name_translations[key]] = value
+        if "infill_overlap" in settings:    # New setting, added in 2.3
+            settings["skin_overlap"] = settings["infill_overlap"]
         return settings
 
     ##  Translates a setting name for the change from Cura 2.1 to 2.2.

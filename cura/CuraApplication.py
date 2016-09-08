@@ -322,6 +322,7 @@ class CuraApplication(QtApplication):
                 path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
 
             if path:
+                instance.setPath(path)
                 with SaveFile(path, "wt", -1, "utf-8") as f:
                     f.write(data)
 
@@ -346,6 +347,7 @@ class CuraApplication(QtApplication):
             elif stack_type == "extruder_train":
                 path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
             if path:
+                stack.setPath(path)
                 with SaveFile(path, "wt", -1, "utf-8") as f:
                     f.write(data)
 
@@ -693,17 +695,17 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-
             nodes.append(node)
 
         if nodes:
             op = GroupedOperation()
             for node in nodes:
+                # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
                 op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
             op.push()
-    
-    ## Reset all transformations on nodes with mesh data. 
+
+    ## Reset all transformations on nodes with mesh data.
     @pyqtSlot()
     def resetAll(self):
         Logger.log("i", "Resetting all scene transformations")
@@ -719,15 +721,17 @@ class CuraApplication(QtApplication):
 
         if nodes:
             op = GroupedOperation()
-
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-
-                op.addOperation(SetTransformOperation(node, Vector(0, node.getMeshData().getCenterPosition().y, 0), Quaternion(), Vector(1, 1, 1)))
-
+                center_y = 0
+                if node.callDecoration("isGroup"):
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = node.getMeshData().getCenterPosition().y
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
-            
+
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
     def reloadAll(self):

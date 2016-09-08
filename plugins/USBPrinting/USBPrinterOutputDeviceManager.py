@@ -105,9 +105,10 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     @pyqtSlot(str)
     def updateAllFirmware(self, file_name):
-        file_name = file_name.replace("file://", "")  # File dialogs prepend the path with file://, which we don't need / want
+        if file_name.startswith("file://"):
+            file_name = QUrl(file_name).toLocalFile() # File dialogs prepend the path with file://, which we don't need / want
         if not self._usb_output_devices:
-            Message(i18n_catalog.i18nc("@info", "Cannot update firmware, there were no connected printers found.")).show()
+            Message(i18n_catalog.i18nc("@info", "Unable to update firmware because there are no printers connected.")).show()
             return
 
         for printer_connection in self._usb_output_devices:

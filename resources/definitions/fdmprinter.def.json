@@ -10,6 +10,7 @@
         "manufacturer": "Ultimaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
+        "has_materials": true,
         "preferred_material": "*generic_pla*",
         "preferred_quality": "*normal*",
         "machine_extruder_trains":
@@ -403,7 +404,7 @@
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 25,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1161,7 +1162,7 @@
                     "default_value": 25,
                     "minimum_value": "0",
                     "maximum_value": "machine_max_feedrate_e",
-                    "maximum_value_warning": "100",
+                    "maximum_value_warning": "25",
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -1174,7 +1175,7 @@
                             "default_value": 25,
                             "minimum_value": "0",
                             "maximum_value": "machine_max_feedrate_e",
-                            "maximum_value_warning": "100",
+                            "maximum_value_warning": "25",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
                             "settable_per_mesh": false,
@@ -1188,7 +1189,7 @@
                             "default_value": 25,
                             "minimum_value": "0",
                             "maximum_value": "machine_max_feedrate_e",
-                            "maximum_value_warning": "100",
+                            "maximum_value_warning": "25",
                             "enabled": "retraction_enable",
                             "value": "retraction_speed",
                             "settable_per_mesh": false,
@@ -3207,6 +3208,7 @@
             "type": "category",
             "icon": "category_dual",
             "description": "Settings used for printing with multiple extruders.",
+            "enabled": "machine_extruder_count > 1",
             "children":
             {
                 "adhesion_extruder_nr":
@@ -3284,6 +3286,7 @@
                     "default_value": 15,
                     "value": "15 if prime_tower_enable else 0",
                     "minimum_value": "0",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "maximum_value_warning": "20",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
