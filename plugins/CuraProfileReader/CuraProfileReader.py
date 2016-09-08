@@ -27,15 +27,15 @@ class CuraProfileReader(ProfileReader):
     #   returned.
     def read(self, file_name):
         try:
-            archive = zipfile.ZipFile(file_name, "r")
-            results = []
-            for profile_id in archive.namelist():
-                with archive.open(profile_id) as f:
-                    serialized = f.read()
-                profile = self._loadProfile(serialized.decode("utf-8"), profile_id)
-                if profile is not None:
-                    results.append(profile)
-            return results
+            with zipfile.ZipFile(file_name, "r") as archive:
+                results = []
+                for profile_id in archive.namelist():
+                    with archive.open(profile_id) as f:
+                        serialized = f.read()
+                    profile = self._loadProfile(serialized.decode("utf-8"), profile_id)
+                    if profile is not None:
+                        results.append(profile)
+                return results
 
         except zipfile.BadZipFile:
             # It must be an older profile from Cura 2.1.
