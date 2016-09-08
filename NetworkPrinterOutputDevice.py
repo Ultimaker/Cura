@@ -280,7 +280,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
             return
         else:
-            self._recreate_network_manager_count = 1
+            if not self._connection_state_before_timeout:
+                self._recreate_network_manager_count = 1
 
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
