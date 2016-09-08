@@ -246,6 +246,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Re-creating the QNetworkManager seems to fix this issue.
         if self._last_response_time and self._connection_state_before_timeout:
             if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
+                self._recreate_network_manager_count += 1
                 # It can happen that we had a very long timeout (multiple times the recreate time).
                 # In that case we should jump through the point that the next update won't be right away.
                 while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
