@@ -268,11 +268,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Some operating systems handle this themselves, others give weird issues.
                 try:
                     if self._post_reply:
-                        self._post_reply.abort()
+                        Logger.log("d", "Stopping post upload because the connection was lost.")
                         try:
                             self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
                         except TypeError:
                             pass  # The disconnection can fail on mac in some cases. Ignore that.
+
+                        self._post_reply.abort()
                         self._progress_message.hide()
                 except RuntimeError:
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
@@ -292,11 +294,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Some operating systems handle this themselves, others give weird issues.
                 try:
                     if self._post_reply:
-                        self._post_reply.abort()
+                        Logger.log("d", "Stopping post upload because the connection was lost.")
                         try:
                             self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
                         except TypeError:
                             pass  # The disconnection can fail on mac in some cases. Ignore that.
+
+                        self._post_reply.abort()
                         self._progress_message.hide()
                 except RuntimeError:
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
