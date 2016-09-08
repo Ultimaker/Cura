@@ -507,7 +507,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             # Change the type of this container so it is not shown as an option in menus.
             # This uses InstanceContainer.setMetaDataEntry because otherwise all containers that
             # share this basefile are also updated.
+            dirty = self.isDirty()
             super().setMetaDataEntry("type", "incompatible_material")
+            super().setDirty(dirty) # reset dirty flag after setMetaDataEntry
 
     def _addSettingElement(self, builder, instance):
         try:
