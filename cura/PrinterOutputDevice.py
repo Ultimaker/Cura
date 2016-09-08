@@ -150,8 +150,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot(int)
     def setTargetBedTemperature(self, temperature):
         self._setTargetBedTemperature(temperature)
-        self._target_bed_temperature = temperature
-        self.targetBedTemperatureChanged.emit()
+        if self._target_bed_temperature != temperature:
+            self._target_bed_temperature = temperature
+            self.targetBedTemperatureChanged.emit()
 
     ## Time the print has been printing.
     #  Note that timeTotal - timeElapsed should give time remaining.
@@ -212,8 +213,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   This simply sets the bed temperature, but ensures that a signal is emitted.
     #   /param temperature temperature of the bed.
     def _setBedTemperature(self, temperature):
-        self._bed_temperature = temperature
-        self.bedTemperatureChanged.emit()
+        if self._bed_temperature != temperature:
+            self._bed_temperature = temperature
+            self.bedTemperatureChanged.emit()
 
     ##  Get the target bed temperature if connected printer (if any)
     @pyqtProperty(int, notify = targetBedTemperatureChanged)
@@ -228,8 +230,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot(int, int)
     def setTargetHotendTemperature(self, index, temperature):
         self._setTargetHotendTemperature(index, temperature)
-        self._target_hotend_temperatures[index] = temperature
-        self.targetHotendTemperaturesChanged.emit()
+
+        if self._target_hotend_temperatures[index] != temperature:
+            self._target_hotend_temperatures[index] = temperature
+            self.targetHotendTemperaturesChanged.emit()
 
     ##  Implementation function of setTargetHotendTemperature.
     #   /param index Index of the hotend to set the temperature of
@@ -251,8 +255,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   /param index Index of the hotend
     #   /param temperature temperature of the hotend (in deg C)
     def _setHotendTemperature(self, index, temperature):
-        self._hotend_temperatures[index] = temperature
-        self.hotendTemperaturesChanged.emit()
+        if self._hotend_temperatures[index] != temperature:
+            self._hotend_temperatures[index] = temperature
+            self.hotendTemperaturesChanged.emit()
 
     @pyqtProperty("QVariantList", notify = materialIdChanged)
     def materialIds(self):
@@ -266,7 +271,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
             Logger.log("d", "Setting material id of hotend %d to %s" % (index, material_id))
             self._material_ids[index] = material_id
             self.materialIdChanged.emit(index, material_id)
-
 
     @pyqtProperty("QVariantList", notify = hotendIdChanged)
     def hotendIds(self):
@@ -302,8 +306,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     ##  Set the connection state of this output device.
     #   /param connection_state ConnectionState enum.
     def setConnectionState(self, connection_state):
-        self._connection_state = connection_state
-        self.connectionStateChanged.emit(self._id)
+        if self._connection_state != connection_state:
+            self._connection_state = connection_state
+            self.connectionStateChanged.emit(self._id)
 
     @pyqtProperty(str, notify = connectionTextChanged)
     def connectionText(self):
@@ -351,6 +356,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._head_z != z:
             self._head_z = z
             position_changed = True
+
         if position_changed:
             self.headPositionChanged.emit()
 
