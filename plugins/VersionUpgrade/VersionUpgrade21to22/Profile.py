@@ -94,7 +94,7 @@ class Profile:
             config.set("general", "definition", "fdmprinter") #In this case, the machine definition is unknown, and it might now have machine-specific profiles, in which case this will fail.
 
         config.add_section("metadata")
-        config.set("metadata", "quality_type", "normal") #This feature doesn't exist in 2.1 yet, so we don't know the actual quality type. For now, always base it on normal.
+        config.set("metadata", "quality", "normal") #This feature doesn't exist in 2.1 yet, so we don't know the actual quality type. For now, always base it on normal.
         config.set("metadata", "type", "quality_changes")
         if self._weight:
             config.set("metadata", "weight", str(self._weight))
