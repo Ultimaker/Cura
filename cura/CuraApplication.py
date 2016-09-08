@@ -322,6 +322,7 @@ class CuraApplication(QtApplication):
                 path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
 
             if path:
+                instance.setPath(path)
                 with SaveFile(path, "wt", -1, "utf-8") as f:
                     f.write(data)
 
@@ -346,6 +347,7 @@ class CuraApplication(QtApplication):
             elif stack_type == "extruder_train":
                 path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
             if path:
+                stack.setPath(path)
                 with SaveFile(path, "wt", -1, "utf-8") as f:
                     f.write(data)
 

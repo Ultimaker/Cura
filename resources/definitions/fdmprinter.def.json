@@ -2478,19 +2478,6 @@
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
-                "support_area_smoothing":
-                {
-                    "label": "Support Area Smoothing",
-                    "description": "Maximum distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.6,
-                    "global_inherits_stack": "support_extruder_nr",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "1.0",
-                    "enabled": "support_enable",
-                    "settable_per_mesh": true
-                },
                 "support_interface_enable":
                 {
                     "label": "Enable Support Interface",
@@ -2545,6 +2532,19 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "support_interface_skip_height":
+                {
+                    "label": "Support Interface Resolution",
+                    "description": "When checking where there's model above the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.3,
+                    "minimum_value": "0",
+                    "global_inherits_stack": "support_extruder_nr",
+                    "maximum_value_warning": "support_interface_height",
+                    "enabled": "extruderValue(support_extruder_nr, 'support_interface_enable') and support_enable",
+                    "settable_per_mesh": true
                 },
                 "support_interface_density":
                 {

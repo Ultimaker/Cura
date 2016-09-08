@@ -51,6 +51,8 @@ class SolidView(View):
             if multi_extrusion:
                 support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
                 support_angle_stack = ExtruderManager.getInstance().getExtruderStack(support_extruder_nr)
+                if not support_angle_stack:
+                    support_angle_stack = global_container_stack
             else:
                 support_angle_stack = global_container_stack
 
