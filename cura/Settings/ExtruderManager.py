@@ -160,7 +160,7 @@ class ExtruderManager(QObject):
     def createExtruderTrain(self, extruder_definition, machine_definition, position, machine_id):
         # Cache some things.
         container_registry = UM.Settings.ContainerRegistry.getInstance()
-        machine_definition_id = machine_definition.getId()
+        machine_definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(machine_definition)
 
         # Create a container stack for this extruder.
         extruder_stack_id = container_registry.uniqueName(extruder_definition.getId())
@@ -222,7 +222,7 @@ class ExtruderManager(QObject):
 
         search_criteria = { "type": "quality" }
         if machine_definition.getMetaDataEntry("has_machine_quality"):
-            search_criteria["definition"] = machine_definition.id
+            search_criteria["definition"] = machine_definition_id
             if machine_definition.getMetaDataEntry("has_materials") and material:
                 search_criteria["material"] = material.id
         else:
