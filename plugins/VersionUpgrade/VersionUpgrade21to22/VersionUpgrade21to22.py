@@ -137,6 +137,54 @@ _setting_name_translations = {
     "support_roof_pattern": "support_interface_pattern"
 }
 
+##  Custom profiles become quality_changes. This dictates which quality to base
+#   the quality_changes profile on.
+#
+#   Which quality profile to base the quality_changes on depends on the machine,
+#   material and nozzle.
+#
+#   If a current configuration is missing, fall back to "normal".
+_quality_fallbacks = {
+    "ultimaker2_plus": {
+        "ultimaker2_plus_0.25": {
+            "generic_abs": "um2p_abs_0.25_normal",
+            "generic_cpe": "um2p_cpe_0.25_normal",
+            #No CPE+.
+            "generic_nylon": "um2p_nylon_0.25_normal",
+            "generic_pc": "um2p_pc_0.25_normal",
+            "generic_pla": "pla_0.25_normal",
+            "generic_tpu": "um2p_tpu_0.25_high"
+        },
+        "ultimaker2_plus_0.4": {
+            "generic_abs": "um2p_abs_0.4_normal",
+            "generic_cpe": "um2p_cpe_0.4_normal",
+            "generic_cpep": "um2p_cpep_0.4_normal",
+            "generic_nylon": "um2p_nylon_0.4_normal",
+            "generic_pc": "um2p_pc_0.4_normal",
+            "generic_pla": "pla_0.4_normal",
+            "generic_tpu": "um2p_tpu_0.4_normal"
+        },
+        "ultimaker2_plus_0.6": {
+            "generic_abs": "um2p_abs_0.6_normal",
+            "generic_cpe": "um2p_cpe_0.6_normal",
+            "generic_cpep": "um2p_cpep_0.6_normal",
+            "generic_nylon": "um2p_nylon_0.6_normal",
+            "generic_pc": "um2p_pc_0.6_normal",
+            "generic_pla": "pla_0.6_normal",
+            "generic_tpu": "um2p_tpu_0.6_fast",
+        },
+        "ultimaker2_plus_0.8": {
+            "generic_abs": "um2p_abs_0.8_normal",
+            "generic_cpe": "um2p_cpe_0.8_normal",
+            "generic_cpep": "um2p_cpep_0.8_normal",
+            "generic_nylon": "um2p_nylon_0.8_normal",
+            "generic_pc": "um2p_pc_0.8_normal",
+            "generic_pla": "pla_0.8_normal",
+            #No TPU.
+        }
+    }
+}
+
 ##  How to translate variants of specific machines from the old version to the
 #   new.
 _variant_translations = {
@@ -195,6 +243,25 @@ class VersionUpgrade21to22(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+
+    ##  Gets the fallback quality to use for a specific machine-variant-material
+    #   combination.
+    #
+    #   For custom profiles we fall back onto this quality profile, since we
+    #   don't know which quality profile it was based on.
+    #
+    #   \param machine The machine ID of the user's configuration in 2.2.
+    #   \param variant The variant ID of the user's configuration in 2.2.
+    #   \param material The material ID of the user's configuration in 2.2.
+    @staticmethod
+    def getQualityFallback(machine, variant, material):
+        if machine not in _quality_fallbacks:
+            return "normal"
+        if variant not in _quality_fallbacks[machine]:
+            return "normal"
+        if material not in _quality_fallbacks[machine][variant]:
+            return "normal"
+        return _quality_fallbacks[machine][variant][material]
 
     ##  Gets the set of built-in profile names in Cura 2.1.
     #
