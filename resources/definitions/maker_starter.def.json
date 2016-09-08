@@ -145,7 +145,7 @@
         "adhesion_type": {
             "default_value": "Raft"
         },
-        "skirt_minimal_length": {
+        "skirt_brim_minimal_length": {
             "default_value": 100
         },
         "raft_base_line_spacing": {
