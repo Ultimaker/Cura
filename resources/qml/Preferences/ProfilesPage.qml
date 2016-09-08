@@ -23,7 +23,7 @@ UM.ManagementPage
             var result = { "type": "quality*", "extruder": null };
             if(Cura.MachineManager.filterQualityByMachine)
             {
-                result.definition = Cura.MachineManager.activeDefinitionId;
+                result.definition = Cura.MachineManager.activeQualityDefinitionId;
                 if(Cura.MachineManager.hasMaterials)
                 {
                     result.material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId];

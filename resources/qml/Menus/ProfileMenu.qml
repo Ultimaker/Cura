@@ -38,7 +38,7 @@ Menu
         id: customProfileInstantiator
         model: UM.InstanceContainersModel
         {
-            filter: { "type": "quality_changes", "extruder": null, "definition": Cura.MachineManager.filterQualityByMachine ? Cura.MachineManager.activeDefinitionId : "fdmprinter" };
+            filter: { "type": "quality_changes", "extruder": null, "definition": Cura.MachineManager.filterQualityByMachine ? Cura.MachineManager.activeQualityDefinitionId : "fdmprinter" };
             onModelReset: customSeparator.visible = rowCount() > 0
         }
 
@@ -79,7 +79,7 @@ Menu
 
         if(Cura.MachineManager.filterQualityByMachine)
         {
-            result.definition = Cura.MachineManager.activeDefinitionId;
+            result.definition = Cura.MachineManager.activeQualityDefinitionId;
             if(Cura.MachineManager.hasMaterials)
             {
                 result.material = Cura.MachineManager.activeQualityMaterialId;
