@@ -14,11 +14,10 @@ Generic Nylon profile. Serves as an example file, data in this file is not corre
         <color_code>#3DF266</color_code>
     </metadata>
     <properties>
-        <density>1.19</density>
+        <density>1.14</density>
         <diameter>2.85</diameter>
     </properties>
     <settings>
-        <setting key="hardware compatible">no</setting><!-- This material is not supported on most printers due to high temperatures -->
         <setting key="print temperature">250</setting>
         <setting key="heated bed temperature">60</setting>
         <setting key="standby temperature">175</setting>

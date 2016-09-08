@@ -15,6 +15,9 @@ from cura.ConvexHullDecorator import ConvexHullDecorator
 from . import PlatformPhysicsOperation
 from . import ZOffsetDecorator
 
+import random  # used for list shuffling
+
+
 class PlatformPhysics:
     def __init__(self, controller, volume):
         super().__init__()
@@ -49,8 +52,11 @@ class PlatformPhysics:
         transformed_nodes = []
 
         group_nodes = []
-
-        for node in BreadthFirstIterator(root):
+        # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
+        # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
+        nodes = list(BreadthFirstIterator(root))
+        random.shuffle(nodes)
+        for node in nodes:
             if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
 
