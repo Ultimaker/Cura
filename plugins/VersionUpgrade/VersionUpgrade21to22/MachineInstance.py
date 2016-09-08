@@ -83,7 +83,7 @@ class MachineInstance:
             active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
             active_quality_changes = "empty_quality_changes"
         else:
-            active_quality = "normal"
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.getQualityFallback(type_name, variant, active_material)
             if has_machine_qualities: #Then the profile will have split into multiple.
                 active_quality_changes = self._active_profile_name + "_" + active_material + "_" + variant
             else:
