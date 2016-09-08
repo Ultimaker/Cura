@@ -14,7 +14,7 @@ Generic PC profile. Serves as an example file, data in this file is not correct.
         <color_code>#F29030</color_code>
     </metadata>
     <properties>
-        <density>1.18</density>
+        <density>1.19</density>
         <diameter>2.85</diameter>
     </properties>
     <settings>

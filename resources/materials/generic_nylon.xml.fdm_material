@@ -14,7 +14,7 @@ Generic Nylon profile. Serves as an example file, data in this file is not corre
         <color_code>#3DF266</color_code>
     </metadata>
     <properties>
-        <density>1.19</density>
+        <density>1.14</density>
         <diameter>2.85</diameter>
     </properties>
     <settings>
