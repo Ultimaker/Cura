@@ -77,7 +77,10 @@ class PerObjectSettingsTool(Tool):
             if not self._multi_extrusion:
                 default_stack_id = global_container_stack.getId()
             else:
-                default_stack_id = ExtruderManager.getInstance().getExtruderStack(0).getId()
+                default_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                if default_stack:
+                    default_stack_id = default_stack.getId()
+                else: default_stack_id = global_container_stack.getId()
 
             root_node = Application.getInstance().getController().getScene().getRoot()
             for node in DepthFirstIterator(root_node):
