@@ -644,6 +644,7 @@
                             "type": "float",
                             "enabled": "support_enable",
                             "value": "line_width",
+                            "global_inherits_stack": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -657,6 +658,7 @@
                             "maximum_value_warning": "machine_nozzle_size * 2",
                             "type": "float",
                             "enabled": "extruderValue(support_extruder_nr, 'support_interface_enable')",
+                            "global_inherits_stack": "support_interface_extruder_nr",
                             "value": "line_width",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -2313,7 +2315,7 @@
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable",
-                    "global_inherits_stack": "support_extruder_nr",
+                    "global_inherits_stack": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2324,6 +2326,7 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "support_enable and (support_pattern == 'zigzag')",
+                    "global_inherits_stack": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2337,6 +2340,7 @@
                     "maximum_value_warning": "100",
                     "default_value": 15,
                     "enabled": "support_enable",
+                    "global_inherits_stack": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children": {
@@ -2350,6 +2354,7 @@
                             "default_value": 2.66,
                             "enabled": "support_enable",
                             "value": "(support_line_width * 100) / support_infill_rate * (2 if support_pattern == \"grid\" else (3 if support_pattern == \"triangles\" else 1))",
+                            "global_inherits_stack": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -2554,7 +2559,7 @@
                     "default_value": 100,
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
-                    "global_inherits_stack": "support_extruder_nr",
+                    "global_inherits_stack": "support_interface_extruder_nr",
                     "enabled": "extruderValue(support_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -2569,7 +2574,7 @@
                             "default_value": 0.4,
                             "minimum_value": "0",
                             "value": "0 if support_interface_density == 0 else (support_interface_line_width * 100) / support_interface_density * (2 if support_interface_pattern == \"grid\" else (3 if support_interface_pattern == \"triangles\" else 1))",
-                            "global_inherits_stack": "support_extruder_nr",
+                            "global_inherits_stack": "support_interface_extruder_nr",
                             "enabled": "extruderValue(support_extruder_nr, 'support_interface_enable') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -2590,7 +2595,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
-                    "global_inherits_stack": "support_extruder_nr",
+                    "global_inherits_stack": "support_interface_extruder_nr",
                     "enabled": "extruderValue(support_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
