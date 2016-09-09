@@ -17,6 +17,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 import json
 import os
+import gzip
 
 from time import time
 
@@ -40,7 +41,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._properties = properties  # Properties dict as provided by zero conf
 
         self._gcode = None
-        self._print_finished = True # _print_finsihed == False means we're halfway in a print
+        self._print_finished = True  # _print_finsihed == False means we're halfway in a print
+
+        self._use_gzip = True  # Should we use g-zip compression before sending the data?
 
         # This holds the full JSON file that was received from the last request.
         # The JSON looks like:
@@ -546,7 +549,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             for line in self._gcode:
                 single_string_file_data += line
 
-            file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
+            if self._use_gzip:
+                file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+                single_string_file_data = gzip.compress(single_string_file_data.encode("utf-8"))
+            else:
+                file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
+                single_string_file_data = single_string_file_data.encode("utf-8")
 
             ##  Create multi_part request
             self._post_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
@@ -555,7 +563,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._post_part = QHttpPart()
             self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader,
                            "form-data; name=\"file\"; filename=\"%s\"" % file_name)
-            self._post_part.setBody(single_string_file_data.encode())
+            self._post_part.setBody(single_string_file_data)
             self._post_multi_part.append(self._post_part)
 
             url = QUrl("http://" + self._address + self._api_prefix + "print_job")
