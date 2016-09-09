@@ -172,7 +172,7 @@ class ContainerManager(QObject):
         containers = self._container_registry.findContainers(None, id=container_id)
         if not containers:
             UM.Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
-            return False
+            return ""
 
         result = containers[0].getMetaDataEntry(entry_name)
         if result:
