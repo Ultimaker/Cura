@@ -11,7 +11,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 import cura.Settings.ExtruderManager
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, QCoreApplication
 from PyQt5.QtGui import QImage
 from PyQt5.QtWidgets import QMessageBox
 
@@ -552,7 +552,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             for line in self._gcode:
                 if self._use_gzip:
                     byte_array_file_data += gzip.compress(line.encode("utf-8"))
-                    sleep(0)  # Yield.
+                    QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                     # Pretend that this is a response, as zipping might take a bit of time.
                     self._last_response_time = time()
                 else:
