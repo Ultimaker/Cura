@@ -551,7 +551,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
             if self._use_gzip:
                 file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
+                compress_time = time()
                 single_string_file_data = gzip.compress(single_string_file_data.encode("utf-8"))
+                Logger.log("d", "It took %s seconds to compress the file", time() - compress_time)
                 # Pretend that this is a response, as zipping might take a bit of time.
                 self._last_response_time = time()
             else:
