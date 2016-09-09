@@ -82,6 +82,13 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.SettingError)
             return
 
+        for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            material = extruder_stack.findContainer({"type": "material"})
+            if material:
+                if material.getMetaDataEntry("compatible") == False:
+                    self.setResult(StartJobResult.SettingError)
+                    return
+
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is not SceneNode or not node.isSelectable():
