@@ -2488,7 +2488,7 @@
                     "description": "Generate a dense interface between the model and the support. This will create a skin at the top of the support on which the model is printed and at the bottom of the support, where it rests on the model.",
                     "type": "bool",
                     "default_value": false,
-                    "global_inherits_stack": "support_interface_extruder_nr",
+                    "global_inherits_stack": "support_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
