@@ -175,8 +175,8 @@ class ContainerManager(QObject):
             return ""
 
         result = containers[0].getMetaDataEntry(entry_name)
-        if result:
-            return result
+        if result is not None:
+            return str(result)
         else:
             return ""
 
