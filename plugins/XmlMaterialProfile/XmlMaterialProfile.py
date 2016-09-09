@@ -83,7 +83,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     # machine / variant combination: only changes for itself.
     def serialize(self):
         if self._read_only:
-            Logger.log("w", "Serializing read-only container [%s], probably a programming error." % self.id)
             return
 
         registry = UM.Settings.ContainerRegistry.getInstance()
