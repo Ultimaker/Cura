@@ -607,7 +607,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
             try:
                 xml_data = container.serialize()
-                if xml_data == "":
+                if xml_data == "" or xml_data is None:
                     continue
                 material_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
 
