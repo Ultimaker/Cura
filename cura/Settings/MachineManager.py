@@ -531,6 +531,12 @@ class MachineManager(QObject):
 
         containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
+        if containers[0].getMetaDataEntry("compatible") == False:
+            message = Message(catalog.i18nc("@info:status",
+                                            "The selected material is imcompatible with the selected machine or configuration."))
+            message.show()
+
+
         if old_quality:
             if old_quality_changes:
                 new_quality = self._updateQualityChangesContainer(old_quality.getMetaDataEntry("quality_type"), old_quality_changes.getMetaDataEntry("name"))

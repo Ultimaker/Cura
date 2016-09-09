@@ -54,10 +54,10 @@ class CuraProfileReader(ProfileReader):
 
         if not "general" in parser:
             Logger.log("w", "Missing required section 'general'.")
-            return None
+            return []
         if not "version" in parser["general"]:
             Logger.log("w", "Missing required 'version' property")
-            return None
+            return []
 
         version = int(parser["general"]["version"])
         if InstanceContainer.Version != version:
