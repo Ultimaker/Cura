@@ -630,8 +630,7 @@
                             "value": "line_width",
                             "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "global_inherits_stack": "adhesion_extruder_nr"
+                            "settable_per_extruder": true
                         },
                         "support_line_width":
                         {
@@ -2736,8 +2735,7 @@
                     "maximum_value_warning": "2500",
                     "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "global_inherits_stack": "adhesion_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "brim_width":
                 {
