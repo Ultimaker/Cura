@@ -18,8 +18,10 @@ from PyQt5.QtWidgets import QMessageBox
 import json
 import os
 import gzip
+import zlib
 
 from time import time
+from time import sleep
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -544,21 +546,22 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
             Logger.log("d", "Started sending g-code to remote printer.")
+
             ## Mash the data into single string
-            single_string_file_data = ""
+            byte_array_file_data = b""
             for line in self._gcode:
-                single_string_file_data += line
+                if self._use_gzip:
+                    byte_array_file_data += gzip.compress(line.encode("utf-8"))
+                    sleep(0)  # Yield.
+                    # Pretend that this is a response, as zipping might take a bit of time.
+                    self._last_response_time = time()
+                else:
+                    byte_array_file_data += line.encode("utf-8")
 
             if self._use_gzip:
                 file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
-                compress_time = time()
-                single_string_file_data = gzip.compress(single_string_file_data.encode("utf-8"))
-                Logger.log("d", "It took %s seconds to compress the file", time() - compress_time)
-                # Pretend that this is a response, as zipping might take a bit of time.
-                self._last_response_time = time()
             else:
                 file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
-                single_string_file_data = single_string_file_data.encode("utf-8")
 
             ##  Create multi_part request
             self._post_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
@@ -567,7 +570,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._post_part = QHttpPart()
             self._post_part.setHeader(QNetworkRequest.ContentDispositionHeader,
                            "form-data; name=\"file\"; filename=\"%s\"" % file_name)
-            self._post_part.setBody(single_string_file_data)
+            self._post_part.setBody(byte_array_file_data)
             self._post_multi_part.append(self._post_part)
 
             url = QUrl("http://" + self._address + self._api_prefix + "print_job")
