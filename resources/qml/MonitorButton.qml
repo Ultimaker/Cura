@@ -248,39 +248,32 @@ Rectangle
 
         text: {
             var result = "";
-            if (!printerConnected) {
+            if (!printerConnected)
+            {
               return "";
             }
-
             var jobState = Cura.MachineManager.printerOutputDevices[0].jobState;
-            if (lastJobState != jobState) {
-                // the userClicked message must disappear when an "automated" jobState comes by
-                userClicked = false;
-                lastJobState = jobState;
-            }
 
             if (jobState == "paused")
             {
-              if (userClicked) {
-                // User feedback for pretending we're already in "printing" mode.
-                result = catalog.i18nc("@label:", "Pause");
-              } else {
-                result = catalog.i18nc("@label:", "Resume");
-              }
-            } else {
-              if (userClicked) {
-                // User feedback for pretending we're already in "pause" mode.
-                result = catalog.i18nc("@label:", "Resume");
-              } else {
-                result = catalog.i18nc("@label:", "Pause");
-              }
+                return catalog.i18nc("@label:", "Resume");
             }
-            return result;
+            else
+            {
+                return catalog.i18nc("@label:", "Pause");
+            }
         }
-        onClicked: {
-          var newJobState = Cura.MachineManager.printerOutputDevices[0].jobState == "paused" ? "print" : "pause";
-          Cura.MachineManager.printerOutputDevices[0].setJobState(newJobState);
-          userClicked = true;
+        onClicked:
+        {
+            var current_job_state = Cura.MachineManager.printerOutputDevices[0].jobState
+            if(current_job_state == "paused")
+            {
+                Cura.MachineManager.printerOutputDevices[0].setJobState("print");
+            }
+            else if(current_job_state == "printing")
+            {
+                Cura.MachineManager.printerOutputDevices[0].setJobState("pause");
+            }
         }
 
         style: ButtonStyle
