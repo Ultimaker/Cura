@@ -15,7 +15,11 @@ QtObject {
                 {
                     if(control.enabled)
                     {
-                        if(control.valueWarning)
+                        if(control.valueError)
+                        {
+                            return Theme.getColor("setting_validation_error");
+                        }
+                        else if(control.valueWarning)
                         {
                             return Theme.getColor("setting_validation_warning");
                         } else
