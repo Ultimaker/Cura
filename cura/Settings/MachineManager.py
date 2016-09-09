@@ -430,13 +430,23 @@ class MachineManager(QObject):
 
         return result
 
+    ##  Get the Material ID associated with the currently active material
+    #   \returns MaterialID (string) if found, empty string otherwise
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityMaterialId(self):
         if self._active_container_stack:
             quality = self._active_container_stack.findContainer({"type": "quality"})
             if quality:
-                return quality.getMetaDataEntry("material")
+                material_id = quality.getMetaDataEntry("material")
+                if material_id:
+                    # if the currently active machine inherits its qualities from a different machine
+                    # definition, make sure to return a material that is relevant to that machine definition
+                    definition_id = self.activeDefinitionId
+                    quality_definition_id = self.activeQualityDefinitionId
+                    if definition_id != quality_definition_id:
+                        material_id = material_id.replace(definition_id, quality_definition_id, 1)
 
+                    return material_id
         return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
@@ -594,7 +604,7 @@ class MachineManager(QObject):
                 criteria["material"] = material.getId()
 
             if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
-                criteria["definition"] = self._global_container_stack.getBottom().getId()
+                criteria["definition"] = self.activeQualityDefinitionId
             else:
                 criteria["definition"] = "fdmprinter"
 
@@ -684,6 +694,51 @@ class MachineManager(QObject):
                 return definition.id
 
         return ""
+
+    ##  Get the Definition ID to use to select quality profiles for the currently active machine
+    #   \returns DefinitionID (string) if found, empty string otherwise
+    #   \sa getQualityDefinitionId
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeQualityDefinitionId(self):
+        if self._global_container_stack:
+            return self.getQualityDefinitionId(self._global_container_stack.getBottom())
+        return ""
+
+    ##  Get the Definition ID to use to select quality profiles for machines of the specified definition
+    #   This is normally the id of the definition itself, but machines can specify a different definition to inherit qualities from
+    #   \param definition (DefinitionContainer) machine definition
+    #   \returns DefinitionID (string) if found, empty string otherwise
+    def getQualityDefinitionId(self, definition):
+        definition_id = definition.getMetaDataEntry("quality_definition")
+        if not definition_id:
+            definition_id = definition.getId()
+        return definition_id
+
+    ##  Get the Variant ID to use to select quality profiles for the currently active variant
+    #   \returns VariantID (string) if found, empty string otherwise
+    #   \sa getQualityVariantId
+    @pyqtProperty(str, notify = activeVariantChanged)
+    def activeQualityVariantId(self):
+        if self._global_container_stack:
+            variant = self._global_container_stack.findContainer({"type": "variant"})
+            if variant:
+                return self.getQualityVariantId(self._global_container_stack.getBottom(), variant)
+        return ""
+
+    ##  Get the Variant ID to use to select quality profiles for variants of the specified definitions
+    #   This is normally the id of the variant itself, but machines can specify a different definition
+    #   to inherit qualities from, which has consequences for the variant to use as well
+    #   \param definition (DefinitionContainer) machine definition
+    #   \param variant (DefinitionContainer) variant definition
+    #   \returns VariantID (string) if found, empty string otherwise
+    def getQualityVariantId(self, definition, variant):
+        variant_id = variant.getId()
+        definition_id = definition.getId()
+        quality_definition_id = self.getQualityDefinitionId(definition)
+
+        if definition_id != quality_definition_id:
+            variant_id = variant_id.replace(definition_id, quality_definition_id, 1)
+        return variant_id
 
     ##  Gets how the active definition calls variants
     #   Caveat: per-definition-variant-title is currently not translated (though the fallback is)
@@ -789,10 +844,10 @@ class MachineManager(QObject):
         search_criteria = { "type": "material" }
 
         if definition.getMetaDataEntry("has_machine_materials"):
-            search_criteria["definition"] = definition.id
+            search_criteria["definition"] = self.getQualityDefinitionId(definition)
 
             if definition.getMetaDataEntry("has_variants") and variant_container:
-                search_criteria["variant"] = variant_container.id
+                search_criteria["variant"] = self.getQualityVariantId(definition, variant_container)
         else:
             search_criteria["definition"] = "fdmprinter"
 
@@ -823,7 +878,7 @@ class MachineManager(QObject):
         search_criteria = { "type": "quality" }
 
         if definition.getMetaDataEntry("has_machine_quality"):
-            search_criteria["definition"] = definition.id
+            search_criteria["definition"] = self.getQualityDefinitionId(definition)
 
             if definition.getMetaDataEntry("has_materials") and material_container:
                 search_criteria["material"] = material_container.id
@@ -866,10 +921,10 @@ class MachineManager(QObject):
                     if definition.getMetaDataEntry("has_variants"):
                         material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
                 else:
-                    material_search_criteria["definition"] = definition.id
+                    material_search_criteria["definition"] = self.getQualityDefinitionId(definition)
 
                     if definition.getMetaDataEntry("has_variants") and variant_container:
-                        material_search_criteria["variant"] = variant_container.id
+                        material_search_criteria["variant"] = self.getQualityVariantId(definition, variant_container)
             else:
                 material_search_criteria["definition"] = "fdmprinter"
             material_containers = container_registry.findInstanceContainers(**material_search_criteria)
