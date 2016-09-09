@@ -7,6 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",
         "category": "Ultimaker",
+        "quality_definition": "ultimaker2_plus",
         "weight": 2,
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
@@ -17,15 +18,6 @@
     "overrides": {
         "machine_height": {
             "default_value": 305
-        },
-        "machine_show_variants": {
-            "default_value": true
-        },
-        "machine_nozzle_head_distance": {
-            "default_value": 5
-        },
-        "machine_nozzle_expansion_angle": {
-            "default_value": 45
         }
     }
 }

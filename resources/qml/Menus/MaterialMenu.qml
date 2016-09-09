@@ -106,10 +106,10 @@ Menu
         var result = { "type": "material" };
         if(Cura.MachineManager.filterMaterialsByMachine)
         {
-            result.definition = Cura.MachineManager.activeDefinitionId;
+            result.definition = Cura.MachineManager.activeQualityDefinitionId;
             if(Cura.MachineManager.hasVariants)
             {
-                result.variant = Cura.MachineManager.activeVariantId;
+                result.variant = Cura.MachineManager.activeQualityVariantId;
             }
         }
         else

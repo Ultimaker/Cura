@@ -610,6 +610,7 @@ class ContainerManager(QObject):
         # are also correctly created.
         with open(containers[0].getPath(), encoding="utf-8") as f:
             duplicated_container.deserialize(f.read())
+        duplicated_container.setDirty(True)
         self._container_registry.addContainer(duplicated_container)
 
     # Factory function, used by QML
