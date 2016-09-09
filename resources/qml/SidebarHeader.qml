@@ -232,6 +232,19 @@ Column
                 text: Cura.MachineManager.activeMaterialName
                 tooltip: Cura.MachineManager.activeMaterialName
                 visible: Cura.MachineManager.hasMaterials
+                property var valueError:
+                {
+                    var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
+                    print(data)
+                    if(data == "" || data == "True")
+                    {
+                        return false
+                    }
+                    if(data == "False")
+                    {
+                        return true
+                    }
+                }
                 enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
