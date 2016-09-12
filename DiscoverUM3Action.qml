@@ -77,70 +77,90 @@ Cura.MachineAction
 
         Row
         {
+            id: contentRow
             width: parent.width
             spacing: UM.Theme.getSize("default_margin").width
-            ScrollView
+
+            Column
             {
-                id: objectListContainer
-                frameVisible: true
                 width: parent.width * 0.5
-                height: base.height - parent.y
+                spacing: UM.Theme.getSize("default_margin").height
 
-                Rectangle
+                ScrollView
                 {
-                    parent: viewport
-                    anchors.fill: parent
-                    color: palette.light
-                }
-
-                ListView
-                {
-                    id: listview
-                    model: manager.foundDevices
-                    onModelChanged:
-                    {
-                        var selectedKey = manager.getStoredKey();
-                        for(var i = 0; i < model.length; i++) {
-                            if(model[i].getKey() == selectedKey)
-                            {
-                                currentIndex = i;
-                                return
-                            }
-                        }
-                        currentIndex = -1;
-                    }
+                    id: objectListContainer
+                    frameVisible: true
                     width: parent.width
-                    currentIndex: -1
-                    onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
-                    Component.onCompleted: manager.startDiscovery()
-                    delegate: Rectangle
-                    {
-                        height: childrenRect.height
-                        color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
-                        width: parent.width
-                        Label
-                        {
-                            anchors.left: parent.left
-                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                            anchors.right: parent.right
-                            text: listview.model[index].name
-                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
-                            elide: Text.ElideRight
-                        }
+                    height: base.height - contentRow.y - discoveryTip.height
 
-                        MouseArea
+                    Rectangle
+                    {
+                        parent: viewport
+                        anchors.fill: parent
+                        color: palette.light
+                    }
+
+                    ListView
+                    {
+                        id: listview
+                        model: manager.foundDevices
+                        onModelChanged:
                         {
-                            anchors.fill: parent;
-                            onClicked:
-                            {
-                                if(!parent.ListView.isCurrentItem)
+                            var selectedKey = manager.getStoredKey();
+                            for(var i = 0; i < model.length; i++) {
+                                if(model[i].getKey() == selectedKey)
                                 {
-                                    parent.ListView.view.currentIndex = index;
+                                    currentIndex = i;
+                                    return
+                                }
+                            }
+                            currentIndex = -1;
+                        }
+                        width: parent.width
+                        currentIndex: -1
+                        onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
+                        Component.onCompleted: manager.startDiscovery()
+                        delegate: Rectangle
+                        {
+                            height: childrenRect.height
+                            color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                            width: parent.width
+                            Label
+                            {
+                                anchors.left: parent.left
+                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                                anchors.right: parent.right
+                                text: listview.model[index].name
+                                color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
+                                elide: Text.ElideRight
+                            }
+
+                            MouseArea
+                            {
+                                anchors.fill: parent;
+                                onClicked:
+                                {
+                                    if(!parent.ListView.isCurrentItem)
+                                    {
+                                        parent.ListView.view.currentIndex = index;
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                Label
+                {
+                    id: discoveryTip
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    wrapMode: Text.WordWrap
+                    //: Tips label
+                    //TODO: get actual link from webteam
+                    text: catalog.i18nc("@label", "If your Ultimaker 3 is not listed, read the <a href='%1'>Ultimaker 3 network troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
+                    onLinkActivated: Qt.openUrlExternally(link)
+                }
+
             }
             Column
             {
