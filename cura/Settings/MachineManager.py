@@ -1075,6 +1075,16 @@ class MachineManager(QObject):
                 container.replaceContainer(ind, self._empty_variant_container)
                 Application.getInstance().setGlobalContainerStack(container)
 
+    @pyqtSlot(str, result=bool)
+    def isMachineChanged(self, machine_id):
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=machine_id)
+        if containers:
+            container = containers[0]
+            c = container.findContainer({'type': 'variant'})
+            if c and c.id != "empty_variant":
+                return True
+            return False
+
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine.

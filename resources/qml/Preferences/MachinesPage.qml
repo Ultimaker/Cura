@@ -62,7 +62,7 @@ UM.ManagementPage
         Button
         {
             text: catalog.i18nc("@action:button", "Reset");
-            enabled: base.currentItem != null
+            enabled: base.currentItem != null && Cura.MachineManager.isMachineChanged(base.currentItem.id);
             onClicked: Cura.MachineManager.resetMachine(base.currentItem.id);
         }
     ]
