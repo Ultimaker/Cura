@@ -10,7 +10,7 @@ def getMetaData():
         "plugin": {
             "name": "UM3 Network Connection",
             "author": "Ultimaker",
-            "description": catalog.i18nc("Wifi connection", "UM3 Network Connection"),
+            "description": catalog.i18nc("@info:whatsthis", "Manages network connections to Ultimaker 3 printers"),
             "api": 3
         }
     }
