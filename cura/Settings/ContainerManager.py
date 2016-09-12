@@ -746,7 +746,10 @@ class ContainerManager(QObject):
         if not global_stack.getMetaDataEntry("has_machine_quality"):
             quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
         else:
-            quality_changes.setDefinition(global_stack.getBottom())
+            definition = global_stack.getBottom()
+            definition_id = definition.getMetaDataEntry("quality_definition", definition.getId())
+            definition = self._container_registry.findContainers(id=definition_id)[0]
+            quality_changes.setDefinition(definition)
 
             if global_stack.getMetaDataEntry("has_materials"):
                 material = quality_container.getMetaDataEntry("material")
