@@ -202,7 +202,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if auth_state == AuthState.AuthenticationRequested:
             Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0} without access to control the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}, waiting for access to control the printer.").format(self.name))
             self._authentication_requested_message.show()
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
@@ -221,6 +221,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif auth_state == AuthState.AuthenticationDenied:
             Logger.log("d", "Authentication state changed to authentication denied")
             self.setAcceptsCommands(False)
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}, no access to control the printer.").format(self.name))
             self._authentication_requested_message.hide()
             self._authentication_failed_message.show()
 
