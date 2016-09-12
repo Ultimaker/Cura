@@ -122,12 +122,15 @@ UM.ManagementPage
 
         Row
         {
+            id: machineInfo
+
             anchors.top: machineActions.visible ? machineActions.bottom : machineActions.anchors.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.right: parent.right
-
             spacing: UM.Theme.getSize("default_margin").height
+
+            visible: base.currentItem
 
             Label
             {
@@ -136,6 +139,35 @@ UM.ManagementPage
             }
             Label {
                 text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
+            }
+        }
+
+        Column {
+            id: additionalComponentsColumn
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: machineInfo.visible ? machineInfo.bottom : machineInfo.anchors.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").width
+
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Component.onCompleted:
+            {
+                for (var component in Printer.additionalComponents["machinesDetailPane"]) {
+                    Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                }
+            }
+        }
+
+        Connections {
+            target: Printer
+            onAdditionalComponentsChanged:
+            {
+                if(areaId == "machinesDetailPane") {
+                    for (var component in Printer.additionalComponents["machinesDetailPane"]) {
+                        Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                    }
+                }
             }
         }
 
