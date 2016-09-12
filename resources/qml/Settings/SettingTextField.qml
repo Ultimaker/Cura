@@ -114,7 +114,7 @@ SettingItem
                     // 3: material  -> user changed material in materialspage
                     // 4: variant
                     // 5: machine
-                    if ((propertyProvider.properties.resolve != "None") && (stackLevel != 0) && (stackLevel != 1) && (stackLevel != 3)) {
+                    if ((propertyProvider.properties.resolve != "None") && (stackLevel != 0) && (stackLevel != 1)) {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
                         // (if user has explicitly set this).
