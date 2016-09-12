@@ -159,7 +159,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             profile_value = None
             for container in containers:
                 new_value = container.getProperty(definition.key, "value")
-                if new_value:
+                if new_value is not None:
                     profile_value = new_value
 
             user_value = None
@@ -170,7 +170,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if extruder_stack:
                     user_value = extruder_stack[0].getTop().getProperty(definition.key, "value")
 
-            if not profile_value and not user_value:
+            if profile_value is None and user_value is None:
                 continue
 
             if is_multi_extrusion:
