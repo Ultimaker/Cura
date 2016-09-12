@@ -1,8 +1,13 @@
 from cura.MachineAction import MachineAction
 
 from UM.Application import Application
+from UM.PluginRegistry import PluginRegistry
+from UM.Logger import Logger
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QUrl, QObject
+from PyQt5.QtQml import QQmlComponent, QQmlContext
+
+import os.path
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -13,6 +18,12 @@ class DiscoverUM3Action(MachineAction):
         self._qml_url = "DiscoverUM3Action.qml"
 
         self._network_plugin = None
+
+        self._context = None
+        self._additional_component = None
+        self._additional_components_view = None
+
+        Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
     printersChanged = pyqtSignal()
 
@@ -69,3 +80,17 @@ class DiscoverUM3Action(MachineAction):
                 return global_container_stack.getMetaDataEntry("um_network_key")
 
         return ""
+
+    def _createAdditionalComponentsView(self):
+        Logger.log("d", "Creating additional ui components for UM3.")
+
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("JediWifiPrintingPlugin"), "UM3InfoComponents.qml"))
+        self._additional_component = QQmlComponent(Application.getInstance()._engine, path)
+
+        # We need access to engine (although technically we can't)
+        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
+        self._context.setContextProperty("manager", self)
+        self._additional_components_view = self._additional_component.create(self._context)
+
+        Application.getInstance().addAdditionalComponent("monitorButtons", self._additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
+        Application.getInstance().addAdditionalComponent("machinesDetailPane", self._additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))
