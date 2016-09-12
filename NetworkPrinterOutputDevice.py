@@ -364,6 +364,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
         head_z = self._json_printer_state["heads"][0]["position"]["z"]
         self._updateHeadPosition(head_x, head_y, head_z)
+        self._updatePrinterState(self._json_printer_state["status"])
+
 
     def close(self):
         self._updateJobState("")
@@ -397,9 +399,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
             self._error_message.show()
             return
-        if self._json_printer_state["status"] != "idle":
+        if self._printer_state != "idle":
             self._error_message = Message(
-                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._json_printer_state["status"])
+                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
