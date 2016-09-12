@@ -127,11 +127,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_id = None
         self._authentication_key = None
 
-        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Requested access. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
-        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", "Pairing request failed due to a timeout or the printer refused the request."))
-        self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the authentication request"))
+        self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer requested. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
+        self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""))
+        self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
         self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
-        self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Printer was successfully paired with Cura"))
+        self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer accepted"))
 
         self._camera_image = QImage()
 
@@ -202,7 +202,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if auth_state == AuthState.AuthenticationRequested:
             Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}, waiting for access to control the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. Please approve the access request on the printer.").format(self.name))
             self._authentication_requested_message.show()
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
@@ -221,8 +221,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif auth_state == AuthState.AuthenticationDenied:
             Logger.log("d", "Authentication state changed to authentication denied")
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}, no access to control the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. No access to control the printer.").format(self.name))
             self._authentication_requested_message.hide()
+            if self._authentication_timer.remainingTime() > 0:
+                self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request was denied on the printer."))
+            else:
+                self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request failed due to a timeout."))
             self._authentication_failed_message.show()
 
             # Stop waiting for a response
@@ -407,7 +411,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             return
         elif self._authentication_state != AuthState.Authenticated:
             self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
-                                                                         "Not authenticated to print with this machine. Unable to start a new job."))
+                                                                         "No access to print with this printer. Unable to start a new job."))
             self._not_authenticated_message.show()
             Logger.log("d", "Attempting to perform an action without authentication. Auth state is %s", self._authentication_state)
             return
@@ -424,14 +428,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
                     Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
                     self._error_message = Message(
-                        i18n_catalog.i18nc("@info:status", "Unable to start a new print job; no PrinterCore loaded in slot {0}".format(index + 1)))
+                        i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
                     self._error_message.show()
                     return
                 if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"] == "":
                     Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
                     self._error_message = Message(
                         i18n_catalog.i18nc("@info:status",
-                                           "Unable to start a new print job; no material loaded in slot {0}".format(index + 1)))
+                                           "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)))
                     self._error_message.show()
                     return
 
