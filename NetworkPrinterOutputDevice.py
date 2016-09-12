@@ -131,11 +131,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer requested. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
         self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""))
         self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
-        self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
+        self._authentication_failed_message.actionTriggered.connect(self.requestAuthentication)
         self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer accepted"))
         self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status", "No access to print with this printer. Unable to send print job."))
         self._not_authenticated_message.addAction("Request", i18n_catalog.i18nc("@action:button", "Request Access"), None, i18n_catalog.i18nc("@info:tooltip", "Send access request to the printer"))
-        self._not_authenticated_message.actionTriggered.connect(self.messageActionTriggered)
+        self._not_authenticated_message.actionTriggered.connect(self.requestAuthentication)
 
         self._camera_image = QImage()
 
@@ -244,7 +244,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._authentication_state = auth_state
 
-    def messageActionTriggered(self, message_id, action_id):
+    @pyqtSlot()
+    def requestAuthentication(self, message_id, action_id):
         self._authentication_failed_message.hide()
         self._not_authenticated_message.hide()
         self._authentication_state = AuthState.NotAuthenticated
