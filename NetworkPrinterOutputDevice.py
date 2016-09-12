@@ -122,6 +122,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_timer.setInterval(1000)  # TODO; Add preference for update interval
         self._authentication_timer.setSingleShot(False)
         self._authentication_timer.timeout.connect(self._onAuthenticationTimer)
+        self._authentication_request_active = False
 
         self._authentication_state = AuthState.NotAuthenticated
         self._authentication_id = None
@@ -129,9 +130,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._authentication_requested_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer requested. Please approve the request on the printer"), lifetime = 0, dismissable = False, progress = 0)
         self._authentication_failed_message = Message(i18n_catalog.i18nc("@info:status", ""))
-        self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry "), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
+        self._authentication_failed_message.addAction("Retry", i18n_catalog.i18nc("@action:button", "Retry"), None, i18n_catalog.i18nc("@info:tooltip", "Re-send the access request"))
         self._authentication_failed_message.actionTriggered.connect(self.messageActionTriggered)
         self._authentication_succeeded_message = Message(i18n_catalog.i18nc("@info:status", "Access to the printer accepted"))
+        self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status", "No access to print with this printer. Unable to send print job."))
+        self._not_authenticated_message.addAction("Request", i18n_catalog.i18nc("@action:button", "Request Access"), None, i18n_catalog.i18nc("@info:tooltip", "Send access request to the printer"))
+        self._not_authenticated_message.actionTriggered.connect(self.messageActionTriggered)
 
         self._camera_image = QImage()
 
@@ -142,7 +146,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._response_timeout_time = 10
         self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
         self._recreate_network_manager_count = 1
-        self._not_authenticated_message = None
+
         self._send_gcode_start = time()  # Time when the sending of the g-code started.
 
         self._last_command = ""
@@ -204,13 +208,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.setAcceptsCommands(False)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. Please approve the access request on the printer.").format(self.name))
             self._authentication_requested_message.show()
+            self._authentication_request_active = True
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
             Logger.log("d", "Authentication state changed to authenticated")
             self.setAcceptsCommands(True)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
             self._authentication_requested_message.hide()
-            self._authentication_succeeded_message.show()
+            if self._authentication_request_active:
+                self._authentication_succeeded_message.show()
 
             # Stop waiting for a response
             self._authentication_timer.stop()
@@ -223,11 +229,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.setAcceptsCommands(False)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. No access to control the printer.").format(self.name))
             self._authentication_requested_message.hide()
-            if self._authentication_timer.remainingTime() > 0:
-                self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request was denied on the printer."))
-            else:
-                self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request failed due to a timeout."))
-            self._authentication_failed_message.show()
+            if self._authentication_request_active:
+                if self._authentication_timer.remainingTime() > 0:
+                    self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request was denied on the printer."))
+                else:
+                    self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request failed due to a timeout."))
+
+                self._authentication_failed_message.show()
+            self._authentication_request_active = False
 
             # Stop waiting for a response
             self._authentication_timer.stop()
@@ -237,6 +246,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def messageActionTriggered(self, message_id, action_id):
         self._authentication_failed_message.hide()
+        self._not_authenticated_message.hide()
         self._authentication_state = AuthState.NotAuthenticated
         self._authentication_counter = 0
         self._authentication_requested_message.setProgress(0)
@@ -410,8 +420,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
-            self._not_authenticated_message = Message(i18n_catalog.i18nc("@info:status",
-                                                                         "No access to print with this printer. Unable to start a new job."))
             self._not_authenticated_message.show()
             Logger.log("d", "Attempting to perform an action without authentication. Auth state is %s", self._authentication_state)
             return
