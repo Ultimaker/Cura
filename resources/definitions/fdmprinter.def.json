@@ -1476,7 +1476,7 @@
                                     "maximum_value_warning": "150",
                                     "value": "speed_support",
                                     "enabled": "support_enable",
-                                    "global_inherits_stack": "support_extruder_nr",
+                                    "global_inherits_stack": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
