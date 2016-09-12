@@ -444,7 +444,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Check if the right cartridges are loaded. Any failure in these results in a warning.
             extruder_manager = cura.Settings.ExtruderManager.getInstance()
             if print_information.materialLengths[index] != 0:
-                variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
+                variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                 if variant:
                     if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
                         Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"], variant.getName())
