@@ -38,13 +38,16 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     def setMetaDataEntry(self, key, value):
         if self.isReadOnly():
             return
+        if self.getMetaDataEntry(key, None) == value:
+            # Prevent loop caused by for loop.
+            return
 
         super().setMetaDataEntry(key, value)
 
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
         # Update all containers that share GUID and basefile
         for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container.setMetaData(copy.deepcopy(self._metadata))
+            container.setMetaDataEntry(key, value)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
