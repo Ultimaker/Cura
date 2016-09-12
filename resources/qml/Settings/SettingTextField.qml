@@ -107,6 +107,13 @@ SettingItem
                 target: input
                 property: "text"
                 value:  {
+                    // Stacklevels
+                    // 0: user  -> unsaved change
+                    // 1: quality changes  -> saved change
+                    // 2: quality
+                    // 3: material  -> user changed material in materialspage
+                    // 4: variant
+                    // 5: machine
                     if ((propertyProvider.properties.resolve != "None") && (stackLevel != 0) && (stackLevel != 1)) {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
