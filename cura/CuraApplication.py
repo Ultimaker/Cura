@@ -327,29 +327,31 @@ class CuraApplication(QtApplication):
                     f.write(data)
 
         for stack in ContainerRegistry.getInstance().findContainerStacks():
-            if not stack.isDirty():
-                continue
+            self.saveStack(stack)
 
-            try:
-                data = stack.serialize()
-            except NotImplementedError:
-                continue
-            except Exception:
-                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                continue
+    def saveStack(self, stack):
+        if not stack.isDirty():
+            return
+        try:
+            data = stack.serialize()
+        except NotImplementedError:
+            return
+        except Exception:
+            Logger.logException("e", "An exception occurred when serializing container %s", stack.getId())
+            return
 
-            mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
-            file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-            stack_type = stack.getMetaDataEntry("type", None)
-            path = None
-            if not stack_type or stack_type == "machine":
-                path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-            elif stack_type == "extruder_train":
-                path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-            if path:
-                stack.setPath(path)
-                with SaveFile(path, "wt", -1, "utf-8") as f:
-                    f.write(data)
+        mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
+        file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
+        stack_type = stack.getMetaDataEntry("type", None)
+        path = None
+        if not stack_type or stack_type == "machine":
+            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+        elif stack_type == "extruder_train":
+            path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
+        if path:
+            stack.setPath(path)
+            with SaveFile(path, "wt", -1, "utf-8") as f:
+                f.write(data)
 
 
     @pyqtSlot(str, result = QUrl)
