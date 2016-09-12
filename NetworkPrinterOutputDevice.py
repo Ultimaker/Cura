@@ -448,10 +448,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
                         warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore selected for extruder {0}".format(index + 1)))
 
-            material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
-            if material:
-                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
-                    warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
+                material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
+                if material:
+                    if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
+                        warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
