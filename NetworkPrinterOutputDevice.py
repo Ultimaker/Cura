@@ -365,6 +365,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
         head_z = self._json_printer_state["heads"][0]["position"]["z"]
         self._updateHeadPosition(head_x, head_y, head_z)
+        self._updatePrinterState(self._json_printer_state["status"])
+
 
     def close(self):
         self._updateJobState("")
@@ -398,9 +400,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
             self._error_message.show()
             return
-        if self._json_printer_state["status"] != "idle":
+        if self._printer_state != "idle":
             self._error_message = Message(
-                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._json_printer_state["status"])
+                i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
             self._error_message.show()
             return
         elif self._authentication_state != AuthState.Authenticated:
@@ -439,20 +441,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Check if there is enough material. Any failure in these results in a warning.
             material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
             if material_length != -1 and print_information.materialLengths[index] > material_length:
+                Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
                 warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
             # Check if the right cartridges are loaded. Any failure in these results in a warning.
             extruder_manager = cura.Settings.ExtruderManager.getInstance()
             if print_information.materialLengths[index] != 0:
-                variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
+                variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                 if variant:
                     if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
+                        Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"], variant.getName())
                         warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore selected for extruder {0}".format(index + 1)))
 
-            material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
-            if material:
-                if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
-                    warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
+                material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
+                if material:
+                    if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
+                        Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
+                                   self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"],
+                                   material.getMetaDataEntry("GUID"))
+                        warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
@@ -470,7 +477,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                                  icon=QMessageBox.Question,
                                                  callback=self._configurationMismatchMessageCallback
                                                  )
-
             return
 
         self.startPrint()
@@ -752,6 +758,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             global_container_stack.setMetaDataEntry("network_authentication_id", self._authentication_id)
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
+                    Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
                     Logger.log("i", "Authentication succeeded")
                 else:  # Got a response that we didn't expect, so something went wrong.
                     Logger.log("w", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
@@ -772,6 +779,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if "/auth/request" in reply_url:
                 # We got a response to requesting authentication.
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
+                if global_container_stack:  # Remove any old data.
+                    global_container_stack.removeMetaDataEntry("network_authentication_key")
+                    global_container_stack.removeMetaDataEntry("network_authentication_id")
+                    Application.getInstance().saveStack(global_container_stack)  # Force saving so we don't keep wrong auth data.
+
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
                 Logger.log("i", "Got a new authentication ID. Waiting for authorization: %s", self._authentication_id )
