@@ -19,10 +19,6 @@ UM.ManagementPage
         filter:
         {
             var result = { "type": "material" }
-            CuraApplication.log("  # filterMaterialsByMachine " + Cura.MachineManager.filterMaterialsByMachine);
-            CuraApplication.log("  # filterQualityByMachine " + Cura.MachineManager.filterQualityByMachine);
-            CuraApplication.log("  # Cura.MachineManager.activeDefinitionId " + Cura.MachineManager.activeDefinitionId);
-            CuraApplication.log("  # Cura.MachineManager.activeVariantId " + Cura.MachineManager.activeVariantId);
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
                 result.definition = Cura.MachineManager.activeDefinitionId

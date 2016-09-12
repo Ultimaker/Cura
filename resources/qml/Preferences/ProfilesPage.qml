@@ -21,7 +21,6 @@ UM.ManagementPage
         filter:
         {
             var result = { "type": "quality*", "extruder": null };
-            CuraApplication.log("  ## filterQualityByMachine " + Cura.MachineManager.filterQualityByMachine);
             if(Cura.MachineManager.filterQualityByMachine)
             {
                 result.definition = Cura.MachineManager.activeQualityDefinitionId;
