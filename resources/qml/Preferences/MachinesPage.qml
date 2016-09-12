@@ -3,6 +3,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
+import QtQuick.Window 2.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -106,6 +107,8 @@ UM.ManagementPage
         {
             id: actionDialog
             property var content
+            minimumWidth: 350 * Screen.devicePixelRatio;
+            minimumHeight: 350 * Screen.devicePixelRatio;
             onContentChanged:
             {
                 contents = content;
