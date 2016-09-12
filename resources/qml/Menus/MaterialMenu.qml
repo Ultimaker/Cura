@@ -93,6 +93,7 @@ Menu
         id: materialsModel
         filter: materialFilter()
         onModelReset: populateMenuModels()
+        onDataChanged: populateMenuModels()
     }
 
     ExclusiveGroup { id: group }
