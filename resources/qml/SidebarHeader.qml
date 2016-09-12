@@ -235,7 +235,6 @@ Column
                 property var valueError:
                 {
                     var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
-                    print(data)
                     if(data == "" || data == "True")
                     {
                         return false
