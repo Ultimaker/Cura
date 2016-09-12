@@ -112,6 +112,11 @@ Rectangle
                     else if(!printerAcceptsCommands)
                         return UM.Theme.getIcon("tab_monitor_unknown");
 
+                    if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+                    {
+                        return UM.Theme.getIcon("tab_monitor_busy");
+                    }
+
                     switch(Cura.MachineManager.printerOutputDevices[0].jobState)
                     {
                         case "printing":

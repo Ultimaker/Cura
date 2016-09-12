@@ -48,7 +48,13 @@ Rectangle
     {
         if(!printerConnected || !printerAcceptsCommands)
             return UM.Theme.getColor("text");
-
+        if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+        {
+            return UM.Theme.getColor("status_busy");
+        } else if (Cura.MachineManager.printerOutputDevices[0].printerState == "error")
+        {
+            return UM.Theme.getColor("status_stopped");
+        }
         switch(Cura.MachineManager.printerOutputDevices[0].jobState)
         {
             case "printing":
@@ -80,6 +86,11 @@ Rectangle
             return catalog.i18nc("@label:MonitorStatus", "Printer does not accept commands");
 
         var printerOutputDevice = Cura.MachineManager.printerOutputDevices[0]
+
+        if(printerOutputDevice.printerState == "maintenance")
+        {
+            return catalog.i18nc("@label:MonitorStatus", "Printer is in maintenance mode.");
+        }
         switch(printerOutputDevice.jobState)
         {
             case "offline":
