@@ -438,6 +438,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Check if there is enough material. Any failure in these results in a warning.
             material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
             if material_length != -1 and print_information.materialLengths[index] > material_length:
+                Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
                 warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
             # Check if the right cartridges are loaded. Any failure in these results in a warning.
@@ -446,11 +447,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 variant = extruder_manager.getExtruderStack(0).findContainer({"type": "variant"})
                 if variant:
                     if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
+                        Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"], variant.getName())
                         warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore selected for extruder {0}".format(index + 1)))
 
                 material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
                 if material:
                     if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
+                        Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
+                                   self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"],
+                                   material.getMetaDataEntry("GUID"))
                         warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
 
         if warnings:
@@ -469,7 +474,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                                  icon=QMessageBox.Question,
                                                  callback=self._configurationMismatchMessageCallback
                                                  )
-
             return
 
         self.startPrint()
