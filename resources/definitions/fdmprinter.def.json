@@ -1460,6 +1460,7 @@
                             "value": "speed_print",
                             "enabled": "support_enable",
                             "settable_per_mesh": false,
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_extruder": true,
                             "children":
                             {
@@ -1475,6 +1476,7 @@
                                     "maximum_value_warning": "150",
                                     "value": "speed_support",
                                     "enabled": "support_enable",
+                                    "global_inherits_stack": "support_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
@@ -1489,6 +1491,7 @@
                                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                                     "maximum_value_warning": "150",
                                     "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "global_inherits_stack": "support_interface_extruder_nr",
                                     "value": "speed_support / 1.5",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -1730,6 +1733,7 @@
                             "value": "acceleration_print",
                             "enabled": "acceleration_enabled and support_enable",
                             "settable_per_mesh": false,
+                            "global_inherits_stack": "support_extruder_nr",
                             "settable_per_extruder": true,
                             "children": {
                                 "acceleration_support_infill": {
@@ -1743,6 +1747,7 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "enabled": "acceleration_enabled and support_enable",
+                                    "global_inherits_stack": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
@@ -1757,6 +1762,7 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "enabled": "acceleration_enabled and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "global_inherits_stack": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
@@ -1848,8 +1854,6 @@
                     "settable_per_mesh": false,
                     "global_inherits_stack": "adhesion_extruder_nr"
                 },
-
-
 
                 "jerk_enabled": {
                     "label": "Enable Jerk Control",
@@ -1951,6 +1955,7 @@
                             "enabled": "jerk_enabled and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
+                            "global_inherits_stack": "support_extruder_nr",
                             "children": {
                                 "jerk_support_infill": {
                                     "label": "Support Infill Jerk",
@@ -1963,6 +1968,7 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "enabled": "jerk_enabled and support_enable",
+                                    "global_inherits_stack": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
@@ -1977,6 +1983,7 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "enabled": "jerk_enabled and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "global_inherits_stack": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
