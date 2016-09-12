@@ -134,6 +134,10 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         for key, value in metadata.items():
             builder.start(key)
+            # Normally value is a string.
+            # Nones get handled well.
+            if isinstance(value, bool):
+                value = str(value)  # parseBool in deserialize expects 'True'.
             builder.data(value)
             builder.end(key)
 
@@ -226,7 +230,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         _indent(root)
         stream = io.StringIO()
         tree = ET.ElementTree(root)
-        tree.write(stream, "unicode", True)
+        tree.write(stream, encoding="unicode", xml_declaration=True)
 
         return stream.getvalue()
 
