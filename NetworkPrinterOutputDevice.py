@@ -755,6 +755,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             global_container_stack.setMetaDataEntry("network_authentication_id", self._authentication_id)
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
+                    Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
                     Logger.log("i", "Authentication succeeded")
                 else:  # Got a response that we didn't expect, so something went wrong.
                     Logger.log("w", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
@@ -775,6 +776,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if "/auth/request" in reply_url:
                 # We got a response to requesting authentication.
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
+                if global_container_stack:  # Remove any old data.
+                    global_container_stack.removeMetaDataEntry("network_authentication_key")
+                    global_container_stack.removeMetaDataEntry("network_authentication_id")
+                    Application.getInstance().saveStack(global_container_stack)  # Force saving so we don't keep wrong auth data.
+
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
                 Logger.log("i", "Got a new authentication ID. Waiting for authorization: %s", self._authentication_id )
