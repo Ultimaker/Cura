@@ -48,7 +48,15 @@ Item {
                 MouseArea {
                     anchors.fill: parent;
                     onClicked: {
-                        parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
+                        forceActiveFocus() //First grab focus, so all the text fields are updated
+                        if(parent.checked)
+                        {
+                            UM.Controller.setActiveTool(null)
+                        }
+                        else
+                        {
+                            UM.Controller.setActiveTool(model.id);
+                        }
                     }
                 }
             }
