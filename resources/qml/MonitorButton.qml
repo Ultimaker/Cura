@@ -89,7 +89,7 @@ Rectangle
 
         if(printerOutputDevice.printerState == "maintenance")
         {
-            return catalog.i18nc("@label:MonitorStatus", "Printer is in maintenance mode.");
+            return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
         }
         switch(printerOutputDevice.jobState)
         {

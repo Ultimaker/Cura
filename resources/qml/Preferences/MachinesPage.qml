@@ -185,8 +185,8 @@ UM.ManagementPage
                             return catalog.i18nc("@label:MonitorStatus", "Waiting for someone to clear the build plate");
                         case "error":
                             return printerOutputDevice.errorText;
-                        case "maintenance":  // note sure if this jobState actually occurs in the wild
-                            return catalog.i18nc("@label:MonitorStatus", "Busy; please check the printer");
+                        case "maintenance":
+                            return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
                         case "abort":  // note sure if this jobState actually occurs in the wild
                             return catalog.i18nc("@label:MonitorStatus", "Aborting print...");
                         case "ready":  // ready to print or getting ready
