@@ -58,6 +58,12 @@ UM.ManagementPage
             iconName: "edit-rename";
             enabled: base.currentItem != null
             onClicked: renameDialog.open();
+        },
+        Button
+        {
+            text: catalog.i18nc("@action:button", "Reset");
+            enabled: base.currentItem != null
+            onClicked: Cura.MachineManager.resetMachine(base.currentItem.id);
         }
     ]
 
