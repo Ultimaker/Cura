@@ -12,6 +12,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Malyan M180" },
         "machine_width": {
             "default_value": 230
         },

@@ -13,6 +13,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "3DMaker Starter" },
         "machine_width": {
             "default_value": 210
         },

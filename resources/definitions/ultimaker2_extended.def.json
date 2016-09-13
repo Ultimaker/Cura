@@ -16,6 +16,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2 Extended" },
         "machine_height": {
             "default_value": 305
         }

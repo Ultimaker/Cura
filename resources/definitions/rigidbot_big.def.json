@@ -13,6 +13,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "RigidBotBig" },
         "machine_width": {
             "default_value": 400
         },
