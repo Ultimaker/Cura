@@ -462,18 +462,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             extruder_manager = cura.Settings.ExtruderManager.getInstance()
             if print_information.materialLengths[index] != 0:
                 variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
+                core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
                 if variant:
-                    if variant.getName() != self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]:
-                        Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"], variant.getName())
-                        warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore selected for extruder {0}".format(index + 1)))
+                    if variant.getName() != core_name:
+                        Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
+                        warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
 
                 material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
                 if material:
-                    if material.getMetaDataEntry("GUID") != self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]:
+                    remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]
+                    if material.getMetaDataEntry("GUID") != remote_material_guid:
                         Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
-                                   self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"],
+                                   remote_material_guid,
                                    material.getMetaDataEntry("GUID"))
-                        warnings.append(i18n_catalog.i18nc("@label", "Different material selected for extruder {0}").format(index + 1))
+
+                        remote_materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                        remote_material_name = "Unknown"
+                        if remote_materials:
+                            remote_material_name = remote_materials[0].getName()
+                        warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
