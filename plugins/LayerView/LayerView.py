@@ -15,6 +15,8 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+from UM.i18n import i18nCatalog
+from UM.Message import Message
 
 from cura.ConvexHullNode import ConvexHullNode
 
