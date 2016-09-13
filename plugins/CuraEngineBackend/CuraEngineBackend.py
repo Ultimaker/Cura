@@ -227,6 +227,16 @@ class CuraEngineBackend(Backend):
         if job.isCancelled() or job.getError() or job.getResult() == StartSliceJob.StartJobResult.Error:
             return
 
+        if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status",
+                                            "The selected material is imcompatible with the selected machine or configuration."))
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+            return
+
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
             if Application.getInstance().getPlatformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. Please check your settings for errors."))

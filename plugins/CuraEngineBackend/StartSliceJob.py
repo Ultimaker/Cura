@@ -24,6 +24,7 @@ class StartJobResult(IntEnum):
     Error = 2
     SettingError = 3
     NothingToSlice = 4
+    MaterialIncompatible = 5
 
 
 ##  Formatter class that handles token expansion in start/end gcod
@@ -86,7 +87,7 @@ class StartSliceJob(Job):
             material = extruder_stack.findContainer({"type": "material"})
             if material:
                 if material.getMetaDataEntry("compatible") == False:
-                    self.setResult(StartJobResult.SettingError)
+                    self.setResult(StartJobResult.MaterialIncompatible)
                     return
 
         # Don't slice if there is a per object setting with an error value.
