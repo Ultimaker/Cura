@@ -64,11 +64,17 @@ Item
         visible: isUM3
         Button
         {
-            height: UM.Theme.getSize("save_button_save_to_button").height
             tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
             text: catalog.i18nc("@action:button", "Request Access")
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
             visible: base.printerConnected && !base.printerAcceptsCommands
+        }
+
+        Button
+        {
+            tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
+            text: catalog.i18nc("@action:button", "Activate Configuration")
+            visible: false
         }
     }
 
