@@ -15,6 +15,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Prusa i3 Mk2" },
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 250 },
         "machine_height": { "default_value": 200 },

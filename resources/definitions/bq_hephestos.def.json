@@ -14,6 +14,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "BQ Prusa i3 Hephestos" },
         "machine_start_gcode": {
             "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z15.0 F1200          ;move Z to position 15.0 mm\nG92 E0                  ;zero the extruded length\nG1 E20 F200             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200                ;set feedrate to 120 mm/s\n; -- end of START GCODE --"
         },

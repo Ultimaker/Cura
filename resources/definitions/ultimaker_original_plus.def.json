@@ -17,6 +17,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker Original+" },
         "machine_heated_bed": {
             "default_value": true
         },

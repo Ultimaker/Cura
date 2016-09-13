@@ -14,6 +14,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Innovo INVENTOR" },
         "machine_width": {
             "default_value": 340
         },

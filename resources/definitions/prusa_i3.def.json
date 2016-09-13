@@ -14,6 +14,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Prusa i3" },
         "machine_heated_bed": {
             "default_value": true
         },

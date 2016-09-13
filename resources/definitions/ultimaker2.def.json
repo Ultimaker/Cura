@@ -18,6 +18,7 @@
         "supported_actions":["UpgradeFirmware"]
     },
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2" },
         "machine_start_gcode" : {
             "default_value": "",
             "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nG1 X10 Y0 F4000;move X/Y to min endstops\\nG28 Z0 ;move Z to bottom endstops\\nG1 Z15.0 F9000 ;move the platform to 15mm\\nG92 E0 ;zero the extruded length\\nG1 F200 E10 ;extrude 10 mm of feed stock\\nG92 E0 ;zero the extruded length again\\nG1 F9000\\n;Put printing message on LCD screen\\nM117 Printing...\""

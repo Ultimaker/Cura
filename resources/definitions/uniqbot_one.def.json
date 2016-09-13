@@ -12,6 +12,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Uniqbot" },
         "machine_heated_bed": {
             "default_value": false
         },
