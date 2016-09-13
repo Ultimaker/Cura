@@ -91,12 +91,9 @@ class MachineInstance:
 
         if has_machine_qualities: #This machine now has machine-quality profiles.
             active_material += "_" + variant_materials #That means that the profile was split into multiple.
-            current_settings = "" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
-        else:
-            current_settings = self._name + "_current_settings"
 
         containers = [
-            current_settings,
+            "", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
             active_quality_changes,
             active_quality,
             active_material,

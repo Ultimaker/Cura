@@ -349,6 +349,9 @@ class ContainerManager(QObject):
         except NotImplementedError:
             return { "status": "error", "message": "Unable to serialize container"}
 
+        if contents is None:
+            return {"status": "error", "message": "Serialization returned None. Unable to write to file"}
+
         with UM.SaveFile(file_url, "w") as f:
             f.write(contents)
 
