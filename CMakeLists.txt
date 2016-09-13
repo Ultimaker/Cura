@@ -7,6 +7,7 @@ install(FILES
     DiscoverUM3Action.qml
     NetworkPrinterOutputDevice.py
     NetworkPrinterOutputDevicePlugin.py
+    UM3InfoComponents.qml
     LICENSE
     README.md
     DESTINATION lib/cura/plugins/JediWifiPrintingPlugin
