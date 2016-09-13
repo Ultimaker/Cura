@@ -12,6 +12,18 @@ Menu
     id: menu
     title: "Material"
 
+    MenuItem
+    {
+        id: automaticMaterial
+        text: catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg("[material_name]")
+        visible: false
+    }
+
+    MenuSeparator
+    {
+        visible: automaticMaterial.visible
+    }
+
     Instantiator
     {
         model: genericMaterialsModel

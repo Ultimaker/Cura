@@ -12,6 +12,18 @@ Menu
     id: menu
     title: "Nozzle"
 
+    MenuItem
+    {
+        id: automaticNozzle
+        text: catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg("[nozzle_name]")
+        visible: false
+    }
+
+    MenuSeparator
+    {
+        visible: automaticNozzle.visible
+    }
+
     Instantiator
     {
         model: UM.InstanceContainersModel
