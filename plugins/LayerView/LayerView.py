@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+from UM.Message import Message
 
 from cura.ConvexHullNode import ConvexHullNode
 
@@ -53,6 +54,8 @@ class LayerView(View):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._busy = False
+
+        self.wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
     def getActivity(self):
         return self._activity

@@ -361,6 +361,18 @@ class MachineManager(QObject):
 
         return False
 
+    ##  Delete a user setting from the global stack and all extruder stacks.
+    #   \param key \type{str} the name of the key to delete
+    @pyqtSlot(str)
+    def clearUserSettingAllCurrentStacks(self, key):
+        if not self._global_container_stack:
+            return
+
+        self._global_container_stack.getTop().removeInstance(key)
+
+        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+            stack.getTop().removeInstance(key)
+
     ##  Check if the global profile does not contain error states
     #   Note that the _active_stack_valid is cached due to performance issues
     #   Calling _checkStackForErrors on every change is simply too expensive

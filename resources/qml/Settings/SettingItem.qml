@@ -179,8 +179,8 @@ Item {
                 iconSource: UM.Theme.getIcon("reset")
 
                 onClicked: {
-                    revertButton.focus = true
-                    propertyProvider.removeFromContainer(0)
+                    revertButton.focus = true;
+                    Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key);
                 }
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
