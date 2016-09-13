@@ -400,6 +400,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_failed_message.hide()
         self._authentication_succeeded_message.hide()
 
+        # Reset stored material & hotend data.
+        self._material_ids = [""] * self._num_extruders
+        self._hotend_ids = [""] * self._num_extruders
+
         if self._error_message:
             self._error_message.hide()
 
