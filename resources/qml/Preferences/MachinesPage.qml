@@ -41,6 +41,12 @@ UM.ManagementPage
         },
         Button
         {
+            text: catalog.i18nc("@action:button", "Reset to default");
+            enabled: base.currentItem != null && Cura.MachineManager.isMachineChanged(base.currentItem.id);
+            onClicked: Cura.MachineManager.resetMachine(base.currentItem.id);
+        },
+        Button
+        {
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
             onClicked: Printer.requestAddPrinter()
@@ -58,12 +64,6 @@ UM.ManagementPage
             iconName: "edit-rename";
             enabled: base.currentItem != null
             onClicked: renameDialog.open();
-        },
-        Button
-        {
-            text: catalog.i18nc("@action:button", "Reset");
-            enabled: base.currentItem != null && Cura.MachineManager.isMachineChanged(base.currentItem.id);
-            onClicked: Cura.MachineManager.resetMachine(base.currentItem.id);
         }
     ]
 
