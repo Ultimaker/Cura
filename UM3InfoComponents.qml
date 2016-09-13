@@ -37,6 +37,7 @@ Item
             text: catalog.i18nc("@action:button", "Connect")
             style: UM.Theme.styles.sidebar_action_button
             onClicked: connectActionDialog.show()
+            enabled: true
             visible: !base.printerConnected
         }
     }
