@@ -18,7 +18,7 @@ Item
     {
         objectName: "networkPrinterConnectButton"
         visible: isUM3
-        spacing: UM.Theme.getSize("default_marging").width
+        spacing: UM.Theme.getSize("default_margin").width
 
         Button
         {
