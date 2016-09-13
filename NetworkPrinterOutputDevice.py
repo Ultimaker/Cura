@@ -246,14 +246,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot()
     def requestAuthentication(self, message_id, action_id):
-        self._authentication_failed_message.hide()
-        self._not_authenticated_message.hide()
-        self._authentication_state = AuthState.NotAuthenticated
-        self._authentication_counter = 0
-        self._authentication_requested_message.setProgress(0)
-        self._authentication_id = None
-        self._authentication_key = None
-        self._createNetworkManager() # Re-create network manager to force re-authentication.
+        if action_id == "Request" or action_id == "Retry":
+            self._authentication_failed_message.hide()
+            self._not_authenticated_message.hide()
+            self._authentication_state = AuthState.NotAuthenticated
+            self._authentication_counter = 0
+            self._authentication_requested_message.setProgress(0)
+            self._authentication_id = None
+            self._authentication_key = None
+            self._createNetworkManager() # Re-create network manager to force re-authentication.
 
     ##  Request data from the connected device.
     def _update(self):
