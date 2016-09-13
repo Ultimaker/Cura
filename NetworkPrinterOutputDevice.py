@@ -245,7 +245,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_state = auth_state
 
     @pyqtSlot()
-    def requestAuthentication(self, message_id, action_id):
+    def requestAuthentication(self, message_id = None, action_id = "Retry"):
         if action_id == "Request" or action_id == "Retry":
             self._authentication_failed_message.hide()
             self._not_authenticated_message.hide()
