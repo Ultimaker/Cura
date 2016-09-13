@@ -56,7 +56,7 @@ class LayerView(View):
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._busy = False
 
-        self.wireprint_warning_message = Message(i18n_catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
+        self.wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
     def getActivity(self):
         return self._activity
