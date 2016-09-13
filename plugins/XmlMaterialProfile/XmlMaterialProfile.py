@@ -85,9 +85,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     # base file: global settings + supported machines
     # machine / variant combination: only changes for itself.
     def serialize(self):
-        if self._read_only:
-            return
-
         registry = UM.Settings.ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
