@@ -286,7 +286,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
                 result.append(i18n_catalog.i18nc("@item:material", "No material loaded"))
                 continue
 
-            containers = self._container_registry.findInstanceContainers(type = "material", guid = material_id)
+            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
             if containers:
                 result.append(containers[0].getName())
             else:

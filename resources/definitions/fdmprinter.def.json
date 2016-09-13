@@ -2715,6 +2715,7 @@
                         "raft": "Raft"
                     },
                     "default_value": "brim",
+                    "resolve": "'raft' if 'raft' in extruderValues('adhesion_type') else ('brim' if 'brim' in extruderValues('adhesion_type') else 'skirt')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3306,6 +3307,7 @@
                     "type": "bool",
                     "enabled": "machine_extruder_count > 1",
                     "default_value": false,
+                    "resolve": "max(extruderValues('prime_tower_enable'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
