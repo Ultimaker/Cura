@@ -165,7 +165,7 @@ Cura.MachineAction
             Column
             {
                 width: parent.width * 0.5
-                visible: base.selectedPrinter
+                visible: base.selectedPrinter ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
                 {
@@ -220,7 +220,7 @@ Cura.MachineAction
                 Button
                 {
                     text: catalog.i18nc("@action:button", "Connect")
-                    enabled: base.selectedPrinter
+                    enabled: base.selectedPrinter ? true : false
                     onClicked: connectToPrinter()
                 }
             }
