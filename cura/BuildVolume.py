@@ -81,10 +81,6 @@ class BuildVolume(SceneNode):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
 
-        self._active_extruder_stack = None
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
-        self._onActiveExtruderStackChanged()
-
         self._has_errors = False
 
     def setWidth(self, width):
@@ -215,11 +211,7 @@ class BuildVolume(SceneNode):
             minimum = Vector(min_w, min_h - 1.0, min_d),
             maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
 
-        bed_adhesion_size = 0.0
-
-        container_stack = Application.getInstance().getGlobalContainerStack()
-        if container_stack:
-            bed_adhesion_size = self._getBedAdhesionSize(container_stack)
+        bed_adhesion_size = self._getBedAdhesionSize()
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
@@ -284,13 +276,6 @@ class BuildVolume(SceneNode):
             self._updateRaftThickness()
 
             self.rebuild()
-
-    def _onActiveExtruderStackChanged(self):
-        if self._active_extruder_stack:
-            self._active_extruder_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
-        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if self._active_extruder_stack:
-            self._active_extruder_stack.propertyChanged.connect(self._onSettingPropertyChanged)
 
     def _onSettingPropertyChanged(self, setting_key, property_name):
         if property_name != "value":
@@ -364,7 +349,7 @@ class BuildVolume(SceneNode):
                 [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
             ])
 
-        bed_adhesion_size = self._getBedAdhesionSize(self._global_container_stack)
+        bed_adhesion_size = self._getBedAdhesionSize()
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
@@ -426,7 +411,10 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = areas
 
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
-    def _getBedAdhesionSize(self, container_stack):
+    def _getBedAdhesionSize(self):
+        if not self._global_container_stack:
+            return 0
+        container_stack = self._global_container_stack
         skirt_size = 0.0
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
