@@ -89,13 +89,13 @@ ScrollView
             }
 
             // Binding to ensure that the right containerstack ID is set for the provider.
-            // This ensures that if a setting has a global_inherits_stack id (for instance; Support speed points to the
+            // This ensures that if a setting has a limit_to_extruder id (for instance; Support speed points to the
             // extruder that actually prints the support, as that is the setting we need to use to calculate the value)
             Binding
             {
                 target: provider
                 property: "containerStackId"
-                when: model.settable_per_extruder || (inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0);
+                when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                 value:
                 {
                     if(!model.settable_per_extruder)
@@ -103,10 +103,10 @@ ScrollView
                         //Not settable per extruder, so we must pick global.
                         return Cura.MachineManager.activeMachineId;
                     }
-                    if(inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0)
+                    if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                     {
-                        //We have global_inherits_stack, so pick that stack.
-                        return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)];
+                        //We have limit_to_extruder, so pick that stack.
+                        return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                     }
                     if(ExtruderManager.activeExtruderStackId)
                     {
@@ -125,7 +125,7 @@ ScrollView
                 id: inheritStackProvider
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key
-                watchedProperties: [ "global_inherits_stack" ]
+                watchedProperties: [ "limit_to_extruder" ]
             }
 
             UM.SettingPropertyProvider

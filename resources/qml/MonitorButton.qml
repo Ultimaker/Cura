@@ -48,13 +48,15 @@ Rectangle
     {
         if(!printerConnected || !printerAcceptsCommands)
             return UM.Theme.getColor("text");
-        if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+
+        switch(Cura.MachineManager.printerOutputDevices[0].printerState)
         {
-            return UM.Theme.getColor("status_busy");
-        } else if (Cura.MachineManager.printerOutputDevices[0].printerState == "error")
-        {
-            return UM.Theme.getColor("status_stopped");
+            case "maintenance":
+                return UM.Theme.getColor("status_busy");
+            case "error":
+                return UM.Theme.getColor("status_stopped");
         }
+
         switch(Cura.MachineManager.printerOutputDevices[0].jobState)
         {
             case "printing":

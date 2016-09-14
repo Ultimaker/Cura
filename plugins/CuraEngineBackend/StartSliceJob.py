@@ -245,16 +245,16 @@ class StartSliceJob(Job):
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
     #
-    #   This is only set for settings that have the global_inherits_stack
+    #   This is only set for settings that have the limit_to_extruder
     #   property.
     #
     #   \param stack The global stack with all settings, from which to read the
-    #   global_inherits_stack property.
+    #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "global_inherits_stack"))))
+            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
             if extruder >= 0: #Set to a specific extruder.
-                setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
+                setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder
 
