@@ -109,7 +109,8 @@ Item
             {
                 tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
                 text: catalog.i18nc("@action:button", "Activate Configuration")
-                visible: base.printerConnected && false
+                visible: base.printerConnected
+                onClicked: manager.loadConfigurationFromPrinter()
             }
 
             Button
