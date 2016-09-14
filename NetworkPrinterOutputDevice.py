@@ -472,7 +472,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
                         warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
 
-                material = extruder_manager.getExtruderStack(0).findContainer({"type": "material"})
+                material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
                 if material:
                     remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]
                     if material.getMetaDataEntry("GUID") != remote_material_guid:
