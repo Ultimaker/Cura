@@ -1072,7 +1072,8 @@ class MachineManager(QObject):
             c = container.findContainer({'type': 'variant'})
             if c:
                 ind = container.getContainerIndex(c)
-                container.replaceContainer(ind, self._empty_variant_container)
+                variant_instance_container = self._updateVariantContainer(c.getDefinition())
+                container.replaceContainer(ind, variant_instance_container)
                 Application.getInstance().setGlobalContainerStack(container)
 
     @pyqtSlot(str, result=bool)
