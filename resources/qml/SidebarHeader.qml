@@ -14,7 +14,6 @@ Column
 {
     id: base;
 
-    property int totalHeightHeader: childrenRect.height
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
 
     spacing: UM.Theme.getSize("default_margin").height

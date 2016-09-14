@@ -149,7 +149,6 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
-        height: totalHeightHeader
 
         anchors.top: sidebarHeaderBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
