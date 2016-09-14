@@ -234,9 +234,9 @@ class ExtruderManager(QObject):
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if not containers and preferred_quality:
-                UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality, machine_id)
-                search_criteria.pop("id", None)
-                containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+            UM.Logger.log("w", "The preferred quality \"%s\" of machine %s doesn't exist or is not a quality profile.", preferred_quality, machine_id)
+            search_criteria.pop("id", None)
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if containers:
             quality = containers[0]
 
