@@ -16,6 +16,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 from UM.Message import Message
+from UM.Application import Application
 
 from cura.ConvexHullNode import ConvexHullNode
 
@@ -46,6 +47,7 @@ class LayerView(View):
         self._top_layers_job = None
         self._activity = False
         self._old_max_layers = 0
+        self._global_container_stack = None
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
@@ -55,7 +57,7 @@ class LayerView(View):
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._busy = False
 
-        self.wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
     def getActivity(self):
         return self._activity
@@ -191,6 +193,33 @@ class LayerView(View):
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - 1)
                 return True
+
+        if event.type == Event.ViewActivateEvent:
+            Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+            self._onGlobalStackChanged()
+
+        elif event.type == Event.ViewDeactivateEvent:
+            self._wireprint_warning_message.hide()
+            Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
+            if self._global_container_stack:
+                self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+
+    def _onGlobalStackChanged(self):
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._onPropertyChanged("wireframe_enabled", "value")
+        else:
+            self._wireprint_warning_message.hide()
+
+    def _onPropertyChanged(self, key, property_name):
+        if key == "wireframe_enabled" and property_name == "value":
+            if self._global_container_stack.getProperty("wireframe_enabled", "value"):
+                self._wireprint_warning_message.show()
+            else:
+                self._wireprint_warning_message.hide()
 
     def _startUpdateTopLayers(self):
         if self._top_layers_job:
