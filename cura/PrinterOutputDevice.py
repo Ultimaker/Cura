@@ -2,6 +2,7 @@ from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtWidgets import QMessageBox
+import UM.Settings.ContainerRegistry
 
 from enum import IntEnum  # For the connection state tracking.
 from UM.Logger import Logger
@@ -285,7 +286,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
                 result.append(i18n_catalog.i18nc("@item:material", "No material loaded"))
                 continue
 
-            containers = self._container_registry.findInstanceContainers(type = "material", guid = material_id)
+            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
             if containers:
                 result.append(containers[0].getName())
             else:

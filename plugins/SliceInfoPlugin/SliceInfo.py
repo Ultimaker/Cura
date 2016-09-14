@@ -1,6 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from cura.CuraApplication import CuraApplication
+
 from UM.Extension import Extension
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -18,6 +20,7 @@ import math
 import urllib.request
 import urllib.parse
 import ssl
+import hashlib
 
 catalog = i18nCatalog("cura")
 
@@ -43,9 +46,11 @@ class SliceInfoJob(Job):
         if Platform.isOSX():
             kwoptions["context"] = ssl._create_unverified_context()
 
+        Logger.log("d", "Sending anonymous slice info to [%s]...", self.url)
+
         try:
             f = urllib.request.urlopen(self.url, **kwoptions)
-            Logger.log("i", "Sent anonymous slice info to %s", self.url)
+            Logger.log("i", "Sent anonymous slice info.")
             f.close()
         except urllib.error.HTTPError as http_exception:
             Logger.log("e", "An HTTP error occurred while trying to send slice information: %s" % http_exception)
@@ -56,7 +61,7 @@ class SliceInfoJob(Job):
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
-    info_url = "https://stats.youmagine.com/curastats/slice"
+    info_url = "http://stats.youmagine.com/curastats/slice"
 
     def __init__(self):
         super().__init__()
@@ -80,6 +85,16 @@ class SliceInfo(Extension):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
                 return # Do nothing, user does not want to send data
 
+            # Listing all files placed on the buildplate
+            modelhashes = []
+            for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
+                if type(node) is not SceneNode or not node.getMeshData():
+                    continue
+                modelhashes.append(node.getMeshData().getHash())
+
+            # Creating md5sums and formatting them as discussed on JIRA
+            modelhash_formatted = ",".join(modelhashes)
+
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
             # Get total material used (in mm^3)
@@ -89,27 +104,6 @@ class SliceInfo(Extension):
             # TODO: Send material per extruder instead of mashing it on a pile
             material_used = math.pi * material_radius * material_radius * sum(print_information.materialLengths) #Volume of all materials used
 
-            # Get model information (bounding boxes, hashes and transformation matrix)
-            models_info = []
-            for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        model_info = {}
-                        model_info["hash"] = node.getMeshData().getHash()
-                        model_info["bounding_box"] = {}
-                        model_info["bounding_box"]["minimum"] = {}
-                        model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
-                        model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
-                        model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
-
-                        model_info["bounding_box"]["maximum"] = {}
-                        model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
-                        model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
-                        model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
-                        model_info["transformation"] = str(node.getWorldTransformation().getData())
-
-                        models_info.append(model_info)
-
             # Bundle the collected data
             submitted_data = {
                 "processor": platform.processor(),
@@ -117,7 +111,7 @@ class SliceInfo(Extension):
                 "platform": platform.platform(),
                 "settings": global_container_stack.serialize(), # global_container with references on used containers
                 "version": Application.getInstance().getVersion(),
-                "modelhash": "None",
+                "modelhash": modelhash_formatted,
                 "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
                 "filament": material_used,
                 "language": Preferences.getInstance().getValue("general/language"),

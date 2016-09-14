@@ -349,6 +349,9 @@ class ContainerManager(QObject):
         except NotImplementedError:
             return { "status": "error", "message": "Unable to serialize container"}
 
+        if contents is None:
+            return {"status": "error", "message": "Serialization returned None. Unable to write to file"}
+
         with UM.SaveFile(file_url, "w") as f:
             f.write(contents)
 
@@ -586,6 +589,7 @@ class ContainerManager(QObject):
                 new_container = container.duplicate(self._createUniqueId(stack_id, new_name), new_name)
                 self._container_registry.addContainer(new_container)
         else:
+            UM.Logger.log("w", "Unable to duplicate profile. It has the wrong type.")
             return ""
 
         return new_name
@@ -688,7 +692,9 @@ class ContainerManager(QObject):
         filter_by_material = False
 
         if global_stack.getMetaDataEntry("has_machine_quality"):
-            criteria["definition"] = global_stack.getBottom().getId()
+            definition = global_stack.getBottom()
+            definition_id = definition.getMetaDataEntry("quality_definition", definition.getId())
+            criteria["definition"] = definition_id
 
             filter_by_material = global_stack.getMetaDataEntry("has_materials")
 

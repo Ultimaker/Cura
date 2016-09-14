@@ -234,14 +234,15 @@ Column
                 property var valueError:
                 {
                     var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
-                    if(data == "" || data == "True")
-                    {
-                        return false
-                    }
                     if(data == "False")
                     {
                         return true
                     }
+                    else
+                    {
+                        return false
+                    }
+
                 }
                 enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
