@@ -242,7 +242,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._authentication_timer.stop()
             self._authentication_counter = 0
 
-        self._authentication_state = auth_state
+        if auth_state != self._authentication_state:
+            self._authentication_state = auth_state
+            self.authenticationStateChanged.emit()
+
+    authenticationStateChanged = pyqtSignal()
+
+    @pyqtProperty(int, notify = authenticationStateChanged)
+    def authenticationState(self):
+        return self._authentication_state
 
     @pyqtSlot()
     def requestAuthentication(self, message_id = None, action_id = "Retry"):

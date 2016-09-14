@@ -13,6 +13,7 @@ Item
     property bool isUM3: Cura.MachineManager.activeDefinitionId == "ultimaker3"
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
+    property bool authenticationRequested: printerConnected && Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 // AuthState.AuthenticationRequested
 
     Row
     {
@@ -27,7 +28,7 @@ Item
             text: catalog.i18nc("@action:button", "Request Access")
             style: UM.Theme.styles.sidebar_action_button
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-            visible: base.printerConnected && !base.printerAcceptsCommands
+            visible: !base.printerAcceptsCommands && !base.authenticationRequested
         }
 
         Button
@@ -66,6 +67,14 @@ Item
         spacing: UM.Theme.getSize("default_margin").width
         anchors.fill: parent
 
+        Button
+        {
+            tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
+            text: catalog.i18nc("@action:button", "Request Access")
+            onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
+            visible: !base.printerAcceptsCommands && !base.authenticationRequested
+        }
+
         Row
         {
             visible: base.printerConnected
@@ -103,23 +112,12 @@ Item
             }
         }
 
-        Row
+        Button
         {
-            Button
-            {
-                tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
-                text: catalog.i18nc("@action:button", "Activate Configuration")
-                visible: base.printerConnected
-                onClicked: manager.loadConfigurationFromPrinter()
-            }
-
-            Button
-            {
-                tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
-                text: catalog.i18nc("@action:button", "Request Access")
-                onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-                visible: base.printerConnected && !base.printerAcceptsCommands
-            }
+            tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
+            text: catalog.i18nc("@action:button", "Activate Configuration")
+            visible: base.printerConnected
+            onClicked: manager.loadConfigurationFromPrinter()
         }
     }
 
