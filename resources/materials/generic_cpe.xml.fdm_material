@@ -11,7 +11,7 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
         </name>
         <GUID>12f41353-1a33-415e-8b4f-a775a6c70cc6</GUID>
         <version>0</version>
-        <color_code>#0000FF</color_code>
+        <color_code>#159499</color_code>
     </metadata>
     <properties>
         <density>0.94</density>

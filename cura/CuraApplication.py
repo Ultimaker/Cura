@@ -28,6 +28,7 @@ from cura.SetParentOperation import SetParentOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.SettingFunction import SettingFunction
 
 from UM.i18n import i18nCatalog
 
@@ -57,20 +58,11 @@ import copy
 import urllib
 numpy.seterr(all="ignore")
 
-#WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
-if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
-    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
-        import ctypes
-        from ctypes.util import find_library
-        ctypes.CDLL(find_library('GL'), ctypes.RTLD_GLOBAL)
-
 try:
     from cura.CuraVersion import CuraVersion, CuraBuildType
 except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
-
 
 class CuraApplication(QtApplication):
     class ResourceTypes:
@@ -98,7 +90,10 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
         SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
-        SettingDefinition.addSettingType("extruder", int, str, Validator)
+        SettingDefinition.addSettingType("extruder", None, str, Validator)
+
+        SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
+        SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -127,6 +122,8 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+
+        self._additional_components = {} # Components to add to certain areas in the interface
 
         super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
@@ -201,7 +198,7 @@ class CuraApplication(QtApplication):
             "dialog_profile_path",
             "dialog_material_path"]:
 
-            Preferences.getInstance().addPreference("local_file/%s" % key, "~/")
+            Preferences.getInstance().addPreference("local_file/%s" % key, os.path.expanduser("~/"))
 
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
@@ -233,13 +230,20 @@ class CuraApplication(QtApplication):
             support
                 support_enable
                 support_type
-                support_roof_density
+                support_interface_density
             platform_adhesion
                 adhesion_type
                 brim_width
                 raft_airgap
                 layer_0_z_overlap
                 raft_surface_layers
+            dual
+                adhesion_extruder_nr
+                support_extruder_nr
+                prime_tower_enable
+                prime_tower_size
+                prime_tower_position_x
+                prime_tower_position_y
             meshfix
             blackmagic
                 print_sequence
@@ -553,12 +557,18 @@ class CuraApplication(QtApplication):
     def deleteSelection(self):
         if not self.getController().getToolsEnabled():
             return
-
+        removed_group_nodes = []
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
             op.addOperation(RemoveSceneNodeOperation(node))
-
+            group_node = node.getParent()
+            if group_node and group_node.callDecoration("isGroup") and group_node not in removed_group_nodes:
+                remaining_nodes_in_group = list(set(group_node.getChildren()) - set(nodes))
+                if len(remaining_nodes_in_group) == 1:
+                    removed_group_nodes.append(group_node)
+                    op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
         pass
@@ -584,8 +594,7 @@ class CuraApplication(QtApplication):
             op.push()
             if group_node:
                 if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
-                    group_node.getChildren()[0].translate(group_node.getPosition())
-                    group_node.getChildren()[0].setParent(group_node.getParent())
+                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
                     op = RemoveSceneNodeOperation(group_node)
                     op.push()
 
@@ -626,7 +635,23 @@ class CuraApplication(QtApplication):
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
-    
+
+    ##  Select all nodes containing mesh data in the scene.
+    @pyqtSlot()
+    def selectAll(self):
+        if not self.getController().getToolsEnabled():
+            return
+
+        Selection.clear()
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            Selection.add(node)
+
     ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):
@@ -650,6 +675,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
+            Selection.clear()
 
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
@@ -877,3 +903,21 @@ class CuraApplication(QtApplication):
 
     def getBuildVolume(self):
         return self._volume
+
+    additionalComponentsChanged = pyqtSignal(str, arguments = ["areaId"])
+
+    @pyqtProperty("QVariantMap", notify = additionalComponentsChanged)
+    def additionalComponents(self):
+        return self._additional_components
+
+    ##  Add a component to a list of components to be reparented to another area in the GUI.
+    #   The actual reparenting is done by the area itself.
+    #   \param area_id \type{str} Identifying name of the area to which the component should be reparented
+    #   \param component \type{QQuickComponent} The component that should be reparented
+    @pyqtSlot(str, "QVariant")
+    def addAdditionalComponent(self, area_id, component):
+        if area_id not in self._additional_components:
+            self._additional_components[area_id] = []
+        self._additional_components[area_id].append(component)
+
+        self.additionalComponentsChanged.emit(area_id)

@@ -69,6 +69,7 @@ UM.PreferencesPage
 
         Row
         {
+            spacing: UM.Theme.getSize("default_margin").width
             Label
             {
                 id: languageLabel
@@ -167,7 +168,7 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width;
             height: childrenRect.height;
-            text: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
+            text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when an model is selected")
 
             CheckBox
             {
@@ -181,16 +182,17 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should objects on the platform be moved so that they no longer intersect?")
+            text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved so that they no longer intersect?")
 
             CheckBox
             {
                 id: pushFreeCheckbox
-                text: catalog.i18nc("@option:check", "Ensure objects are kept apart")
+                text: catalog.i18nc("@option:check", "Ensure models are kept apart")
                 checked: boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
                 onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
             }
         }
+
 
         UM.TooltipArea {
             width: childrenRect.width;
@@ -215,6 +217,19 @@ UM.PreferencesPage
                 }
             }
         }
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should only the top layers be displayed in layerview?")
+
+            CheckBox
+            {
+                id: topLayersOnlyCheckbox
+                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view")
+                checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
+                onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
+            }
+        }
 
         Item
         {
@@ -232,12 +247,12 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","Should objects be scaled to the build volume if they are too large?")
+            text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
 
             CheckBox
             {
                 id: scaleToFitCheckbox
-                text: catalog.i18nc("@option:check","Scale large objects")
+                text: catalog.i18nc("@option:check","Scale large models")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_to_fit", checked)
             }
@@ -246,12 +261,12 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","An object may appear extremely small if its unit is for example in meters rather than millimeters. Should these objects be scaled up?")
+            text: catalog.i18nc("@info:tooltip","An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?")
 
             CheckBox
             {
                 id: scaleTinyCheckbox
-                text: catalog.i18nc("@option:check","Scale extremely small objects")
+                text: catalog.i18nc("@option:check","Scale extremely small models")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
             }

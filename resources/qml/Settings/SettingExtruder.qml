@@ -19,7 +19,10 @@ SettingItem
         model: Cura.ExtrudersModel
         {
             id: extruders_model
+            onModelChanged: control.color = extruders_model.getItem(control.currentIndex).color
         }
+        property string color: extruders_model.getItem(control.currentIndex).color
+
         textRole: "name"
 
         anchors.fill: parent
@@ -64,7 +67,7 @@ SettingItem
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: extruders_model.getItem(control.currentIndex).colour
+                    color: control.color
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
                 }
@@ -105,13 +108,14 @@ SettingItem
         onActivated:
         {
             forceActiveFocus();
-            provider.setPropertyValue("value", extruders_model.getItem(index).index)
+            propertyProvider.setPropertyValue("value", extruders_model.getItem(index).index);
+            control.color = extruders_model.getItem(index).color;
         }
         onModelChanged: updateCurrentIndex();
 
         Connections
         {
-            target: provider
+            target: propertyProvider
             onPropertiesChanged: control.updateCurrentIndex();
         }
 
@@ -119,9 +123,10 @@ SettingItem
         {
             for(var i = 0; i < extruders_model.rowCount(); ++i)
             {
-                if(extruders_model.getItem(i).index == provider.properties.value)
+                if(extruders_model.getItem(i).index == propertyProvider.properties.value)
                 {
-                    currentIndex = i;
+                    control.currentIndex = i;
+                    control.color = extruders_model.getItem(i).color;
                     return;
                 }
             }

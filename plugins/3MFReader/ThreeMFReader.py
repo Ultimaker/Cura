@@ -9,18 +9,20 @@ from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Math.Quaternion import Quaternion
-
 from UM.Job import Job
 
 import math
 import zipfile
 
-import xml.etree.ElementTree as ET
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
     def __init__(self):
-        super(ThreeMFReader, self).__init__()
+        super().__init__()
         self._supported_extensions = [".3mf"]
 
         self._namespaces = {
@@ -116,4 +118,10 @@ class ThreeMFReader(MeshReader):
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
 
-        return result  
+        try: # Selftest - There might be more functions that should fail
+            boundingBox = result.getBoundingBox()
+            boundingBox.isValid()
+        except:
+            return None
+
+        return result

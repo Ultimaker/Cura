@@ -54,10 +54,7 @@ UM.MainWindow
         Keys.onPressed: {
             if (event.key == Qt.Key_Backspace)
             {
-                if(objectContextMenu.objectId != 0)
-                {
-                    Printer.deleteObject(objectContextMenu.objectId);
-                }
+                Cura.Actions.deleteSelection.trigger()
             }
         }
 
@@ -121,6 +118,7 @@ UM.MainWindow
                 MenuItem { action: Cura.Actions.undo; }
                 MenuItem { action: Cura.Actions.redo; }
                 MenuSeparator { }
+                MenuItem { action: Cura.Actions.selectAll; }
                 MenuItem { action: Cura.Actions.deleteSelection; }
                 MenuItem { action: Cura.Actions.deleteAll; }
                 MenuItem { action: Cura.Actions.resetAllTranslation; }
@@ -540,6 +538,7 @@ UM.MainWindow
         MenuItem { action: Cura.Actions.deleteObject; }
         MenuItem { action: Cura.Actions.multiplyObject; }
         MenuSeparator { }
+        MenuItem { action: Cura.Actions.selectAll; }
         MenuItem { action: Cura.Actions.deleteAll; }
         MenuItem { action: Cura.Actions.reloadAll; }
         MenuItem { action: Cura.Actions.resetAllTranslation; }
@@ -592,6 +591,7 @@ UM.MainWindow
     Menu
     {
         id: contextMenu;
+        MenuItem { action: Cura.Actions.selectAll; }
         MenuItem { action: Cura.Actions.deleteAll; }
         MenuItem { action: Cura.Actions.reloadAll; }
         MenuItem { action: Cura.Actions.resetAllTranslation; }
@@ -677,6 +677,7 @@ UM.MainWindow
         id: addMachineDialog
         onMachineAdded:
         {
+            machineActionsWizard.firstRun = addMachineDialog.firstRun
             machineActionsWizard.start(id)
         }
     }

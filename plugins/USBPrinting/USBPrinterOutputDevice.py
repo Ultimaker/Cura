@@ -21,12 +21,14 @@ catalog = i18nCatalog("cura")
 
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
+
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
+        self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
 
         self._serial = None
         self._serial_port = serial_port
@@ -85,12 +87,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._updating_firmware = False
 
         self._firmware_file_name = None
+        self._firmware_update_finished = False
 
         self._error_message = None
 
     onError = pyqtSignal()
 
     firmwareUpdateComplete = pyqtSignal()
+    firmwareUpdateChange = pyqtSignal()
 
     endstopStateChanged = pyqtSignal(str ,bool, arguments = ["key","state"])
 
@@ -170,6 +174,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
         self.setProgress(0, 100)
+        self._firmware_update_finished = False
 
         if self._connection_state != ConnectionState.closed:
             self.close()
@@ -177,10 +182,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if len(hex_file) == 0:
             Logger.log("e", "Unable to read provided hex file. Could not update firmware")
-            return 
+            self._updateFirmware_completed()
+            return
 
         programmer = stk500v2.Stk500v2()
-        programmer.progressCallback = self.setProgress 
+        programmer.progress_callback = self.setProgress
 
         try:
             programmer.connect(self._serial_port)
@@ -192,6 +198,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
+            self._updateFirmware_completed()
             return 
 
         self._updating_firmware = True
@@ -201,13 +208,21 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._updating_firmware = False
         except Exception as e:
             Logger.log("e", "Exception while trying to update firmware %s" %e)
-            self._updating_firmware = False
+            self._updateFirmware_completed()
             return
         programmer.close()
 
-        self.setProgress(100, 100)
+        self._updateFirmware_completed()
+        return
 
+    ##  Private function which makes sure that firmware update process has completed/ended
+    def _updateFirmware_completed(self):
+        self.setProgress(100, 100)
+        self._firmware_update_finished = True
+        self.resetFirmwareUpdate(update_has_finished=True)
         self.firmwareUpdateComplete.emit()
+        
+        return
 
     ##  Upload new firmware to machine
     #   \param filename full path of firmware file to be uploaded
@@ -215,6 +230,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("i", "Updating firmware of %s using %s", self._serial_port, file_name)
         self._firmware_file_name = file_name
         self._update_firmware_thread.start()
+
+    @property
+    def firmwareUpdateFinished(self):
+        return self._firmware_update_finished
+
+    def resetFirmwareUpdate(self, update_has_finished = False):
+        self._firmware_update_finished = update_has_finished
+        self.firmwareUpdateChange.emit()
 
     @pyqtSlot()
     def startPollEndstop(self):
@@ -251,7 +274,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # If the programmer connected, we know its an atmega based version.
         # Not all that useful, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
-            Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
+            Logger.log("d", "Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
@@ -260,7 +283,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     continue
             else:
                 if not self.setBaudRate(baud_rate):
-                    continue # Could not set the baud rate, go to the next
+                    continue  # Could not set the baud rate, go to the next
 
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 seconds seems to be the magic number
             sucesfull_responses = 0
@@ -270,11 +293,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             while timeout_time > time.time():
                 line = self._readline()
                 if line is None:
+                    Logger.log("d", "No response from serial connection received.")
                     # Something went wrong with reading, could be that close was called.
                     self.setConnectionState(ConnectionState.closed)
                     return
 
                 if b"T:" in line:
+                    Logger.log("d", "Correct response for auto-baudrate detection received.")
                     self._serial.timeout = 0.5
                     sucesfull_responses += 1
                     if sucesfull_responses >= self._required_responses_auto_baud:
@@ -282,7 +307,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self.setConnectionState(ConnectionState.connected)
                         self._listen_thread.start()  # Start listening
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
-                        return 
+                        return
 
                 self._sendCommand("M105")  # Send M105 as long as we are listening, otherwise we end up in an undefined state
 
@@ -310,7 +335,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._connect_thread = threading.Thread(target = self._connect)
         self._connect_thread.daemon = True
-        
+
         self.setConnectionState(ConnectionState.closed)
         if self._serial is not None:
             try:
@@ -539,7 +564,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             ret = self._serial.readline()
         except Exception as e:
             Logger.log("e", "Unexpected error while reading serial port. %s" % e)
-            self._setErrorState("Printer has been disconnected") 
+            self._setErrorState("Printer has been disconnected")
             self.close()
             return None
         return ret

@@ -18,7 +18,10 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMachineId
-    activeIndex: {
+    activeIndex: activeMachineIndex()
+
+    function activeMachineIndex()
+    {
         for(var i = 0; i < model.rowCount(); i++) {
             if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
                 return i;
@@ -83,16 +86,17 @@ UM.ManagementPage
             Repeater
             {
                 id: machineActionRepeater
-                model: Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id))
+                model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
 
                 Button
                 {
-                    text: machineActionRepeater.model[index].label;
+                    text: machineActionRepeater.model[index].label
                     onClicked:
                     {
-                        actionDialog.content = machineActionRepeater.model[index].displayItem
-                        machineActionRepeater.model[index].displayItem.reset()
-                        actionDialog.show()
+                        actionDialog.content = machineActionRepeater.model[index].displayItem;
+                        machineActionRepeater.model[index].displayItem.reset();
+                        actionDialog.title = machineActionRepeater.model[index].label;
+                        actionDialog.show();
                     }
                 }
             }
@@ -106,6 +110,13 @@ UM.ManagementPage
             {
                 contents = content;
                 content.onCompleted.connect(hide)
+                content.dialog = actionDialog
+            }
+            rightButtons: Button
+            {
+                text: catalog.i18nc("@action:button", "Close")
+                iconName: "dialog-close"
+                onClicked: actionDialog.reject()
             }
         }
 
@@ -118,8 +129,14 @@ UM.ManagementPage
 
             spacing: UM.Theme.getSize("default_margin").height
 
-            Label { text: catalog.i18nc("@label", "Type") }
-            Label { text: base.currentItem ? base.currentItem.metadata.definition_name : "" }
+            Label
+            {
+                text: catalog.i18nc("@label", "Type")
+                visible: base.currentItem && "definition_name" in base.currentItem.metadata
+            }
+            Label {
+                text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
+            }
         }
 
         UM.I18nCatalog { id: catalog; name: "uranium"; }
@@ -128,7 +145,16 @@ UM.ManagementPage
         {
             id: confirmDialog;
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
-            onYes: Cura.MachineManager.removeMachine(base.currentItem.id);
+            onYes:
+            {
+                Cura.MachineManager.removeMachine(base.currentItem.id);
+                if(!base.currentItem)
+                {
+                    objectList.currentIndex = activeMachineIndex()
+                }
+                //Force updating currentItem and the details panel
+                objectList.onCurrentIndexChanged()
+            }
         }
 
         UM.RenameDialog
@@ -138,11 +164,20 @@ UM.ManagementPage
             onAccepted:
             {
                 Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim());
-                //Reselect current item to update details panel
-                var index = objectList.currentIndex
-                objectList.currentIndex = -1
-                objectList.currentIndex = index
+                //Force updating currentItem and the details panel
+                objectList.onCurrentIndexChanged()
             }
         }
+
+        Connections
+        {
+            target: Cura.MachineManager
+            onGlobalContainerChanged:
+            {
+                objectList.currentIndex = activeMachineIndex()
+                objectList.onCurrentIndexChanged()
+            }
+        }
+
     }
 }

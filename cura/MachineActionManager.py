@@ -57,9 +57,10 @@ class MachineActionManager(QObject):
     def addRequiredAction(self, definition_id, action_key):
         if action_key in self._machine_actions:
             if definition_id in self._required_actions:
-                self._required_actions[definition_id] |= {self._machine_actions[action_key]}
+                if self._machine_actions[action_key] not in self._required_actions[definition_id]:
+                    self._required_actions[definition_id].append(self._machine_actions[action_key])
             else:
-                self._required_actions[definition_id] = {self._machine_actions[action_key]}
+                self._required_actions[definition_id] = [self._machine_actions[action_key]]
         else:
             raise UnknownMachineActionError("Action %s, which is required for %s is not known." % (action_key, definition_id))
 
@@ -67,9 +68,10 @@ class MachineActionManager(QObject):
     def addSupportedAction(self, definition_id, action_key):
         if action_key in self._machine_actions:
             if definition_id in self._supported_actions:
-                self._supported_actions[definition_id] |= {self._machine_actions[action_key]}
+                if self._machine_actions[action_key] not in self._supported_actions[definition_id]:
+                    self._supported_actions[definition_id].append(self._machine_actions[action_key])
             else:
-                self._supported_actions[definition_id] = {self._machine_actions[action_key]}
+                self._supported_actions[definition_id] = [self._machine_actions[action_key]]
         else:
             Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, definition_id)
 

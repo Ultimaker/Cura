@@ -28,6 +28,7 @@ Rectangle
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+    property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -107,17 +108,28 @@ Rectangle
                 onClicked: monitoringPrint = true
                 iconSource: {
                     if(!printerConnected)
-                        return UM.Theme.getIcon("tab_monitor")
-                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "printing" || Cura.MachineManager.printerOutputDevices[0].jobState == "pre_print")
-                        return UM.Theme.getIcon("tab_monitor_busy")
-                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "ready" || Cura.MachineManager.printerOutputDevices[0].jobState == "")
-                        return UM.Theme.getIcon("tab_monitor_connected")
-                    else if(Cura.MachineManager.printerOutputDevices[0].jobState == "paused")
-                        return UM.Theme.getIcon("tab_monitor_paused")
-                    else if (Cura.MachineManager.printerOutputDevices[0].jobState == "error")
-                        return UM.Theme.getIcon("tab_monitor_stopped")
-                    else
-                        return UM.Theme.getIcon("tab_monitor")
+                        return UM.Theme.getIcon("tab_monitor");
+                    else if(!printerAcceptsCommands)
+                        return UM.Theme.getIcon("tab_monitor_unknown");
+
+                    switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                    {
+                        case "printing":
+                        case "pre_print":
+                        case "wait_cleanup":
+                            return UM.Theme.getIcon("tab_monitor_busy");
+                        case "ready":
+                        case "":
+                            return UM.Theme.getIcon("tab_monitor_connected")
+                        case "paused":
+                            return UM.Theme.getIcon("tab_monitor_paused")
+                        case "error":
+                            return UM.Theme.getIcon("tab_monitor_stopped")
+                        case "offline":
+                            return UM.Theme.getIcon("tab_monitor_offline")
+                        default:
+                            return UM.Theme.getIcon("tab_monitor")
+                    }
                 }
                 checkable: true
                 checked: monitoringPrint

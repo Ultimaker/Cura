@@ -8,6 +8,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",
         "category": "Ultimaker",
+        "weight": 3,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "ultimaker2_platform.obj",
@@ -17,10 +18,12 @@
     },
     "overrides": {
         "machine_start_gcode" : {
-            "default_value": ""
+            "default_value": "",
+            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nG1 X10 Y0 F4000;move X/Y to min endstops\\nG28 Z0 ;move Z to bottom endstops\\nG1 Z15.0 F9000 ;move the platform to 15mm\\nG92 E0 ;zero the extruded length\\nG1 F200 E10 ;extrude 10 mm of feed stock\\nG92 E0 ;zero the extruded length again\\nG1 F9000\\n;Put printing message on LCD screen\\nM117 Printing...\""
         },
         "machine_end_gcode" : {
-            "default_value": ""
+            "default_value": "",
+            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"M104 S0 ;extruder heater off\\nM140 S0 ;heated bed heater off (if you have it)\\nG91 ;relative positioning\\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\\nM84 ;steppers off\\nG90 ;absolute positioning\""
         },
         "machine_width": {
             "default_value": 223
@@ -57,7 +60,7 @@
             "default_value": 2
         },
         "gantry_height": {
-            "default_value": 55
+            "default_value": 48
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true
@@ -82,10 +85,10 @@
             "default_value": 45
         },
         "material_print_temperature": {
-            "enabled": "False"
+            "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\""
         },
         "material_bed_temperature": {
-            "enabled": "False"
+            "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\""
         },
         "machine_max_feedrate_x": {
             "default_value": 300
@@ -103,22 +106,22 @@
             "default_value": 3000
         },
         "material_diameter": {
-            "enabled": "False"
+            "enabled": "machine_gcode_flavor != \"UltiGCode\""
         },
         "material_flow": {
-            "enabled": "False"
+            "enabled": "machine_gcode_flavor != \"UltiGCode\""
         },
         "retraction_amount": {
-            "enabled": "False"
+            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
         },
         "retraction_speed": {
-            "enabled": "False"
+            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
         },
         "retraction_retract_speed": {
-            "enabled": "False"
+            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
         },
         "retraction_prime_speed": {
-            "enabled": "False"
+            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
         }
     }
 }

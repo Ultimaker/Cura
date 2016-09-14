@@ -12,6 +12,9 @@ class UMOUpgradeSelection(MachineAction):
         super().__init__("UMOUpgradeSelection", catalog.i18nc("@action", "Select upgrades"))
         self._qml_url = "UMOUpgradeSelectionMachineAction.qml"
 
+    def _reset(self):
+        self.heatedBedChanged.emit()
+
     heatedBedChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = heatedBedChanged)

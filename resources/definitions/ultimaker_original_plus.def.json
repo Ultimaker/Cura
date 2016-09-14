@@ -7,11 +7,13 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",
         "category": "Ultimaker",
+        "weight": 4,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "UltimakerPlusbackplate.png",
-        "supported_actions":["UMOCheckup", "UpgradeFirmware", "BedLevel"]
+        "first_start_actions": ["UMOCheckup", "BedLevel"],
+        "supported_actions": ["UMOCheckup", "BedLevel", "UpgradeFirmware"]
     },
 
     "overrides": {

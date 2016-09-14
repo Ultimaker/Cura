@@ -39,37 +39,25 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
         }
 
-        Item
+        Row
         {
             id: startStopButtons
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-            height: childrenRect.height
-            width: startCheckButton.width + skipCheckButton.width + UM.Theme.getSize("default_margin").height < checkupMachineAction.width ? startCheckButton.width + skipCheckButton.width + UM.Theme.getSize("default_margin").height : checkupMachineAction.width
+            width: childrenRect.width
+            spacing: UM.Theme.getSize("default_margin").width
             Button
             {
                 id: startCheckButton
-                anchors.top: parent.top
-                anchors.left: parent.left
                 text: catalog.i18nc("@action:button","Start Printer Check");
                 onClicked:
                 {
-                    checkupMachineAction.heatupHotendStarted = false
-                    checkupMachineAction.heatupBedStarted = false
-                    manager.startCheck()
+                    checkupMachineAction.heatupHotendStarted = false;
+                    checkupMachineAction.heatupBedStarted = false;
+                    manager.startCheck();
+                    startCheckButton.visible = false;
                 }
-            }
-
-            Button
-            {
-                id: skipCheckButton
-                anchors.top: parent.width < checkupMachineAction.width ? parent.top : startCheckButton.bottom
-                anchors.topMargin: parent.width < checkupMachineAction.width ? 0 : UM.Theme.getSize("default_margin").height/2
-                anchors.left: parent.width < checkupMachineAction.width ? startCheckButton.right : parent.left
-                anchors.leftMargin: parent.width < checkupMachineAction.width ? UM.Theme.getSize("default_margin").width : 0
-                text: catalog.i18nc("@action:button", "Skip Printer Check");
-                onClicked: manager.setFinished()
             }
         }
 
@@ -232,7 +220,7 @@ Cura.MachineAction
                 anchors.left: parent.left
                 anchors.top: nozzleTempLabel.bottom
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","Bed temperature check:")
+                text: catalog.i18nc("@label","Build plate temperature check:")
                 visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
             }
 

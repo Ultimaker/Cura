@@ -16,12 +16,24 @@ UM.Dialog
 {
     id: base
     title: catalog.i18nc("@title:window", "Add Printer")
-    property string activeManufacturer: "Ultimaker";
+    property bool firstRun: false
+    property string preferredCategory: "Ultimaker"
+    property string activeCategory: preferredCategory
+
+    onVisibilityChanged:
+    {
+        // Reset selection and machine name
+        if (visible) {
+            activeCategory = preferredCategory;
+            machineList.currentIndex = 0;
+            machineName.text = getMachineName();
+        }
+    }
 
     signal machineAdded(string id)
     function getMachineName()
     {
-        var name = machineList.model.getItem(machineList.currentIndex).name
+        var name = machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).name : ""
         return name
     }
 
@@ -36,6 +48,7 @@ UM.Dialog
             right: parent.right;
             bottom: parent.bottom;
         }
+
         ListView
         {
             id: machineList
@@ -43,9 +56,12 @@ UM.Dialog
             model: UM.DefinitionContainersModel
             {
                 id: machineDefinitionsModel
-                filter: {"visible":true}
+                filter: { "visible": true }
+                sectionProperty: "category"
+                preferredSectionValue: preferredCategory
             }
-            section.property: "manufacturer"
+
+            section.property: "section"
             section.delegate: Button
             {
                 text: section
@@ -76,16 +92,25 @@ UM.Dialog
                             sourceSize.width: width
                             sourceSize.height: width
                             color: palette.windowText
-                            source: base.activeManufacturer == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
+                            source: base.activeCategory == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
                         }
                     }
                 }
 
                 onClicked:
                 {
-                    base.activeManufacturer = section;
-                    machineList.currentIndex = machineList.model.find("manufacturer", section)
-                    machineName.text = getMachineName()
+                    base.activeCategory = section;
+                    if (machineList.model.getItem(machineList.currentIndex).section != section) {
+                        // Find the first machine from this section
+                        for(var i = 0; i < sortedMachineDefinitionsModel.count; i++) {
+                            var item = sortedMachineDefinitionsModel.getItem(i);
+                            if (item.section == section) {
+                                machineList.currentIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    machineName.text = getMachineName();
                 }
             }
 
@@ -114,7 +139,7 @@ UM.Dialog
                 states: State
                 {
                     name: "collapsed";
-                    when: base.activeManufacturer != model.manufacturer;
+                    when: base.activeCategory != model.section;
 
                     PropertyChanges { target: machineButton; opacity: 0; height: 0; }
                 }
@@ -158,13 +183,17 @@ UM.Dialog
         text: catalog.i18nc("@action:button", "Add Printer")
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        onClicked:
-        {
-            base.visible = false
-            var item = machineList.model.getItem(machineList.currentIndex);
-            Cura.MachineManager.addMachine(machineName.text, item.id)
-            base.machineAdded(item.id) // Emit signal that the user added a machine.
-        }
+        onClicked: addMachine()
+    }
+
+    onAccepted: addMachine()
+
+    function addMachine()
+    {
+        base.visible = false
+        var item = machineList.model.getItem(machineList.currentIndex);
+        Cura.MachineManager.addMachine(machineName.text, item.id)
+        base.machineAdded(item.id) // Emit signal that the user added a machine.
     }
 
     Item

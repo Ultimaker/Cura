@@ -10,7 +10,7 @@ catalog = i18nCatalog("cura")
 
 class BedLevelMachineAction(MachineAction):
     def __init__(self):
-        super().__init__("BedLevel", catalog.i18nc("@action", "Level bed"))
+        super().__init__("BedLevel", catalog.i18nc("@action", "Level build plate"))
         self._qml_url = "BedLevelMachineAction.qml"
         self._bed_level_position = 0
 
@@ -18,6 +18,11 @@ class BedLevelMachineAction(MachineAction):
         pass
 
     def _reset(self):
+        self._bed_level_position = 0
+        pass
+
+    @pyqtSlot()
+    def startBedLeveling(self):
         self._bed_level_position = 0
         printer_output_devices = self._getPrinterOutputDevices()
         if printer_output_devices:
@@ -52,4 +57,5 @@ class BedLevelMachineAction(MachineAction):
                 output_device.moveHead(0, 0, -3)
                 self._bed_level_position += 1
             elif self._bed_level_position >= 3:
+                output_device.sendCommand("M18") # Turn off all motors so the user can move the axes
                 self.setFinished()

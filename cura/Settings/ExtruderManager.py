@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject, QVariant #
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger
 import UM.Settings.ContainerRegistry #Finding containers by ID.
+import UM.Settings.SettingFunction
 
 
 ##  Manages all existing extruder stacks.
@@ -90,6 +91,15 @@ class ExtruderManager(QObject):
             if global_container_stack.getId() in self._extruder_trains:
                 if str(self._active_extruder_index) in self._extruder_trains[global_container_stack.getId()]:
                     return self._extruder_trains[global_container_stack.getId()][str(self._active_extruder_index)]
+        return None
+
+    ##  Get an extruder stack by index
+    def getExtruderStack(self, index):
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            if global_container_stack.getId() in self._extruder_trains:
+                if str(index) in self._extruder_trains[global_container_stack.getId()]:
+                    return self._extruder_trains[global_container_stack.getId()][str(index)]
         return None
 
     ##  Adds all extruders of a specific machine definition to the extruder
@@ -273,3 +283,54 @@ class ExtruderManager(QObject):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_stack and global_stack.getBottom():
             self.addMachineExtruders(global_stack.getBottom(), global_stack.getId())
+
+    ##  Get all extruder values for a certain setting.
+    #
+    #   This is exposed to SettingFunction so it can be used in value functions.
+    #
+    #   \param key The key of the setting to retieve values for.
+    #
+    #   \return A list of values for all extruders. If an extruder does not have a value, it will not be in the list.
+    #           If no extruder has the value, the list will contain the global value.
+    @staticmethod
+    def getExtruderValues(key):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        result = []
+        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+            value = extruder.getRawProperty(key, "value")
+
+            if not value:
+                continue
+
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(extruder)
+
+            result.append(value)
+
+        if not result:
+            result.append(global_stack.getProperty(key, "value"))
+
+        return result
+
+    ##  Get the value for a setting from a specific extruder.
+    #
+    #   This is exposed to SettingFunction to use in value functions.
+    #
+    #   \param extruder_index The index of the extruder to get the value from.
+    #   \param key The key of the setting to get the value of.
+    #
+    #   \return The value of the setting for the specified extruder or for the
+    #   global stack if not found.
+    @staticmethod
+    def getExtruderValue(extruder_index, key):
+        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
+
+        if extruder:
+            value = extruder.getRawProperty(key, "value")
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(extruder)
+        else: #Just a value from global.
+            value = UM.Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
+
+        return value

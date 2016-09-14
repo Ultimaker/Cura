@@ -73,13 +73,21 @@ class MachineInstance:
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
+        has_machine_qualities = self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()
         type_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._type_name)
-        active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
         active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
         variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
+        variant_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(self._variant_name, type_name)
+        active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+        if has_machine_qualities: #This machine now has machine-quality profiles.
+            active_profile += "_" + active_material + "_" + variant
+            active_material += "_" + variant_materials #That means that the profile was split into multiple.
+            current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
+        else:
+            current_settings = self._name + "_current_settings"
 
         containers = [
-            self._name + "_current_settings",
+            current_settings,
             active_profile,
             active_material,
             variant,
@@ -97,4 +105,4 @@ class MachineInstance:
 
         output = io.StringIO()
         config.write(output)
-        return self._filename, output.getvalue()
+        return [self._filename], [output.getvalue()]

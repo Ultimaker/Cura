@@ -11,11 +11,8 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
+from UM.Job import Job
 
-import collections
-import json
-import os.path
-import copy
 import platform
 import math
 import urllib.request
@@ -24,6 +21,36 @@ import ssl
 
 catalog = i18nCatalog("cura")
 
+class SliceInfoJob(Job):
+    data = None
+    url = None
+
+    def __init__(self, url, data):
+        super().__init__()
+        self.url = url
+        self.data = data
+
+    def run(self):
+        if not self.url or not self.data:
+            Logger.log("e", "URL or DATA for sending slice info was not set!")
+            return
+
+        # Submit data
+        kwoptions = {"data" : self.data,
+                     "timeout" : 5
+                     }
+
+        if Platform.isOSX():
+            kwoptions["context"] = ssl._create_unverified_context()
+
+        try:
+            f = urllib.request.urlopen(self.url, **kwoptions)
+            Logger.log("i", "Sent anonymous slice info to %s", self.url)
+            f.close()
+        except urllib.error.HTTPError as http_exception:
+            Logger.log("e", "An HTTP error occurred while trying to send slice information: %s" % http_exception)
+        except Exception as e: # We don't want any exception to cause problems
+            Logger.log("e", "An exception occurred while trying to send slice information: %s" % e)
 
 ##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
@@ -112,19 +139,10 @@ class SliceInfo(Extension):
             submitted_data = urllib.parse.urlencode(submitted_data)
             binary_data = submitted_data.encode("utf-8")
 
-            # Submit data
-            kwoptions = {"data" : binary_data,
-                         "timeout" : 1
-                         }
-            if Platform.isOSX():
-                kwoptions["context"] = ssl._create_unverified_context()
-            try:
-                f = urllib.request.urlopen(self.info_url, **kwoptions)
-                Logger.log("i", "Sent anonymous slice info to %s", self.info_url)
-                f.close()
-            except Exception as e:
-                Logger.logException("e", "An exception occurred while trying to send slice information")
-        except:
+            # Sending slice info non-blocking
+            reportJob = SliceInfoJob(self.info_url, binary_data)
+            reportJob.start()
+        except Exception as e:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
             # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
-            pass
+            Logger.log("e", "Exception raised while sending slice info: %s" %(repr(e))) # But we should be notified about these problems of course.

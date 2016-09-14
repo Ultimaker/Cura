@@ -27,6 +27,7 @@ Item
 
     property alias multiplyObject: multiplyObjectAction;
 
+    property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
     property alias resetAllTranslation: resetAllTranslationAction;
@@ -119,7 +120,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings");
         onTriggered: Cura.MachineManager.updateQualityContainerFromUserContainer()
     }
@@ -135,7 +136,7 @@ Item
     Action
     {
         id: addProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings...");
     }
 
@@ -182,7 +183,7 @@ Item
     Action
     {
         id: deleteObjectAction;
-        text: catalog.i18nc("@action:inmenu","Delete Object");
+        text: catalog.i18nc("@action:inmenu","Delete Model");
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
     }
@@ -190,13 +191,13 @@ Item
     Action
     {
         id: centerObjectAction;
-        text: catalog.i18nc("@action:inmenu","Ce&nter Object on Platform");
+        text: catalog.i18nc("@action:inmenu","Ce&nter Model on Platform");
     }
 
     Action
     {
         id: groupObjectsAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Group Objects");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Group Models");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
@@ -206,7 +207,7 @@ Item
     Action
     {
         id: unGroupObjectsAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Objects");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
         enabled: UM.Scene.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
@@ -216,7 +217,7 @@ Item
     Action
     {
         id: mergeObjectsAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Objects");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
@@ -226,14 +227,24 @@ Item
     Action
     {
         id: multiplyObjectAction;
-        text: catalog.i18nc("@action:inmenu","&Duplicate Object");
+        text: catalog.i18nc("@action:inmenu","&Duplicate Model");
         iconName: "edit-duplicate"
     }
 
     Action
     {
+        id: selectAllAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Select All Models");
+        enabled: UM.Controller.toolsEnabled;
+        iconName: "edit-select-all";
+        shortcut: "Ctrl+A";
+        onTriggered: Printer.selectAll();
+    }
+
+    Action
+    {
         id: deleteAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Platform");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Plate");
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
@@ -243,7 +254,7 @@ Item
     Action
     {
         id: reloadAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Objects");
+        text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
         iconName: "document-revert";
         onTriggered: Printer.reloadAll();
     }
@@ -251,14 +262,14 @@ Item
     Action
     {
         id: resetAllTranslationAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Object Positions");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Positions");
         onTriggered: Printer.resetAllTranslation();
     }
 
     Action
     {
         id: resetAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Object &Transformations");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model &Transformations");
         onTriggered: Printer.resetAll();
     }
 

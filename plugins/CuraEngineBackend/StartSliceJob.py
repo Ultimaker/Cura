@@ -13,6 +13,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from UM.Settings.Validator import ValidatorState
+from UM.Settings.SettingRelation import RelationType
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
@@ -23,6 +24,7 @@ class StartJobResult(IntEnum):
     Error = 2
     SettingError = 3
     NothingToSlice = 4
+
 
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
@@ -36,6 +38,7 @@ class GcodeStartEndFormatter(Formatter):
         else:
             Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
             return "{" + str(key) + "}"
+
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
@@ -71,7 +74,7 @@ class StartSliceJob(Job):
             return
 
         # Don't slice if there is a setting with an error value.
-        if self._checkStackForErrors(stack):
+        if not Application.getInstance().getMachineManager().isActiveStackValid:
             self.setResult(StartJobResult.SettingError)
             return
 
@@ -123,11 +126,15 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
 
+            # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
+            # able to find a possible sequence or because there are no objects on the build plate (or they are outside
+            # the build volume)
             if not object_groups:
                 self.setResult(StartJobResult.NothingToSlice)
                 return
 
             self._buildGlobalSettingsMessage(stack)
+            self._buildGlobalInheritsStackMessage(stack)
 
             for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
@@ -171,6 +178,7 @@ class StartSliceJob(Job):
             Logger.logException("w", "Unable to do token replacement on start/end gcode")
             return str(value).encode("utf-8")
 
+    ##  Create extruder message from stack
     def _buildExtruderMessage(self, stack):
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
@@ -209,11 +217,54 @@ class StartSliceJob(Job):
             else:
                 setting_message.value = str(value).encode("utf-8")
 
+    ##  Sends for some settings which extruder they should fallback to if not
+    #   set.
+    #
+    #   This is only set for settings that have the global_inherits_stack
+    #   property.
+    #
+    #   \param stack The global stack with all settings, from which to read the
+    #   global_inherits_stack property.
+    def _buildGlobalInheritsStackMessage(self, stack):
+        for key in stack.getAllKeys():
+            extruder = int(round(float(stack.getProperty(key, "global_inherits_stack"))))
+            if extruder >= 0: #Set to a specific extruder.
+                setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
+                setting_extruder.name = key
+                setting_extruder.extruder = extruder
+
+    ##  Check if a node has per object settings and ensure that they are set correctly in the message
+    #   \param node \type{SceneNode} Node to check.
+    #   \param message object_lists message to put the per object settings in
     def _handlePerObjectSettings(self, node, message):
         stack = node.callDecoration("getStack")
+        # Check if the node has a stack attached to it and the stack has any settings in the top container.
         if stack:
-            for key in stack.getAllKeys():
+            # Check all settings for relations, so we can also calculate the correct values for dependant settings.
+            changed_setting_keys = set(stack.getTop().getAllKeys())
+            for key in stack.getTop().getAllKeys():
+                instance = stack.getTop().getInstance(key)
+                self._addRelations(changed_setting_keys, instance.definition.relations)
+                Job.yieldThread()
+
+            # Ensure that the engine is aware what the build extruder is
+            if stack.getProperty("machine_extruder_count", "value") > 1:
+                changed_setting_keys.add("extruder_nr")
+
+            # Get values for all changed settings
+            for key in changed_setting_keys:
                 setting = message.addRepeatedMessage("settings")
                 setting.name = key
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
                 Job.yieldThread()
+
+    ##  Recursive function to put all settings that require eachother for value changes in a list
+    #   \param relations_set \type{set} Set of keys (strings) of settings that are influenced
+    #   \param relations list of relation objects that need to be checked.
+    def _addRelations(self, relations_set, relations):
+        for relation in filter(lambda r: r.role == "value", relations):
+            if relation.type == RelationType.RequiresTarget:
+                continue
+
+            relations_set.add(relation.target.key)
+            self._addRelations(relations_set, relation.target.relations)
