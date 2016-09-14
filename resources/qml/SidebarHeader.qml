@@ -223,7 +223,7 @@ Column
                 anchors.left: parent.left
                 style: UM.Theme.styles.sidebar_header_button
 
-                menu: NozzleMenu { }
+                menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
             }
 
             ToolButton {
@@ -251,7 +251,7 @@ Column
                 anchors.right: parent.right
                 style: UM.Theme.styles.sidebar_header_button
 
-                menu: MaterialMenu { }
+                menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
             }
         }
     }
