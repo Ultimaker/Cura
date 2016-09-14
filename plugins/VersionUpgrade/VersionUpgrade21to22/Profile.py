@@ -80,7 +80,7 @@ class Profile:
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
 
         if self._name == "Current settings":
-            self._filename += "_current_settings" #This resolves a duplicate ID arising from how Cura 2.1 stores its current settings.
+            return None, None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
 
         config = configparser.ConfigParser(interpolation = None)
 
@@ -94,12 +94,10 @@ class Profile:
             config.set("general", "definition", "fdmprinter") #In this case, the machine definition is unknown, and it might now have machine-specific profiles, in which case this will fail.
 
         config.add_section("metadata")
-        if self._type:
-            config.set("metadata", "type", self._type)
-        else:
-            config.set("metadata", "type", "quality")
+        config.set("metadata", "quality", "normal") #This feature doesn't exist in 2.1 yet, so we don't know the actual quality type. For now, always base it on normal.
+        config.set("metadata", "type", "quality_changes")
         if self._weight:
-            config.set("metadata", "weight", self._weight)
+            config.set("metadata", "weight", str(self._weight))
         if self._machine_variant_name:
             if self._machine_type_id:
                 config.set("metadata", "variant", VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._machine_variant_name, self._machine_type_id))

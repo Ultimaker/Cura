@@ -13,6 +13,7 @@ from UM.Settings.Validator import ValidatorState
 from UM.View.GL.OpenGL import OpenGL
 
 import cura.Settings
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import math
 
@@ -45,16 +46,27 @@ class SolidView(View):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
+            multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+
+            if multi_extrusion:
+                support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
+                support_angle_stack = ExtruderManager.getInstance().getExtruderStack(support_extruder_nr)
+                if not support_angle_stack:
+                    support_angle_stack = global_container_stack
+            else:
+                support_angle_stack = global_container_stack
+
             if Preferences.getInstance().getValue("view/show_overhang"):
-                angle = global_container_stack.getProperty("support_angle", "value")
-                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") == ValidatorState.Valid:
+                angle = support_angle_stack.getProperty("support_angle", "value")
+                # Make sure the overhang angle is valid before passing it to the shader
+                # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)
+                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") in [None, ValidatorState.Valid]:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
-            multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):

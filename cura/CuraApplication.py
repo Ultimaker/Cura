@@ -13,7 +13,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
-from UM.Platform import Platform
 from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
@@ -24,6 +23,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
@@ -37,7 +37,6 @@ from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
-from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
@@ -50,12 +49,12 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-import platform
 import sys
 import os.path
 import numpy
 import copy
 import urllib
+
 numpy.seterr(all="ignore")
 
 try:
@@ -85,11 +84,12 @@ class CuraApplication(QtApplication):
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         # Need to do this before ContainerRegistry tries to load the machines
-        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True)
-        SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
+        SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True, read_only = True)
+        SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1")
+        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
@@ -180,8 +180,14 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addContainer(empty_material_container)
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
+        empty_quality_container.setName("Not supported")
+        empty_quality_container.addMetaDataEntry("quality_type", "normal")
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
+        empty_quality_changes_container = copy.deepcopy(empty_container)
+        empty_quality_changes_container._id = "empty_quality_changes"
+        empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
+        ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
         ContainerRegistry.getInstance().load()
 
@@ -248,7 +254,6 @@ class CuraApplication(QtApplication):
             blackmagic
                 print_sequence
                 infill_mesh
-                dual
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
@@ -309,7 +314,7 @@ class CuraApplication(QtApplication):
             path = None
             if instance_type == "material":
                 path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-            elif instance_type == "quality":
+            elif instance_type == "quality" or instance_type == "quality_changes":
                 path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
             elif instance_type == "user":
                 path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
@@ -317,32 +322,36 @@ class CuraApplication(QtApplication):
                 path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
 
             if path:
+                instance.setPath(path)
                 with SaveFile(path, "wt", -1, "utf-8") as f:
                     f.write(data)
 
         for stack in ContainerRegistry.getInstance().findContainerStacks():
-            if not stack.isDirty():
-                continue
+            self.saveStack(stack)
 
-            try:
-                data = stack.serialize()
-            except NotImplementedError:
-                continue
-            except Exception:
-                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                continue
+    def saveStack(self, stack):
+        if not stack.isDirty():
+            return
+        try:
+            data = stack.serialize()
+        except NotImplementedError:
+            return
+        except Exception:
+            Logger.logException("e", "An exception occurred when serializing container %s", stack.getId())
+            return
 
-            mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
-            file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-            stack_type = stack.getMetaDataEntry("type", None)
-            path = None
-            if not stack_type or stack_type == "machine":
-                path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-            elif stack_type == "extruder_train":
-                path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-            if path:
-                with SaveFile(path, "wt", -1, "utf-8") as f:
-                    f.write(data)
+        mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
+        file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
+        stack_type = stack.getMetaDataEntry("type", None)
+        path = None
+        if not stack_type or stack_type == "machine":
+            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+        elif stack_type == "extruder_train":
+            path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
+        if path:
+            stack.setPath(path)
+            with SaveFile(path, "wt", -1, "utf-8") as f:
+                f.write(data)
 
 
     @pyqtSlot(str, result = QUrl)
@@ -477,6 +486,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
 
         qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
@@ -505,8 +515,6 @@ class CuraApplication(QtApplication):
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
-            else:
-                self._previous_active_tool = None
 
     def _onToolOperationStopped(self, event):
         if self._center_after_select:
@@ -689,18 +697,17 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-
             nodes.append(node)
 
         if nodes:
             op = GroupedOperation()
             for node in nodes:
+                # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
-
+                op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
             op.push()
-    
-    ## Reset all transformations on nodes with mesh data. 
+
+    ## Reset all transformations on nodes with mesh data.
     @pyqtSlot()
     def resetAll(self):
         Logger.log("i", "Resetting all scene transformations")
@@ -716,14 +723,17 @@ class CuraApplication(QtApplication):
 
         if nodes:
             op = GroupedOperation()
-
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
-
+                center_y = 0
+                if node.callDecoration("isGroup"):
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = node.getMeshData().getCenterPosition().y
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
-            
+
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
     def reloadAll(self):
@@ -788,14 +798,19 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("d", "mergeSelected: Exception:", e)
             return
-        multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
-        group_node.addDecorator(multi_material_decorator)
-        # Reset the position of each node
-        for node in group_node.getChildren():
-            new_position = node.getMeshData().getCenterPosition()
-            new_position = new_position.scale(node.getScale())
-            node.setPosition(new_position)
-        
+
+        # Compute the center of the objects when their origins are aligned.
+        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren()]
+        middle_x = sum([v.x for v in object_centers]) / len(object_centers)
+        middle_y = sum([v.y for v in object_centers]) / len(object_centers)
+        middle_z = sum([v.z for v in object_centers]) / len(object_centers)
+        offset = Vector(middle_x, middle_y, middle_z)
+
+        # Move each node to the same position.
+        for center, node in zip(object_centers, group_node.getChildren()):
+            # Align the object and also apply the offset to center it inside the group.
+            node.setPosition(center - offset)
+
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
 
@@ -921,3 +936,7 @@ class CuraApplication(QtApplication):
         self._additional_components[area_id].append(component)
 
         self.additionalComponentsChanged.emit(area_id)
+
+    @pyqtSlot(str)
+    def log(self, msg):
+        Logger.log("d", msg)

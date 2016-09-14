@@ -33,6 +33,8 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
+        UM.Preferences.resetPreference("physics/automatic_drop_down")
+        dropDownCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
         UM.Preferences.resetPreference("mesh/scale_to_fit")
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         UM.Preferences.resetPreference("mesh/scale_tiny_meshes")
@@ -46,11 +48,11 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
-        if (plugins.model.find("id", "SliceInfoPlugin") > -1) {
+        if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
             sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         }
-        if (plugins.model.find("id", "UpdateChecker") > -1) {
+        if (plugins.find("id", "UpdateChecker") > -1) {
             UM.Preferences.resetPreference("info/automatic_update_check")
             checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
         }
@@ -58,6 +60,9 @@ UM.PreferencesPage
 
     Column
     {
+        //: Model used to check if a plugin exists
+        UM.PluginsModel { id: plugins }
+
         //: Language selection label
         UM.I18nCatalog{id: catalog; name:"cura"}
 
@@ -192,7 +197,19 @@ UM.PreferencesPage
                 onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
             }
         }
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved down to touch the build plate?")
 
+            CheckBox
+            {
+                id: dropDownCheckbox
+                text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
+                checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
+                onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+            }
+        }
 
         UM.TooltipArea {
             width: childrenRect.width;
@@ -301,7 +318,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "UpdateChecker") > -1
+            visible: plugins.find("id", "UpdateChecker") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -316,7 +333,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "SliceInfoPlugin") > -1
+            visible: plugins.find("id", "SliceInfoPlugin") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -328,14 +345,6 @@ UM.PreferencesPage
                 checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
             }
-        }
-
-        //: Invisible list used to check if a plugin exists
-        ListView
-        {
-            id: plugins
-            model: UM.PluginsModel { }
-            visible: false
         }
     }
 }

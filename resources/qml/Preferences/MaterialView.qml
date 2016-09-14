@@ -44,6 +44,16 @@ TabView
 
                 property real rowHeight: textField.height;
 
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
+                ReadOnlyTextField
+                {
+                    id: displayNameTextField;
+                    width: base.secondColumnWidth;
+                    text: properties.name;
+                    readOnly: !base.editingEnabled;
+                    onEditingFinished: base.setName(properties.name, text)
+                }
+
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
                 ReadOnlyTextField
                 {
@@ -105,7 +115,7 @@ TabView
                     width: base.secondColumnWidth;
                     value: properties.density;
                     decimals: 2
-                    suffix: "g/cm"
+                    suffix: "g/cm³"
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
 
@@ -118,7 +128,7 @@ TabView
                     width: base.secondColumnWidth;
                     value: properties.diameter;
                     decimals: 2
-                    suffix: "mm³"
+                    suffix: "mm"
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
 
@@ -254,7 +264,17 @@ TabView
     {
         if(old_value != new_value)
         {
-            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value)
+            Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value);
+        }
+    }
+
+    function setName(old_value, new_value)
+    {
+        if(old_value != new_value)
+        {
+            Cura.ContainerManager.setContainerName(base.containerId, new_value);
+            // update material name label. not so pretty, but it works
+            materialProperties.name = new_value;
         }
     }
 }

@@ -46,6 +46,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.IndexRole, "index")
 
         self._add_global = False
+        self._simple_names = False
 
         self._active_extruder_stack = None
 
@@ -69,6 +70,21 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     @pyqtProperty(bool, fset = setAddGlobal, notify = addGlobalChanged)
     def addGlobal(self):
         return self._add_global
+
+    ##  Set the simpleNames property.
+    def setSimpleNames(self, simple_names):
+        if simple_names != self._simple_names:
+            self._simple_names = simple_names
+            self.simpleNamesChanged.emit()
+            self._updateExtruders()
+
+    ##  Emitted when the simpleNames property changes.
+    simpleNamesChanged = pyqtSignal()
+
+    ##  Whether or not the model should show all definitions regardless of visibility.
+    @pyqtProperty(bool, fset = setSimpleNames, notify = simpleNamesChanged)
+    def simpleNames(self):
+        return self._simple_names
 
     def _onActiveExtruderChanged(self):
         manager = ExtruderManager.getInstance()
@@ -97,8 +113,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         changed = False
 
         if self.rowCount() != 0:
-            self.clear()
             changed = True
+
+        items = []
 
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -111,14 +128,14 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "color": color,
                     "index": -1
                 }
-                self.appendItem(item)
+                items.append(item)
                 changed = True
 
             manager = ExtruderManager.getInstance()
             for extruder in manager.getMachineExtruders(global_container_stack.getId()):
                 extruder_name = extruder.getName()
                 material = extruder.findContainer({ "type": "material" })
-                if material:
+                if material and not self._simple_names:
                     extruder_name = "%s (%s)" % (material.getName(), extruder_name)
                 position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
                 try:
@@ -133,9 +150,10 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "color": color,
                     "index": position
                 }
-                self.appendItem(item)
+                items.append(item)
                 changed = True
 
         if changed:
-            self.sort(lambda item: item["index"])
+            items.sort(key = lambda i: i["index"])
+            self.setItems(items)
             self.modelChanged.emit()

@@ -14,8 +14,9 @@ class LayerPolygon:
     SupportInfillType = 7
     MoveCombingType = 8
     MoveRetractionType = 9
+    SupportInterfaceType = 10
     
-    __jump_map = numpy.logical_or( numpy.arange(10) == NoneType, numpy.arange(10) >= MoveCombingType )
+    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
     
     def __init__(self, mesh, extruder, line_types, data, line_widths):
         self._mesh = mesh
@@ -41,7 +42,7 @@ class LayerPolygon:
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0], dtype=numpy.bool)
+        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1], dtype=numpy.bool)
         
         self._build_cache_line_mesh_mask = None
         self._build_cache_needed_points = None
@@ -178,10 +179,11 @@ class LayerPolygon:
         SkinType: Color(1.0, 1.0, 0.0, 1.0),
         SupportType: Color(0.0, 1.0, 1.0, 1.0),
         SkirtType: Color(0.0, 1.0, 1.0, 1.0),
-        InfillType: Color(1.0, 0.74, 0.0, 1.0),
+        InfillType: Color(1.0, 0.75, 0.0, 1.0),
         SupportInfillType: Color(0.0, 1.0, 1.0, 1.0),
         MoveCombingType: Color(0.0, 0.0, 1.0, 1.0),
         MoveRetractionType: Color(0.5, 0.5, 1.0, 1.0),
+        SupportInterfaceType: Color(0.25, 0.75, 1.0, 1.0),
     }
 
     # Should be generated in better way, not hardcoded.
@@ -192,8 +194,9 @@ class LayerPolygon:
         [1.0, 1.0, 0.0, 1.0],
         [0.0, 1.0, 1.0, 1.0],
         [0.0, 1.0, 1.0, 1.0],
-        [1.0, 0.74, 0.0, 1.0],
+        [1.0, 0.75, 0.0, 1.0],
         [0.0, 1.0, 1.0, 1.0],
         [0.0, 0.0, 1.0, 1.0],
-        [0.5, 0.5, 1.0, 1.0]
+        [0.5, 0.5, 1.0, 1.0],
+        [0.25, 0.75, 1.0, 1.0]
     ])

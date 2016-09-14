@@ -14,8 +14,7 @@ Column
 {
     id: base;
 
-    property int totalHeightHeader: childrenRect.height
-    property int currentExtruderIndex:ExtruderManager.activeExtruderIndex;
+    property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -67,7 +66,7 @@ Column
         id: extrudersList
         property var index: 0
 
-        visible: machineExtruderCount.properties.value > 1
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
 
         boundsBehavior: Flickable.StopAtBounds
@@ -92,8 +91,8 @@ Column
             onGlobalContainerChanged:
             {
                 forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                base.currentExtruderIndex = (machineExtruderCount.properties.value == 1) ? -1 : 0;
-                ExtruderManager.setActiveExtruderIndex(base.currentExtruderIndex);
+                var extruder_index = (machineExtruderCount.properties.value == 1) ? -1 : 0
+                ExtruderManager.setActiveExtruderIndex(extruder_index);
             }
         }
 
@@ -105,13 +104,11 @@ Column
             text: model.name
             tooltip: model.name
             exclusiveGroup: extruderMenuGroup
-            checkable: true
             checked: base.currentExtruderIndex == index
 
             onClicked:
             {
                 forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                base.currentExtruderIndex = index;
                 ExtruderManager.setActiveExtruderIndex(index);
             }
 
@@ -170,7 +167,7 @@ Column
         id: variantRow
 
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint
 
         anchors
         {
@@ -183,8 +180,23 @@ Column
         Label
         {
             id: variantLabel
-            text: (Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
-                    Cura.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
+            text:
+            {
+                var label;
+                if(Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials)
+                {
+                    label = "%1 & %2".arg(Cura.MachineManager.activeDefinitionVariantsName).arg(catalog.i18nc("@label","Material"));
+                }
+                else if(Cura.MachineManager.hasVariants)
+                {
+                    label = Cura.MachineManager.activeDefinitionVariantsName;
+                }
+                else
+                {
+                    label = catalog.i18nc("@label","Material");
+                }
+                return "%1:".arg(label);
+            }
 
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
@@ -211,7 +223,7 @@ Column
                 anchors.left: parent.left
                 style: UM.Theme.styles.sidebar_header_button
 
-                menu: NozzleMenu { }
+                menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
             }
 
             ToolButton {
@@ -219,6 +231,19 @@ Column
                 text: Cura.MachineManager.activeMaterialName
                 tooltip: Cura.MachineManager.activeMaterialName
                 visible: Cura.MachineManager.hasMaterials
+                property var valueError:
+                {
+                    var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
+                    if(data == "False")
+                    {
+                        return true
+                    }
+                    else
+                    {
+                        return false
+                    }
+
+                }
                 enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
@@ -226,7 +251,7 @@ Column
                 anchors.right: parent.right
                 style: UM.Theme.styles.sidebar_header_button
 
-                menu: MaterialMenu { }
+                menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
             }
         }
     }
@@ -235,6 +260,7 @@ Column
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint
 
         anchors
         {
@@ -264,7 +290,7 @@ Column
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
-
+            property var valueWarning: Cura.MachineManager.activeQualityId == "empty_quality"
             menu: ProfileMenu { }
 
             UM.SimpleButton

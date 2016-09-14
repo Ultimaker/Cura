@@ -11,7 +11,26 @@ QtObject {
     property Component sidebar_header_button: Component {
         ButtonStyle {
             background: Rectangle {
-                color: control.enabled ? Theme.getColor("setting_control") : Theme.getColor("setting_control_disabled")
+                color:
+                {
+                    if(control.enabled)
+                    {
+                        if(control.valueError)
+                        {
+                            return Theme.getColor("setting_validation_error");
+                        }
+                        else if(control.valueWarning)
+                        {
+                            return Theme.getColor("setting_validation_warning");
+                        } else
+                        {
+                            return Theme.getColor("setting_control");
+                        }
+                    } else {
+                        return Theme.getColor("setting_control_disabled");
+                    }
+                }
+
                 border.width: Theme.getSize("default_lining").width
                 border.color: !control.enabled ? Theme.getColor("setting_control_disabled_border") :
                                 control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border")
@@ -184,18 +203,32 @@ QtObject {
 
     property Component progressbar: Component{
         ProgressBarStyle {
-            background:Rectangle {
+            background: Rectangle {
                 implicitWidth: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2)
                 implicitHeight: Theme.getSize("progressbar").height
                 radius: Theme.getSize("progressbar_radius").width
-                color: Theme.getColor("progressbar_background")
+                color: control.hasOwnProperty("backgroundColor") ? control.backgroundColor : Theme.getColor("progressbar_background")
             }
             progress: Rectangle {
-                color: control.indeterminate ? "transparent" : Theme.getColor("progressbar_control")
+                color:
+                {
+                    if(control.indeterminate)
+                    {
+                        return "transparent";
+                    }
+                    else if(control.hasOwnProperty("controlColor"))
+                    {
+                        return  control.controlColor;
+                    }
+                    else
+                    {
+                        return Theme.getColor("progressbar_control");
+                    }
+                }
                 radius: Theme.getSize("progressbar_radius").width
                 Rectangle{
                     radius: Theme.getSize("progressbar_radius").width
-                    color: Theme.getColor("progressbar_control")
+                    color: control.hasOwnProperty("controlColor") ? control.controlColor : Theme.getColor("progressbar_control")
                     width: Theme.getSize("progressbar_control").width
                     height: Theme.getSize("progressbar_control").height
                     visible: control.indeterminate
@@ -471,6 +504,61 @@ QtObject {
                     font: Theme.getFont("default");
                 }
             }
+        }
+    }
+
+    property Component sidebar_action_button: Component {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if(!control.enabled)
+                        return UM.Theme.getColor("action_button_disabled_border");
+                    else if(control.pressed)
+                        return UM.Theme.getColor("action_button_active_border");
+                    else if(control.hovered)
+                        return UM.Theme.getColor("action_button_hovered_border");
+                    else
+                        return UM.Theme.getColor("action_button_border");
+                }
+                color:
+                {
+                    if(!control.enabled)
+                        return UM.Theme.getColor("action_button_disabled");
+                    else if(control.pressed)
+                        return UM.Theme.getColor("action_button_active");
+                    else if(control.hovered)
+                        return UM.Theme.getColor("action_button_hovered");
+                    else
+                        return UM.Theme.getColor("action_button");
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+
+                Label
+                {
+                    id: actualLabel
+                    anchors.centerIn: parent
+                    color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled_text");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active_text");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered_text");
+                        else
+                            return UM.Theme.getColor("action_button_text");
+                    }
+                    font: UM.Theme.getFont("action_button")
+                    text: control.text
+                }
+            }
+            label: Item { }
         }
     }
 }

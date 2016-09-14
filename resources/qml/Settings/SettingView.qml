@@ -40,7 +40,7 @@ ScrollView
             id: delegate
 
             width: UM.Theme.getSize("sidebar").width;
-            height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : 0
+            height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: provider.properties.enabled == "True" ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
@@ -57,6 +57,7 @@ ScrollView
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
             property var propertyProvider: provider
+            property var globalPropertyProvider: inheritStackProvider
 
             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -88,37 +89,43 @@ ScrollView
             }
 
             // Binding to ensure that the right containerstack ID is set for the provider.
-            // This ensures that if a setting has a global_inherits_stack id (for instance; Support speed points to the
+            // This ensures that if a setting has a limit_to_extruder id (for instance; Support speed points to the
             // extruder that actually prints the support, as that is the setting we need to use to calculate the value)
             Binding
             {
                 target: provider
                 property: "containerStackId"
+                when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                 value:
                 {
-                    if(inheritStackProvider.properties.global_inherits_stack == -1 || inheritStackProvider.properties.global_inherits_stack == null)
+                    if(!model.settable_per_extruder)
                     {
-                        if( ExtruderManager.activeExtruderStackId)
-                        {
-                            return ExtruderManager.activeExtruderStackId
-                        }
-                        else
-                        {
-                            return Cura.MachineManager.activeMachineId
-                        }
+                        //Not settable per extruder, so we must pick global.
+                        return Cura.MachineManager.activeMachineId;
                     }
-                    return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)]
+                    if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                    {
+                        //We have limit_to_extruder, so pick that stack.
+                        return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                    }
+                    if(ExtruderManager.activeExtruderStackId)
+                    {
+                        //We're on an extruder tab. Pick the current extruder.
+                        return ExtruderManager.activeExtruderStackId;
+                    }
+                    //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
+                    return Cura.MachineManager.activeMachineId;
                 }
             }
 
             // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
-            // so we bypass that to make a dedicated provider.
+            // so we bypass that to make a dedicated provider).
             UM.SettingPropertyProvider
             {
                 id: inheritStackProvider
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key
-                watchedProperties: [ "global_inherits_stack"]
+                watchedProperties: [ "limit_to_extruder" ]
             }
 
             UM.SettingPropertyProvider
@@ -127,7 +134,7 @@ ScrollView
 
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key ? model.key : ""
-                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder" ]
+                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                 storeIndex: 0
             }
 

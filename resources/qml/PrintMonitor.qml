@@ -14,11 +14,15 @@ Column
     id: printMonitor
     property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    Cura.ExtrudersModel { id: extrudersModel }
+    Cura.ExtrudersModel
+    {
+        id: extrudersModel
+        simpleNames: true
+    }
 
     Label
     {
-        text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@label", "The printer is not connected.")
+        text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
         color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
         font: UM.Theme.getFont("default")
         wrapMode: Text.WordWrap

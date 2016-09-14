@@ -45,6 +45,7 @@ Item
     property alias preferences: preferencesAction;
 
     property alias showEngineLog: showEngineLogAction;
+    property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
     property alias reportBug: reportBugAction;
     property alias about: aboutAction;
@@ -122,7 +123,7 @@ Item
         id: updateProfileAction;
         enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings");
-        onTriggered: Cura.MachineManager.updateQualityContainerFromUserContainer()
+        onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
 
     Action
@@ -130,7 +131,7 @@ Item
         id: resetProfileAction;
         enabled: Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Discard current settings");
-        onTriggered: Cura.MachineManager.clearUserSettings();
+        onTriggered: Cura.ContainerManager.clearUserContainers();
     }
 
     Action
@@ -291,8 +292,15 @@ Item
 
     Action
     {
+        id: showProfileFolderAction;
+        text: catalog.i18nc("@action:inmenu menubar:help","Show Configuration Folder");
+    }
+
+
+    Action
+    {
         id: configureSettingVisibilityAction
-        text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
+        text: catalog.i18nc("@action:menu", "Configure setting visibility...");
         iconName: "configure"
     }
 }

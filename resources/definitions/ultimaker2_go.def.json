@@ -17,6 +17,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2 Go" },
         "machine_width": {
             "default_value": 120
         },

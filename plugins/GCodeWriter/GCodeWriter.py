@@ -66,7 +66,10 @@ class GCodeWriter(MeshWriter):
     ##  Create a new container with container 2 as base and container 1 written over it.
     def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
         flat_container = InstanceContainer(instance_container2.getName())
-        flat_container.setDefinition(instance_container2.getDefinition())
+        if instance_container1.getDefinition():
+            flat_container.setDefinition(instance_container1.getDefinition())
+        else:
+            flat_container.setDefinition(instance_container2.getDefinition())
         flat_container.setMetaData(instance_container2.getMetaData())
 
         for key in instance_container2.getAllKeys():
@@ -89,17 +92,17 @@ class GCodeWriter(MeshWriter):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        container_with_profile = stack.findContainer({"type": "quality"})
+        container_with_profile = stack.findContainer({"type": "quality_changes"})
         if not container_with_profile:
             Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
             return ""
 
-        flat_global_container = self._createFlattenedContainerInstance(stack.getTop(),container_with_profile)
+        flat_global_container = self._createFlattenedContainerInstance(stack.getTop(), container_with_profile)
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
         for extruder in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
-            extruder_quality = extruder.findContainer({"type": "quality"})
+            extruder_quality = extruder.findContainer({"type": "quality_changes"})
             if not extruder_quality:
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue

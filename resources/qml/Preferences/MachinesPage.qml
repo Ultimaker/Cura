@@ -3,6 +3,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
+import QtQuick.Window 2.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -106,6 +107,8 @@ UM.ManagementPage
         {
             id: actionDialog
             property var content
+            minimumWidth: 350 * Screen.devicePixelRatio;
+            minimumHeight: 350 * Screen.devicePixelRatio;
             onContentChanged:
             {
                 contents = content;
@@ -120,22 +123,108 @@ UM.ManagementPage
             }
         }
 
-        Row
+        Grid
         {
+            id: machineInfo
+
             anchors.top: machineActions.visible ? machineActions.bottom : machineActions.anchors.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.right: parent.right
-
             spacing: UM.Theme.getSize("default_margin").height
+            rowSpacing: UM.Theme.getSize("default_lining").height
+            columns: 2
+
+            visible: base.currentItem
+
+            property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+            property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
+            property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
             Label
             {
-                text: catalog.i18nc("@label", "Type")
+                text: catalog.i18nc("@label", "Printer type:")
                 visible: base.currentItem && "definition_name" in base.currentItem.metadata
             }
             Label {
                 text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "Connection:")
+                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
+            }
+            Label {
+                width: parent.width * 0.7
+                text: machineInfo.printerConnected ? machineInfo.connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
+                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
+                wrapMode: Text.WordWrap
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "State:")
+                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
+            }
+            Label {
+                width: parent.width * 0.7
+                text:
+                {
+                    if(!machineInfo.printerConnected || !machineInfo.printerAcceptsCommands) {
+                        return "";
+                    }
+
+                    switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                    {
+                        case "printing":
+                            return catalog.i18nc("@label:MonitorStatus", "Printing...");
+                        case "paused":
+                            return catalog.i18nc("@label:MonitorStatus", "Paused");
+                        case "pre_print":
+                            return catalog.i18nc("@label:MonitorStatus", "Preparing...");
+                        case "wait_cleanup":
+                            return catalog.i18nc("@label:MonitorStatus", "Waiting for someone to clear the build plate");
+                        case "error":
+                            return printerOutputDevice.errorText;
+                        case "maintenance":
+                            return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
+                        case "abort":  // note sure if this jobState actually occurs in the wild
+                            return catalog.i18nc("@label:MonitorStatus", "Aborting print...");
+                        case "ready":  // ready to print or getting ready
+                        case "":  // ready to print or getting ready
+                            return catalog.i18nc("@label:MonitorStatus", "Waiting for a printjob");
+                    }
+                }
+                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
+                wrapMode: Text.WordWrap
+            }
+        }
+
+        Column {
+            id: additionalComponentsColumn
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: machineInfo.visible ? machineInfo.bottom : machineInfo.anchors.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").width
+
+            spacing: UM.Theme.getSize("default_margin").width
+
+            Component.onCompleted:
+            {
+                for (var component in Printer.additionalComponents["machinesDetailPane"]) {
+                    Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                }
+            }
+        }
+
+        Connections {
+            target: Printer
+            onAdditionalComponentsChanged:
+            {
+                if(areaId == "machinesDetailPane") {
+                    for (var component in Printer.additionalComponents["machinesDetailPane"]) {
+                        Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                    }
+                }
             }
         }
 

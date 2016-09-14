@@ -10,3 +10,4 @@ from .ExtrudersModel import ExtrudersModel
 from .MachineManager import MachineManager
 from .MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from .SettingOverrideDecorator import SettingOverrideDecorator
+from .QualitySettingsModel import QualitySettingsModel

@@ -111,7 +111,8 @@ class LegacyProfileReader(ProfileReader):
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
-        current_printer = Application.getInstance().getGlobalContainerStack().findContainer({ }, DefinitionContainer)
+        current_printer_definition = Application.getInstance().getGlobalContainerStack().getBottom()
+        profile.setDefinition(current_printer_definition)
         for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
@@ -121,10 +122,13 @@ class LegacyProfileReader(ProfileReader):
             except Exception: #Probably some setting name that was missing or something else that went wrong in the ini file.
                 Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
                 continue
-            if new_value != value_using_defaults and current_printer.findDefinitions(key = new_setting).default_value != new_value: #Not equal to the default in the new Cura OR the default in the legacy Cura.
-                profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
+            definitions = current_printer_definition.findDefinitions(key = new_setting)
+            if definitions:
+                if new_value != value_using_defaults and definitions[0].default_value != new_value:  # Not equal to the default in the new Cura OR the default in the legacy Cura.
+                    profile.setProperty(new_setting, "value", new_value)  # Store the setting in the profile!
 
-        if len(profile.getChangedSettings()) == 0:
+        if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
         profile.setDirty(True)
+        profile.addMetaDataEntry("type", "quality")
         return profile

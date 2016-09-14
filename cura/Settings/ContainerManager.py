@@ -14,6 +14,8 @@ import UM.Platform
 import UM.MimeTypeDatabase
 import UM.Logger
 
+import cura.Settings
+
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
 
 from UM.i18n import i18nCatalog
@@ -28,7 +30,9 @@ class ContainerManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._registry = UM.Settings.ContainerRegistry.getInstance()
+        self._container_registry = UM.Settings.ContainerRegistry.getInstance()
+        self._machine_manager = UM.Application.getInstance().getMachineManager()
+
         self._container_name_filters = {}
 
     ##  Create a duplicate of the specified container
@@ -41,7 +45,7 @@ class ContainerManager(QObject):
     #   \return The ID of the new container, or an empty string if duplication failed.
     @pyqtSlot(str, result = str)
     def duplicateContainer(self, container_id):
-        containers = self._registry.findContainers(None, id = container_id)
+        containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
             UM.Logger.log("w", "Could duplicate container %s because it was not found.", container_id)
             return ""
@@ -49,7 +53,7 @@ class ContainerManager(QObject):
         container = containers[0]
 
         new_container = None
-        new_name = self._registry.uniqueName(container.getName())
+        new_name = self._container_registry.uniqueName(container.getName())
         # Only InstanceContainer has a duplicate method at the moment.
         # So fall back to serialize/deserialize when no duplicate method exists.
         if hasattr(container, "duplicate"):
@@ -60,7 +64,7 @@ class ContainerManager(QObject):
             new_container.setName(new_name)
 
         if new_container:
-            self._registry.addContainer(new_container)
+            self._container_registry.addContainer(new_container)
 
         return new_container.getId()
 
@@ -73,24 +77,24 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, str, str, result = bool)
     def renameContainer(self, container_id, new_id, new_name):
-        containers = self._registry.findContainers(None, id = container_id)
+        containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
             UM.Logger.log("w", "Could rename container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
         # First, remove the container from the registry. This will clean up any files related to the container.
-        self._registry.removeContainer(container)
+        self._container_registry.removeContainer(container)
 
         # Ensure we have a unique name for the container
-        new_name = self._registry.uniqueName(new_name)
+        new_name = self._container_registry.uniqueName(new_name)
 
         # Then, update the name and ID of the container
         container.setName(new_name)
         container._id = new_id # TODO: Find a nicer way to set a new, unique ID
 
         # Finally, re-add the container so it will be properly serialized again.
-        self._registry.addContainer(container)
+        self._container_registry.addContainer(container)
 
         return True
 
@@ -101,12 +105,12 @@ class ContainerManager(QObject):
     #   \return True if the container was successfully removed, False if not.
     @pyqtSlot(str, result = bool)
     def removeContainer(self, container_id):
-        containers = self._registry.findContainers(None, id = container_id)
+        containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
             UM.Logger.log("w", "Could remove container %s because it was not found.", container_id)
             return False
 
-        self._registry.removeContainer(containers[0].getId())
+        self._container_registry.removeContainer(containers[0].getId())
 
         return True
 
@@ -121,26 +125,25 @@ class ContainerManager(QObject):
     #   \return True if successfully merged, False if not.
     @pyqtSlot(str, result = bool)
     def mergeContainers(self, merge_into_id, merge_id):
-        containers = self._registry.findContainers(None, id = merge_into_id)
+        containers = self._container_registry.findContainers(None, id = merge_into_id)
         if not containers:
             UM.Logger.log("w", "Could merge into container %s because it was not found.", merge_into_id)
             return False
 
         merge_into = containers[0]
 
-        containers = self._registry.findContainers(None, id = merge_id)
+        containers = self._container_registry.findContainers(None, id = merge_id)
         if not containers:
             UM.Logger.log("w", "Could not merge container %s because it was not found", merge_id)
             return False
 
         merge = containers[0]
 
-        if type(merge) != type(merge_into):
+        if not isinstance(merge, type(merge_into)):
             UM.Logger.log("w", "Cannot merge two containers of different types")
             return False
 
-        for key in merge.getAllKeys():
-            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+        self._performMerge(merge_into, merge)
 
         return True
 
@@ -151,7 +154,7 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, result = bool)
     def clearContainer(self, container_id):
-        containers = self._registry.findContainers(None, id = container_id)
+        containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
             UM.Logger.log("w", "Could clear container %s because it was not found.", container_id)
             return False
@@ -163,6 +166,19 @@ class ContainerManager(QObject):
         containers[0].clear()
 
         return True
+
+    @pyqtSlot(str, str, result=str)
+    def getContainerMetaDataEntry(self, container_id, entry_name):
+        containers = self._container_registry.findContainers(None, id=container_id)
+        if not containers:
+            UM.Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
+            return ""
+
+        result = containers[0].getMetaDataEntry(entry_name)
+        if result is not None:
+            return str(result)
+        else:
+            return ""
 
     ##  Set a metadata entry of the specified container.
     #
@@ -178,9 +194,9 @@ class ContainerManager(QObject):
     #   \return True if successful, False if not.
     @pyqtSlot(str, str, str, result = bool)
     def setContainerMetaDataEntry(self, container_id, entry_name, entry_value):
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
+        containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
-            UM.Logger.log("w", "Could set metadata of container %s because it was not found.", container_id)
+            UM.Logger.log("w", "Could not set metadata of container %s because it was not found.", container_id)
             return False
 
         container = containers[0]
@@ -209,6 +225,24 @@ class ContainerManager(QObject):
 
         return True
 
+    ##  Set the name of the specified container.
+    @pyqtSlot(str, str, result = bool)
+    def setContainerName(self, container_id, new_name):
+        containers = self._container_registry.findContainers(None, id = container_id)
+        if not containers:
+            UM.Logger.log("w", "Could not set name of container %s because it was not found.", container_id)
+            return False
+
+        container = containers[0]
+
+        if container.isReadOnly():
+            UM.Logger.log("w", "Cannot set name of read-only container %s.", container_id)
+            return False
+
+        container.setName(new_name)
+
+        return True
+
     ##  Find instance containers matching certain criteria.
     #
     #   This effectively forwards to ContainerRegistry::findInstanceContainers.
@@ -219,10 +253,23 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariantMap", result = "QVariantList")
     def findInstanceContainers(self, criteria):
         result = []
-        for entry in self._registry.findInstanceContainers(**criteria):
+        for entry in self._container_registry.findInstanceContainers(**criteria):
             result.append(entry.getId())
 
         return result
+
+    @pyqtSlot(str, result = bool)
+    def isContainerUsed(self, container_id):
+        UM.Logger.log("d", "Checking if container %s is currently used in the active stacks", container_id)
+        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            if container_id in [child.getId() for child in stack.getContainers()]:
+                UM.Logger.log("d", "The container is in use by %s", stack.getId())
+                return True
+        return False
+
+    @pyqtSlot(str, result = str)
+    def makeUniqueName(self, original_name):
+        return self._container_registry.uniqueName(original_name)
 
     ##  Get a list of string that can be used as name filters for a Qt File Dialog
     #
@@ -276,7 +323,7 @@ class ContainerManager(QObject):
         else:
             mime_type = self._container_name_filters[file_type]["mime"]
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
+        containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
             return { "status": "error", "message": "Container not found"}
         container = containers[0]
@@ -301,6 +348,9 @@ class ContainerManager(QObject):
             contents = container.serialize()
         except NotImplementedError:
             return { "status": "error", "message": "Unable to serialize container"}
+
+        if contents is None:
+            return {"status": "error", "message": "Serialization returned None. Unable to write to file"}
 
         with UM.SaveFile(file_url, "w") as f:
             f.write(contents)
@@ -334,7 +384,7 @@ class ContainerManager(QObject):
             return { "status": "error", "message": "Could not find a container to handle the specified file."}
 
         container_id = urllib.parse.unquote_plus(mime_type.stripExtension(os.path.basename(file_url)))
-        container_id = UM.Settings.ContainerRegistry.getInstance().uniqueName(container_id)
+        container_id = self._container_registry.uniqueName(container_id)
 
         container = container_type(container_id)
 
@@ -346,9 +396,242 @@ class ContainerManager(QObject):
 
         container.setName(container_id)
 
-        UM.Settings.ContainerRegistry.getInstance().addContainer(container)
+        self._container_registry.addContainer(container)
 
         return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
+
+    ##  Update the current active quality changes container with the settings from the user container.
+    #
+    #   This will go through the active global stack and all active extruder stacks and merge the changes from the user
+    #   container into the quality_changes container. After that, the user container is cleared.
+    #
+    #   \return \type{bool} True if successful, False if not.
+    @pyqtSlot(result = bool)
+    def updateQualityChanges(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        self._machine_manager.blurSettings.emit()
+
+        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            # Find the quality_changes container for this stack and merge the contents of the top container into it.
+            quality_changes = stack.findContainer(type = "quality_changes")
+            if not quality_changes or quality_changes.isReadOnly():
+                UM.Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
+                continue
+
+            self._performMerge(quality_changes, stack.getTop())
+
+        self._machine_manager.activeQualityChanged.emit()
+
+        return True
+
+    ##  Clear the top-most (user) containers of the active stacks.
+    @pyqtSlot()
+    def clearUserContainers(self):
+        self._machine_manager.blurSettings.emit()
+
+        # Go through global and extruder stacks and clear their topmost container (the user settings).
+        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            stack.getTop().clear()
+
+    ##  Create quality changes containers from the user containers in the active stacks.
+    #
+    #   This will go through the global and extruder stacks and create quality_changes containers from
+    #   the user containers in each stack. These then replace the quality_changes containers in the
+    #   stack and clear the user settings.
+    #
+    #   \return \type{bool} True if the operation was successfully, False if not.
+    @pyqtSlot(str, result = bool)
+    def createQualityChanges(self, base_name):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        active_quality_name = self._machine_manager.activeQualityName
+        if active_quality_name == "":
+            UM.Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
+            return False
+
+        self._machine_manager.blurSettings.emit()
+        if base_name is None or base_name == "":
+            base_name = active_quality_name
+        unique_name = self._container_registry.uniqueName(base_name)
+
+        # Go through the active stacks and create quality_changes containers from the user containers.
+        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            user_container = stack.getTop()
+            quality_container = stack.findContainer(type = "quality")
+            quality_changes_container = stack.findContainer(type = "quality_changes")
+            if not quality_container or not quality_changes_container:
+                UM.Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
+                continue
+
+            new_changes = self._createQualityChanges(quality_container, unique_name, stack.getId())
+            self._performMerge(new_changes, user_container)
+
+            self._container_registry.addContainer(new_changes)
+            stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_changes)
+
+        self._machine_manager.activeQualityChanged.emit()
+        return True
+
+    ##  Remove all quality changes containers matching a specified name.
+    #
+    #   This will search for quality_changes containers matching the supplied name and remove them.
+    #   Note that if the machine specifies that qualities should be filtered by machine and/or material
+    #   only the containers related to the active machine/material are removed.
+    #
+    #   \param quality_name The name of the quality changes to remove.
+    #
+    #   \return \type{bool} True if successful, False if not.
+    @pyqtSlot(str, result = bool)
+    def removeQualityChanges(self, quality_name):
+        UM.Logger.log("d", "Attempting to remove the quality change containers with name %s", quality_name)
+        containers_found = False
+
+        if not quality_name:
+            return containers_found  # Without a name we will never find a container to remove.
+
+        # If the container that is being removed is the currently active quality, set another quality as the active quality
+        activate_quality = quality_name == self._machine_manager.activeQualityName
+        activate_quality_type = None
+
+        for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
+            containers_found = True
+            if activate_quality and not activate_quality_type:
+                activate_quality_type = container.getMetaDataEntry("quality")
+            self._container_registry.removeContainer(container.getId())
+
+        if not containers_found:
+            UM.Logger.log("d", "Unable to remove quality containers, as we did not find any by the name of %s", quality_name)
+
+        elif activate_quality:
+            definition_id = "fdmprinter" if not self._machine_manager.filterQualityByMachine else self._machine_manager.activeDefinitionId
+            containers = self._container_registry.findInstanceContainers(type = "quality", definition = definition_id, quality_type = activate_quality_type)
+            if containers:
+                self._machine_manager.setActiveQuality(containers[0].getId())
+                self._machine_manager.activeQualityChanged.emit()
+
+        return containers_found
+
+    ##  Rename a set of quality changes containers.
+    #
+    #   This will search for quality_changes containers matching the supplied name and rename them.
+    #   Note that if the machine specifies that qualities should be filtered by machine and/or material
+    #   only the containers related to the active machine/material are renamed.
+    #
+    #   \param quality_name The name of the quality changes containers to rename.
+    #   \param new_name The new name of the quality changes.
+    #
+    #   \return True if successful, False if not.
+    @pyqtSlot(str, str, result = bool)
+    def renameQualityChanges(self, quality_name, new_name):
+        UM.Logger.log("d", "User requested QualityChanges container rename of %s to %s", quality_name, new_name)
+        if not quality_name or not new_name:
+            return False
+
+        if quality_name == new_name:
+            UM.Logger.log("w", "Unable to rename %s to %s, because they are the same.", quality_name, new_name)
+            return True
+
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        self._machine_manager.blurSettings.emit()
+
+        new_name = self._container_registry.uniqueName(new_name)
+
+        container_registry = self._container_registry
+        for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
+            stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
+            container_registry.renameContainer(container.getId(), new_name, self._createUniqueId(stack_id, new_name))
+
+        self._machine_manager.activeQualityChanged.emit()
+        return True
+
+    ##  Duplicate a specified set of quality or quality_changes containers.
+    #
+    #   This will search for containers matching the specified name. If the container is a "quality" type container, a new
+    #   quality_changes container will be created with the specified quality as base. If the container is a "quality_changes"
+    #   container, it is simply duplicated and renamed.
+    #
+    #   \param quality_name The name of the quality to duplicate.
+    #
+    #   \return A string containing the name of the duplicated containers, or an empty string if it failed.
+    @pyqtSlot(str, str, result = str)
+    def duplicateQualityOrQualityChanges(self, quality_name, base_name):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack or not quality_name:
+            return ""
+        UM.Logger.log("d", "Attempting to duplicate the quality %s", quality_name)
+        containers = self._container_registry.findInstanceContainers(name = quality_name)
+        if not containers:
+            UM.Logger.log("d", "Unable to duplicate the quality %s, because it doesn't exist.", quality_name)
+            return ""
+
+        if base_name is None:
+            base_name = quality_name
+
+        new_name = self._container_registry.uniqueName(base_name)
+
+        container_type = containers[0].getMetaDataEntry("type")
+        if container_type == "quality":
+            for container in self._getFilteredContainers(name = quality_name, type = "quality"):
+                for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+                    new_changes = self._createQualityChanges(container, new_name, stack.getId())
+                    self._container_registry.addContainer(new_changes)
+        elif container_type == "quality_changes":
+            for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
+                stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
+                new_container = container.duplicate(self._createUniqueId(stack_id, new_name), new_name)
+                self._container_registry.addContainer(new_container)
+        else:
+            UM.Logger.log("w", "Unable to duplicate profile. It has the wrong type.")
+            return ""
+
+        return new_name
+
+    @pyqtSlot(str, result = str)
+    def duplicateMaterial(self, material_id):
+        containers = self._container_registry.findInstanceContainers(id=material_id)
+        if not containers:
+            UM.Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", material_id)
+            return ""
+
+        # Ensure all settings are saved.
+        UM.Application.getInstance().saveSettings()
+
+        # Create a new ID & container to hold the data.
+        new_id = self._container_registry.uniqueName(material_id)
+        container_type = type(containers[0])  # Could be either a XMLMaterialProfile or a InstanceContainer
+        duplicated_container = container_type(new_id)
+
+        # Instead of duplicating we load the data from the basefile again.
+        # This ensures that the inheritance goes well and all "cut up" subclasses of the xmlMaterial profile
+        # are also correctly created.
+        with open(containers[0].getPath(), encoding="utf-8") as f:
+            duplicated_container.deserialize(f.read())
+        duplicated_container.setDirty(True)
+        self._container_registry.addContainer(duplicated_container)
+
+    # Factory function, used by QML
+    @staticmethod
+    def createContainerManager(engine, js_engine):
+        return ContainerManager()
+
+    def _performMerge(self, merge_into, merge):
+        assert isinstance(merge, type(merge_into))
+
+        if merge == merge_into:
+            return
+
+        for key in merge.getAllKeys():
+            merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
+
+        merge.clear()
 
     def _updateContainerNameFilters(self):
         self._container_name_filters = {}
@@ -394,7 +677,88 @@ class ContainerManager(QObject):
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
 
-    # Factory function, used by QML
-    @staticmethod
-    def createContainerManager(engine, js_engine):
-        return ContainerManager()
+    ##  Return a generator that iterates over a set of containers that are filtered by machine and material when needed.
+    #
+    #   \param kwargs Initial search criteria that the containers need to match.
+    #
+    #   \return A generator that iterates over the list of containers matching the search criteria.
+    def _getFilteredContainers(self, **kwargs):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return False
+
+        criteria = kwargs
+
+        filter_by_material = False
+
+        if global_stack.getMetaDataEntry("has_machine_quality"):
+            definition = global_stack.getBottom()
+            definition_id = definition.getMetaDataEntry("quality_definition", definition.getId())
+            criteria["definition"] = definition_id
+
+            filter_by_material = global_stack.getMetaDataEntry("has_materials")
+
+        material_ids = []
+        if filter_by_material:
+            for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+                material_ids.append(stack.findContainer(type = "material").getId())
+
+        containers = self._container_registry.findInstanceContainers(**criteria)
+        for container in containers:
+            # If the machine specifies we should filter by material, exclude containers that do not match any active material.
+            if filter_by_material and container.getMetaDataEntry("material") not in material_ids:
+                continue
+
+            yield container
+
+    ##  Creates a unique ID for a container by prefixing the name with the stack ID.
+    #
+    #   This method creates a unique ID for a container by prefixing it with a specified stack ID.
+    #   This is done to ensure we have an easily identified ID for quality changes, which have the
+    #   same name across several stacks.
+    #
+    #   \param stack_id The ID of the stack to prepend.
+    #   \param container_name The name of the container that we are creating a unique ID for.
+    #
+    #   \return Container name prefixed with stack ID, in lower case with spaces replaced by underscores.
+    def _createUniqueId(self, stack_id, container_name):
+        result = stack_id + "_" + container_name
+        result = result.lower()
+        result.replace(" ", "_")
+        return result
+
+    ##  Create a quality changes container for a specified quality container.
+    #
+    #   \param quality_container The quality container to create a changes container for.
+    #   \param new_name The name of the new quality_changes container.
+    #   \param stack_id The ID of the container stack the new container "belongs to". It is used primarily to ensure a unique ID.
+    #
+    #   \return A new quality_changes container with the specified container as base.
+    def _createQualityChanges(self, quality_container, new_name, stack_id):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        assert global_stack is not None
+
+        # Create a new quality_changes container for the quality.
+        quality_changes = UM.Settings.InstanceContainer(self._createUniqueId(stack_id, new_name))
+        quality_changes.setName(new_name)
+        quality_changes.addMetaDataEntry("type", "quality_changes")
+        quality_changes.addMetaDataEntry("quality", quality_container.getMetaDataEntry("quality_type"))
+
+        # If we are creating a container for an extruder, ensure we add that to the container
+        if stack_id != global_stack.getId():
+            quality_changes.addMetaDataEntry("extruder", stack_id)
+
+        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
+        if not global_stack.getMetaDataEntry("has_machine_quality"):
+            quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
+        else:
+            definition = global_stack.getBottom()
+            definition_id = definition.getMetaDataEntry("quality_definition", definition.getId())
+            definition = self._container_registry.findContainers(id=definition_id)[0]
+            quality_changes.setDefinition(definition)
+
+            if global_stack.getMetaDataEntry("has_materials"):
+                material = quality_container.getMetaDataEntry("material")
+                quality_changes.addMetaDataEntry("material", material)
+
+        return quality_changes

@@ -143,20 +143,21 @@ UM.MainWindow
                     model: Cura.ExtrudersModel { }
                     Menu {
                         title: model.name
+                        visible: machineExtruderCount.properties.value > 1
 
-                        NozzleMenu { title: catalog.i18nc("@title:menu", "&Nozzle"); visible: Cura.MachineManager.hasVariants }
-                        MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials }
+                        NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
+                        MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
                         ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                         MenuSeparator { }
 
-                        MenuItem { text: "Set as Active Extruder" }
+                        MenuItem { text: catalog.i18nc("@action:inmenu", "Set as Active Extruder"); onTriggered: ExtruderManager.setActiveExtruderIndex(model.index) }
                     }
                     onObjectAdded: settingsMenu.insertItem(index, object)
                     onObjectRemoved: settingsMenu.removeItem(object)
                 }
 
-                NozzleMenu { title: catalog.i18nc("@title:menu", "&Nozzle"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
+                NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasVariants }
                 MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: machineExtruderCount.properties.value <= 1 && Cura.MachineManager.hasMaterials }
                 ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); visible: machineExtruderCount.properties.value <= 1 }
 
@@ -211,7 +212,7 @@ UM.MainWindow
                 //: Help menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
-                MenuItem { action: Cura.Actions.showEngineLog; }
+                MenuItem { action: Cura.Actions.showProfileFolder; }
                 MenuItem { action: Cura.Actions.documentation; }
                 MenuItem { action: Cura.Actions.reportBug; }
                 MenuSeparator { }
@@ -345,6 +346,7 @@ UM.MainWindow
                     bottom: parent.bottom;
                     right: parent.right;
                 }
+                z: 1
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
             }
@@ -401,7 +403,7 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
-                source: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+                source: Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
             }
 
             UM.MessageStack
@@ -426,6 +428,9 @@ UM.MainWindow
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
             insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
+
+            removePage(1);
+            insertPage(1, catalog.i18nc("@title:tab","Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
 
             insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
 
@@ -459,12 +464,11 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.MachineManager.newQualityContainerFromQualityAndUser();
             preferences.setPage(4);
             preferences.show();
 
-            // Show the renameDialog after a very short delay so the preference page has time to initiate
-            showProfileNameDialogTimer.start();
+            // Create a new profile after a very short delay so the preference page has time to initiate
+            createProfileTimer.start();
         }
     }
 
@@ -511,11 +515,11 @@ UM.MainWindow
 
     Timer
     {
-        id: showProfileNameDialogTimer
+        id: createProfileTimer
         repeat: false
         interval: 1
 
-        onTriggered: preferences.getCurrentItem().showProfileNameDialog()
+        onTriggered: preferences.getCurrentItem().createProfile()
     }
 
     // BlurSettings is a way to force the focus away from any of the setting items.
@@ -668,8 +672,15 @@ UM.MainWindow
 
     Connections
     {
-        target: Cura.Actions.showEngineLog
-        onTriggered: engineLog.visible = true;
+        target: Cura.Actions.showProfileFolder
+        onTriggered:
+        {
+            var path = UM.Resources.getPath(UM.Resources.Preferences, "");
+            if(Qt.platform.os == "windows") {
+                path = path.replace(/\\/g,"/");
+            }
+            Qt.openUrlExternally(path);
+        }
     }
 
     AddMachineDialog

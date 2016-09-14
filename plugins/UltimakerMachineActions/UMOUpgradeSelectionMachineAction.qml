@@ -44,7 +44,7 @@ Cura.MachineAction
 
             text: catalog.i18nc("@label", "Heated Build Plate (official kit or self-built)")
             checked: manager.hasHeatedBed
-            onClicked: checked ? manager.addHeatedBed() : manager.removeHeatedBed()
+            onClicked: manager.setHeatedBed(checked)
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

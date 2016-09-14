@@ -12,9 +12,11 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-
+from UM.Scene.SceneNode import SceneNode
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+from UM.Message import Message
+from UM.Application import Application
 
 from cura.ConvexHullNode import ConvexHullNode
 
@@ -33,7 +35,7 @@ class LayerView(View):
     def __init__(self):
         super().__init__()
         self._shader = None
-        self._selection_shader = None
+        self._ghost_shader = None
         self._num_layers = 0
         self._layer_percentage = 0  # what percentage of layers need to be shown (Slider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
@@ -45,6 +47,7 @@ class LayerView(View):
         self._top_layers_job = None
         self._activity = False
         self._old_max_layers = 0
+        self._global_container_stack = None
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
@@ -53,6 +56,8 @@ class LayerView(View):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._busy = False
+
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
     def getActivity(self):
         return self._activity
@@ -84,9 +89,9 @@ class LayerView(View):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
-        if not self._selection_shader:
-            self._selection_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._selection_shader.setUniformValue("u_color", Color(32, 32, 32, 128))
+        if not self._ghost_shader:
+            self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
+            self._ghost_shader.setUniformValue("u_color", Color(0, 0, 0, 64))
 
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
@@ -96,8 +101,13 @@ class LayerView(View):
 
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
-                    if Selection.isSelected(node):
-                        renderer.queueNode(node, transparent = True, shader = self._selection_shader)
+                    renderer.queueNode(node,
+                                       shader = self._ghost_shader,
+                                       type = RenderBatch.RenderType.Transparent                    )
+
+        for node in DepthFirstIterator(scene.getRoot()):
+            if type(node) is SceneNode:
+                if node.getMeshData() and node.isVisible():
                     layer_data = node.callDecoration("getLayerData")
                     if not layer_data:
                         continue
@@ -183,6 +193,33 @@ class LayerView(View):
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - 1)
                 return True
+
+        if event.type == Event.ViewActivateEvent:
+            Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+            self._onGlobalStackChanged()
+
+        elif event.type == Event.ViewDeactivateEvent:
+            self._wireprint_warning_message.hide()
+            Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
+            if self._global_container_stack:
+                self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+
+    def _onGlobalStackChanged(self):
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._onPropertyChanged("wireframe_enabled", "value")
+        else:
+            self._wireprint_warning_message.hide()
+
+    def _onPropertyChanged(self, key, property_name):
+        if key == "wireframe_enabled" and property_name == "value":
+            if self._global_container_stack.getProperty("wireframe_enabled", "value"):
+                self._wireprint_warning_message.show()
+            else:
+                self._wireprint_warning_message.hide()
 
     def _startUpdateTopLayers(self):
         if self._top_layers_job:

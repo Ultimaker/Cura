@@ -27,7 +27,7 @@ Item {
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var settablePerExtruder: propertyProvider.properties.settable_per_extruder
+    property var resolve: propertyProvider.properties.resolve
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -138,7 +138,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && base.settablePerExtruder != "True" && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || definition.limit_to_extruder != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
@@ -150,7 +150,15 @@ Item {
 
                 iconSource: UM.Theme.getIcon("link")
 
-                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders")) }
+                onEntered: {
+                    hoverTimer.stop();
+                    var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders") + ".";
+                    if ((resolve != "None") && (stackLevel != 0)) {
+                        // We come here if a setting has a resolve and the setting is not manually edited.
+                        tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + ExtruderManager.getInstanceExtruderValues(definition.key) + "].";
+                    }
+                    base.showTooltip(tooltipText);
+                }
                 onExited: base.showTooltip(base.tooltipText);
             }
 
@@ -171,8 +179,8 @@ Item {
                 iconSource: UM.Theme.getIcon("reset")
 
                 onClicked: {
-                    revertButton.focus = true
-                    propertyProvider.removeFromContainer(0)
+                    revertButton.focus = true;
+                    Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key);
                 }
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
@@ -238,8 +246,8 @@ Item {
                         // This ensures that the value in any of the deeper containers need not be removed, which is
                         // needed for the reset button (which deletes the top value) to correctly go back to profile
                         // defaults.
-                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
                         propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
+                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
 
                     }
                 }

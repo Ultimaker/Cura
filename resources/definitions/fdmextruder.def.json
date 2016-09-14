@@ -177,8 +177,7 @@
                     "minimum_value_warning": "machine_nozzle_offset_x",
                     "maximum_value": "machine_width",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "enabled": false
+                    "settable_per_extruder": true
                 },
                 "extruder_prime_pos_y":
                 {
@@ -190,8 +189,7 @@
                     "minimum_value_warning": "machine_nozzle_offset_y",
                     "maximum_value_warning": "machine_depth",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "enabled": false
+                    "settable_per_extruder": true
                 }
             }
         }

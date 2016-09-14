@@ -24,6 +24,7 @@ class StartJobResult(IntEnum):
     Error = 2
     SettingError = 3
     NothingToSlice = 4
+    MaterialIncompatible = 5
 
 
 ##  Formatter class that handles token expansion in start/end gcod
@@ -77,6 +78,17 @@ class StartSliceJob(Job):
         if not Application.getInstance().getMachineManager().isActiveStackValid:
             self.setResult(StartJobResult.SettingError)
             return
+
+        if Application.getInstance().getBuildVolume().hasErrors():
+            self.setResult(StartJobResult.SettingError)
+            return
+
+        for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            material = extruder_stack.findContainer({"type": "material"})
+            if material:
+                if material.getMetaDataEntry("compatible") == False:
+                    self.setResult(StartJobResult.MaterialIncompatible)
+                    return
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
@@ -203,7 +215,20 @@ class StartSliceJob(Job):
         keys = stack.getAllKeys()
         settings = {}
         for key in keys:
-            settings[key] = stack.getProperty(key, "value")
+            # Use resolvement value if available, or take the value
+            resolved_value = stack.getProperty(key, "resolve")
+            if resolved_value is not None:
+                # There is a resolvement value. Check if we need to use it.
+                user_container = stack.findContainer({"type": "user"})
+                quality_changes_container = stack.findContainer({"type": "quality_changes"})
+                if user_container.hasProperty(key,"value") or quality_changes_container.hasProperty(key,"value"):
+                    # Normal case
+                    settings[key] = stack.getProperty(key, "value")
+                else:
+                    settings[key] = resolved_value
+            else:
+                # Normal case
+                settings[key] = stack.getProperty(key, "value")
 
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
@@ -220,16 +245,16 @@ class StartSliceJob(Job):
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
     #
-    #   This is only set for settings that have the global_inherits_stack
+    #   This is only set for settings that have the limit_to_extruder
     #   property.
     #
     #   \param stack The global stack with all settings, from which to read the
-    #   global_inherits_stack property.
+    #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "global_inherits_stack"))))
+            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
             if extruder >= 0: #Set to a specific extruder.
-                setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
+                setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder
 

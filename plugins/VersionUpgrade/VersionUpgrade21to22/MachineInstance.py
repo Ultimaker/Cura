@@ -69,26 +69,33 @@ class MachineInstance:
         config.add_section("general")
         config.set("general", "name", self._name)
         config.set("general", "id", self._name)
-        config.set("general", "type", self._type_name)
         config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
 
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         has_machine_qualities = self._type_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()
         type_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._type_name)
-        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_material_name)
+        active_material = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateMaterial(self._active_material_name)
         variant = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(self._variant_name, type_name)
         variant_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(self._variant_name, type_name)
-        active_profile = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
-        if has_machine_qualities: #This machine now has machine-quality profiles.
-            active_profile += "_" + active_material + "_" + variant
-            active_material += "_" + variant_materials #That means that the profile was split into multiple.
-            current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
+
+        #Convert to quality profile if we have one of the built-in profiles, otherwise convert to a quality-changes profile.
+        if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+            active_quality_changes = "empty_quality_changes"
         else:
-            current_settings = self._name + "_current_settings"
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.getQualityFallback(type_name, variant, active_material)
+            if has_machine_qualities: #Then the profile will have split into multiple.
+                active_quality_changes = self._active_profile_name + "_" + active_material + "_" + variant
+            else:
+                active_quality_changes = self._active_profile_name
+
+        if has_machine_qualities: #This machine now has machine-quality profiles.
+            active_material += "_" + variant_materials #That means that the profile was split into multiple.
 
         containers = [
-            current_settings,
-            active_profile,
+            "", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
+            active_quality_changes,
+            active_quality,
             active_material,
             variant,
             type_name

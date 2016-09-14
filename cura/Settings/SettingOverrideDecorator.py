@@ -30,7 +30,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._stack.addContainer(self._instance)
 
         if cura.Settings.ExtruderManager.getInstance().extruderCount > 1:
-            self._extruder_stack = cura.Settings.ExtruderManager.getInstance().activeExtruderStackId
+            self._extruder_stack = cura.Settings.ExtruderManager.getInstance().getExtruderStack(0).getId()
         else:
             self._extruder_stack = None
 
