@@ -1072,7 +1072,7 @@ class MachineManager(QObject):
             c = container.findContainer({'type': 'variant'})
             if c:
                 ind = container.getContainerIndex(c)
-                variant_instance_container = self._updateVariantContainer(c.getDefinition())
+                variant_instance_container = self._updateVariantContainer(container.getBottom())
                 container.replaceContainer(ind, variant_instance_container)
                 Application.getInstance().setGlobalContainerStack(container)
 
@@ -1082,8 +1082,11 @@ class MachineManager(QObject):
         if containers:
             container = containers[0]
             c = container.findContainer({'type': 'variant'})
-            if c and c.id != "empty_variant":
-                return True
+            if c:
+                variant_instance_container = self._updateVariantContainer(container.getBottom())
+                for ins in c.getAllKeys():
+                    if c.getInstance(ins) != variant_instance_container.getInstance(ins):
+                        return True
             return False
 
     @pyqtSlot(str)
