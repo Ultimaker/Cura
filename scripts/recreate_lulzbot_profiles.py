@@ -566,7 +566,12 @@ def create_machine_type(machine_type, path, dir):
 				order = material_order[material]
 				if material_types.has_key(material):
 					types = material_types[material]
-					if ((material == "PLA_poly" and machine_type.startswith("lulzbot_mini")) or \
+					if machine_type.endswith("Moarstruder_v2"):
+						if material == "PLA_poly":
+							types = types + "|First Run"
+							order = 0
+							f.write("default = 1\n")
+					elif ((material == "PLA_poly" and machine_type.startswith("lulzbot_mini")) or \
 						(material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_4")) or \
 						(material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_5")) or \
 						(material == "nGen" and machine_type.startswith("lulzbot_TAZ_6"))):
