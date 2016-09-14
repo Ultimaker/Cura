@@ -14,7 +14,11 @@ Column
     id: printMonitor
     property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    Cura.ExtrudersModel { id: extrudersModel }
+    Cura.ExtrudersModel
+    {
+        id: extrudersModel
+        simpleNames: true
+    }
 
     Label
     {
