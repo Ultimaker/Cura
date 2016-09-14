@@ -521,7 +521,7 @@ def find_files_for_material(files, material):
 def is_experimental(material, toolhead_type):
 	answer = material not in material_types
 	if "Moar" in toolhead_type:
-		special_exclusions = {"PCTPE", "Alloy910", "PC_VP"}
+		special_exclusions = {"ABS_VP", "Alloy910", "HIPS_VP", "HT", "PCTPE", "PC-MAX", "PC_VP"}
 		if material in special_exclusions:
 			answer = True
 	return answer
