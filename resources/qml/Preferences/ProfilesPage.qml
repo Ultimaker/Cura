@@ -14,7 +14,6 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Profiles");
     property var extrudersModel: Cura.ExtrudersModel{}
-    //Cura.ExtrudersModel { id: extrudersModel}
 
     model: UM.InstanceContainersModel
     {
