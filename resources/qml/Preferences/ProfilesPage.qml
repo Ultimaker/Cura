@@ -167,11 +167,11 @@ UM.ManagementPage
             elide: Text.ElideRight
         }
 
-        Row {
+        Flow {
             id: currentSettingsActions
             visible: currentItem && currentItem.id == Cura.MachineManager.activeQualityId
-
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.top: profileName.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
