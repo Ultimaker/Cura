@@ -242,7 +242,14 @@ UM.ManagementPage
             object: base.currentItem != null ? base.currentItem.name : ""
             onYes:
             {
-                var containers = Cura.ContainerManager.findInstanceContainers({"id": base.currentItem.id})
+                // A material container can actually be multiple items, so we need to find (and remove) all of them.
+                var base_file = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "base_file")
+                if(base_file == "")
+                {
+                    base_file = base.currentItem.id
+                }
+                var guid = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "GUID")
+                var containers = Cura.ContainerManager.findInstanceContainers({"GUID": guid, "base_file": base_file, "type": "material"})
                 for(var i in containers)
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
