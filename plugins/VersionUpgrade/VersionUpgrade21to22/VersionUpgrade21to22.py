@@ -118,6 +118,12 @@ _profile_translations = {
     "tpu_0.6_fast": "um2p_tpu_0.6_fast"
 }
 
+##  Settings that are no longer in the new version.
+_removed_settings = {
+    "fill_perimeter_gaps",
+    "support_area_smoothing"
+}
+
 ##  How to translate setting names from the old version to the new.
 _setting_name_translations = {
     "remove_overlapping_walls_0_enabled": "travel_compensate_overlapping_walls_0_enabled",
@@ -385,7 +391,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     @staticmethod
     def translateSettings(settings):
         for key, value in settings.items():
-            if key == "fill_perimeter_gaps": #Setting is removed.
+            if key in _removed_settings:
                 del settings[key]
             elif key == "retraction_combing": #Combing was made into an enum instead of a boolean.
                 settings[key] = "off" if (value == "False") else "all"
