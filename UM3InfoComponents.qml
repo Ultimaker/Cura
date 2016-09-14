@@ -59,23 +59,66 @@ Item
     }
 
 
-    Item
+    Column
     {
         objectName: "networkPrinterConnectionInfo"
         visible: isUM3
-        Button
+        spacing: UM.Theme.getSize("default_margin").width
+        anchors.fill: parent
+
+        Row
         {
-            tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
-            text: catalog.i18nc("@action:button", "Request Access")
-            onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-            visible: base.printerConnected && !base.printerAcceptsCommands
+            visible: base.printerConnected
+            spacing: UM.Theme.getSize("default_margin").width
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: childrenRect.height
+
+            Column
+            {
+                Repeater
+                {
+                    model: Cura.ExtrudersModel { simpleNames: true }
+                    Label { text: model.name }
+                }
+            }
+            Column
+            {
+                Repeater
+                {
+                    id: nozzleColumn
+                    model: Cura.MachineManager.printerOutputDevices[0].hotendIds
+                    Label { text: nozzleColumn.model[index] }
+                }
+            }
+            Column
+            {
+                Repeater
+                {
+                    id: materialColumn
+                    model: Cura.MachineManager.printerOutputDevices[0].materialNames
+                    Label { text: materialColumn.model[index] }
+                }
+            }
         }
 
-        Button
+        Row
         {
-            tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
-            text: catalog.i18nc("@action:button", "Activate Configuration")
-            visible: false
+            Button
+            {
+                tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
+                text: catalog.i18nc("@action:button", "Activate Configuration")
+                visible: base.printerConnected && false
+            }
+
+            Button
+            {
+                tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
+                text: catalog.i18nc("@action:button", "Request Access")
+                onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
+                visible: base.printerConnected && !base.printerAcceptsCommands
+            }
         }
     }
 
