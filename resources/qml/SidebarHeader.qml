@@ -66,7 +66,7 @@ Column
         id: extrudersList
         property var index: 0
 
-        visible: machineExtruderCount.properties.value > 1
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
 
         boundsBehavior: Flickable.StopAtBounds
@@ -167,7 +167,7 @@ Column
         id: variantRow
 
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint
 
         anchors
         {
@@ -259,6 +259,7 @@ Column
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint
 
         anchors
         {
