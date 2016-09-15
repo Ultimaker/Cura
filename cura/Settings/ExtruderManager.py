@@ -13,8 +13,12 @@ import UM.Settings.SettingFunction
 #
 #   This keeps a list of extruder stacks for each machine.
 class ExtruderManager(QObject):
-    ##  Signal to notify other components when the list of extruders changes.
+    ##  Signal to notify other components when the list of extruders for a machine definition changes.
     extrudersChanged = pyqtSignal(QVariant)
+
+    ## Signal to notify other components when the global container stack is switched to a definition
+    #  that has different extruders than the previous global container stack
+    globalContainerStackDefinitionChanged = pyqtSignal()
 
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
@@ -25,6 +29,7 @@ class ExtruderManager(QObject):
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs.
         self._active_extruder_index = 0
         UM.Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
+        self._global_container_stack_definition_id = None
         self._addCurrentMachineExtruders()
 
     ##  Gets the unique identifier of the currently active extruder stack.
@@ -141,7 +146,7 @@ class ExtruderManager(QObject):
                     shallow_stack = UM.Settings.ContainerStack(machine_id + "_shallow")
                     shallow_stack.addContainer(machine_definition)
                     extruder_train.setNextStack(shallow_stack)
-                changed = True
+                    changed = True
         if changed:
             self.extrudersChanged.emit(machine_id)
 
@@ -301,6 +306,10 @@ class ExtruderManager(QObject):
 
     def __globalContainerStackChanged(self):
         self._addCurrentMachineExtruders()
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
+            self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
+            self.globalContainerStackDefinitionChanged.emit()
         self.activeExtruderChanged.emit()
 
     ##  Adds the extruders of the currently active machine.
