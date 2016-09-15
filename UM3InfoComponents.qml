@@ -28,7 +28,7 @@ Item
             text: catalog.i18nc("@action:button", "Request Access")
             style: UM.Theme.styles.sidebar_action_button
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-            visible: !base.printerAcceptsCommands && !base.authenticationRequested
+            visible: printerConnected && !base.printerAcceptsCommands && !base.authenticationRequested
         }
 
         Button
