@@ -520,6 +520,8 @@ class MachineManager(QObject):
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.getTop().setProperty(key, "value", new_value)
 
+    ## Set the active material by switching out a container
+    #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
@@ -533,7 +535,9 @@ class MachineManager(QObject):
         if not old_material:
             Logger.log("w", "While trying to set the active material, no material was found to replace it.")
             return
-        if old_quality_changes.getId() == "empty_quality_changes": #Don't want the empty one.
+        if (old_quality_changes.getId() == "empty_quality_changes" or #Don't want the empty one.
+            old_quality_changes.getMetaDataEntry("material") != material_id):  # The quality change is based off a different material; the quality change is probably a custom quality.
+
             old_quality_changes = None
         self.blurSettings.emit()
         old_material.nameChanged.disconnect(self._onMaterialNameChanged)
@@ -551,7 +555,9 @@ class MachineManager(QObject):
 
         if old_quality:
             if old_quality_changes:
-                new_quality = self._updateQualityChangesContainer(old_quality.getMetaDataEntry("quality_type"), old_quality_changes.getMetaDataEntry("name"))
+                new_quality = self._updateQualityChangesContainer(
+                    old_quality.getMetaDataEntry("quality_type"),
+                    preferred_quality_changes_name = old_quality_changes.getMetaDataEntry("name"))
             else:
                 new_quality = self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], old_quality.getName())
         else:
