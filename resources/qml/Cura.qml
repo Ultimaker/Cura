@@ -140,7 +140,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: Cura.ExtrudersModel { }
+                    model: Cura.ExtrudersModel { simpleNames: true }
                     Menu {
                         title: model.name
                         visible: machineExtruderCount.properties.value > 1
