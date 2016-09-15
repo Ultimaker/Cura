@@ -130,6 +130,7 @@ _setting_name_translations = {
     "remove_overlapping_walls_enabled": "travel_compensate_overlapping_walls_enabled",
     "remove_overlapping_walls_x_enabled": "travel_compensate_overlapping_walls_x_enabled",
     "retraction_hop": "retraction_hop_enabled",
+    "skin_overlap": "infill_overlap",
     "skirt_line_width": "skirt_brim_line_width",
     "skirt_minimal_length": "skirt_brim_minimal_length",
     "skirt_speed": "skirt_brim_speed",
@@ -401,8 +402,6 @@ class VersionUpgrade21to22(VersionUpgrade):
                 new_settings[_setting_name_translations[key]] = value
                 continue
             new_settings[key] = value
-        if "infill_overlap" in settings:    # New setting, added in 2.3
-            new_settings["skin_overlap"] = settings["infill_overlap"]
         return new_settings
 
     ##  Translates a setting name for the change from Cura 2.1 to 2.2.
