@@ -390,17 +390,20 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The same dictionary.
     @staticmethod
     def translateSettings(settings):
+        new_settings = {}
         for key, value in settings.items():
             if key in _removed_settings:
-                del settings[key]
-            elif key == "retraction_combing": #Combing was made into an enum instead of a boolean.
-                settings[key] = "off" if (value == "False") else "all"
-            elif key in _setting_name_translations:
-                del settings[key]
-                settings[_setting_name_translations[key]] = value
+                continue
+            if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                new_settings[key] = "off" if (value == "False") else "all"
+                continue
+            if key in _setting_name_translations:
+                new_settings[_setting_name_translations[key]] = value
+                continue
+            new_settings[key] = value
         if "infill_overlap" in settings:    # New setting, added in 2.3
-            settings["skin_overlap"] = settings["infill_overlap"]
-        return settings
+            new_settings["skin_overlap"] = settings["infill_overlap"]
+        return new_settings
 
     ##  Translates a setting name for the change from Cura 2.1 to 2.2.
     #
