@@ -46,6 +46,7 @@ Third party plugins
 * [Post Processing Plugin](https://github.com/nallath/PostProcessingPlugin): Allows for post-processing scripts to run on g-code.
 * [Barbarian Plugin](https://github.com/nallath/BarbarianPlugin): Simple scale tool for imperial to metric.
 * [X3G Writer](https://github.com/Ghostkeeper/X3GWriter): Adds support for exporting X3G files.
+*[Auto orientation](https://github.com/nallath/CuraOrientationPlugin): Calculate the optimal orientation for a model.
 
 Making profiles for other printers
 ----------------------------------
