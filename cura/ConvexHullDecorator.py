@@ -1,8 +1,10 @@
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
-
+from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Math.Polygon import Polygon
 from . import ConvexHullNode
+
+import UM.Settings.ContainerRegistry
 
 import numpy
 
@@ -227,18 +229,15 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Add extra margin depending on adhesion type
         adhesion_type = self._global_stack.getProperty("adhesion_type", "value")
         extra_margin = 0
-        machine_head_coords = numpy.array(
-            self._global_stack.getProperty("machine_head_with_fans_polygon", "value"),
-            numpy.float32)
 
         if adhesion_type == "raft":
-            extra_margin = max(0, self._global_stack.getProperty("raft_margin", "value"))
+            extra_margin = max(0, self._getSettingProperty("raft_margin", "value"))
         elif adhesion_type == "brim":
-            extra_margin = max(0, self._global_stack.getProperty("brim_line_count", "value") * self._global_stack.getProperty("skirt_brim_line_width", "value"))
+            extra_margin = max(0, self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
         elif adhesion_type == "skirt":
             extra_margin = max(
-                0, self._global_stack.getProperty("skirt_gap", "value") +
-                   self._global_stack.getProperty("skirt_line_count", "value") * self._global_stack.getProperty("skirt_brim_line_width", "value"))
+                0, self._getSettingProperty("skirt_gap", "value") +
+                   self._getSettingPropertyy("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
 
         # adjust head_and_fans with extra margin
         if extra_margin > 0:
@@ -268,6 +267,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._global_stack:
             self._global_stack.propertyChanged.disconnect(self._onSettingValueChanged)
             self._global_stack.containersChanged.disconnect(self._onChanged)
+            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_stack.getId())
+            for extruder in extruders:
+                extruder.propertyChanged.disconnect(self._onSettingValueChanged)
 
         self._global_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -275,7 +277,26 @@ class ConvexHullDecorator(SceneNodeDecorator):
             self._global_stack.propertyChanged.connect(self._onSettingValueChanged)
             self._global_stack.containersChanged.connect(self._onChanged)
 
+            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_stack.getId())
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingValueChanged)
+
             self._onChanged()
+
+    ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
+    def _getSettingProperty(self, setting_key, property="value"):
+        multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
+
+        if not multi_extrusion:
+            return self._global_stack.getProperty(setting_key, property)
+
+        extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
+        if extruder_index == "-1":  # If extruder index is -1 use global instead
+            return self._global_stack.getProperty(setting_key, property)
+
+        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
+        return stack.getProperty(setting_key, property)
 
     ## Returns true if node is a descendent or the same as the root node.
     def __isDescendant(self, root, node):
