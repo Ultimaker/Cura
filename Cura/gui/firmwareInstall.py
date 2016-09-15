@@ -41,8 +41,8 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_5_05nozzle':  "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			'lulzbot_TAZ_5_035nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 
-			'lulzbot_TAZ_4_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.1.hex",
-			'lulzbot_TAZ_5_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.1.hex",
+			'lulzbot_TAZ_4_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.2.hex",
+			'lulzbot_TAZ_5_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.2.hex",
 			
 			'lulzbot_TAZ_4_DualV2': "TAZ4-5-Dual-LBHexagon-1.0.0.1.hex",
 			'lulzbot_TAZ_5_DualV2': "TAZ4-5-Dual-LBHexagon-1.0.0.1.hex",
