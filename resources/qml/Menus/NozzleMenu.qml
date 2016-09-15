@@ -12,11 +12,27 @@ Menu
     id: menu
     title: "Nozzle"
 
+    property int extruderIndex: 0
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+
     MenuItem
     {
         id: automaticNozzle
-        text: catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg("[nozzle_name]")
-        visible: false
+        text:
+        {
+            var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
+            return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(nozzleName);
+        }
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex
+        onTriggered:
+        {
+            var hotendId = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
+            var itemIndex = nozzleInstantiator.model.find("name", hotendId);
+            if(itemIndex > -1)
+            {
+                Cura.MachineManager.setActiveVariant(nozzleInstantiator.model.getItem(itemIndex).id)
+            }
+        }
     }
 
     MenuSeparator
@@ -26,6 +42,7 @@ Menu
 
     Instantiator
     {
+        id: nozzleInstantiator
         model: UM.InstanceContainersModel
         {
             filter:

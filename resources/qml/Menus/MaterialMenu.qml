@@ -12,11 +12,32 @@ Menu
     id: menu
     title: "Material"
 
+    property int extruderIndex: 0
+    property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
+
     MenuItem
     {
         id: automaticMaterial
-        text: catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg("[material_name]")
-        visible: false
+        text:
+        {
+            var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
+            return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(materialName);
+        }
+        visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex
+        onTriggered:
+        {
+            var material_id = Cura.MachineManager.printerOutputDevices[0].materialIds[extruderIndex];
+            var items = materialsModel.items;
+            // materialsModel.find cannot be used because we need to look inside the metadata property of items
+            for(var i in items)
+            {
+                if (items[i]["metadata"]["GUID"] == material_id)
+                {
+                    Cura.MachineManager.setActiveMaterial(items[i].id);
+                    break;
+                }
+            }
+        }
     }
 
     MenuSeparator

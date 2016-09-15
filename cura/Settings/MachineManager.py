@@ -124,22 +124,6 @@ class MachineManager(QObject):
         else:
             Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
 
-    def _autoUpdateHotends(self):
-        extruder_manager = ExtruderManager.getInstance()
-        for position in self._auto_hotends_changed:
-            hotend_id = self._auto_hotends_changed[position]
-            old_index = extruder_manager.activeExtruderIndex
-
-            if old_index != int(position):
-                extruder_manager.setActiveExtruderIndex(int(position))
-            else:
-                old_index = None
-            Logger.log("d", "Setting hotend variant of hotend %s to %s" % (position, hotend_id))
-            self.setActiveVariant(hotend_id)
-
-            if old_index is not None:
-                extruder_manager.setActiveExtruderIndex(old_index)
-
     def _onMaterialIdChanged(self, index, material_id):
         if not self._global_container_stack:
             return
@@ -185,6 +169,22 @@ class MachineManager(QObject):
 
             Logger.log("d", "Setting material of hotend %s to %s" % (position, material_id))
             self.setActiveMaterial(material_id)
+
+            if old_index is not None:
+                extruder_manager.setActiveExtruderIndex(old_index)
+
+    def _autoUpdateHotends(self):
+        extruder_manager = ExtruderManager.getInstance()
+        for position in self._auto_hotends_changed:
+            hotend_id = self._auto_hotends_changed[position]
+            old_index = extruder_manager.activeExtruderIndex
+
+            if old_index != int(position):
+                extruder_manager.setActiveExtruderIndex(int(position))
+            else:
+                old_index = None
+            Logger.log("d", "Setting hotend variant of hotend %s to %s" % (position, hotend_id))
+            self.setActiveVariant(hotend_id)
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
