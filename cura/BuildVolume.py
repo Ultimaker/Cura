@@ -22,6 +22,8 @@ catalog = i18nCatalog("cura")
 import numpy
 import copy
 
+import UM.Settings.ContainerRegistry
+
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 10
@@ -256,11 +258,17 @@ class BuildVolume(SceneNode):
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            for extruder in extruders:
+                extruder.propertyChanged.disconnect(self._onSettingPropertyChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
+            extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+            for extruder in extruders:
+                extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
@@ -410,6 +418,21 @@ class BuildVolume(SceneNode):
         self._has_errors = collision
         self._disallowed_areas = areas
 
+    ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
+    def _getSettingProperty(self, setting_key, property = "value"):
+        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
+
+        if not multi_extrusion:
+            return self._global_container_stack.getProperty(setting_key, property)
+
+        extruder_index = self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
+        if extruder_index == "-1":  # If extruder index is -1 use global instead
+            return self._global_container_stack.getProperty(setting_key, property)
+
+        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+        return stack.getProperty(setting_key, property)
+
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
     def _getBedAdhesionSize(self):
         if not self._global_container_stack:
@@ -423,13 +446,13 @@ class BuildVolume(SceneNode):
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt":
-            skirt_distance = container_stack.getProperty("skirt_gap", "value")
-            skirt_line_count = container_stack.getProperty("skirt_line_count", "value")
-            skirt_size = skirt_distance + (skirt_line_count * container_stack.getProperty("skirt_brim_line_width", "value"))
+            skirt_distance = self._getSettingProperty("skirt_gap", "value")
+            skirt_line_count = self._getSettingProperty("skirt_line_count", "value")
+            skirt_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
         elif adhesion_type == "brim":
-            skirt_size = container_stack.getProperty("brim_line_count", "value") * container_stack.getProperty("skirt_brim_line_width", "value")
+            skirt_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
         elif adhesion_type == "raft":
-            skirt_size = container_stack.getProperty("raft_margin", "value")
+            skirt_size = self._getSettingProperty("raft_margin", "value")
 
         if container_stack.getProperty("draft_shield_enabled", "value"):
             skirt_size += container_stack.getProperty("draft_shield_dist", "value")
