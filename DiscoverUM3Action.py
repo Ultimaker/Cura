@@ -21,7 +21,7 @@ class DiscoverUM3Action(MachineAction):
 
         self._network_plugin = None
 
-        self._context = None
+        self._additional_components_context = None
         self._additional_component = None
         self._additional_components_view = None
 
@@ -110,9 +110,9 @@ class DiscoverUM3Action(MachineAction):
         self._additional_component = QQmlComponent(Application.getInstance()._engine, path)
 
         # We need access to engine (although technically we can't)
-        self._context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._context.setContextProperty("manager", self)
-        self._additional_components_view = self._additional_component.create(self._context)
+        self._additional_components_context = QQmlContext(Application.getInstance()._engine.rootContext())
+        self._additional_components_context.setContextProperty("manager", self)
+        self._additional_components_view = self._additional_component.create(self._additional_components_context)
 
         Application.getInstance().addAdditionalComponent("monitorButtons", self._additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
         Application.getInstance().addAdditionalComponent("machinesDetailPane", self._additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))
