@@ -61,8 +61,8 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.20.hex",
 			
 			#Mini
-			'lulzbot_mini':              "Mini-Single-or-Flexystruder-LBHexagon-1.1.0.8.hex",
-			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.1.0.8.hex",
+			'lulzbot_mini':              "Mini-Single-or-Flexystruder-LBHexagon-1.1.0.9.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.1.0.9.hex",
 	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
