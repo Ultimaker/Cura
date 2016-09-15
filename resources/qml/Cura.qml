@@ -140,7 +140,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: Cura.ExtrudersModel { }
+                    model: Cura.ExtrudersModel { simpleNames: true }
                     Menu {
                         title: model.name
                         visible: machineExtruderCount.properties.value > 1
@@ -641,8 +641,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-        //TODO: Support multiple file selection, workaround bug in KDE file dialog
-        //selectMultiple: true
+        selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
@@ -653,7 +652,12 @@ UM.MainWindow
             folder = f;
 
             CuraApplication.setDefaultPath("dialog_load_path", folder);
-            UM.MeshFileHandler.readLocalFile(fileUrl)
+
+            for(var i in fileUrls)
+            {
+                UM.MeshFileHandler.readLocalFile(fileUrls[i])
+            }
+
             var meshName = backgroundItem.getMeshName(fileUrl.toString())
             backgroundItem.hasMesh(decodeURIComponent(meshName))
         }
