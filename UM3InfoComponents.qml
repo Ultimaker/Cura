@@ -97,7 +97,7 @@ Item
                 Repeater
                 {
                     id: nozzleColumn
-                    model: Cura.MachineManager.printerOutputDevices[0].hotendIds
+                    model: printerConnected ? Cura.MachineManager.printerOutputDevices[0].hotendIds : null
                     Label { text: nozzleColumn.model[index] }
                 }
             }
@@ -106,7 +106,7 @@ Item
                 Repeater
                 {
                     id: materialColumn
-                    model: Cura.MachineManager.printerOutputDevices[0].materialNames
+                    model: printerConnected ? Cura.MachineManager.printerOutputDevices[0].materialNames : null
                     Label { text: materialColumn.model[index] }
                 }
             }
