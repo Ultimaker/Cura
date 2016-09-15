@@ -84,12 +84,12 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot()
     def loadConfigurationFromPrinter(self):
         machine_manager = Application.getInstance().getMachineManager()
-        hotendIds = machine_manager.printerOutputDevices[0].hotendIds
-        for index in range(len(hotendIds)):
-            machine_manager.printerOutputDevices[0].hotendIdChanged.emit(index, hotendIds[index])
-        materialIds = machine_manager.printerOutputDevices[0].materialIds
-        for index in range(len(materialIds)):
-            machine_manager.printerOutputDevices[0].materialIdChanged.emit(index, materialIds[index])
+        hotend_ids = machine_manager.printerOutputDevices[0].hotendIds
+        for index in range(len(hotend_ids)):
+            machine_manager.printerOutputDevices[0].hotendIdChanged.emit(index, hotend_ids[index])
+        material_ids = machine_manager.printerOutputDevices[0].materialIds
+        for index in range(len(material_ids)):
+            machine_manager.printerOutputDevices[0].materialIdChanged.emit(index, material_ids[index])
 
     def _createAdditionalComponentsView(self):
         Logger.log("d", "Creating additional ui components for UM3.")
