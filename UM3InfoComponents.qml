@@ -38,7 +38,6 @@ Item
             text: catalog.i18nc("@action:button", "Connect")
             style: UM.Theme.styles.sidebar_action_button
             onClicked: connectActionDialog.show()
-            enabled: true
             visible: !base.printerConnected
         }
     }
@@ -72,7 +71,7 @@ Item
             tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
             text: catalog.i18nc("@action:button", "Request Access")
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-            visible: !base.printerAcceptsCommands && !base.authenticationRequested
+            visible: base.printerConnected && !base.printerAcceptsCommands && !base.authenticationRequested
         }
 
         Row
