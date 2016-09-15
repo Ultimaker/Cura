@@ -9,6 +9,8 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 
 import os.path
 
+import time
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -25,6 +27,9 @@ class DiscoverUM3Action(MachineAction):
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
+        self._min_time_between_restart_discovery = 2
+        self._time_since_last_discovery = time.time() - self._min_time_between_restart_discovery
+
     printersChanged = pyqtSignal()
 
     @pyqtSlot()
@@ -37,10 +42,17 @@ class DiscoverUM3Action(MachineAction):
 
     @pyqtSlot()
     def restartDiscovery(self):
-        if not self._network_plugin:
-            self.startDiscovery()
-        else:
-            self._network_plugin.startDiscovery()
+        # Ensure that there is a bit of time between refresh attempts.
+        # This is a work around for an issue with Qt 5.5.1 up to Qt 5.7 which can segfault if we do this too often.
+        # It's most likely that the QML engine is still creating delegates, where the python side already deleted or
+        # garbage collected the data.
+        # Whatever the case, waiting a bit ensures that it doesn't crash.
+        if time.time() - self._time_since_last_discovery > self._min_time_between_restart_discovery:
+            if not self._network_plugin:
+                self.startDiscovery()
+            else:
+                self._network_plugin.startDiscovery()
+            self._time_since_last_discovery = time.time()
 
     def _onPrinterDiscoveryChanged(self, *args):
         self.printersChanged.emit()
