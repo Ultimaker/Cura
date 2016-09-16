@@ -816,6 +816,15 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": true
+                },"outer_inset_first": 
+                {
+                    "label": "Print Outer Inset First",
+                    "description": "Prints insets in order of outside to inside when selected. This can help improve dimensional accuracy in x and y when using a high viscosity plastic like ABS however it can decrease outer surface print quality, especially overhangs.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 },
                 "alternate_extra_perimeter":
                 {
@@ -3773,16 +3782,6 @@
                             "settable_per_mesh": true
                         }
                     }
-                },
-                "outer_inset_first": 
-                {
-                    "label": "Print Outer Inset First",
-                    "description": "Prints insets in order of outside to inside when selected. This can help improve dimensional accuracy in x and y when using a high viscosity plastic like ABS however it can decrease outer surface print quality, especially overhangs.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
                 },
                 "wireframe_enabled":
                 {
