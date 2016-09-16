@@ -40,6 +40,10 @@ class SettingInheritanceManager(QObject):
             self._settings_with_inheritance_warning.remove(key)
             self.settingsWithIntheritanceChanged.emit()
 
+    @pyqtSlot()
+    def forceUpdate(self):
+        self._update()
+
     def _onActiveExtruderChanged(self):
         if self._active_container_stack:
             self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)

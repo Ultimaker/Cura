@@ -33,6 +33,7 @@ ScrollView
             exclude: ["machine_settings"]
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
+            onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
         }
 
         delegate: Loader
