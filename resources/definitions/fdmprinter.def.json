@@ -819,7 +819,7 @@
                 },
                 "outer_inset_first": 
                 {
-                    "label": "Print Outer Wall Before Inner Walls",
+                    "label": "Outer Wall Before Inner Walls",
                     "description": "Prints insets in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
                     "type": "bool",
                     "default_value": false,
