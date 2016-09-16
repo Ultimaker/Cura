@@ -398,6 +398,9 @@ class VersionUpgrade21to22(VersionUpgrade):
             if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
                 new_settings[key] = "off" if (value == "False") else "all"
                 continue
+            if key == "cool_fan_full_layer": #Layer counting was made one-indexed.
+                new_settings[key] = str(int(value) + 1)
+                continue
             if key in _setting_name_translations:
                 new_settings[_setting_name_translations[key]] = value
                 continue
