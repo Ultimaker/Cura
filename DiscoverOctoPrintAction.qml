@@ -116,7 +116,7 @@ Cura.MachineAction
             Column
             {
                 width: parent.width * 0.5
-                visible: base.selectedInstance
+                visible: base.selectedInstance != null
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
                 {
@@ -168,9 +168,15 @@ Cura.MachineAction
                     }
                 }
 
+                Label
+                {
+                    text: catalog.i18nc("@label", "Please enter the API key to access OctoPrint above. You can get the OctoPrint API key through the OctoPrint web page.")
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                }
+
                 Flow
                 {
-                    visible: base.selectedInstance
                     spacing: UM.Theme.getSize("default_margin").width
 
                     Button
@@ -182,6 +188,7 @@ Cura.MachineAction
                     Button
                     {
                         text: catalog.i18nc("@action:button", "Connect")
+                        enabled: apiKey.text != ""
                         onClicked:
                         {
                             manager.setKey(base.selectedInstance.getKey())
