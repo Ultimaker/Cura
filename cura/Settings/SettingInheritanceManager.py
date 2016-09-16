@@ -126,17 +126,22 @@ class SettingInheritanceManager(QObject):
         while stack:
             containers.extend(stack.getContainers())
             stack = stack.getNextStack()
-
+        has_non_function_value = False
         for container in containers:
             try:
-                has_setting_function = isinstance(container.getProperty(key, "value"), UM.Settings.SettingFunction)
+                value = container.getProperty(key, "value")
+                if value is not None:
+                    has_setting_function = isinstance(value, UM.Settings.SettingFunction)
+                    if has_setting_function is False:
+                        has_non_function_value = True
+                        continue
             except AttributeError:
                 continue
             if has_setting_function:
-                break  # There is a setting function somehwere, stop looking deeper.
+                break  # There is a setting function somewhere, stop looking deeper.
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        return has_setting_function and not isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction)
+        return has_setting_function and not isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction) and has_non_function_value
 
     def _update(self):
         self._settings_with_inheritance_warning = []  # Reset previous data.
