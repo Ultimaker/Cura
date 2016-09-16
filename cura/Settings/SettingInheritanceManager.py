@@ -22,6 +22,18 @@ class SettingInheritanceManager(QObject):
     def test(self):
         pass
 
+    ##  Get the keys of all children settings with an override.
+    @pyqtSlot(str, result = "QStringList")
+    def getChildrenKeysWithOverride(self, key):
+        definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
+        if not definitions:
+            return
+        result = []
+        for key in definitions[0].getAllKeys():
+            if key in self._settings_with_inheritance_warning:
+                result.append(key)
+        return result
+
     def _onActiveExtruderChanged(self):
         if self._active_container_stack:
             self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)

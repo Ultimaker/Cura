@@ -17,12 +17,10 @@ Button {
     signal showTooltip(string text);
     signal hideTooltip();
     signal contextMenuRequested()
-    signal showAllHiddenInheritedSettings()
+    signal showAllHiddenInheritedSettings(string category_id)
 
     text: definition.label
     iconSource: UM.Theme.getIcon(definition.icon)
-
-
 
     checkable: true
     checked: definition.expanded
@@ -69,7 +67,7 @@ Button {
 
         onClicked:
         {
-            base.showAllHiddenInheritedSettings()
+            base.showAllHiddenInheritedSettings(definition.key)
         }
 
         color: UM.Theme.getColor("setting_control_button")

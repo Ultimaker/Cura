@@ -149,6 +149,14 @@ ScrollView
                 }
                 onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
                 onHideTooltip: base.hideTooltip()
+                onShowAllHiddenInheritedSettings:
+                {
+                    var test = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
+                    for(var i = 0; i < test.length; i++)
+                    {
+                        definitionsModel.setVisible(test[i], true)
+                    }
+                }
             }
         }
 

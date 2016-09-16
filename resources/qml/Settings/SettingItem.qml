@@ -34,7 +34,7 @@ Item {
     signal contextMenuRequested()
     signal showTooltip(string text);
     signal hideTooltip();
-
+    signal showAllHiddenInheritedSettings(string category_id)
     property string tooltipText:
     {
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
