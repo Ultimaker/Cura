@@ -5,6 +5,7 @@ install(FILES
     __init__.py
     DiscoverOctoPrintAction.py
     DiscoverOctoPrintAction.qml
+    OctoPrintComponents.qml
     OctoPrintOutputDevice.py
     OctoPrintOutputDevicePlugin.py
     LICENSE
