@@ -3307,7 +3307,7 @@
                     "type": "bool",
                     "enabled": "machine_extruder_count > 1",
                     "default_value": false,
-                    "resolve": "max(extruderValues('prime_tower_enable'))",
+                    "resolve": "any(extruderValues('prime_tower_enable'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
