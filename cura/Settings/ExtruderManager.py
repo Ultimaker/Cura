@@ -344,7 +344,7 @@ class ExtruderManager(QObject):
     #   \param key The key of the setting to retieve values for.
     #
     #   \return String representing the extruder values
-    @pyqtSlot(str, result="QList<int>")
+    @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key):
         return ExtruderManager.getExtruderValues(key)
 
