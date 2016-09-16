@@ -8,7 +8,7 @@ from UM.Message import Message
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply
-from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QUrl, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, QCoreApplication
 from PyQt5.QtGui import QImage, QDesktopServices
 
 import json
@@ -93,6 +93,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._last_response_time = None
         self._response_timeout_time = 5
+        self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
+        self._recreate_network_manager_count = 1
 
     def getProperties(self):
         return self._properties
@@ -129,6 +131,53 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._image_reply = self._manager.get(self._image_request)
 
     def _update(self):
+        if self._last_response_time:
+            time_since_last_response = time() - self._last_response_time
+        else:
+            time_since_last_response = 0
+
+        # Connection is in timeout, check if we need to re-start the connection.
+        # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
+        # Re-creating the QNetworkManager seems to fix this issue.
+        if self._last_response_time and self._connection_state_before_timeout:
+            if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
+                self._recreate_network_manager_count += 1
+                # It can happen that we had a very long timeout (multiple times the recreate time).
+                # In that case we should jump through the point that the next update won't be right away.
+                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
+                    self._recreate_network_manager_count += 1
+                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", time_since_last_response)
+                self._createNetworkManager()
+                return
+
+        # Check if we have an connection in the first place.
+        if not self._manager.networkAccessible():
+            if not self._connection_state_before_timeout:
+                Logger.log("d", "The network connection seems to be disabled. Going into timeout mode")
+                self._connection_state_before_timeout = self._connection_state
+                self.setConnectionState(ConnectionState.error)
+                self._connection_message = Message(i18n_catalog.i18nc("@info:status",
+                                                                      "The connection with the network was lost."))
+                self._connection_message.show()
+                # Check if we were uploading something. Abort if this is the case.
+                # Some operating systems handle this themselves, others give weird issues.
+                try:
+                    if self._post_reply:
+                        Logger.log("d", "Stopping post upload because the connection was lost.")
+                        try:
+                            self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
+                        except TypeError:
+                            pass  # The disconnection can fail on mac in some cases. Ignore that.
+
+                        self._post_reply.abort()
+                        self._progress_message.hide()
+                except RuntimeError:
+                    self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
+            return
+        else:
+            if not self._connection_state_before_timeout:
+                self._recreate_network_manager_count = 1
+
         # Check that we aren't in a timeout state
         if self._last_response_time and not self._connection_state_before_timeout:
             if time() - self._last_response_time > self._response_timeout_time:
@@ -150,6 +199,13 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._job_request = QNetworkRequest(url)
         self._job_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
         self._job_reply = self._manager.get(self._job_request)
+
+    def _createNetworkManager(self):
+        if self._manager:
+            self._manager.finished.disconnect(self._onRequestFinished)
+
+        self._manager = QNetworkAccessManager()
+        self._manager.finished.connect(self._onRequestFinished)
 
     def close(self):
         self._updateJobState("")
@@ -174,6 +230,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from the instance
     def connect(self):
+        #self.close()  # Ensure that previous connection (if any) is killed.
+
+        self._createNetworkManager()
+
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         self._update_camera()
@@ -182,6 +242,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._camera_timer.start()
         self._last_response_time = None
         self.setAcceptsCommands(False)
+        self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connecting to OctoPrint on {0}").format(self._key))
 
     ##  Stop requesting data from the instance
     def disconnect(self):
@@ -193,6 +254,9 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     @pyqtProperty(QUrl, notify = newImage)
     def cameraImage(self):
         self._camera_image_id += 1
+        # There is an image provider that is called "camera". In order to ensure that the image qml object, that
+        # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
+        # as new (instead of relying on cached version and thus forces an update.
         temp = "image://camera/" + str(self._camera_image_id)
         return QUrl(temp, QUrl.TolerantMode)
 
@@ -228,8 +292,13 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
             ## Mash the data into single string
             single_string_file_data = ""
+            last_process_events = time()
             for line in self._gcode:
                 single_string_file_data += line
+                if time() > last_process_events + 0.05:
+                    # Ensure that the GUI keeps updated at least 20 times per second.
+                    QCoreApplication.processEvents()
+                    last_process_events = time()
 
             file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
 
@@ -339,7 +408,9 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if "printer" in reply.url().toString():  # Status update from /printer.
                 if http_status_code == 200:
-                    self.setAcceptsCommands(True)
+                    if not self.acceptsCommands:
+                        self.setAcceptsCommands(True)
+                        self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected to OctoPrint on {0}").format(self._key))
 
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
@@ -376,6 +447,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                     self._updateJobState(job_state)
                 elif http_status_code == 401:
                     self.setAcceptsCommands(False)
+                    self.setConnectionText(i18n_catalog.i18nc("@info:status", "OctoPrint on {0} does not allow access to print").format(self._key))
                 else:
                     pass  # TODO: Handle errors
 
@@ -438,9 +510,14 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
+            # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
+            # timeout responses if this happens.
+            self._last_response_time = time()
+
             progress = bytes_sent / bytes_total * 100
             if progress < 100:
-                self._progress_message.setProgress(progress)
+                if progress > self._progress_message.getProgress():
+                    self._progress_message.setProgress(progress)
             else:
                 self._progress_message.hide()
                 self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Storing data on OctoPrint"), 0, False, -1)
