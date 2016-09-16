@@ -117,14 +117,11 @@ class SettingInheritanceManager(QObject):
             override = self._settingIsOverwritingInheritance(setting_key)
             if override:
                 self._settings_with_inheritance_warning.append(setting_key)
-            definitions = self._global_container_stack.getBottom().findDefinitions(key=setting_key)
-            parent = definitions[0].parent
-            if parent is not None and override:
-                while parent.parent is not None:
-                    parent = parent.parent
-                # Add the topmost container as well (if this wasn't already the case)
-                if parent.key not in self._settings_with_inheritance_warning:
-                    self._settings_with_inheritance_warning.append(parent.key)
+
+        for category in self._global_container_stack.getBottom().findDefinitions(type = "category"):
+            if self._recursiveCheck(category):
+                self._settings_with_inheritance_warning.append(category.key)
+
         self.settingsWithIntheritanceChanged.emit()
 
     def _onGlobalContainerChanged(self):
