@@ -10,12 +10,12 @@ class SettingInheritanceManager(QObject):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._global_container_stack = None
         self._onGlobalContainerChanged()
-
+        self._settings_with_inheritance_warning = []
         self._active_container_stack = None
         cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
-        self._settings_with_inheritance_warning = []
+
 
     settingsWithIntheritanceChanged = pyqtSignal()
 
@@ -36,6 +36,7 @@ class SettingInheritanceManager(QObject):
             self._active_container_stack = new_active_stack
             self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
+
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value" and self._global_container_stack:
