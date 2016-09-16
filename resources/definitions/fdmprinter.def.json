@@ -2228,10 +2228,10 @@
                             "label": "Regular Fan Speed at Layer",
                             "description": "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
                             "type": "int",
-                            "default_value": 1,
-                            "minimum_value": "0",
+                            "default_value": 2,
+                            "minimum_value": "1",
                             "maximum_value_warning": "100",
-                            "value": "max(0, int(math.floor((cool_fan_full_at_height - layer_height_0) / layer_height) + 2))",
+                            "value": "max(1, int(math.floor((cool_fan_full_at_height - layer_height_0) / layer_height) + 2))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
