@@ -2231,7 +2231,7 @@
                             "default_value": 1,
                             "minimum_value": "0",
                             "maximum_value_warning": "100",
-                            "value": "max(0, int(round((cool_fan_full_at_height - layer_height_0) / layer_height, 0)))",
+                            "value": "max(0, int(math.floor((cool_fan_full_at_height - layer_height_0) / layer_height) + 1))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }

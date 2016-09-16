@@ -207,6 +207,7 @@ UM.ManagementPage
             anchors.topMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
+            visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
 
             Component.onCompleted:
             {
