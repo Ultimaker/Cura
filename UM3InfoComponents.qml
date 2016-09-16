@@ -10,7 +10,7 @@ Item
 {
     id: base
 
-    property bool isUM3: Cura.MachineManager.activeDefinitionId == "ultimaker3"
+    property bool isUM3: Cura.MachineManager.activeQualityDefinitionId == "ultimaker3"
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property bool authenticationRequested: printerConnected && Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 // AuthState.AuthenticationRequested
@@ -28,7 +28,7 @@ Item
             text: catalog.i18nc("@action:button", "Request Access")
             style: UM.Theme.styles.sidebar_action_button
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-            visible: !base.printerAcceptsCommands && !base.authenticationRequested
+            visible: printerConnected && !printerAcceptsCommands && !authenticationRequested
         }
 
         Button
@@ -38,8 +38,7 @@ Item
             text: catalog.i18nc("@action:button", "Connect")
             style: UM.Theme.styles.sidebar_action_button
             onClicked: connectActionDialog.show()
-            enabled: true
-            visible: !base.printerConnected
+            visible: !printerConnected
         }
     }
 
@@ -72,12 +71,12 @@ Item
             tooltip: catalog.i18nc("@info:tooltip", "Send access request to the printer")
             text: catalog.i18nc("@action:button", "Request Access")
             onClicked: Cura.MachineManager.printerOutputDevices[0].requestAuthentication()
-            visible: !base.printerAcceptsCommands && !base.authenticationRequested
+            visible: printerConnected && !printerAcceptsCommands && !authenticationRequested
         }
 
         Row
         {
-            visible: base.printerConnected
+            visible: printerConnected
             spacing: UM.Theme.getSize("default_margin").width
 
             anchors.left: parent.left
@@ -97,7 +96,7 @@ Item
                 Repeater
                 {
                     id: nozzleColumn
-                    model: Cura.MachineManager.printerOutputDevices[0].hotendIds
+                    model: printerConnected ? Cura.MachineManager.printerOutputDevices[0].hotendIds : null
                     Label { text: nozzleColumn.model[index] }
                 }
             }
@@ -106,7 +105,7 @@ Item
                 Repeater
                 {
                     id: materialColumn
-                    model: Cura.MachineManager.printerOutputDevices[0].materialNames
+                    model: printerConnected ? Cura.MachineManager.printerOutputDevices[0].materialNames : null
                     Label { text: materialColumn.model[index] }
                 }
             }
@@ -116,7 +115,7 @@ Item
         {
             tooltip: catalog.i18nc("@info:tooltip", "Load the configuration of the printer into Cura")
             text: catalog.i18nc("@action:button", "Activate Configuration")
-            visible: base.printerConnected
+            visible: printerConnected
             onClicked: manager.loadConfigurationFromPrinter()
         }
     }
