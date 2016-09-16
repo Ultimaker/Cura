@@ -98,6 +98,10 @@ class SettingInheritanceManager(QObject):
         has_user_state = self._active_container_stack.getProperty(key, "state") == UM.Settings.InstanceState.User
         if not has_user_state:
             return False
+
+        if not self._active_container_stack.getProperty(key, "enabled"):
+            return False
+        
         while stack:
             containers.extend(stack.getContainers())
             stack = stack.getNextStack()
