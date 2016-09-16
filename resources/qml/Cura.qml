@@ -22,7 +22,6 @@ UM.MainWindow
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-
         // Workaround silly issues with QML Action's shortcut property.
         //
         // Currently, there is no way to define shortcuts as "Application Shortcut".

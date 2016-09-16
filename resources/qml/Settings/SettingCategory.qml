@@ -28,7 +28,6 @@ Button {
     checked: definition.expanded
 
     onClicked: { forceActiveFocus(); definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key) }
-    Component.onCompleted: print(definition.label, propertyProvider.isValueUsed)
     UM.SimpleButton
     {
         id: settingsButton
@@ -60,7 +59,11 @@ Button {
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
 
-        visible: true //false //hiddenValuesCount > 0
+        visible:
+        {
+            return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+        }
+
         height: parent.height / 2
         width: height
 
