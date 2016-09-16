@@ -87,7 +87,8 @@ class SliceInfo(Extension):
             material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
 
             # TODO: Send material per extruder instead of mashing it on a pile
-            material_used = math.pi * material_radius * material_radius * sum(print_information.materialLengths) #Volume of all materials used
+            material_used = [str(math.pi * material_radius * material_radius * material_length) for material_length in print_information.materialLengths]
+            material_used = ",".join(material_used)
 
             # Get model information (bounding boxes, hashes and transformation matrix)
             models_info = []
