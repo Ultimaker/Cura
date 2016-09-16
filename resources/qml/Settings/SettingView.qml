@@ -151,11 +151,12 @@ ScrollView
                 onHideTooltip: base.hideTooltip()
                 onShowAllHiddenInheritedSettings:
                 {
-                    var test = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
-                    for(var i = 0; i < test.length; i++)
+                    var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
+                    for(var i = 0; i < children_with_override.length; i++)
                     {
-                        definitionsModel.setVisible(test[i], true)
+                        definitionsModel.setVisible(children_with_override[i], true)
                     }
+                    Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                 }
             }
         }

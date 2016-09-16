@@ -59,7 +59,19 @@ Button {
 
         visible:
         {
-            return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+            if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0)
+            {
+                var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(definition.key)
+                for(var i = 0; i < children_with_override.length; i++)
+                {
+                    if(!settingDefinitionsModel.getVisible(children_with_override[i]))
+                    {
+                        return true
+                    }
+                }
+                return false
+            }
+            return false
         }
 
         height: parent.height / 2

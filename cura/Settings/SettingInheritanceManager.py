@@ -34,6 +34,12 @@ class SettingInheritanceManager(QObject):
                 result.append(key)
         return result
 
+    @pyqtSlot(str)
+    def manualRemoveOverride(self, key):
+        if key in self._settings_with_inheritance_warning:
+            self._settings_with_inheritance_warning.remove(key)
+            self.settingsWithIntheritanceChanged.emit()
+
     def _onActiveExtruderChanged(self):
         if self._active_container_stack:
             self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
