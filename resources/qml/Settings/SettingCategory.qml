@@ -17,15 +17,18 @@ Button {
     signal showTooltip(string text);
     signal hideTooltip();
     signal contextMenuRequested()
+    signal showAllHiddenInheritedSettings()
 
     text: definition.label
     iconSource: UM.Theme.getIcon(definition.icon)
+
+
 
     checkable: true
     checked: definition.expanded
 
     onClicked: { forceActiveFocus(); definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key) }
-
+    Component.onCompleted: print(definition.label, propertyProvider.isValueUsed)
     UM.SimpleButton
     {
         id: settingsButton
@@ -57,7 +60,7 @@ Button {
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
 
-        visible: false //hiddenValuesCount > 0
+        visible: true //false //hiddenValuesCount > 0
         height: parent.height / 2
         width: height
 

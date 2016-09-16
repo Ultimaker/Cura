@@ -11,3 +11,4 @@ from .MachineManager import MachineManager
 from .MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from .SettingOverrideDecorator import SettingOverrideDecorator
 from .QualitySettingsModel import QualitySettingsModel
+from .SettingInheritanceManager import SettingInheritanceManager

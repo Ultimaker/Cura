@@ -122,6 +122,7 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._setting_inheritance_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -426,7 +427,7 @@ class CuraApplication(QtApplication):
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         cura.Settings.ExtruderManager.getInstance()
         qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
-
+        qmlRegisterSingletonType(cura.Settings.SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
@@ -448,6 +449,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = cura.Settings.MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getSettingInheritanceManager(self, *args):
+        if self._setting_inheritance_manager is None:
+            self._setting_inheritance_manager = cura.Settings.SettingInheritanceManager.createSettingInheritanceManager()
+        return self._setting_inheritance_manager
 
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
