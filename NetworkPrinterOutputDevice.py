@@ -297,7 +297,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 if self._progress_message:
                     self._progress_message.hide()
-                    
+
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
                 try:
@@ -309,6 +309,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             pass  # The disconnection can fail on mac in some cases. Ignore that.
 
                         self._post_reply.abort()
+                        self._post_reply = None
                 except RuntimeError:
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
             return
@@ -339,6 +340,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             pass  # The disconnection can fail on mac in some cases. Ignore that.
 
                         self._post_reply.abort()
+                        self._post_reply = None
                 except RuntimeError:
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
                 self.setConnectionState(ConnectionState.error)
