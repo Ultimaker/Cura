@@ -120,6 +120,10 @@ class DiscoverOctoPrintAction(MachineAction):
         # We need access to engine (although technically we can't)
         self._additional_components_context = QQmlContext(Application.getInstance()._engine.rootContext())
         self._additional_components_context.setContextProperty("manager", self)
+
         self._additional_components_view = self._additional_component.create(self._additional_components_context)
+        if not self._additional_components_view:
+            Logger.log("w", "Could not create additional components for OctoPrint-connected printers.")
+            return
 
         Application.getInstance().addAdditionalComponent("monitorButtons", self._additional_components_view.findChild(QObject, "openOctoPrintButton"))
