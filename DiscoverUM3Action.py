@@ -27,7 +27,7 @@ class DiscoverUM3Action(MachineAction):
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
-        self._min_time_between_restart_discovery = 5
+        self._min_time_between_restart_discovery = 1
         self._time_since_last_discovery = time.time() - self._min_time_between_restart_discovery
 
     printersChanged = pyqtSignal()

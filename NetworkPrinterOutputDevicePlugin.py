@@ -41,7 +41,6 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             self._browser = None
             self._old_printers = [printer_name for printer_name in self._printers]
             self._printers = {}
-        self._zero_conf.__init__()
 
         self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
