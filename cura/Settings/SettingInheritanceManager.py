@@ -1,10 +1,17 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 import UM.Settings
 from UM.Application import Application
 import cura.Settings
 
 
-
+##    The settingInheritance manager is responsible for checking each setting in order to see if one of the "deeper"
+#     containers has a setting function and the topmost one with a value has a value. We need to have this check
+#     because some profiles tend to have 'hardcoded' values that break our inheritance. A good example of that are the
+#     speed settings. If all the children of print_speed have a single value override, changing the speed won't
+#     actually do anything, as only the 'leaf' settings are used by the engine.
 class SettingInheritanceManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -17,10 +24,6 @@ class SettingInheritanceManager(QObject):
         self._onActiveExtruderChanged()
 
     settingsWithIntheritanceChanged = pyqtSignal()
-
-    @pyqtSlot()
-    def test(self):
-        pass
 
     ##  Get the keys of all children settings with an override.
     @pyqtSlot(str, result = "QStringList")
@@ -105,7 +108,6 @@ class SettingInheritanceManager(QObject):
                 if self._recursiveCheck(child):
                     return True
         return False
-
 
     @pyqtProperty("QVariantList", notify = settingsWithIntheritanceChanged)
     def settingsWithInheritanceWarning(self):
