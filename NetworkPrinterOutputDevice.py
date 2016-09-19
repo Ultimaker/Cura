@@ -294,6 +294,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status",
                                                                       "The connection with the network was lost."))
                 self._connection_message.show()
+
+                if self._progress_message:
+                    self._progress_message.hide()
+                    
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
                 try:
@@ -305,7 +309,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             pass  # The disconnection can fail on mac in some cases. Ignore that.
 
                         self._post_reply.abort()
-                        self._progress_message.hide()
                 except RuntimeError:
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
             return
@@ -321,6 +324,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._connection_state_before_timeout = self._connection_state
                 self._connection_message = Message(i18n_catalog.i18nc("@info:status", "The connection with the printer was lost. Check your printer to see if it is connected."))
                 self._connection_message.show()
+
+                if self._progress_message:
+                    self._progress_message.hide()
+
                 # Check if we were uploading something. Abort if this is the case.
                 # Some operating systems handle this themselves, others give weird issues.
                 try:
@@ -332,7 +339,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             pass  # The disconnection can fail on mac in some cases. Ignore that.
 
                         self._post_reply.abort()
-                        self._progress_message.hide()
                 except RuntimeError:
                     self._post_reply = None  # It can happen that the wrapped c++ object is already deleted.
                 self.setConnectionState(ConnectionState.error)
