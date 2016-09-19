@@ -21,9 +21,9 @@ class DiscoverUM3Action(MachineAction):
 
         self._network_plugin = None
 
-        self._additional_components_context = None
-        self._additional_component = None
-        self._additional_components_view = None
+        self.__additional_components_context = None
+        self.__additional_component = None
+        self.__additional_components_view = None
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
@@ -107,12 +107,12 @@ class DiscoverUM3Action(MachineAction):
         Logger.log("d", "Creating additional ui components for UM3.")
 
         path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("JediWifiPrintingPlugin"), "UM3InfoComponents.qml"))
-        self._additional_component = QQmlComponent(Application.getInstance()._engine, path)
+        self.__additional_component = QQmlComponent(Application.getInstance()._engine, path)
 
         # We need access to engine (although technically we can't)
-        self._additional_components_context = QQmlContext(Application.getInstance()._engine.rootContext())
-        self._additional_components_context.setContextProperty("manager", self)
-        self._additional_components_view = self._additional_component.create(self._additional_components_context)
+        self.__additional_components_context = QQmlContext(Application.getInstance()._engine.rootContext())
+        self.__additional_components_context.setContextProperty("manager", self)
+        self.__additional_components_view = self.__additional_component.create(self.__additional_components_context)
 
-        Application.getInstance().addAdditionalComponent("monitorButtons", self._additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
-        Application.getInstance().addAdditionalComponent("machinesDetailPane", self._additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))
+        Application.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
+        Application.getInstance().addAdditionalComponent("machinesDetailPane", self.__additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))
