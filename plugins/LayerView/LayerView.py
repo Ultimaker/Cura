@@ -71,6 +71,7 @@ class LayerView(View):
 
     def getActivity(self):
         return self._activity
+
     def getLayerPass(self):
         if not self._layer_pass:
             # Currently the RenderPass constructor requires a size > 0
@@ -90,9 +91,6 @@ class LayerView(View):
         return self._max_layers
 
     busyChanged = Signal()
-
-    def getActivity(self):
-        return self._activity
 
     def isBusy(self):
         return self._busy
@@ -194,10 +192,6 @@ class LayerView(View):
             Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
             self._onGlobalStackChanged()
 
-        if event.type == Event.ViewActivateEvent:
-            # Make sure the LayerPass is created
-            self.getLayerPass()
-
             if not self._layerview_composite_shader:
                 self._layerview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layerview_composite.shader"))
 
@@ -217,6 +211,7 @@ class LayerView(View):
 
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
+
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -233,7 +228,6 @@ class LayerView(View):
                 self._wireprint_warning_message.show()
             else:
                 self._wireprint_warning_message.hide()
-
 
     def _startUpdateTopLayers(self):
         if self._top_layers_job:
