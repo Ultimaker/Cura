@@ -128,6 +128,10 @@ class SettingInheritanceManager(QObject):
         if not self._active_container_stack.getProperty(key, "enabled"):
             return False
 
+        ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
+        if isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
+            return False
+
         ##  Mash all containers for all the stacks together.
         while stack:
             containers.extend(stack.getContainers())
@@ -146,8 +150,7 @@ class SettingInheritanceManager(QObject):
             if has_setting_function:
                 break  # There is a setting function somewhere, stop looking deeper.
 
-        ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        return has_setting_function and not isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction) and has_non_function_value
+        return has_setting_function and has_non_function_value
 
     def _update(self):
         self._settings_with_inheritance_warning = []  # Reset previous data.
