@@ -163,7 +163,7 @@ class ProcessSlicedLayersJob(Job):
 
         view = Application.getInstance().getController().getActiveView()
         if view.getPluginId() == "LayerView":
-            view.resetLayerData()
+            view.getLayerPass().resetLayerData()
 
         if self._progress:
             self._progress.hide()
