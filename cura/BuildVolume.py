@@ -367,8 +367,6 @@ class BuildVolume(SceneNode):
 
                 areas.append(poly)
 
-        if self._prime_tower_area:
-            self._prime_tower_area = self._prime_tower_area.getMinkowskiHull(Polygon(approximatedCircleVertices(bed_adhesion_size)))
 
         # Add the skirt areas around the borders of the build plate.
         if bed_adhesion_size > 0:
@@ -409,6 +407,8 @@ class BuildVolume(SceneNode):
         collision = False
         if self._prime_tower_area:
             for area in areas:
+                # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
+                self._prime_tower_area = self._prime_tower_area.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
                 if self._prime_tower_area.intersectsPolygon(area) is not None:
                     collision = True
                     break
