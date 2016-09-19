@@ -123,12 +123,10 @@ class LayerPass(RenderPass):
         self.bind()
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay)
-        tool_handle_has_items = False
 
         for node in DepthFirstIterator(self._scene.getRoot()):
             if isinstance(node, ToolHandle):
                 tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
-                tool_handle_has_items = True
 
             elif isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
                 layer_data = node.callDecoration("getLayerData")
@@ -152,21 +150,18 @@ class LayerPass(RenderPass):
 
                 # Create a new batch that is not range-limited
                 batch = RenderBatch(self._shader, type = RenderBatch.RenderType.Solid)
-                batch_has_items = False
 
                 if self._current_layer_mesh:
-                    batch_has_items = True
                     batch.addItem(node.getWorldTransformation(), self._current_layer_mesh)
 
                 if self._current_layer_jumps:
-                    batch_has_items = True
                     batch.addItem(node.getWorldTransformation(), self._current_layer_jumps)
 
-                if batch_has_items:
+                if len(batch.items) > 0:
                     batch.render(self._scene.getActiveCamera())
 
         # Render toolhandles on top of the layerview
-        if tool_handle_has_items:
+        if len(tool_handle_batch.items) > 0:
             tool_handle_batch.render(self._scene.getActiveCamera())
 
         self.release()
