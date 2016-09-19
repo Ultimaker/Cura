@@ -1,10 +1,17 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 import UM.Settings
 from UM.Application import Application
 import cura.Settings
 
 
-
+##    The settingInheritance manager is responsible for checking each setting in order to see if one of the "deeper"
+#     containers has a setting function and the topmost one with a value has a value. We need to have this check
+#     because some profiles tend to have 'hardcoded' values that break our inheritance. A good example of that are the
+#     speed settings. If all the children of print_speed have a single value override, changing the speed won't
+#     actually do anything, as only the 'leaf' settings are used by the engine.
 class SettingInheritanceManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -17,10 +24,6 @@ class SettingInheritanceManager(QObject):
         self._onActiveExtruderChanged()
 
     settingsWithIntheritanceChanged = pyqtSignal()
-
-    @pyqtSlot()
-    def test(self):
-        pass
 
     ##  Get the keys of all children settings with an override.
     @pyqtSlot(str, result = "QStringList")
@@ -106,7 +109,6 @@ class SettingInheritanceManager(QObject):
                     return True
         return False
 
-
     @pyqtProperty("QVariantList", notify = settingsWithIntheritanceChanged)
     def settingsWithInheritanceWarning(self):
         return self._settings_with_inheritance_warning
@@ -124,6 +126,10 @@ class SettingInheritanceManager(QObject):
 
         ## If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
         if not self._active_container_stack.getProperty(key, "enabled"):
+            return False
+
+        ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
+        if isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.
@@ -144,8 +150,7 @@ class SettingInheritanceManager(QObject):
             if has_setting_function:
                 break  # There is a setting function somewhere, stop looking deeper.
 
-        ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        return has_setting_function and not isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction) and has_non_function_value
+        return has_setting_function and has_non_function_value
 
     def _update(self):
         self._settings_with_inheritance_warning = []  # Reset previous data.
