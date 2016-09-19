@@ -147,7 +147,7 @@ Cura.MachineAction
 
                         ComboBox
                         {
-                            model: ["RepRap (Marlin/Sprinter)", "UltiGCode"]
+                            model: ["RepRap (Marlin/Sprinter)", "UltiGCode", "Repetier"]
                             currentIndex: machineGCodeFlavorProvider.properties.value != model[1] ? 0 : 1
                             onActivated:
                             {
