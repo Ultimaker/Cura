@@ -16,10 +16,6 @@ fragment =
     uniform sampler2D u_layer0;
     uniform sampler2D u_layer1;
     uniform sampler2D u_layer2;
-    uniform sampler2D u_layer3;
-
-    uniform float u_imageWidth;
-    uniform float u_imageHeight;
 
     uniform vec2 u_offset[9];
 
@@ -42,11 +38,13 @@ fragment =
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
 
         vec4 result = u_background_color;
-        vec4 layer0 = texture2D(u_layer0, v_uvs);
-        vec4 layer2 = texture2D(u_layer2, v_uvs);
 
-        result = layer0 * layer0.a + result * (1.0 - layer0.a);
-        result = layer2 * layer2.a + result * (1.0 - layer2.a);
+        vec4 main_layer = texture2D(u_layer0, v_uvs);
+        vec4 selection_layer = texture2D(u_layer1, v_uvs);
+        vec4 layerview_layer = texture2D(u_layer2, v_uvs);
+
+        result = main_layer * main_layer.a + result * (1.0 - main_layer.a);
+        result = layerview_layer * layerview_layer.a + result * (1.0 - layerview_layer.a);
 
         vec4 sum = vec4(0.0);
         for (int i = 0; i < 9; i++)
@@ -55,8 +53,7 @@ fragment =
             sum += color * (kernel[i] / u_outline_strength);
         }
 
-        vec4 layer1 = texture2D(u_layer1, v_uvs);
-        if((layer1.rgb == x_axis || layer1.rgb == y_axis || layer1.rgb == z_axis))
+        if((selection_layer.rgb == x_axis || selection_layer.rgb == y_axis || selection_layer.rgb == z_axis))
         {
             gl_FragColor = result;
         }
@@ -70,7 +67,6 @@ fragment =
 u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
-u_layer3 = 3
 u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]

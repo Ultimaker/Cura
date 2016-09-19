@@ -16,10 +16,6 @@ fragment =
     uniform sampler2D u_layer0;
     uniform sampler2D u_layer1;
     uniform sampler2D u_layer2;
-    uniform sampler2D u_layer3;
-
-    uniform float u_imageWidth;
-    uniform float u_imageHeight;
 
     uniform vec2 u_offset[9];
 
@@ -62,7 +58,6 @@ fragment =
 u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
-u_layer3 = 3
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
 u_error_color = [1.0, 0.0, 0.0, 1.0]
