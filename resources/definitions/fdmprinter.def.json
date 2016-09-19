@@ -254,8 +254,19 @@
                 {
                     "label": "Gcode flavour",
                     "description": "The type of gcode to be generated.",
-                    "default_value": "RepRap",
-                    "type": "str",
+                    "type": "enum",
+                    "options":
+                    {
+                        "RepRap (Marlin/Sprinter)": "RepRap (Marlin/Sprinter)",
+                        "RepRap (Volumatric)": "RepRap (Volumetric)",
+                        "UltiGCode": "Ultimaker 2",
+                        "Griffin": "Griffin",
+                        "Makerbot": "Makerbot",
+                        "BFB": "Bits from Bytes",
+                        "MACH3": "Mach3",
+                        "Repetier": "Repetier"
+                    },
+                    "default_value": "RepRap (Marlin/Sprinter)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
