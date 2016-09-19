@@ -636,6 +636,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
+                            "enabled": "infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "skirt_brim_line_width":
@@ -947,6 +948,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "grid",
+                    "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "settable_per_mesh": true
                 },
@@ -960,7 +962,7 @@
                     "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
                     "minimum_value_warning": "-50",
                     "maximum_value_warning": "100",
-                    "enabled": "infill_pattern != 'concentric'",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -974,7 +976,7 @@
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "machine_nozzle_size",
                             "value": "infill_line_width * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
-                            "enabled": "infill_pattern != 'concentric'",
+                            "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
                     }
@@ -1015,6 +1017,7 @@
                     "value": "wall_line_width_0 / 4 if wall_line_count == 1 else wall_line_width_x / 4",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
+                    "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 },
                 "infill_sparse_thickness":
@@ -1028,6 +1031,7 @@
                     "maximum_value_warning": "0.32",
                     "maximum_value": "layer_height * 8",
                     "value": "layer_height",
+                    "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_steps":
@@ -1039,6 +1043,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
                     "maximum_value": "20 - math.log(infill_line_distance) / math.log(2)",
+                    "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
@@ -1050,7 +1055,7 @@
                     "default_value": 5.0,
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "100",
-                    "enabled": "gradual_infill_steps > 0",
+                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0",
                     "settable_per_mesh": true
                 },
                 "infill_before_walls":
@@ -1059,6 +1064,7 @@
                     "description": "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface.",
                     "type": "bool",
                     "default_value": true,
+                    "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 }
             }
@@ -1411,6 +1417,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 60,
                             "value": "speed_print",
+                            "enabled": "infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "speed_wall":
@@ -1685,7 +1692,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "acceleration_enabled and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "acceleration_wall": {
@@ -1906,7 +1913,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled",
+                            "enabled": "jerk_enabled and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "jerk_wall": {
