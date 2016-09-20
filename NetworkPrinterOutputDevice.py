@@ -151,6 +151,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_command = ""
 
+        self._compressing_print = False
+
     def _onNetworkAccesibleChanged(self, accessible):
         Logger.log("d", "Network accessible state changed to: %s", accessible)
 
@@ -585,6 +587,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 return user
         return "Unknown User"  # Couldn't find out username.
 
+    def _progressMessageActionTrigger(self, message_id = None, action_id="abort"):
+        if action_id == "abort":
+            Logger.log("d", "User aborted sending print to remote.")
+            self._progress_message.hide()
+            self._compressing_print = False
+            if self._post_reply:
+                self._post_reply.abort()
+
     ##  Attempt to start a new print.
     #   This function can fail to actually start a print due to not being authenticated or another print already
     #   being in progress.
@@ -592,12 +602,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         try:
             self._send_gcode_start = time()
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
+            self._progress_message.addAction("abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
+            self._progress_message.actionTriggered.connect(self._progressMessageActionTrigger)
             self._progress_message.show()
             Logger.log("d", "Started sending g-code to remote printer.")
-
+            self._compressing_print = True
             ## Mash the data into single string
             byte_array_file_data = b""
             for line in self._gcode:
+                if not self._compressing_print:
+                    self._progress_message.hide()
+                    return  # Stop trying to zip, abort was called.
                 if self._use_gzip:
                     byte_array_file_data += gzip.compress(line.encode("utf-8"))
                     QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
@@ -611,6 +626,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             else:
                 file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
 
+            self._compressing_print = False
             ##  Create multi_part request
             self._post_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
 
