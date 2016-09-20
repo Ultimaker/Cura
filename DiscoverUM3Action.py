@@ -112,7 +112,11 @@ class DiscoverUM3Action(MachineAction):
         # We need access to engine (although technically we can't)
         self.__additional_components_context = QQmlContext(Application.getInstance()._engine.rootContext())
         self.__additional_components_context.setContextProperty("manager", self)
+
         self.__additional_components_view = self.__additional_component.create(self.__additional_components_context)
+        if not self.__additional_components_view:
+            Logger.log("w", "Could not create ui components for UM3.")
+            return
 
         Application.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
         Application.getInstance().addAdditionalComponent("machinesDetailPane", self.__additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))

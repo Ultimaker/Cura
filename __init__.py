@@ -11,6 +11,7 @@ def getMetaData():
             "name": "UM3 Network Connection",
             "author": "Ultimaker",
             "description": catalog.i18nc("@info:whatsthis", "Manages network connections to Ultimaker 3 printers"),
+            "version": "1.0",
             "api": 3
         }
     }
