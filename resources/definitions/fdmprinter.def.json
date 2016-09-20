@@ -835,7 +835,7 @@
                     "description": "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
                 {
