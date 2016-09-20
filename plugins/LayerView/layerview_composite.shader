@@ -19,13 +19,17 @@ fragment =
 
     uniform vec2 u_offset[9];
 
+    uniform vec4 u_background_color;
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_error_color;
 
     varying vec2 v_uvs;
 
     float kernel[9];
+
+    const vec3 x_axis = vec3(1.0, 0.0, 0.0);
+    const vec3 y_axis = vec3(0.0, 1.0, 0.0);
+    const vec3 z_axis = vec3(0.0, 0.0, 1.0);
 
     void main()
     {
@@ -33,16 +37,14 @@ fragment =
         kernel[3] = 1.0; kernel[4] = -4.0; kernel[5] = 1.0;
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
 
-        vec4 result = vec4(0.965, 0.965, 0.965, 1.0);
-        vec4 layer0 = texture2D(u_layer0, v_uvs);
+        vec4 result = u_background_color;
 
-        result = layer0 * layer0.a + result * (1.0 - layer0.a);
+        vec4 main_layer = texture2D(u_layer0, v_uvs);
+        vec4 selection_layer = texture2D(u_layer1, v_uvs);
+        vec4 layerview_layer = texture2D(u_layer2, v_uvs);
 
-        float intersection_count = (texture2D(u_layer2, v_uvs).r * 255.0) / 5.0;
-        if(mod(intersection_count, 2.0) == 1.0)
-        {
-            result = u_error_color;
-        }
+        result = main_layer * main_layer.a + result * (1.0 - main_layer.a);
+        result = layerview_layer * layerview_layer.a + result * (1.0 - layerview_layer.a);
 
         vec4 sum = vec4(0.0);
         for (int i = 0; i < 9; i++)
@@ -51,20 +53,26 @@ fragment =
             sum += color * (kernel[i] / u_outline_strength);
         }
 
-        gl_FragColor = mix(result, vec4(abs(sum.a)) * u_outline_color, abs(sum.a));
+        if((selection_layer.rgb == x_axis || selection_layer.rgb == y_axis || selection_layer.rgb == z_axis))
+        {
+            gl_FragColor = result;
+        }
+        else
+        {
+            gl_FragColor = mix(result, u_outline_color, abs(sum.a));
+        }
     }
 
 [defaults]
 u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
+u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
-u_error_color = [1.0, 0.0, 0.0, 1.0]
 
 [bindings]
 
 [attributes]
 a_vertex = vertex
 a_uvs = uv
-
