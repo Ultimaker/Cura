@@ -9,9 +9,10 @@ def getMetaData():
     return {
         "type": "extension",
         "plugin": {
-            "name": "Wifi connection",
-            "author": "Ultimaker",
-            "description": catalog.i18nc("Wifi connection", "Wifi connection"),
+            "name": "OctoPrint connection",
+            "author": "fieldOfView",
+            "version": "1.0",
+            "description": catalog.i18nc("@info:whatsthis", "Allows sending prints to OctoPrint and monitoring the progress"),
             "api": 3
         }
     }
