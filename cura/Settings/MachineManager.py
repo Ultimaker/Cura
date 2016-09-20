@@ -552,7 +552,6 @@ class MachineManager(QObject):
                                             "The selected material is imcompatible with the selected machine or configuration."))
             message.show()
 
-
         if old_quality:
             if old_quality_changes:
                 new_quality = self._updateQualityChangesContainer(
@@ -586,6 +585,8 @@ class MachineManager(QObject):
         else:
             Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
+    ##  set the active quality
+    #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
@@ -600,6 +601,7 @@ class MachineManager(QObject):
 
         container_type = containers[0].getMetaDataEntry("type")
 
+        # Get quality container and optionally the quality_changes container.
         if container_type == "quality":
             quality_container = containers[0]
         elif container_type == "quality_changes":
@@ -618,7 +620,10 @@ class MachineManager(QObject):
         if not quality_type:
             quality_type = quality_changes_container.getName()
 
-        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        # Find suitable quality containers (by quality_type) for each stack and swap out the container.
+        stacks = list(ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks())
+        name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
+        for stack in stacks:
             extruder_id = stack.getId() if stack != self._global_container_stack else None
 
             criteria = { "quality_type": quality_type, "extruder": extruder_id }
@@ -660,11 +665,19 @@ class MachineManager(QObject):
             else:
                 Logger.log("w", "Could not find old quality_changes while changing active quality.")
 
-            stack.replaceContainer(stack.getContainerIndex(old_quality), stack_quality)
-            stack.replaceContainer(stack.getContainerIndex(old_changes), stack_quality_changes)
+            stack.replaceContainer(stack.getContainerIndex(old_quality), stack_quality, postpone_emit = True)
+            stack.replaceContainer(stack.getContainerIndex(old_changes), stack_quality_changes, postpone_emit = True)
 
-            stack_quality.nameChanged.connect(self._onQualityNameChanged)
-            stack_quality_changes.nameChanged.connect(self._onQualityNameChanged)
+            name_changed_connect_stacks.append(stack_quality)
+            name_changed_connect_stacks.append(stack_quality_changes)
+
+        # Send emits that are postponed in replaceContainer.
+        # Here the stacks are finished replacing and every value can be resolved based on the current state.
+        for stack in stacks:
+            stack.sendPostponedEmits()
+        # Connect to onQualityNameChanged
+        for stack in name_changed_connect_stacks:
+            stack.nameChanged.connect(self._onQualityNameChanged)
 
         if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
             # Ask the user if the user profile should be cleared or not (discarding the current settings)
