@@ -254,6 +254,7 @@ UM.ManagementPage
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
                 }
+                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
             }
         }
 
