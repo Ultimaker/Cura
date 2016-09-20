@@ -104,7 +104,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
             for record in zeroconf.cache.entries_with_name(info.server):
                 info.update_record(zeroconf, time.time(), record)
-                if info.address:
+                if info.address and info.address[:2] != b'\xa9\xfe': # don't accept 169.254.x.x address
                     break
 
             # Request more data if info is not complete
