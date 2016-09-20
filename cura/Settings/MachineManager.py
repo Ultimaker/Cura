@@ -12,6 +12,7 @@ from UM.Settings.SettingRelation import RelationType
 
 import UM.Settings
 
+from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from . import ExtruderManager
 
@@ -535,10 +536,10 @@ class MachineManager(QObject):
         if not old_material:
             Logger.log("w", "While trying to set the active material, no material was found to replace it.")
             return
-        if (old_quality_changes.getId() == "empty_quality_changes" or #Don't want the empty one.
-            old_quality_changes.getMetaDataEntry("material") != material_id):  # The quality change is based off a different material; the quality change is probably a custom quality.
 
+        if old_quality_changes.getId() == "empty_quality_changes":
             old_quality_changes = None
+
         self.blurSettings.emit()
         old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
@@ -596,22 +597,26 @@ class MachineManager(QObject):
         Logger.log("d", "Attempting to change the active quality to %s", quality_id)
 
         self.blurSettings.emit()
-        quality_container = None
+
         quality_changes_container = self._empty_quality_changes_container
 
+        # Quality profile come in two flavours: type=quality and type=quality_changes
+        # If we found a quality_changes profile then look up its parent quality profile.
         container_type = containers[0].getMetaDataEntry("type")
 
         # Get quality container and optionally the quality_changes container.
         if container_type == "quality":
             quality_container = containers[0]
+
         elif container_type == "quality_changes":
             quality_changes_container = containers[0]
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(
-                quality_type = quality_changes_container.getMetaDataEntry("quality"))
+            # Find a suitable quality container to match this quality changes container.
+            containers = QualityManager.getInstance().findQualityByQualityType(quality_changes_container.getMetaDataEntry("quality_type"))
             if not containers:
                 Logger.log("e", "Could not find quality %s for changes %s, not changing quality", quality_changes_container.getMetaDataEntry("quality"), quality_changes_container.getId())
                 return
             quality_container = containers[0]
+
         else:
             Logger.log("e", "Tried to set quality to a container that is not of the right type")
             return
@@ -620,25 +625,33 @@ class MachineManager(QObject):
         if not quality_type:
             quality_type = quality_changes_container.getName()
 
-        # Find suitable quality containers (by quality_type) for each stack and swap out the container.
+        # Find and swap in the quality changes containers for the global stack and each extruder stack.
         stacks = list(ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks())
         name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
-        for stack in stacks:
-            extruder_id = stack.getId() if stack != self._global_container_stack else None
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            if stack != self._global_container_stack:
+                # Must be an extruder stack. Use the ID of the extruders as specified by the machine definition.
+                extruder_id = QualityManager.getInstance().getParentMachineDefinition(stack.getBottom()).getId()
+            else:
+                extruder_id = None
+            criteria = { "quality_type": quality_type, "type": "quality", "extruder": extruder_id }
 
-            criteria = { "quality_type": quality_type, "extruder": extruder_id }
-
+            # Filter candidate quality containers by the current material in the stack.
             material = stack.findContainer(type = "material")
             if material and material is not self._empty_material_container:
                 criteria["material"] = material.getId()
 
+            # Apply a filter when machines have their own specific quality profiles.
             if self._global_container_stack.getMetaDataEntry("has_machine_quality"):
                 criteria["definition"] = self.activeQualityDefinitionId
             else:
                 criteria["definition"] = "fdmprinter"
 
+            # Find the new quality container.
             stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if not stack_quality:
+                # Search again, except this time drop any extruder requirement. We should now get
+                # the same quality container as the one needed for the global stack.
                 criteria.pop("extruder")
                 stack_quality = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
                 if not stack_quality:
@@ -648,28 +661,21 @@ class MachineManager(QObject):
             else:
                 stack_quality = stack_quality[0]
 
+            # Find the new quality changes if one has been specified.
             if quality_changes_container != self._empty_quality_changes_container:
-                stack_quality_changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = quality_changes_container.getName(), extruder = extruder_id)[0]
+                changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(
+                    type="quality_changes",
+                    quality_type=stack_quality.getMetaDataEntry("quality_type"),
+                    name = quality_changes_container.getName(), extruder = extruder_id)
+                stack_quality_changes = changes[0]
             else:
+                # This is case of quality container and the no-op quality changes container.
                 stack_quality_changes = self._empty_quality_changes_container
-
-            old_quality = stack.findContainer(type = "quality")
-            if old_quality:
-                old_quality.nameChanged.disconnect(self._onQualityNameChanged)
-            else:
-                Logger.log("w", "Could not find old quality while changing active quality.")
-
-            old_changes = stack.findContainer(type = "quality_changes")
-            if old_changes:
-                old_changes.nameChanged.disconnect(self._onQualityNameChanged)
-            else:
-                Logger.log("w", "Could not find old quality_changes while changing active quality.")
-
-            stack.replaceContainer(stack.getContainerIndex(old_quality), stack_quality, postpone_emit = True)
-            stack.replaceContainer(stack.getContainerIndex(old_changes), stack_quality_changes, postpone_emit = True)
 
             name_changed_connect_stacks.append(stack_quality)
             name_changed_connect_stacks.append(stack_quality_changes)
+            self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit = True)
+            self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit = True)
 
         # Send emits that are postponed in replaceContainer.
         # Here the stacks are finished replacing and every value can be resolved based on the current state.
@@ -680,18 +686,40 @@ class MachineManager(QObject):
             stack.nameChanged.connect(self._onQualityNameChanged)
 
         if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-            # Ask the user if the user profile should be cleared or not (discarding the current settings)
-            # In Simple Mode we assume the user always wants to keep the (limited) current settings
-            details = catalog.i18nc("@label", "You made changes to the following setting(s):")
-            user_settings = self._active_container_stack.getTop().findInstances(**{})
-            for setting in user_settings:
-                details = details + "\n    " + setting.definition.label
-
-            Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"), catalog.i18nc("@label", "Do you want to transfer your changed settings to this profile?"),
-                                                 catalog.i18nc("@label", "If you transfer your settings they will override settings in the profile."), details,
-                                                 buttons = QMessageBox.Yes + QMessageBox.No, icon = QMessageBox.Question, callback = self._keepUserSettingsDialogCallback)
+            self._askUserToKeepOrClearCurrentSettings()
 
         self.activeQualityChanged.emit()
+
+    def _replaceQualityOrQualityChangesInStack(self, stack, container, postpone_emit = False):
+        # Disconnect the signal handling from the old container.
+        old_container = stack.findContainer(type=container.getMetaDataEntry("type"))
+        if old_container:
+            old_container.nameChanged.disconnect(self._onQualityNameChanged)
+        else:
+            Logger.log("w", "Could not find old "+  container.getMetaDataEntry("type") + " while changing active " + container.getMetaDataEntry("type") + ".")
+
+        # Swap in the new container into the stack.
+        stack.replaceContainer(stack.getContainerIndex(old_container), container, postpone_emit = postpone_emit)
+
+        # Attach the needed signal handling.
+        container.nameChanged.connect(self._onQualityNameChanged)
+
+    def _askUserToKeepOrClearCurrentSettings(self):
+        # Ask the user if the user profile should be cleared or not (discarding the current settings)
+        # In Simple Mode we assume the user always wants to keep the (limited) current settings
+        details = catalog.i18nc("@label", "You made changes to the following setting(s):")
+        user_settings = self._active_container_stack.getTop().findInstances(**{})
+        for setting in user_settings:
+            details = details + "\n    " + setting.definition.label
+
+        Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"),
+                                             catalog.i18nc("@label",
+                                                           "Do you want to transfer your changed settings to this profile?"),
+                                             catalog.i18nc("@label",
+                                                           "If you transfer your settings they will override settings in the profile."),
+                                             details,
+                                             buttons=QMessageBox.Yes + QMessageBox.No, icon=QMessageBox.Question,
+                                             callback=self._keepUserSettingsDialogCallback)
 
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:
@@ -746,10 +774,7 @@ class MachineManager(QObject):
     #   \param definition (DefinitionContainer) machine definition
     #   \returns DefinitionID (string) if found, empty string otherwise
     def getQualityDefinitionId(self, definition):
-        definition_id = definition.getMetaDataEntry("quality_definition")
-        if not definition_id:
-            definition_id = definition.getId()
-        return definition_id
+        return QualityManager.getInstance().getParentMachineDefinition(definition).getId()
 
     ##  Get the Variant ID to use to select quality profiles for the currently active variant
     #   \returns VariantID (string) if found, empty string otherwise
