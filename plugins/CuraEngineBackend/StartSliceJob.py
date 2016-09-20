@@ -160,7 +160,12 @@ class StartSliceJob(Job):
 
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
-                    verts = numpy.array(mesh_data.getVertices())
+                    verts = mesh_data.getVertices()
+                    indices = mesh_data.getIndices()
+                    if indices is not None:
+                        verts = numpy.array([verts[vert_index] for face in indices for vert_index in face])
+                    else:
+                        verts = numpy.array(verts)
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
