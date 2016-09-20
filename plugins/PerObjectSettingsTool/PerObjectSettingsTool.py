@@ -8,6 +8,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Event import Event
 
 
 ##  This tool allows the user to add & change settings per node in the scene.
@@ -31,6 +32,9 @@ class PerObjectSettingsTool(Tool):
         self._onGlobalContainerChanged()
 
     def event(self, event):
+        super().event(event)
+        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            self.operationStopped.emit(self)
         return False
 
     def getSelectedObjectId(self):
