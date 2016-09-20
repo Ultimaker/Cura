@@ -17,9 +17,10 @@ class SettingInheritanceManager(QObject):
         super().__init__(parent)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._global_container_stack = None
-        self._onGlobalContainerChanged()
         self._settings_with_inheritance_warning = []
         self._active_container_stack = None
+        self._onGlobalContainerChanged()
+
         cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
@@ -58,12 +59,11 @@ class SettingInheritanceManager(QObject):
         if new_active_stack != self._active_container_stack:
             # Check if changed
             self._active_container_stack = new_active_stack
-            self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value" and self._global_container_stack:
-
             definitions = self._global_container_stack.getBottom().findDefinitions(key = key)
             if not definitions:
                 return
@@ -149,7 +149,6 @@ class SettingInheritanceManager(QObject):
                 continue
             if has_setting_function:
                 break  # There is a setting function somewhere, stop looking deeper.
-
         return has_setting_function and has_non_function_value
 
     def _update(self):
@@ -170,7 +169,12 @@ class SettingInheritanceManager(QObject):
         self.settingsWithIntheritanceChanged.emit()
 
     def _onGlobalContainerChanged(self):
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+        self._onActiveExtruderChanged()
 
     @staticmethod
     def createSettingInheritanceManager(engine=None, script_engine=None):
