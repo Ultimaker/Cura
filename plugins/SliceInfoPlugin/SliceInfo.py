@@ -61,7 +61,7 @@ class SliceInfoJob(Job):
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
-    info_url = "http://stats.youmagine.com/curastats/slice"
+    info_url = "https://stats.youmagine.com/curastats/slice"
 
     def __init__(self):
         super().__init__()
