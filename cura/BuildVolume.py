@@ -95,6 +95,11 @@ class BuildVolume(SceneNode):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
 
+        self._build_volume_message = Message(catalog.i18nc("@info:status",
+            "The build volume height has been reduced due to the value of the"
+            " \"Print Sequence\" setting to prevent the gantry from colliding"
+            " with printed models."))
+
     def _onSceneChanged(self, source):
         self._change_timer.start()
 
@@ -252,13 +257,6 @@ class BuildVolume(SceneNode):
     def getBoundingBox(self):
         return self._volume_aabb
 
-    def _buildVolumeMessage(self):
-        Message(catalog.i18nc(
-            "@info:status",
-            "The build volume height has been reduced due to the value of the"
-            " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models.")).show()
-
     def getRaftThickness(self):
         return self._raft_thickness
 
@@ -299,9 +297,12 @@ class BuildVolume(SceneNode):
             if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and self._number_of_objects > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
-                    self._buildVolumeMessage()
+                    self._build_volume_message.show()
+                else:
+                    self._build_volume_message.hide()
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
+                self._build_volume_message.hide()
             self._depth = self._global_container_stack.getProperty("machine_depth", "value")
 
             self._updateDisallowedAreas()
@@ -319,9 +320,12 @@ class BuildVolume(SceneNode):
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and self._number_of_objects > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
-                    self._buildVolumeMessage()
+                    self._build_volume_message.show()
+                else:
+                    self._build_volume_message.hide()
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
+                self._build_volume_message.hide()
             rebuild_me = True
 
         if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings:
