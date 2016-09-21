@@ -63,7 +63,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                     if definition.limit_to_extruder and self._stack.getProperty("machine_extruder_count", "value") > 1:
                         #Obtain the value from the correct container stack. Only once, upon adding the setting.
                         stack_nr = str(int(round(float(self._stack.getProperty(item, "limit_to_extruder"))))) #Stack to get the setting from. Round it and remove the fractional part.
-                    if stack_nr not in ExtruderManager.getInstance().extruderIds and self._stack.getProperty("extruder_nr", "value"): #Property not defined, but we have an extruder number.
+                    if stack_nr not in ExtruderManager.getInstance().extruderIds and self._stack.getProperty("extruder_nr", "value") is not None: #Property not defined, but we have an extruder number.
                         stack_nr = str(int(round(float(self._stack.getProperty("extruder_nr", "value")))))
                     if stack_nr in ExtruderManager.getInstance().extruderIds: #We have either a limit_to_extruder or an extruder_nr.
                         stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
