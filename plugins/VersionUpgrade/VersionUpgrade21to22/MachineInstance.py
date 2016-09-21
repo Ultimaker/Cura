@@ -110,7 +110,7 @@ class MachineInstance:
 
         version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
         user_storage = os.path.join(UM.Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
-        user_profile_file = os.path.join(user_storage, self._name + "_current_settings")
+        user_profile_file = os.path.join(user_storage, self._name + "_current_settings.inst.cfg")
         if not os.path.exists(user_storage):
             os.makedirs(user_storage)
         with open(user_profile_file, "w") as file_handle:
