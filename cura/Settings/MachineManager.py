@@ -860,14 +860,13 @@ class MachineManager(QObject):
     def _updateVariantContainer(self, definition):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
-
+        machine_definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(definition)
         containers = []
         preferred_variant = definition.getMetaDataEntry("preferred_variant")
         if preferred_variant:
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = definition.id, id = preferred_variant)
-
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = machine_definition_id, id = preferred_variant)
         if not containers:
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = definition.id)
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = machine_definition_id)
 
         if containers:
             return containers[0]
