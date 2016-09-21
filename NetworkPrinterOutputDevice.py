@@ -801,6 +801,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 elif status_code == 403:
                     # If we already had an auth (eg; didn't request one), we only need a single 403 to see it as denied.
                     if self._authentication_state != AuthState.AuthenticationRequested:
+                        Logger.log("d", "While trying to verify the authentication state, we got a forbidden response. Our own auth state was %s", self._authentication_state)
                         self.setAuthenticationState(AuthState.AuthenticationDenied)
                 elif status_code == 200:
                     self.setAuthenticationState(AuthState.Authenticated)
