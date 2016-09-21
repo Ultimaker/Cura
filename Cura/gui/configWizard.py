@@ -1304,8 +1304,8 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 		self.standard.OnSelected(self.OnStandardSelected)
 		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
 										'Lulzbot_Toolhead_TAZ_Flexystruder_v2.jpg', image_size)
-		self.moar = self.AddImageButton(self.panel, 1, 0, _('MOARstruder v2'),
-										'Lulzbot_Toolhead_TAZ_MOARstruder-v2.jpg', image_size)
+		self.moar = self.AddImageButton(self.panel, 1, 0, _('MOARstruder'),
+										'Lulzbot_Toolhead_TAZ_MOARstruder.jpg', image_size)
 		self.flexy.OnSelected(self.OnNonStandardSelected)
 		self.moar.OnSelected(self.OnNonStandardSelected)
 		if self.standard.GetValue() == False and \
@@ -1365,9 +1365,9 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 		elif self.moar and self.moar.GetValue():
 			profile.putProfileSetting('nozzle_size', '1.2')
 			profile.putMachineSetting('extruder_amount', '1')
-			profile.putMachineSetting('toolhead', 'MOARstruder V2')
-			profile.putMachineSetting('toolhead_shortname', 'MOARstruder v2')
-			profile.putMachineSetting('machine_type', machine_type + '_Moarstruder_v2')
+			profile.putMachineSetting('toolhead', 'MOARstruder')
+			profile.putMachineSetting('toolhead_shortname', 'MOARstruder')
+			profile.putMachineSetting('machine_type', machine_type + '_Moarstruder')
 		elif self.dual and self.dual.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '2')
@@ -1526,8 +1526,8 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 											 'Lulzbot_Toolhead_TAZ_Flexystruder_v%d.jpg'% self.version, image_size)
 			if self.version == 2 and "dual" not in self.type and \
 			   profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5'):
-				self.moar = self.AddImageButton(self.panel, 1, 0, _('MOARstruder v2'),
-												'Lulzbot_Toolhead_TAZ_MOARstruder-v2.jpg', image_size)
+				self.moar = self.AddImageButton(self.panel, 1, 0, _('MOARstruder'),
+												'Lulzbot_Toolhead_TAZ_MOARstruder.jpg', image_size)
 			shift = 1
 		if "dual" in self.type or self.version == 1:
 			self.dually = self.AddImageButton(self.panel, shift, 0, _('Dual Extruder v%d' % self.version),
@@ -1619,9 +1619,9 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 		elif self.moar and self.moar.GetValue():
 			profile.putProfileSetting('nozzle_size', '1.2')
 			profile.putMachineSetting('extruder_amount', '1')
-			profile.putMachineSetting('toolhead', 'MOARstruder V2')
-			profile.putMachineSetting('toolhead_shortname', 'MOARstruder v2')
-			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_Moarstruder_v2')
+			profile.putMachineSetting('toolhead', 'MOARstruder')
+			profile.putMachineSetting('toolhead_shortname', 'MOARstruder')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_Moarstruder')
 			# on TAZ5, MOARstruder reduces the build volume
 			profile.putMachineSetting('machine_width', '280')
 			profile.putMachineSetting('machine_height', '242')
