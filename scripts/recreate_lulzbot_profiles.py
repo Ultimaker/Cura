@@ -54,7 +54,6 @@ material_map = {
 	"PLA_eSUN": "PLA",
 	"PLA_VP": "PLA",
 	"PLA_verbatim": "PLA",
-	"nGen": "nGen",
 	"PLA_PHA": "PLA-PHA",
 	"PLA_poly": "PLA-polylite",
 	
@@ -68,6 +67,7 @@ material_map = {
 	"Corkfill": "corkfill",
 	"PP-Coffee": "protopasta-aromatic-coffee-PLA",
 	"PP-HT-PLA": "protopasta-high-temp-PLA",
+	"nGen": "nGen",
 	
 	# Advanced
 	"Alloy910": "alloy910",
@@ -136,7 +136,6 @@ material_map = {
 
 material_order = {
 	# Beginner
-	"nGen":                 0,
 	"PLA_VP":               1,
 	"HIPS_eSUN":            2,
 	"PLA_eSUN":             3,
@@ -154,6 +153,7 @@ material_order = {
 	"Corkfill":            16,
 	"PP-Coffee":           17,
 	"PP-HT-PLA":           18,
+	"nGen":                19,
 	
 	# Advanced
 	"INOVA-1800":          50,
@@ -225,7 +225,6 @@ material_types = {
 	"HIPS_eSUN": "Beginner",
 	"PLA_eSUN": "Beginner",
 	"PLA_VP": "Beginner",
-	"nGen": "Beginner",
 	"PLA_PHA": "Beginner",
 	"PLA_verbatim": "Beginner",
 	"PLA_poly": "Beginner",
@@ -240,6 +239,7 @@ material_types = {
 	"Corkfill": "Intermediate",
 	"PP-Coffee": "Intermediate",
 	"PP-HT-PLA": "Intermediate",
+	"nGen": "Intermediate",
 	
 	# Advanced
 	"Alloy910": "Advanced",
@@ -301,7 +301,6 @@ material_names = {
 	"HIPS_eSUN": "HIPS (eSUN)",
 	"PLA_eSUN": "PLA (eSUN)",
 	"PLA_VP": "PLA (Village Plastics)",
-	"nGen": "nGen (colorFabb)",
 	"PLA_PHA": "PLA/PHA (colorFabb)",
 	"PLA_verbatim": "PLA (Verbatim)",
 	"PLA_poly": "PLA Polylite (Polymaker)",
@@ -316,6 +315,7 @@ material_names = {
 	"Corkfill": "corkFill (colorFabb)",
 	"PP-Coffee": "Coffee PLA (Proto-pasta)",
 	"PP-HT-PLA": "High Temp PLA (Proto-pasta)",
+	"nGen": "nGen (colorFabb)",
 	
 	# Advanced
 	"Alloy910": "Alloy 910 (Taulman)",
@@ -387,7 +387,6 @@ material_url = {
 	"HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
 	"PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
 	"PLA_VP": "lulzbot.com/store/filament/pla-village",
-	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PLA_PHA": "",
 #	"PLA_verbatim": "",
 #	"PLA_poly": "",
@@ -402,6 +401,7 @@ material_url = {
 #	"Corkfill": "",
 	"PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
 #	"PP-HT-PLA": "",
+	"nGen": "lulzbot.com/store/filament/ngen",
 
 	# Advanced
 	"Alloy910": "lulzbot.com/store/filament/alloy-910",
@@ -481,6 +481,7 @@ bed_prep_materials = {
 	"618-Nylon",
 	"645-Nylon",
 	"PC-ABS",
+	"nGen",
 }
 
 profile_map = {
