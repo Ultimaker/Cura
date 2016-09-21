@@ -300,7 +300,7 @@ class BuildVolume(SceneNode):
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
             rebuild_me = True
 
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence":
+        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings:
             self._updateDisallowedAreas()
             rebuild_me = True
 
@@ -457,6 +457,9 @@ class BuildVolume(SceneNode):
         if container_stack.getProperty("draft_shield_enabled", "value"):
             skirt_size += container_stack.getProperty("draft_shield_dist", "value")
 
+        if container_stack.getProperty("ooze_shield_enabled", "value"):
+            skirt_size += container_stack.getProperty("ooze_shield_dist", "value")
+
         if container_stack.getProperty("xy_offset", "value"):
             skirt_size += container_stack.getProperty("xy_offset", "value")
 
@@ -469,3 +472,4 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
+    _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
