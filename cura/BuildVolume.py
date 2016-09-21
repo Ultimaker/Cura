@@ -4,6 +4,7 @@
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Resources import Resources
@@ -14,7 +15,7 @@ from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
 from UM.Message import Message
 from UM.Signal import Signal
-
+from PyQt5.QtCore import QTimer
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")
@@ -84,6 +85,29 @@ class BuildVolume(SceneNode):
         self._onGlobalContainerStackChanged()
 
         self._has_errors = False
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+
+        # Number of objects loaded at the moment.
+        self._number_of_objects = 0
+
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(100)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self._onChangeTimerFinished)
+
+    def _onSceneChanged(self, source):
+        self._change_timer.start()
+
+    def _onChangeTimerFinished(self):
+        root = Application.getInstance().getController().getScene().getRoot()
+        new_number_of_objects = len([node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode])
+        if new_number_of_objects != self._number_of_objects:
+            recalculate = False
+            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                recalculate = (new_number_of_objects < 2 and self._number_of_objects > 1) or (new_number_of_objects > 1 and self._number_of_objects < 2)
+            self._number_of_objects = new_number_of_objects
+            if recalculate:
+                self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
 
     def setWidth(self, width):
         if width: self._width = width
@@ -272,7 +296,7 @@ class BuildVolume(SceneNode):
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and self._number_of_objects > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._buildVolumeMessage()
@@ -292,7 +316,7 @@ class BuildVolume(SceneNode):
         rebuild_me = False
         if setting_key == "print_sequence":
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
+            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and self._number_of_objects > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._buildVolumeMessage()
