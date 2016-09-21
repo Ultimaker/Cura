@@ -227,14 +227,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # Once we are authenticated we need to send all material profiles.
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
-            Logger.log("d", "Authentication state changed to authentication denied")
             self.setAcceptsCommands(False)
             self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. No access to control the printer.").format(self.name))
             self._authentication_requested_message.hide()
             if self._authentication_request_active:
                 if self._authentication_timer.remainingTime() > 0:
+                    Logger.logException("d", "Authentication state changed to authentication denied before the request timeout.")
                     self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request was denied on the printer."))
                 else:
+                    Logger.logException("d", "Authentication state changed to authentication denied due to a timeout")
                     self._authentication_failed_message.setText(i18n_catalog.i18nc("@info:status", "Access request failed due to a timeout."))
 
                 self._authentication_failed_message.show()
