@@ -99,7 +99,7 @@ class MachineInstance:
         user_profile = configparser.ConfigParser(interpolation = None)
         user_profile["general"] = {
             "version": "2",
-            "name": self._name + "_current_settings",
+            "name": "Current settings",
             "definition": type_name
         }
         user_profile["metadata"] = {
