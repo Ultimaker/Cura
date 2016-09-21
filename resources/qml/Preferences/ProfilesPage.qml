@@ -17,22 +17,33 @@ UM.ManagementPage
 
     model: UM.InstanceContainersModel
     {
-        filter:
+        filterList:
         {
-            var result = { "type": "quality*", "extruder": null };
+            var qualityFilter = { "type": "quality", "extruder": null };
             if(Cura.MachineManager.filterQualityByMachine)
             {
-                result.definition = Cura.MachineManager.activeQualityDefinitionId;
+                qualityFilter.definition = Cura.MachineManager.activeQualityDefinitionId;
                 if(Cura.MachineManager.hasMaterials)
                 {
-                    result.material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId];
+                    qualityFilter.material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId];
                 }
             }
             else
             {
-                result.definition = "fdmprinter"
+                qualityFilter.definition = "fdmprinter";
             }
-            return result
+
+            var qualityChangeFilter = { "type": "quality_changes", "extruder": null };
+            if(Cura.MachineManager.filterQualityByMachine)
+            {
+                qualityChangeFilter.definition = Cura.MachineManager.activeQualityDefinitionId;
+            }
+            else
+            {
+                qualityChangeFilter.definition = "fdmprinter";
+            }
+
+            return [qualityFilter, qualityChangeFilter];
         }
     }
 
