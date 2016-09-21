@@ -6,20 +6,26 @@ from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Application import Application
+from UM.PluginRegistry import PluginRegistry
 
 from UM.View.RenderPass import RenderPass
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+
+from cura.Settings.ExtruderManager import ExtruderManager
+
+import os.path
 
 ## RenderPass used to display g-code paths.
 class LayerPass(RenderPass):
     def __init__(self, width, height):
         super().__init__("layerview", width, height)
 
-        self._shader = None
+        self._layer_shader = None
         self._tool_handle_shader = None
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
+        self._extruder_manager = ExtruderManager.getInstance()
 
         self._layer_view = None
 
@@ -27,8 +33,9 @@ class LayerPass(RenderPass):
         self._layerview = layerview
 
     def render(self):
-        if not self._shader:
-            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
+        if not self._layer_shader:
+            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layers.shader"))
+        self._layer_shader.setUniformValue("u_active_extruder", float(self._extruder_manager.activeExtruderIndex))
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
 
@@ -56,12 +63,12 @@ class LayerPass(RenderPass):
                         end += counts
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
-                    batch = RenderBatch(self._shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end))
+                    batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end))
                     batch.addItem(node.getWorldTransformation(), layer_data)
                     batch.render(self._scene.getActiveCamera())
 
                 # Create a new batch that is not range-limited
-                batch = RenderBatch(self._shader, type = RenderBatch.RenderType.Solid)
+                batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid)
 
                 if self._layerview._current_layer_mesh:
                     batch.addItem(node.getWorldTransformation(), self._layerview._current_layer_mesh)
