@@ -10,10 +10,8 @@ Item
 {
     id: base
 
-    property string octoPrintConnected: printerConnected && Cura.MachineManager.printerOutputDevices[0].hasOwnProperty("octoprintVersion")
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
-    property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-    property bool authenticationRequested: printerConnected && Cura.MachineManager.printerOutputDevices[0].authenticationState == 2 // AuthState.AuthenticationRequested
+    property bool octoPrintConnected: printerConnected && Cura.MachineManager.printerOutputDevices[0].hasOwnProperty("octoprintVersion")
 
     Button
     {
