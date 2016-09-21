@@ -425,6 +425,8 @@ class X3DReader(MeshReader):
             # All the spines are collinear. Fallback to the rotated source
             # XZ plane.
             # TODO: handle the situation where the first two spine points match
+            if len(spine) < 2:
+                return Vector(0, 0, 1)
             v = spine[1] - spine[0]
             orig_y = Vector(0, 1, 0)
             orig_z = Vector(0, 0, 1)
