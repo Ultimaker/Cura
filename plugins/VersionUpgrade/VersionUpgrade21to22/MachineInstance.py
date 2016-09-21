@@ -3,6 +3,7 @@
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
 import UM.VersionUpgradeManager #To schedule more files to be upgraded.
+import UM.Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
@@ -108,8 +109,10 @@ class MachineInstance:
         user_profile["values"] = {}
 
         version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
-        user_storage = next(iter(version_upgrade_manager.getStoragePaths("user")))
+        user_storage = os.path.join(UM.Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
         user_profile_file = os.path.join(user_storage, self._name + "_current_settings")
+        if not os.path.exists(user_storage):
+            os.makedirs(user_storage)
         with open(user_profile_file, "w") as file_handle:
             user_profile.write(file_handle)
         version_upgrade_manager.upgradeExtraFile(user_storage, self._name + "_current_settings", "user")
