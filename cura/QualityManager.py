@@ -83,7 +83,7 @@ class QualityManager:
             filter_by_material = machine_definition.getMetaDataEntry("has_materials")
 
         # Stick the material IDs in a set
-        if material_containers is None:
+        if material_containers is None or len(material_containers) == 0:
             filter_by_material = False
         else:
             material_ids = set()
