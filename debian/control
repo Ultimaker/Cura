@@ -1,9 +1,7 @@
 Source: cura
 Priority: optional
 Maintainer: Gregor Riepl <onitake@gmail.com>
-Build-Depends: debhelper (>= 9), cmake (>=2.8.12),
- python3 (>=3.4.0), python3-uranium (>=2.1.3),
- cura-engine2 (>=2.1.3)
+Build-Depends: debhelper (>= 9), cmake (>=2.8.12)
 Standards-Version: 3.9.8
 Section: misc
 Homepage: https://github.com/Ultimaker/Cura
@@ -12,6 +10,9 @@ Vcs-Browser: https://github.com/Ultimaker/Cura
 
 Package: cura
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
+ python3 (>=3.4.0), python3-serial,
+ python3-pyqt5, python3-pyqt5.qtopengl,
+ python3-uranium (>=2.1.3), cura-engine2 (>=2.1.3)
 Description: 3d printing application
  This is the new, shiny frontend for Cura.
