@@ -13,7 +13,7 @@ message Slice
     repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
     SettingList global_settings = 2; // The global settings used for the whole print job
     repeated Extruder extruders = 3; // The settings sent to each extruder object
-    repeated SettingExtruder limit_to_extruder = 4; //From which stack the setting would inherit if not defined in a stack.
+    repeated SettingExtruder limit_to_extruder = 4; // From which stack the setting would inherit if not defined per object
 }
 
 message Extruder
