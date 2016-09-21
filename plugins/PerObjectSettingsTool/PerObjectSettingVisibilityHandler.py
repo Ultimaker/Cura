@@ -60,6 +60,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                 if definition:
                     new_instance = SettingInstance(definition, settings)
                     stack_nr = -1
+                    stack = None
                     # Check from what stack we should copy the raw property of the setting from.
                     if definition.limit_to_extruder != "-1" and self._stack.getProperty("machine_extruder_count", "value") > 1:
                         # A limit to extruder function was set and it's a multi extrusion machine. Check what stack we do need to use.
@@ -67,16 +68,17 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
                     # Check if the found stack_number is in the extruder list of extruders.
                     if stack_nr not in ExtruderManager.getInstance().extruderIds and self._stack.getProperty("extruder_nr", "value") is not None:
-                        stack_nr = str(int(round(float(self._stack.getProperty("extruder_nr", "value")))))
+                        stack_nr = -1
 
                     # Use the found stack number to get the right stack to copy the value from.
                     if stack_nr in ExtruderManager.getInstance().extruderIds:
-                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
-                    else:
-                        stack = UM.Application.getInstance().getGlobalContainerStack()
+                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=ExtruderManager.getInstance().extruderIds[stack_nr])[0]
 
                     # Use the raw property to set the value (so the intheritance doesn't break)
-                    new_instance.setProperty("value", stack.getRawProperty(item, "value"))
+                    if stack is not None:
+                        new_instance.setProperty("value", stack.getRawProperty(item, "value"))
+                    else:
+                        new_instance.setProperty("value", None)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     visibility_changed = True
