@@ -587,13 +587,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 return user
         return "Unknown User"  # Couldn't find out username.
 
-    def _progressMessageActionTrigger(self, message_id = None, action_id="abort"):
-        if action_id == "abort":
+    def _progressMessageActionTrigger(self, message_id = None, action_id = None):
+        if action_id == "Abort":
             Logger.log("d", "User aborted sending print to remote.")
             self._progress_message.hide()
             self._compressing_print = False
             if self._post_reply:
                 self._post_reply.abort()
+            Application.getInstance().showPrintMonitor.emit(False)
 
     ##  Attempt to start a new print.
     #   This function can fail to actually start a print due to not being authenticated or another print already
@@ -602,7 +603,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         try:
             self._send_gcode_start = time()
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
-            self._progress_message.addAction("abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
+            self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), None, "")
             self._progress_message.actionTriggered.connect(self._progressMessageActionTrigger)
             self._progress_message.show()
             Logger.log("d", "Started sending g-code to remote printer.")
