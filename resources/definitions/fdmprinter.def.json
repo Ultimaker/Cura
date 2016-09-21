@@ -2838,7 +2838,9 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "adhesion_type == \"raft\"",
-                    "limit_to_extruder": "adhesion_extruder_nr"
+                    "limit_to_extruder": "adhesion_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "raft_airgap":
                 {
