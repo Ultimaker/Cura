@@ -2,9 +2,11 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager #To schedule more files to be upgraded.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+import os.path #To get the path to write new user profiles to.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -92,8 +94,28 @@ class MachineInstance:
         if has_machine_qualities: #This machine now has machine-quality profiles.
             active_material += "_" + variant_materials #That means that the profile was split into multiple.
 
+        #Create a new user profile and schedule it to be upgraded.
+        user_profile = configparser.ConfigParser(interpolation = None)
+        user_profile["general"] = {
+            "version": "2",
+            "name": self._name + "_current_settings",
+            "definition": type_name
+        }
+        user_profile["metadata"] = {
+            "type": "user",
+            "machine": self._name
+        }
+        user_profile["values"] = {}
+
+        version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
+        user_storage = next(iter(version_upgrade_manager.getStoragePaths("user")))
+        user_profile_file = os.path.join(user_storage, self._name + "_current_settings")
+        with open(user_profile_file, "w") as file_handle:
+            user_profile.write(file_handle)
+        version_upgrade_manager.upgradeExtraFile(user_storage, self._name + "_current_settings", "user")
+
         containers = [
-            "", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
+            self._name + "_current_settings", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
             active_quality_changes,
             active_quality,
             active_material,
