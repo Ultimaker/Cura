@@ -8,6 +8,7 @@ import UM.Resources #To get the config storage path.
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
 import os.path #To get the path to write new user profiles to.
+import urllib #To serialise the user container file name properly.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -110,12 +111,12 @@ class MachineInstance:
 
         version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
         user_storage = os.path.join(UM.Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
-        user_profile_file = os.path.join(user_storage, self._name + "_current_settings.inst.cfg")
+        user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
         if not os.path.exists(user_storage):
             os.makedirs(user_storage)
         with open(user_profile_file, "w") as file_handle:
             user_profile.write(file_handle)
-        version_upgrade_manager.upgradeExtraFile(user_storage, self._name + "_current_settings", "user")
+        version_upgrade_manager.upgradeExtraFile(user_storage, urllib.parse.quote_plus(self._name), "user")
 
         containers = [
             self._name + "_current_settings", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
