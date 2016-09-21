@@ -86,10 +86,19 @@ class CuraApplication(QtApplication):
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
+        # this setting can be changed for each group in one-at-a-time mode
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True, read_only = True)
+
+        # From which stack the setting would inherit if not defined per object (handled in the engine)
+        # AND for settings which are not settable_per_mesh:
+        # which extruder is the only extruder this setting is obtained from
         SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1")
+
+        # For settings which are not settable_per_mesh and not settable_per_extruder:
+        # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
@@ -112,11 +121,12 @@ class CuraApplication(QtApplication):
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
-        self._version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager(
+        UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
                 ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences")
+                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", UM.Settings.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 

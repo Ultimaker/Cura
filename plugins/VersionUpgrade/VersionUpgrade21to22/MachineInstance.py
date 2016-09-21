@@ -2,9 +2,13 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager #To schedule more files to be upgraded.
+import UM.Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+import os.path #To get the path to write new user profiles to.
+import urllib #To serialise the user container file name properly.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -92,8 +96,30 @@ class MachineInstance:
         if has_machine_qualities: #This machine now has machine-quality profiles.
             active_material += "_" + variant_materials #That means that the profile was split into multiple.
 
+        #Create a new user profile and schedule it to be upgraded.
+        user_profile = configparser.ConfigParser(interpolation = None)
+        user_profile["general"] = {
+            "version": "2",
+            "name": "Current settings",
+            "definition": type_name
+        }
+        user_profile["metadata"] = {
+            "type": "user",
+            "machine": self._name
+        }
+        user_profile["values"] = {}
+
+        version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
+        user_storage = os.path.join(UM.Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
+        user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
+        if not os.path.exists(user_storage):
+            os.makedirs(user_storage)
+        with open(user_profile_file, "w") as file_handle:
+            user_profile.write(file_handle)
+        version_upgrade_manager.upgradeExtraFile(user_storage, urllib.parse.quote_plus(self._name), "user")
+
         containers = [
-            "", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
+            self._name + "_current_settings", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
             active_quality_changes,
             active_quality,
             active_material,
