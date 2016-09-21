@@ -20,7 +20,7 @@ Cura.MachineAction
         onNextClicked:
         {
             // Connect to the printer if the MachineAction is currently shown
-            if(base.parent == dialog)
+            if(base.parent.wizard == dialog)
             {
                 connectToPrinter();
             }
