@@ -112,7 +112,7 @@ class CuraApplication(QtApplication):
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
-        self._version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager(
+        UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
                 ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
