@@ -49,15 +49,14 @@ class SettingInheritanceManager(QObject):
         self._update()
 
     def _onActiveExtruderChanged(self):
-        if self._active_container_stack:
-            self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
-
         new_active_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
         if not new_active_stack:
             new_active_stack = self._global_container_stack
 
-        if new_active_stack != self._active_container_stack:
-            # Check if changed
+        if new_active_stack != self._active_container_stack:  # Check if changed
+            if self._active_container_stack:  # Disconnect signal from old container (if any)
+                self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+
             self._active_container_stack = new_active_stack
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
             self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
