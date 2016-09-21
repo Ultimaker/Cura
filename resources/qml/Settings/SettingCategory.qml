@@ -79,7 +79,8 @@ Button {
 
         onClicked:
         {
-            base.showAllHiddenInheritedSettings(definition.key)
+            settingDefinitionsModel.expandAll(definition.key);
+            base.showAllHiddenInheritedSettings(definition.key);
         }
 
         color: UM.Theme.getColor("setting_control_button")
