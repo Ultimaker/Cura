@@ -57,7 +57,7 @@ class QualityManager:
         return self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
 
     def _getFilteredContainers(self, **kwargs):
-        return self._getFilteredContainersForStack(None, None **kwargs)
+        return self._getFilteredContainersForStack(None, None, **kwargs)
 
     def _getFilteredContainersForStack(self, machine_definition=None, material_containers=None, **kwargs):
         # Fill in any default values.

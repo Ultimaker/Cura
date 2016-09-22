@@ -502,7 +502,12 @@ class ContainerManager(QObject):
         activate_quality = quality_name == self._machine_manager.activeQualityName
         activate_quality_type = None
 
-        for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        if not global_stack or not quality_name:
+            return ""
+        machine_definition = global_stack.getBottom()
+
+        for container in QualityManager.getInstance().findQualityChangesByName(quality_name, machine_definition, []):
             containers_found = True
             if activate_quality and not activate_quality_type:
                 activate_quality_type = container.getMetaDataEntry("quality")
