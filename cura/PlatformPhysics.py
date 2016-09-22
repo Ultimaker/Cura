@@ -102,7 +102,7 @@ class PlatformPhysics:
                         continue
                     
                     # Ignore collisions within a group
-                    if other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None:
+                    if other_node.getParent() and node.getParent() and (other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None):
                         continue
                     
                     # Ignore nodes that do not have the right properties set.
