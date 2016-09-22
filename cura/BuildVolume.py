@@ -462,17 +462,6 @@ class BuildVolume(SceneNode):
         stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
         return stack.getProperty(setting_key, property)
 
-    def _getAllExtruderValues(self, setting_key):
-        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return [self._global_container_stack.getProperty(setting_key, "value")]
-        result = []
-        for index in ExtruderManager.getInstance().extruderIds:
-            extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
-            result.append(stack.getProperty(setting_key, "value"))
-        return result
-
     ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
     def _getBedAdhesionSize(self):
         if not self._global_container_stack:
@@ -491,7 +480,7 @@ class BuildVolume(SceneNode):
             skirt_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
-                extruder_values = self._getAllExtruderValues("skirt_brim_line_width")
+                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
                 for value in extruder_values:
                     skirt_size += value
@@ -500,7 +489,7 @@ class BuildVolume(SceneNode):
             skirt_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
-                extruder_values = self._getAllExtruderValues("skirt_brim_line_width")
+                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
                 for value in extruder_values:
                     skirt_size += value

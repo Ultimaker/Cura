@@ -265,6 +265,19 @@ class ExtruderManager(QObject):
 
         container_registry.addContainer(container_stack)
 
+    def getAllExtruderValues(self, setting_key):
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+        if not multi_extrusion:
+            return [global_container_stack.getProperty(setting_key, "value")]
+
+        result = []
+        for index in self.extruderIds:
+            extruder_stack_id = self.extruderIds[str(index)]
+            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
+            result.append(stack.getProperty(setting_key, "value"))
+        return result
+
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #
     #   \param machine_id The machine to remove the extruders for.
