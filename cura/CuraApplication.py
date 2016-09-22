@@ -817,10 +817,13 @@ class CuraApplication(QtApplication):
 
         # Compute the center of the objects when their origins are aligned.
         object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren() if node.getMeshData()]
-        middle_x = sum([v.x for v in object_centers]) / len(object_centers)
-        middle_y = sum([v.y for v in object_centers]) / len(object_centers)
-        middle_z = sum([v.z for v in object_centers]) / len(object_centers)
-        offset = Vector(middle_x, middle_y, middle_z)
+        if object_centers:
+            middle_x = sum([v.x for v in object_centers]) / len(object_centers)
+            middle_y = sum([v.y for v in object_centers]) / len(object_centers)
+            middle_z = sum([v.z for v in object_centers]) / len(object_centers)
+            offset = Vector(middle_x, middle_y, middle_z)
+        else:
+            offset = Vector(0, 0, 0)
 
         # Move each node to the same position.
         for center, node in zip(object_centers, group_node.getChildren()):
