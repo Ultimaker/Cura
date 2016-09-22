@@ -91,7 +91,7 @@ class SolidView(View):
 
                         if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
                             # Shade objects that are printed with the non-active extruder 25% darker
-                            shade_factor = 0.75
+                            shade_factor = 0.6
                     try:
                         # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
                         # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])

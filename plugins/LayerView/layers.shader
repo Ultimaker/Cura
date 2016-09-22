@@ -25,7 +25,7 @@ fragment =
 
 [defaults]
 u_active_extruder = 0.0
-u_shade_factor = 0.75
+u_shade_factor = 0.60
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix
