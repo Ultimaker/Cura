@@ -151,10 +151,11 @@ Item {
 
         Column
         {
-            spacing: UM.Theme.getSize("default_lining").height
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
-            height: contents.count * UM.Theme.getSize("section").height < 200 ? contents.count * UM.Theme.getSize("section").height : 200
+            property int maximumHeight: 200 * Screen.devicePixelRatio
+            height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
+
             ScrollView
             {
                 height: parent.height
@@ -163,6 +164,7 @@ Item {
                 ListView
                 {
                     id: contents
+                    spacing: UM.Theme.getSize("default_lining").height
 
                     model: UM.SettingDefinitionsModel
                     {
