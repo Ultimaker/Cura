@@ -190,7 +190,7 @@ class gcode(object):
 					else:
 						e = 0.0
 					if moveType == 'move' and oldPos[2] != pos[2]:
-						if oldPos[2] > pos[2] and abs(oldPos[2] - pos[2]) > 5.0 and pos[2] < 1.0:
+						if oldPos[2] > pos[2] and oldPos[2] >= 2.0 and pos[2] < 1.5:
 							oldPos[2] = 0.0
 						if layerThickness == 0.0:
 							layerThickness = abs(oldPos[2] - pos[2])
