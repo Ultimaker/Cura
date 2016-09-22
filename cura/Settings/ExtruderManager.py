@@ -180,7 +180,7 @@ class ExtruderManager(QObject):
                 variant = variants[0]
             preferred_variant_id = machine_definition.getMetaDataEntry("preferred_variant")
             if preferred_variant_id:
-                preferred_variants = container_registry.findInstanceContainers(id = preferred_variant_id, type = "variant")
+                preferred_variants = container_registry.findInstanceContainers(id = preferred_variant_id, definition = machine_definition_id, type = "variant")
                 if len(preferred_variants) >= 1:
                     variant = preferred_variants[0]
                 else:
