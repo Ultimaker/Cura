@@ -14,20 +14,6 @@ import cStringIO as StringIO
 
 from Cura.util import profile
 
-def gcodePath(newType, pathType, layerThickness, startPoint):
-	"""
-	Build a gcodePath object. This used to be objects, however, this code is timing sensitive and dictionaries proved to be faster.
-	"""
-	if layerThickness <= 0.0:
-		layerThickness = 0.01
-	if profile.getProfileSetting('spiralize') == 'True':
-		layerThickness = profile.getProfileSettingFloat('layer_height')
-	return {'type': newType,
-			'pathType': pathType,
-			'layerThickness': layerThickness,
-			'points': [startPoint],
-			'extrusion': [0.0]}
-
 class gcode(object):
 	"""
 	The heavy lifting GCode parser. This is most likely the hardest working python code in Cura.
@@ -39,31 +25,61 @@ class gcode(object):
 		self.extrusionAmount = 0
 		self.filename = None
 		self.progressCallback = None
-	
+		self._load_profile_settings()
+
+	def _load_profile_settings(self):
+		self._layer_height = profile.getProfileSettingFloat('layer_height')
+		self._spiralize = profile.getProfileSetting('spiralize')
+		self._filament_diameter = profile.getProfileSetting('filament_diameter')
+		self._filament_physical_density = profile.getPreferenceFloat('filament_physical_density')
+		self._filament_cost_kg = profile.getPreferenceFloat('filament_cost_kg')
+		self._filament_cost_meter = profile.getPreferenceFloat('filament_cost_meter')
+
+	def _load_profile_from_data(self, gcodeFile):
+		for line in gcodeFile:
+			if type(line) is tuple:
+				line = line[0]
+
+			if ';' in line:
+				comment = line[line.find(';')+1:].strip()
+				if comment.startswith('CURA_PROFILE_STRING:'):
+					original_profile = profile.getProfileString()
+					profile_string=comment[len('CURA_PROFILE_STRING:'):]
+					profile.setProfileFromString(profile_string)
+					self._load_profile_settings()
+					profile.setProfileFromString(original_profile)
+					break
+
+
 	def load(self, data):
 		self.filename = None
 		if type(data) in types.StringTypes and os.path.isfile(data):
 			self.filename = data
 			self._fileSize = os.stat(data).st_size
 			gcodeFile = open(data, 'r')
+			self._load_profile_from_data(gcodeFile)
+			gcodeFile.seek(0)
 			self._load(gcodeFile)
 			gcodeFile.close()
 		elif type(data) is list:
+			self._load_profile_from_data(data)
 			self._load(data)
 		else:
 			self._fileSize = len(data)
+			data.seekStart()
+			self._load_profile_from_data(data)
 			data.seekStart()
 			self._load(data)
 
 	def calculateWeight(self):
 		#Calculates the weight of the filament in kg
-		radius = float(profile.getProfileSetting('filament_diameter')) / 2
+		radius = float(self._filament_diameter) / 2
 		volumeM3 = (self.extrusionAmount * (math.pi * radius * radius)) / (1000*1000*1000)
-		return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
-	
+		return volumeM3 * self._filament_physical_density
+
 	def calculateCost(self):
-		cost_kg = profile.getPreferenceFloat('filament_cost_kg')
-		cost_meter = profile.getPreferenceFloat('filament_cost_meter')
+		cost_kg = self._filament_cost_kg
+		cost_meter = self._filament_cost_meter
 		if cost_kg > 0.0 and cost_meter > 0.0:
 			return "%.2f / %.2f" % (self.calculateWeight() * cost_kg, self.extrusionAmount / 1000 * cost_meter)
 		elif cost_kg > 0.0:
@@ -71,7 +87,21 @@ class gcode(object):
 		elif cost_meter > 0.0:
 			return "%.2f" % (self.extrusionAmount / 1000 * cost_meter)
 		return None
-	
+
+	def gcodePath(self, newType, pathType, layerThickness, startPoint):
+		"""
+		Build a gcodePath object. This used to be objects, however, this code is timing sensitive and dictionaries proved to be faster.
+		"""
+		if layerThickness <= 0.0:
+			layerThickness = 0.01
+		if self._spiralize == 'True':
+			layerThickness = self._layer_height
+		return {'type': newType,
+				'pathType': pathType,
+				'layerThickness': layerThickness,
+				'points': [startPoint],
+				'extrusion': [0.0]}
+
 	def _load(self, gcodeFile):
 		self.layerList = []
 		pos = [0.0,0.0,0.0]
@@ -87,7 +117,7 @@ class gcode(object):
 		layerThickness = 0.1
 		pathType = 'CUSTOM'
 		currentLayer = []
-		currentPath = gcodePath('move', pathType, layerThickness, pos)
+		currentPath = self.gcodePath('move', pathType, layerThickness, pos)
 		currentPath['extruder'] = currentExtruder
 
 		currentLayer.append(currentPath)
@@ -110,7 +140,7 @@ class gcode(object):
 					pathType = 'SKIRT'
 				#Cura layer comments.
 				if comment.startswith('LAYER:'):
-					currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
+					currentPath = self.gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
 					layerThickness = 0.0
 					currentPath['extruder'] = currentExtruder
 					for path in currentLayer:
@@ -165,7 +195,7 @@ class gcode(object):
 						if layerThickness == 0.0:
 							layerThickness = abs(oldPos[2] - pos[2])
 					if currentPath['type'] != moveType or currentPath['pathType'] != pathType:
-						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
+						currentPath = self.gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
 						currentPath['extruder'] = currentExtruder
 						currentLayer.append(currentPath)
 
@@ -175,7 +205,7 @@ class gcode(object):
 					S = getCodeFloat(line, 'S')
 					P = getCodeFloat(line, 'P')
 				elif G == 10:	#Retract
-					currentPath = gcodePath('retract', pathType, layerThickness, currentPath['points'][-1])
+					currentPath = self.gcodePath('retract', pathType, layerThickness, currentPath['points'][-1])
 					currentPath['extruder'] = currentExtruder
 					currentLayer.append(currentPath)
 					currentPath['points'].append(currentPath['points'][0])
