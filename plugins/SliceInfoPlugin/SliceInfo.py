@@ -21,6 +21,7 @@ import urllib.request
 import urllib.parse
 import ssl
 import hashlib
+import json
 
 catalog = i18nCatalog("cura")
 
@@ -105,18 +106,7 @@ class SliceInfo(Extension):
             material_used = [str(math.pi * material_radius * material_radius * material_length) for material_length in print_information.materialLengths]
             material_used = ",".join(material_used)
 
-            # Bundle the collected data
-            submitted_data = {
-                "processor": platform.processor(),
-                "machine": platform.machine(),
-                "platform": platform.platform(),
-                "settings": global_container_stack.serialize(), # global_container with references on used containers
-                "version": Application.getInstance().getVersion(),
-                "modelhash": modelhash_formatted,
-                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
-                "filament": material_used,
-                "language": Preferences.getInstance().getValue("general/language"),
-            }
+            containers = { "": global_container_stack.serialize() }
             for container in global_container_stack.getContainers():
                 container_id = container.getId()
                 container_serialized = ""
@@ -125,11 +115,23 @@ class SliceInfo(Extension):
                 except NotImplementedError:
                     Logger.log("w", "Container %s could not be serialized!", container_id)
                     continue
-
                 if container_serialized:
-                    submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
+                    containers[container_id] = container_serialized
                 else:
                     Logger.log("i", "No data found in %s to be serialized!", container_id)
+
+            # Bundle the collected data
+            submitted_data = {
+                "processor": platform.processor(),
+                "machine": platform.machine(),
+                "platform": platform.platform(),
+                "settings": json.dumps(containers), # global_container with references on used containers
+                "version": Application.getInstance().getVersion(),
+                "modelhash": modelhash_formatted,
+                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
+                "filament": material_used,
+                "language": Preferences.getInstance().getValue("general/language"),
+            }
 
             # Convert data to bytes
             submitted_data = urllib.parse.urlencode(submitted_data)
