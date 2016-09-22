@@ -119,6 +119,7 @@ class SliceInfo(Extension):
             }
             for container in global_container_stack.getContainers():
                 container_id = container.getId()
+                container_serialized = ""
                 try:
                     container_serialized = container.serialize()
                 except NotImplementedError:
