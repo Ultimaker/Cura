@@ -469,7 +469,10 @@ class ContainerManager(QObject):
                 UM.Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
                 continue
 
-            new_changes = self._createQualityChanges(quality_container, unique_name, stack.getId(), UM.Application.getInstance().getGlobalContainerStack())
+            extruder_id = None if stack is global_stack else stack.getBottom().getId()
+            new_changes = self._createQualityChanges(quality_container, unique_name,
+                                                     UM.Application.getInstance().getGlobalContainerStack().getBottom(),
+                                                     extruder_id)
             self._performMerge(new_changes, user_container)
 
             self._container_registry.addContainer(new_changes)
