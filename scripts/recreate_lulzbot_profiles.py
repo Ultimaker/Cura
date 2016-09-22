@@ -375,7 +375,7 @@ material_names = {
 	"b-pet": "B-Pet",
 	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
-	"polyflex": "Polyflex (Polymaker)",
+	"polyflex": "PolyFlex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
 	"silk": "BioFila Silk (twoBEars)",
