@@ -35,7 +35,8 @@ class LayerPass(RenderPass):
     def render(self):
         if not self._layer_shader:
             self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layers.shader"))
-        self._layer_shader.setUniformValue("u_active_extruder", float(self._extruder_manager.activeExtruderIndex))
+        # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
+        self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
 
