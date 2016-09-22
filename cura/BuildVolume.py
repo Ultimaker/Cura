@@ -328,7 +328,7 @@ class BuildVolume(SceneNode):
                 self._build_volume_message.hide()
             rebuild_me = True
 
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings:
+        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings:
             self._updateDisallowedAreas()
             rebuild_me = True
 
@@ -446,14 +446,15 @@ class BuildVolume(SceneNode):
         self._has_errors = collision
         self._disallowed_areas = areas
 
-    ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
+    ##   Private convenience function to get a setting from the adhesion extruder.
     def _getSettingProperty(self, setting_key, property = "value"):
         multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         if not multi_extrusion:
             return self._global_container_stack.getProperty(setting_key, property)
 
-        extruder_index = self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
+        extruder_index = self._global_container_stack.getProperty("adhesion_extruder_nr", "value")
+
         if extruder_index == "-1":  # If extruder index is -1 use global instead
             return self._global_container_stack.getProperty(setting_key, property)
 
@@ -477,8 +478,22 @@ class BuildVolume(SceneNode):
             skirt_distance = self._getSettingProperty("skirt_gap", "value")
             skirt_line_count = self._getSettingProperty("skirt_line_count", "value")
             skirt_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
+            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+                adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
+                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
+                del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
+                for value in extruder_values:
+                    skirt_size += value
+
         elif adhesion_type == "brim":
             skirt_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
+            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+                adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
+                extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
+                del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
+                for value in extruder_values:
+                    skirt_size += value
+
         elif adhesion_type == "raft":
             skirt_size = self._getSettingProperty("raft_margin", "value")
 
@@ -491,6 +506,12 @@ class BuildVolume(SceneNode):
         if container_stack.getProperty("xy_offset", "value"):
             skirt_size += container_stack.getProperty("xy_offset", "value")
 
+        if container_stack.getProperty("infill_wipe_dist", "value"):
+            skirt_size += container_stack.getProperty("infill_wipe_dist", "value")
+
+        if container_stack.getProperty("travel_avoid_dist", "value"):
+            skirt_size += container_stack.getProperty("travel_avoid_dist", "value")
+
         return skirt_size
 
     def _clamp(self, value, min_value, max_value):
@@ -501,3 +522,4 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_dist"]

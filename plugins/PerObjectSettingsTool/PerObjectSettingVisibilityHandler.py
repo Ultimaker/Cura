@@ -72,9 +72,9 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
                     # Use the found stack number to get the right stack to copy the value from.
                     if stack_nr in ExtruderManager.getInstance().extruderIds:
-                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
 
-                    # Use the raw property to set the value (so the intheritance doesn't break)
+                    # Use the raw property to set the value (so the inheritance doesn't break)
                     if stack is not None:
                         new_instance.setProperty("value", stack.getRawProperty(item, "value"))
                     else:
