@@ -469,7 +469,7 @@ class BuildVolume(SceneNode):
         result = []
         for index in ExtruderManager.getInstance().extruderIds:
             extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
+            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             result.append(stack.getProperty(setting_key, "value"))
         return result
 
