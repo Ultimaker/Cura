@@ -80,6 +80,7 @@ Button {
         onClicked:
         {
             settingDefinitionsModel.expandAll(definition.key);
+            base.checked = true;
             base.showAllHiddenInheritedSettings(definition.key);
         }
 
