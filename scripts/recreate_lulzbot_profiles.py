@@ -303,7 +303,7 @@ material_names = {
 	"PLA_VP": "PLA (Village Plastics)",
 	"PLA_PHA": "PLA/PHA (colorFabb)",
 	"PLA_verbatim": "PLA (Verbatim)",
-	"PLA_poly": "PLA Polylite (Polymaker)",
+	"PLA_poly": "PLA PolyLite (Polymaker)",
 	
 	# Intermediate
 	"ABS_VP": "ABS (Village Plastics)",
