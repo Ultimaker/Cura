@@ -49,25 +49,38 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         # This holds the full JSON file that was received from the last request.
         # The JSON looks like:
-        # {'led': {'saturation': 0.0, 'brightness': 100.0, 'hue': 0.0},
-        # 'beep': {}, 'network': {'wifi_networks': [],
-        # 'ethernet': {'connected': True, 'enabled': True},
-        # 'wifi': {'ssid': 'xxxx', 'connected': False, 'enabled': False}},
-        # 'diagnostics': {},
-        # 'bed': {'temperature': {'target': 60.0, 'current': 44.4}},
-        # 'heads': [{'max_speed': {'z': 40.0, 'y': 300.0, 'x': 300.0},
-        # 'position': {'z': 20.0, 'y': 6.0, 'x': 180.0},
-        # 'fan': 0.0,
-        # 'jerk': {'z': 0.4, 'y': 20.0, 'x': 20.0},
-        # 'extruders': [
-        # {'feeder': {'max_speed': 45.0, 'jerk': 5.0, 'acceleration': 3000.0},
-        # 'active_material': {'GUID': 'xxxxxxx', 'length_remaining': -1.0},
-        # 'hotend': {'temperature': {'target': 0.0, 'current': 22.8}, 'id': 'AA 0.4'}},
-        # {'feeder': {'max_speed': 45.0, 'jerk': 5.0, 'acceleration': 3000.0},
-        # 'active_material': {'GUID': 'xxxx', 'length_remaining': -1.0},
-        # 'hotend': {'temperature': {'target': 0.0, 'current': 22.8}, 'id': 'BB 0.4'}}],
-        # 'acceleration': 3000.0}],
-        # 'status': 'printing'}
+        #{
+        #    "led": {"saturation": 0.0, "brightness": 100.0, "hue": 0.0},
+        #    "beep": {},
+        #    "network": {
+        #        "wifi_networks": [],
+        #        "ethernet": {"connected": true, "enabled": true},
+        #        "wifi": {"ssid": "xxxx", "connected": False, "enabled": False}
+        #    },
+        #    "diagnostics": {},
+        #    "bed": {"temperature": {"target": 60.0, "current": 44.4}},
+        #    "heads": [{
+        #        "max_speed": {"z": 40.0, "y": 300.0, "x": 300.0},
+        #        "position": {"z": 20.0, "y": 6.0, "x": 180.0},
+        #        "fan": 0.0,
+        #        "jerk": {"z": 0.4, "y": 20.0, "x": 20.0},
+        #        "extruders": [
+        #            {
+        #                "feeder": {"max_speed": 45.0, "jerk": 5.0, "acceleration": 3000.0},
+        #                "active_material": {"GUID": "xxxxxxx", "length_remaining": -1.0},
+        #                "hotend": {"temperature": {"target": 0.0, "current": 22.8}, "id": "AA 0.4"}
+        #            },
+        #            {
+        #                "feeder": {"max_speed": 45.0, "jerk": 5.0, "acceleration": 3000.0},
+        #                "active_material": {"GUID": "xxxx", "length_remaining": -1.0},
+        #                "hotend": {"temperature": {"target": 0.0, "current": 22.8}, "id": "BB 0.4"}
+        #            }
+        #        ],
+        #        "acceleration": 3000.0
+        #    }],
+        #    "status": "printing"
+        #}
+
         self._json_printer_state = {}
 
         ##  Todo: Hardcoded value now; we should probably read this from the machine file.
