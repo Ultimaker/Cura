@@ -52,7 +52,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         #Listen to changes.
         manager = ExtruderManager.getInstance()
-        manager.extrudersChanged.connect(self._updateExtruders) #When the list of extruders changes in general.
+        manager.globalContainerStackDefinitionChanged.connect(self._updateExtruders) #When the global stack changes to a printer with different extruders.
 
         self._updateExtruders()
 
