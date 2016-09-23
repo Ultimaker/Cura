@@ -188,12 +188,13 @@ QtObject {
             }
 
             label: Item {
-                Image {
+                UM.RecolorImage {
                     anchors.centerIn: parent;
                     opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
                     width: Theme.getSize("button_icon").width;
                     height: Theme.getSize("button_icon").height;
+                    color: Theme.getColor("button_text")
 
                     sourceSize: Theme.getSize("button_icon")
                 }
