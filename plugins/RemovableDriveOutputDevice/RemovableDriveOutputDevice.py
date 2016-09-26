@@ -114,3 +114,8 @@ class RemovableDriveOutputDevice(OutputDevice):
         if action == "eject":
             if Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("RemovableDriveOutputDevice").ejectDevice(self):
                 message.hide()
+
+                eject_message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(self.getName()))
+            else:
+                eject_message = Message(catalog.i18nc("@info:status", "Failed to eject {0}. Another program may be using the drive.").format(self.getName()))
+            eject_message.show()
