@@ -92,6 +92,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._connection_state_before_timeout = None
 
         self._last_response_time = None
+        self._last_request_time = None
         self._response_timeout_time = 5
         self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
         self._recreate_network_manager_count = 1
@@ -135,6 +136,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             time_since_last_response = time() - self._last_response_time
         else:
             time_since_last_response = 0
+        if self._last_request_time:
+            time_since_last_request = time() - self._last_request_time
+        else:
+            time_since_last_request = float("inf") # An irrelevantly large number of seconds
 
         # Connection is in timeout, check if we need to re-start the connection.
         # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
@@ -179,8 +184,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 self._recreate_network_manager_count = 1
 
         # Check that we aren't in a timeout state
-        if self._last_response_time and not self._connection_state_before_timeout:
-            if time() - self._last_response_time > self._response_timeout_time:
+        if self._last_response_time and self._last_request_time and not self._connection_state_before_timeout:
+            if time_since_last_response > self._response_timeout_time and time_since_last_request <= self._response_timeout_time:
                 # Go into timeout state.
                 Logger.log("d", "We did not receive a response for %s seconds, so it seems OctoPrint is no longer accesible.", time() - self._last_response_time)
                 self._connection_state_before_timeout = self._connection_state
