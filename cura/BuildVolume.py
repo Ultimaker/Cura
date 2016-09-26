@@ -101,6 +101,8 @@ class BuildVolume(SceneNode):
             " with printed models."))
 
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
+        # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
+        # Therefore this works.
         Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
 
     def _onSceneChanged(self, source):
