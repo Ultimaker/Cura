@@ -156,6 +156,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._connection_state_before_timeout = None
 
         self._last_response_time = time()
+        self._last_request_time = None
         self._response_timeout_time = 10
         self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
         self._recreate_network_manager_count = 1
@@ -286,6 +287,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             time_since_last_response = time() - self._last_response_time
         else:
             time_since_last_response = 0
+        if self._last_request_time:
+            time_since_last_request = time() - self._last_request_time
+        else:
+            time_since_last_request = 1000000 # An irrelevantly large number of seconds
 
         # Connection is in timeout, check if we need to re-start the connection.
         # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
@@ -334,8 +339,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._recreate_network_manager_count = 1
 
         # Check that we aren't in a timeout state
-        if self._last_response_time and not self._connection_state_before_timeout:
-            if time_since_last_response > self._response_timeout_time:
+        if self._last_response_time and self._last_request_time and not self._connection_state_before_timeout:
+            if time_since_last_response > self._response_timeout_time and time_since_last_request <= self._response_timeout_time:
                 # Go into timeout state.
                 Logger.log("d", "We did not receive a response for %0.1f seconds, so it seems the printer is no longer accessible.", time_since_last_response)
                 self._connection_state_before_timeout = self._connection_state
@@ -376,6 +381,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "print_job")
         print_job_request = QNetworkRequest(url)
         self._manager.get(print_job_request)
+
+        self._last_request_time = time()
 
     def _createNetworkManager(self):
         if self._manager:
