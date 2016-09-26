@@ -30,6 +30,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
     addPrinterSignal = Signal()
     removePrinterSignal = Signal()
+    printerListChanged = Signal()
 
     ##  Start looking for devices on network.
     def start(self):
@@ -73,6 +74,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
                 self._printers[printer.getKey()].connect()
                 printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+        self.printerListChanged.emit()
 
     def removePrinter(self, name):
         printer = self._printers.pop(name, None)
@@ -80,6 +82,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             if printer.isConnected():
                 printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
                 printer.disconnect()
+        self.printerListChanged.emit()
 
     ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
