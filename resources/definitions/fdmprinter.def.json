@@ -691,7 +691,7 @@
                             "description": "Width of a single prime tower line.",
                             "type": "float",
                             "unit": "mm",
-                            "enabled": "prime_tower_enable",
+                            "enabled": "resolveOrValue('prime_tower_enable')",
                             "default_value": 0.4,
                             "value": "line_width",
                             "minimum_value": "0.0001",
@@ -1540,7 +1540,7 @@
                             "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
                             "type": "float",
                             "unit": "mm/s",
-                            "enabled": "prime_tower_enable",
+                            "enabled": "resolveOrValue('prime_tower_enable')",
                             "default_value": 60,
                             "value": "speed_print",
                             "minimum_value": "0.1",
@@ -1814,7 +1814,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "prime_tower_enable and acceleration_enabled",
+                            "enabled": "resolveOrValue('prime_tower_enable') and acceleration_enabled",
                             "settable_per_mesh": false
                         }
                     }
@@ -2035,7 +2035,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "prime_tower_enable and jerk_enabled",
+                            "enabled": "resolveOrValue('prime_tower_enable') and jerk_enabled",
                             "settable_per_mesh": false
                         }
                     }
@@ -3345,9 +3345,9 @@
                     "description": "The width of the prime tower.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "prime_tower_enable",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 15,
-                    "value": "15 if prime_tower_enable else 0",
+                    "value": "15 if resolveOrValue('prime_tower_enable') else 0",
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "maximum_value_warning": "20",
@@ -3360,7 +3360,7 @@
                     "description": "The x coordinate of the position of the prime tower.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "prime_tower_enable",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
@@ -3375,7 +3375,7 @@
                     "description": "The y coordinate of the position of the prime tower.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "prime_tower_enable",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
@@ -3390,7 +3390,7 @@
                     "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
                     "type": "float",
                     "unit": "%",
-                    "enabled": "prime_tower_enable",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 100,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
@@ -3403,7 +3403,7 @@
                     "label": "Wipe Nozzle on Prime Tower",
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "bool",
-                    "enabled": "prime_tower_enable",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false

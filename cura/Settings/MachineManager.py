@@ -356,7 +356,8 @@ class MachineManager(QObject):
         if self._global_container_stack.getTop().findInstances():
             return True
 
-        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        for stack in stacks:
             if stack.getTop().findInstances():
                 return True
 
@@ -369,10 +370,19 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return
 
-        self._global_container_stack.getTop().removeInstance(key)
+        send_emits_containers = []
+
+        top_container = self._global_container_stack.getTop()
+        top_container.removeInstance(key, postpone_emit=True)
+        send_emits_containers.append(top_container)
 
         for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
-            stack.getTop().removeInstance(key)
+            container = stack.getTop()
+            container.removeInstance(key, postpone_emit=True)
+            send_emits_containers.append(container)
+
+        for container in send_emits_containers:
+            container.sendPostponedEmits()
 
     ##  Check if the global profile does not contain error states
     #   Note that the _active_stack_valid is cached due to performance issues
