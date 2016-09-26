@@ -505,10 +505,14 @@ class BuildVolume(SceneNode):
             skirt_size = self._getSettingProperty("raft_margin", "value")
 
         if container_stack.getProperty("draft_shield_enabled", "value"):
-            skirt_size += container_stack.getProperty("draft_shield_dist", "value")
+            draft_shield_dist = container_stack.getProperty("draft_shield_dist", "value")
+            if skirt_size < draft_shield_dist:
+                skirt_size = draft_shield_dist
 
         if container_stack.getProperty("ooze_shield_enabled", "value"):
-            skirt_size += container_stack.getProperty("ooze_shield_dist", "value")
+            ooze_shield_dist = container_stack.getProperty("ooze_shield_dist", "value")
+            if skirt_size < ooze_shield_dist:
+                skirt_size = ooze_shield_dist
 
         if container_stack.getProperty("xy_offset", "value"):
             skirt_size += container_stack.getProperty("xy_offset", "value")
