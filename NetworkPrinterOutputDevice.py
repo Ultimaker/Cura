@@ -290,7 +290,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_request_time:
             time_since_last_request = time() - self._last_request_time
         else:
-            time_since_last_request = 1000000 # An irrelevantly large number of seconds
+            time_since_last_request = float("inf") # An irrelevantly large number of seconds
 
         # Connection is in timeout, check if we need to re-start the connection.
         # Sometimes the qNetwork manager incorrectly reports the network status on Mac & Windows.
