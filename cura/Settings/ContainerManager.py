@@ -433,9 +433,16 @@ class ContainerManager(QObject):
     def clearUserContainers(self):
         self._machine_manager.blurSettings.emit()
 
+        send_emits_containers = []
+
         # Go through global and extruder stacks and clear their topmost container (the user settings).
         for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
-            stack.getTop().clear()
+            container = stack.getTop()
+            container.clear()
+            send_emits_containers.append(container)
+
+        for container in send_emits_containers:
+            container.sendPostponedEmits()
 
     ##  Create quality changes containers from the user containers in the active stacks.
     #

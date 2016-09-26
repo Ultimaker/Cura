@@ -347,7 +347,7 @@ class ExtruderManager(QObject):
         for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
             value = extruder.getRawProperty(key, "value")
 
-            if not value:
+            if value is None:
                 continue
 
             if isinstance(value, UM.Settings.SettingFunction):
@@ -390,5 +390,31 @@ class ExtruderManager(QObject):
                 value = value(extruder)
         else: #Just a value from global.
             value = UM.Application.getInstance().getGlobalContainerStack().getProperty(key, "value")
+
+        return value
+
+    ##  Get the resolve value or value for a given key
+    #
+    #   This is the effective value for a given key, it is used for values in the global stack.
+    #   This is exposed to SettingFunction to use in value functions.
+    #   \param key The key of the setting to get the value of.
+    #
+    #   \return The effective value
+    @staticmethod
+    def getResolveOrValue(key):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+        resolved_value = global_stack.getProperty(key, "resolve")
+        if resolved_value is not None:
+            user_container = global_stack.findContainer({"type": "user"})
+            quality_changes_container = global_stack.findContainer({"type": "quality_changes"})
+            if user_container.hasProperty(key, "value") or quality_changes_container.hasProperty(key, "value"):
+                # Normal case
+                value = global_stack.getProperty(key, "value")
+            else:
+                # We have a resolved value and we're using it because of no user and quality_changes value
+                value = resolved_value
+        else:
+            value = global_stack.getRawProperty(key, "value")
 
         return value

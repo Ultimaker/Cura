@@ -103,6 +103,7 @@ class CuraApplication(QtApplication):
 
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
+        SettingFunction.registerOperator("resolveOrValue", cura.Settings.ExtruderManager.getResolveOrValue)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
