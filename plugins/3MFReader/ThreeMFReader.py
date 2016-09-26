@@ -74,7 +74,12 @@ class ThreeMFReader(MeshReader):
                 # TODO: We currently do not check for normals and simply recalculate them.
                 mesh_builder.calculateNormals()
                 mesh_builder.setFileName(file_name)
-                node.setMeshData(mesh_builder.build().getTransformed(rotation))
+                mesh_data = mesh_builder.build().getTransformed(rotation)
+
+                if not len(mesh_data.getVertices()):
+                    continue  # This object doesn't have data, so skip it.
+
+                node.setMeshData(mesh_data)
                 node.setSelectable(True)
 
                 transformations = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(entry.get("id")), self._namespaces)
@@ -107,7 +112,7 @@ class ThreeMFReader(MeshReader):
                     node.setTransformation(temp_mat)
 
                 try:
-                    node.getBoundingBox() # Selftest - There might be more functions that should fail
+                    node.getBoundingBox()  # Selftest - There might be more functions that should fail
                 except:
                     continue
 
