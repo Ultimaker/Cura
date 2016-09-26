@@ -81,7 +81,11 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
             enabled: base.currentItem != null ? base.currentItem.id != Cura.MachineManager.activeQualityId : false;
-            onClicked: Cura.MachineManager.setActiveQuality(base.currentItem.id)
+            onClicked:
+            {
+                Cura.MachineManager.setActiveQuality(base.currentItem.id)
+                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
+            }
         },
 
         // Create button
