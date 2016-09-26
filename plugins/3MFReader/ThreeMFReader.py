@@ -47,7 +47,8 @@ class ThreeMFReader(MeshReader):
                 mesh_builder = MeshBuilder()
                 node = SceneNode()
                 vertex_list = []
-                #for vertex in entry.mesh.vertices.vertex:
+
+                # for vertex in entry.mesh.vertices.vertex:
                 for vertex in entry.findall(".//3mf:vertex", self._namespaces):
                     vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
                     Job.yieldThread()
@@ -114,13 +115,13 @@ class ThreeMFReader(MeshReader):
                 group_decorator = GroupDecorator()
                 result.addDecorator(group_decorator)
             elif len(objects) == 1:
-                result = result.getChildren()[0] # Only one object found, return that.
+                result = result.getChildren()[0]  # Only one object found, return that.
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
 
-        try: # Selftest - There might be more functions that should fail
-            boundingBox = result.getBoundingBox()
-            boundingBox.isValid()
+        try:  # Selftest - There might be more functions that should fail
+            bounding_box = result.getBoundingBox()
+            bounding_box.isValid()
         except:
             return None
 
