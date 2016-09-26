@@ -106,6 +106,11 @@ class ThreeMFReader(MeshReader):
 
                     node.setTransformation(temp_mat)
 
+                try:
+                    node.getBoundingBox() # Selftest - There might be more functions that should fail
+                except:
+                    continue
+
                 result.addChild(node)
 
                 Job.yieldThread()
@@ -118,7 +123,6 @@ class ThreeMFReader(MeshReader):
                 result = result.getChildren()[0]  # Only one object found, return that.
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
-
         try:  # Selftest - There might be more functions that should fail
             bounding_box = result.getBoundingBox()
             bounding_box.isValid()
