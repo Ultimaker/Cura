@@ -81,8 +81,8 @@ class BuildVolume(SceneNode):
         self._platform = Platform(self)
 
         self._global_container_stack = None
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
-        self._onGlobalContainerStackChanged()
+        Application.getInstance().globalContainerStackChanged.connect(self._onStackChanged)
+        self._onStackChanged()
 
         self._has_errors = False
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
@@ -99,6 +99,9 @@ class BuildVolume(SceneNode):
             "The build volume height has been reduced due to the value of the"
             " \"Print Sequence\" setting to prevent the gantry from colliding"
             " with printed models."))
+
+        # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
+        Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
 
     def _onSceneChanged(self, source):
         self._change_timer.start()
@@ -277,7 +280,8 @@ class BuildVolume(SceneNode):
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
 
-    def _onGlobalContainerStackChanged(self):
+    ##  Update the build volume visualization
+    def _onStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
             extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
@@ -354,7 +358,8 @@ class BuildVolume(SceneNode):
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         self._prime_tower_area = None
         # Add prime tower location as disallowed area.
-        if self._global_container_stack.getProperty("prime_tower_enable", "value") == True:
+        # if self._global_container_stack.getProperty("prime_tower_enable", "value") == True:
+        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
