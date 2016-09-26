@@ -515,11 +515,15 @@ class BuildVolume(SceneNode):
         if container_stack.getProperty("xy_offset", "value"):
             skirt_size += container_stack.getProperty("xy_offset", "value")
 
-        if container_stack.getProperty("infill_wipe_dist", "value"):
-            skirt_size += container_stack.getProperty("infill_wipe_dist", "value")
+        if container_stack.getProperty("infill_wipe_distance", "value"):
+            infill_wipe_distance = container_stack.getProperty("infill_wipe_distance", "value")
+            if skirt_size < infill_wipe_distance:
+                skirt_size += infill_wipe_distance
 
-        if container_stack.getProperty("travel_avoid_dist", "value"):
-            skirt_size += container_stack.getProperty("travel_avoid_dist", "value")
+        if container_stack.getProperty("travel_avoid_distance", "value"):
+            travel_avoid_distance = container_stack.getProperty("travel_avoid_distance", "value")
+            if skirt_size < travel_avoid_distance:
+                skirt_size += travel_avoid_distance
 
         return skirt_size
 
@@ -531,4 +535,4 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_dist"]
+    _distance_settings = ["infill_wipe_distance", "travel_avoid_distance"]
