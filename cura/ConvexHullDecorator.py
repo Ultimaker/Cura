@@ -296,6 +296,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
     def _getSettingProperty(self, setting_key, property="value"):
+        per_mesh_stack = self._node.callDecoration("getStack")
+        if per_mesh_stack:
+            return per_mesh_stack.getProperty(setting_key, property)
+
         multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
 
         if not multi_extrusion:
