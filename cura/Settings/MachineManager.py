@@ -539,8 +539,10 @@ class MachineManager(QObject):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
         if not containers or not self._active_container_stack:
             return
+        material_container = containers[0]
+
         Logger.log("d", "Attempting to change the active material to %s", material_id)
-        old_variant = self._active_container_stack.findContainer({"type": "variant"})
+
         old_material = self._active_container_stack.findContainer({"type": "material"})
         old_quality = self._active_container_stack.findContainer({"type": "quality"})
         old_quality_changes = self._active_container_stack.findContainer({"type": "quality_changes"})
@@ -555,26 +557,37 @@ class MachineManager(QObject):
         old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
         material_index = self._active_container_stack.getContainerIndex(old_material)
-        self._active_container_stack.replaceContainer(material_index, containers[0])
+        self._active_container_stack.replaceContainer(material_index, material_container)
 
-        containers[0].nameChanged.connect(self._onMaterialNameChanged)
+        material_container.nameChanged.connect(self._onMaterialNameChanged)
 
-        if containers[0].getMetaDataEntry("compatible") == False:
+        if material_container.getMetaDataEntry("compatible") == False:
             message = Message(catalog.i18nc("@info:status",
                                             "The selected material is imcompatible with the selected machine or configuration."))
             message.show()
 
-        if old_quality:
-            if old_quality_changes:
-                new_quality = self._updateQualityChangesContainer(
-                    old_quality.getMetaDataEntry("quality_type"),
-                    preferred_quality_changes_name = old_quality_changes.getMetaDataEntry("name"))
-            else:
-                new_quality = self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0], old_quality.getName())
-        else:
-            new_quality = self._updateQualityContainer(self._global_container_stack.getBottom(), old_variant, containers[0])
+        new_quality_id = old_quality.getId()
+        quality_type = old_quality.getMetaDataEntry("quality_type")
+        if old_quality_changes:
+            quality_type = old_quality_changes.getMetaDataEntry("quality_type")
+            new_quality_id = old_quality_changes.getId()
 
-        self.setActiveQuality(new_quality.getId())
+        # See if the requested quality type is available in the new situation.
+        machine_definition = self._active_container_stack.getBottom()
+        quality_manager = QualityManager.getInstance()
+        candidate_qualities = quality_manager.findQualityByQualityType(quality_type,
+                                   quality_manager.getWholeMachineDefinition(machine_definition),
+                                   [material_container])
+        if not candidate_qualities:
+            # Fall back to normal quality
+            new_quality_id = quality_manager.findQualityByQualityType("normal",
+                                    quality_manager.getWholeMachineDefinition(machine_definition),
+                                    [material_container])[0].getId()
+        else:
+            if not old_quality_changes:
+                new_quality_id = candidate_qualities[0].getId()
+
+        self.setActiveQuality(new_quality_id)
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
