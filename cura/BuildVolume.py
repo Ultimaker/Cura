@@ -507,6 +507,8 @@ class BuildVolume(SceneNode):
 
         elif adhesion_type == "raft":
             border_size = self._getSettingProperty("raft_margin", "value")
+        else:
+            raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
         if self._getSettingProperty("xy_offset", "value"):
             border_size += self._getSettingProperty("xy_offset", "value")
