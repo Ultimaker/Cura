@@ -478,7 +478,7 @@ class BuildVolume(SceneNode):
         if not self._global_container_stack:
             return 0
         container_stack = self._global_container_stack
-        skirt_size = 0.0
+        border_size = 0.0
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
@@ -488,50 +488,50 @@ class BuildVolume(SceneNode):
         if adhesion_type == "skirt":
             skirt_distance = self._getSettingProperty("skirt_gap", "value")
             skirt_line_count = self._getSettingProperty("skirt_line_count", "value")
-            skirt_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
+            border_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
                 for value in extruder_values:
-                    skirt_size += value
+                    border_size += value
 
         elif adhesion_type == "brim":
-            skirt_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
+            border_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
                 for value in extruder_values:
-                    skirt_size += value
+                    border_size += value
 
         elif adhesion_type == "raft":
-            skirt_size = self._getSettingProperty("raft_margin", "value")
+            border_size = self._getSettingProperty("raft_margin", "value")
 
         if self._getSettingProperty("xy_offset", "value"):
-            skirt_size += self._getSettingProperty("xy_offset", "value")
+            border_size += self._getSettingProperty("xy_offset", "value")
 
         if container_stack.getProperty("draft_shield_enabled", "value"):
             draft_shield_dist = container_stack.getProperty("draft_shield_dist", "value")
-            if skirt_size < draft_shield_dist:
-                skirt_size = draft_shield_dist
+            if border_size < draft_shield_dist:
+                border_size = draft_shield_dist
 
         if container_stack.getProperty("ooze_shield_enabled", "value"):
             ooze_shield_dist = container_stack.getProperty("ooze_shield_dist", "value")
-            if skirt_size < ooze_shield_dist:
-                skirt_size = ooze_shield_dist
+            if border_size < ooze_shield_dist:
+                border_size = ooze_shield_dist
 
         if self._getSettingProperty("infill_wipe_dist", "value"):
             infill_wipe_distance = self._getSettingProperty("infill_wipe_dist", "value")
-            if skirt_size < infill_wipe_distance:
-                skirt_size = infill_wipe_distance
+            if border_size < infill_wipe_distance:
+                border_size = infill_wipe_distance
 
         if self._getSettingProperty("travel_avoid_distance", "value"):
             travel_avoid_distance = self._getSettingProperty("travel_avoid_distance", "value")
-            if skirt_size < travel_avoid_distance:
-                skirt_size = travel_avoid_distance
+            if border_size < travel_avoid_distance:
+                border_size = travel_avoid_distance
 
-        return skirt_size
+        return border_size
 
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
