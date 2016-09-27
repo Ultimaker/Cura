@@ -519,7 +519,7 @@ class BuildVolume(SceneNode):
 
         move_from_wall_radius = 0 #Moves that start from outer wall.
         if self._getSettingProperty("infill_wipe_dist", "value"):
-            wall_expansion_radius = max(move_from_wall_radius, self._getSettingProperty("infill_wipe_dist", "value"))
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("infill_wipe_dist", "value"))
         if self._getSettingProperty("travel_avoid_distance", "value"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("travel_avoid_distance", "value"))
 
