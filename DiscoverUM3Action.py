@@ -35,7 +35,7 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
-            self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("JediWifiPrintingPlugin")
+            self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
             self._network_plugin.printerListChanged.connect(self._onPrinterDiscoveryChanged)
             self.printersChanged.emit()
 
@@ -105,7 +105,7 @@ class DiscoverUM3Action(MachineAction):
     def _createAdditionalComponentsView(self):
         Logger.log("d", "Creating additional ui components for UM3.")
 
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("JediWifiPrintingPlugin"), "UM3InfoComponents.qml"))
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"), "UM3InfoComponents.qml"))
         self.__additional_component = QQmlComponent(Application.getInstance()._engine, path)
 
         # We need access to engine (although technically we can't)
