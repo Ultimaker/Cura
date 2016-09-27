@@ -665,7 +665,6 @@ class MachineManager(QObject):
 
         # Find the values for each extruder.
         for stack in ExtruderManager.getInstance().getActiveExtruderStacks():
-            # machine_definition = QualityManager.getInstance().getParentMachineDefinition(stack.getBottom())
             material = stack.findContainer(type="material")
             stack_qualities = QualityManager.getInstance().findQualityByName(quality_name, global_machine_definition, [material])
             if not stack_qualities:
