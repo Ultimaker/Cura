@@ -130,6 +130,7 @@ Cura.MachineAction
                 {
                     width: parent.width
                     columns: 2
+                    rowSpacing: UM.Theme.getSize("default_lining").height
                     Label
                     {
                         width: parent.width * 0.3
@@ -146,13 +147,13 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.3
                         wrapMode: Text.WordWrap
-                        text: catalog.i18nc("@label", "IP Address")
+                        text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
                         width: parent.width * 0.7
                         wrapMode: Text.WordWrap
-                        text: base.selectedInstance ? base.selectedInstance.ipAddress : ""
+                        text: base.selectedInstance ? "%1:%2".arg(base.selectedInstance.ipAddress).arg(String(base.selectedInstance.port)) : ""
                     }
                     Label
                     {
@@ -181,8 +182,8 @@ Cura.MachineAction
 
                     Button
                     {
-                        text: catalog.i18nc("@action", "Open webpage...")
-                        onClicked: manager.openWebPage("http://%1/".arg(base.selectedInstance.ipAddress))
+                        text: catalog.i18nc("@action", "Open in browser...")
+                        onClicked: manager.openWebPage(base.selectedInstance.baseURL)
                     }
 
                     Button

@@ -20,10 +20,12 @@ i18n_catalog = i18nCatalog("cura")
 ##  OctoPrint connected (wifi / lan) printer using the OctoPrint API
 @signalemitter
 class OctoPrintOutputDevice(PrinterOutputDevice):
-    def __init__(self, key, address, properties):
+    def __init__(self, key, address, port, properties):
         super().__init__(key)
 
         self._address = address
+        self._port = port
+        self._path = properties["path"] if "path" in properties else "/"
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
@@ -34,9 +36,13 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._num_extruders = 1
 
         self._api_version = "1"
-        self._api_prefix = "/api/"
+        self._api_prefix = "api/"
         self._api_header = "X-Api-Key"
         self._api_key = None
+
+        self._base_url = "http://%s:%d%s" % (self._address, self._port, self._path)
+        self._api_url = self._base_url + self._api_prefix
+        self._camera_url = "http://%s:8080/?action=snapshot" % self._address
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
@@ -125,9 +131,19 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def ipAddress(self):
         return self._address
 
+    ## port of this instance
+    @pyqtProperty(int, constant=True)
+    def port(self):
+        return self._port
+
+    ## absolute url of this instance
+    @pyqtProperty(str, constant=True)
+    def baseURL(self):
+        return self._base_url
+
     def _update_camera(self):
         ## Request new image
-        url = QUrl("http://" + self._address + ":8080/?action=snapshot")
+        url = QUrl(self._camera_url)
         self._image_request = QNetworkRequest(url)
         self._image_reply = self._manager.get(self._image_request)
 
@@ -194,13 +210,13 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 self.setConnectionState(ConnectionState.error)
 
         ## Request 'general' printer data
-        url = QUrl("http://" + self._address + self._api_prefix + "printer")
+        url = QUrl(self._api_url + "printer")
         self._printer_request = QNetworkRequest(url)
         self._printer_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
         self._printer_reply = self._manager.get(self._printer_request)
 
         ## Request print_job data
-        url = QUrl("http://" + self._address + self._api_prefix + "job")
+        url = QUrl(self._api_url + "job")
         self._job_request = QNetworkRequest(url)
         self._job_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
         self._job_reply = self._manager.get(self._job_request)
@@ -327,7 +343,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 self._post_part.setBody(single_string_file_data.encode())
                 self._post_multi_part.append(self._post_part)
 
-            url = QUrl("http://" + self._address + self._api_prefix + "files/local")
+            url = QUrl(self._api_url + "files/local")
 
             ##  Create the QT request
             self._post_request = QNetworkRequest(url)
@@ -348,7 +364,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
     def _sendCommand(self, command):
-        url = QUrl("http://" + self._address + self._api_prefix + "job")
+        url = QUrl(self._api_url + "job")
         self._command_request = QNetworkRequest(url)
         self._command_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
         self._command_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
@@ -532,4 +548,4 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     def _onMessageActionTriggered(self, message, action):
         if action == "open_browser":
-            QDesktopServices.openUrl(QUrl("http://" + self._address))
+            QDesktopServices.openUrl(QUrl(self._base_url))

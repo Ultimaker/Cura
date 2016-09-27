@@ -64,8 +64,8 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
                     self._instances[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-    def addInstance(self, name, address, properties):
-        instance = OctoPrintOutputDevice.OctoPrintOutputDevice(name, address, properties)
+    def addInstance(self, name, address, port, properties):
+        instance = OctoPrintOutputDevice.OctoPrintOutputDevice(name, address, port, properties)
         self._instances[instance.getKey()] = instance
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and instance.getKey() == global_container_stack.getMetaDataEntry("octoprint_id"):
@@ -108,7 +108,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
                     break
 
             # Request more data if info is not complete
-            if not info.address:
+            if not info.address or not info.port:
                 Logger.log("d", "Trying to get address of %s", name)
                 info = zeroconf.get_service_info(service_type, key)
 
@@ -116,9 +116,9 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
                     Logger.log("w", "Could not get information about %s" % name)
                     return
 
-            if info.address:
+            if info.address and info.port:
                 address = '.'.join(map(lambda n: str(n), info.address))
-                self.addInstanceSignal.emit(name, address, info.properties)
+                self.addInstanceSignal.emit(name, address, info.port, info.properties)
             else:
                 Logger.log("d", "Discovered instance named %s but received no address", name)
 
