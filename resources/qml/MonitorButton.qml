@@ -143,26 +143,44 @@ Rectangle
         visible: showProgress
     }
 
-    Rectangle
+    ProgressBar
     {
-        id: progressBar
-        width: parent.width - 2 * UM.Theme.getSize("default_margin").width
-        height: UM.Theme.getSize("progressbar").height
-        anchors.top: statusLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height / 4
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        radius: UM.Theme.getSize("progressbar_radius").width
-        color: UM.Theme.getColor("progressbar_background")
-        visible: showProgress
+        id: progressBar;
+        minimumValue: 0;
+        maximumValue: 100;
+        value: 0;
 
-        Rectangle
+        //Doing this in an explicit binding since the implicit binding breaks on occasion.
+        Binding
         {
-            width: Math.max(parent.width * base.progress / 100)
-            height: parent.height
-            color: base.statusColor
-            radius: UM.Theme.getSize("progressbar_radius").width
+            target: progressBar;
+            property: "value";
+            value: base.progress;
         }
+
+        visible: showProgress;
+        indeterminate:
+        {
+            switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+            {
+                case "pausing":
+                case "resuming":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        style: UM.Theme.styles.progressbar;
+
+        property string backgroundColor: UM.Theme.getColor("progressbar_background");
+        property string controlColor: base.statusColor;
+
+        width: parent.width - 2 * UM.Theme.getSize("default_margin").width;
+        height: UM.Theme.getSize("progressbar").height;
+        anchors.top: statusLabel.bottom;
+        anchors.topMargin: UM.Theme.getSize("default_margin").height / 4;
+        anchors.left: parent.left;
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
     }
 
     Row {
