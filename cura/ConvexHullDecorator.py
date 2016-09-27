@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -238,6 +241,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
             extra_margin = max(
                 0, self._getSettingProperty("skirt_gap", "value") +
                    self._getSettingPropertyy("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+        else:
+            raise Exception("Unknown bed adhesion type. Did you forget to update the convex hull calculations for your new bed adhesion type?")
 
         # adjust head_and_fans with extra margin
         if extra_margin > 0:
