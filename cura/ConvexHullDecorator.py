@@ -231,7 +231,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Compensate for raft/skirt/brim
         # Add extra margin depending on adhesion type
         adhesion_type = self._global_stack.getProperty("adhesion_type", "value")
-        extra_margin = 0
 
         if adhesion_type == "raft":
             extra_margin = max(0, self._getSettingProperty("raft_margin", "value"))
