@@ -247,7 +247,7 @@ class BuildVolume(SceneNode):
             minimum = Vector(min_w, min_h - 1.0, min_d),
             maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
 
-        bed_adhesion_size = self._getBedAdhesionSize()
+        bed_adhesion_size = self._getEdgeDisallowedSize()
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
@@ -392,7 +392,7 @@ class BuildVolume(SceneNode):
                 [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
             ])
 
-        bed_adhesion_size = self._getBedAdhesionSize()
+        bed_adhesion_size = self._getEdgeDisallowedSize()
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
@@ -469,8 +469,12 @@ class BuildVolume(SceneNode):
         stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
         return stack.getProperty(setting_key, property)
 
-    ##  Convenience function to calculate the size of the bed adhesion in directions x, y.
-    def _getBedAdhesionSize(self):
+    ##  Convenience function to calculate the disallowed radius around the edge.
+    #
+    #   This disallowed radius is to allow for space around the models that is
+    #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
+    #   and travel avoid distance.
+    def _getEdgeDisallowedSize(self):
         if not self._global_container_stack:
             return 0
         container_stack = self._global_container_stack
