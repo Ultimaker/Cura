@@ -40,9 +40,9 @@ class QualityManager:
     #   \param material_containers (Optional) \type{List[ContainerInstance]} If nothing is specified then
     #                               the current set of selected materials is used.
     #   \return the matching quality changes containers \type{List[ContainerInstance]}
-    def findQualityChangesByName(self, quality_changes_name, machine_definition=None, material_containers=None):
+    def findQualityChangesByName(self, quality_changes_name, machine_definition=None):
         criteria = {"type": "quality_changes", "name": quality_changes_name}
-        return self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+        return self._getFilteredContainersForStack(machine_definition, [], **criteria)
 
     ##  Find a quality container by quality type.
     #
@@ -67,8 +67,6 @@ class QualityManager:
             if quality_definition is not None:
                 machine_definition = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition)[0]
 
-        machine_definition = self.getParentMachineDefinition(machine_definition)
-
         if material_containers is None:
             active_stacks = cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
             material_containers = [stack.findContainer(type="material") for stack in active_stacks]
@@ -76,11 +74,13 @@ class QualityManager:
         criteria = kwargs
         filter_by_material = False
 
-        if machine_definition.getMetaDataEntry("has_machine_quality"):
-            definition_id = machine_definition.getMetaDataEntry("quality_definition", machine_definition.getId())
+        machine_definition = self.getParentMachineDefinition(machine_definition)
+        whole_machine_definition = self.getWholeMachineDefinition(machine_definition)
+        if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
+            definition_id = machine_definition.getMetaDataEntry("quality_definition", whole_machine_definition.getId())
             criteria["definition"] = definition_id
 
-            filter_by_material = machine_definition.getMetaDataEntry("has_materials")
+            filter_by_material = whole_machine_definition.getMetaDataEntry("has_materials")
 
         # Stick the material IDs in a set
         if material_containers is None or len(material_containers) == 0:
@@ -90,12 +90,20 @@ class QualityManager:
             for material_instance in material_containers:
                 material_ids.add(material_instance.getId())
 
+
+        if machine_definition.getMetaDataEntry("type") == "extruder":
+            extruder_id = machine_definition.getId()
+        else:
+            extruder_id = None
+
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         result = []
         for container in containers:
             # If the machine specifies we should filter by material, exclude containers that do not match any active material.
             if filter_by_material and container.getMetaDataEntry("material") not in material_ids:
+                continue
+            if extruder_id != container.getMetaDataEntry("extruder"):
                 continue
             result.append(container)
         return result
@@ -130,3 +138,18 @@ class QualityManager:
                 extruder_position = machine_definition.getMetaDataEntry("position")
                 parent_extruder_id = parent_machine.getMetaDataEntry("machine_extruder_trains")[extruder_position]
                 return container_registry.findDefinitionContainers(id=parent_extruder_id)[0]
+
+    ##  Get the whole/global machine definition from an extruder definition.
+    #
+    #    \param machine_definition \type{DefinitionContainer} This may be a normal machine definition or
+    #               an extruder definition.
+    #    \return \type{DefinitionContainer}
+    def getWholeMachineDefinition(self, machine_definition):
+        machine_entry = machine_definition.getMetaDataEntry("machine")
+        if machine_entry is None:
+            # This already is a 'global' machine definition.
+            return machine_definition
+        else:
+            container_registry = UM.Settings.ContainerRegistry.getInstance()
+            whole_machine = container_registry.findDefinitionContainers(id=machine_entry)[0]
+            return whole_machine
