@@ -145,26 +145,26 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: parent.width * 0.3
+                        width: parent.width * 0.2
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
-                        width: parent.width * 0.7
+                        width: parent.width * 0.8
                         wrapMode: Text.WordWrap
                         text: base.selectedInstance ? "%1:%2".arg(base.selectedInstance.ipAddress).arg(String(base.selectedInstance.port)) : ""
                     }
                     Label
                     {
-                        width: parent.width * 0.3
+                        width: parent.width * 0.2
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "API Key")
                     }
                     TextField
                     {
                         id: apiKey
-                        width: parent.width * 0.7 - UM.Theme.getSize("default_margin").width
+                        width: parent.width * 0.8 - UM.Theme.getSize("default_margin").width
                         text: manager.apiKey
                     }
                 }
@@ -174,6 +174,18 @@ Cura.MachineAction
                     text: catalog.i18nc("@label", "Please enter the API key to access OctoPrint above. You can get the OctoPrint API key through the OctoPrint web page.")
                     width: parent.width
                     wrapMode: Text.WordWrap
+                }
+
+                CheckBox
+                {
+                    id: autoPrintCheckBox
+                    text: catalog.i18nc("@label", "Automatically start print job after uploading")
+                    checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print") != "false"
+                    onClicked:
+                    {
+                        Cura.ContainerManager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print", String(checked))
+                    }
+                    width: parent.width
                 }
 
                 Flow
