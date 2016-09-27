@@ -303,19 +303,25 @@ class ExtruderManager(QObject):
         for name in self._extruder_trains[machine_id]:
             yield self._extruder_trains[machine_id][name]
 
-    ##  Returns a generator that will iterate over the global stack and per-extruder stacks.
+    ##  Returns a list containing the global stack and active extruder stacks.
     #
-    #   The first generated element is the global container stack. After that any extruder stacks are generated.
+    #   The first element is the global container stack, followed by any extruder stacks.
+    #   \return \type{List[ContainerStack]}
     def getActiveGlobalAndExtruderStacks(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         if not global_stack:
-            return
+            return None
 
-        yield global_stack
+        result = [global_stack]
+        result.extend(self.getActiveExtruderStacks())
+        return result
 
-        global_id = global_stack.getId()
-        for name in self._extruder_trains[global_id]:
-            yield self._extruder_trains[global_id][name]
+    ##  Returns the list of active extruder stacks.
+    #
+    #   \return \type{List[ContainerStack]} a list of
+    def getActiveExtruderStacks(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        return list(self._extruder_trains[global_stack.getId()].values()) if global_stack else []
 
     def __globalContainerStackChanged(self):
         self._addCurrentMachineExtruders()
