@@ -99,8 +99,10 @@ Rectangle
                 return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer");
             case "printing":
                 return catalog.i18nc("@label:MonitorStatus", "Printing...");
+            //TODO: Add text for case "pausing".
             case "paused":
                 return catalog.i18nc("@label:MonitorStatus", "Paused");
+            //TODO: Add text for case "resuming".
             case "pre_print":
                 return catalog.i18nc("@label:MonitorStatus", "Preparing...");
             case "wait_cleanup":
