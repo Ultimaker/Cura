@@ -124,7 +124,7 @@ class SliceInfo(Extension):
                 "processor": platform.processor(),
                 "machine": platform.machine(),
                 "platform": platform.platform(),
-                "settings": json.dumps(containers), # global_container with references on used containers
+                "settings": json.dumps(containers), # bundle of containers with their serialized contents
                 "version": Application.getInstance().getVersion(),
                 "modelhash": modelhash_formatted,
                 "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
