@@ -144,12 +144,14 @@ class CuraContainerRegistry(ContainerRegistry):
                     self._configureProfile(profile, name_seed)
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
+                    new_name = self.createUniqueName("quality_changes", "", name_seed, catalog.i18nc("@label", "Custom profile"))
                     for profile in profile_or_list:
                         profile.setDirty(True)  # Ensure the profiles are correctly saved
                         if profile.getId() != "":
                             container_registry.addContainer(profile)
                         else:
                             self._configureProfile(profile, name_seed)
+                            profile.setName(new_name)
 
                     if len(profile_or_list) == 1:
                         return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
@@ -160,12 +162,11 @@ class CuraContainerRegistry(ContainerRegistry):
         #If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return { "status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
 
-    def _configureProfile(self, profile, name_seed):
+    def _configureProfile(self, profile, id_seed):
         profile.setReadOnly(False)
 
-        new_name = self.createUniqueName("quality_changes", "", name_seed, catalog.i18nc("@label", "Custom profile"))
-        profile.setName(new_name)
-        profile._id = new_name
+        new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
+        profile._id = new_id
 
         if self._machineHasOwnQualities():
             profile.setDefinition(self._activeDefinition())
