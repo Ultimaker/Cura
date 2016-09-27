@@ -683,6 +683,7 @@ class MachineManager(QObject):
                     stack_quality_changes = changes[0]
                 else:
                     Logger.log("w", "Unable to find quality changes container. Using empty container instead")
+                    print(stack_quality.getMetaDataEntry("quality_type"), quality_changes_container.getName(), extruder_id)
                     stack_quality_changes = self._empty_quality_changes_container
             else:
                 # This is case of quality container and the no-op quality changes container.

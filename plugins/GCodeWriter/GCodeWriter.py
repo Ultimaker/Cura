@@ -98,6 +98,11 @@ class GCodeWriter(MeshWriter):
             return ""
 
         flat_global_container = self._createFlattenedContainerInstance(stack.getTop(), container_with_profile)
+
+        # Ensure that quality_type is set. (Can happen if we have empty quality changes).
+        if flat_global_container.getMetaDataEntry("quality_type", None) is None:
+            flat_global_container.addMetaDataEntry("quality_type", stack.findContainer({"type": "quality"}).getMetaDataEntry("quality_type", "normal"))
+
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
@@ -106,9 +111,15 @@ class GCodeWriter(MeshWriter):
             if not extruder_quality:
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue
-
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)
 
+            # Ensure that extruder is set. (Can happen if we have empty quality changes).
+            if flat_extruder_quality.getMetaDataEntry("extruder", None) is None:
+                flat_extruder_quality.addMetaDataEntry("extruder", extruder.getBottom().getId())
+
+            # Ensure that quality_type is set. (Can happen if we have empty quality changes).
+            if flat_extruder_quality.getMetaDataEntry("quality_type", None) is None:
+                flat_extruder_quality.addMetaDataEntry("quality_type", extruder.findContainer({"type": "quality"}).getMetaDataEntry("quality_type", "normal"))
             extruder_serialized = flat_extruder_quality.serialize()
             data.setdefault("extruder_quality", []).append(extruder_serialized)
 
