@@ -525,7 +525,7 @@ class BuildVolume(SceneNode):
 
         #Now combine our different pieces of data to get the final border size.
         # - Wall expansion is applied to the outer wall itself, so add it to the rest.
-        # - Farthest shield, moves from the wall and bed adhesion are all radiusses around the outer wall, so take the max of them.
+        # - Farthest shield, moves from the wall and bed adhesion are all radii around the outer wall, so take the max of them.
         border_size = wall_expansion_radius + max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
         return border_size
 
