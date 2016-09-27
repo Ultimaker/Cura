@@ -31,6 +31,8 @@ Rectangle
         {
             case "printing":
             case "paused":
+            case "pausing":
+            case "resuming":
                 return true;
             case "pre_print":  // heating, etc.
             case "wait_cleanup":
@@ -62,6 +64,8 @@ Rectangle
             case "printing":
             case "pre_print":
             case "wait_cleanup":
+            case "pausing":
+            case "resuming":
                 return UM.Theme.getColor("status_busy");
             case "ready":
             case "":
