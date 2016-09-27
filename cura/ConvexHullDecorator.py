@@ -301,17 +301,20 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return per_mesh_stack.getProperty(setting_key, property)
 
         multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
-
         if not multi_extrusion:
             return self._global_stack.getProperty(setting_key, property)
 
         extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
-        if extruder_index == "-1":  # If extruder index is -1 use global instead
-            return self._global_stack.getProperty(setting_key, property)
-
-        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
-        return stack.getProperty(setting_key, property)
+        if extruder_index == "-1":  # If extruder index is -1 use the object's extruder instead.
+            extruder_stack_id = self._node.callDecoration("getActiveExtruder")
+            if not extruder_stack_id: #Decoration doesn't exist.
+                extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
+            extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            return extruder_stack.getProperty(setting_key, property)
+        else: #Limit_to_extruder is set. Use that one.
+            extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            return stack.getProperty(setting_key, property)
 
     ## Returns true if node is a descendent or the same as the root node.
     def __isDescendant(self, root, node):
