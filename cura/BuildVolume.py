@@ -392,48 +392,48 @@ class BuildVolume(SceneNode):
                 [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
             ])
 
-        bed_adhesion_size = self._getEdgeDisallowedSize()
+        disallowed_border_size = self._getEdgeDisallowedSize()
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
             for area in disallowed_areas:
                 poly = Polygon(numpy.array(area, numpy.float32))
-                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(bed_adhesion_size)))
+                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(disallowed_border_size)))
 
                 areas.append(poly)
 
 
         # Add the skirt areas around the borders of the build plate.
-        if bed_adhesion_size > 0:
+        if disallowed_border_size > 0:
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, -half_machine_depth],
                 [-half_machine_width, half_machine_depth],
-                [-half_machine_width + bed_adhesion_size, half_machine_depth - bed_adhesion_size],
-                [-half_machine_width + bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
+                [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size],
+                [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [half_machine_width, half_machine_depth],
                 [half_machine_width, -half_machine_depth],
-                [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size],
-                [half_machine_width - bed_adhesion_size, half_machine_depth - bed_adhesion_size]
+                [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size],
+                [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, half_machine_depth],
                 [half_machine_width, half_machine_depth],
-                [half_machine_width - bed_adhesion_size, half_machine_depth - bed_adhesion_size],
-                [-half_machine_width + bed_adhesion_size, half_machine_depth - bed_adhesion_size]
+                [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size],
+                [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size]
             ], numpy.float32)))
 
             areas.append(Polygon(numpy.array([
                 [half_machine_width, -half_machine_depth],
                 [-half_machine_width, -half_machine_depth],
-                [-half_machine_width + bed_adhesion_size, -half_machine_depth + bed_adhesion_size],
-                [half_machine_width - bed_adhesion_size, -half_machine_depth + bed_adhesion_size]
+                [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size],
+                [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size]
             ], numpy.float32)))
 
         # Check if the prime tower area intersects with any of the other areas.
