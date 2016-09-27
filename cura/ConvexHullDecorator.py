@@ -240,7 +240,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         elif adhesion_type == "skirt":
             extra_margin = max(
                 0, self._getSettingProperty("skirt_gap", "value") +
-                   self._getSettingPropertyy("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+                   self._getSettingProperty("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the convex hull calculations for your new bed adhesion type?")
 
