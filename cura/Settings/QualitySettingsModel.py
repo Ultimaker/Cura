@@ -92,7 +92,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
             criteria = {
                 "type": "quality",
-                "quality_type": quality_changes_container.getMetaDataEntry("quality"),
+                "quality_type": quality_changes_container.getMetaDataEntry("quality_type"),
                 "definition": quality_changes_container.getDefinition().getId()
             }
 
@@ -137,7 +137,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             return
 
         if quality_changes_container:
-            criteria = {"type": "quality_changes", "quality": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
+            criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
             if self._extruder_id != "":
                 criteria["extruder"] = self._extruder_id
             else:
@@ -182,6 +182,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
+
             items.append({
                 "key": definition.key,
                 "label": definition.label,
