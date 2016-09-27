@@ -5,8 +5,10 @@ from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Preferences import Preferences
 
 import time
+import json
 
 ##      This plugin handles the connection detection & creation of output device objects for OctoPrint-connected printers.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -24,6 +26,16 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         self.removeInstanceSignal.connect(self.removeInstance)
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
+        # Load custom instances from preferences
+        preferences = Preferences.getInstance()
+        preferences.addPreference("octoprint/manual_instances", "[]")
+        try:
+            self._manual_instances = json.loads(preferences.getValue("octoprint/manual_instances"))
+        except ValueError:
+            self._manual_instances = []
+        if not isinstance(self._manual_instances, list):
+            self._manual_instances = []
+
     addInstanceSignal = Signal()
     removeInstanceSignal = Signal()
 
@@ -39,6 +51,11 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf.__init__()
 
         self._browser = ServiceBrowser(self._zero_conf, u'_octoprint._tcp.local.', [self._onServiceChanged])
+
+        # Add manual instances from preference
+        for instance in self._manual_instances:
+            # TODO: make sure the instance name is unique and does not collide with zeroconf instance names
+            self.addInstance(instance["name"], instance["address"], instance["port"], {"path": instance["path"]})
 
     ##  Stop looking for devices on network.
     def stop(self):
