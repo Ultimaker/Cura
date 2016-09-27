@@ -199,9 +199,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
                         # First, calculate the normal convex hull around the points
                         convex_hull = hull.getConvexHull()
 
-                        # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
-                        # This is done because of rounding errors.
-                        rounded_hull = convex_hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
+                        #Then, offset the convex hull with the horizontal expansion value, since that is always added to the mesh.
+                        #Use a minimum of 0.5mm to outset and round the normal convex hull if there is no horizontal expansion, because of edge cases.
+                        horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
+                        expansion_polygon = Polygon(numpy.array([
+                            [-horizontal_expansion, -horizontal_expansion],
+                            [-horizontal_expansion, horizontal_expansion],
+                            [horizontal_expansion, horizontal_expansion],
+                            [horizontal_expansion, -horizontal_expansion]
+                        ], numpy.float32))
+                        rounded_hull = convex_hull.getMinkowskiHull(expansion_polygon)
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
