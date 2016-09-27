@@ -478,7 +478,6 @@ class BuildVolume(SceneNode):
         if not self._global_container_stack:
             return 0
         container_stack = self._global_container_stack
-        border_size = 0.0
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
@@ -488,51 +487,46 @@ class BuildVolume(SceneNode):
         if adhesion_type == "skirt":
             skirt_distance = self._getSettingProperty("skirt_gap", "value")
             skirt_line_count = self._getSettingProperty("skirt_line_count", "value")
-            border_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
+            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
                 for value in extruder_values:
-                    border_size += value
-
+                    bed_adhesion_size += value
         elif adhesion_type == "brim":
-            border_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
+            bed_adhesion_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
                 for value in extruder_values:
-                    border_size += value
-
+                    bed_adhesion_size += value
         elif adhesion_type == "raft":
-            border_size = self._getSettingProperty("raft_margin", "value")
+            bed_adhesion_size = self._getSettingProperty("raft_margin", "value")
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
+        wall_expansion_radius = 0 #Outer wall is moved?
         if self._getSettingProperty("xy_offset", "value"):
-            border_size += self._getSettingProperty("xy_offset", "value")
+            wall_expansion_radius += self._getSettingProperty("xy_offset", "value")
 
+        farthest_shield_distance = 0
         if container_stack.getProperty("draft_shield_enabled", "value"):
-            draft_shield_dist = container_stack.getProperty("draft_shield_dist", "value")
-            if border_size < draft_shield_dist:
-                border_size = draft_shield_dist
-
+            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
         if container_stack.getProperty("ooze_shield_enabled", "value"):
-            ooze_shield_dist = container_stack.getProperty("ooze_shield_dist", "value")
-            if border_size < ooze_shield_dist:
-                border_size = ooze_shield_dist
+            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
 
+        move_from_wall_radius = 0 #Moves that start from outer wall.
         if self._getSettingProperty("infill_wipe_dist", "value"):
-            infill_wipe_distance = self._getSettingProperty("infill_wipe_dist", "value")
-            if border_size < infill_wipe_distance:
-                border_size = infill_wipe_distance
-
+            wall_expansion_radius = max(move_from_wall_radius, self._getSettingProperty("infill_wipe_dist", "value"))
         if self._getSettingProperty("travel_avoid_distance", "value"):
-            travel_avoid_distance = self._getSettingProperty("travel_avoid_distance", "value")
-            if border_size < travel_avoid_distance:
-                border_size = travel_avoid_distance
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("travel_avoid_distance", "value"))
 
+        #Now combine our different pieces of data to get the final border size.
+        # - Wall expansion is applied to the outer wall itself, so add it to the rest.
+        # - Farthest shield, moves from the wall and bed adhesion are all radiusses around the outer wall, so take the max of them.
+        border_size = wall_expansion_radius + max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
         return border_size
 
     def _clamp(self, value, min_value, max_value):
