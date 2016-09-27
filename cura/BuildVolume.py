@@ -504,6 +504,9 @@ class BuildVolume(SceneNode):
         elif adhesion_type == "raft":
             skirt_size = self._getSettingProperty("raft_margin", "value")
 
+        if self._getSettingProperty("xy_offset", "value"):
+            skirt_size += self._getSettingProperty("xy_offset", "value")
+
         if container_stack.getProperty("draft_shield_enabled", "value"):
             draft_shield_dist = container_stack.getProperty("draft_shield_dist", "value")
             if skirt_size < draft_shield_dist:
@@ -514,18 +517,15 @@ class BuildVolume(SceneNode):
             if skirt_size < ooze_shield_dist:
                 skirt_size = ooze_shield_dist
 
-        if self._getSettingProperty("xy_offset", "value"):
-            skirt_size += self._getSettingProperty("xy_offset", "value")
-
         if self._getSettingProperty("infill_wipe_dist", "value"):
             infill_wipe_distance = self._getSettingProperty("infill_wipe_dist", "value")
             if skirt_size < infill_wipe_distance:
-                skirt_size += infill_wipe_distance
+                skirt_size = infill_wipe_distance
 
         if self._getSettingProperty("travel_avoid_distance", "value"):
             travel_avoid_distance = self._getSettingProperty("travel_avoid_distance", "value")
             if skirt_size < travel_avoid_distance:
-                skirt_size += travel_avoid_distance
+                skirt_size = travel_avoid_distance
 
         return skirt_size
 
