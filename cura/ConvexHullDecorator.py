@@ -305,7 +305,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return self._global_stack.getProperty(setting_key, property)
 
         extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
-        if extruder_index == "-1":  # If extruder index is -1 use the object's extruder instead.
+        if extruder_index == "-1": #No limit_to_extruder.
             extruder_stack_id = self._node.callDecoration("getActiveExtruder")
             if not extruder_stack_id: #Decoration doesn't exist.
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
