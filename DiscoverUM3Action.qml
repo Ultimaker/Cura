@@ -66,13 +66,45 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your Ultimaker 3, you can still use a USB drive to transfer g-code files to your printer.\n\nSelect your Ultimaker 3 from the list below:")
         }
 
-        Button
+        Row
         {
-            id: rediscoverButton
-            text: catalog.i18nc("@title", "Refresh")
-            onClicked: manager.restartDiscovery()
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.5
+            spacing: UM.Theme.getSize("default_lining").width
+
+            Button
+            {
+                id: addButton
+                text: catalog.i18nc("@action:button", "Add");
+                onClicked:
+                {
+                    manualPrinterDialog.showDialog("", "");
+                }
+            }
+
+            Button
+            {
+                id: editButton
+                text: catalog.i18nc("@action:button", "Edit")
+                enabled: base.selectedPrinter && base.selectedPrinter.getKey().substr(0,7) =="manual:"
+                onClicked:
+                {
+                    manualPrinterDialog.showDialog(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress);
+                }
+            }
+
+            Button
+            {
+                id: removeButton
+                text: catalog.i18nc("@action:button", "Remove")
+                enabled: base.selectedPrinter && base.selectedPrinter.getKey().substr(0,7) =="manual:"
+                onClicked: manager.removeManualPrinter(base.selectedPrinter.getKey())
+            }
+
+            Button
+            {
+                id: rediscoverButton
+                text: catalog.i18nc("@title", "Refresh")
+                onClicked: manager.restartDiscovery()
+            }
         }
 
         Row
@@ -225,5 +257,59 @@ Cura.MachineAction
                 }
             }
         }
+    }
+
+    UM.Dialog
+    {
+        id: manualPrinterDialog
+        property string printerKey
+        property alias addressText: addressField.text
+
+        title: catalog.i18nc("@label", "IP Address")
+
+        minimumWidth: 400 * Screen.devicePixelRatio
+        minimumHeight: 120 * Screen.devicePixelRatio
+        width: minimumWidth
+        height: minimumHeight
+
+        signal showDialog(string key, string address)
+        onShowDialog:
+        {
+            printerKey = key;
+
+            addressText = address;
+            addressField.selectAll();
+            addressField.focus = true;
+
+            manualPrinterDialog.show();
+        }
+
+        onAccepted:
+        {
+            manager.setManualPrinter(printerKey, addressText)
+        }
+
+        Column {
+            anchors.fill: parent
+
+            TextField {
+                id: addressField
+                width: parent.width
+                maximumLength: 40
+            }
+        }
+
+        rightButtons: [
+            Button {
+                text: catalog.i18nc("@action:button","Cancel")
+                onClicked: manualPrinterDialog.reject()
+            },
+            Button {
+                text: catalog.i18nc("@action:button", "Ok")
+                onClicked: manualPrinterDialog.accept()
+                enabled: manualPrinterDialog.addressText.trim() != ""
+                isDefault: true
+            }
+        ]
     }
 }
