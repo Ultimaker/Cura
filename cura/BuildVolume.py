@@ -364,7 +364,7 @@ class BuildVolume(SceneNode):
                 poly = Polygon(numpy.array(area, numpy.float32))
 
                 # Minkowski with zero, to ensure that the polygon is correct & watertight.
-                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
+                poly = poly.getMinkowskiHull(Polygon.approximatedCircle(0))
                 disallowed_polygons.append(poly)
 
             extruder_manager = ExtruderManager.getInstance()
@@ -385,7 +385,7 @@ class BuildVolume(SceneNode):
                     [prime_x + PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
                     [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
                 ])
-                prime_polygon = prime_polygon.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
+                prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(0))
                 prime_tower_collision = False
 
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
