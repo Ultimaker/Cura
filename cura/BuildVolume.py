@@ -351,6 +351,7 @@ class BuildVolume(SceneNode):
     def _updateDisallowedAreas(self):
         if not self._global_container_stack:
             return
+
         self._has_errors = False  # Reset.
         self._error_areas = []
         disallowed_areas = copy.deepcopy(
@@ -362,7 +363,6 @@ class BuildVolume(SceneNode):
         prime_tower_area = None
 
         # Add prime tower location as disallowed area.
-        # if self._global_container_stack.getProperty("prime_tower_enable", "value") == True:
         if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
@@ -376,17 +376,20 @@ class BuildVolume(SceneNode):
             ])
         disallowed_polygons = []
 
-        prime_collision = False
         # Check if prime positions intersect with disallowed areas
+        prime_collision = False
         if disallowed_areas:
             for area in disallowed_areas:
                 poly = Polygon(numpy.array(area, numpy.float32))
+
+                # Minkowski with zero, to ensure that the polygon is correct & watertight.
                 poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
                 disallowed_polygons.append(poly)
 
             extruder_manager = ExtruderManager.getInstance()
             extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
             prime_polygons = []
+            # Each extruder has it's own prime location
             for extruder in extruders:
                 prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2
                 prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
@@ -403,13 +406,17 @@ class BuildVolume(SceneNode):
                 ])
                 prime_polygon = prime_polygon.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
                 prime_tower_collision = False
+
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
+                # Note that we check the prime area without bed adhesion.
                 for poly in disallowed_polygons:
                     if prime_polygon.intersectsPolygon(poly) is not None:
                         prime_tower_collision = True
                         break
 
-                if not prime_tower_collision: # Prime area is valid. Add as normal.
+                if not prime_tower_collision:
+                    # Prime area is valid. Add as normal.
+                    # Once it's added like this, it will recieve a bed adhesion offset, just like the others.
                     prime_polygons.append(prime_polygon)
                 else:
                     self._error_areas.append(prime_polygon)
@@ -419,8 +426,8 @@ class BuildVolume(SceneNode):
 
         disallowed_border_size = self._getEdgeDisallowedSize()
 
+        # Extend every area already in the disallowed_areas with the skirt size.
         if disallowed_areas:
-            # Extend every area already in the disallowed_areas with the skirt size.
             for poly in disallowed_polygons:
                 poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(disallowed_border_size)))
                 areas.append(poly)
@@ -459,7 +466,7 @@ class BuildVolume(SceneNode):
             ], numpy.float32)))
 
         # Check if the prime tower area intersects with any of the other areas.
-        # If this is the case, keep the polygon seperate, so it can be drawn in red.
+        # If this is the case, add it to the error area's so it can be drawn in red.
         # If not, add it back to disallowed area's, so it's rendered as normal.
         prime_tower_collision = False
         if prime_tower_area:
@@ -475,6 +482,7 @@ class BuildVolume(SceneNode):
             else:
                 self._error_areas.append(prime_tower_area)
 
+        # The buildplate has errors if either prime tower or prime has a colission.
         self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = areas
 
@@ -532,7 +540,7 @@ class BuildVolume(SceneNode):
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
-        wall_expansion_radius = 0 #Outer wall is moved?
+        wall_expansion_radius = 0  # Outer wall is moved?
         if self._getSettingProperty("xy_offset", "value"):
             wall_expansion_radius += self._getSettingProperty("xy_offset", "value")
 
@@ -542,15 +550,15 @@ class BuildVolume(SceneNode):
         if container_stack.getProperty("ooze_shield_enabled", "value"):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
 
-        move_from_wall_radius = 0 #Moves that start from outer wall.
+        move_from_wall_radius = 0  # Moves that start from outer wall.
         if self._getSettingProperty("infill_wipe_dist", "value"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("infill_wipe_dist", "value"))
         if self._getSettingProperty("travel_avoid_distance", "value"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("travel_avoid_distance", "value"))
 
-        #Now combine our different pieces of data to get the final border size.
+        # Now combine our different pieces of data to get the final border size.
         # - Wall expansion is applied to the outer wall itself, so add it to the rest.
-        # - Farthest shield, moves from the wall and bed adhesion are all radii around the outer wall, so take the max of them.
+        # - Furthest shield, moves from the wall and bed adhesion are all radii around the outer wall, so take the max of them.
         border_size = wall_expansion_radius + max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
         return border_size
 
