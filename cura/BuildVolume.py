@@ -540,10 +540,6 @@ class BuildVolume(SceneNode):
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
-        wall_expansion_radius = 0  # Outer wall is moved?
-        if self._getSettingProperty("xy_offset", "value"):
-            wall_expansion_radius += self._getSettingProperty("xy_offset", "value")
-
         farthest_shield_distance = 0
         if container_stack.getProperty("draft_shield_enabled", "value"):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
@@ -556,16 +552,14 @@ class BuildVolume(SceneNode):
         if self._getSettingProperty("travel_avoid_distance", "value"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("travel_avoid_distance", "value"))
 
-        # Now combine our different pieces of data to get the final border size.
-        # - Wall expansion is applied to the outer wall itself, so add it to the rest.
-        # - Furthest shield, moves from the wall and bed adhesion are all radii around the outer wall, so take the max of them.
-        border_size = wall_expansion_radius + max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
+        #Now combine our different pieces of data to get the final border size.
+        border_size = max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
         return border_size
 
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
