@@ -386,22 +386,28 @@ class BuildVolume(SceneNode):
                     [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
                 ])
                 prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(0))
-                prime_tower_collision = False
+                prime_collision = False
 
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
                 # Note that we check the prime area without bed adhesion.
                 for poly in disallowed_polygons:
                     if prime_polygon.intersectsPolygon(poly) is not None:
-                        prime_tower_collision = True
+                        prime_collision = True
                         break
 
-                if not prime_tower_collision:
+                # Also collide with other prime positions
+                for poly in prime_polygons:
+                    if prime_polygon.intersectsPolygon(poly) is not None:
+                        prime_collision = True
+                        break
+
+                if not prime_collision:
                     # Prime area is valid. Add as normal.
                     # Once it's added like this, it will recieve a bed adhesion offset, just like the others.
                     prime_polygons.append(prime_polygon)
                 else:
                     self._error_areas.append(prime_polygon)
-                    prime_collision = prime_collision or prime_tower_collision
+                    prime_collision = prime_collision
 
             disallowed_polygons.extend(prime_polygons)
 
