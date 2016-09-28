@@ -144,21 +144,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if child_polygon == self._2d_convex_hull_group_child_polygon:
                 return self._2d_convex_hull_group_result
 
-            # First, calculate the normal convex hull around the points
-            convex_hull = child_polygon.getConvexHull()
-
-            # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
-            # This is done because of rounding errors.
-            rounded_hull = self._roundHull(convex_hull)
+            convex_hull = child_polygon.getConvexHull() #First calculate the normal convex hull around the points.
+            offset_hull = self._offsetHull(convex_hull) #Then apply the offset from the settings.
 
             # Store the result in the cache
             self._2d_convex_hull_group_child_polygon = child_polygon
-            self._2d_convex_hull_group_result = rounded_hull
+            self._2d_convex_hull_group_result = offset_hull
 
-            return rounded_hull
+            return offset_hull
 
         else:
-            rounded_hull = None
+            offset_hull = None
             mesh = None
             world_transform = None
             if self._node.getMeshData():
@@ -197,14 +193,14 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
                     if len(vertex_data) >= 4:
                         convex_hull = hull.getConvexHull()
-                        rounded_hull = self._roundHull(convex_hull)
+                        offset_hull = self._offsetHull(convex_hull)
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
             self._2d_convex_hull_mesh_world_transform = world_transform
-            self._2d_convex_hull_mesh_result = rounded_hull
+            self._2d_convex_hull_mesh_result = offset_hull
 
-            return rounded_hull
+            return offset_hull
 
     def _getHeadAndFans(self):
         return Polygon(numpy.array(self._global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
@@ -249,7 +245,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #
     #   This also applies a minimum offset of 0.5mm, because of edge cases due
     #   to the rounding we apply.
-    def _roundHull(self, convex_hull):
+    def _offsetHull(self, convex_hull):
         horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
         expansion_polygon = Polygon(numpy.array([
             [-horizontal_expansion, -horizontal_expansion],
