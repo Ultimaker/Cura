@@ -30,25 +30,6 @@ import UM.Settings.ContainerRegistry
 PRIME_CLEARANCE = 1.5
 
 
-def approximatedCircleVertices(r):
-    """
-    Return vertices from an approximated circle.
-    :param r: radius
-    :return: numpy 2-array with the vertices
-    """
-
-    return numpy.array([
-        [-r, 0],
-        [-r * 0.707, r * 0.707],
-        [0, r],
-        [r * 0.707, r * 0.707],
-        [r, 0],
-        [r * 0.707, -r * 0.707],
-        [0, -r],
-        [-r * 0.707, -r * 0.707]
-    ], numpy.float32)
-
-
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
     VolumeOutlineColor = Color(12, 169, 227, 255)
