@@ -48,7 +48,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with OctoPrint"))
-        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Send to OctoPrint instance for printing"))
+        self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print with OctoPrint"))
         self.setIconName("print")
         self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected to OctoPrint on {0}").format(self._key))
 
