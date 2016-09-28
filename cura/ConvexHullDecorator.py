@@ -257,7 +257,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return poly
 
     def _roundHull(self, convex_hull):
-        return convex_hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
+        #Offset the convex hull with the horizontal expansion value, since that is always added to the mesh.
+        #Use a minimum of 0.5mm to outset and round the normal convex hull if there is no horizontal expansion, because of edge cases.
+        horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
+        expansion_polygon = Polygon(numpy.array([
+            [-horizontal_expansion, -horizontal_expansion],
+            [-horizontal_expansion, horizontal_expansion],
+            [horizontal_expansion, horizontal_expansion],
+            [horizontal_expansion, -horizontal_expansion]
+        ], numpy.float32))
+        return convex_hull.getMinkowskiHull(expansion_polygon)
 
     def _onChanged(self, *args):
         self._raft_thickness = self._build_volume.getRaftThickness()
@@ -305,7 +314,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             return stack.getProperty(setting_key, property)
 
-    ## Returns true if node is a descendent or the same as the root node.
+    ## Returns true if node is a descendant or the same as the root node.
     def __isDescendant(self, root, node):
         if node is None:
             return False
