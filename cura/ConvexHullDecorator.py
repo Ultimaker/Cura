@@ -252,18 +252,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         # adjust head_and_fans with extra margin
         if extra_margin > 0:
-            # In Cura 2.2+, there is a function to create this circle-like polygon.
-            extra_margin_polygon = Polygon(numpy.array([
-                [-extra_margin, 0],
-                [-extra_margin * 0.707, extra_margin * 0.707],
-                [0, extra_margin],
-                [extra_margin * 0.707, extra_margin * 0.707],
-                [extra_margin, 0],
-                [extra_margin * 0.707, -extra_margin * 0.707],
-                [0, -extra_margin],
-                [-extra_margin * 0.707, -extra_margin * 0.707]
-            ], numpy.float32))
-
+            extra_margin_polygon = Polygon.approximatedCircle(extra_margin)
             poly = poly.getMinkowskiHull(extra_margin_polygon)
         return poly
 
