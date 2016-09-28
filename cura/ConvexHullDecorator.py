@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -196,9 +199,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
                         # First, calculate the normal convex hull around the points
                         convex_hull = hull.getConvexHull()
 
-                        # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
-                        # This is done because of rounding errors.
-                        rounded_hull = convex_hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
+                        #Then, offset the convex hull with the horizontal expansion value, since that is always added to the mesh.
+                        #Use a minimum of 0.5mm to outset and round the normal convex hull if there is no horizontal expansion, because of edge cases.
+                        horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
+                        expansion_polygon = Polygon(numpy.array([
+                            [-horizontal_expansion, -horizontal_expansion],
+                            [-horizontal_expansion, horizontal_expansion],
+                            [horizontal_expansion, horizontal_expansion],
+                            [horizontal_expansion, -horizontal_expansion]
+                        ], numpy.float32))
+                        rounded_hull = convex_hull.getMinkowskiHull(expansion_polygon)
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
@@ -228,7 +238,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Compensate for raft/skirt/brim
         # Add extra margin depending on adhesion type
         adhesion_type = self._global_stack.getProperty("adhesion_type", "value")
-        extra_margin = 0
 
         if adhesion_type == "raft":
             extra_margin = max(0, self._getSettingProperty("raft_margin", "value"))
@@ -237,7 +246,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         elif adhesion_type == "skirt":
             extra_margin = max(
                 0, self._getSettingProperty("skirt_gap", "value") +
-                   self._getSettingPropertyy("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+                   self._getSettingProperty("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+        else:
+            raise Exception("Unknown bed adhesion type. Did you forget to update the convex hull calculations for your new bed adhesion type?")
 
         # adjust head_and_fans with extra margin
         if extra_margin > 0:
@@ -285,18 +296,25 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
     def _getSettingProperty(self, setting_key, property="value"):
-        multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
+        per_mesh_stack = self._node.callDecoration("getStack")
+        if per_mesh_stack:
+            return per_mesh_stack.getProperty(setting_key, property)
 
+        multi_extrusion = self._global_stack.getProperty("machine_extruder_count", "value") > 1
         if not multi_extrusion:
             return self._global_stack.getProperty(setting_key, property)
 
         extruder_index = self._global_stack.getProperty(setting_key, "limit_to_extruder")
-        if extruder_index == "-1":  # If extruder index is -1 use global instead
-            return self._global_stack.getProperty(setting_key, property)
-
-        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
-        return stack.getProperty(setting_key, property)
+        if extruder_index == "-1": #No limit_to_extruder.
+            extruder_stack_id = self._node.callDecoration("getActiveExtruder")
+            if not extruder_stack_id: #Decoration doesn't exist.
+                extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
+            extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            return extruder_stack.getProperty(setting_key, property)
+        else: #Limit_to_extruder is set. Use that one.
+            extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            return stack.getProperty(setting_key, property)
 
     ## Returns true if node is a descendent or the same as the root node.
     def __isDescendant(self, root, node):
