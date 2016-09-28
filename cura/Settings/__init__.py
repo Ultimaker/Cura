@@ -12,3 +12,4 @@ from .MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from .SettingOverrideDecorator import SettingOverrideDecorator
 from .QualitySettingsModel import QualitySettingsModel
 from .SettingInheritanceManager import SettingInheritanceManager
+from .ProfilesModel import ProfilesModel

@@ -144,17 +144,18 @@ class CuraContainerRegistry(ContainerRegistry):
                     self._configureProfile(profile, name_seed)
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
-                    new_name = self.createUniqueName("quality_changes", "", name_seed, catalog.i18nc("@label", "Custom profile"))
                     for profile in profile_or_list:
+                        extruder_id = profile.getMetaDataEntry("extruder")
+                        if extruder_id:
+                            profile_name = "%s_%s" % (extruder_id, name_seed)
+                        else:
+                            profile_name = name_seed
+                        new_name = self.createUniqueName("quality_changes", "", profile_name, catalog.i18nc("@label", "Custom profile"))
                         profile.setDirty(True)  # Ensure the profiles are correctly saved
-                        self._configureProfile(profile, name_seed)
+                        self._configureProfile(profile, profile_name)
                         profile.setName(new_name)
 
-                    if len(profile_or_list) == 1:
-                        return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
-                    else:
-                        profile_names = ", ".join([profile.getName() for profile in profile_or_list])
-                        return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profiles {0}", profile_names) }
+                    return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
         #If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return { "status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
