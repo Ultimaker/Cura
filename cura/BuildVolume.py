@@ -70,9 +70,6 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
 
-        self._prime_tower_area = None
-        self._prime_tower_area_mesh = None
-
         self._error_areas = []
         self._error_mesh = None
 
@@ -149,10 +146,6 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
-
-        if self._prime_tower_area_mesh:
-            renderer.queueNode(self, mesh = self._prime_tower_area_mesh, shader = self._shader, transparent=True,
-                               backface_cull=True, sort=-8)
 
         if self._error_mesh:
             renderer.queueNode(self, mesh=self._error_mesh, shader=self._shader, transparent=True,
@@ -232,24 +225,6 @@ class BuildVolume(SceneNode):
         else:
             self._disallowed_area_mesh = None
 
-        if self._prime_tower_area:
-            mb = MeshBuilder()
-            color = Color(1.0, 0.0, 0.0, 0.5)
-            points = self._prime_tower_area.getPoints()
-            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                           self._clamp(points[0][1], min_d, max_d))
-            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                                    self._clamp(points[0][1], min_d, max_d))
-            for point in points:
-                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
-                                   self._clamp(point[1], min_d, max_d))
-                mb.addFace(first, previous_point, new_point, color=color)
-                previous_point = new_point
-
-            self._prime_tower_area_mesh = mb.build()
-        else:
-            self._prime_tower_area_mesh = None
-
         if self._error_areas:
             mb = MeshBuilder()
             for error_area in self._error_areas:
@@ -265,7 +240,8 @@ class BuildVolume(SceneNode):
                     mb.addFace(first, previous_point, new_point, color=color)
                     previous_point = new_point
             self._error_mesh = mb.build()
-
+        else:
+            self._error_mesh = None
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
@@ -383,7 +359,8 @@ class BuildVolume(SceneNode):
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-        self._prime_tower_area = None
+        prime_tower_area = None
+
         # Add prime tower location as disallowed area.
         # if self._global_container_stack.getProperty("prime_tower_enable", "value") == True:
         if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
@@ -391,7 +368,7 @@ class BuildVolume(SceneNode):
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
 
-            self._prime_tower_area = Polygon([
+            prime_tower_area = Polygon([
                 [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
                 [prime_tower_x, prime_tower_y - prime_tower_size],
                 [prime_tower_x, prime_tower_y],
@@ -425,18 +402,18 @@ class BuildVolume(SceneNode):
                     [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
                 ])
                 prime_polygon = prime_polygon.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
-                collision = False
+                prime_tower_collision = False
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
                 for poly in disallowed_polygons:
                     if prime_polygon.intersectsPolygon(poly) is not None:
-                        collision = True
+                        prime_tower_collision = True
                         break
 
-                if not collision: # Prime area is valid. Add as normal.
+                if not prime_tower_collision: # Prime area is valid. Add as normal.
                     prime_polygons.append(prime_polygon)
                 else:
                     self._error_areas.append(prime_polygon)
-                    prime_collision = prime_collision or collision
+                    prime_collision = prime_collision or prime_tower_collision
 
             disallowed_polygons.extend(prime_polygons)
 
@@ -447,7 +424,6 @@ class BuildVolume(SceneNode):
             for poly in disallowed_polygons:
                 poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(disallowed_border_size)))
                 areas.append(poly)
-
 
         # Add the skirt areas around the borders of the build plate.
         if disallowed_border_size > 0:
@@ -485,18 +461,21 @@ class BuildVolume(SceneNode):
         # Check if the prime tower area intersects with any of the other areas.
         # If this is the case, keep the polygon seperate, so it can be drawn in red.
         # If not, add it back to disallowed area's, so it's rendered as normal.
-        collision = False
-        if self._prime_tower_area:
+        prime_tower_collision = False
+        if prime_tower_area:
+            # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
+            prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
             for area in areas:
-                # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
-                self._prime_tower_area = self._prime_tower_area.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
-                if self._prime_tower_area.intersectsPolygon(area) is not None:
-                    collision = True
+                if prime_tower_area.intersectsPolygon(area) is not None:
+                    prime_tower_collision = True
                     break
-            if not collision:
-                areas.append(self._prime_tower_area)
-                self._prime_tower_area = None
-        self._has_errors = collision
+
+            if not prime_tower_collision:
+                areas.append(prime_tower_area)
+            else:
+                self._error_areas.append(prime_tower_area)
+
+        self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = areas
 
     ##   Private convenience function to get a setting from the adhesion extruder.
