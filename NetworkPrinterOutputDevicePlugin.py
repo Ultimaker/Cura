@@ -5,6 +5,10 @@ from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
+from UM.Preferences import Preferences
+
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager, QNetworkReply
+from PyQt5.QtCore import QUrl
 
 import time
 
@@ -19,6 +23,12 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self._browser = None
         self._printers = {}
 
+        self._api_version = "1"
+        self._api_prefix = "/api/v" + self._api_version + "/"
+
+        self._network_manager = QNetworkAccessManager()
+        self._network_manager.finished.connect(self._onNetworkRequestFinished)
+
         # List of old printer names. This is used to ensure that a refresh of zeroconf does not needlessly forces
         # authentication requests.
         self._old_printers = []
@@ -27,6 +37,11 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self.addPrinterSignal.connect(self.addPrinter)
         self.removePrinterSignal.connect(self.removePrinter)
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
+
+        # Get list of manual printers from preferences
+        preferences = Preferences.getInstance()
+        preferences.addPreference("um3networkprinting/manual_instances", "") #  A comma-separated list of ip adresses or hostnames
+        self._manual_instances = preferences.getValue("um3networkprinting/manual_instances").split(",")
 
     addPrinterSignal = Signal()
     removePrinterSignal = Signal()
@@ -44,6 +59,28 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             self._printers = {}
 
         self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
+
+        # Look for manual instances from preference
+        for address in self._manual_instances:
+            url = QUrl("http://" + address + self._api_prefix + "system/name")
+
+            name_request = QNetworkRequest(url)
+            self._network_manager.get(name_request)
+
+    ##  Handler for all requests that have finished.
+    def _onNetworkRequestFinished(self, reply):
+        reply_url = reply.url().toString()
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+
+        if reply.operation() == QNetworkAccessManager.GetOperation:
+            if "system/name" in reply_url:  # Name returned from printer.
+                if status_code == 200:
+                    address = reply.url().host()
+                    name = reply.readAll()
+
+                    instance_name = "manual:%s" % address
+                    properties = { b"name": name.data() }
+                    self.addPrinter(instance_name, address, properties)
 
     ##  Stop looking for devices on network.
     def stop(self):
