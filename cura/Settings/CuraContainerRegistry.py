@@ -147,11 +147,8 @@ class CuraContainerRegistry(ContainerRegistry):
                     new_name = self.createUniqueName("quality_changes", "", name_seed, catalog.i18nc("@label", "Custom profile"))
                     for profile in profile_or_list:
                         profile.setDirty(True)  # Ensure the profiles are correctly saved
-                        if profile.getId() != "":
-                            container_registry.addContainer(profile)
-                        else:
-                            self._configureProfile(profile, name_seed)
-                            profile.setName(new_name)
+                        self._configureProfile(profile, name_seed)
+                        profile.setName(new_name)
 
                     if len(profile_or_list) == 1:
                         return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
