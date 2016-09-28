@@ -13,10 +13,7 @@ Menu
 
     Instantiator
     {
-        model: UM.InstanceContainersModel
-        {
-            filter: menu.getFilter({ "type": "quality" });
-        }
+        model: Cura.ProfilesModel { }
 
         MenuItem
         {
