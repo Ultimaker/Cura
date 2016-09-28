@@ -87,7 +87,8 @@ class BuildVolume(SceneNode):
         Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
 
     def _onSceneChanged(self, source):
-        self._change_timer.start()
+        if self._global_container_stack:
+            self._change_timer.start()
 
     def _onChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
