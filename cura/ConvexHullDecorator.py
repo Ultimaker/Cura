@@ -115,7 +115,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key, property_name):
-        if key in self._affected_settings and property_name == "value":
+        if property_name != "value": #Not the value that was changed.
+            return
+
+        if key in self._affected_settings:
+            self._onChanged()
+        if key in self._influencing_settings:
+            self._init2DConvexHullCache() #Invalidate the cache.
             self._onChanged()
 
     def _init2DConvexHullCache(self):
@@ -313,3 +319,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
         "adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers",
         "raft_surface_thickness", "raft_airgap", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
+
+    ##  Settings that change the convex hull.
+    #
+    #   If these settings change, the convex hull should be recalculated.
+    _influencing_settings = {"xy_offset"}
