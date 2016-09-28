@@ -245,9 +245,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
             poly = poly.getMinkowskiHull(extra_margin_polygon)
         return poly
 
+    ##  Offset the convex hull with settings that influence the collision area.
+    #
+    #   This also applies a minimum offset of 0.5mm, because of edge cases due
+    #   to the rounding we apply.
     def _roundHull(self, convex_hull):
-        #Offset the convex hull with the horizontal expansion value, since that is always added to the mesh.
-        #Use a minimum of 0.5mm to outset and round the normal convex hull if there is no horizontal expansion, because of edge cases.
         horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
         expansion_polygon = Polygon(numpy.array([
             [-horizontal_expansion, -horizontal_expansion],
