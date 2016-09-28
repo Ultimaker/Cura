@@ -514,7 +514,7 @@ class ContainerManager(QObject):
             return ""
         machine_definition = global_stack.getBottom()
 
-        for container in QualityManager.getInstance().findQualityChangesByName(quality_name, machine_definition, []):
+        for container in QualityManager.getInstance().findQualityChangesByName(quality_name, machine_definition):
             containers_found = True
             if activate_quality and not activate_quality_type:
                 activate_quality_type = container.getMetaDataEntry("quality")
@@ -642,7 +642,7 @@ class ContainerManager(QObject):
     def _duplicateQualityChangesForMachineType(self, quality_changes_name, base_name, machine_definition):
         new_change_instances = []
         for container in QualityManager.getInstance().findQualityChangesByName(quality_changes_name,
-                                                              machine_definition, []):
+                                                              machine_definition):
             new_unique_id = self._createUniqueId(container.getId(), base_name)
             new_container = container.duplicate(new_unique_id, base_name)
             new_change_instances.append(new_container)
