@@ -104,7 +104,6 @@ class DiscoverUM3Action(MachineAction):
 
     def _createAdditionalComponentsView(self):
         Logger.log("d", "Creating additional ui components for UM3.")
-
         path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"), "UM3InfoComponents.qml"))
         self.__additional_component = QQmlComponent(Application.getInstance()._engine, path)
 

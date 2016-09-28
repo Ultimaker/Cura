@@ -15,7 +15,7 @@ import time
 class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def __init__(self):
         super().__init__()
-        self._zero_conf = Zeroconf()
+        self._zero_conf = None
         self._browser = None
         self._printers = {}
 
@@ -37,17 +37,22 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self.startDiscovery()
 
     def startDiscovery(self):
+        self.stop()
         if self._browser:
             self._browser.cancel()
             self._browser = None
             self._old_printers = [printer_name for printer_name in self._printers]
             self._printers = {}
-
+            self.printerListChanged.emit()
+        # After network switching, one must make a new instance of Zeroconf
+        # On windows, the instance creation is very fast (unnoticable). Other platforms?
+        self._zero_conf = Zeroconf()
         self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
     ##  Stop looking for devices on network.
     def stop(self):
-        self._zero_conf.close()
+        if self._zero_conf is not None:
+            self._zero_conf.close()
 
     def getPrinters(self):
         return self._printers
