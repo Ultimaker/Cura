@@ -27,7 +27,7 @@ import UM.Settings.ContainerRegistry
 
 
 # Setting for clearance around the prime
-PRIME_CLEARANCE = 10
+PRIME_CLEARANCE = 1.5
 
 
 def approximatedCircleVertices(r):
@@ -72,6 +72,9 @@ class BuildVolume(SceneNode):
 
         self._prime_tower_area = None
         self._prime_tower_area_mesh = None
+
+        self._error_areas = []
+        self._error_mesh = None
 
         self.setCalculateBoundingBox(False)
         self._volume_aabb = None
@@ -149,6 +152,10 @@ class BuildVolume(SceneNode):
 
         if self._prime_tower_area_mesh:
             renderer.queueNode(self, mesh = self._prime_tower_area_mesh, shader = self._shader, transparent=True,
+                               backface_cull=True, sort=-8)
+
+        if self._error_mesh:
+            renderer.queueNode(self, mesh=self._error_mesh, shader=self._shader, transparent=True,
                                backface_cull=True, sort=-8)
 
         return True
@@ -242,6 +249,23 @@ class BuildVolume(SceneNode):
             self._prime_tower_area_mesh = mb.build()
         else:
             self._prime_tower_area_mesh = None
+
+        if self._error_areas:
+            mb = MeshBuilder()
+            for error_area in self._error_areas:
+                color = Color(1.0, 0.0, 0.0, 0.5)
+                points = error_area.getPoints()
+                first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                               self._clamp(points[0][1], min_d, max_d))
+                previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                                        self._clamp(points[0][1], min_d, max_d))
+                for point in points:
+                    new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
+                                       self._clamp(point[1], min_d, max_d))
+                    mb.addFace(first, previous_point, new_point, color=color)
+                    previous_point = new_point
+            self._error_mesh = mb.build()
+
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
@@ -352,6 +376,7 @@ class BuildVolume(SceneNode):
         if not self._global_container_stack:
             return
         self._has_errors = False  # Reset.
+        self._error_areas = []
         disallowed_areas = copy.deepcopy(
             self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
@@ -372,34 +397,55 @@ class BuildVolume(SceneNode):
                 [prime_tower_x, prime_tower_y],
                 [prime_tower_x - prime_tower_size, prime_tower_y],
             ])
+        disallowed_polygons = []
 
-        # Add extruder prime locations as disallowed areas.
-        # Probably needs some rework after coordinate system change.
-        extruder_manager = ExtruderManager.getInstance()
-        extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
-        for single_extruder in extruders:
-            extruder_prime_pos_x = single_extruder.getProperty("extruder_prime_pos_x", "value")
-            extruder_prime_pos_y = single_extruder.getProperty("extruder_prime_pos_y", "value")
-            # TODO: calculate everything in CuraEngine/Firmware/lower left as origin coordinates.
-            # Here we transform the extruder prime pos (lower left as origin) to Cura coordinates
-            # (center as origin, y from back to front)
-            prime_x = extruder_prime_pos_x - machine_width / 2
-            prime_y = machine_depth / 2 - extruder_prime_pos_y
-            disallowed_areas.append([
-                [prime_x - PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
-                [prime_x + PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
-                [prime_x + PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
-                [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
-            ])
+        prime_collision = False
+        # Check if prime positions intersect with disallowed areas
+        if disallowed_areas:
+            for area in disallowed_areas:
+                poly = Polygon(numpy.array(area, numpy.float32))
+                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
+                disallowed_polygons.append(poly)
+
+            extruder_manager = ExtruderManager.getInstance()
+            extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
+            prime_polygons = []
+            for extruder in extruders:
+                prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2
+                prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
+                offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
+                offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
+                prime_x -= offset_x
+                prime_y -= offset_y
+
+                prime_polygon = Polygon([
+                    [prime_x - PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
+                    [prime_x + PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
+                    [prime_x + PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
+                    [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
+                ])
+                prime_polygon = prime_polygon.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
+                collision = False
+                # Check if prime polygon is intersecting with any of the other disallowed areas.
+                for poly in disallowed_polygons:
+                    if prime_polygon.intersectsPolygon(poly) is not None:
+                        collision = True
+                        break
+
+                if not collision: # Prime area is valid. Add as normal.
+                    prime_polygons.append(prime_polygon)
+                else:
+                    self._error_areas.append(prime_polygon)
+                    prime_collision = prime_collision or collision
+
+            disallowed_polygons.extend(prime_polygons)
 
         disallowed_border_size = self._getEdgeDisallowedSize()
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
-            for area in disallowed_areas:
-                poly = Polygon(numpy.array(area, numpy.float32))
+            for poly in disallowed_polygons:
                 poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(disallowed_border_size)))
-
                 areas.append(poly)
 
 
