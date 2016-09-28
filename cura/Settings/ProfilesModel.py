@@ -18,6 +18,9 @@ class ProfilesModel(InstanceContainersModel):
     #   See UM.Settings.Models.InstanceContainersModel._fetchInstanceContainers().
     def _fetchInstanceContainers(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
+            return []
+
         global_machine_definition = global_container_stack.getBottom()
 
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -26,7 +29,7 @@ class ProfilesModel(InstanceContainersModel):
 
             # Determine the common set of quality types which can be
             # applied to all of the materials for this machine.
-            quality_type_dict = self.__fetchQualityTypeDictForStack(global_container_stack, global_machine_definition)
+            quality_type_dict = self.__fetchQualityTypeDictForStack(extruder_stacks[0], global_machine_definition)
             common_quality_types = set(quality_type_dict.keys())
             for stack in extruder_stacks[1:]:
                 next_quality_type_dict = self.__fetchQualityTypeDictForStack(stack, global_machine_definition)
