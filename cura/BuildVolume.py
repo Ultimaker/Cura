@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -429,7 +429,7 @@ class BuildVolume(SceneNode):
         # Extend every area already in the disallowed_areas with the skirt size.
         if disallowed_areas:
             for poly in disallowed_polygons:
-                poly = poly.getMinkowskiHull(Polygon(approximatedCircleVertices(disallowed_border_size)))
+                poly = poly.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
                 areas.append(poly)
 
         # Add the skirt areas around the borders of the build plate.
@@ -471,7 +471,7 @@ class BuildVolume(SceneNode):
         prime_tower_collision = False
         if prime_tower_area:
             # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
-            prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon(approximatedCircleVertices(0)))
+            prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for area in areas:
                 if prime_tower_area.intersectsPolygon(area) is not None:
                     prime_tower_collision = True
