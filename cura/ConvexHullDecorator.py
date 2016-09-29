@@ -251,6 +251,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #
     #   This also applies a minimum offset of 0.5mm, because of edge cases due
     #   to the rounding we apply.
+    #
+    #   \param convex_hull Polygon of the original convex hull.
+    #   \return New Polygon instance that is offset with everything that
+    #   influences the collision area.
     def _offsetHull(self, convex_hull):
         horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
         expansion_polygon = Polygon(numpy.array([
