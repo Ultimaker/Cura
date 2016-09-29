@@ -141,20 +141,12 @@ class QualityManager:
             for material_instance in material_containers:
                 material_ids.add(material_instance.getId())
 
-
-        if machine_definition.getMetaDataEntry("type") == "extruder":
-            extruder_id = machine_definition.getId()
-        else:
-            extruder_id = None
-
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         result = []
         for container in containers:
             # If the machine specifies we should filter by material, exclude containers that do not match any active material.
             if filter_by_material and container.getMetaDataEntry("material") not in material_ids:
-                continue
-            if extruder_id != container.getMetaDataEntry("extruder"):
                 continue
             result.append(container)
         return result

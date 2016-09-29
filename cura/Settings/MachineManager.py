@@ -687,7 +687,11 @@ class MachineManager(QObject):
 
         global_container_stack = self._global_container_stack
         global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
-        global_quality_changes = quality_manager.findQualityChangesByName(quality_changes_name, global_machine_definition)[0]
+
+        quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name,
+                                                                            global_machine_definition)
+
+        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None][0]
         material = global_container_stack.findContainer(type="material")
 
         # For the global stack, find a quality which matches the quality_type in
@@ -697,11 +701,14 @@ class MachineManager(QObject):
 
         # Find the values for each extruder.
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+
         for stack in extruder_stacks:
-            machine_definition = quality_manager.getParentMachineDefinition(stack.getBottom())
-            quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name, machine_definition)
-            if quality_changes_profiles:
-                quality_changes = quality_changes_profiles[0]
+            extruder_definition = quality_manager.getParentMachineDefinition(stack.getBottom())
+
+            quality_changes_list = [qcp for qcp in quality_changes_profiles
+                                    if qcp.getMetaDataEntry("extruder") == extruder_definition.getId()]
+            if quality_changes_list:
+                quality_changes = quality_changes_list[0]
             else:
                 quality_changes = global_quality_changes
 
