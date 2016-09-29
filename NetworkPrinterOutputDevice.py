@@ -36,11 +36,12 @@ class AuthState(IntEnum):
 ##  Network connected (wifi / lan) printer that uses the Ultimaker API
 @signalemitter
 class NetworkPrinterOutputDevice(PrinterOutputDevice):
-    def __init__(self, key, address, properties):
+    def __init__(self, key, address, properties, api_prefix):
         super().__init__(key)
         self._address = address
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
+        self._api_prefix = api_prefix
 
         self._gcode = None
         self._print_finished = True  # _print_finsihed == False means we're halfway in a print
@@ -94,8 +95,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._material_ids = [""] * self._num_extruders
         self._hotend_ids = [""] * self._num_extruders
 
-        self._api_version = "1"
-        self._api_prefix = "/api/v" + self._api_version + "/"
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print over network"))
@@ -186,6 +185,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def getProperties(self):
         return self._properties
+
+    @pyqtSlot(str, result = str)
+    def getProperty(self, key):
+        key = key.encode("utf-8")
+        if key in self._properties:
+            return self._properties.get(key, b"").decode("utf-8")
+        else:
+            return ""
 
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.

@@ -73,7 +73,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         name = address
         instance_name = "manual:%s" % address
-        properties = { b"name": name.encode("UTF-8"), b"incomplete": True }
+        properties = { b"name": name.encode("utf-8"), b"manual": b"true", b"incomplete": b"true" }
 
         if instance_name not in self._printers:
             # Add a preliminary printer instance
@@ -111,7 +111,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                     name = ("%s (%s)" % (system_info["name"], address))
 
                     instance_name = "manual:%s" % address
-                    properties = { b"name": name.encode("UTF-8"), b"firmware_version": system_info["firmware"].encode("UTF-8") }
+                    properties = { b"name": name.encode("utf-8"), b"firmware_version": system_info["firmware"].encode("utf-8"), b"manual": b"true" }
                     if instance_name in self._printers:
                         # Only replace the printer if it is still in the list of (manual) printers
                         self.removePrinter(instance_name)
@@ -139,7 +139,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties):
-        printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
+        printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties, self._api_prefix)
         self._printers[printer.getKey()] = printer
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):

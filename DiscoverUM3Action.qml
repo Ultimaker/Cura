@@ -85,7 +85,7 @@ Cura.MachineAction
             {
                 id: editButton
                 text: catalog.i18nc("@action:button", "Edit")
-                enabled: base.selectedPrinter != null && (base.selectedPrinter.getKey().substr(0,7) =="manual:")
+                enabled: base.selectedPrinter != null && base.selectedPrinter.getProperty("manual") == "true"
                 onClicked:
                 {
                     manualPrinterDialog.showDialog(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress);
@@ -96,7 +96,7 @@ Cura.MachineAction
             {
                 id: removeButton
                 text: catalog.i18nc("@action:button", "Remove")
-                enabled: base.selectedPrinter != null && (base.selectedPrinter.getKey().substr(0,7) =="manual:")
+                enabled: base.selectedPrinter != null && base.selectedPrinter.getProperty("manual") == "true"
                 onClicked: manager.removeManualPrinter(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress)
             }
 
@@ -155,7 +155,7 @@ Cura.MachineAction
                         {
                             base.selectedPrinter = listview.model[currentIndex];
                             // Only allow connecting if the printer has responded to API query since the last refresh
-                            base.completeProperties = base.selectedPrinter != null && (base.selectedPrinter.firmwareVersion != "");
+                            base.completeProperties = base.selectedPrinter != null && base.selectedPrinter.getProperty("incomplete") != "true";
                         }
                         Component.onCompleted: manager.startDiscovery()
                         delegate: Rectangle
