@@ -143,9 +143,7 @@ class ExtruderManager(QObject):
 
                 # Make sure the next stack is a stack that contains only the machine definition
                 if not extruder_train.getNextStack():
-                    shallow_stack = UM.Settings.ContainerStack(machine_id + "_shallow")
-                    shallow_stack.addContainer(machine_definition)
-                    extruder_train.setNextStack(shallow_stack)
+                    extruder_train.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
                     changed = True
         if changed:
             self.extrudersChanged.emit(machine_id)
@@ -264,9 +262,7 @@ class ExtruderManager(QObject):
 
         # Make sure the next stack is a stack that contains only the machine definition
         if not container_stack.getNextStack():
-            shallow_stack = UM.Settings.ContainerStack(machine_id + "_shallow")
-            shallow_stack.addContainer(machine_definition)
-            container_stack.setNextStack(shallow_stack)
+            container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
         container_registry.addContainer(container_stack)
 
