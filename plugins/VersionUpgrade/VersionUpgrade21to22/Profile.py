@@ -59,7 +59,9 @@ class Profile:
         # Parse the settings.
         self._settings = {}
         if parser.has_section("settings"):
+            print("---------------------- have section Settings")
             for key, value in parser["settings"].items():
+                print("----------------------", key, "=", value)
                 self._settings[key] = value
 
         # Parse the defaults and the disabled defaults.
@@ -105,13 +107,13 @@ class Profile:
                 config.set("metadata", "variant", self._machine_variant_name)
 
         if self._settings:
-            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
+            self._settings = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
             config.add_section("values")
             for key, value in self._settings.items():
                 config.set("values", key, str(value))
 
         if self._changed_settings_defaults:
-            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
+            self._changed_settings_defaults = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
             config.add_section("defaults")
             for key, value in self._changed_settings_defaults.items():
                 config.set("defaults", key, str(value))
