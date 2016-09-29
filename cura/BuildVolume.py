@@ -564,6 +564,8 @@ class BuildVolume(SceneNode):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
         if self._getSettingFromAdhesionExtruder("travel_avoid_distance"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
+        if self._getSettingFromSupportInfillExtruder("support_offset"):
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromSupportInfillExtruder("support_offset"))
 
         #Now combine our different pieces of data to get the final border size.
         border_size = max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
@@ -577,4 +579,4 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset"]
