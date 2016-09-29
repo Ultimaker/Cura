@@ -63,7 +63,8 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         # Look for manual instances from preference
         for address in self._manual_instances:
-            self.addManualPrinter(address)
+            if address:
+                self.addManualPrinter(address)
 
     def addManualPrinter(self, address):
         if address not in self._manual_instances:
@@ -72,17 +73,13 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         name = address
         instance_name = "manual:%s" % address
-        properties = { b"name": name.encode("UTF-8") }
+        properties = { b"name": name.encode("UTF-8"), b"incomplete": True }
 
         if instance_name not in self._printers:
             # Add a preliminary printer instance
             self.addPrinter(instance_name, address, properties)
 
-        # Check if a printer exists at this address
-        # If a printer responds, it will replace the preliminary printer created above
-        url = QUrl("http://" + address + self._api_prefix + "system")
-        name_request = QNetworkRequest(url)
-        self._network_manager.get(name_request)
+        self.checkManualPrinter(address)
 
     def removeManualPrinter(self, key, address = None):
         if key in self._printers:
@@ -93,6 +90,13 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         if address in self._manual_instances:
             self._manual_instances.remove(address)
             self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+
+    def checkManualPrinter(self, address):
+        # Check if a printer exists at this address
+        # If a printer responds, it will replace the preliminary printer created above
+        url = QUrl("http://" + address + self._api_prefix + "system")
+        name_request = QNetworkRequest(url)
+        self._network_manager.get(name_request)
 
     ##  Handler for all requests that have finished.
     def _onNetworkRequestFinished(self, reply):

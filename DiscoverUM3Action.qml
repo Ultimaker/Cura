@@ -11,6 +11,7 @@ Cura.MachineAction
     id: base
     anchors.fill: parent;
     property var selectedPrinter: null
+    property bool completeProperties: true
     property var connectingToPrinter: null
 
     Connections
@@ -84,7 +85,7 @@ Cura.MachineAction
             {
                 id: editButton
                 text: catalog.i18nc("@action:button", "Edit")
-                enabled: base.selectedPrinter && base.selectedPrinter.getKey().substr(0,7) =="manual:"
+                enabled: base.selectedPrinter != null && (base.selectedPrinter.getKey().substr(0,7) =="manual:")
                 onClicked:
                 {
                     manualPrinterDialog.showDialog(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress);
@@ -95,7 +96,7 @@ Cura.MachineAction
             {
                 id: removeButton
                 text: catalog.i18nc("@action:button", "Remove")
-                enabled: base.selectedPrinter && base.selectedPrinter.getKey().substr(0,7) =="manual:"
+                enabled: base.selectedPrinter != null && (base.selectedPrinter.getKey().substr(0,7) =="manual:")
                 onClicked: manager.removeManualPrinter(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress)
             }
 
@@ -150,7 +151,12 @@ Cura.MachineAction
                         }
                         width: parent.width
                         currentIndex: -1
-                        onCurrentIndexChanged: base.selectedPrinter = listview.model[currentIndex]
+                        onCurrentIndexChanged:
+                        {
+                            base.selectedPrinter = listview.model[currentIndex];
+                            // Only allow connecting if the printer has responded to API query since the last refresh
+                            base.completeProperties = base.selectedPrinter != null && (base.selectedPrinter.firmwareVersion != "");
+                        }
                         Component.onCompleted: manager.startDiscovery()
                         delegate: Rectangle
                         {
@@ -252,7 +258,7 @@ Cura.MachineAction
                 Button
                 {
                     text: catalog.i18nc("@action:button", "Connect")
-                    enabled: base.selectedPrinter ? true : false
+                    enabled: (base.selectedPrinter && base.completeProperties) ? true : false
                     onClicked: connectToPrinter()
                 }
             }
