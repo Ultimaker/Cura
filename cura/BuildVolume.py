@@ -473,14 +473,40 @@ class BuildVolume(SceneNode):
         self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = areas
 
-    ##   Private convenience function to get a setting from the adhesion extruder.
-    def _getSettingProperty(self, setting_key, property = "value"):
+    ##  Private convenience function to get a setting from the adhesion
+    #   extruder.
+    #
+    #   \param setting_key The key of the setting to get.
+    #   \param property The property to get from the setting.
+    #   \return The property of the specified setting in the adhesion extruder.
+    def _getSettingFromAdhesionExtruder(self, setting_key, property = "value"):
+        return self._getSettingFromExtruder(setting_key, "adhesion_extruder_nr", property)
+
+    ##  Private convenience function to get a setting from the support infill
+    #   extruder.
+    #
+    #   \param setting_key The key of the setting to get.
+    #   \param property The property to get from the setting.
+    #   \return The property of the specified setting in the support infill
+    #   extruder.
+    def _getSettingFromSupportInfillExtruder(self, setting_key, property = "value"):
+        return self._getSettingFromExtruder(setting_key, "support_infill_extruder_nr", property)
+
+    ##  Helper function to get a setting from an extruder specified in another
+    #   setting.
+    #
+    #   \param setting_key The key of the setting to get.
+    #   \param extruder_setting_key The key of the setting that specifies from
+    #   which extruder to get the setting, if there are multiple extruders.
+    #   \param property The property to get from the setting.
+    #   \return The property of the specified setting in the specified extruder.
+    def _getSettingFromExtruder(self, setting_key, extruder_setting_key, property = "value"):
         multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         if not multi_extrusion:
             return self._global_container_stack.getProperty(setting_key, property)
 
-        extruder_index = self._global_container_stack.getProperty("adhesion_extruder_nr", "value")
+        extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
 
         if extruder_index == "-1":  # If extruder index is -1 use global instead
             return self._global_container_stack.getProperty(setting_key, property)
@@ -505,9 +531,9 @@ class BuildVolume(SceneNode):
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt":
-            skirt_distance = self._getSettingProperty("skirt_gap", "value")
-            skirt_line_count = self._getSettingProperty("skirt_line_count", "value")
-            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingProperty("skirt_brim_line_width", "value"))
+            skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
+            skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
+            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width"))
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
@@ -515,7 +541,7 @@ class BuildVolume(SceneNode):
                 for value in extruder_values:
                     bed_adhesion_size += value
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
@@ -523,7 +549,7 @@ class BuildVolume(SceneNode):
                 for value in extruder_values:
                     bed_adhesion_size += value
         elif adhesion_type == "raft":
-            bed_adhesion_size = self._getSettingProperty("raft_margin", "value")
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
@@ -534,10 +560,12 @@ class BuildVolume(SceneNode):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        if self._getSettingProperty("infill_wipe_dist", "value"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("infill_wipe_dist", "value"))
-        if self._getSettingProperty("travel_avoid_distance", "value"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingProperty("travel_avoid_distance", "value"))
+        if self._getSettingFromAdhesionExtruder("infill_wipe_dist"):
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
+        if self._getSettingFromAdhesionExtruder("travel_avoid_distance"):
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
+        if self._getSettingFromSupportInfillExtruder("support_offset"):
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromSupportInfillExtruder("support_offset"))
 
         #Now combine our different pieces of data to get the final border size.
         border_size = max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
@@ -551,4 +579,4 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset"]
