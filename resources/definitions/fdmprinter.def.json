@@ -3404,7 +3404,7 @@
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": false,
+                    "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },

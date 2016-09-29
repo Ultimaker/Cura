@@ -13,6 +13,8 @@ class ProfilesModel(InstanceContainersModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        Application.getInstance().globalContainerStackChanged.connect(self._update)
+
     ##  Fetch the list of containers to display.
     #
     #   See UM.Settings.Models.InstanceContainersModel._fetchInstanceContainers().

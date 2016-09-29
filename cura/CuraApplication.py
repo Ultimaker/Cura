@@ -503,6 +503,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel")
+        qmlRegisterType(cura.Settings.ProfilesPageModel, "Cura", 1, 0, "ProfilesPageModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
 

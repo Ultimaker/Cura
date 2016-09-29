@@ -53,7 +53,9 @@ class QualityManager:
     #                               the current set of selected materials is used.
     #   \return the matching quality containers \type{List[ContainerInstance]}
     def findQualityByQualityType(self, quality_type, machine_definition=None, material_containers=None):
-        criteria = {"type": "quality", "quality_type": quality_type}
+        criteria = {"type": "quality"}
+        if quality_type:
+            criteria["quality_type"] = quality_type
         return self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
 
     def _getFilteredContainers(self, **kwargs):
@@ -63,9 +65,9 @@ class QualityManager:
         # Fill in any default values.
         if machine_definition is None:
             machine_definition = UM.Application.getInstance().getGlobalContainerStack().getBottom()
-            quality_definition = machine_definition.getMetaDataEntry("quality_definition")
-            if quality_definition is not None:
-                machine_definition = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition)[0]
+            quality_definition_id = machine_definition.getMetaDataEntry("quality_definition")
+            if quality_definition_id is not None:
+                machine_definition = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition_id)[0]
 
         if material_containers is None:
             active_stacks = cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
@@ -81,6 +83,8 @@ class QualityManager:
             criteria["definition"] = definition_id
 
             filter_by_material = whole_machine_definition.getMetaDataEntry("has_materials")
+        else:
+            criteria["definition"] = "fdmprinter"
 
         # Stick the material IDs in a set
         if material_containers is None or len(material_containers) == 0:
