@@ -3,8 +3,8 @@
 
 from UM.Application import Application
 from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
-from UM.Settings.ContainerRegistry import ContainerRegistry
 
+from cura.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  QML Model for listing the current list of valid quality profiles.
@@ -28,36 +28,18 @@ class ProfilesModel(InstanceContainersModel):
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         if extruder_stacks:
             # Multi-extruder machine detected.
-
-            # Determine the common set of quality types which can be
-            # applied to all of the materials for this machine.
-            quality_type_dict = self.__fetchQualityTypeDictForStack(extruder_stacks[0], global_machine_definition)
-            common_quality_types = set(quality_type_dict.keys())
-            for stack in extruder_stacks[1:]:
-                next_quality_type_dict = self.__fetchQualityTypeDictForStack(stack, global_machine_definition)
-                common_quality_types.intersection_update(set(next_quality_type_dict.keys()))
-
-            return [quality_type_dict[quality_type] for quality_type in common_quality_types]
-
+            materials = [stack.findContainer(type="material") for stack in extruder_stacks]
         else:
             # Machine with one extruder.
-            quality_type_dict = self.__fetchQualityTypeDictForStack(global_container_stack, global_machine_definition)
-            return list(quality_type_dict.values())
-        return []
+            materials = [global_container_stack.findContainer(type="material")]
 
-    def __fetchQualityTypeDictForStack(self, stack, global_machine_definition):
-        criteria = {"type": "quality" }
-        if global_machine_definition.getMetaDataEntry("has_machine_quality", False):
-            criteria["definition"] = global_machine_definition.getId()
-            if global_machine_definition.getMetaDataEntry("has_materials", False):
-                material = stack.findContainer(type="material")
-                criteria["material"] = material.getId()
-        else:
-            criteria["definition"] = "fdmprinter"
-
-        qualities = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
-
+        quality_types = QualityManager.getInstance().findAllQualityTypesForMachineAndMaterials(global_machine_definition,
+                                                                                            materials)
+        # Map the list of quality_types to InstanceContainers
+        qualities = QualityManager.getInstance().findAllQualitiesForMachineMaterial(global_machine_definition,
+                                                                                    materials[0])
         quality_type_dict = {}
         for quality in qualities:
             quality_type_dict[quality.getMetaDataEntry("quality_type")] = quality
-        return quality_type_dict
+
+        return [quality_type_dict[quality_type] for quality_type in quality_types]

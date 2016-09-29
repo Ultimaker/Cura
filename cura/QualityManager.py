@@ -44,6 +44,29 @@ class QualityManager:
         criteria = {"type": "quality_changes", "name": quality_changes_name}
         return self._getFilteredContainersForStack(machine_definition, [], **criteria)
 
+    ##  Fetch the list of available quality types for this combination of machine definition and materials.
+    #
+    #   \param machine_definition \type{DefinitionContainer}
+    #   \param material_containers \type{List[InstanceContainer]}
+    #   \return \type{List[str]}
+    def findAllQualityTypesForMachineAndMaterials(self, machine_definition, material_containers):
+        # Determine the common set of quality types which can be
+        # applied to all of the materials for this machine.
+        quality_type_dict = self.__fetchQualityTypeDictForMaterial(machine_definition, material_containers[0])
+        common_quality_types = set(quality_type_dict.keys())
+        for material_container in material_containers[1:]:
+            next_quality_type_dict = self.__fetchQualityTypeDictForMaterial(machine_definition, material_container)
+            common_quality_types.intersection_update(set(next_quality_type_dict.keys()))
+
+        return list(common_quality_types)
+
+    def __fetchQualityTypeDictForMaterial(self, machine_definition, material):
+        qualities = self.findAllQualitiesForMachineMaterial(machine_definition, material)
+        quality_type_dict = {}
+        for quality in qualities:
+            quality_type_dict[quality.getMetaDataEntry("quality_type")] = quality
+        return quality_type_dict
+
     ##  Find a quality container by quality type.
     #
     #   \param quality_type \type{str} the name of the quality type to search for.
@@ -51,12 +74,36 @@ class QualityManager:
     #                               specified then the currently selected machine definition is used.
     #   \param material_containers (Optional) \type{List[ContainerInstance]} If nothing is specified then
     #                               the current set of selected materials is used.
-    #   \return the matching quality containers \type{List[ContainerInstance]}
+    #   \return the matching quality container \type{ContainerInstance}
     def findQualityByQualityType(self, quality_type, machine_definition=None, material_containers=None):
         criteria = {"type": "quality"}
         if quality_type:
             criteria["quality_type"] = quality_type
-        return self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+        result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+
+        # Fall back to using generic materials and qualities if nothing could be found.
+        if not result and material_containers and len(material_containers) == 1:
+            basic_material = self._getBasicMaterial(material_containers[0])
+            result = self._getFilteredContainersForStack(machine_definition, [basic_material], **criteria)
+        return result[0] if result else None
+
+    def findAllQualitiesForMachineMaterial(self, machine_definition, material_container):
+        criteria = {"type": "quality" }
+        result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
+        if not result:
+            basic_material = self._getBasicMaterial(material_container)
+            result = self._getFilteredContainersForStack(machine_definition, [basic_material], **criteria)
+        return result
+
+    def _getBasicMaterial(self, material_container):
+        base_material = material_container.getMetaDataEntry("material")
+        if base_material:
+            # There is a basic material specified
+            criteria = { "type": "material", "name": base_material, "definition": "fdmprinter" }
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            return containers[0] if containers else None
+
+        return None
 
     def _getFilteredContainers(self, **kwargs):
         return self._getFilteredContainersForStack(None, None, **kwargs)

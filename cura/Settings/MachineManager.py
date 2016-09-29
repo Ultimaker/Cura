@@ -8,7 +8,6 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Settings.SettingRelation import RelationType
 
 import UM.Settings
 
@@ -562,26 +561,18 @@ class MachineManager(QObject):
         # See if the requested quality type is available in the new situation.
         machine_definition = self._active_container_stack.getBottom()
         quality_manager = QualityManager.getInstance()
-        candidate_qualities = quality_manager.findQualityByQualityType(quality_type,
+        candidate_quality = quality_manager.findQualityByQualityType(quality_type,
                                    quality_manager.getWholeMachineDefinition(machine_definition),
                                    [material_container])
-        if not candidate_qualities:
-            # Fall back to normal quality
-            quality_containers = quality_manager.findQualityByQualityType("normal",
+        if not candidate_quality:
+            # Fall back to a quality
+            new_quality_id = quality_manager.findQualityByQualityType(None,
                                 quality_manager.getWholeMachineDefinition(machine_definition),
                                 [material_container])
-            if quality_containers:
-                new_quality_id = quality_containers[0].getId()
-            else:
-                # There is no normal quality for this machine/variant/material combination
-                quality_containers = quality_manager.findQualityByQualityType(None,
-                                    quality_manager.getWholeMachineDefinition(machine_definition),
-                                    [material_container])
-                new_quality_id = quality_containers[0].getId()
 
         else:
             if not old_quality_changes:
-                new_quality_id = candidate_qualities[0].getId()
+                new_quality_id = candidate_quality.getId()
 
         self.setActiveQuality(new_quality_id)
 
@@ -622,10 +613,11 @@ class MachineManager(QObject):
         # If we found a quality_changes profile then look up its parent quality profile.
         container_type = containers[0].getMetaDataEntry("type")
         quality_name = containers[0].getName()
+        quality_type = containers[0].getMetaDataEntry("quality_type")
 
         # Get quality container and optionally the quality_changes container.
         if container_type == "quality":
-            new_quality_settings_list = self._determineQualityAndQualityChangesForQuality(quality_name)
+            new_quality_settings_list = self._determineQualityAndQualityChangesForQualityType(quality_type)
         elif container_type == "quality_changes":
             new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
         else:
@@ -661,26 +653,28 @@ class MachineManager(QObject):
     #
     #   \param quality_name \type{str} the name of the quality.
     #   \return \type{List[Dict]} with keys "stack", "quality" and "quality_changes".
-    def _determineQualityAndQualityChangesForQuality(self, quality_name):
+    def _determineQualityAndQualityChangesForQualityType(self, quality_type):
+        quality_manager = QualityManager.getInstance()
         result = []
         empty_quality_changes = self._empty_quality_changes_container
-
-        # Find the values for the global stack.
         global_container_stack = self._global_container_stack
-        global_machine_definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-        material = global_container_stack.findContainer(type="material")
-        global_quality = QualityManager.getInstance().findQualityByName(quality_name, global_machine_definition, [material])[0]
-        result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": empty_quality_changes})
+        global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
 
-        # Find the values for each extruder.
-        for stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        if extruder_stacks:
+            stacks = extruder_stacks
+        else:
+            stacks = [global_container_stack]
+
+        for stack in stacks:
             material = stack.findContainer(type="material")
-            stack_qualities = QualityManager.getInstance().findQualityByName(quality_name, global_machine_definition, [material])
-            if not stack_qualities:
-                # Fall back on the values used for the global stack.
-                result.append({"stack": stack, "quality": global_quality, "quality_changes": empty_quality_changes})
-            else:
-                result.append({"stack": stack, "quality": stack_qualities[0], "quality_changes": empty_quality_changes})
+            quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+            result.append({"stack": stack, "quality": quality, "quality_changes": empty_quality_changes})
+
+        if extruder_stacks:
+            # Add an extra entry for the global stack.
+            result.append({"stack": global_container_stack, "quality": result[0]["quality"],
+                           "quality_changes": empty_quality_changes})
         return result
 
     ##  Determine the quality and quality changes settings for the current machine for a quality changes name.
@@ -699,12 +693,11 @@ class MachineManager(QObject):
         # For the global stack, find a quality which matches the quality_type in
         # the quality changes profile and also satisfies any material constraints.
         quality_type = global_quality_changes.getMetaDataEntry("quality_type")
-        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])[0]
-
-        result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
+        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
 
         # Find the values for each extruder.
-        for stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        for stack in extruder_stacks:
             machine_definition = quality_manager.getParentMachineDefinition(stack.getBottom())
             quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name, machine_definition)
             if quality_changes_profiles:
@@ -713,9 +706,16 @@ class MachineManager(QObject):
                 quality_changes = global_quality_changes
 
             material = stack.findContainer(type="material")
-            quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])[0]
+            quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
 
             result.append({"stack": stack, "quality": quality, "quality_changes": quality_changes})
+
+        if extruder_stacks:
+            # Duplicate the quality from the 1st extruder into the global stack. If anyone
+            # then looks in the global stack, they should get a reasonable view.
+            result.append({"stack": global_container_stack, "quality": result[0]["quality"], "quality_changes": global_quality_changes})
+        else:
+            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
 
         return result
 
