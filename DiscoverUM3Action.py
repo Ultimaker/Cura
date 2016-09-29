@@ -52,6 +52,22 @@ class DiscoverUM3Action(MachineAction):
             else:
                 self._network_plugin.startDiscovery()
 
+    @pyqtSlot(str, str)
+    def removeManualPrinter(self, key, address):
+        if not self._network_plugin:
+            return
+
+        self._network_plugin.removeManualPrinter(key, address)
+
+    @pyqtSlot(str, str)
+    def setManualPrinter(self, key, address):
+        if key != "":
+            # This manual printer replaces a current manual printer
+            self._network_plugin.removeManualPrinter(key)
+
+        if address != "":
+            self._network_plugin.addManualPrinter(address)
+
     def _onPrinterDiscoveryChanged(self, *args):
         self._last_zeroconf_event_time = time.time()
         self.printersChanged.emit()
