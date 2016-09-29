@@ -129,13 +129,17 @@ class CuraContainerRegistry(ContainerRegistry):
 
         plugin_registry = PluginRegistry.getInstance()
         container_registry = ContainerRegistry.getInstance()
+        extension = file_name.split(".")[-1]
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
+            if meta_data["profile_reader"][0]["extension"] != extension:
+                continue
+
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
-                profile_or_list = profile_reader.read(file_name) # Try to open the file with the profile reader.
+                profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
             except Exception as e:
-                #Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
-                Logger.log("e", "Failed to import profile from %s: %s", file_name, str(e))
+                # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
+                Logger.log("e", "Failed to import profile from %s: %s while using profile reader", file_name, str(e), profile_reader.getPluginId())
                 return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
             if profile_or_list: # Success!
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
@@ -157,8 +161,8 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
-        #If it hasn't returned by now, none of the plugins loaded the profile successfully.
-        return { "status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
+        # If it hasn't returned by now, none of the plugins loaded the profile successfully.
+        return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
 
     def _configureProfile(self, profile, id_seed):
         profile.setReadOnly(False)
