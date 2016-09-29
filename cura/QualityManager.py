@@ -53,7 +53,9 @@ class QualityManager:
     #                               the current set of selected materials is used.
     #   \return the matching quality containers \type{List[ContainerInstance]}
     def findQualityByQualityType(self, quality_type, machine_definition=None, material_containers=None):
-        criteria = {"type": "quality", "quality_type": quality_type}
+        criteria = {"type": "quality"}
+        if quality_type:
+            criteria["quality_type"] = quality_type
         return self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
 
     def _getFilteredContainers(self, **kwargs):

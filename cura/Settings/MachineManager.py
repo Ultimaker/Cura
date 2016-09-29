@@ -580,9 +580,18 @@ class MachineManager(QObject):
                                    [material_container])
         if not candidate_qualities:
             # Fall back to normal quality
-            new_quality_id = quality_manager.findQualityByQualityType("normal",
+            quality_containers = quality_manager.findQualityByQualityType("normal",
+                                quality_manager.getWholeMachineDefinition(machine_definition),
+                                [material_container])
+            if quality_containers:
+                new_quality_id = quality_containers[0].getId()
+            else:
+                # There is no normal quality for this machine/variant/material combination
+                quality_containers = quality_manager.findQualityByQualityType(None,
                                     quality_manager.getWholeMachineDefinition(machine_definition),
-                                    [material_container])[0].getId()
+                                    [material_container])
+                new_quality_id = quality_containers[0].getId()
+
         else:
             if not old_quality_changes:
                 new_quality_id = candidate_qualities[0].getId()
