@@ -20,6 +20,7 @@ dir_map = {
 	#Profile location/directory name: machine name in Cura
 	"Mini_single_extruder_v2": ("lulzbot_mini",),
 	"Mini_flexystruder_v2": ("lulzbot_mini_flexystruder",),
+	
 	"TAZ_single_extruder_0.35nozzle": ("lulzbot_TAZ_4_SingleV1",
 									   "lulzbot_TAZ_5_SingleV1",
 									   "lulzbot_TAZ_4_035nozzle",
@@ -38,10 +39,13 @@ dir_map = {
 							"lulzbot_TAZ_5_FlexyDuallyV1"),
 	"TAZ_flexy_dually_v2": ("lulzbot_TAZ_4_FlexyDuallyV2",
 							"lulzbot_TAZ_5_FlexyDuallyV2"),
+	"TAZ5_moarstruder": ("lulzbot_TAZ_5_Moarstruder",),
+		
 	"TAZ6_single_extruder_v2.1": ("lulzbot_TAZ_6_Single_v2.1",),
 	"TAZ6_flexystruder_v2": ("lulzbot_TAZ_6_Flexystruder_v2",),
 	"TAZ6_dual_extruder_v2": ("lulzbot_TAZ_6_Dual_v2",),
 	"TAZ6_flexy_dually_v2": ("lulzbot_TAZ_6_FlexyDually_v2",),
+	"TAZ6_moarstruder": ("lulzbot_TAZ_6_Moarstruder",),
 }
 
 material_map = {
@@ -50,7 +54,6 @@ material_map = {
 	"PLA_eSUN": "PLA",
 	"PLA_VP": "PLA",
 	"PLA_verbatim": "PLA",
-	"nGen": "nGen",
 	"PLA_PHA": "PLA-PHA",
 	"PLA_poly": "PLA-polylite",
 	
@@ -64,6 +67,7 @@ material_map = {
 	"Corkfill": "corkfill",
 	"PP-Coffee": "protopasta-aromatic-coffee-PLA",
 	"PP-HT-PLA": "protopasta-high-temp-PLA",
+	"nGen": "nGen",
 	
 	# Advanced
 	"Alloy910": "alloy910",
@@ -127,11 +131,11 @@ material_map = {
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
 	"silk": "silk",
+	"linen": "linen",
 }
 
 material_order = {
 	# Beginner
-	"nGen":                 0,
 	"PLA_VP":               1,
 	"HIPS_eSUN":            2,
 	"PLA_eSUN":             3,
@@ -149,6 +153,7 @@ material_order = {
 	"Corkfill":            16,
 	"PP-Coffee":           17,
 	"PP-HT-PLA":           18,
+	"nGen":                19,
 	
 	# Advanced
 	"INOVA-1800":          50,
@@ -212,6 +217,7 @@ material_order = {
 	"armadillo":         5007,
 	"brassfill":         5008,
 	"silk":              5009,
+	"linen":             5010,
 }
 
 material_types = {
@@ -219,7 +225,6 @@ material_types = {
 	"HIPS_eSUN": "Beginner",
 	"PLA_eSUN": "Beginner",
 	"PLA_VP": "Beginner",
-	"nGen": "Beginner",
 	"PLA_PHA": "Beginner",
 	"PLA_verbatim": "Beginner",
 	"PLA_poly": "Beginner",
@@ -234,6 +239,7 @@ material_types = {
 	"Corkfill": "Intermediate",
 	"PP-Coffee": "Intermediate",
 	"PP-HT-PLA": "Intermediate",
+	"nGen": "Intermediate",
 	
 	# Advanced
 	"Alloy910": "Advanced",
@@ -295,10 +301,9 @@ material_names = {
 	"HIPS_eSUN": "HIPS (eSUN)",
 	"PLA_eSUN": "PLA (eSUN)",
 	"PLA_VP": "PLA (Village Plastics)",
-	"nGen": "nGen (colorFabb)",
 	"PLA_PHA": "PLA/PHA (colorFabb)",
 	"PLA_verbatim": "PLA (Verbatim)",
-	"PLA_poly": "PLA Polylite (Polymaker)",
+	"PLA_poly": "PLA PolyLite (Polymaker)",
 	
 	# Intermediate
 	"ABS_VP": "ABS (Village Plastics)",
@@ -310,6 +315,7 @@ material_names = {
 	"Corkfill": "corkFill (colorFabb)",
 	"PP-Coffee": "Coffee PLA (Proto-pasta)",
 	"PP-HT-PLA": "High Temp PLA (Proto-pasta)",
+	"nGen": "nGen (colorFabb)",
 	
 	# Advanced
 	"Alloy910": "Alloy 910 (Taulman)",
@@ -369,10 +375,11 @@ material_names = {
 	"b-pet": "B-Pet",
 	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
-	"polyflex": "Polyflex (Polymaker)",
+	"polyflex": "PolyFlex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
-	"silk": "bioFila Silk (twoBEars)",
+	"silk": "BioFila Silk (twoBEars)",
+	"linen": "BioFila Linen (twoBEars)",
 }
 
 material_url = {
@@ -380,7 +387,6 @@ material_url = {
 	"HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
 	"PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
 	"PLA_VP": "lulzbot.com/store/filament/pla-village",
-	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PLA_PHA": "",
 #	"PLA_verbatim": "",
 #	"PLA_poly": "",
@@ -395,6 +401,7 @@ material_url = {
 #	"Corkfill": "",
 	"PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
 #	"PP-HT-PLA": "",
+	"nGen": "lulzbot.com/store/filament/ngen",
 
 	# Advanced
 	"Alloy910": "lulzbot.com/store/filament/alloy-910",
@@ -457,6 +464,7 @@ material_url = {
 #	"armadillo": "",
 #	"brassfill": "",
 #	"silk": "",
+#	"linen": "",
 }
 
 bed_prep_materials = {
@@ -473,6 +481,7 @@ bed_prep_materials = {
 	"618-Nylon",
 	"645-Nylon",
 	"PC-ABS",
+	"nGen",
 }
 
 profile_map = {
@@ -480,7 +489,8 @@ profile_map = {
 	"high-speed": "High speed",
 	"high-quality": "High detail",
 	"high-clarity": "High clarity",
-	"high-strength": "High strength"
+	"high-strength": "High strength",
+	"spiral-vase": "Spiral vase",
 }
 
 profile_order = {
@@ -488,7 +498,8 @@ profile_order = {
 	"high-speed": 1,
 	"high-quality": 2,
 	"high-clarity": 3,
-	"high-strength": 4
+	"high-strength": 4,
+	"spiral-vase": 5,
 }
 
 disable_materials = {
@@ -508,19 +519,24 @@ def find_files_for_material(files, material):
 					result.append((file, material, profile))
 	return result
 
-def is_experimental(material):
-	return material not in material_types
+def is_experimental(material, toolhead_type):
+	answer = material not in material_types
+	if "Moar" in toolhead_type:
+		special_exclusions = {"ABS_VP", "Alloy910", "HIPS_VP", "HT", "PCTPE", "PC-MAX", "PC_VP"}
+		if material in special_exclusions:
+			answer = True
+	return answer
 
-def get_material_display_name(material):
+def get_material_display_name(material, machine_type):
 	material_name = ""
-	if is_experimental(material):
+	if is_experimental(material, machine_type):
 		material_name += "* "
 	material_name += material_names[material]
 	return material_name
 
-def get_description(material):
+def get_description(material, machine_type):
 	description_data = ""
-	if is_experimental(material):
+	if is_experimental(material, machine_type):
 		description_data = \
 			"* Experimental profile, use at \n" + \
 			" your own risk! Newer profiles \n" + \
@@ -547,28 +563,33 @@ def create_machine_type(machine_type, path, dir):
 				os.makedirs(os.path.join(path, material, profile))
 			with open(os.path.join(path, material, "material.ini"), "w") as f:
 				f.write("[info]\n")
-				f.write("name = %s\n" % get_material_display_name(material))
+				f.write("name = %s\n" % get_material_display_name(material, machine_type))
 				order = material_order[material]
 				if material_types.has_key(material):
 					types = material_types[material]
-					if ((material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
+					if 'moarstruder' in machine_type.lower():
+						if material == "PLA_poly":
+							types = types + "|First Run"
+							order = 0
+							f.write("default = 1\n")
+					elif ((material == "PLA_poly" and machine_type.startswith("lulzbot_mini")) or \
 						(material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_4")) or \
 						(material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_5")) or \
 						(material == "nGen" and machine_type.startswith("lulzbot_TAZ_6"))):
 						types = types + "|First Run"
 						order = 0
 						f.write("default = 1\n")
-				if is_experimental(material):
+				if is_experimental(material, machine_type):
 					types = "Experimental"
 				f.write("material_types = %s\n" % types)
 				f.write("order = %d\n" % order)
-				description_data = get_description(material)
+				description_data = get_description(material, machine_type)
 				if description_data is not "":
 					f.write("description = %s\n" % description_data)
 				if material_url.has_key(material):
 					referer = "?pk_campaign=software-cura"
 					f.write("url = %s%s\n" %(material_url[material], referer) )
-				elif is_experimental(material):
+				elif is_experimental(material, machine_type):
 					f.write("url = %s\n" %("code.alephobjects.com/diffusion/P/") )
 			with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
 				f.write("[info]\n")

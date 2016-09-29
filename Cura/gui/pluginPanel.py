@@ -29,7 +29,7 @@ class pluginPanel(wx.Panel):
 
 		self.listbox = wx.ListBox(self, -1, choices=pluginStringList)
 		title = wx.StaticText(self, -1, _("Plugins:"))
-		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
+		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		helpButton = wx.Button(self, -1, '?', style=wx.BU_EXACTFIT)
 		addButton = wx.Button(self, -1, 'V', style=wx.BU_EXACTFIT)
 		openPluginLocationButton = wx.Button(self, -1, _("Open plugin location"))
@@ -84,7 +84,7 @@ class pluginPanel(wx.Panel):
 		s = wx.GridBagSizer(2, 2)
 		pluginPanel.SetSizer(s)
 		title = wx.StaticText(pluginPanel, -1, plugin.getName())
-		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
+		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		remButton = wx.Button(pluginPanel, -1, 'X', style=wx.BU_EXACTFIT)
 		helpButton = wx.Button(pluginPanel, -1, '?', style=wx.BU_EXACTFIT)
 		s.Add(title, pos=(0,1), span=(1,2), flag=wx.ALIGN_BOTTOM|wx.TOP|wx.LEFT|wx.RIGHT, border=5)
@@ -117,7 +117,7 @@ class pluginPanel(wx.Panel):
 				s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
 				ctrl.Bind(wx.EVT_CHECKBOX, self.OnSettingChange) #bind the checkbox event to the same method as for the standard text boxes
 			elif param['type'].lower() == 'list': #checks for 'type' list, displays listbox and sets stored value (integer)
-				ctrl = ListBoxEnh(pluginPanel, -1, wx.DefaultPosition, (-1,(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPixelSize()[1]+1)*len(ListOfItems)+6), ListOfItems)
+				ctrl = ListBoxEnh(pluginPanel, -1, wx.DefaultPosition, (-1,(wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPixelSize()[1]+1)*len(ListOfItems)+6), ListOfItems)
 				ctrl.Select(value)
 				s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
 				ctrl.Bind(wx.EVT_LISTBOX, self.OnSettingChange) #bind the listbox event to the same method as for the standard text boxes (derived class necessary due to usage of SetValue method)

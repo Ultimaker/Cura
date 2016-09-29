@@ -1414,6 +1414,15 @@ def performVersionUpgrade():
 			putMachineSetting('toolhead', 'Single Extruder v2.1', n)
 			putMachineSetting('toolhead_shortname', 'Single v2.1', n)
 			putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_v2.1', n)
+		
+		#Update product name for MOARstruder
+		if 'moarstruder' in machine_type.lower():
+			putMachineSetting('toolhead', 'MOARstruder', n)
+			putMachineSetting('toolhead_shortname', 'MOARstruder', n)
+			if 'TAZ_5' in machine_type:
+				putMachineSetting('machine_type', 'lulzbot_TAZ_5_Moarstruder', n)
+			elif 'TAZ_6' in machine_type:
+				putMachineSetting('machine_type', 'lulzbot_TAZ_6_Moarstruder', n)
 
 		# Change TAZ print bed so prints are centered when scaled to the max
 		if (machine_type.startswith('lulzbot_TAZ_4') or \
