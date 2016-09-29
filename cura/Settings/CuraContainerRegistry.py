@@ -150,7 +150,7 @@ class CuraContainerRegistry(ContainerRegistry):
                             profile_name = "%s_%s" % (extruder_id, name_seed)
                         else:
                             profile_name = name_seed
-                        new_name = self.createUniqueName("quality_changes", "", profile_name, catalog.i18nc("@label", "Custom profile"))
+                        new_name = container_registry.uniqueName(profile_name)
                         profile.setDirty(True)  # Ensure the profiles are correctly saved
                         self._configureProfile(profile, profile_name)
                         profile.setName(new_name)
