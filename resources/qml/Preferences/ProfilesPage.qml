@@ -15,37 +15,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Profiles");
     property var extrudersModel: Cura.ExtrudersModel{}
 
-    model: UM.InstanceContainersModel
-    {
-        filterList:
-        {
-            var qualityFilter = { "type": "quality", "extruder": null };
-            if(Cura.MachineManager.filterQualityByMachine)
-            {
-                qualityFilter.definition = Cura.MachineManager.activeQualityDefinitionId;
-                if(Cura.MachineManager.hasMaterials)
-                {
-                    qualityFilter.material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId];
-                }
-            }
-            else
-            {
-                qualityFilter.definition = "fdmprinter";
-            }
-
-            var qualityChangeFilter = { "type": "quality_changes", "extruder": null };
-            if(Cura.MachineManager.filterQualityByMachine)
-            {
-                qualityChangeFilter.definition = Cura.MachineManager.activeQualityDefinitionId;
-            }
-            else
-            {
-                qualityChangeFilter.definition = "fdmprinter";
-            }
-
-            return [qualityFilter, qualityChangeFilter];
-        }
-    }
+    model: Cura.ProfilesPageModel { }
 
     section.property: "readOnly"
     section.delegate: Rectangle
