@@ -138,7 +138,7 @@ msgstr "De Y-coördinaat van de eindpositie wanneer de extruder wordt uitgeschak
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Z-positie voor terugduwen extruder"
+msgstr "Z-positie voor primen extruder"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
@@ -160,7 +160,7 @@ msgstr "Hechting"
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr "X-positie voor terugduwen extruder"
+msgstr "X-positie voor primen extruder"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
@@ -172,7 +172,7 @@ msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt terugge
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr "Y-positie voor terugduwen extruder"
+msgstr "Y-positie voor primen extruder"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"

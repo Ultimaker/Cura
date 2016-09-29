@@ -389,7 +389,7 @@ msgstr "Pas de extruderoffset toe op het coördinatensysteem."
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Z-positie voor terugduwen extruder"
+msgstr "Z-positie voor primen extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z description"
@@ -401,14 +401,14 @@ msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt terugge
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
-msgstr "Absolute positie voor terugduwen extruder"
+msgstr "Absolute positie voor primen extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs description"
 msgid ""
 "Make the extruder prime position absolute rather than relative to the last-"
 "known location of the head."
-msgstr "Maak van de terugduwpositie van de extruder de absolute positie, in plaats van de relatieve positie ten opzichte van de laatst bekende locatie van de printkop."
+msgstr "Maak van de primepositie van de extruder de absolute positie, in plaats van de relatieve positie ten opzichte van de laatst bekende locatie van de printkop."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_x label"
@@ -675,12 +675,12 @@ msgstr "Breedte van een enkele lijn van de verbindingsstructuur."
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "Lijnbreedte terugduwpijler"
+msgstr "Lijnbreedte primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
 msgid "Width of a single prime tower line."
-msgstr "Breedte van een enkele lijn van de terugduwpijler."
+msgstr "Breedte van een enkele lijn van de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "shell label"
@@ -1250,7 +1250,7 @@ msgctxt "retraction_speed description"
 msgid ""
 "The speed at which the filament is retracted and primed during a retraction "
 "move."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetrokken en teruggeduwd."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetrokken en geprimet."
 
 #: fdmprinter.def.json
 msgctxt "retraction_retract_speed label"
@@ -1265,17 +1265,17 @@ msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetr
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr "Intreksnelheid (Terugduwen)"
+msgstr "Intreksnelheid (Primen)"
 
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a retraction move."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt teruggeduwd."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt geprimet."
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
-msgstr "Extra terugduwhoeveelheid na intrekken"
+msgstr "Extra primehoeveelheid na intrekken"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount description"
@@ -1410,14 +1410,14 @@ msgstr "De snelheid waarmee het filament tijdens een intrekbeweging tijdens het 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed label"
 msgid "Nozzle Switch Prime Speed"
-msgstr "Terugduwsnelheid bij wisselen nozzles"
+msgstr "Primesnelheid bij wisselen nozzles"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed description"
 msgid ""
 "The speed at which the filament is pushed back after a nozzle switch "
 "retraction."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging na het wisselen van de nozzles wordt teruggeduwd."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging na het wisselen van de nozzles wordt geprimet."
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch label"
@@ -1549,7 +1549,7 @@ msgstr "De snelheid waarmee de supportdaken en -bodems worden geprint. Als u dez
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
-msgstr "Snelheid terugduwpijler"
+msgstr "Snelheid primepijler"
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower description"
@@ -1557,7 +1557,7 @@ msgid ""
 "The speed at which the prime tower is printed. Printing the prime tower "
 "slower can make it more stable when the adhesion between the different "
 "filaments is suboptimal."
-msgstr "De snelheid waarmee de terugduwpijler wordt geprint. Als u de terugduwpijler langzamer print, wordt deze stabieler. Dit is zinvol wanneer de hechting tussen de verschillende filamenten niet optimaal is."
+msgstr "De snelheid waarmee de primepijler wordt geprint. Als u de primepijler langzamer print, wordt deze stabieler. Dit is zinvol wanneer de hechting tussen de verschillende filamenten niet optimaal is."
 
 #: fdmprinter.def.json
 msgctxt "speed_travel label"
@@ -1775,12 +1775,12 @@ msgstr "De acceleratie tijdens het printen van de supportdaken en -bodems. Als u
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
-msgstr "Acceleratie terugduwpijler"
+msgstr "Acceleratie primepijler"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower description"
 msgid "The acceleration with which the prime tower is printed."
-msgstr "De acceleratie tijdens het printen van de terugduwpijler."
+msgstr "De acceleratie tijdens het printen van de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel label"
@@ -1954,14 +1954,14 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
 msgid "Prime Tower Jerk"
-msgstr "Schok terugduwpijler"
+msgstr "Schok primepijler"
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower description"
 msgid ""
 "The maximum instantaneous velocity change with which the prime tower is "
 "printed."
-msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van de terugduwpijler."
+msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel label"
@@ -2650,26 +2650,26 @@ msgstr "Hechting"
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr "X-positie voor terugduwen extruder"
+msgstr "X-positie voor primen extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x description"
 msgid ""
 "The X coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt teruggeduwd aan het begin van het printen."
+msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprimet aan het begin van het printen."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr "Y-positie voor terugduwen extruder"
+msgstr "Y-positie voor primen extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid ""
 "The Y coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt teruggeduwd aan het begin van het printen."
+msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt geprimet aan het begin van het printen."
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type label"
@@ -3177,49 +3177,49 @@ msgstr "De extruder train die wordt gebruikt voor het printen van de daken en bo
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable label"
 msgid "Enable Prime Tower"
-msgstr "Terugduwpijler inschakelen"
+msgstr "Primepijler inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable description"
 msgid ""
 "Print a tower next to the print which serves to prime the material after "
 "each nozzle switch."
-msgstr "Print een pijler naast de print, waarop het materiaal na iedere nozzlewisseling wordt teruggeduwd."
+msgstr "Print een pijler naast de print, waarop het materiaal na iedere nozzlewisseling wordt ingespoeld."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
-msgstr "Formaat terugduwpijler"
+msgstr "Formaat primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
-msgstr "De breedte van de terugduwpijler."
+msgstr "De breedte van de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
-msgstr "X-positie terugduwpijler"
+msgstr "X-positie primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x description"
 msgid "The x coordinate of the position of the prime tower."
-msgstr "De X-coördinaat van de positie van de terugduwpijler."
+msgstr "De X-coördinaat van de positie van de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
-msgstr "Y-positie terugduwpijler"
+msgstr "Y-positie primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y description"
 msgid "The y coordinate of the position of the prime tower."
-msgstr "De Y-coördinaat van de positie van de terugduwpijler."
+msgstr "De Y-coördinaat van de positie van de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
-msgstr "Doorvoer terugduwpijler"
+msgstr "Doorvoer primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow description"
@@ -3231,14 +3231,14 @@ msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wor
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Nozzle on Prime Tower"
-msgstr "Nozzle vegen op terugduwpijler"
+msgstr "Nozzle vegen op primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled description"
 msgid ""
 "After printing the prime tower with one nozzle, wipe the oozed material from "
 "the other nozzle off on the prime tower."
-msgstr "Veeg na het printen van de terugduwpijler met één nozzle het doorgevoerde materiaal van de andere nozzle af aan de terugduwpijler."
+msgstr "Veeg na het printen van de primepijler met één nozzle het doorgevoerde materiaal van de andere nozzle af aan de primepijler."
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
