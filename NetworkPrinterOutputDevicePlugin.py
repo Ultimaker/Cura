@@ -11,6 +11,7 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager, QNetworkRepl
 from PyQt5.QtCore import QUrl
 
 import time
+import json
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -79,7 +80,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         # Check if a printer exists at this address
         # If a printer responds, it will replace the preliminary printer created above
-        url = QUrl("http://" + address + self._api_prefix + "system/name")
+        url = QUrl("http://" + address + self._api_prefix + "system")
         name_request = QNetworkRequest(url)
         self._network_manager.get(name_request)
 
@@ -99,14 +100,14 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
 
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            if "system/name" in reply_url:  # Name returned from printer.
+            if "system" in reply_url:  # Name returned from printer.
                 if status_code == 200:
+                    system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     address = reply.url().host()
-                    name = reply.readAll().data().decode()
-                    name = ("%s (%s)" % (name, address))
+                    name = ("%s (%s)" % (system_info["name"], address))
 
                     instance_name = "manual:%s" % address
-                    properties = { b"name": name.encode("UTF-8") }
+                    properties = { b"name": name.encode("UTF-8"), b"firmware_version": system_info["firmware"].encode("UTF-8") }
                     if instance_name in self._printers:
                         # Only replace the printer if it is still in the list of (manual) printers
                         self.removePrinter(instance_name)
