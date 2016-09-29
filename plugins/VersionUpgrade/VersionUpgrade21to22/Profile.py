@@ -59,9 +59,7 @@ class Profile:
         # Parse the settings.
         self._settings = {}
         if parser.has_section("settings"):
-            print("---------------------- have section Settings")
             for key, value in parser["settings"].items():
-                print("----------------------", key, "=", value)
                 self._settings[key] = value
 
         # Parse the defaults and the disabled defaults.
