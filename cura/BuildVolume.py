@@ -505,9 +505,9 @@ class BuildVolume(SceneNode):
 
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt":
-            skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap", "value")
-            skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count", "value")
-            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value"))
+            skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
+            skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
+            bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width"))
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
@@ -515,7 +515,7 @@ class BuildVolume(SceneNode):
                 for value in extruder_values:
                     bed_adhesion_size += value
         elif adhesion_type == "brim":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count", "value") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width", "value")
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("brim_line_count") * self._getSettingFromAdhesionExtruder("skirt_brim_line_width")
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
@@ -523,7 +523,7 @@ class BuildVolume(SceneNode):
                 for value in extruder_values:
                     bed_adhesion_size += value
         elif adhesion_type == "raft":
-            bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin", "value")
+            bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
@@ -534,10 +534,10 @@ class BuildVolume(SceneNode):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        if self._getSettingFromAdhesionExtruder("infill_wipe_dist", "value"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist", "value"))
-        if self._getSettingFromAdhesionExtruder("travel_avoid_distance", "value"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance", "value"))
+        if self._getSettingFromAdhesionExtruder("infill_wipe_dist"):
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
+        if self._getSettingFromAdhesionExtruder("travel_avoid_distance"):
+            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
 
         #Now combine our different pieces of data to get the final border size.
         border_size = max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
