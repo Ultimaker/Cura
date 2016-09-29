@@ -245,20 +245,7 @@ class MachineManager(QObject):
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
-            # If a setting is not settable per extruder, but "has enabled" or "value" relations that are settable per extruder
-            # we need to copy the value to global, so that the front-end displays the right settings.
-            if not self._active_container_stack.getProperty(key, "settable_per_extruder"):
-                relations = self._global_container_stack.getBottom()._getDefinition(key).relations
-                for relation in filter(lambda r: (r.role == "enabled" or r.role == "value") and r.type == RelationType.RequiredByTarget, relations):
-                    # Target setting is settable per extruder
-                    if self._active_container_stack.getProperty(relation.target.key, "settable_per_extruder"):
-                        new_value = self._global_container_stack.getProperty(key, "value")
-                        stacks = [stack for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())]
-                        for extruder_stack in stacks:
-                            if extruder_stack.getProperty(key, "value") != new_value:
-                                extruder_stack.getTop().setProperty(key, "value", new_value)
-                        break
-
+            # Notify UI items, such as the "changed" star in profile pull down menu.
             self.activeStackValueChanged.emit()
 
         if property_name == "validationState":

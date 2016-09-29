@@ -650,7 +650,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -935,7 +935,7 @@
                             "type": "float",
                             "default_value": 2,
                             "minimum_value": "0",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == \"grid\" else (3 if infill_pattern == \"triangles\" or infill_pattern == \"cubic\" else (4 if infill_pattern == \"tetrahedral\" else 1)))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' else (4 if infill_pattern == 'tetrahedral' else 1)))",
                             "settable_per_mesh": true
                         }
                     }
@@ -1616,7 +1616,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "value": "speed_layer_0",
-                    "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2141,7 +2141,7 @@
                     "description": "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "retraction_combing != \"off\"",
+                    "enabled": "retraction_combing != 'off'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2155,7 +2155,7 @@
                     "value": "machine_nozzle_tip_outer_diameter / 2 * 1.25",
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_tip_outer_diameter * 5",
-                    "enabled": "retraction_combing != \"off\" and travel_avoid_other_parts",
+                    "enabled": "retraction_combing != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -2242,7 +2242,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.5,
-                    "value": "0 if adhesion_type == \"raft\" else layer_height_0",
+                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else layer_height_0",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "settable_per_mesh": false,
@@ -2396,7 +2396,7 @@
                             "minimum_value": "0",
                             "default_value": 2.66,
                             "enabled": "support_enable",
-                            "value": "(support_line_width * 100) / support_infill_rate * (2 if support_pattern == \"grid\" else (3 if support_pattern == \"triangles\" else 1))",
+                            "value": "(support_line_width * 100) / support_infill_rate * (2 if support_pattern == 'grid' else (3 if support_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -2616,7 +2616,7 @@
                             "type": "float",
                             "default_value": 0.4,
                             "minimum_value": "0",
-                            "value": "0 if support_interface_density == 0 else (support_interface_line_width * 100) / support_interface_density * (2 if support_interface_pattern == \"grid\" else (3 if support_interface_pattern == \"triangles\" else 1))",
+                            "value": "0 if support_interface_density == 0 else (support_interface_line_width * 100) / support_interface_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                             "settable_per_mesh": false,
@@ -2753,7 +2753,7 @@
                     "default_value": 1,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "adhesion_type == \"skirt\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2767,7 +2767,7 @@
                     "default_value": 3,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
-                    "enabled": "adhesion_type == \"skirt\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2782,7 +2782,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
-                    "enabled": "adhesion_type == \"skirt\" or adhesion_type == \"brim\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2795,7 +2795,7 @@
                     "default_value": 8.0,
                     "minimum_value": "0.0",
                     "maximum_value_warning": "100.0",
-                    "enabled": "adhesion_type == \"brim\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr",
@@ -2810,7 +2810,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "300",
                             "value": "math.ceil(brim_width / skirt_brim_line_width)",
-                            "enabled": "adhesion_type == \"brim\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "adhesion_extruder_nr"
@@ -2823,7 +2823,7 @@
                     "description": "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "adhesion_type == \"brim\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2837,7 +2837,7 @@
                     "default_value": 15,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2851,7 +2851,7 @@
                     "default_value": 0.3,
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2865,7 +2865,7 @@
                     "value": "raft_airgap / 2",
                     "minimum_value": "0",
                     "maximum_value_warning": "layer_height",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2878,7 +2878,7 @@
                     "default_value": 2,
                     "minimum_value": "0",
                     "maximum_value_warning": "20",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2893,7 +2893,7 @@
                     "value": "layer_height",
                     "minimum_value": "0",
                     "maximum_value_warning": "2.0",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2908,7 +2908,7 @@
                     "value": "line_width",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "machine_nozzle_size * 2",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2922,7 +2922,7 @@
                     "default_value": 0.4,
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "5.0",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "value": "raft_surface_line_width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -2938,7 +2938,7 @@
                     "value": "layer_height * 1.5",
                     "minimum_value": "0",
                     "maximum_value_warning": "5.0",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2953,7 +2953,7 @@
                     "value": "line_width * 2",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "machine_nozzle_size * 2",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2968,7 +2968,7 @@
                     "value": "raft_interface_line_width + 0.2",
                     "minimum_value": "0",
                     "maximum_value_warning": "15.0",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2983,7 +2983,7 @@
                     "value": "layer_height_0 * 1.2",
                     "minimum_value": "0",
                     "maximum_value_warning": "5.0",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2998,7 +2998,7 @@
                     "minimum_value": "0.0001",
                     "value": "machine_nozzle_size * 2",
                     "maximum_value_warning": "machine_nozzle_size * 3",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -3013,7 +3013,7 @@
                     "value": "raft_base_line_width * 2",
                     "minimum_value": "0.0001",
                     "maximum_value_warning": "100",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -3028,7 +3028,7 @@
                     "minimum_value": "0.1",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "200",
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "value": "speed_print / 60 * 30",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -3045,7 +3045,7 @@
                             "minimum_value": "0.1",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "100",
-                            "enabled": "adhesion_type == \"raft\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                             "value": "raft_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
@@ -3062,7 +3062,7 @@
                             "minimum_value": "0.1",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "150",
-                            "enabled": "adhesion_type == \"raft\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "adhesion_extruder_nr"
@@ -3077,7 +3077,7 @@
                             "minimum_value": "0.1",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "200",
-                            "enabled": "adhesion_type == \"raft\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                             "value": "0.75 * raft_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
@@ -3095,7 +3095,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print",
-                    "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children": {
@@ -3109,7 +3109,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3123,7 +3123,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3137,7 +3137,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
@@ -3153,7 +3153,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_print",
-                    "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children": {
@@ -3167,7 +3167,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
-                            "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3181,7 +3181,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3195,7 +3195,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
@@ -3211,7 +3211,7 @@
                     "default_value": 0,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "enabled": "adhesion_type == \"raft\"",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children":
                     {
@@ -3225,7 +3225,7 @@
                             "maximum_value": "100",
                             "default_value": 0,
                             "value": "raft_fan_speed",
-                            "enabled": "adhesion_type == \"raft\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "adhesion_extruder_nr"
@@ -3240,7 +3240,7 @@
                             "maximum_value": "100",
                             "default_value": 0,
                             "value": "raft_fan_speed",
-                            "enabled": "adhesion_type == \"raft\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "adhesion_extruder_nr"
@@ -3255,7 +3255,7 @@
                             "maximum_value": "100",
                             "default_value": 0,
                             "value": "raft_fan_speed",
-                            "enabled": "adhesion_type == \"raft\"",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "adhesion_extruder_nr"
@@ -3625,7 +3625,7 @@
                     "maximum_value_warning": "9999",
                     "default_value": 10,
                     "value": "10",
-                    "enabled": "draft_shield_enabled and draft_shield_height_limitation == \"limited\"",
+                    "enabled": "draft_shield_enabled and draft_shield_height_limitation == 'limited'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3710,7 +3710,7 @@
                     "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "top_bottom_pattern != \"concentric\"",
+                    "enabled": "top_bottom_pattern != 'concentric'",
                     "settable_per_mesh": true
                 },
                 "support_conical_enabled":
