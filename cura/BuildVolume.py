@@ -473,14 +473,40 @@ class BuildVolume(SceneNode):
         self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = areas
 
-    ##   Private convenience function to get a setting from the adhesion extruder.
+    ##  Private convenience function to get a setting from the adhesion
+    #   extruder.
+    #
+    #   \param setting_key The key of the setting to get.
+    #   \param property The property to get from the setting.
+    #   \return The property of the specified setting in the adhesion extruder.
     def _getSettingFromAdhesionExtruder(self, setting_key, property = "value"):
+        return self._getSettingFromExtruder(setting_key, "adhesion_extruder_nr", property)
+
+    ##  Private convenience function to get a setting from the support infill
+    #   extruder.
+    #
+    #   \param setting_key The key of the setting to get.
+    #   \param property The property to get from the setting.
+    #   \return The property of the specified setting in the support infill
+    #   extruder.
+    def _getSettingFromSupportInfillExtruder(self, setting_key, property = "value"):
+        return self._getSettingFromExtruder(setting_key, "support_infill_extruder_nr", property)
+
+    ##  Helper function to get a setting from an extruder specified in another
+    #   setting.
+    #
+    #   \param setting_key The key of the setting to get.
+    #   \param extruder_setting_key The key of the setting that specifies from
+    #   which extruder to get the setting, if there are multiple extruders.
+    #   \param property The property to get from the setting.
+    #   \return The property of the specified setting in the specified extruder.
+    def _getSettingFromExtruder(self, setting_key, extruder_setting_key, property = "value"):
         multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         if not multi_extrusion:
             return self._global_container_stack.getProperty(setting_key, property)
 
-        extruder_index = self._global_container_stack.getProperty("adhesion_extruder_nr", "value")
+        extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
 
         if extruder_index == "-1":  # If extruder index is -1 use global instead
             return self._global_container_stack.getProperty(setting_key, property)
