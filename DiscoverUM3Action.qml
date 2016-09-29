@@ -96,7 +96,7 @@ Cura.MachineAction
                 id: removeButton
                 text: catalog.i18nc("@action:button", "Remove")
                 enabled: base.selectedPrinter && base.selectedPrinter.getKey().substr(0,7) =="manual:"
-                onClicked: manager.removeManualPrinter(base.selectedPrinter.getKey())
+                onClicked: manager.removeManualPrinter(base.selectedPrinter.getKey(), base.selectedPrinter.ipAddress)
             }
 
             Button

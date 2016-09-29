@@ -39,9 +39,9 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
         # Get list of manual printers from preferences
-        preferences = Preferences.getInstance()
-        preferences.addPreference("um3networkprinting/manual_instances", "") #  A comma-separated list of ip adresses or hostnames
-        self._manual_instances = preferences.getValue("um3networkprinting/manual_instances").split(",")
+        self._preferences = Preferences.getInstance()
+        self._preferences.addPreference("um3networkprinting/manual_instances", "") #  A comma-separated list of ip adresses or hostnames
+        self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
 
     addPrinterSignal = Signal()
     removePrinterSignal = Signal()
@@ -65,17 +65,33 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             self.addManualPrinter(address)
 
     def addManualPrinter(self, address):
-        # Add a preliminary printer instance
+        if address not in self._manual_instances:
+            self._manual_instances.append(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+
         name = address
         instance_name = "manual:%s" % address
         properties = { b"name": name.encode("UTF-8") }
-        self.addPrinter(instance_name, address, properties)
+
+        if instance_name not in self._printers:
+            # Add a preliminary printer instance
+            self.addPrinter(instance_name, address, properties)
 
         # Check if a printer exists at this address
         # If a printer responds, it will replace the preliminary printer created above
         url = QUrl("http://" + address + self._api_prefix + "system/name")
         name_request = QNetworkRequest(url)
         self._network_manager.get(name_request)
+
+    def removeManualPrinter(self, key, address = None):
+        if key in self._printers:
+            if not address:
+                address = self._printers[key].ipAddress
+            self.removePrinter(key)
+
+        if address in self._manual_instances:
+            self._manual_instances.remove(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
 
     ##  Handler for all requests that have finished.
     def _onNetworkRequestFinished(self, reply):
@@ -91,8 +107,10 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
                     instance_name = "manual:%s" % address
                     properties = { b"name": name.encode("UTF-8") }
-                    self.removePrinter(instance_name)
-                    self.addPrinter(instance_name, address, properties)
+                    if instance_name in self._printers:
+                        # Only replace the printer if it is still in the list of (manual) printers
+                        self.removePrinter(instance_name)
+                        self.addPrinter(instance_name, address, properties)
 
     ##  Stop looking for devices on network.
     def stop(self):
