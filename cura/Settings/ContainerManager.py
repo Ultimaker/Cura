@@ -561,9 +561,12 @@ class ContainerManager(QObject):
         new_name = self._container_registry.uniqueName(new_name)
 
         container_registry = self._container_registry
+
         for container in self._getFilteredContainers(name = quality_name, type = "quality_changes"):
             stack_id = container.getMetaDataEntry("extruder", global_stack.getId())
             container_registry.renameContainer(container.getId(), new_name, self._createUniqueId(stack_id, new_name))
+        else:
+            UM.Logger.log("e", "Unable to rename %s, because we could not find the profile", quality_name)
 
         self._machine_manager.activeQualityChanged.emit()
         return True
