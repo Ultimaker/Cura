@@ -553,6 +553,10 @@ class BuildVolume(SceneNode):
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
+        support_expansion = 0
+        if self._getSettingFromSupportInfillExtruder("support_offset"):
+            support_expansion += self._getSettingFromSupportInfillExtruder("support_offset")
+
         farthest_shield_distance = 0
         if container_stack.getProperty("draft_shield_enabled", "value"):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
@@ -564,11 +568,11 @@ class BuildVolume(SceneNode):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
         if self._getSettingFromAdhesionExtruder("travel_avoid_distance"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
-        if self._getSettingFromSupportInfillExtruder("support_offset"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromSupportInfillExtruder("support_offset"))
 
         #Now combine our different pieces of data to get the final border size.
-        border_size = max(farthest_shield_distance, move_from_wall_radius, bed_adhesion_size)
+        #Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
+        #Support expansion is added to farthest shield distance, since the shields go around support.
+        border_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
         return border_size
 
     def _clamp(self, value, min_value, max_value):
