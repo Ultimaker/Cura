@@ -721,7 +721,7 @@
                     "default_value": 0.8,
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
-                    "maximum_value_warning": "5 * line_width",
+                    "maximum_value_warning": "10 * line_width",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -732,6 +732,8 @@
                             "description": "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number.",
                             "default_value": 2,
                             "minimum_value": "0",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "10",
                             "type": "int",
                             "value": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1) if wall_thickness != 0 else 0",
                             "settable_per_mesh": true
@@ -758,6 +760,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
+                            "minimum_value_warning": "3 * layer_height",
                             "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
@@ -772,6 +775,7 @@
                                     "minimum_value": "0",
                                     "maximum_value_warning": "100",
                                     "type": "int",
+                                    "minimum_value_warning": "0",
                                     "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / layer_height, 4))",
                                     "settable_per_mesh": true
                                 }
@@ -784,6 +788,7 @@
                             "unit": "mm",
                             "default_value": 0.6,
                             "minimum_value": "0",
+                            "minimum_value_warning": "3 * layer_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "maximum_value": "machine_height",
@@ -795,6 +800,7 @@
                                     "label": "Bottom Layers",
                                     "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "minimum_value": "0",
+                                    "minimum_value_warning": "3",
                                     "default_value": 6,
                                     "type": "int",
                                     "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / layer_height, 4))",
@@ -879,8 +885,8 @@
                     "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
-                    "minimum_value_warning": "-10",
-                    "maximum_value_warning": "10",
+                    "minimum_value_warning": "-1",
+                    "maximum_value_warning": "1",
                     "default_value": 0,
                     "settable_per_mesh": true
                 },
