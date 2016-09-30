@@ -942,6 +942,7 @@
                             "type": "float",
                             "default_value": 2,
                             "minimum_value": "0",
+                            "minimum_value_warning": "infill_line_width",
                             "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' else (4 if infill_pattern == 'tetrahedral' else 1)))",
                             "settable_per_mesh": true
                         }
@@ -1042,8 +1043,8 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.1,
-                    "minimum_value": "0.0001",
-                    "maximum_value_warning": "0.32",
+                    "minimum_value": "layer_height",
+                    "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "layer_height * 8",
                     "value": "layer_height",
                     "enabled": "infill_sparse_density > 0",
@@ -1069,6 +1070,7 @@
                     "type": "float",
                     "default_value": 5.0,
                     "minimum_value": "0.0001",
+                    "minimum_value_warning": "3 * layer_height",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0",
                     "settable_per_mesh": true
