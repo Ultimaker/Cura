@@ -313,11 +313,19 @@ Cura.MachineAction
         rightButtons: [
             Button {
                 text: catalog.i18nc("@action:button","Cancel")
-                onClicked: manualPrinterDialog.reject()
+                onClicked:
+                {
+                    manualPrinterDialog.reject()
+                    manualPrinterDialog.hide()
+                }
             },
             Button {
                 text: catalog.i18nc("@action:button", "Ok")
-                onClicked: manualPrinterDialog.accept()
+                onClicked:
+                {
+                    manualPrinterDialog.accept()
+                    manualPrinterDialog.hide()
+                }
                 enabled: manualPrinterDialog.addressText.trim() != ""
                 isDefault: true
             }
