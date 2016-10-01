@@ -215,6 +215,7 @@ Cura.MachineAction
                 }
                 Grid
                 {
+                    visible: base.completeProperties
                     width: parent.width
                     columns: 2
                     Label
