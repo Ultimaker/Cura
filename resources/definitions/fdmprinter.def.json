@@ -1690,7 +1690,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "default_value": 3000,
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "acceleration_infill": {
@@ -1703,7 +1703,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled and infill_sparse_density > 0",
+                            "enabled": "resolveOrValue('acceleration_enabled') and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "acceleration_wall": {
@@ -1716,7 +1716,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true,
                             "children": {
                                 "acceleration_wall_0": {
@@ -1729,7 +1729,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall",
-                                    "enabled": "acceleration_enabled",
+                                    "enabled": "resolveOrValue('acceleration_enabled')",
                                     "settable_per_mesh": true
                                 },
                                 "acceleration_wall_x": {
@@ -1742,7 +1742,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall",
-                                    "enabled": "acceleration_enabled",
+                                    "enabled": "resolveOrValue('acceleration_enabled')",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -1757,7 +1757,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true
                         },
                         "acceleration_support": {
@@ -1770,7 +1770,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled and support_enable",
+                            "enabled": "resolveOrValue('acceleration_enabled') and support_enable",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "support_extruder_nr",
                             "settable_per_extruder": true,
@@ -1785,7 +1785,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "enabled": "acceleration_enabled and support_enable",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and support_enable",
                                     "limit_to_extruder": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -1800,7 +1800,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "enabled": "acceleration_enabled and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -1817,7 +1817,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "resolveOrValue('prime_tower_enable') and acceleration_enabled",
+                            "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false
                         }
                     }
@@ -1832,7 +1832,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print if magic_spiralize else 5000",
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false
                 },
                 "acceleration_layer_0": {
@@ -1845,7 +1845,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "acceleration_print_layer_0":
@@ -1859,7 +1859,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true
                         },
                         "acceleration_travel_layer_0":
@@ -1873,7 +1873,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -1889,7 +1889,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
@@ -3101,7 +3101,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children": {
@@ -3115,7 +3115,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3129,7 +3129,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3143,7 +3143,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
