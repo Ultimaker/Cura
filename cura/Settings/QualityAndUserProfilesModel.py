@@ -8,7 +8,7 @@ from cura.Settings.ProfilesModel import ProfilesModel
 
 ##  QML Model for listing the current list of valid quality and quality changes profiles.
 #
-class ProfilesPageModel(ProfilesModel):
+class QualityAndUserProfilesModel(ProfilesModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
