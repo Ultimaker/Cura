@@ -2445,10 +2445,10 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "default_value": 0.1,
-                            "value": "extruderValue(support_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
+                            "value": "extruderValue(support_extruder_nr, 'support_z_distance') if resolveOrValue('support_type') == 'everywhere' else 0",
                             "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
                             "type": "float",
-                            "enabled": "support_enable and support_type == 'everywhere'",
+                            "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
                             "settable_per_mesh": true
                         }
                     }
