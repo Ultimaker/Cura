@@ -678,6 +678,16 @@ class ContainerManager(QObject):
         duplicated_container.setDirty(True)
         self._container_registry.addContainer(duplicated_container)
 
+    ##  Get the singleton instance for this class.
+    @classmethod
+    def getInstance(cls):
+        # Note: Explicit use of class name to prevent issues with inheritance.
+        if ContainerManager.__instance is None:
+            ContainerManager.__instance = cls()
+        return ContainerManager.__instance
+
+    __instance = None
+
     # Factory function, used by QML
     @staticmethod
     def createContainerManager(engine, js_engine):

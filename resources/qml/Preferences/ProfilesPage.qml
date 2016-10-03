@@ -15,7 +15,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Profiles");
     property var extrudersModel: Cura.ExtrudersModel{}
 
-    model: Cura.ProfilesPageModel { }
+    model: Cura.QualityAndUserProfilesModel { }
 
     section.property: "readOnly"
     section.delegate: Rectangle
