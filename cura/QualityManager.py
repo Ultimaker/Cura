@@ -60,6 +60,11 @@ class QualityManager:
 
         return list(common_quality_types)
 
+    ##  Fetches a dict of quality types names to quality profiles for a combination of machine and material.
+    #
+    #   \param machine_definition \type{DefinitionContainer} the machine definition.
+    #   \param material \type{ContainerInstance} the material.
+    #   \return \type{Dict[str, ContainerInstance]} the dict of suitable quality type names mapping to qualities.
     def __fetchQualityTypeDictForMaterial(self, machine_definition, material):
         qualities = self.findAllQualitiesForMachineMaterial(machine_definition, material)
         quality_type_dict = {}
@@ -87,6 +92,11 @@ class QualityManager:
             result = self._getFilteredContainersForStack(machine_definition, [basic_material], **criteria)
         return result[0] if result else None
 
+    ##  Find all suitable qualities for a combination of machine and material.
+    #
+    #   \param machine_definition \type{DefinitionContainer} the machine definition.
+    #   \param material_container \type{ContainerInstance} the material.
+    #   \return \type{List[ContainerInstance]} the list of suitable qualities.
     def findAllQualitiesForMachineMaterial(self, machine_definition, material_container):
         criteria = {"type": "quality" }
         result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
@@ -95,6 +105,11 @@ class QualityManager:
             result = self._getFilteredContainersForStack(machine_definition, [basic_material], **criteria)
         return result
 
+    ##  Fetch a more basic version of a material.
+    #
+    #   This tries to find a generic or basic version of the given material.
+    #   \param material_container \type{InstanceContainer} the material
+    #   \return \type{Option[InstanceContainer]} the basic material or None if one could not be found.
     def _getBasicMaterial(self, material_container):
         base_material = material_container.getMetaDataEntry("material")
         if base_material:
