@@ -1912,7 +1912,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "default_value": 20,
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "jerk_infill": {
@@ -1925,7 +1925,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled and infill_sparse_density > 0",
+                            "enabled": "resolveOrValue('jerk_enabled') and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "jerk_wall": {
@@ -1938,7 +1938,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true,
                             "children": {
                                 "jerk_wall_0": {
@@ -1951,7 +1951,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall",
-                                    "enabled": "jerk_enabled",
+                                    "enabled": "resolveOrValue('jerk_enabled')",
                                     "settable_per_mesh": true
                                 },
                                 "jerk_wall_x": {
@@ -1964,7 +1964,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall",
-                                    "enabled": "jerk_enabled",
+                                    "enabled": "resolveOrValue('jerk_enabled')",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -1979,7 +1979,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true
                         },
                         "jerk_support": {
@@ -1992,7 +1992,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled and support_enable",
+                            "enabled": "resolveOrValue('jerk_enabled') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "support_extruder_nr",
@@ -2007,7 +2007,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "enabled": "jerk_enabled and support_enable",
+                                    "enabled": "resolveOrValue('jerk_enabled') and support_enable",
                                     "limit_to_extruder": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -2022,7 +2022,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "enabled": "jerk_enabled and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "enabled": "resolveOrValue('jerk_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -2039,7 +2039,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "resolveOrValue('prime_tower_enable') and jerk_enabled",
+                            "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false
                         }
                     }
@@ -2054,7 +2054,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false
                 },
                 "jerk_layer_0": {
@@ -2067,7 +2067,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "jerk_print_layer_0":
@@ -2081,7 +2081,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true
                         },
                         "jerk_travel_layer_0":
@@ -2095,7 +2095,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -2111,7 +2111,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_layer_0",
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 }
@@ -3159,7 +3159,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_print",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children": {
@@ -3173,7 +3173,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3187,7 +3187,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3201,7 +3201,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
