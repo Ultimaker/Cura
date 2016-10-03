@@ -85,6 +85,9 @@ class BuildVolume(SceneNode):
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         Application.getInstance().getMachineManager().activeQualityChanged.connect(self._onStackChanged)
+        # This should also ways work, and it is semantically more correct,
+        # but it does not update the disallowed areas after material change
+        Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
