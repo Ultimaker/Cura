@@ -804,6 +804,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Print aborted. Please check the printer"))
                         state = "error"
 
+                    # NB/TODO: the following two states are intentionally added for future proofing the i18n strings
+                    #          but are currently non-functional
+                    if state == "!pausing":
+                        self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Pausing print..."))
+                    if state == "!resuming":
+                        self.setErrorText(i18n_catalog.i18nc("@label:MonitorStatus", "Resuming print..."))
+
                     self._updateJobState(state)
                     self.setTimeElapsed(json_data["time_elapsed"])
                     self.setTimeTotal(json_data["time_total"])

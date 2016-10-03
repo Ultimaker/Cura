@@ -54,7 +54,7 @@ Cura.MachineAction
         {
             id: pageTitle
             width: parent.width
-            text: catalog.i18nc("@title", "Connect to Networked Printer")
+            text: catalog.i18nc("@title:window", "Connect to Networked Printer")
             wrapMode: Text.WordWrap
             font.pointSize: 18
         }
@@ -64,7 +64,7 @@ Cura.MachineAction
             id: pageDescription
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "To print directly to your Ultimaker 3 printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your Ultimaker 3, you can still use a USB drive to transfer g-code files to your printer.\n\nSelect your Ultimaker 3 from the list below:")
+            text: catalog.i18nc("@label", "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n\nSelect your printer from the list below:")
         }
 
         Row
@@ -103,7 +103,7 @@ Cura.MachineAction
             Button
             {
                 id: rediscoverButton
-                text: catalog.i18nc("@title", "Refresh")
+                text: catalog.i18nc("@action:button", "Refresh")
                 onClicked: manager.restartDiscovery()
             }
         }
@@ -195,7 +195,7 @@ Cura.MachineAction
                     wrapMode: Text.WordWrap
                     //: Tips label
                     //TODO: get actual link from webteam
-                    text: catalog.i18nc("@label", "If your Ultimaker 3 is not listed, read the <a href='%1'>Ultimaker 3 network troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
+                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network-printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
 
@@ -228,7 +228,7 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.5
                         wrapMode: Text.WordWrap
-                        text: catalog.i18nc("@label", "Ultimaker 3")
+                        text: true ? catalog.i18nc("@label", "Ultimaker 3") : catalog.i18nc("@label", "Ultimaker 3 Extended")
                     }
                     Label
                     {
@@ -246,7 +246,7 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.5
                         wrapMode: Text.WordWrap
-                        text: catalog.i18nc("@label", "IP Address")
+                        text: catalog.i18nc("@label", "Address")
                     }
                     Label
                     {
@@ -254,6 +254,13 @@ Cura.MachineAction
                         wrapMode: Text.WordWrap
                         text: base.selectedPrinter ? base.selectedPrinter.ipAddress : ""
                     }
+                }
+                Label
+                {
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                    visible: base.selectedPrinter && !base.completeProperties
+                    text: catalog.i18nc("@label", "The printer at this address has not yet responded." )
                 }
 
                 Button
@@ -266,13 +273,20 @@ Cura.MachineAction
         }
     }
 
+    Label
+    {
+        // TODO: move use this in an appropriate location
+        visible: false
+        text: catalog.i18nc("@label:", "Print Again")
+    }
+
     UM.Dialog
     {
         id: manualPrinterDialog
         property string printerKey
         property alias addressText: addressField.text
 
-        title: catalog.i18nc("@label", "IP Address")
+        title: catalog.i18nc("@title:window", "Printer Address")
 
         minimumWidth: 400 * Screen.devicePixelRatio
         minimumHeight: 120 * Screen.devicePixelRatio
@@ -298,8 +312,17 @@ Cura.MachineAction
 
         Column {
             anchors.fill: parent
+            spacing: UM.Theme.getSize("default_margin").height
 
-            TextField {
+            Label
+            {
+                text: catalog.i18nc("@alabel","Enter the IP address or hostname of your printer on the network.")
+                width: parent.width
+                wrapMode: Text.WordWrap
+            }
+
+            TextField
+            {
                 id: addressField
                 width: parent.width
                 maximumLength: 40
