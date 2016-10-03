@@ -3371,8 +3371,8 @@
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
-                    "maximum_value": "machine_width - 0.5 * prime_tower_size",
-                    "minimum_value": "0.5 * prime_tower_size",
+                    "maximum_value": "machine_width - 0.5 * resolveOrValue('prime_tower_size')",
+                    "minimum_value": "0.5 * resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3386,8 +3386,8 @@
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
-                    "maximum_value": "machine_depth - 0.5 * prime_tower_size",
-                    "minimum_value": "0.5 * prime_tower_size",
+                    "maximum_value": "machine_depth - 0.5 * resolveOrValue('prime_tower_size')",
+                    "minimum_value": "0.5 * resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
