@@ -467,6 +467,8 @@ class ContainerManager(QObject):
             base_name = active_quality_name
         unique_name = self._container_registry.uniqueName(base_name)
 
+        global_changes = None
+
         # Go through the active stacks and create quality_changes containers from the user containers.
         for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             user_container = stack.getTop()
@@ -481,6 +483,11 @@ class ContainerManager(QObject):
                                                      UM.Application.getInstance().getGlobalContainerStack().getBottom(),
                                                      extruder_id)
             self._performMerge(new_changes, user_container)
+
+            if stack is global_stack:
+                global_changes = new_changes
+            else:
+                new_changes.setMetaDataEntry("global_profile", global_changes.getId())
 
             self._container_registry.addContainer(new_changes)
             stack.replaceContainer(stack.getContainerIndex(quality_changes_container), new_changes)
@@ -628,8 +635,9 @@ class ContainerManager(QObject):
         new_change_instances = []
 
         # Handle the global stack first.
-        new_changes = self._createQualityChanges(quality_container, new_name, machine_definition, None)
-        new_change_instances.append(new_changes)
+        global_changes = self._createQualityChanges(quality_container, new_name, machine_definition, None)
+        new_changes.addMetaDataEntry("global_profile", global_changes.getId())
+        new_change_instances.append(global_changes)
         self._container_registry.addContainer(new_changes)
 
         # Handle the extruders if present.
@@ -638,6 +646,7 @@ class ContainerManager(QObject):
             for key in extruders:
                 value = extruders[key]
                 new_changes = self._createQualityChanges(quality_container, new_name, machine_definition, value)
+                new_changes.addMetaDataEntry("global_profile", global_changes.getId())
                 new_change_instances.append(new_changes)
                 self._container_registry.addContainer(new_changes)
 
@@ -646,10 +655,16 @@ class ContainerManager(QObject):
     #  Duplicate a quality changes container
     def _duplicateQualityChangesForMachineType(self, quality_changes_name, base_name, machine_definition):
         new_change_instances = []
+        profile_index = -1
+        global_changes_id = ""
         for container in QualityManager.getInstance().findQualityChangesByName(quality_changes_name,
                                                               machine_definition):
             new_unique_id = self._createUniqueId(container.getId(), base_name)
             new_container = container.duplicate(new_unique_id, base_name)
+            if profile_index >= 0:
+                new_changes.setMetaDataEntry("global_profile", global_changes_id)
+            else:
+                global_changes_id = new_unique_id
             new_change_instances.append(new_container)
             self._container_registry.addContainer(new_container)
 

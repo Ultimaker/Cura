@@ -462,7 +462,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityName(self):
         if self._active_container_stack:
-            quality = self._active_container_stack.findContainer({"type": "quality_changes"})
+            quality = self._global_container_stack.findContainer({"type": "quality_changes"})
             if quality and quality != self._empty_quality_changes_container:
                 return quality.getName()
             quality = self._active_container_stack.findContainer({"type": "quality"})

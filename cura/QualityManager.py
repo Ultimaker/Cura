@@ -42,7 +42,12 @@ class QualityManager:
     #   \return the matching quality changes containers \type{List[ContainerInstance]}
     def findQualityChangesByName(self, quality_changes_name, machine_definition=None):
         criteria = {"type": "quality_changes", "name": quality_changes_name}
-        return self._getFilteredContainersForStack(machine_definition, [], **criteria)
+        result = self._getFilteredContainersForStack(machine_definition, [], **criteria)
+
+        criteria = {"type": "quality_changes", "global_profile": quality_changes_name}
+        result.extend(self._getFilteredContainersForStack(machine_definition, [], **criteria))
+
+        return result
 
     ##  Fetch the list of available quality types for this combination of machine definition and materials.
     #

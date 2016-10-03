@@ -171,6 +171,10 @@ class CuraContainerRegistry(ContainerRegistry):
                                     profile.setMetaDataEntry("extruder", extruder_id)
                                 else:
                                     profile.addMetaDataEntry("extruder", extruder_id)
+                                if "global_profile" in profile.getMetaData():
+                                    profile.setMetaDataEntry("global_profile", global_profile.getId())
+                                else:
+                                    profile.addMetaDataEntry("global_profile", global_profile.getId())
                             elif profile_index == 0:
                                 # Importing a multiextrusion profile into a single extrusion machine; merge 1st extruder profile into global profile
                                 profile._id = self.uniqueName("temporary_profile")
