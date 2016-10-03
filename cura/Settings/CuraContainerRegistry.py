@@ -156,6 +156,10 @@ class CuraContainerRegistry(ContainerRegistry):
                             profile_name = name_seed
                         new_name = container_registry.uniqueName(profile_name)
                         profile.setDirty(True)  # Ensure the profiles are correctly saved
+                        if "type" in profile.getMetaData():
+                            profile.setMetaDataEntry("type", "quality_changes")
+                        else:
+                            profile.addMetaDataEntry("type", "quality_changes")
                         self._configureProfile(profile, profile_name)
                         profile.setName(new_name)
 
