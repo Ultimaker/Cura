@@ -181,10 +181,10 @@ class CuraContainerRegistry(ContainerRegistry):
                                 self.addContainer(profile)
                                 ContainerManager.getInstance().mergeContainers(global_profile.getId(), profile.getId())
                                 self.removeContainer(profile.getId())
-                                continue
+                                break
                             else:
                                 # The imported composite profile has a profile for an extruder that this machine does not have. Ignore this extruder-profile
-                                continue
+                                break
                         else:
                             global_profile = profile
                             profile_name = name_seed
