@@ -223,6 +223,7 @@ UM.ManagementPage
                 {
                     title: model.name;
                     extruderId: model.id;
+                    extruderDefinition: model.definition;
                     quality: base.currentItem != null ? base.currentItem.id : "";
                     material: Cura.MachineManager.allActiveMaterialIds[model.id]
                 }

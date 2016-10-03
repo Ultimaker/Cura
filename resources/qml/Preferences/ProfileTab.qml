@@ -12,6 +12,7 @@ Tab
     id: base
 
     property string extruderId: "";
+    property string extruderDefinition: "";
     property string quality: "";
     property string material: "";
 
@@ -55,7 +56,8 @@ Tab
 
         model: Cura.QualitySettingsModel
         {
-            extruderId: base.extruderId != "" ? base.extruderId : ""
+            extruderId: base.extruderId
+            extruderDefinition: base.extruderDefinition
             quality: base.quality != null ? base.quality : ""
             material: base.material != null ? base.material : ""
         }
