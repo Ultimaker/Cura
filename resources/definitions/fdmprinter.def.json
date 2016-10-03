@@ -590,7 +590,7 @@
                                     "description": "Width of the outermost wall line. By lowering this value, higher levels of detail can be printed.",
                                     "unit": "mm",
                                     "minimum_value": "0.0001",
-                                    "minimum_value_warning": "0.1 * machine_nozzle_size if wall_0_inset > 0 else 0.75 * machine_nozzle_size",
+                                    "minimum_value_warning": "0.75 * machine_nozzle_size if outer_inset_first else 0.1 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "default_value": 0.4,
                                     "value":"wall_line_width",
