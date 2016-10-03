@@ -2247,7 +2247,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.5,
-                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else layer_height_0",
+                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "settable_per_mesh": false,
@@ -2262,7 +2262,7 @@
                             "default_value": 2,
                             "minimum_value": "1",
                             "maximum_value_warning": "100",
-                            "value": "max(1, int(math.floor((cool_fan_full_at_height - layer_height_0) / layer_height) + 2))",
+                            "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / layer_height) + 2))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -2986,7 +2986,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
-                    "value": "layer_height_0 * 1.2",
+                    "value": "resolveOrValue('layer_height_0') * 1.2",
                     "minimum_value": "0",
                     "maximum_value_warning": "5.0",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
