@@ -567,10 +567,11 @@ class MachineManager(QObject):
                                    [material_container])
         if not candidate_quality:
             # Fall back to a quality
-            new_quality_id = quality_manager.findQualityByQualityType(None,
+            new_quality = quality_manager.findQualityByQualityType(None,
                                 quality_manager.getWholeMachineDefinition(machine_definition),
                                 [material_container])
-
+            if new_quality:
+                new_quality_id = new_quality.getId()
         else:
             if not old_quality_changes:
                 new_quality_id = candidate_quality.getId()
