@@ -138,6 +138,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return
 
         machine_extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
+        machine_extruders.sort(key = lambda k: k.getMetaDataEntry("position"))
 
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
