@@ -2146,7 +2146,7 @@
                     "description": "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "retraction_combing != 'off'",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2160,7 +2160,7 @@
                     "value": "machine_nozzle_tip_outer_diameter / 2 * 1.25",
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_tip_outer_diameter * 5",
-                    "enabled": "retraction_combing != 'off' and travel_avoid_other_parts",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
