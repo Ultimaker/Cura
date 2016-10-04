@@ -90,14 +90,14 @@ UM.PreferencesPage
                     id: languageList
 
                     Component.onCompleted: {
-                        append({ text: catalog.i18nc("@item:inlistbox", "English"), code: "en" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Finnish"), code: "fi" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "French"), code: "fr" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "German"), code: "de" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Italian"), code: "it" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Dutch"), code: "nl" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Spanish"), code: "es" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Turkish"), code: "tr" })
+                        append({ text: "English", code: "en" })
+                        append({ text: "Suomi", code: "fi" })
+                        append({ text: "Français", code: "fr" })
+                        append({ text: "Deutsch", code: "de" })
+                        append({ text: "Italiano", code: "it" })
+                        append({ text: "Nederlands", code: "nl" })
+                        append({ text: "Español", code: "es" })
+                        append({ text: "Türkçe", code: "tr" })
                     }
                 }
 
