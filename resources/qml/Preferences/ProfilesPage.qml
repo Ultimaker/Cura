@@ -336,18 +336,16 @@ UM.ManagementPage
             folder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var profiles_to_export = [base.currentItem.id]
-                for(var extruder_nr in base.extrudersModel.items)
-                {
-                    profiles_to_export.push(ExtruderManager.getQualityChangesIdByExtruderStackId(base.extrudersModel.items[extruder_nr].id))
-                }
-                var result = base.model.exportProfile(profiles_to_export, fileUrl, selectedNameFilter)
+                var containers = Cura.ContainerManager.findInstanceContainers({"type": "quality_changes", "name": base.currentItem.name})
+                var result = base.model.exportProfile(containers, fileUrl, selectedNameFilter)
+
                 if(result && result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical
                     messageDialog.text = result.message
                     messageDialog.open()
                 }
+
                 // else pop-up Message thing from python code
                 CuraApplication.setDefaultPath("dialog_profile_path", folder)
             }
