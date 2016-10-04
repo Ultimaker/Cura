@@ -550,6 +550,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
+                    "resolve": "sum(extruderValues('layer_height_0')) / len(extruderValues('layer_height_0'))",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.8 * min(extruderValues('machine_nozzle_size'))",
@@ -1640,6 +1641,7 @@
                     "description": "The first few layers are printed slower than the rest of the model, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers.",
                     "type": "int",
                     "default_value": 2,
+                    "resolve": "sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers'))",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0 / layer_height",
                     "settable_per_mesh": false,
@@ -1675,6 +1677,7 @@
                     "description": "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality.",
                     "type": "bool",
                     "default_value": false,
+                    "resolve": "any(extruderValues('acceleration_enabled'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -1687,7 +1690,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "default_value": 3000,
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "acceleration_infill": {
@@ -1700,7 +1703,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled and infill_sparse_density > 0",
+                            "enabled": "resolveOrValue('acceleration_enabled') and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "acceleration_wall": {
@@ -1713,7 +1716,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true,
                             "children": {
                                 "acceleration_wall_0": {
@@ -1726,7 +1729,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall",
-                                    "enabled": "acceleration_enabled",
+                                    "enabled": "resolveOrValue('acceleration_enabled')",
                                     "settable_per_mesh": true
                                 },
                                 "acceleration_wall_x": {
@@ -1739,7 +1742,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall",
-                                    "enabled": "acceleration_enabled",
+                                    "enabled": "resolveOrValue('acceleration_enabled')",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -1754,7 +1757,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true
                         },
                         "acceleration_support": {
@@ -1767,7 +1770,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "acceleration_enabled and support_enable",
+                            "enabled": "resolveOrValue('acceleration_enabled') and support_enable",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "support_extruder_nr",
                             "settable_per_extruder": true,
@@ -1782,7 +1785,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "enabled": "acceleration_enabled and support_enable",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and support_enable",
                                     "limit_to_extruder": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -1797,7 +1800,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "enabled": "acceleration_enabled and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -1814,7 +1817,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "resolveOrValue('prime_tower_enable') and acceleration_enabled",
+                            "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false
                         }
                     }
@@ -1829,7 +1832,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print if magic_spiralize else 5000",
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false
                 },
                 "acceleration_layer_0": {
@@ -1842,7 +1845,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "acceleration_print_layer_0":
@@ -1856,7 +1859,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true
                         },
                         "acceleration_travel_layer_0":
@@ -1870,7 +1873,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "acceleration_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -1886,7 +1889,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "acceleration_enabled",
+                    "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
@@ -1896,6 +1899,7 @@
                     "description": "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality.",
                     "type": "bool",
                     "default_value": false,
+                    "resolve": "any(extruderValues('jerk_enabled'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -1908,7 +1912,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "default_value": 20,
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "jerk_infill": {
@@ -1921,7 +1925,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled and infill_sparse_density > 0",
+                            "enabled": "resolveOrValue('jerk_enabled') and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
                         "jerk_wall": {
@@ -1934,7 +1938,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true,
                             "children": {
                                 "jerk_wall_0": {
@@ -1947,7 +1951,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall",
-                                    "enabled": "jerk_enabled",
+                                    "enabled": "resolveOrValue('jerk_enabled')",
                                     "settable_per_mesh": true
                                 },
                                 "jerk_wall_x": {
@@ -1960,7 +1964,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall",
-                                    "enabled": "jerk_enabled",
+                                    "enabled": "resolveOrValue('jerk_enabled')",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -1975,7 +1979,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true
                         },
                         "jerk_support": {
@@ -1988,7 +1992,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "jerk_enabled and support_enable",
+                            "enabled": "resolveOrValue('jerk_enabled') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "support_extruder_nr",
@@ -2003,7 +2007,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "enabled": "jerk_enabled and support_enable",
+                                    "enabled": "resolveOrValue('jerk_enabled') and support_enable",
                                     "limit_to_extruder": "support_infill_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -2018,7 +2022,7 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "enabled": "jerk_enabled and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "enabled": "resolveOrValue('jerk_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -2035,7 +2039,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "resolveOrValue('prime_tower_enable') and jerk_enabled",
+                            "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false
                         }
                     }
@@ -2050,7 +2054,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false
                 },
                 "jerk_layer_0": {
@@ -2063,7 +2067,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": true,
                     "children": {
                         "jerk_print_layer_0":
@@ -2077,7 +2081,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true
                         },
                         "jerk_travel_layer_0":
@@ -2091,7 +2095,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "jerk_enabled",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -2107,7 +2111,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_layer_0",
-                    "enabled": "jerk_enabled",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 }
@@ -2133,6 +2137,7 @@
                         "noskin": "No Skin"
                     },
                     "default_value": "all",
+                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
                     "settable_per_mesh": true
                 },
                 "travel_avoid_other_parts":
@@ -2141,7 +2146,7 @@
                     "description": "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "retraction_combing != 'off'",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2155,7 +2160,7 @@
                     "value": "machine_nozzle_tip_outer_diameter / 2 * 1.25",
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_tip_outer_diameter * 5",
-                    "enabled": "retraction_combing != 'off' and travel_avoid_other_parts",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -2242,7 +2247,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.5,
-                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else layer_height_0",
+                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "settable_per_mesh": false,
@@ -2257,7 +2262,7 @@
                             "default_value": 2,
                             "minimum_value": "1",
                             "maximum_value_warning": "100",
-                            "value": "max(1, int(math.floor((cool_fan_full_at_height - layer_height_0) / layer_height) + 2))",
+                            "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / layer_height) + 2))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -2326,6 +2331,7 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
+                    "resolve": "'everywhere' if 'everywhere' in extruderValues('support_type') else buildplate",
                     "enabled": "support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -2439,10 +2445,10 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "default_value": 0.1,
-                            "value": "extruderValue(support_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
+                            "value": "extruderValue(support_extruder_nr, 'support_z_distance') if resolveOrValue('support_type') == 'everywhere' else 0",
                             "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
                             "type": "float",
-                            "enabled": "support_enable and support_type == 'everywhere'",
+                            "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
                             "settable_per_mesh": true
                         }
                     }
@@ -2980,7 +2986,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
-                    "value": "layer_height_0 * 1.2",
+                    "value": "resolveOrValue('layer_height_0') * 1.2",
                     "minimum_value": "0",
                     "maximum_value_warning": "5.0",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
@@ -3095,7 +3101,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children": {
@@ -3109,7 +3115,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3123,7 +3129,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3137,7 +3143,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and acceleration_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
@@ -3153,7 +3159,7 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "value": "jerk_print",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "children": {
@@ -3167,7 +3173,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3181,7 +3187,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
@@ -3195,7 +3201,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and jerk_enabled",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
@@ -3348,6 +3354,7 @@
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 15,
                     "value": "15 if resolveOrValue('prime_tower_enable') else 0",
+                    "resolve": "max(extruderValues('prime_tower_size'))",
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "maximum_value_warning": "20",
@@ -3364,8 +3371,8 @@
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
-                    "maximum_value": "machine_width - 0.5 * prime_tower_size",
-                    "minimum_value": "0.5 * prime_tower_size",
+                    "maximum_value": "machine_width - 0.5 * resolveOrValue('prime_tower_size')",
+                    "minimum_value": "0.5 * resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3379,8 +3386,8 @@
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
-                    "maximum_value": "machine_depth - 0.5 * prime_tower_size",
-                    "minimum_value": "0.5 * prime_tower_size",
+                    "maximum_value": "machine_depth - 0.5 * resolveOrValue('prime_tower_size')",
+                    "minimum_value": "0.5 * resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3405,6 +3412,7 @@
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": true,
+                    "resolve": "any(extruderValues('prime_tower_wipe_enabled'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3424,6 +3432,7 @@
                     "label": "Enable Ooze Shield",
                     "description": "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
                     "type": "bool",
+                    "resolve": "any(extruderValues('ooze_shield_enabled'))",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -3434,8 +3443,9 @@
                     "description": "The maximum angle a part in the ooze shield will have. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller angle leads to less failed ooze shields, but more material.",
                     "type": "float",
                     "unit": "°",
-                    "enabled": "ooze_shield_enabled",
+                    "enabled": "resolveOrValue('ooze_shield_enabled')",
                     "default_value": 60,
+                    "resolve": "min(extruderValues('ooze_shield_angle'))",
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "settable_per_mesh": false,
@@ -3447,8 +3457,9 @@
                     "description": "Distance of the ooze shield from the print, in the X/Y directions.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "ooze_shield_enabled",
+                    "enabled": "resolveOrValue('ooze_shield_enabled')",
                     "default_value": 2,
+                    "resolve": "max(extruderValues('ooze_shield_dist'))",
                     "minimum_value": "0",
                     "maximum_value_warning": "30",
                     "settable_per_mesh": false,
@@ -3596,6 +3607,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 10,
+                    "resolve": "max(extruderValues('draft_shield_dist'))",
                     "enabled": "draft_shield_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -3611,6 +3623,7 @@
                         "limited": "Limited"
                     },
                     "default_value": "full",
+                    "resolve": "'full' if 'full' in extruderValues('draft_shield_height_limitation') else 'limited'",
                     "enabled": "draft_shield_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
