@@ -91,12 +91,12 @@ UM.PreferencesPage
 
                     Component.onCompleted: {
                         append({ text: "English", code: "en" })
+                        append({ text: "Deutsch", code: "de" })
+                        append({ text: "Español", code: "es" })
                         append({ text: "Suomi", code: "fi" })
                         append({ text: "Français", code: "fr" })
-                        append({ text: "Deutsch", code: "de" })
                         append({ text: "Italiano", code: "it" })
                         append({ text: "Nederlands", code: "nl" })
-                        append({ text: "Español", code: "es" })
                         append({ text: "Türkçe", code: "tr" })
                     }
                 }
