@@ -668,7 +668,7 @@ class ContainerManager(QObject):
             new_unique_id = self._createUniqueId(container.getId(), base_name)
             new_container = container.duplicate(new_unique_id, base_name)
             if profile_index >= 0:
-                new_changes.setMetaDataEntry("global_profile", global_changes_id)
+                new_container.setMetaDataEntry("global_profile", global_changes_id)
             else:
                 global_changes_id = new_unique_id
             new_change_instances.append(new_container)
