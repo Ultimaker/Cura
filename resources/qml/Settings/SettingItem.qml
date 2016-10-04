@@ -217,10 +217,9 @@ Item {
                             break;
                         }
                     }
-
-                    if(last_entry == 4 && base.stackLevel == 0 && base.stackLevels.length == 2)
+                    if((last_entry == 4 || last_entry == 11) && base.stackLevel == 0 && base.stackLevels.length == 2)
                     {
-                        // Special case of the inherit reset. If only the definition (4th container) and the first
+                        // Special case of the inherit reset. If only the definition (4th or 11th) container) and the first
                         // entry (user container) are set, we can simply remove the container.
                         propertyProvider.removeFromContainer(0)
                     }
