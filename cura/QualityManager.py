@@ -44,9 +44,6 @@ class QualityManager:
         criteria = {"type": "quality_changes", "name": quality_changes_name}
         result = self._getFilteredContainersForStack(machine_definition, [], **criteria)
 
-        criteria = {"type": "quality_changes", "global_profile": quality_changes_name}
-        result.extend(self._getFilteredContainersForStack(machine_definition, [], **criteria))
-
         return result
 
     ##  Fetch the list of available quality types for this combination of machine definition and materials.

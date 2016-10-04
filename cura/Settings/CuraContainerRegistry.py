@@ -161,21 +161,19 @@ class CuraContainerRegistry(ContainerRegistry):
                     profile_index = -1
                     global_profile = None
 
+                    new_name = self.uniqueName(name_seed)
+
                     for profile in profile_or_list:
                         if profile_index >= 0:
                             if len(machine_extruders) > profile_index:
                                 extruder_id = machine_extruders[profile_index].getBottom().getId()
-                                profile_name = "%s_%s" % (extruder_id, name_seed)
                                 # Ensure the extruder profiles get non-conflicting names
                                 # NB: these are not user-facing
                                 if "extruder" in profile.getMetaData():
                                     profile.setMetaDataEntry("extruder", extruder_id)
                                 else:
                                     profile.addMetaDataEntry("extruder", extruder_id)
-                                if "global_profile" in profile.getMetaData():
-                                    profile.setMetaDataEntry("global_profile", global_profile.getId())
-                                else:
-                                    profile.addMetaDataEntry("global_profile", global_profile.getId())
+                                profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
                             elif profile_index == 0:
                                 # Importing a multiextrusion profile into a single extrusion machine; merge 1st extruder profile into global profile
                                 profile._id = self.uniqueName("temporary_profile")
@@ -188,16 +186,9 @@ class CuraContainerRegistry(ContainerRegistry):
                                 break
                         else:
                             global_profile = profile
-                            profile_name = name_seed
-                        new_name = self.uniqueName(profile_name)
+                            profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
 
-                        profile.setDirty(True)  # Ensure the profiles are correctly saved
-                        if "type" in profile.getMetaData():
-                            profile.setMetaDataEntry("type", "quality_changes")
-                        else:
-                            profile.addMetaDataEntry("type", "quality_changes")
-                        self._configureProfile(profile, profile_name)
-                        profile.setName(new_name)
+                        self._configureProfile(profile, profile_id, new_name)
 
                         profile_index += 1
 
@@ -206,11 +197,18 @@ class CuraContainerRegistry(ContainerRegistry):
         # If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
 
-    def _configureProfile(self, profile, id_seed):
+    def _configureProfile(self, profile, id_seed, new_name):
         profile.setReadOnly(False)
+        profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
         profile._id = new_id
+        profile.setName(new_name)
+
+        if "type" in profile.getMetaData():
+            profile.setMetaDataEntry("type", "quality_changes")
+        else:
+            profile.addMetaDataEntry("type", "quality_changes")
 
         if self._machineHasOwnQualities():
             profile.setDefinition(self._activeQualityDefinition())
