@@ -16,14 +16,17 @@ class QualityAndUserProfilesModel(ProfilesModel):
     #
     #   See UM.Settings.Models.InstanceContainersModel._fetchInstanceContainers().
     def _fetchInstanceContainers(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return []
+
         # Fetch the list of qualities
         quality_list = super()._fetchInstanceContainers()
 
         # Fetch the list of quality changes.
         quality_manager = QualityManager.getInstance()
-        application = Application.getInstance()
 
-        machine_definition = quality_manager.getParentMachineDefinition(application.getGlobalContainerStack().getBottom())
+        machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
         if machine_definition.getMetaDataEntry("has_machine_quality"):
             definition_id = machine_definition.getId()
         else:
