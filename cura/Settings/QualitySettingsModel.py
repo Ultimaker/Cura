@@ -25,6 +25,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self._container_registry = UM.Settings.ContainerRegistry.getInstance()
 
         self._extruder_id = None
+        self._extruder_definition_id = None
         self._quality = None
         self._material = None
 
@@ -45,6 +46,17 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     @pyqtProperty(str, fset = setExtruderId, notify = extruderIdChanged)
     def extruderId(self):
         return self._extruder_id
+
+    def setExtruderDefinition(self, extruder_definition):
+        if extruder_definition != self._extruder_definition_id:
+            self._extruder_definition_id = extruder_definition
+            self._update()
+            self.extruderDefinitionChanged.emit()
+
+    extruderDefinitionChanged = pyqtSignal()
+    @pyqtProperty(str, fset = setExtruderDefinition, notify = extruderDefinitionChanged)
+    def extruderDefinition(self):
+        return self._extruder_definition_id
 
     def setQuality(self, quality):
         if quality != self._quality:
@@ -138,8 +150,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         if quality_changes_container:
             criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
-            if self._extruder_id != "":
-                criteria["extruder"] = self._extruder_id
+            if self._extruder_definition_id != "":
+                criteria["extruder"] = self._extruder_definition_id
+                criteria["name"] = "%s_%s" % (self._extruder_definition_id, quality_changes_container.getName())
             else:
                 criteria["extruder"] = None
 

@@ -461,8 +461,8 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityName(self):
-        if self._active_container_stack:
-            quality = self._active_container_stack.findContainer({"type": "quality_changes"})
+        if self._active_container_stack and self._global_container_stack:
+            quality = self._global_container_stack.findContainer({"type": "quality_changes"})
             if quality and quality != self._empty_quality_changes_container:
                 return quality.getName()
             quality = self._active_container_stack.findContainer({"type": "quality"})
@@ -544,6 +544,7 @@ class MachineManager(QObject):
 
         material_index = self._active_container_stack.getContainerIndex(old_material)
         self._active_container_stack.replaceContainer(material_index, material_container)
+        Logger.log("d", "Active material changed")
 
         material_container.nameChanged.connect(self._onMaterialNameChanged)
 
@@ -566,10 +567,11 @@ class MachineManager(QObject):
                                    [material_container])
         if not candidate_quality:
             # Fall back to a quality
-            new_quality_id = quality_manager.findQualityByQualityType(None,
+            new_quality = quality_manager.findQualityByQualityType(None,
                                 quality_manager.getWholeMachineDefinition(machine_definition),
                                 [material_container])
-
+            if new_quality:
+                new_quality_id = new_quality.getId()
         else:
             if not old_quality_changes:
                 new_quality_id = candidate_quality.getId()
@@ -588,7 +590,7 @@ class MachineManager(QObject):
             self.blurSettings.emit()
             variant_index = self._active_container_stack.getContainerIndex(old_variant)
             self._active_container_stack.replaceContainer(variant_index, containers[0])
-
+            Logger.log("d", "Active variant changed")
             preferred_material = None
             if old_material:
                 preferred_material_name = old_material.getName()

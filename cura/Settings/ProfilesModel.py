@@ -6,6 +6,7 @@ from UM.Settings.Models.InstanceContainersModel import InstanceContainersModel
 
 from cura.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.MachineManager import MachineManager
 
 ##  QML Model for listing the current list of valid quality profiles.
 #
@@ -14,6 +15,10 @@ class ProfilesModel(InstanceContainersModel):
         super().__init__(parent)
 
         Application.getInstance().globalContainerStackChanged.connect(self._update)
+
+        Application.getInstance().getMachineManager().activeVariantChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
+        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
     ##  Fetch the list of containers to display.
     #

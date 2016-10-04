@@ -29,6 +29,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     #   containers.
     IndexRole = Qt.UserRole + 4
 
+    # The ID of the definition of the extruder.
+    DefinitionRole = Qt.UserRole + 5
+
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
@@ -44,6 +47,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.ColorRole, "color")
         self.addRoleName(self.IndexRole, "index")
+        self.addRoleName(self.DefinitionRole, "definition")
 
         self._add_global = False
         self._simple_names = False
@@ -51,8 +55,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._active_extruder_stack = None
 
         #Listen to changes.
+        UM.Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders)
         manager = ExtruderManager.getInstance()
-        manager.globalContainerStackDefinitionChanged.connect(self._updateExtruders) #When the global stack changes to a printer with different extruders.
 
         self._updateExtruders()
 
@@ -126,7 +130,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "id": global_container_stack.getId(),
                     "name": "Global",
                     "color": color,
-                    "index": -1
+                    "index": -1,
+                    "definition": ""
                 }
                 items.append(item)
                 changed = True
@@ -148,7 +153,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "id": extruder.getId(),
                     "name": extruder_name,
                     "color": color,
-                    "index": position
+                    "index": position,
+                    "definition": extruder.getBottom().getId()
                 }
                 items.append(item)
                 changed = True
