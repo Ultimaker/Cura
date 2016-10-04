@@ -643,9 +643,8 @@ class ContainerManager(QObject):
 
         # Handle the global stack first.
         global_changes = self._createQualityChanges(quality_container, new_name, machine_definition, None)
-        new_changes.addMetaDataEntry("global_profile", global_changes.getId())
         new_change_instances.append(global_changes)
-        self._container_registry.addContainer(new_changes)
+        self._container_registry.addContainer(global_changes)
 
         # Handle the extruders if present.
         extruders = machine_definition.getMetaDataEntry("machine_extruder_trains")
@@ -714,7 +713,7 @@ class ContainerManager(QObject):
     # Factory function, used by QML
     @staticmethod
     def createContainerManager(engine, js_engine):
-        return ContainerManager()
+        return self.getInstance()
 
     def _performMerge(self, merge_into, merge):
         assert isinstance(merge, type(merge_into))
