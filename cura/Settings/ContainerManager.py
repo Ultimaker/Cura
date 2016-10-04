@@ -713,7 +713,7 @@ class ContainerManager(QObject):
     # Factory function, used by QML
     @staticmethod
     def createContainerManager(engine, js_engine):
-        return ContainerManager()
+        return ContainerManager.getInstance()
 
     def _performMerge(self, merge_into, merge):
         assert isinstance(merge, type(merge_into))
