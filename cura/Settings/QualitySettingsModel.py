@@ -16,8 +16,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     LabelRole = Qt.UserRole + 2
     UnitRole = Qt.UserRole + 3
     ProfileValueRole = Qt.UserRole + 4
-    UserValueRole = Qt.UserRole + 5
-    CategoryRole = Qt.UserRole + 6
+    ProfileValueSourceRole = Qt.UserRole + 5
+    UserValueRole = Qt.UserRole + 6
+    CategoryRole = Qt.UserRole + 7
 
     def __init__(self, parent = None):
         super().__init__(parent = parent)
@@ -33,6 +34,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.UnitRole, "unit")
         self.addRoleName(self.ProfileValueRole, "profile_value")
+        self.addRoleName(self.ProfileValueSourceRole, "profile_value_source")
         self.addRoleName(self.UserValueRole, "user_value")
         self.addRoleName(self.CategoryRole, "category")
 
@@ -170,9 +172,11 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 continue
 
             profile_value = None
+            profile_value_source = ""
             for container in containers:
                 new_value = container.getProperty(definition.key, "value")
                 if new_value is not None:
+                    profile_value_source = container.getMetaDataEntry("type")
                     profile_value = new_value
 
             user_value = None
@@ -201,6 +205,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "label": definition.label,
                 "unit": definition.unit,
                 "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
+                "profile_value_source": profile_value_source,
                 "user_value": "" if user_value is None else str(user_value),
                 "category": current_category
             })

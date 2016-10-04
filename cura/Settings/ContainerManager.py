@@ -674,6 +674,7 @@ class ContainerManager(QObject):
                 global_changes_id = new_unique_id
             new_change_instances.append(new_container)
             self._container_registry.addContainer(new_container)
+            profile_index += 1
 
         return new_change_instances
 
