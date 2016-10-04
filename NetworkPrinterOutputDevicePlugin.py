@@ -1,7 +1,7 @@
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import NetworkPrinterOutputDevice
 
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo, new_socket
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
@@ -20,7 +20,7 @@ import json
 class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     def __init__(self):
         super().__init__()
-        self._zero_conf = None
+        self._zero_conf = Zeroconf()
         self._browser = None
         self._printers = {}
 
@@ -53,16 +53,18 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         self.startDiscovery()
 
     def startDiscovery(self):
-        self.stop()
         if self._browser:
             self._browser.cancel()
             self._browser = None
             self._old_printers = [printer_name for printer_name in self._printers]
             self._printers = {}
             self.printerListChanged.emit()
-        # After network switching, one must make a new instance of Zeroconf
-        # On windows, the instance creation is very fast (unnoticable). Other platforms?
-        self._zero_conf = Zeroconf()
+        #After network switching, Zeroconf's network socket is no longer functional.
+        #Zeroconf must reinitialise its socket, but reinitialising Zeroconf causes massive CPU usage.
+        #So we only reinitialise Zeroconf's listening socket.
+        self._zero_conf.engine.del_reader(self._zero_conf._listen_socket)
+        self._zero_conf._listen_socket = new_socket() #Warning: Touching Zeroconf's privates! It has no functionality to reinitialise its own socket.
+        self._zero_conf.engine.add_reader(self._zero_conf.listener, self._zero_conf._listen_socket)
         self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
         # Look for manual instances from preference
@@ -123,8 +125,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
     ##  Stop looking for devices on network.
     def stop(self):
-        if self._zero_conf is not None:
-            self._zero_conf.close()
+        self._zero_conf.close()
 
     def getPrinters(self):
         return self._printers
