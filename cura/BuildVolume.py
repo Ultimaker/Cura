@@ -378,10 +378,6 @@ class BuildVolume(SceneNode):
             for extruder in extruders:
                 prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2
                 prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
-                offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
-                offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
-                prime_x -= offset_x
-                prime_y -= offset_y
 
                 prime_polygon = Polygon([
                     [prime_x - PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
