@@ -37,6 +37,7 @@ class DiscoverOctoPrintAction(MachineAction):
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("OctoPrintPlugin")
             self._network_plugin.addInstanceSignal.connect(self._onInstanceDiscovery)
             self._network_plugin.removeInstanceSignal.connect(self._onInstanceDiscovery)
+            self._network_plugin.instanceListChanged.connect(self._onInstanceDiscovery)
             self.instancesChanged.emit()
         else:
             # Restart bonjour discovery

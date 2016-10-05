@@ -39,6 +39,7 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
     addInstanceSignal = Signal()
     removeInstanceSignal = Signal()
+    instanceListChanged = Signal()
 
     ##  Start looking for devices on network.
     def start(self):
@@ -49,8 +50,9 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
             self._browser.cancel()
             self._browser = None
             self._printers = {}
-        self._zero_conf.__init__()
+        self.instanceListChanged.emit()
 
+        self._zero_conf.__init__()
         self._browser = ServiceBrowser(self._zero_conf, u'_octoprint._tcp.local.', [self._onServiceChanged])
 
         # Add manual instances from preference
@@ -68,10 +70,12 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
             self.removeInstance(name)
 
         self.addInstance(name, address, port, properties)
+        self.instanceListChanged.emit()
 
     def removeManualInstance(self, name):
         if name in self._instances:
             self.removeInstance(name)
+            self.instanceListChanged.emit()
 
         if name in self._manual_instances:
             self._manual_instances.pop(name, None)
