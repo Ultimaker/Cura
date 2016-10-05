@@ -166,6 +166,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._compressing_print = False
 
+        printer_type = self._properties.get(b"machine", b"").decode("utf-8")
+        if printer_type == "9511.0":
+            self._updatePrinterType("UM3Extended")
+        elif printer_type == "9066.0":
+            self._updatePrinterType("UM3")
+        else:
+            self._updatePrinterType("unknown")
+
     def _onNetworkAccesibleChanged(self, accessible):
         Logger.log("d", "Network accessible state changed to: %s", accessible)
 
