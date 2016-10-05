@@ -47,6 +47,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._accepts_commands = True
 
         self._printer_state = ""
+        self._printer_type = "unknown"
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -97,6 +98,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     printerStateChanged = pyqtSignal()
 
+    printerTypeChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify=printerTypeChanged)
+    def printerType(self):
+        return self._printer_type
+
     @pyqtProperty(str, notify=printerStateChanged)
     def printerState(self):
         return self._printer_state
@@ -104,6 +111,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtProperty(str, notify = jobStateChanged)
     def jobState(self):
         return self._job_state
+
+    def _updatePrinterType(self, printer_type):
+        if self._printer_type != printer_type:
+            self._printer_type = printer_type
+            self.printerTypeChanged.emit()
 
     def _updatePrinterState(self, printer_state):
         if self._printer_state != printer_state:
