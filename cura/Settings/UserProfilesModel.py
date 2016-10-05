@@ -6,9 +6,9 @@ from cura.QualityManager import QualityManager
 from cura.Settings.ProfilesModel import ProfilesModel
 from cura.Settings.ExtruderManager import ExtruderManager
 
-##  QML Model for listing the current list of valid quality and quality changes profiles.
+##  QML Model for listing the current list of valid quality changes profiles.
 #
-class QualityAndUserProfilesModel(ProfilesModel):
+class UserProfilesModel(ProfilesModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -33,4 +33,4 @@ class QualityAndUserProfilesModel(ProfilesModel):
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in quality_list])
         filtered_quality_changes = [qc for qc in quality_changes_list if qc.getMetaDataEntry("quality_type") in quality_type_set]
 
-        return quality_list + filtered_quality_changes
+        return filtered_quality_changes
