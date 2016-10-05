@@ -119,7 +119,7 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             onClicked: exportDialog.open()
-            enabled: currentItem != null
+            enabled: currentItem != null && !base.currentItem.readOnly
         }
     ]
 
