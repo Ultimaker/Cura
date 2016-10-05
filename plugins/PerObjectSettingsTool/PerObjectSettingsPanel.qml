@@ -31,7 +31,7 @@ Item {
             spacing: UM.Theme.getSize("default_margin").width
             Label
             {
-                text: catalog.i18nc("@label", "Print model with")
+                text: catalog.i18nc("@label Followed by extruder selection drop-down.", "Print model with")
                 anchors.verticalCenter: extruderSelector.verticalCenter
 
                 color: UM.Theme.getColor("setting_control_text")
