@@ -14,3 +14,4 @@ from .QualitySettingsModel import QualitySettingsModel
 from .SettingInheritanceManager import SettingInheritanceManager
 from .ProfilesModel import ProfilesModel
 from .QualityAndUserProfilesModel import QualityAndUserProfilesModel
+from .UserProfilesModel import UserProfilesModel

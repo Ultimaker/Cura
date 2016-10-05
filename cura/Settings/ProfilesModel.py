@@ -28,23 +28,5 @@ class ProfilesModel(InstanceContainersModel):
         if global_container_stack is None:
             return []
 
-        global_machine_definition = global_container_stack.getBottom()
-
-        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        if extruder_stacks:
-            # Multi-extruder machine detected.
-            materials = [stack.findContainer(type="material") for stack in extruder_stacks]
-        else:
-            # Machine with one extruder.
-            materials = [global_container_stack.findContainer(type="material")]
-
-        quality_types = QualityManager.getInstance().findAllQualityTypesForMachineAndMaterials(global_machine_definition,
-                                                                                            materials)
-        # Map the list of quality_types to InstanceContainers
-        qualities = QualityManager.getInstance().findAllQualitiesForMachineMaterial(global_machine_definition,
-                                                                                    materials[0])
-        quality_type_dict = {}
-        for quality in qualities:
-            quality_type_dict[quality.getMetaDataEntry("quality_type")] = quality
-
-        return [quality_type_dict[quality_type] for quality_type in quality_types]
+        return QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
+                                                              ExtruderManager.getInstance().getActiveExtruderStacks())
