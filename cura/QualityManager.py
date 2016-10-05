@@ -159,7 +159,8 @@ class QualityManager:
         else:
             material_ids = set()
             for material_instance in material_containers:
-                material_ids.add(material_instance.getId())
+                if material_instance is not None:
+                    material_ids.add(material_instance.getId())
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
