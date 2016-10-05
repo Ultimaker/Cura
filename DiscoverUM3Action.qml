@@ -259,7 +259,7 @@ Cura.MachineAction
                 {
                     width: parent.width
                     wrapMode: Text.WordWrap
-                    visible: base.selectedPrinter && !base.completeProperties
+                    visible: base.selectedPrinter != null && !base.completeProperties
                     text: catalog.i18nc("@label", "The printer at this address has not yet responded." )
                 }
 
