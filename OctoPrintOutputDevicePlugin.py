@@ -27,14 +27,15 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
 
         # Load custom instances from preferences
-        preferences = Preferences.getInstance()
-        preferences.addPreference("octoprint/manual_instances", "[]")
+        self._preferences = Preferences.getInstance()
+        self._preferences.addPreference("octoprint/manual_instances", "{}")
+
         try:
-            self._manual_instances = json.loads(preferences.getValue("octoprint/manual_instances"))
+            self._manual_instances = json.loads(self._preferences.getValue("octoprint/manual_instances"))
         except ValueError:
-            self._manual_instances = []
-        if not isinstance(self._manual_instances, list):
-            self._manual_instances = []
+            self._manual_instances = {}
+        if not isinstance(self._manual_instances, dict):
+            self._manual_instances = {}
 
     addInstanceSignal = Signal()
     removeInstanceSignal = Signal()
@@ -53,9 +54,28 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
         self._browser = ServiceBrowser(self._zero_conf, u'_octoprint._tcp.local.', [self._onServiceChanged])
 
         # Add manual instances from preference
-        for instance in self._manual_instances:
-            # TODO: make sure the instance name is unique and does not collide with zeroconf instance names
-            self.addInstance(instance["name"], instance["address"], instance["port"], {"path": instance["path"]})
+        for name, properties in self._manual_instances.items():
+            additional_properties = {b"path": properties["path"].encode("utf-8"), b"manual": b"true"}
+            self.addInstance(name, properties["address"], properties["port"], additional_properties)
+
+    def addManualInstance(self, name, address, port, path):
+        self._manual_instances[name] = {"address": address, "port": port, "path": path}
+        self._preferences.setValue("octoprint/manual_instances", json.dumps(self._manual_instances))
+
+        properties = { b"path": path.encode("utf-8"), b"manual": b"true" }
+
+        if name in self._instances:
+            self.removeInstance(name)
+
+        self.addInstance(name, address, port, properties)
+
+    def removeManualInstance(self, name):
+        if name in self._instances:
+            self.removeInstance(name)
+
+        if name in self._manual_instances:
+            self._manual_instances.pop(name, None)
+            self._preferences.setValue("octoprint/manual_instances", json.dumps(self._manual_instances))
 
     ##  Stop looking for devices on network.
     def stop(self):

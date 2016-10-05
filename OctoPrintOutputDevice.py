@@ -107,6 +107,14 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def getProperties(self):
         return self._properties
 
+    @pyqtSlot(str, result = str)
+    def getProperty(self, key):
+        key = key.encode("utf-8")
+        if key in self._properties:
+            return self._properties.get(key, b"").decode("utf-8")
+        else:
+            return ""
+
     ##  Get the unique key of this machine
     #   \return key String containing the key of the machine.
     @pyqtSlot(result = str)
@@ -136,6 +144,11 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     @pyqtProperty(int, constant=True)
     def port(self):
         return self._port
+
+    ## path of this instance
+    @pyqtProperty(str, constant=True)
+    def path(self):
+        return self._path
 
     ## absolute url of this instance
     @pyqtProperty(str, constant=True)

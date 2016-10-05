@@ -37,13 +37,46 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "Select your OctoPrint instance from the list below:")
         }
 
-        Button
+        Row
         {
-            id: rediscoverButton
-            text: catalog.i18nc("@title", "Refresh")
-            onClicked: manager.startDiscovery()
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * 0.5
+            spacing: UM.Theme.getSize("default_lining").width
+
+            Button
+            {
+                id: addButton
+                text: catalog.i18nc("@action:button", "Add");
+                onClicked:
+                {
+                    manualPrinterDialog.showDialog("", "", "80", "/");
+                }
+            }
+
+            Button
+            {
+                id: editButton
+                text: catalog.i18nc("@action:button", "Edit")
+                enabled: base.selectedInstance != null && base.selectedInstance.getProperty("manual") == "true"
+                onClicked:
+                {
+                    manualPrinterDialog.showDialog(base.selectedInstance.name, base.selectedInstance.ipAddress,
+                                                   base.selectedInstance.port, base.selectedInstance.path);
+                }
+            }
+
+            Button
+            {
+                id: removeButton
+                text: catalog.i18nc("@action:button", "Remove")
+                enabled: base.selectedInstance != null && base.selectedInstance.getProperty("manual") == "true"
+                onClicked: manager.removeManualInstance(base.selectedInstance.name)
+            }
+
+            Button
+            {
+                id: rediscoverButton
+                text: catalog.i18nc("@action:button", "Refresh")
+                onClicked: manager.startDiscovery()
+            }
         }
 
         Row
@@ -212,5 +245,150 @@ Cura.MachineAction
                 }
             }
         }
+    }
+
+    UM.Dialog
+    {
+        id: manualPrinterDialog
+        property alias nameText: nameField.text
+        property alias addressText: addressField.text
+        property alias portText: portField.text
+        property alias pathText: pathField.text
+
+        title: catalog.i18nc("@title:window", "Manually added OctoPrint instance")
+
+        minimumWidth: 400 * Screen.devicePixelRatio
+        minimumHeight: 140 * Screen.devicePixelRatio
+        width: minimumWidth
+        height: minimumHeight
+
+        signal showDialog(string name, string address, string port, string path_)
+        onShowDialog:
+        {
+            nameText = name;
+            nameField.selectAll();
+            nameField.focus = true;
+
+            addressText = address;
+            portText = port;
+            pathText = path_;
+
+            manualPrinterDialog.show();
+        }
+
+        onAccepted:
+        {
+            if(portText == "")
+            {
+                portText = "80" // default http port
+            }
+            if(pathText.substr(0,1) != "/")
+            {
+                pathText = "/" + pathText // ensure absolute path
+            }
+            manager.setManualInstance(nameText, addressText, parseInt(portText), pathText)
+        }
+
+        Column {
+            anchors.fill: parent
+            spacing: UM.Theme.getSize("default_margin").height
+
+            Grid
+            {
+                columns: 2
+                width: parent.width
+                verticalItemAlignment: Grid.AlignVCenter
+                rowSpacing: UM.Theme.getSize("default_lining").height
+
+                Label
+                {
+                    text: catalog.i18nc("@alabel","Instance Name")
+                    width: parent.width * 0.4
+                }
+
+                TextField
+                {
+                    id: nameField
+                    maximumLength: 20
+                    width: parent.width * 0.6
+                    validator: RegExpValidator
+                    {
+                        regExp: /[a-zA-Z0-9\.\-\_]*/
+                    }
+                }
+
+                Label
+                {
+                    text: catalog.i18nc("@alabel","IP Address or Hostname")
+                    width: parent.width * 0.4
+                }
+
+                TextField
+                {
+                    id: addressField
+                    maximumLength: 30
+                    width: parent.width * 0.6
+                    validator: RegExpValidator
+                    {
+                        regExp: /[a-zA-Z0-9\.\-\_]*/
+                    }
+                }
+
+                Label
+                {
+                    text: catalog.i18nc("@alabel","Port Number")
+                    width: parent.width * 0.4
+                }
+
+                TextField
+                {
+                    id: portField
+                    maximumLength: 5
+                    width: parent.width * 0.6
+                    validator: RegExpValidator
+                    {
+                        regExp: /[0-9]*/
+                    }
+                }
+
+                Label
+                {
+                    text: catalog.i18nc("@alabel","Path")
+                    width: parent.width * 0.4
+                }
+
+                TextField
+                {
+                    id: pathField
+                    maximumLength: 30
+                    width: parent.width * 0.6
+                    validator: RegExpValidator
+                    {
+                        regExp: /[a-zA-Z0-9\.\-\_\/]*/
+                    }
+                }
+            }
+        }
+
+        rightButtons: [
+            Button {
+                text: catalog.i18nc("@action:button","Cancel")
+                onClicked:
+                {
+                    manualPrinterDialog.reject()
+                    manualPrinterDialog.hide()
+                }
+            },
+            Button {
+                text: catalog.i18nc("@action:button", "Ok")
+                onClicked:
+                {
+                    manualPrinterDialog.accept()
+                    manualPrinterDialog.hide()
+                }
+                enabled: manualPrinterDialog.nameText.trim() != "" && manualPrinterDialog.addressText.trim() != ""
+                isDefault: true
+            }
+        ]
     }
 }
