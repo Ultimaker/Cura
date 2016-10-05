@@ -919,7 +919,7 @@ msgid "Cancel"
 msgstr "Annuleren"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:34
-msgctxt "@label"
+msgctxt "@label Followed by extruder selection drop-down."
 msgid "Print model with"
 msgstr "Model printen met"
 
@@ -1781,12 +1781,12 @@ msgid ""
 msgstr "Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde.\n\nKlik om deze instellingen zichtbaar te maken."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:59
-msgctxt "@label"
+msgctxt "@label Header for list of settings."
 msgid "Affects"
 msgstr "Beïnvloedt"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:64
-msgctxt "@label"
+msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Beïnvloed door"
 

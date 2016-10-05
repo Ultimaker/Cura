@@ -919,7 +919,7 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:34
-msgctxt "@label"
+msgctxt "@label Followed by extruder selection drop-down."
 msgid "Print model with"
 msgstr "Modell drucken mit"
 
@@ -1781,12 +1781,12 @@ msgid ""
 msgstr "Einige ausgeblendete Einstellungen verwenden Werte, die von ihren normalen, berechneten Werten abweichen.\n\nKlicken Sie, um diese Einstellungen sichtbar zu machen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:59
-msgctxt "@label"
+msgctxt "@label Header for list of settings."
 msgid "Affects"
 msgstr "Hat Einfluss auf"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:64
-msgctxt "@label"
+msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Wird beeinflusst von"
 

@@ -919,7 +919,7 @@ msgid "Cancel"
 msgstr "Peruuta"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:34
-msgctxt "@label"
+msgctxt "@label Followed by extruder selection drop-down."
 msgid "Print model with"
 msgstr "Tulosta malli seuraavalla:"
 
@@ -1781,12 +1781,12 @@ msgid ""
 msgstr "Jotkin piilotetut asetukset käyttävät arvoja, jotka eroavat normaaleista lasketuista arvoista.\n\nTee asetuksista näkyviä napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:59
-msgctxt "@label"
+msgctxt "@label Header for list of settings."
 msgid "Affects"
 msgstr "Koskee seuraavia:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:64
-msgctxt "@label"
+msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Riippuu seuraavista:"
 
