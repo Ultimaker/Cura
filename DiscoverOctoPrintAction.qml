@@ -166,13 +166,13 @@ Cura.MachineAction
                     rowSpacing: UM.Theme.getSize("default_lining").height
                     Label
                     {
-                        width: parent.width * 0.3
+                        width: parent.width * 0.2
                         wrapMode: Text.WordWrap
                         text: catalog.i18nc("@label", "Version")
                     }
                     Label
                     {
-                        width: parent.width * 0.7
+                        width: parent.width * 0.75
                         wrapMode: Text.WordWrap
                         text: base.selectedInstance ? base.selectedInstance.octoprintVersion : ""
                     }
@@ -184,7 +184,7 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: parent.width * 0.8
+                        width: parent.width * 0.7 
                         wrapMode: Text.WordWrap
                         text: base.selectedInstance ? "%1:%2".arg(base.selectedInstance.ipAddress).arg(String(base.selectedInstance.port)) : ""
                     }
