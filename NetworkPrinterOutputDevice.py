@@ -168,9 +168,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
         if printer_type == "9511.0":
-            self._updatePrinterType("UM3Extended")
+            self._updatePrinterType("ultimaker3_extended")
         elif printer_type == "9066.0":
-            self._updatePrinterType("UM3")
+            self._updatePrinterType("ultimaker3")
         else:
             self._updatePrinterType("unknown")
 
