@@ -161,10 +161,6 @@ Rectangle
         visible: showProgress;
         indeterminate:
         {
-            if (!printerConnected)
-            {
-                return true;
-            }
             switch(Cura.MachineManager.printerOutputDevices[0].jobState)
             {
                 case "pausing":
