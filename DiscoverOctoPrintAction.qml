@@ -250,6 +250,7 @@ Cura.MachineAction
     UM.Dialog
     {
         id: manualPrinterDialog
+        property string oldName
         property alias nameText: nameField.text
         property alias addressText: addressField.text
         property alias portText: portField.text
@@ -265,6 +266,7 @@ Cura.MachineAction
         signal showDialog(string name, string address, string port, string path_)
         onShowDialog:
         {
+            oldName = name;
             nameText = name;
             nameField.selectAll();
             nameField.focus = true;
@@ -278,6 +280,10 @@ Cura.MachineAction
 
         onAccepted:
         {
+            if(oldName != nameText)
+            {
+                manager.removeManualInstance(oldName);
+            }
             if(portText == "")
             {
                 portText = "80" // default http port
