@@ -161,6 +161,10 @@ Rectangle
         visible: showProgress;
         indeterminate:
         {
+            if(!showProgress)
+            {
+                return false; //Never be indeterminate when not visible, since that triggers a redraw of the screen.
+            }
             switch(Cura.MachineManager.printerOutputDevices[0].jobState)
             {
                 case "pausing":
