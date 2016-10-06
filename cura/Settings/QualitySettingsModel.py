@@ -27,8 +27,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         self._extruder_id = None
         self._extruder_definition_id = None
-        self._quality = None
-        self._material = None
+        self._quality_id = None
+        self._material_id = None
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
@@ -61,29 +61,29 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         return self._extruder_definition_id
 
     def setQuality(self, quality):
-        if quality != self._quality:
-            self._quality = quality
+        if quality != self._quality_id:
+            self._quality_id = quality
             self._update()
             self.qualityChanged.emit()
 
     qualityChanged = pyqtSignal()
     @pyqtProperty(str, fset = setQuality, notify = qualityChanged)
     def quality(self):
-        return self._quality
+        return self._quality_id
 
     def setMaterial(self, material):
-        if material != self._material:
-            self._material = material
+        if material != self._material_id:
+            self._material_id = material
             self._update()
             self.materialChanged.emit()
 
     materialChanged = pyqtSignal()
     @pyqtProperty(str, fset = setMaterial, notify = materialChanged)
     def material(self):
-        return self._material
+        return self._material_id
 
     def _update(self):
-        if not self._quality:
+        if not self._quality_id:
             return
 
         items = []
@@ -91,9 +91,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         settings = collections.OrderedDict()
         definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
 
-        containers = self._container_registry.findInstanceContainers(id = self._quality)
+        containers = self._container_registry.findInstanceContainers(id = self._quality_id)
         if not containers:
-            UM.Logger.log("w", "Could not find a quality container with id %s", self._quality)
+            UM.Logger.log("w", "Could not find a quality container with id %s", self._quality_id)
             return
 
         quality_container = None
@@ -110,8 +110,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "definition": quality_changes_container.getDefinition().getId()
             }
 
-            if self._material:
-                criteria["material"] = self._material
+            if self._material_id and self._material_id != "empty_material":
+                criteria["material"] = self._material_id
 
             quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
@@ -124,8 +124,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
-        if self._material:
-            criteria["material"] = self._material
+        if self._material_id and self._material_id != "empty_material":
+            criteria["material"] = self._material_id
 
         criteria["extruder"] = self._extruder_id
 

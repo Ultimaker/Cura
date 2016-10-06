@@ -77,6 +77,7 @@ class ThreeMFReader(MeshReader):
                 mesh_data = mesh_builder.build().getTransformed(rotation)
 
                 if not len(mesh_data.getVertices()):
+                    Logger.log("d", "One of the objects does not have vertices. Skipping it.")
                     continue  # This object doesn't have data, so skip it.
 
                 node.setMeshData(mesh_data)
@@ -114,6 +115,7 @@ class ThreeMFReader(MeshReader):
                 try:
                     node.getBoundingBox()  # Selftest - There might be more functions that should fail
                 except:
+                    Logger.log("w", "Bounding box test for object failed. Skipping this object")
                     continue
 
                 result.addChild(node)
@@ -125,7 +127,10 @@ class ThreeMFReader(MeshReader):
                 group_decorator = GroupDecorator()
                 result.addDecorator(group_decorator)
             elif len(objects) == 1:
-                result = result.getChildren()[0]  # Only one object found, return that.
+                if result.getChildren():
+                    result = result.getChildren()[0]  # Only one object found, return that.
+                else: # we failed to load any data
+                    return None
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
         try:  # Selftest - There might be more functions that should fail
