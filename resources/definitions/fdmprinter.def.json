@@ -2896,7 +2896,7 @@
                     "default_value": 0.22,
                     "value": "raft_airgap / 2",
                     "minimum_value": "0",
-                    "maximum_value_warning": "airgap",
+                    "maximum_value_warning": "raft_airgap",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
