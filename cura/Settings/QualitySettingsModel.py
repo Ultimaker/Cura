@@ -154,7 +154,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
             if self._extruder_definition_id != "":
                 criteria["extruder"] = self._extruder_definition_id
-                criteria["name"] = "%s_%s" % (self._extruder_definition_id, quality_changes_container.getName())
+                criteria["name"] = quality_changes_container.getName()
             else:
                 criteria["extruder"] = None
 
