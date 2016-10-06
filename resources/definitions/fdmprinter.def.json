@@ -1364,6 +1364,7 @@
                     "default_value": 20,
                     "minimum_value": "0.1",
                     "minimum_value_warning": "1",
+                    "maximum_value": "machine_max_feedrate_e",
                     "maximum_value_warning": "70",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -1380,6 +1381,7 @@
                             "value": "switch_extruder_retraction_speeds",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "1",
+                            "maximum_value": "machine_max_feedrate_e",
                             "maximum_value_warning": "70",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -1395,6 +1397,7 @@
                             "value": "switch_extruder_retraction_speeds",
                             "minimum_value": "0.1",
                             "minimum_value_warning": "1",
+                            "maximum_value": "machine_max_feedrate_e",
                             "maximum_value_warning": "70",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
