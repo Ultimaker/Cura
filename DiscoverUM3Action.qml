@@ -228,7 +228,26 @@ Cura.MachineAction
                     {
                         width: parent.width * 0.5
                         wrapMode: Text.WordWrap
-                        text: true ? catalog.i18nc("@label", "Ultimaker 3") : catalog.i18nc("@label", "Ultimaker 3 Extended")
+                        text:
+                        {
+                            if(base.selectedPrinter)
+                            {
+                                if(base.selectedPrinter.printerType == "ultimaker3")
+                                {
+                                    return catalog.i18nc("@label", "Ultimaker 3")
+                                } else if(base.selectedPrinter.printerType == "ultimaker3_extended")
+                                {
+                                    return catalog.i18nc("@label", "Ultimaker 3 Extended")
+                                } else
+                                {
+                                    return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
+                                }
+                            }
+                            else
+                            {
+                                return ""
+                            }
+                        }
                     }
                     Label
                     {
