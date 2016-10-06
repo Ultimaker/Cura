@@ -39,6 +39,11 @@ class DiscoverUM3Action(MachineAction):
             self._network_plugin.printerListChanged.connect(self._onPrinterDiscoveryChanged)
             self.printersChanged.emit()
 
+    ##  Re-filters the list of printers.
+    @pyqtSlot()
+    def reset(self):
+        self.printersChanged.emit()
+
     @pyqtSlot()
     def restartDiscovery(self):
         # Ensure that there is a bit of time after a printer has been discovered.
