@@ -30,7 +30,7 @@ ScrollView
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-            exclude: ["machine_settings"]
+            exclude: ["machine_settings", "infill_mesh", "infill_mesh_order"]
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
             onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
