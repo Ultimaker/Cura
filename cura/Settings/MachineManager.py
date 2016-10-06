@@ -745,10 +745,20 @@ class MachineManager(QObject):
     def _askUserToKeepOrClearCurrentSettings(self):
         # Ask the user if the user profile should be cleared or not (discarding the current settings)
         # In Simple Mode we assume the user always wants to keep the (limited) current settings
-        details = catalog.i18nc("@label", "You made changes to the following setting(s):")
-        user_settings = self._active_container_stack.getTop().findInstances(**{})
-        for setting in user_settings:
-            details = details + "\n    " + setting.definition.label
+        details_text = catalog.i18nc("@label", "You made changes to the following setting(s):")
+
+        # user changes in global stack
+        details_list = [setting.definition.label for setting in self._global_container_stack.getTop().findInstances(**{})]
+
+        # user changes in extruder stacks
+        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        for stack in stacks:
+            details_list.extend([
+                "%s (%s)" % (setting.definition.label, stack.getName())
+                for setting in stack.getTop().findInstances(**{})])
+
+        # Format to output string
+        details = "\n    ".join([details_text, ] + details_list)
 
         Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"),
                                              catalog.i18nc("@label",
