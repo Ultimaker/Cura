@@ -79,7 +79,7 @@ class DiscoverUM3Action(MachineAction):
                 global_printer_type = Application.getInstance().getGlobalContainerStack().getBottom().getId()
             else:
                 global_printer_type = "unknown"
-                
+
             printers = list(self._network_plugin.getPrinters().values())
             # TODO; There are still some testing printers that don't have a correct printer type, so don't filter out unkown ones just yet.
             printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
