@@ -88,13 +88,10 @@ class MachineInstance:
             active_quality_changes = "empty_quality_changes"
         else:
             active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.getQualityFallback(type_name, variant, active_material)
-            if has_machine_qualities: #Then the profile will have split into multiple.
-                active_quality_changes = self._active_profile_name + "_" + active_material + "_" + variant
-            else:
-                active_quality_changes = self._active_profile_name
+            active_quality_changes = self._active_profile_name
 
         if has_machine_qualities: #This machine now has machine-quality profiles.
-            active_material += "_" + variant_materials #That means that the profile was split into multiple.
+            active_material += "_" + variant_materials
 
         #Create a new user profile and schedule it to be upgraded.
         user_profile = configparser.ConfigParser(interpolation = None)
