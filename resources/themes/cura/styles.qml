@@ -237,7 +237,7 @@ QtObject {
                     SequentialAnimation on x {
                         id: xAnim
                         property int animEndPoint: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2) - Theme.getSize("progressbar_control").width
-                        running: control.indeterminate
+                        running: control.indeterminate && control.visible
                         loops: Animation.Infinite
                         NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
                         NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
