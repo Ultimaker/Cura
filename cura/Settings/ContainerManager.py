@@ -480,6 +480,7 @@ class ContainerManager(QObject):
             new_changes = self._createQualityChanges(quality_container, unique_name,
                                                      UM.Application.getInstance().getGlobalContainerStack().getBottom(),
                                                      extruder_id)
+            self._performMerge(new_changes, quality_changes_container, clear_settings = False)
             self._performMerge(new_changes, user_container)
 
             self._container_registry.addContainer(new_changes)
@@ -694,7 +695,7 @@ class ContainerManager(QObject):
     def createContainerManager(engine, js_engine):
         return ContainerManager.getInstance()
 
-    def _performMerge(self, merge_into, merge):
+    def _performMerge(self, merge_into, merge, clear_settings = True):
         assert isinstance(merge, type(merge_into))
 
         if merge == merge_into:
@@ -703,7 +704,8 @@ class ContainerManager(QObject):
         for key in merge.getAllKeys():
             merge_into.setProperty(key, "value", merge.getProperty(key, "value"))
 
-        merge.clear()
+        if clear_settings:
+            merge.clear()
 
     def _updateContainerNameFilters(self):
         self._container_name_filters = {}
