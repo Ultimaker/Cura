@@ -93,8 +93,8 @@ class QualityManager:
 
         # Fall back to using generic materials and qualities if nothing could be found.
         if not result and material_containers and len(material_containers) == 1:
-            basic_material = self._getBasicMaterial(material_containers[0])
-            result = self._getFilteredContainersForStack(machine_definition, [basic_material], **criteria)
+            basic_materials = self._getBasicMaterials(material_containers[0])
+            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
         return result[0] if result else None
 
     ##  Find all suitable qualities for a combination of machine and material.
@@ -106,8 +106,8 @@ class QualityManager:
         criteria = {"type": "quality" }
         result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
         if not result:
-            basic_material = self._getBasicMaterial(material_container)
-            result = self._getFilteredContainersForStack(machine_definition, [basic_material], **criteria)
+            basic_materials = self._getBasicMaterials(material_container)
+            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
         return result
 
     ##  Find all quality changes for a machine.
@@ -157,16 +157,24 @@ class QualityManager:
     #
     #   This tries to find a generic or basic version of the given material.
     #   \param material_container \type{InstanceContainer} the material
-    #   \return \type{Option[InstanceContainer]} the basic material or None if one could not be found.
-    def _getBasicMaterial(self, material_container):
+    #   \return \type{List[InstanceContainer]} the basic material or None if one could not be found.
+    def _getBasicMaterials(self, material_container):
         base_material = material_container.getMetaDataEntry("material")
+        if material_container.getDefinition().getMetaDataEntry("has_machine_quality"):
+            definition_id = material_container.getDefinition().getMetaDataEntry("quality_definition", material_container.getDefinition().getId())
+        else:
+            definition_id = "fdmprinter"
+
         if base_material:
             # There is a basic material specified
-            criteria = { "type": "material", "name": base_material, "definition": "fdmprinter" }
+            criteria = { "type": "material", "name": base_material, "definition": definition_id }
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
-            return containers[0] if containers else None
+            containers = [basic_material for basic_material in containers if
+                               basic_material.getMetaDataEntry("variant") == material_container.getMetaDataEntry(
+                                   "variant")]
+            return containers
 
-        return None
+        return []
 
     def _getFilteredContainers(self, **kwargs):
         return self._getFilteredContainersForStack(None, None, **kwargs)
