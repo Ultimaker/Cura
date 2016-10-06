@@ -829,8 +829,8 @@ class MachineManager(QObject):
     #   \sa getQualityVariantId
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeQualityVariantId(self):
-        if self._global_container_stack:
-            variant = self._global_container_stack.findContainer({"type": "variant"})
+        if self._active_container_stack:
+            variant = self._active_container_stack.findContainer({"type": "variant"})
             if variant:
                 return self.getQualityVariantId(self._global_container_stack.getBottom(), variant)
         return ""
