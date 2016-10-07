@@ -20,7 +20,7 @@ Generic Nylon profile. Serves as an example file, data in this file is not corre
     <settings>
         <setting key="print temperature">250</setting>
         <setting key="heated bed temperature">60</setting>
-        <setting key="standby temperature">100</setting>
+        <setting key="standby temperature">175</setting>
 
         <machine>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
