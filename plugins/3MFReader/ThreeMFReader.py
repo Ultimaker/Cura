@@ -33,29 +33,34 @@ class ThreeMFReader(MeshReader):
         }
 
     def _createNodeFromObject(self, object, name = ""):
-        mesh_builder = MeshBuilder()
         node = SceneNode()
+        mesh_builder = MeshBuilder()
         vertex_list = []
 
         components = object.find(".//3mf:components", self._namespaces)
         if components:
             for component in components:
                 id = component.get("objectid")
-                object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
-                new_node = self._createNodeFromObject(object)
+                new_object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
+
+                new_node = self._createNodeFromObject(new_object)
                 node.addChild(new_node)
                 transform = component.get("transform")
                 if transform is not None:
                     new_node.setTransformation(self._createMatrixFromTransformationString(transform))
 
-        if len(node.getChildren()) > 0:
-            group_decorator = GroupDecorator()
-            node.addDecorator(group_decorator)
-
         # for vertex in entry.mesh.vertices.vertex:
         for vertex in object.findall(".//3mf:vertex", self._namespaces):
             vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
             Job.yieldThread()
+
+        # If this object has no vertices and just one child, just return the child.
+        if len(vertex_list) == 0 and len(node.getChildren()) == 1:
+            return node.getChildren()[0]
+
+        if len(node.getChildren()) > 0:
+            group_decorator = GroupDecorator()
+            node.addDecorator(group_decorator)
 
         triangles = object.findall(".//3mf:triangle", self._namespaces)
         mesh_builder.reserveFaceCount(len(triangles))
@@ -74,11 +79,17 @@ class ThreeMFReader(MeshReader):
         # Rotate the model; We use a different coordinate frame.
         rotation = Matrix()
         rotation.setByRotationAxis(-0.5 * math.pi, Vector(1, 0, 0))
+        flip_matrix = Matrix()
+
+        flip_matrix._data[1, 1] = 0
+        flip_matrix._data[1, 2] = 1
+        flip_matrix._data[2, 1] = 1
+        flip_matrix._data[2, 2] = 0
 
         # TODO: We currently do not check for normals and simply recalculate them.
         mesh_builder.calculateNormals()
         mesh_builder.setFileName(name)
-        mesh_data = mesh_builder.build() #.getTransformed(rotation)
+        mesh_data = mesh_builder.build().getTransformed(flip_matrix)
 
         if len(mesh_data.getVertices()):
             node.setMeshData(mesh_data)
@@ -110,6 +121,14 @@ class ThreeMFReader(MeshReader):
         temp_mat._data[0, 3] = splitted_transformation[9]
         temp_mat._data[1, 3] = splitted_transformation[10]
         temp_mat._data[2, 3] = splitted_transformation[11]
+
+        flip_matrix = Matrix()
+        flip_matrix._data[1, 1] = 0
+        flip_matrix._data[1, 2] = 1
+        flip_matrix._data[2, 1] = 1
+        flip_matrix._data[2, 2] = 0
+        temp_mat.multiply(flip_matrix)
+
         return temp_mat
 
     def read(self, file_name):
@@ -129,7 +148,6 @@ class ThreeMFReader(MeshReader):
                 if transform is not None:
                     build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
                 result.addChild(build_item_node)
-                build_item_node.rotate(Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1, 0, 0)))
 
         except Exception as e:
             Logger.log("e", "exception occured in 3mf reader: %s", e)
