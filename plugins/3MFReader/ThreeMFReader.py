@@ -8,7 +8,7 @@ from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
-from UM.Math.Quaternion import Quaternion
+import UM.Application
 from UM.Job import Job
 
 import math
@@ -118,6 +118,11 @@ class ThreeMFReader(MeshReader):
                     Logger.log("w", "Bounding box test for object failed. Skipping this object")
                     continue
 
+                # 3mf defines the front left corner as the 0, so we need to translate to their operating space.
+                global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+                if global_container_stack:
+                    translation = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2, y = 0, z = global_container_stack.getProperty("machine_depth", "value") / 2)
+                    node.translate(translation)
                 result.addChild(node)
 
                 Job.yieldThread()
