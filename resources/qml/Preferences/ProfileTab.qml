@@ -25,12 +25,13 @@ Tab
         {
             id: itemDelegate
 
-            Rectangle
+            UM.TooltipArea
             {
                 property var setting: qualitySettings.getItem(styleData.row)
                 height: childrenRect.height
-                color: "transparent"
                 width: (parent != null) ? parent.width : 0
+                text: (styleData.value.substr(0,1) == "=") ? styleData.value : ""
+
                 Label
                 {
                     anchors.left: parent.left
