@@ -208,6 +208,8 @@ UM.ManagementPage
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
+            currentIndex: ExtruderManager.activeExtruderIndex + 1;
+
             ProfileTab
             {
                 title: catalog.i18nc("@title:tab", "Global Settings");
