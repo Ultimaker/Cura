@@ -72,6 +72,9 @@ class MachineManager(QObject):
         self._auto_materials_changed = {}
         self._auto_hotends_changed = {}
 
+        self._material_incompatible_message = Message(catalog.i18nc("@info:status",
+                                              "The selected material is imcompatible with the selected machine or configuration."))
+
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
@@ -549,9 +552,9 @@ class MachineManager(QObject):
         material_container.nameChanged.connect(self._onMaterialNameChanged)
 
         if material_container.getMetaDataEntry("compatible") == False:
-            message = Message(catalog.i18nc("@info:status",
-                                            "The selected material is imcompatible with the selected machine or configuration."))
-            message.show()
+            self._material_incompatible_message.show()
+        else:
+            self._material_incompatible_message.hide()
 
         new_quality_id = old_quality.getId()
         quality_type = old_quality.getMetaDataEntry("quality_type")
