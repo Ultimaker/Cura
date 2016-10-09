@@ -205,7 +205,7 @@ class ExtruderManager(QObject):
             if preferred_material_id:
                 search_criteria = { "type": "material",  "id": preferred_material_id}
                 if machine_definition.getMetaDataEntry("has_machine_materials"):
-                    search_criteria["definition"] = machine_definition.id
+                    search_criteria["definition"] = machine_definition_id
 
                     if machine_definition.getMetaDataEntry("has_variants") and variant:
                         search_criteria["variant"] = variant.id

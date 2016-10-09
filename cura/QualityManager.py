@@ -150,11 +150,11 @@ class QualityManager:
 
         return [quality_type_dict[quality_type] for quality_type in quality_types]
 
-    ##  Fetch a more basic version of a material.
+    ##  Fetch more basic versions of a material.
     #
     #   This tries to find a generic or basic version of the given material.
     #   \param material_container \type{InstanceContainer} the material
-    #   \return \type{List[InstanceContainer]} the basic material or None if one could not be found.
+    #   \return \type{List[InstanceContainer]} a list of the basic materials or an empty list if one could not be found.
     def _getBasicMaterials(self, material_container):
         base_material = material_container.getMetaDataEntry("material")
         if material_container.getDefinition().getMetaDataEntry("has_machine_quality"):

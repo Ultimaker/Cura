@@ -3715,7 +3715,7 @@
                     "type": "float",
                     "default_value": 0.064,
                     "minimum_value": "0",
-                    "maximum_value_warning": "2.0",
+                    "maximum_value_warning": "machine_nozzle_size * 5",
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true

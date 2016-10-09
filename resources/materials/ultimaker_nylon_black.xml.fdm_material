@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic Nylon profile. Serves as an example file, data in this file is not correct.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Ultimaker</brand>
+            <material>Nylon</material>
+            <color>Black</color>
+        </name>
+        <GUID>c64c2dbe-5691-4363-a7d9-66b2dc12837f</GUID>
+        <version>1</version>
+        <color_code>#000000</color_code>
+    </metadata>
+    <properties>
+        <density>1.14</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">100</setting>
+    </settings>
+</fdmmaterial>

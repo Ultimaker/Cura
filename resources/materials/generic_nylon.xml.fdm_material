@@ -9,7 +9,7 @@ Generic Nylon profile. Serves as an example file, data in this file is not corre
             <material>Nylon</material>
             <color>Generic</color>
         </name>
-        <GUID>35ebb8df-66d2-41cd-9662-b7d96b9c2cbd</GUID>
+        <GUID>28fb4162-db74-49e1-9008-d05f1e8bef5c</GUID>
         <version>1</version>
         <color_code>#3DF266</color_code>
     </metadata>

@@ -84,10 +84,25 @@ class CuraContainerRegistry(ContainerRegistry):
                 if result == QMessageBox.No:
                     return
         found_containers = []
+        extruder_positions = []
         for instance_id in instance_ids:
             containers = ContainerRegistry.getInstance().findInstanceContainers(id=instance_id)
             if containers:
                 found_containers.append(containers[0])
+
+                # Determine the position of the extruder of this container
+                extruder_id = containers[0].getMetaDataEntry("extruder", "")
+                if extruder_id == "":
+                    # Global stack
+                    extruder_positions.append(-1)
+                else:
+                    extruder_containers = ContainerRegistry.getInstance().findDefinitionContainers(id=extruder_id)
+                    if extruder_containers:
+                        extruder_positions.append(int(extruder_containers[0].getMetaDataEntry("position", 0)))
+                    else:
+                        extruder_positions.append(0)
+        # Ensure the profiles are always exported in order (global, extruder 0, extruder 1, ...)
+        found_containers = [containers for (positions, containers) in sorted(zip(extruder_positions, found_containers))]
 
         profile_writer = self._findProfileWriter(extension, description)
 
