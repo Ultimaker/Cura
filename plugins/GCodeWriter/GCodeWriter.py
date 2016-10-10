@@ -54,8 +54,7 @@ class GCodeWriter(MeshWriter):
         scene = Application.getInstance().getController().getScene()
         gcode_list = getattr(scene, "gcode_list")
         if gcode_list:
-            for gcode in gcode_list:
-                stream.write(gcode)
+            stream.write("\n".join(gcode_list))
             # Serialise the current container stack and put it at the end of the file.
             settings = self._serialiseSettings(Application.getInstance().getGlobalContainerStack())
             stream.write(settings)
