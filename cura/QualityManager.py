@@ -109,6 +109,10 @@ class QualityManager:
         if not result:
             basic_materials = self._getBasicMaterials(material_container)
             result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
+
+        if not result:
+            result = [ self._empty_quality_container ]
+
         return result
 
     ##  Find all quality changes for a machine.
