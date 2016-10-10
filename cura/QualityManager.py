@@ -20,6 +20,9 @@ class QualityManager:
 
     __instance = None
 
+    def __init__(self):
+        self._empty_quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality")[0]
+
     ##  Find a quality by name for a specific machine definition and materials.
     #
     #   \param quality_name
@@ -92,7 +95,8 @@ class QualityManager:
         if not result and material_containers and len(material_containers) == 1:
             basic_materials = self._getBasicMaterials(material_containers[0])
             result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
-        return result[0] if result else None
+
+        return result[0] if result else self._empty_quality_container
 
     ##  Find all suitable qualities for a combination of machine and material.
     #
@@ -105,6 +109,10 @@ class QualityManager:
         if not result:
             basic_materials = self._getBasicMaterials(material_container)
             result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
+
+        if not result:
+            result = [ self._empty_quality_container ]
+
         return result
 
     ##  Find all quality changes for a machine.
