@@ -236,9 +236,7 @@ class CuraApplication(QtApplication):
 
         # Set the filename to create if cura is writing in the config dir.
         self._config_lock_filename = os.path.join(Resources.getConfigStoragePath(), CONFIG_LOCK_FILENAME)
-        # Lock file check: if (another) Cura is writing in the Config dir, one may not be able to read a
-        # valid set of files. Not entirely fool-proof, but works when you start Cura shortly after shutting down.
-        waitFileDisappear(self._config_lock_filename, max_age_seconds=10, msg="Waiting for Cura to finish writing in the config dir...")
+        self.waitConfigLockFile()
         ContainerRegistry.getInstance().load()
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
@@ -319,6 +317,12 @@ class CuraApplication(QtApplication):
 
             self._recent_files.append(QUrl.fromLocalFile(f))
 
+    ## Lock file check: if (another) Cura is writing in the Config dir.
+    #  one may not be able to read a valid set of files while writing. Not entirely fool-proof,
+    #  but works when you start Cura shortly after shutting down.
+    def waitConfigLockFile(self):
+        waitFileDisappear(self._config_lock_filename, max_age_seconds=10, msg="Waiting for Cura to finish writing in the config dir...")
+
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
@@ -345,6 +349,8 @@ class CuraApplication(QtApplication):
     def saveSettings(self):
         if not self._started: # Do not do saving during application start
             return
+
+        self.waitConfigLockFile()
 
         # When starting Cura, we check for the lockFile which is created and deleted here
         with lockFile(self._config_lock_filename):
