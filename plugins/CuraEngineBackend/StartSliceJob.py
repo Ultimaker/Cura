@@ -204,6 +204,7 @@ class StartSliceJob(Job):
         material_instance_container = stack.findContainer({"type": "material"})
 
         for key in stack.getAllKeys():
+            # Do not send settings that are not settable_per_extruder.
             if stack.getProperty(key, "settable_per_extruder") == False:
                 continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
