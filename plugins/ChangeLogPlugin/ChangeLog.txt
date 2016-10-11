@@ -7,7 +7,7 @@ The first thing you will notice is the speed. STL loading is now 10 to 20 times 
 Machines with multiple extruders are now supported. If you’ve got the Ultimaker Original with the dual extrusion upgrade kit, we’ve got you covered.
 
 *Custom Machine Support
-The new custom machine plug-in allows you to change machine settings with ease. That means it’s now much easier to use Cura with custom machines.
+It’s now much easier to use Cura with custom machines. You can edit the machine settings when you load a new custom machine.
 
 *Improved Position Tool
 Place objects precisely where you want them by manually entering the values for the position.
@@ -35,14 +35,17 @@ Cura now estimates print weight as well as length.
 Configurations from older installations of Cura 2.1 are automatically imported into the newest installation.
 
 *Slicing features
-*Infill Improvements
-We've introduced two new infill types: Tetrahedral and Cubic. They change along with the Z-axis for more uniform strength in all directions. Also, now you can change the density of the infill based on the distance from the top layers. Your objects print faster, use less material, and maintain the same strength.
+*Infill Types
+We've introduced two new infill types: Tetrahedral and Cubic. They change along with the Z-axis for more uniform strength in all directions. There are now 7 infill types to choose from.
+
+*Gradual Infill
+Now you can change the density of the infill based on the distance from the top layers. Your objects print faster, use less material, while top surfaces have the same quality.
 
 *Set Acceleration and Jerk by Feature
 You can now set Jerk and Acceleration by feature-type (infill, walls, top/bottom, etc), for more precision.
 
 *Outer Wall Offset
-Apply an offset to where the outer wall is printed for better surface quality when the outer wall line width is smaller than the nozzle size.
+If your outer wall line width is smaller than your nozzle size, move the nozzle a bit inward when printing the outer wall, to improve surface quality.
 
 *Enhanced Combing
 The “No Skin” option allows you to comb over infill only to avoid scars on top surfaces.
@@ -57,7 +60,7 @@ The Skin Overlap setting allows you to overlap the skin lines with the walls for
 Set the travel speed of the initial layer(s) to reduce risk of extruder pulling the print from the bed.
 
 *Support Interface
-It is now possible to print a support bottom as well as a support roof. Support bottoms are placed where the support rests on the model.
+It is now possible to print a support bottom as well as a support roof. Support bottoms are placed where the support rests on the model. Printing the support interface with PVA leads to improved surface quality.
 
 *Bug fixes
 Deleting grouped objects
@@ -70,7 +73,7 @@ Overlap Compensation
 Retractions on Raft
 Retractions now occur after each object printed in one-at-a-time mode.
 Rafts are no longer printed outside of build area.
-Spiralize now spiralizes each part in a layer.
+Spiralize no longer only spiralizes the first printed segment only.
 Line distance is now the actual line distance.
 Enabling raft doesn’t influence at which height the model is sliced any more.
 Brim is now always printed just once.
@@ -81,7 +84,8 @@ Messages are now displayed 30 seconds instead of 10, making it less likely that 
 You are now notified if you try to save to a locked SD card.
 Engine log is now included in the application log.
 Undo and Redo now work correctly with multiple operations.
-The last used folder is now remembered (instead of defaulting to home folder)
+The last used folder is now remembered (instead of defaulting to home folder).
+Import X3D files.
 Made it possible to add multiple Per Model Settings at once.
 Bed Level and Checkup procedures for UMO+ can now be done without re-adding machine.
 Combing is applied in more cases and results in better paths.
@@ -95,7 +99,6 @@ Draft shield and Ooze shield get their own brim or raft.
 Settings shared between skirt and brim now also activate when brim is selected.
 Compensate overlapping wall parts now also works for inner walls.
 You can now adjust the speed at which the bed is lowered each layer.
-
 
 [2.1.3]
 
