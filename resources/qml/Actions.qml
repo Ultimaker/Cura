@@ -137,7 +137,7 @@ Item
     Action
     {
         id: addProfileAction;
-        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityId != "empty_quality"
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings...");
     }
 
