@@ -2295,25 +2295,6 @@ msgid ""
 "Click to open the profile manager."
 msgstr "Certaines valeurs de paramètre sont différentes des valeurs enregistrées dans le profil.\n\nCliquez pour ouvrir le gestionnaire de profils."
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
-msgid "Modify G-Code"
-msgstr "Modifier le G-Code"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:12
-msgctxt "@label"
-msgid "Post Processing"
-msgstr "Post-traitement"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:16
-msgctxt "Description of plugin"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Extension qui permet le post-traitement des scripts créés par l'utilisateur"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
-msgctxt "@title:window"
-msgid "Post Processing Plugin"
-msgstr "Plug-in de post-traitement"
-
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
 msgctxt "@label"
 msgid "Post Processing Scripts"
