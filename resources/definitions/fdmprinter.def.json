@@ -761,7 +761,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
-                            "minimum_value_warning": "3 * layer_height",
+                            "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                             "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
@@ -777,7 +777,7 @@
                                     "maximum_value_warning": "100",
                                     "type": "int",
                                     "minimum_value_warning": "4",
-                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / layer_height, 4))",
+                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -789,7 +789,7 @@
                             "unit": "mm",
                             "default_value": 0.6,
                             "minimum_value": "0",
-                            "minimum_value_warning": "3 * layer_height",
+                            "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "maximum_value": "machine_height",
@@ -804,7 +804,7 @@
                                     "minimum_value_warning": "4",
                                     "default_value": 6,
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / layer_height, 4))",
+                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -1044,10 +1044,10 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.1,
-                    "minimum_value": "layer_height",
+                    "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
-                    "maximum_value": "layer_height * 8",
-                    "value": "layer_height",
+                    "maximum_value": "resolveOrValue('layer_height') * 8",
+                    "value": "resolveOrValue('layer_height')",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 },
@@ -1071,7 +1071,7 @@
                     "type": "float",
                     "default_value": 5.0,
                     "minimum_value": "0.0001",
-                    "minimum_value_warning": "3 * layer_height",
+                    "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0",
                     "settable_per_mesh": true
@@ -1664,7 +1664,7 @@
                     "default_value": 2,
                     "resolve": "sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers'))",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1.0 / layer_height",
+                    "maximum_value_warning": "1.0 / resolveOrValue('layer_height')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -2284,8 +2284,8 @@
                             "type": "int",
                             "default_value": 2,
                             "minimum_value": "1",
-                            "maximum_value_warning": "10 / layer_height",
-                            "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / layer_height) + 2))",
+                            "maximum_value_warning": "10 / resolveOrValue('layer_height')",
+                            "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -2574,7 +2574,7 @@
                     "type": "float",
                     "default_value": 1,
                     "minimum_value": "0",
-                    "minimum_value_warning": "3 * layer_height",
+                    "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "10",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
@@ -2589,7 +2589,7 @@
                             "type": "float",
                             "default_value": 1,
                             "minimum_value": "0",
-                            "minimum_value_warning": "3 * layer_height",
+                            "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                             "maximum_value_warning": "10",
                             "value": "extruderValue(support_interface_extruder_nr, 'support_interface_height')",
                             "limit_to_extruder": "support_interface_extruder_nr",
@@ -2605,7 +2605,7 @@
                             "default_value": 1,
                             "value": "extruderValue(support_interface_extruder_nr, 'support_interface_height')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "min(3 * layer_height, extruderValue(support_interface_extruder_nr, 'support_bottom_stair_step_height'))",
+                            "minimum_value_warning": "min(3 * resolveOrValue('layer_height'), extruderValue(support_interface_extruder_nr, 'support_bottom_stair_step_height'))",
                             "maximum_value_warning": "10",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
@@ -2926,7 +2926,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.1,
-                    "value": "layer_height",
+                    "value": "resolveOrValue('layer_height')",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.75 * extruderValue(adhesion_extruder_nr, 'machine_nozzle_size')",
@@ -2974,7 +2974,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.15,
-                    "value": "layer_height * 1.5",
+                    "value": "resolveOrValue('layer_height') * 1.5",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.75 * extruderValue(adhesion_extruder_nr, 'raft_interface_line_width')",
