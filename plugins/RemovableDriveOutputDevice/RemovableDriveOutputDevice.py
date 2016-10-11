@@ -23,6 +23,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         self.setPriority(1)
 
         self._writing = False
+        self._stream = None
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
@@ -65,8 +66,9 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         try:
             Logger.log("d", "Writing to %s", file_name)
-            stream = open(file_name, "wt")
-            job = WriteMeshJob(writer, stream, node, MeshWriter.OutputMode.TextMode)
+            # Using buffering greatly reduces the write time for many lines of gcode
+            self._stream = open(file_name, "wt", buffering = 1)
+            job = WriteMeshJob(writer, self._stream, node, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
@@ -92,6 +94,11 @@ class RemovableDriveOutputDevice(OutputDevice):
         self.writeProgress.emit(self, progress)
 
     def _onFinished(self, job):
+        if self._stream:
+            # Explicitly closing the stream flushes the write-buffer
+            self._stream.close()
+            self._stream = None
+
         if hasattr(job, "_message"):
             job._message.hide()
             job._message = None
