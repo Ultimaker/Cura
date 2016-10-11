@@ -66,6 +66,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         try:
             Logger.log("d", "Writing to %s", file_name)
+            # Using buffering greatly reduces the write time for many lines of gcode
             self._stream = open(file_name, "wt", buffering = 1)
             job = WriteMeshJob(writer, self._stream, node, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
@@ -94,6 +95,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
     def _onFinished(self, job):
         if self._stream:
+            # Explicitly closing the stream flushes the write-buffer
             self._stream.close()
             self._stream = None
 
