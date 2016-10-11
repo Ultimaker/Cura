@@ -2628,4 +2628,4 @@ msgstr "De configuratie van de printer in Cura laden"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:117
 msgctxt "@action:button"
 msgid "Activate Configuration"
-msgstr "Configuratie activeren"
+msgstr "Configuratie Activeren"
