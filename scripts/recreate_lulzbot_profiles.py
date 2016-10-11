@@ -82,6 +82,7 @@ material_map = {
 	"Bronzefill": "colorfabb-metal-filled",
 	"Copperfill": "colorfabb-metal-filled",
 	"HT": "HT-5300",
+	"PC-MAX": "polymaker-PC-MAX",
 	
 	# Expert
 	"PP-Conductive": "protopasta-conductive-PLA",
@@ -125,7 +126,6 @@ material_map = {
 	
 	#Experimental
 	"b-pet": "b-pet",
-	"PC-MAX": "polymaker-PC-MAX",
 	"wood-bamboo": "woodFill-bambooFill",
 	"polyflex": "polyflex",
 	"armadillo": "armadillo",
@@ -168,6 +168,7 @@ material_order = {
 	"Bronzefill":          59,
 	"Copperfill":          60,
 	"HT":                  61,
+	"PC-MAX":              62,
 	
 	# Expert
 	"PP-Conductive":      500,
@@ -211,7 +212,6 @@ material_order = {
 	
 	#Experimental
 	"b-pet":             5002,
-	"PC-MAX":            5003,
 	"wood-bamboo":       5004,
 	"polyflex":          5006,
 	"armadillo":         5007,
@@ -254,6 +254,7 @@ material_types = {
 	"Bronzefill": "Advanced",
 	"Copperfill": "Advanced",
 	"HT": "Advanced",
+	"PC-MAX": "Advanced",
 	
 	# Expert
 	"PP-Conductive": "Expert",
@@ -331,6 +332,7 @@ material_names = {
 	"Bronzefill": "bronzeFill (colorFabb)",
 	"Copperfill": "copperFill (colorFabb)",
 	"HT": "HT (colorFabb)",
+	"PC-MAX": "PC-MAX (Polymaker)",
 	
 	# Expert
 	"PP-Conductive": "Conductive (Proto-pasta)",
@@ -374,7 +376,6 @@ material_names = {
 	
 	# Experimental
 	"b-pet": "B-Pet",
-	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
 	"polyflex": "PolyFlex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
@@ -484,6 +485,7 @@ bed_prep_materials = {
 	"PC-ABS",
 	"nGen",
 	"HT",
+	"PC-MAX",
 }
 
 profile_map = {
