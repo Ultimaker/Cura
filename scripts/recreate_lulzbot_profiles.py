@@ -69,6 +69,8 @@ material_map = {
 	"PP-HT-PLA": "protopasta-high-temp-PLA",
 	"nGen": "nGen",
 	"PP-Matte-HT-PLA": "protopasta-high-temp-PLA",
+	"silk": "silk",
+	"linen": "linen",
 	
 	# Advanced
 	"Alloy910": "alloy910",
@@ -131,8 +133,6 @@ material_map = {
 	"polyflex": "polyflex",
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
-	"silk": "silk",
-	"linen": "linen",
 }
 
 material_order = {
@@ -156,6 +156,8 @@ material_order = {
 	"PP-HT-PLA":           18,
 	"nGen":                19,
 	"PP-Matte-HT-PLA":     20,
+	"silk":                21,
+	"linen":               22,
 	
 	# Advanced
 	"INOVA-1800":          50,
@@ -218,8 +220,6 @@ material_order = {
 	"polyflex":          5006,
 	"armadillo":         5007,
 	"brassfill":         5008,
-	"silk":              5009,
-	"linen":             5010,
 }
 
 material_types = {
@@ -243,6 +243,8 @@ material_types = {
 	"PP-HT-PLA": "Intermediate",
 	"nGen": "Intermediate",
 	"PP-Matte-HT-PLA": "Intermediate",
+	"silk": "Intermediate",
+	"linen": "Intermediate",
 	
 	# Advanced
 	"Alloy910": "Advanced",
@@ -322,6 +324,8 @@ material_names = {
 	"PP-HT-PLA": "High Temp PLA (Proto-pasta)",
 	"nGen": "nGen (colorFabb)",
 	"PP-Matte-HT-PLA": "Matte Fiber HTPLA (Proto-pasta)",
+	"silk": "BioFila Silk (twoBEars)",
+	"linen": "BioFila Linen (twoBEars)",
 	
 	# Advanced
 	"Alloy910": "Alloy 910 (Taulman)",
@@ -384,8 +388,6 @@ material_names = {
 	"polyflex": "PolyFlex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
-	"silk": "BioFila Silk (twoBEars)",
-	"linen": "BioFila Linen (twoBEars)",
 }
 
 material_url = {
