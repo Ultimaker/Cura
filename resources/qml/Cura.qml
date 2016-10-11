@@ -666,10 +666,13 @@ UM.MainWindow
             for(var i in fileUrls)
             {
                 UM.MeshFileHandler.readLocalFile(fileUrls[i])
-            }
 
-            var meshName = backgroundItem.getMeshName(fileUrl.toString())
-            backgroundItem.hasMesh(decodeURIComponent(meshName))
+                if (i == fileUrls.length - 1)
+                {
+                    var meshName = backgroundItem.getMeshName(fileUrls.toString())
+                    backgroundItem.hasMesh(decodeURIComponent(meshName))
+                }
+            }
         }
     }
 

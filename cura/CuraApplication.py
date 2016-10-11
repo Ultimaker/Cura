@@ -646,8 +646,6 @@ class CuraApplication(QtApplication):
                     op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
-        pass
-
     ##  Remove an object from the scene.
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
@@ -661,17 +659,17 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
-            group_node = None
-            if node.getParent():
-                group_node = node.getParent()
-                op = RemoveSceneNodeOperation(node)
+            op = GroupedOperation()
+            op.addOperation(RemoveSceneNodeOperation(node))
+
+            group_node = node.getParent()
+            if group_node:
+                # Note that at this point the node has not yet been deleted
+                if len(group_node.getChildren()) <= 2 and group_node.callDecoration("isGroup"):
+                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
 
             op.push()
-            if group_node:
-                if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
-                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
-                    op = RemoveSceneNodeOperation(group_node)
-                    op.push()
 
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
