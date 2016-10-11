@@ -216,7 +216,7 @@ Cura.MachineAction
                     checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print") != "false"
                     onClicked:
                     {
-                        Cura.ContainerManager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print", String(checked))
+                        manager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print", String(checked))
                     }
                     width: parent.width
                 }
