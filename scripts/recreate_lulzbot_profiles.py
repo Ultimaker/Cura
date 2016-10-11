@@ -68,6 +68,7 @@ material_map = {
 	"PP-Coffee": "protopasta-aromatic-coffee-PLA",
 	"PP-HT-PLA": "protopasta-high-temp-PLA",
 	"nGen": "nGen",
+	"PP-Matte-HT-PLA": "protopasta-high-temp-PLA",
 	
 	# Advanced
 	"Alloy910": "alloy910",
@@ -154,6 +155,7 @@ material_order = {
 	"PP-Coffee":           17,
 	"PP-HT-PLA":           18,
 	"nGen":                19,
+	"PP-Matte-HT-PLA":     20,
 	
 	# Advanced
 	"INOVA-1800":          50,
@@ -240,6 +242,7 @@ material_types = {
 	"PP-Coffee": "Intermediate",
 	"PP-HT-PLA": "Intermediate",
 	"nGen": "Intermediate",
+	"PP-Matte-HT-PLA": "Intermediate",
 	
 	# Advanced
 	"Alloy910": "Advanced",
@@ -318,6 +321,7 @@ material_names = {
 	"PP-Coffee": "Coffee PLA (Proto-pasta)",
 	"PP-HT-PLA": "High Temp PLA (Proto-pasta)",
 	"nGen": "nGen (colorFabb)",
+	"PP-Matte-HT-PLA": "Matte Fiber HTPLA (Proto-pasta)",
 	
 	# Advanced
 	"Alloy910": "Alloy 910 (Taulman)",
@@ -404,6 +408,7 @@ material_url = {
 	"PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
 #	"PP-HT-PLA": "",
 	"nGen": "lulzbot.com/store/filament/ngen",
+#	"PP-Matte-HT-PLA": "",
 
 	# Advanced
 	"Alloy910": "lulzbot.com/store/filament/alloy-910",
