@@ -24,7 +24,7 @@ msgstr "Instellingen van de machine"
 #: fdmprinter.def.json
 msgctxt "machine_name label"
 msgid "Machine Type"
-msgstr "Type machine"
+msgstr "Type Machine"
 
 #: fdmprinter.def.json
 msgctxt "machine_name description"
@@ -46,14 +46,14 @@ msgstr "Hiermee bepaalt u of verschillende varianten van deze machine worden get
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
 msgid "Start GCode"
-msgstr "Begin g-code"
+msgstr "Begin G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n."
+msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \\n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -65,7 +65,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n."
+msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -345,7 +345,7 @@ msgstr "Een 2D-silouette van de printkop (exclusief ventilatorkappen)."
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine head & Fan polygon"
-msgstr "Machinekop- en ventilatorpolygoon"
+msgstr "Machinekop- en Ventilatorpolygoon"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -355,14 +355,14 @@ msgstr "Een 2D-silouette van de printkop (inclusief ventilatorkappen)."
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry height"
-msgstr "Portaalhoogte"
+msgstr "Rijbrughoogte"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
 msgid ""
 "The height difference between the tip of the nozzle and the gantry system (X "
 "and Y axes)."
-msgstr "Het hoogteverschil tussen de punt van de nozzle en het portaalsysteem (X- en Y-as)."
+msgstr "Het hoogteverschil tussen de punt van de nozzle en het rijbrugsysteem (X- en Y-as)."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
@@ -379,7 +379,7 @@ msgstr "De binnendiameter van de nozzle. Verander deze instelling wanneer u een 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset With Extruder"
-msgstr "Offset met extruder"
+msgstr "Offset met Extruder"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -389,7 +389,7 @@ msgstr "Pas de extruderoffset toe op het coördinatensysteem."
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Z-positie voor primen extruder"
+msgstr "Z-positie voor Primen Extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z description"
@@ -401,7 +401,7 @@ msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt terugge
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
-msgstr "Absolute positie voor primen extruder"
+msgstr "Absolute Positie voor Primen Extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs description"
@@ -413,7 +413,7 @@ msgstr "Maak van de primepositie van de extruder de absolute positie, in plaats 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_x label"
 msgid "Maximum Speed X"
-msgstr "Maximale snelheid X"
+msgstr "Maximale Snelheid X"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_x description"
@@ -423,7 +423,7 @@ msgstr "De maximale snelheid van de motor in de X-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_y label"
 msgid "Maximum Speed Y"
-msgstr "Maximale snelheid Y"
+msgstr "Maximale Snelheid Y"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_y description"
@@ -433,7 +433,7 @@ msgstr "De maximale snelheid van de motor in de Y-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_z label"
 msgid "Maximum Speed Z"
-msgstr "Maximale snelheid Z"
+msgstr "Maximale Snelheid Z"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_z description"
@@ -443,7 +443,7 @@ msgstr "De maximale snelheid van de motor in de Z-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Feedrate"
-msgstr "Maximale doorvoersnelheid"
+msgstr "Maximale Doorvoersnelheid"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -453,7 +453,7 @@ msgstr "De maximale snelheid voor de doorvoer van het filament."
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x label"
 msgid "Maximum Acceleration X"
-msgstr "Maximale acceleratie X"
+msgstr "Maximale Acceleratie X"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x description"
@@ -463,7 +463,7 @@ msgstr "De maximale acceleratie van de motor in de X-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
 msgid "Maximum Acceleration Y"
-msgstr "Maximale acceleratie Y"
+msgstr "Maximale Acceleratie Y"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y description"
@@ -473,7 +473,7 @@ msgstr "De maximale acceleratie van de motor in de Y-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
-msgstr "Maximale acceleratie Z"
+msgstr "Maximale Acceleratie Z"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_z description"
@@ -483,7 +483,7 @@ msgstr "De maximale acceleratie van de motor in de Z-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_e label"
 msgid "Maximum Filament Acceleration"
-msgstr "Maximale filamentacceleratie"
+msgstr "Maximale Filamentacceleratie"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_e description"
@@ -523,7 +523,7 @@ msgstr "De standaardschok voor de motor in de Z-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e label"
 msgid "Default Filament Jerk"
-msgstr "Standaard filamentschok"
+msgstr "Standaard Filamentschok"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e description"
@@ -533,7 +533,7 @@ msgstr "De standaardschok voor de motor voor het filament."
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
-msgstr "Minimale doorvoersnelheid"
+msgstr "Minimale Doorvoersnelheid"
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate description"
@@ -567,7 +567,7 @@ msgstr "De hoogte van elke laag in mm. Met hogere waarden print u sneller met ee
 #: fdmprinter.def.json
 msgctxt "layer_height_0 label"
 msgid "Initial Layer Height"
-msgstr "Hoogte eerste laag"
+msgstr "Hoogte Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -592,7 +592,7 @@ msgstr "De breedte van een enkele lijn. Over het algemeen dient de breedte van e
 #: fdmprinter.def.json
 msgctxt "wall_line_width label"
 msgid "Wall Line Width"
-msgstr "Lijnbreedte wand"
+msgstr "Lijnbreedte Wand"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width description"
@@ -602,7 +602,7 @@ msgstr "Breedte van een enkele wandlijn."
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 label"
 msgid "Outer Wall Line Width"
-msgstr "Lijnbreedte buitenwand"
+msgstr "Lijnbreedte Buitenwand"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 description"
@@ -614,7 +614,7 @@ msgstr "De breedte van de buitenste lijn van de wand. Wanneer deze waarde wordt 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
-msgstr "Lijnbreedte binnenwand(en)"
+msgstr "Lijnbreedte Binnenwand(en)"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x description"
@@ -625,7 +625,7 @@ msgstr "Breedte van een enkele wandlijn voor alle wandlijnen, behalve de buitens
 #: fdmprinter.def.json
 msgctxt "skin_line_width label"
 msgid "Top/Bottom Line Width"
-msgstr "Lijnbreedte boven-/onderkant"
+msgstr "Lijnbreedte Boven-/onderkant"
 
 #: fdmprinter.def.json
 msgctxt "skin_line_width description"
@@ -635,7 +635,7 @@ msgstr "Breedte van een enkele lijn aan de boven-/onderkant."
 #: fdmprinter.def.json
 msgctxt "infill_line_width label"
 msgid "Infill Line Width"
-msgstr "Lijnbreedte vulling"
+msgstr "Lijnbreedte Vulling"
 
 #: fdmprinter.def.json
 msgctxt "infill_line_width description"
@@ -645,7 +645,7 @@ msgstr "Breedte van een enkele vullijn."
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width label"
 msgid "Skirt/Brim Line Width"
-msgstr "Lijnbreedte skirt/brim"
+msgstr "Lijnbreedte Skirt/Brim"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width description"
@@ -655,7 +655,7 @@ msgstr "Breedte van een enkele skirt- of brimlijn."
 #: fdmprinter.def.json
 msgctxt "support_line_width label"
 msgid "Support Line Width"
-msgstr "Lijnbreedte supportstructuur"
+msgstr "Lijnbreedte Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_line_width description"
@@ -665,7 +665,7 @@ msgstr "Breedte van een enkele lijn van de supportstructuur."
 #: fdmprinter.def.json
 msgctxt "support_interface_line_width label"
 msgid "Support Interface Line Width"
-msgstr "Lijnbreedte verbindingsstructuur"
+msgstr "Lijnbreedte Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_line_width description"
@@ -675,7 +675,7 @@ msgstr "Breedte van een enkele lijn van de verbindingsstructuur."
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "Lijnbreedte primepijler"
+msgstr "Lijnbreedte Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
@@ -707,7 +707,7 @@ msgstr "De dikte van de buitenwanden in horizontale richting. Het aantal wanden 
 #: fdmprinter.def.json
 msgctxt "wall_line_count label"
 msgid "Wall Line Count"
-msgstr "Aantal wandlijnen"
+msgstr "Aantal Wandlijnen"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_count description"
@@ -719,7 +719,7 @@ msgstr "Het aantal wandlijnen. Wanneer deze waarde wordt berekend aan de hand va
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
 msgid "Top/Bottom Thickness"
-msgstr "Dikte boven-/onderkant"
+msgstr "Dikte Boven-/Onderkant"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness description"
@@ -731,7 +731,7 @@ msgstr "De dikte van de boven-/onderlagen in de print. Het aantal boven-/onderla
 #: fdmprinter.def.json
 msgctxt "top_thickness label"
 msgid "Top Thickness"
-msgstr "Dikte bovenkant"
+msgstr "Dikte Bovenkant"
 
 #: fdmprinter.def.json
 msgctxt "top_thickness description"
@@ -779,7 +779,7 @@ msgstr "Het aantal bodemlagen. Wanneer deze waarde wordt berekend aan de hand va
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
 msgid "Top/Bottom Pattern"
-msgstr "Patroon boven-/onderkant"
+msgstr "Patroon Boven-/Onderkant"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern description"
@@ -804,7 +804,7 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
 msgid "Outer Wall Inset"
-msgstr "Uitsparing buitenwand"
+msgstr "Uitsparing Buitenwand"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset description"
@@ -818,7 +818,7 @@ msgstr "Uitsparing die wordt toegepast in de buitenwand. Als de buitenwand small
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
 msgid "Outer Before Inner Walls"
-msgstr "Buitenwanden vóór binnenwanden"
+msgstr "Buitenwanden vóór Binnenwanden"
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first description"
@@ -832,7 +832,7 @@ msgstr "Wanneer deze optie is ingeschakeld, worden wanden van buiten naar binnen
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
-msgstr "Extra wand afwisselen"
+msgstr "Afwisselend Extra Wand"
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
@@ -844,7 +844,7 @@ msgstr "Print op afwisselende lagen een extra wand. Op deze manier wordt vulling
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_enabled label"
 msgid "Compensate Wall Overlaps"
-msgstr "Overlapping van wanden compenseren"
+msgstr "Overlapping van Wanden Compenseren"
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_enabled description"
@@ -856,7 +856,7 @@ msgstr "Compenseer de doorvoer van wanddelen die worden geprint op een plek waar
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled label"
 msgid "Compensate Outer Wall Overlaps"
-msgstr "Overlapping van buitenwanden compenseren"
+msgstr "Overlapping van Buitenwanden Compenseren"
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled description"
@@ -868,7 +868,7 @@ msgstr "Hiermee wordt de doorvoer gecompenseerd voor delen van buitenwanden die 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_x_enabled label"
 msgid "Compensate Inner Wall Overlaps"
-msgstr "Overlapping van binnenwanden compenseren"
+msgstr "Overlapping van Binnenwanden Compenseren"
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_x_enabled description"
@@ -880,7 +880,7 @@ msgstr "Hiermee wordt de doorvoer gecompenseerd voor delen van binnenwanden die 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
 msgid "Horizontal Expansion"
-msgstr "Horizontale uitbreiding"
+msgstr "Horizontale Uitbreiding"
 
 #: fdmprinter.def.json
 msgctxt "xy_offset description"
@@ -923,7 +923,7 @@ msgstr "Willekeurig"
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "Ignore Small Z Gaps"
-msgstr "Kleine Z-gaten negeren"
+msgstr "Kleine Z-gaten Negeren"
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
@@ -946,7 +946,7 @@ msgstr "Vulling"
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
 msgid "Infill Density"
-msgstr "Dichtheid vulling"
+msgstr "Dichtheid Vulling"
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density description"
@@ -1030,7 +1030,7 @@ msgstr "De mate van overlap tussen de vulling en de wanden. Met een lichte overl
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
 msgid "Infill Overlap"
-msgstr "Overlap vulling"
+msgstr "Overlap Vulling"
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm description"
@@ -1042,7 +1042,7 @@ msgstr "De mate van overlap tussen de vulling en de wanden. Met een lichte overl
 #: fdmprinter.def.json
 msgctxt "skin_overlap label"
 msgid "Skin Overlap Percentage"
-msgstr "Overlappercentage skin"
+msgstr "Overlappercentage Skin"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
@@ -1054,7 +1054,7 @@ msgstr "De mate van overlap tussen de skin en de wanden. Met een lichte overlap 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
 msgid "Skin Overlap"
-msgstr "Overlap skin"
+msgstr "Overlap Skin"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
@@ -1066,7 +1066,7 @@ msgstr "De mate van overlap tussen de skin en de wanden. Met een lichte overlap 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
 msgid "Infill Wipe Distance"
-msgstr "Veegafstand vulling"
+msgstr "Veegafstand Vulling"
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist description"
@@ -1079,7 +1079,7 @@ msgstr "De afstand voor een beweging die na het printen van elke vullijn wordt i
 #: fdmprinter.def.json
 msgctxt "infill_sparse_thickness label"
 msgid "Infill Layer Thickness"
-msgstr "Dikte vullaag"
+msgstr "Dikte Vullaag"
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_thickness description"
@@ -1091,7 +1091,7 @@ msgstr "De dikte per laag vulmateriaal. Deze waarde moet altijd een veelvoud van
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps label"
 msgid "Gradual Infill Steps"
-msgstr "Geleidelijke vulstappen"
+msgstr "Stappen Geleidelijke Vulling"
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
@@ -1104,7 +1104,7 @@ msgstr "Het aantal keren dat de vuldichtheid wordt gehalveerd naarmate er verder
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height label"
 msgid "Gradual Infill Step Height"
-msgstr "Hoogte geleidelijke vulstappen"
+msgstr "Staphoogte Geleidelijke Vulling"
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
@@ -1115,7 +1115,7 @@ msgstr "De hoogte van de vulling van een opgegeven dichtheid voordat wordt overg
 #: fdmprinter.def.json
 msgctxt "infill_before_walls label"
 msgid "Infill Before Walls"
-msgstr "Vulling vóór wanden"
+msgstr "Vulling vóór Wanden"
 
 #: fdmprinter.def.json
 msgctxt "infill_before_walls description"
@@ -1139,7 +1139,7 @@ msgstr "Materiaal"
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
 msgid "Auto Temperature"
-msgstr "Automatische temperatuurinstelling"
+msgstr "Automatische Temperatuurinstelling"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature description"
@@ -1162,7 +1162,7 @@ msgstr "De temperatuur waarmee wordt geprint. Stel deze optie in op 0 om de prin
 #: fdmprinter.def.json
 msgctxt "material_flow_temp_graph label"
 msgid "Flow Temperature Graph"
-msgstr "Grafiek doorvoertemperatuur"
+msgstr "Grafiek Doorvoertemperatuur"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_temp_graph description"
@@ -1174,7 +1174,7 @@ msgstr "Grafiek om de materiaaldoorvoer (in mm3 per seconde) te koppelen aan de 
 #: fdmprinter.def.json
 msgctxt "material_extrusion_cool_down_speed label"
 msgid "Extrusion Cool Down Speed Modifier"
-msgstr "Aanpassing afkoelsnelheid doorvoer"
+msgstr "Aanpassing Afkoelsnelheid Doorvoer"
 
 #: fdmprinter.def.json
 msgctxt "material_extrusion_cool_down_speed description"
@@ -1222,7 +1222,7 @@ msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wor
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
-msgstr "Intrekken inschakelen"
+msgstr "Intrekken Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
@@ -1275,7 +1275,7 @@ msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt geprim
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
-msgstr "Extra primehoeveelheid na intrekken"
+msgstr "Extra Primehoeveelheid na Intrekken"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount description"
@@ -1287,7 +1287,7 @@ msgstr "Tijdens een beweging kan materiaal verloren gaan, wat met deze optie kan
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel label"
 msgid "Retraction Minimum Travel"
-msgstr "Minimale beweging voor intrekken"
+msgstr "Minimale Afstand voor Intrekken"
 
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel description"
@@ -1299,7 +1299,7 @@ msgstr "De minimale bewegingsafstand voordat het filament kan worden ingetrokken
 #: fdmprinter.def.json
 msgctxt "retraction_count_max label"
 msgid "Maximum Retraction Count"
-msgstr "Maximaal aantal intrekbewegingen"
+msgstr "Maximaal Aantal Intrekbewegingen"
 
 #: fdmprinter.def.json
 msgctxt "retraction_count_max description"
@@ -1313,7 +1313,7 @@ msgstr "Deze instelling beperkt het aantal intrekbewegingen dat kan worden uitge
 #: fdmprinter.def.json
 msgctxt "retraction_extrusion_window label"
 msgid "Minimum Extrusion Distance Window"
-msgstr "Minimaal afstandsgebied voor intrekken"
+msgstr "Minimaal Afstandsgebied voor Intrekken"
 
 #: fdmprinter.def.json
 msgctxt "retraction_extrusion_window description"
@@ -1322,12 +1322,12 @@ msgid ""
 "should be approximately the same as the retraction distance, so that "
 "effectively the number of times a retraction passes the same patch of "
 "material is limited."
-msgstr "Dit is het gebied waarop het Maximaal aantal intrekbewegingen van toepassing is. Deze waarde moet ongeveer overeenkomen met de Intrekafstand, waarmee in feite het aantal intrekbewegingen op hetzelfde deel van het materiaal wordt beperkt."
+msgstr "Dit is het gebied waarop het maximaal aantal intrekbewegingen van toepassing is. Deze waarde moet ongeveer overeenkomen met de Intrekafstand, waarmee in feite het aantal intrekbewegingen op hetzelfde deel van het materiaal wordt beperkt."
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_enabled label"
 msgid "Z Hop when Retracted"
-msgstr "Z-verplaatsing wanneer ingetrokken"
+msgstr "Z-sprong wanneer Ingetrokken"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_enabled description"
@@ -1341,24 +1341,24 @@ msgstr "Tijdens het intrekken wordt het platform omlaag gebracht om ruimte te cr
 #: fdmprinter.def.json
 msgctxt "retraction_hop_only_when_collides label"
 msgid "Z Hop Only Over Printed Parts"
-msgstr "Z-verplaatsing alleen over geprinte delen"
+msgstr "Z-sprong Alleen over Geprinte Delen"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_only_when_collides description"
 msgid ""
 "Only perform a Z Hop when moving over printed parts which cannot be avoided "
 "by horizontal motion by Avoid Printed Parts when Traveling."
-msgstr "Voer alleen een Z-verplaatsing uit bij bewegingen over geprinte delen die bij een horizontale verplaatsing niet kunnen worden vermeden met Geprinte delen mijden tijdens bewegingen."
+msgstr "Voer alleen een Z-sprong uit bij bewegingen over geprinte delen die niet kunnen worden vermeden met Geprinte Delen Mijden Tijdens Bewegingen."
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop label"
 msgid "Z Hop Height"
-msgstr "Hoogte Z-verplaatsing"
+msgstr "Hoogte Z-sprong"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop description"
 msgid "The height difference when performing a Z Hop."
-msgstr "Het hoogteverschil dat wordt aangehouden tijdens een Z-verplaatsing."
+msgstr "Het hoogteverschil dat wordt aangehouden tijdens een Z-sprong."
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -1375,7 +1375,7 @@ msgstr "De temperatuur van de nozzle op de momenten waarop een andere nozzle wor
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount label"
 msgid "Nozzle Switch Retraction Distance"
-msgstr "Intrekafstand bij wisselen nozzles"
+msgstr "Intrekafstand bij Wisselen Nozzles"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
@@ -1387,7 +1387,7 @@ msgstr "De intrekafstand: indien u deze optie instelt op 0, wordt er niet ingetr
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
-msgstr "Intreksnelheid bij wisselen nozzles"
+msgstr "Intreksnelheid bij Wisselen Nozzles"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds description"
@@ -1399,7 +1399,7 @@ msgstr "De snelheid waarmee het filament wordt ingetrokken. Een hogere intreksne
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speed label"
 msgid "Nozzle Switch Retract Speed"
-msgstr "Intrekkingssnelheid bij wisselen nozzles"
+msgstr "Intrekkingssnelheid bij Wisselen Nozzles"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speed description"
@@ -1410,7 +1410,7 @@ msgstr "De snelheid waarmee het filament tijdens een intrekbeweging tijdens het 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed label"
 msgid "Nozzle Switch Prime Speed"
-msgstr "Primesnelheid bij wisselen nozzles"
+msgstr "Primesnelheid bij Wisselen Nozzles"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed description"
@@ -1422,7 +1422,7 @@ msgstr "De snelheid waarmee het filament tijdens een intrekbeweging na het wisse
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch label"
 msgid "Z Hop After Extruder Switch"
-msgstr "Z-beweging na wisselen extruder"
+msgstr "Z-beweging na Wisselen Extruder"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch description"
@@ -1475,7 +1475,7 @@ msgstr "De snelheid waarmee wanden worden geprint."
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
-msgstr "Snelheid buitenwand"
+msgstr "Snelheid Buitenwand"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 description"
@@ -1489,7 +1489,7 @@ msgstr "De snelheid waarmee de buitenwanden worden geprint. Als u de buitenwand 
 #: fdmprinter.def.json
 msgctxt "speed_wall_x label"
 msgid "Inner Wall Speed"
-msgstr "Snelheid binnenwand"
+msgstr "Snelheid Binnenwand"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_x description"
@@ -1502,7 +1502,7 @@ msgstr "De snelheid waarmee alle binnenwanden worden geprint. Als u de binnenwan
 #: fdmprinter.def.json
 msgctxt "speed_topbottom label"
 msgid "Top/Bottom Speed"
-msgstr "Snelheid boven-/onderkant"
+msgstr "Snelheid Boven-/Onderkant"
 
 #: fdmprinter.def.json
 msgctxt "speed_topbottom description"
@@ -1512,7 +1512,7 @@ msgstr "De snelheid waarmee boven-/onderlagen worden geprint."
 #: fdmprinter.def.json
 msgctxt "speed_support label"
 msgid "Support Speed"
-msgstr "Snelheid supportstructuur"
+msgstr "Snelheid Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "speed_support description"
@@ -1525,7 +1525,7 @@ msgstr "De snelheid waarmee de supportstructuur wordt geprint. Als u de supports
 #: fdmprinter.def.json
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
-msgstr "Vulsnelheid supportstructuur"
+msgstr "Vulsnelheid Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_infill description"
@@ -1537,7 +1537,7 @@ msgstr "De snelheid waarmee de supportvulling wordt geprint. Als u de vulling la
 #: fdmprinter.def.json
 msgctxt "speed_support_interface label"
 msgid "Support Interface Speed"
-msgstr "Vulsnelheid verbindingsstructuur"
+msgstr "Vulsnelheid Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_interface description"
@@ -1549,7 +1549,7 @@ msgstr "De snelheid waarmee de supportdaken en -bodems worden geprint. Als u dez
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
-msgstr "Snelheid primepijler"
+msgstr "Snelheid Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower description"
@@ -1572,7 +1572,7 @@ msgstr "De snelheid waarmee bewegingen plaatsvinden."
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 label"
 msgid "Initial Layer Speed"
-msgstr "Snelheid eerste laag"
+msgstr "Snelheid Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
@@ -1584,7 +1584,7 @@ msgstr "De snelheid waarmee de eerste laag wordt geprint. Hiervoor wordt een lag
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
 msgid "Initial Layer Print Speed"
-msgstr "Printsnelheid eerste laag"
+msgstr "Printsnelheid Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 description"
@@ -1596,7 +1596,7 @@ msgstr "De snelheid waarmee de eerste laag wordt geprint. Hiervoor wordt een lag
 #: fdmprinter.def.json
 msgctxt "speed_travel_layer_0 label"
 msgid "Initial Layer Travel Speed"
-msgstr "Bewegingssnelheid eerste laag"
+msgstr "Bewegingssnelheid Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "speed_travel_layer_0 description"
@@ -1608,7 +1608,7 @@ msgstr "De snelheid van de bewegingen tijdens het printen van de eerste laag. Hi
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed label"
 msgid "Skirt/Brim Speed"
-msgstr "Skirt-/brimsnelheid"
+msgstr "Skirt-/Brimsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed description"
@@ -1633,7 +1633,7 @@ msgstr "De maximale snelheid waarmee het platform wordt bewogen. Wanneer u deze 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers label"
 msgid "Number of Slower Layers"
-msgstr "Aantal lagen met lagere printsnelheid"
+msgstr "Aantal Lagen met Lagere Printsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers description"
@@ -1646,7 +1646,7 @@ msgstr "De eerste lagen worden minder snel geprint dan de rest van het model, om
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_enabled label"
 msgid "Equalize Filament Flow"
-msgstr "Filamentdoorvoer afstemmen"
+msgstr "Filamentdoorvoer Afstemmen"
 
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_enabled description"
@@ -1660,7 +1660,7 @@ msgstr "Print lijnen die dunner zijn dan normaal, sneller zodat de hoeveelheid d
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max label"
 msgid "Maximum Speed for Flow Equalization"
-msgstr "Maximale snelheid voor het afstemmen van de doorvoer"
+msgstr "Maximale Snelheid voor het Afstemmen van Doorvoer"
 
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_max description"
@@ -1671,14 +1671,14 @@ msgstr "Maximale printsnelheid tijdens het aanpassen van de printsnelheid om de 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
 msgid "Enable Acceleration Control"
-msgstr "Acceleratiecontrole inschakelen"
+msgstr "Acceleratieregulering Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled description"
 msgid ""
 "Enables adjusting the print head acceleration. Increasing the accelerations "
 "can reduce printing time at the cost of print quality."
-msgstr "Hiermee schakelt u de printkopacceleratie in. Door het verhogen van de acceleratie wordt de printtijd mogelijk verkort ten koste van de printkwaliteit."
+msgstr "Hiermee stelt u de printkopacceleratie in. Door het verhogen van de acceleratie wordt de printtijd mogelijk verkort ten koste van de printkwaliteit."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -1733,7 +1733,7 @@ msgstr "De acceleratie tijdens het printen van alle binnenwanden."
 #: fdmprinter.def.json
 msgctxt "acceleration_topbottom label"
 msgid "Top/Bottom Acceleration"
-msgstr "Acceleratie boven-/onderkant"
+msgstr "Acceleratie Boven-/Onderkant"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_topbottom description"
@@ -1743,7 +1743,7 @@ msgstr "De acceleratie tijdens het printen van de boven-/onderlagen."
 #: fdmprinter.def.json
 msgctxt "acceleration_support label"
 msgid "Support Acceleration"
-msgstr "Acceleratie supportstructuur"
+msgstr "Acceleratie Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support description"
@@ -1753,7 +1753,7 @@ msgstr "De acceleratie tijdens het printen van de supportstructuur."
 #: fdmprinter.def.json
 msgctxt "acceleration_support_infill label"
 msgid "Support Infill Acceleration"
-msgstr "Acceleratie supportvulling"
+msgstr "Acceleratie Supportvulling"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_infill description"
@@ -1763,7 +1763,7 @@ msgstr "De acceleratie tijdens het printen van de supportvulling."
 #: fdmprinter.def.json
 msgctxt "acceleration_support_interface label"
 msgid "Support Interface Acceleration"
-msgstr "Acceleratie verbindingsstructuur"
+msgstr "Acceleratie Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_interface description"
@@ -1775,7 +1775,7 @@ msgstr "De acceleratie tijdens het printen van de supportdaken en -bodems. Als u
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
-msgstr "Acceleratie primepijler"
+msgstr "Acceleratie Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower description"
@@ -1795,7 +1795,7 @@ msgstr "De acceleratie tijdens het uitvoeren van bewegingen."
 #: fdmprinter.def.json
 msgctxt "acceleration_layer_0 label"
 msgid "Initial Layer Acceleration"
-msgstr "Acceleratie eerste laag"
+msgstr "Acceleratie Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_layer_0 description"
@@ -1805,7 +1805,7 @@ msgstr "De acceleratie voor de eerste laag."
 #: fdmprinter.def.json
 msgctxt "acceleration_print_layer_0 label"
 msgid "Initial Layer Print Acceleration"
-msgstr "Printacceleratie eerste laag"
+msgstr "Printacceleratie Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print_layer_0 description"
@@ -1815,7 +1815,7 @@ msgstr "De acceleratie tijdens het printen van de eerste laag."
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 label"
 msgid "Initial Layer Travel Acceleration"
-msgstr "Bewegingsacceleratie eerste laag"
+msgstr "Bewegingsacceleratie Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 description"
@@ -1825,7 +1825,7 @@ msgstr "De acceleratie tijdens het uitvoeren van bewegingen in de eerste laag."
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim label"
 msgid "Skirt/Brim Acceleration"
-msgstr "Acceleratie skirt/brim"
+msgstr "Acceleratie Skirt/Brim"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim description"
@@ -1838,7 +1838,7 @@ msgstr "De acceleratie tijdens het printen van de skirt en de brim. Normaal gebe
 #: fdmprinter.def.json
 msgctxt "jerk_enabled label"
 msgid "Enable Jerk Control"
-msgstr "Schokcontrole inschakelen"
+msgstr "Schokregulering Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "jerk_enabled description"
@@ -1846,7 +1846,7 @@ msgid ""
 "Enables adjusting the jerk of print head when the velocity in the X or Y "
 "axis changes. Increasing the jerk can reduce printing time at the cost of "
 "print quality."
-msgstr "Hiermee schakelt u de schok van de printkop in wanneer de snelheid in de X- of Y-as verandert. Door het verhogen van de schok wordt de printtijd mogelijk verkort ten koste van de printkwaliteit."
+msgstr "Hiermee stelt u de schok van de printkop in wanneer de snelheid in de X- of Y-as verandert. Door het verhogen van de schok wordt de printtijd mogelijk verkort ten koste van de printkwaliteit."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
@@ -1882,7 +1882,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 label"
 msgid "Outer Wall Jerk"
-msgstr "Schok buitenwand"
+msgstr "Schok Buitenwand"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 description"
@@ -1894,7 +1894,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
-msgstr "Schok binnenwand"
+msgstr "Schok Binnenwand"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x description"
@@ -1906,7 +1906,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van a
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom label"
 msgid "Top/Bottom Jerk"
-msgstr "Schok boven-/onderkant"
+msgstr "Schok Boven-/Onderkant"
 
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom description"
@@ -1918,7 +1918,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
 msgid "Support Jerk"
-msgstr "Schok supportstructuur"
+msgstr "Schok Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support description"
@@ -1930,7 +1930,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_support_infill label"
 msgid "Support Infill Jerk"
-msgstr "Schok supportvulling"
+msgstr "Schok Supportvulling"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_infill description"
@@ -1942,7 +1942,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface label"
 msgid "Support Interface Jerk"
-msgstr "Schok verbindingsstructuur"
+msgstr "Schok Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface description"
@@ -1954,7 +1954,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
 msgid "Prime Tower Jerk"
-msgstr "Schok primepijler"
+msgstr "Schok Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower description"
@@ -1977,7 +1977,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het uitvoeren van
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 label"
 msgid "Initial Layer Jerk"
-msgstr "Schok eerste laag"
+msgstr "Schok Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -1987,7 +1987,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering in de eerste laag."
 #: fdmprinter.def.json
 msgctxt "jerk_print_layer_0 label"
 msgid "Initial Layer Print Jerk"
-msgstr "Printschok eerste laag"
+msgstr "Printschok Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "jerk_print_layer_0 description"
@@ -1999,7 +1999,7 @@ msgstr "De maximale onmiddellijke snelheidsverandering tijdens het printen van d
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 label"
 msgid "Initial Layer Travel Jerk"
-msgstr "Bewegingsschok eerste laag"
+msgstr "Bewegingsschok Eerste Laag"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 description"
@@ -2009,7 +2009,7 @@ msgstr "De acceleratie tijdens het uitvoeren van bewegingen in de eerste laag."
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "Schok skirt/brim"
+msgstr "Schok Skirt/Brim"
 
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim description"
@@ -2058,12 +2058,12 @@ msgstr "Alles"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "No Skin"
-msgstr "Geen skin"
+msgstr "Geen Skin"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts when Traveling"
-msgstr "Geprinte delen mijden tijdens bewegingen"
+msgstr "Geprinte Delen Mijden Tijdens Bewegingen"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts description"
@@ -2075,7 +2075,7 @@ msgstr "Tijdens bewegingen mijdt de nozzle delen die al zijn geprint. Deze optie
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
 msgid "Travel Avoid Distance"
-msgstr "Afstand voor mijden tijdens bewegingen"
+msgstr "Mijdafstand Tijdens Bewegingen"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance description"
@@ -2097,7 +2097,7 @@ msgstr "Koelen"
 #: fdmprinter.def.json
 msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
-msgstr "Koelen van de print inschakelen"
+msgstr "Koelen van de Print Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_enabled description"
@@ -2119,7 +2119,7 @@ msgstr "De snelheid waarmee de printventilatoren draaien."
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_min label"
 msgid "Regular Fan Speed"
-msgstr "Normale ventilatorsnelheid"
+msgstr "Normale Ventilatorsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_min description"
@@ -2132,7 +2132,7 @@ msgstr "De snelheid waarmee de ventilatoren draaien voordat de drempelwaarde wor
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_max label"
 msgid "Maximum Fan Speed"
-msgstr "Maximale ventilatorsnelheid"
+msgstr "Maximale Ventilatorsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_max description"
@@ -2145,7 +2145,7 @@ msgstr "De snelheid waarmee de ventilatoren draaien bij de minimale laagtijd. Wa
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time_fan_speed_max label"
 msgid "Regular/Maximum Fan Speed Threshold"
-msgstr "Drempelwaarde normale/maximale ventilatorsnelheid"
+msgstr "Drempelwaarde Normale/Maximale Ventilatorsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time_fan_speed_max description"
@@ -2159,7 +2159,7 @@ msgstr "De laagtijd waarmee de drempelwaarde tussen de normale ventilatorsnelhei
 #: fdmprinter.def.json
 msgctxt "cool_fan_full_at_height label"
 msgid "Regular Fan Speed at Height"
-msgstr "Normale ventilatorsnelheid op hoogte"
+msgstr "Normale Ventilatorsnelheid op Hoogte"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_full_at_height description"
@@ -2171,7 +2171,7 @@ msgstr "De hoogte waarop de ventilatoren op normale snelheid draaien. Tijdens he
 #: fdmprinter.def.json
 msgctxt "cool_fan_full_layer label"
 msgid "Regular Fan Speed at Layer"
-msgstr "Normale ventilatorsnelheid op laag"
+msgstr "Normale Ventilatorsnelheid op Laag"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_full_layer description"
@@ -2183,7 +2183,7 @@ msgstr "De laag waarop de ventilatoren op normale snelheid draaien. Als de norma
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
-msgstr "Minimale laagtijd"
+msgstr "Minimale Laagtijd"
 
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time description"
@@ -2209,7 +2209,7 @@ msgstr "De minimale printsnelheid die wordt aangehouden ondanks vertragen vanweg
 #: fdmprinter.def.json
 msgctxt "cool_lift_head label"
 msgid "Lift Head"
-msgstr "Printkop optillen"
+msgstr "Printkop Optillen"
 
 #: fdmprinter.def.json
 msgctxt "cool_lift_head description"
@@ -2232,7 +2232,7 @@ msgstr "Supportstructuur"
 #: fdmprinter.def.json
 msgctxt "support_enable label"
 msgid "Enable Support"
-msgstr "Supportstructuur inschakelen"
+msgstr "Supportstructuur Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "support_enable description"
@@ -2244,7 +2244,7 @@ msgstr "Schakel het printen van een supportstructuur in. Een supportstructuur on
 #: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
-msgstr "Plaatsing supportstructuur"
+msgstr "Plaatsing Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_type description"
@@ -2257,7 +2257,7 @@ msgstr "Past de plaatsing van de supportstructuur aan. De plaatsing kan worden i
 #: fdmprinter.def.json
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
-msgstr "Platform aanraken"
+msgstr "Platform Aanraken"
 
 #: fdmprinter.def.json
 msgctxt "support_type option everywhere"
@@ -2267,7 +2267,7 @@ msgstr "Overal"
 #: fdmprinter.def.json
 msgctxt "support_angle label"
 msgid "Support Overhang Angle"
-msgstr "Overhanghoek supportstructuur"
+msgstr "Overhanghoek Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_angle description"
@@ -2279,7 +2279,7 @@ msgstr "De minimale overhanghoek waarbij een supportstructuur wordt toegevoegd. 
 #: fdmprinter.def.json
 msgctxt "support_pattern label"
 msgid "Support Pattern"
-msgstr "Patroon supportstructuur"
+msgstr "Patroon Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_pattern description"
@@ -2316,7 +2316,7 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
 msgid "Connect Support ZigZags"
-msgstr "Zigzaglijnen supportstructuur verbinden"
+msgstr "Zigzaglijnen Supportstructuur Verbinden"
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags description"
@@ -2328,7 +2328,7 @@ msgstr "Verbind de zigzaglijnen. Hiermee versterkt u de zigzag-supportstructuur.
 #: fdmprinter.def.json
 msgctxt "support_infill_rate label"
 msgid "Support Density"
-msgstr "Dichtheid supportstructuur"
+msgstr "Dichtheid Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -2340,7 +2340,7 @@ msgstr "Past de dichtheid van de supportstructuur aan. Met een hogere waarde kri
 #: fdmprinter.def.json
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
-msgstr "Lijnafstand supportstructuur"
+msgstr "Lijnafstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_line_distance description"
@@ -2352,7 +2352,7 @@ msgstr "De afstand tussen de geprinte lijnen van de supportstructuur. Deze inste
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
-msgstr "Z-afstand supportstructuur"
+msgstr "Z-afstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance description"
@@ -2365,7 +2365,7 @@ msgstr "De afstand tussen de boven-/onderkant van de supportstructuur en de prin
 #: fdmprinter.def.json
 msgctxt "support_top_distance label"
 msgid "Support Top Distance"
-msgstr "Afstand van bovenkant supportstructuur"
+msgstr "Afstand van Bovenkant Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_top_distance description"
@@ -2375,7 +2375,7 @@ msgstr "De afstand van de bovenkant van de supportstructuur tot de print."
 #: fdmprinter.def.json
 msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
-msgstr "Afstand van onderkant supportstructuur"
+msgstr "Afstand van Onderkant Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_distance description"
@@ -2385,7 +2385,7 @@ msgstr "De afstand van de print tot de onderkant van de supportstructuur."
 #: fdmprinter.def.json
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
-msgstr "X-/Y-afstand supportstructuur"
+msgstr "X-/Y-afstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance description"
@@ -2395,7 +2395,7 @@ msgstr "Afstand tussen de supportstructuur en de print, in de X- en Y-richting."
 #: fdmprinter.def.json
 msgctxt "support_xy_overrides_z label"
 msgid "Support Distance Priority"
-msgstr "Prioriteit afstand supportstructuur"
+msgstr "Prioriteit Afstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_overrides_z description"
@@ -2419,7 +2419,7 @@ msgstr "Z krijgt voorrang boven X/Y"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang label"
 msgid "Minimum Support X/Y Distance"
-msgstr "Minimale X-/Y-afstand supportstructuur"
+msgstr "Minimale X-/Y-afstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
@@ -2430,7 +2430,7 @@ msgstr "Afstand tussen de supportstructuur en de overhang in de X- en Y-richting
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
 msgid "Support Stair Step Height"
-msgstr "Hoogte traptreden supportstructuur"
+msgstr "Hoogte Traptreden Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height description"
@@ -2443,7 +2443,7 @@ msgstr "De hoogte van de treden van het trapvormige grondvlak van de supportstru
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
 msgid "Support Join Distance"
-msgstr "Samenvoegafstand supportstructuur"
+msgstr "Samenvoegafstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance description"
@@ -2456,7 +2456,7 @@ msgstr "De maximale afstand tussen de supportstructuren in de X- en Y-richting. 
 #: fdmprinter.def.json
 msgctxt "support_offset label"
 msgid "Support Horizontal Expansion"
-msgstr "Horizontale uitbreiding supportstructuur"
+msgstr "Horizontale Uitzetting Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_offset description"
@@ -2468,7 +2468,7 @@ msgstr "De mate van offset die wordt toegepast op alle steunpolygonen in elke la
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
 msgid "Enable Support Interface"
-msgstr "Verbindingsstructuur inschakelen"
+msgstr "Verbindingsstructuur Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable description"
@@ -2481,7 +2481,7 @@ msgstr "Hiermee maakt u een dichte verbindingsstructuur tussen het model en de s
 #: fdmprinter.def.json
 msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
-msgstr "Dikte verbindingsstructuur"
+msgstr "Dikte Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_height description"
@@ -2493,7 +2493,7 @@ msgstr "De dikte van de verbindingsstructuur waar dit het model aan de onder- of
 #: fdmprinter.def.json
 msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
-msgstr "Dikte supportdak"
+msgstr "Dikte Supportdak"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_height description"
@@ -2505,7 +2505,7 @@ msgstr "De dikte van de supportdaken. Hiermee wordt het aantal dichte lagen bepa
 #: fdmprinter.def.json
 msgctxt "support_bottom_height label"
 msgid "Support Bottom Thickness"
-msgstr "Dikte supportbodem"
+msgstr "Dikte Supportbodem"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_height description"
@@ -2517,7 +2517,7 @@ msgstr "De dikte van de supportbodems. Hiermee wordt het aantal dichte lagen bep
 #: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
-msgstr "Resolutie verbindingsstructuur"
+msgstr "Resolutie Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_skip_height description"
@@ -2531,7 +2531,7 @@ msgstr "Maak, tijdens het controleren waar zich boven de supportstructuur delen 
 #: fdmprinter.def.json
 msgctxt "support_interface_density label"
 msgid "Support Interface Density"
-msgstr "Dichtheid verbindingsstructuur"
+msgstr "Dichtheid Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_density description"
@@ -2544,7 +2544,7 @@ msgstr "Hiermee past u de dichtheid van de daken en bodems van de supportstructu
 #: fdmprinter.def.json
 msgctxt "support_interface_line_distance label"
 msgid "Support Interface Line Distance"
-msgstr "Lijnafstand verbindingsstructuur"
+msgstr "Lijnafstand Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_line_distance description"
@@ -2556,7 +2556,7 @@ msgstr "De afstand tussen de geprinte lijnen van de verbindingsstructuur. Deze i
 #: fdmprinter.def.json
 msgctxt "support_interface_pattern label"
 msgid "Support Interface Pattern"
-msgstr "Patroon verbindingsstructuur"
+msgstr "Patroon Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_pattern description"
@@ -2593,7 +2593,7 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
 msgid "Use Towers"
-msgstr "Pijlers gebruiken"
+msgstr "Pijlers Gebruiken"
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers description"
@@ -2616,7 +2616,7 @@ msgstr "De diameter van een speciale pijler."
 #: fdmprinter.def.json
 msgctxt "support_minimal_diameter label"
 msgid "Minimum Diameter"
-msgstr "Minimale diameter"
+msgstr "Minimale Diameter"
 
 #: fdmprinter.def.json
 msgctxt "support_minimal_diameter description"
@@ -2628,7 +2628,7 @@ msgstr "De minimale diameter in de X- en Y-richting van een kleiner gebied dat m
 #: fdmprinter.def.json
 msgctxt "support_tower_roof_angle label"
 msgid "Tower Roof Angle"
-msgstr "Hoek van pijlerdak"
+msgstr "Hoek van Pijlerdak"
 
 #: fdmprinter.def.json
 msgctxt "support_tower_roof_angle description"
@@ -2640,7 +2640,7 @@ msgstr "De hoek van een dak van een pijler. Een hogere waarde zorgt voor een spi
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "Hechting aan platform"
+msgstr "Hechting aan Platform"
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion description"
@@ -2650,7 +2650,7 @@ msgstr "Hechting"
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr "X-positie voor primen extruder"
+msgstr "X-positie voor Primen Extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x description"
@@ -2662,7 +2662,7 @@ msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprime
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr "Y-positie voor primen extruder"
+msgstr "Y-positie voor Primen Extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_y description"
@@ -2674,7 +2674,7 @@ msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt geprime
 #: fdmprinter.def.json
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
-msgstr "Type hechting aan platform"
+msgstr "Type Hechting aan Platform"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
@@ -2704,7 +2704,7 @@ msgstr "Raft"
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
-msgstr "Aantal skirtlijnen"
+msgstr "Aantal Skirtlijnen"
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count description"
@@ -2729,7 +2729,7 @@ msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.\n
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
-msgstr "Minimale skirt-/brimlengte"
+msgstr "Minimale Skirt-/Brimlengte"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length description"
@@ -2743,7 +2743,7 @@ msgstr "De minimale lengte van de skirt of de brim. Als deze minimumlengte niet 
 #: fdmprinter.def.json
 msgctxt "brim_width label"
 msgid "Brim Width"
-msgstr "Breedte brim"
+msgstr "Breedte Brim"
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -2756,7 +2756,7 @@ msgstr "De afstand vanaf de rand van het model tot de buitenrand van de brim. Ee
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
-msgstr "Aantal brimlijnen"
+msgstr "Aantal Brimlijnen"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count description"
@@ -2768,7 +2768,7 @@ msgstr "Het aantal lijnen dat voor een brim wordt gebruikt. Meer lijnen zorgen v
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
 msgid "Brim Only on Outside"
-msgstr "Brim alleen aan buitenkant"
+msgstr "Brim Alleen aan Buitenkant"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"
@@ -2781,7 +2781,7 @@ msgstr "Print de brim alleen aan de buitenkant van het model. Hiermee verkleint 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
 msgid "Raft Extra Margin"
-msgstr "Extra marge raft"
+msgstr "Extra Marge Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_margin description"
@@ -2794,7 +2794,7 @@ msgstr "Als de raft is ingeschakeld, is dit het extra raftgebied rond het model 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
-msgstr "Luchtruimte raft"
+msgstr "Luchtruimte Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap description"
@@ -2820,7 +2820,7 @@ msgstr "Laat de eerste en tweede laag van het model overlappen in de Z-richting 
 #: fdmprinter.def.json
 msgctxt "raft_surface_layers label"
 msgid "Raft Top Layers"
-msgstr "Bovenlagen raft"
+msgstr "Bovenlagen Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_layers description"
@@ -2833,7 +2833,7 @@ msgstr "Het aantal bovenlagen op de tweede raftlaag. Dit zijn volledig gevulde l
 #: fdmprinter.def.json
 msgctxt "raft_surface_thickness label"
 msgid "Raft Top Layer Thickness"
-msgstr "Dikte bovenlaag raft"
+msgstr "Dikte Bovenlaag Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_thickness description"
@@ -2843,7 +2843,7 @@ msgstr "Laagdikte van de bovenste lagen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_surface_line_width label"
 msgid "Raft Top Line Width"
-msgstr "Breedte bovenste lijn raft"
+msgstr "Breedte Bovenste Lijn Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_line_width description"
@@ -2855,7 +2855,7 @@ msgstr "De breedte van de lijnen in de bovenkant van de raft. Dit kunnen dunne l
 #: fdmprinter.def.json
 msgctxt "raft_surface_line_spacing label"
 msgid "Raft Top Spacing"
-msgstr "Bovenruimte raft"
+msgstr "Bovenruimte Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_line_spacing description"
@@ -2867,7 +2867,7 @@ msgstr "De afstand tussen de raftlijnen voor de bovenste lagen van de raft. Als 
 #: fdmprinter.def.json
 msgctxt "raft_interface_thickness label"
 msgid "Raft Middle Thickness"
-msgstr "Lijndikte midden raft"
+msgstr "Lijndikte Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_thickness description"
@@ -2877,7 +2877,7 @@ msgstr "De laagdikte van de middelste laag van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_interface_line_width label"
 msgid "Raft Middle Line Width"
-msgstr "Lijnbreedte midden raft"
+msgstr "Lijnbreedte Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_line_width description"
@@ -2889,7 +2889,7 @@ msgstr "Breedte van de lijnen in de middelste laag van de raft. Als u voor de tw
 #: fdmprinter.def.json
 msgctxt "raft_interface_line_spacing label"
 msgid "Raft Middle Spacing"
-msgstr "Tussenruimte midden raft"
+msgstr "Tussenruimte Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_line_spacing description"
@@ -2902,7 +2902,7 @@ msgstr "De afstand tussen de raftlijnen voor de middelste laag van de raft. De r
 #: fdmprinter.def.json
 msgctxt "raft_base_thickness label"
 msgid "Raft Base Thickness"
-msgstr "Dikte grondvlak raft"
+msgstr "Dikte Grondvlak Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_thickness description"
@@ -2914,7 +2914,7 @@ msgstr "De laagdikte van de grondlaag van de raft. Deze laag moet dik zijn, zoda
 #: fdmprinter.def.json
 msgctxt "raft_base_line_width label"
 msgid "Raft Base Line Width"
-msgstr "Lijnbreedte grondvlak raft"
+msgstr "Lijnbreedte Grondvlak Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_width description"
@@ -2926,7 +2926,7 @@ msgstr "Breedte van de lijnen van de onderste laag van de raft. Deze lijnen moet
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Line Spacing"
-msgstr "Tussenruimte lijnen raft"
+msgstr "Tussenruimte Lijnen Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing description"
@@ -2938,7 +2938,7 @@ msgstr "De afstand tussen de lijnen in de onderste laag van de raft. Als u hier 
 #: fdmprinter.def.json
 msgctxt "raft_speed label"
 msgid "Raft Print Speed"
-msgstr "Printsnelheid raft"
+msgstr "Printsnelheid Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_speed description"
@@ -2948,7 +2948,7 @@ msgstr "De snelheid waarmee de raft wordt geprint."
 #: fdmprinter.def.json
 msgctxt "raft_surface_speed label"
 msgid "Raft Top Print Speed"
-msgstr "Printsnelheid bovenkant raft"
+msgstr "Printsnelheid Bovenkant Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_speed description"
@@ -2961,7 +2961,7 @@ msgstr "De snelheid waarmee de toplagen van de raft worden geprint. Deze lagen m
 #: fdmprinter.def.json
 msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
-msgstr "Printsnelheid midden raft"
+msgstr "Printsnelheid Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_speed description"
@@ -2974,7 +2974,7 @@ msgstr "De snelheid waarmee de middelste laag van de raft wordt geprint. Deze la
 #: fdmprinter.def.json
 msgctxt "raft_base_speed label"
 msgid "Raft Base Print Speed"
-msgstr "Printsnelheid grondvlak raft"
+msgstr "Printsnelheid Grondvlak Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_speed description"
@@ -2987,7 +2987,7 @@ msgstr "De snelheid waarmee de grondlaag van de raft wordt geprint. Deze laag mo
 #: fdmprinter.def.json
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
-msgstr "Printacceleratie raft"
+msgstr "Printacceleratie Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_acceleration description"
@@ -2997,7 +2997,7 @@ msgstr "De acceleratie tijdens het printen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_surface_acceleration label"
 msgid "Raft Top Print Acceleration"
-msgstr "Printacceleratie bovenkant raft"
+msgstr "Printacceleratie Bovenkant Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_acceleration description"
@@ -3007,7 +3007,7 @@ msgstr "De acceleratie tijdens het printen van de toplagen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_interface_acceleration label"
 msgid "Raft Middle Print Acceleration"
-msgstr "Printacceleratie midden raft"
+msgstr "Printacceleratie Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_acceleration description"
@@ -3017,7 +3017,7 @@ msgstr "De acceleratie tijdens het printen van de middelste laag van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_base_acceleration label"
 msgid "Raft Base Print Acceleration"
-msgstr "Printacceleratie grondvlak raft"
+msgstr "Printacceleratie Grondvlak Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_acceleration description"
@@ -3027,7 +3027,7 @@ msgstr "De acceleratie tijdens het printen van het grondvlak van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
-msgstr "Printschok raft"
+msgstr "Printschok Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_jerk description"
@@ -3037,7 +3037,7 @@ msgstr "De schok tijdens het printen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_surface_jerk label"
 msgid "Raft Top Print Jerk"
-msgstr "Printschok bovenkant raft"
+msgstr "Printschok Bovenkant Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_jerk description"
@@ -3047,7 +3047,7 @@ msgstr "De schok tijdens het printen van de toplagen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_interface_jerk label"
 msgid "Raft Middle Print Jerk"
-msgstr "Printschok midden raft"
+msgstr "Printschok Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_jerk description"
@@ -3057,7 +3057,7 @@ msgstr "De schok tijdens het printen van de middelste laag van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_base_jerk label"
 msgid "Raft Base Print Jerk"
-msgstr "Printschok grondvlak raft"
+msgstr "Printschok Grondvlak Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_jerk description"
@@ -3067,7 +3067,7 @@ msgstr "De schok tijdens het printen van het grondvlak van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
-msgstr "Ventilatorsnelheid raft"
+msgstr "Ventilatorsnelheid Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_fan_speed description"
@@ -3077,7 +3077,7 @@ msgstr "De ventilatorsnelheid tijdens het printen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_surface_fan_speed label"
 msgid "Raft Top Fan Speed"
-msgstr "Ventilatorsnelheid bovenkant raft"
+msgstr "Ventilatorsnelheid Bovenkant Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_fan_speed description"
@@ -3087,7 +3087,7 @@ msgstr "De ventilatorsnelheid tijdens het printen van de toplagen van de raft."
 #: fdmprinter.def.json
 msgctxt "raft_interface_fan_speed label"
 msgid "Raft Middle Fan Speed"
-msgstr "Ventilatorsnelheid midden raft"
+msgstr "Ventilatorsnelheid Midden Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_fan_speed description"
@@ -3097,7 +3097,7 @@ msgstr "De ventilatorsnelheid tijdens het printen van de middelste laag van de r
 #: fdmprinter.def.json
 msgctxt "raft_base_fan_speed label"
 msgid "Raft Base Fan Speed"
-msgstr "Ventilatorsnelheid grondlaag raft"
+msgstr "Ventilatorsnelheid Grondlaag Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_fan_speed description"
@@ -3107,7 +3107,7 @@ msgstr "De ventilatorsnelheid tijdens het printen van de grondlaag van de raft."
 #: fdmprinter.def.json
 msgctxt "dual label"
 msgid "Dual Extrusion"
-msgstr "Dubbele doorvoer"
+msgstr "Dubbele Doorvoer"
 
 #: fdmprinter.def.json
 msgctxt "dual description"
@@ -3117,7 +3117,7 @@ msgstr "Instellingen die worden gebruikt voor het printen met meerdere extruders
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr label"
 msgid "Build Plate Adhesion Extruder"
-msgstr "Extruder voor hechting aan platform"
+msgstr "Extruder Hechting aan Platform"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr description"
@@ -3129,7 +3129,7 @@ msgstr "De extruder train die wordt gebruikt voor het printen van de skirt/brim/
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr label"
 msgid "Support Extruder"
-msgstr "Extruder voor supportstructuur"
+msgstr "Extruder Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr description"
@@ -3141,7 +3141,7 @@ msgstr "De extruder train die wordt gebruikt voor het printen van de supportstru
 #: fdmprinter.def.json
 msgctxt "support_infill_extruder_nr label"
 msgid "Support Infill Extruder"
-msgstr "Extruder supportvulling"
+msgstr "Extruder Supportvulling"
 
 #: fdmprinter.def.json
 msgctxt "support_infill_extruder_nr description"
@@ -3153,7 +3153,7 @@ msgstr "De extruder train die wordt gebruikt voor het printen van de supportvull
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr_layer_0 label"
 msgid "First Layer Support Extruder"
-msgstr "Extruder voor eerste laag van support"
+msgstr "Extruder Eerste Laag van Support"
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr_layer_0 description"
@@ -3165,7 +3165,7 @@ msgstr "De extruder train die wordt gebruikt voor het printen van de eerste laag
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr label"
 msgid "Support Interface Extruder"
-msgstr "Extruder verbindingsstructuur"
+msgstr "Extruder Verbindingsstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr description"
@@ -3177,7 +3177,7 @@ msgstr "De extruder train die wordt gebruikt voor het printen van de daken en bo
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable label"
 msgid "Enable Prime Tower"
-msgstr "Primepijler inschakelen"
+msgstr "Primepijler Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable description"
@@ -3189,7 +3189,7 @@ msgstr "Print een pijler naast de print, waarop het materiaal na iedere nozzlewi
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
-msgstr "Formaat primepijler"
+msgstr "Formaat Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -3199,7 +3199,7 @@ msgstr "De breedte van de primepijler."
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
-msgstr "X-positie primepijler"
+msgstr "X-positie Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x description"
@@ -3209,7 +3209,7 @@ msgstr "De X-coördinaat van de positie van de primepijler."
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
-msgstr "Y-positie primepijler"
+msgstr "Y-positie Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y description"
@@ -3219,7 +3219,7 @@ msgstr "De Y-coördinaat van de positie van de primepijler."
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
-msgstr "Doorvoer primepijler"
+msgstr "Doorvoer Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow description"
@@ -3231,7 +3231,7 @@ msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wor
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Nozzle on Prime Tower"
-msgstr "Nozzle vegen op primepijler"
+msgstr "Nozzle Vegen op Primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled description"
@@ -3243,7 +3243,7 @@ msgstr "Veeg na het printen van de primepijler met één nozzle het doorgevoerde
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Dual Extrusion Overlap"
-msgstr "Overlap dubbele doorvoer"
+msgstr "Overlap Dubbele Doorvoer"
 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap description"
@@ -3255,7 +3255,7 @@ msgstr "Als modellen worden geprint met verschillende extruder trains, ontstaat 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
-msgstr "Doorvoerscherm inschakelen"
+msgstr "Uitloopscherm Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled description"
@@ -3263,12 +3263,12 @@ msgid ""
 "Enable exterior ooze shield. This will create a shell around the model which "
 "is likely to wipe a second nozzle if it's at the same height as the first "
 "nozzle."
-msgstr "Hiermee wordt het doorvoerscherm aan de buitenkant ingeschakeld, waardoor een shell rond het model wordt gemaakt waarop een tweede nozzle kan worden afgeveegd als deze zich op dezelfde hoogte bevindt als de eerste nozzle."
+msgstr "Hiermee wordt het uitloopscherm aan de buitenkant ingeschakeld, waardoor een shell rond het model wordt gemaakt waarop een tweede nozzle kan worden afgeveegd als deze zich op dezelfde hoogte bevindt als de eerste nozzle."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_angle label"
 msgid "Ooze Shield Angle"
-msgstr "Hoek doorvoerscherm"
+msgstr "Hoek Uitloopscherm"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_angle description"
@@ -3276,17 +3276,17 @@ msgid ""
 "The maximum angle a part in the ooze shield will have. With 0 degrees being "
 "vertical, and 90 degrees being horizontal. A smaller angle leads to less "
 "failed ooze shields, but more material."
-msgstr "De maximale hoek voor een deel van het doorvoerscherm. Hierbij is 0 graden verticaal en 90 graden horizontaal. Een kleinere hoek leidt tot minder mislukte doorvoerschermen, maar zorgt ervoor dat er meer materiaal wordt gebruikt."
+msgstr "De maximale hoek voor een deel van het uitloopscherm. Hierbij is 0 graden verticaal en 90 graden horizontaal. Een kleinere hoek leidt tot minder mislukte uitloopschermen, maar zorgt ervoor dat er meer materiaal wordt gebruikt."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_dist label"
 msgid "Ooze Shield Distance"
-msgstr "Afstand doorvoerscherm"
+msgstr "Afstand Uitloopscherm"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_dist description"
 msgid "Distance of the ooze shield from the print, in the X/Y directions."
-msgstr "De afstand tussen het doorvoerscherm en de print, in de X- en Y-richting."
+msgstr "De afstand tussen het uitloopscherm en de print, in de X- en Y-richting."
 
 #: fdmprinter.def.json
 msgctxt "meshfix label"
@@ -3301,7 +3301,7 @@ msgstr "category_fixes"
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
 msgid "Union Overlapping Volumes"
-msgstr "Overlappende volumes samenvoegen"
+msgstr "Overlappende Volumes Samenvoegen"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all description"
@@ -3313,7 +3313,7 @@ msgstr "Negeer de interne geometrie die ontstaat uit overlappende volumes en pri
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all_remove_holes label"
 msgid "Remove All Holes"
-msgstr "Alle gaten verwijderen"
+msgstr "Alle Gaten Verwijderen"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all_remove_holes description"
@@ -3326,7 +3326,7 @@ msgstr "Verwijder de gaten in elke laag en behoudt u alleen de buitenvorm. Hierm
 #: fdmprinter.def.json
 msgctxt "meshfix_extensive_stitching label"
 msgid "Extensive Stitching"
-msgstr "Uitgebreid hechten"
+msgstr "Uitgebreid Hechten"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_extensive_stitching description"
@@ -3339,7 +3339,7 @@ msgstr "Met uitgebreid hechten worden zo veel mogelijk open gaten in het raster 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
-msgstr "Onderbroken oppervlakken behouden"
+msgstr "Onderbroken Oppervlakken Behouden"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
@@ -3353,7 +3353,7 @@ msgstr "Normaal probeert Cura kleine gaten in het raster te hechten en delen van
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
 msgid "Special Modes"
-msgstr "Speciale modi"
+msgstr "Speciale Modi"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
@@ -3378,12 +3378,12 @@ msgstr "Met deze optie bepaalt u of u alle modellen tegelijk, laag voor laag pri
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
 msgid "All at Once"
-msgstr "Allemaal tegelijk"
+msgstr "Alles Tegelijk"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
-msgstr "Eén voor één"
+msgstr "Eén voor Eén"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh label"
@@ -3401,7 +3401,7 @@ msgstr "Gebruik dit raster om de vulling aan te passen van andere rasters waarme
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Infill Mesh Order"
-msgstr "Volgorde vulraster"
+msgstr "Volgorde Vulraster"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -3444,7 +3444,7 @@ msgstr "Beide"
 #: fdmprinter.def.json
 msgctxt "magic_spiralize label"
 msgid "Spiralize Outer Contour"
-msgstr "Buitencontour spiraliseren"
+msgstr "Buitencontour Spiraliseren"
 
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
@@ -3468,7 +3468,7 @@ msgstr "experimenteel!"
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
-msgstr "Tochtscherm inschakelen"
+msgstr "Tochtscherm Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_enabled description"
@@ -3490,7 +3490,7 @@ msgstr "De afstand tussen het tochtscherm en de print, in de X- en Y-richting."
 #: fdmprinter.def.json
 msgctxt "draft_shield_height_limitation label"
 msgid "Draft Shield Limitation"
-msgstr "Beperking tochtscherm"
+msgstr "Beperking Tochtscherm"
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_height_limitation description"
@@ -3512,7 +3512,7 @@ msgstr "Beperkt"
 #: fdmprinter.def.json
 msgctxt "draft_shield_height label"
 msgid "Draft Shield Height"
-msgstr "Hoogte tochtscherm"
+msgstr "Hoogte Tochtscherm"
 
 #: fdmprinter.def.json
 msgctxt "draft_shield_height description"
@@ -3524,7 +3524,7 @@ msgstr "Stel een hoogtebeperking in voor het tochtscherm. Boven deze hoogte word
 #: fdmprinter.def.json
 msgctxt "conical_overhang_enabled label"
 msgid "Make Overhang Printable"
-msgstr "Overhang printbaar maken"
+msgstr "Overhang Printbaar Maken"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_enabled description"
@@ -3537,7 +3537,7 @@ msgstr "Verander de geometrie van het geprinte model dusdanig dat minimale suppo
 #: fdmprinter.def.json
 msgctxt "conical_overhang_angle label"
 msgid "Maximum Model Angle"
-msgstr "Maximale modelhoek"
+msgstr "Maximale Modelhoek"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_angle description"
@@ -3550,7 +3550,7 @@ msgstr "De maximale hoek van een overhang nadat deze printbaar is gemaakt. Bij e
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
 msgid "Enable Coasting"
-msgstr "Coasting inschakelen"
+msgstr "Coasting Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable description"
@@ -3575,7 +3575,7 @@ msgstr "Hiermee stelt u volume in dat anders zou worden afgevoerd. Deze waarde d
 #: fdmprinter.def.json
 msgctxt "coasting_min_volume label"
 msgid "Minimum Volume Before Coasting"
-msgstr "Minimaal volume vóór coasting"
+msgstr "Minimaal Volume vóór Coasting"
 
 #: fdmprinter.def.json
 msgctxt "coasting_min_volume description"
@@ -3602,7 +3602,7 @@ msgstr "De snelheid waarmee de printkop tijdens coasting beweegt ten opzichte va
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
 msgid "Extra Skin Wall Count"
-msgstr "Aantal extra wandlijnen rond de skin"
+msgstr "Aantal Extra Wandlijnen Rond Skin"
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count description"
@@ -3615,7 +3615,7 @@ msgstr "Vervang het buitenste gedeelte van het patroon boven-/onderkant door een
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation label"
 msgid "Alternate Skin Rotation"
-msgstr "Skinrotatie wisselen"
+msgstr "Skinrotatie Wisselen"
 
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation description"
@@ -3640,7 +3640,7 @@ msgstr "Experimentele functie: maak draagvlakken aan de onderkant kleiner dan bi
 #: fdmprinter.def.json
 msgctxt "support_conical_angle label"
 msgid "Conical Support Angle"
-msgstr "Hoek conische supportstructuur"
+msgstr "Hoek Conische Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_angle description"
@@ -3654,7 +3654,7 @@ msgstr "De hoek van de schuine kant van de conische supportstructuur, waarbij 0 
 #: fdmprinter.def.json
 msgctxt "support_conical_min_width label"
 msgid "Conical Support Minimum Width"
-msgstr "Minimale breedte conische supportstructuur"
+msgstr "Minimale Breedte Conische Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_min_width description"
@@ -3666,7 +3666,7 @@ msgstr "Minimale breedte waarmee het grondvlak van het kegelvormige supportgebie
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
 msgid "Fuzzy Skin"
-msgstr "Rafelig oppervlak"
+msgstr "Rafelig Oppervlak"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled description"
@@ -3678,7 +3678,7 @@ msgstr "Door willekeurig trillen tijdens het printen van de buitenwand wordt het
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
 msgid "Fuzzy Skin Thickness"
-msgstr "Dikte rafelig oppervlak"
+msgstr "Dikte Rafelig Oppervlak"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness description"
@@ -3690,7 +3690,7 @@ msgstr "De breedte van de trilling. Het wordt aangeraden hiervoor een waarde in 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_density label"
 msgid "Fuzzy Skin Density"
-msgstr "Dichtheid rafelig oppervlak"
+msgstr "Dichtheid Rafelig Oppervlak"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_density description"
@@ -3703,7 +3703,7 @@ msgstr "De gemiddelde dichtheid van de punten die op elke polygoon in een laag w
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_dist label"
 msgid "Fuzzy Skin Point Distance"
-msgstr "Puntafstand rafelig oppervlak"
+msgstr "Puntafstand Rafelig Oppervlak"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_dist description"
@@ -3731,7 +3731,7 @@ msgstr "Print alleen de buitenkant van het object in een dunne webstructuur, 'in
 #: fdmprinter.def.json
 msgctxt "wireframe_height label"
 msgid "WP Connection Height"
-msgstr "Verbindingshoogte tijdens draadprinten"
+msgstr "Verbindingshoogte Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_height description"
@@ -3744,7 +3744,7 @@ msgstr "De hoogte van de opgaande en diagonaal neergaande lijnen tussen twee hor
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_inset label"
 msgid "WP Roof Inset Distance"
-msgstr "Afstand dakuitsparingen tijdens draadprinten"
+msgstr "Afstand Dakuitsparingen Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_inset description"
@@ -3756,7 +3756,7 @@ msgstr "De afstand die wordt overbrugt wanneer vanaf een dakcontour een verbindi
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed label"
 msgid "WP Speed"
-msgstr "Snelheid tijdens draadprinten"
+msgstr "Snelheid Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed description"
@@ -3768,7 +3768,7 @@ msgstr "De snelheid waarmee de nozzle beweegt tijdens het doorvoeren van materia
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_bottom label"
 msgid "WP Bottom Printing Speed"
-msgstr "Printsnelheid bodem tijdens draadprinten"
+msgstr "Printsnelheid Bodem Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_bottom description"
@@ -3780,7 +3780,7 @@ msgstr "De snelheid waarmee de eerste laag wordt geprint. Dit is tevens de enige
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_up label"
 msgid "WP Upward Printing Speed"
-msgstr "Opwaartse printsnelheid tijdens draadprinten"
+msgstr "Opwaartse Printsnelheid Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_up description"
@@ -3791,7 +3791,7 @@ msgstr "De snelheid waarmee een lijn naar boven 'in het luchtledige' wordt gepri
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_down label"
 msgid "WP Downward Printing Speed"
-msgstr "Neerwaartse printsnelheid tijdens draadprinten"
+msgstr "Neerwaartse Printsnelheid Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_down description"
@@ -3802,7 +3802,7 @@ msgstr "De snelheid waarmee een lijn diagonaal naar beneden wordt geprint. Allee
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_flat label"
 msgid "WP Horizontal Printing Speed"
-msgstr "Horizontale printsnelheid tijdens draadprinten"
+msgstr "Horizontale Printsnelheid Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_flat description"
@@ -3814,7 +3814,7 @@ msgstr "De snelheid waarmee de contouren van een model worden geprint. Alleen va
 #: fdmprinter.def.json
 msgctxt "wireframe_flow label"
 msgid "WP Flow"
-msgstr "Doorvoer tijdens draadprinten"
+msgstr "Doorvoer Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flow description"
@@ -3826,7 +3826,7 @@ msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wor
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_connection label"
 msgid "WP Connection Flow"
-msgstr "Verbindingsdoorvoer tijdens draadprinten"
+msgstr "Verbindingsdoorvoer Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_connection description"
@@ -3836,7 +3836,7 @@ msgstr "Doorvoercompensatie tijdens bewegingen naar boven of beneden. Alleen van
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_flat label"
 msgid "WP Flat Flow"
-msgstr "Doorvoer platte lijn tijdens draadprinten"
+msgstr "Doorvoer Platte Lijn Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_flat description"
@@ -3847,7 +3847,7 @@ msgstr "Doorvoercompensatie tijdens het printen van platte lijnen. Alleen van to
 #: fdmprinter.def.json
 msgctxt "wireframe_top_delay label"
 msgid "WP Top Delay"
-msgstr "Opwaartse vertraging tijdens draadprinten"
+msgstr "Opwaartse Vertraging Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_delay description"
@@ -3859,7 +3859,7 @@ msgstr "Vertraging na een opwaartse beweging, zodat de opwaartse lijn kan uithar
 #: fdmprinter.def.json
 msgctxt "wireframe_bottom_delay label"
 msgid "WP Bottom Delay"
-msgstr "Neerwaartse vertraging tijdens draadprinten"
+msgstr "Neerwaartse Vertraging Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_bottom_delay description"
@@ -3869,7 +3869,7 @@ msgstr "Vertraging na een neerwaartse beweging. Alleen van toepassing op Draadpr
 #: fdmprinter.def.json
 msgctxt "wireframe_flat_delay label"
 msgid "WP Flat Delay"
-msgstr "Vertraging platte lijn tijdens draadprinten"
+msgstr "Vertraging Platte Lijn Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flat_delay description"
@@ -3882,7 +3882,7 @@ msgstr "Vertragingstijd tussen twee horizontale segmenten. Een dergelijke vertra
 #: fdmprinter.def.json
 msgctxt "wireframe_up_half_speed label"
 msgid "WP Ease Upward"
-msgstr "Langzaam opwaarts tijdens draadprinten"
+msgstr "Langzaam Opwaarts Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_up_half_speed description"
@@ -3895,7 +3895,7 @@ msgstr "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
 msgid "WP Knot Size"
-msgstr "Verdikkingsgrootte tijdens draadprinten"
+msgstr "Knoopgrootte Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump description"
@@ -3908,7 +3908,7 @@ msgstr "Maakt een kleine verdikking boven aan een opwaartse lijn, zodat de volge
 #: fdmprinter.def.json
 msgctxt "wireframe_fall_down label"
 msgid "WP Fall Down"
-msgstr "Valafstand tijdens draadprinten"
+msgstr "Valafstand Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_fall_down description"
@@ -3920,7 +3920,7 @@ msgstr "De afstand die het materiaal valt na een opwaartse doorvoer. Deze afstan
 #: fdmprinter.def.json
 msgctxt "wireframe_drag_along label"
 msgid "WP Drag Along"
-msgstr "Meeslepen tijdens draadprinten"
+msgstr "Meeslepen Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_drag_along description"
@@ -3965,7 +3965,7 @@ msgstr "Intrekken"
 #: fdmprinter.def.json
 msgctxt "wireframe_straight_before_down label"
 msgid "WP Straighten Downward Lines"
-msgstr "Neerwaartse lijnen rechtbuigen tijdens draadprinten"
+msgstr "Neerwaartse Lijnen Rechtbuigen Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_straight_before_down description"
@@ -3978,7 +3978,7 @@ msgstr "Het percentage van een diagonaal neerwaartse lijn die wordt afgedekt doo
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_fall_down label"
 msgid "WP Roof Fall Down"
-msgstr "Valafstand dak tijdens draadprinten"
+msgstr "Valafstand Dak Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_fall_down description"
@@ -3991,7 +3991,7 @@ msgstr "De afstand die horizontale daklijnen die 'in het luchtledige' worden gep
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_drag_along label"
 msgid "WP Roof Drag Along"
-msgstr "Meeslepen dak tijdens draadprinten"
+msgstr "Meeslepen Dak Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_drag_along description"
@@ -4016,7 +4016,7 @@ msgstr "De wachttijd aan de buitenkant van een gat dat een dak moet gaan vormen.
 #: fdmprinter.def.json
 msgctxt "wireframe_nozzle_clearance label"
 msgid "WP Nozzle Clearance"
-msgstr "Tussenruimte nozzle tijdens draadprinten"
+msgstr "Tussenruimte Nozzle Draadprinten"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_nozzle_clearance description"
