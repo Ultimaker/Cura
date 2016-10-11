@@ -2159,7 +2159,8 @@
                     },
                     "default_value": "all",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
                 },
                 "travel_avoid_other_parts":
                 {
