@@ -59,40 +59,43 @@ Set the travel speed of the initial layer(s) to reduce risk of extruder pulling 
 *Support Interface
 It is now possible to print a support bottom as well as a support roof. Support bottoms are placed where the support rests on the model.
 
-*Bug fixes & minor changes
-Deleting grouped objects works as intended again.
-Duplicating groups works as intended again.
-Bridging works as intended again.
+*Bug fixes
+Deleting grouped objects
+Duplicating groups
+Bridging
+Drag and drop on the first run on Windows
+Unretraction speeds
+Bottom layer in Spiralize mode
+Overlap Compensation
+Retractions on Raft
+Retractions now occur after each object printed in one-at-a-time mode.
 Rafts are no longer printed outside of build area.
-Messages are now displayed 30 seconds instead of 10, making it less likely that certain messages are missed.
-Drag and drop on the first run on windows works again.
-You are now notified if you try to save to a locked SD card.
-Combing is applied in more cases and results in better paths.
-Infill thickness now supports Grid infill also for even multiples of the layer height.
-Unretraction speeds are correct again.
-Spiralize mode doesn’t spiralize the bottom layer any more.
 Spiralize now spiralizes each part in a layer.
-Support is no longer removed by unprintable thin parts of the model.
-Support is now generated on each layer it’s supposed to.
-Support doesn't go outside overhang areas any more.
 Line distance is now the actual line distance.
 Enabling raft doesn’t influence at which height the model is sliced any more.
 Brim is now always printed just once.
-Overlap Compensation works as intended again.
-A raft now produces a reasonable amount of retractions.
-No more string plume on top of one-at-a-time printed objects.
-Engine log is now included in the application log.
 Support roofs now only occur just below overhang.
-Brim is now also generated under the support.
-Compensate overlapping wall parts now also works for inner walls.
-Bed Level and Checkup procedures for UMO+ can now be done without re-adding machine.
+
+*Minor changes
+Messages are now displayed 30 seconds instead of 10, making it less likely that certain messages are missed.
+You are now notified if you try to save to a locked SD card.
+Engine log is now included in the application log.
 Undo and Redo now work correctly with multiple operations.
 The last used folder is now remembered (instead of defaulting to home folder)
-You can now adjust the speed at which the bed is lowered each layer.
-Settings shared between skirt and brim now also activate when brim is selected.
 Made it possible to add multiple Per Model Settings at once.
+Bed Level and Checkup procedures for UMO+ can now be done without re-adding machine.
+Combing is applied in more cases and results in better paths.
+Infill thickness now supports Grid infill also for even multiples of the layer height.
+Support is no longer removed by unprintable thin parts of the model.
+Support is now generated on each layer it’s supposed to.
+Support doesn't go outside overhang areas any more.
 Support doesn't remove brim around the object any more.
+Brim is now also generated under the support.
 Draft shield and Ooze shield get their own brim or raft.
+Settings shared between skirt and brim now also activate when brim is selected.
+Compensate overlapping wall parts now also works for inner walls.
+You can now adjust the speed at which the bed is lowered each layer.
+
 
 [2.1.3]
 
