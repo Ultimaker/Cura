@@ -81,6 +81,7 @@ material_map = {
 	"T-Glase": "t-glase",
 	"Bronzefill": "colorfabb-metal-filled",
 	"Copperfill": "colorfabb-metal-filled",
+	"HT": "HT-5300",
 	
 	# Expert
 	"PP-Conductive": "protopasta-conductive-PLA",
@@ -123,7 +124,6 @@ material_map = {
 	"HIPS_scaffold": "HIPS-scaffold-support",
 	
 	#Experimental
-	"HT": "HT-5300",
 	"b-pet": "b-pet",
 	"PC-MAX": "polymaker-PC-MAX",
 	"wood-bamboo": "woodFill-bambooFill",
@@ -167,6 +167,7 @@ material_order = {
 	"T-Glase":             58,
 	"Bronzefill":          59,
 	"Copperfill":          60,
+	"HT":                  61,
 	
 	# Expert
 	"PP-Conductive":      500,
@@ -209,7 +210,6 @@ material_order = {
 	"HIPS_scaffold":      112,
 	
 	#Experimental
-	"HT":                5001,
 	"b-pet":             5002,
 	"PC-MAX":            5003,
 	"wood-bamboo":       5004,
@@ -253,6 +253,7 @@ material_types = {
 	"T-Glase": "Advanced",
 	"Bronzefill": "Advanced",
 	"Copperfill": "Advanced",
+	"HT": "Advanced",
 	
 	# Expert
 	"PP-Conductive": "Expert",
@@ -329,6 +330,7 @@ material_names = {
 	"T-Glase": "t-glase (Taulman)",
 	"Bronzefill": "bronzeFill (colorFabb)",
 	"Copperfill": "copperFill (colorFabb)",
+	"HT": "HT (colorFabb)",
 	
 	# Expert
 	"PP-Conductive": "Conductive (Proto-pasta)",
@@ -371,7 +373,6 @@ material_names = {
 	"HIPS_scaffold": "HIPS & Scaffold Support",
 	
 	# Experimental
-	"HT": "HT (colorFabb)",
 	"b-pet": "B-Pet",
 	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
@@ -482,6 +483,7 @@ bed_prep_materials = {
 	"645-Nylon",
 	"PC-ABS",
 	"nGen",
+	"HT",
 }
 
 profile_map = {
