@@ -464,6 +464,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Reset timeout state
         self._connection_state_before_timeout = None
         self._last_response_time = time()
+        self._last_request_time = None
 
         # Stop update timers
         self._update_timer.stop()
