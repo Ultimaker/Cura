@@ -3692,7 +3692,7 @@
                 },
                 "prime_tower_wipe_enabled":
                 {
-                    "label": "Wipe Nozzle on Prime Tower",
+                    "label": "Wipe Inactive Nozzle on Prime Tower",
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
