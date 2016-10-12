@@ -223,6 +223,9 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
+
+        old_active_container_stack = self._active_container_stack
+
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -232,8 +235,16 @@ class MachineManager(QObject):
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
         else:
             self._active_container_stack = self._global_container_stack
+
+        old_active_stack_valid = self._active_stack_valid
         self._active_stack_valid = not self._checkStackForErrors(self._active_container_stack)
-        self.activeStackValidationChanged.emit()
+        if old_active_stack_valid != self._active_stack_valid:
+            self.activeStackValidationChanged.emit()
+
+        if old_active_container_stack != self._active_container_stack:
+            # Many methods and properties related to the active quality actually depend
+            # on _active_container_stack. If it changes, then the properties change.
+            self.activeQualityChanged.emit()
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
