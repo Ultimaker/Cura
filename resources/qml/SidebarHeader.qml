@@ -244,7 +244,7 @@ Column
                     }
 
                 }
-                property var valueWarning: Cura.MachineManager.activeQualityId == "empty_quality"
+                property var valueWarning: Cura.MachineManager.activeQualityContainerId == "empty_quality"
 
                 enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
