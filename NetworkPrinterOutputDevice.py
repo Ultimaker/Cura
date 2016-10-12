@@ -440,6 +440,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
 
     def close(self):
+        Logger.log("d", "Closing connection of printer %s with ip %s", self._key, self._address)
         self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
         if self._progress_message:
