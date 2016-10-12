@@ -535,7 +535,7 @@ msgid ""
 "The selected material is imcompatible with the selected machine or "
 "configuration."
 msgstr ""
-"The selected material is imcompatible with the selected machine or "
+"The selected material is incompatible with the selected machine or "
 "configuration."
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:666
