@@ -120,7 +120,11 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = quality_container.getDefinition().getId()
+        definition = quality_container.getDefinition()
+        if definition:
+            definition_id = definition.getId()
+        else:
+            definition_id = "empty_quality"
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
@@ -136,9 +140,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             new_criteria.pop("extruder")
             containers = self._container_registry.findInstanceContainers(**new_criteria)
 
-        if not containers:
+        if not containers and "material" in criteria:
             # Try again, this time without material
-            criteria.pop("material")
+            criteria.pop("material", None)
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
@@ -147,7 +151,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
-            UM.Logger.log("Could not find any quality containers matching the search criteria %s" % str(criteria))
+            UM.Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
             return
 
         if quality_changes_container:
