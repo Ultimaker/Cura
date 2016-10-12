@@ -134,7 +134,7 @@ class MachineManager(QObject):
 
         definition_id = "fdmprinter"
         if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
-            definition_id = self._global_container_stack.getBottom().getId()
+            definition_id = self.activeQualityDefinitionId
         extruder_manager = ExtruderManager.getInstance()
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
         if containers:  # New material ID is known
@@ -145,7 +145,7 @@ class MachineManager(QObject):
                     matching_extruder = extruder
                     break
 
-            if matching_extruder and matching_extruder.findContainer({"type":"material"}).getMetaDataEntry("GUID") != material_id:
+            if matching_extruder and matching_extruder.findContainer({"type": "material"}).getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
                 self._auto_materials_changed[str(index)] = containers[0].getId()
                 self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
