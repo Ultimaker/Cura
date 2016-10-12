@@ -29,9 +29,9 @@ class GCODEReader(MeshReader):
         if n < 1:
             return None
         m = line.find(' ', n)
-        m2 = line.find(';', n)
-        if m < 0:
-            m = m2
+        # m2 = line.find(';', n)
+        # if m < 0:
+        #     m = m2
         try:
             if m < 0:
                 return int(line[n:])
@@ -44,9 +44,9 @@ class GCODEReader(MeshReader):
         if n < 1:
             return None
         m = line.find(' ', n)
-        m2 = line.find(';', n)
-        if m < 0:
-            m = m2
+        # m2 = line.find(';', n)
+        # if m < 0:
+        #     m = m2
         try:
             if m < 0:
                 return float(line[n:])
@@ -95,6 +95,7 @@ class GCODEReader(MeshReader):
             current_x = 0
             current_y = 0
             current_z = 0
+            current_e = 0
 
             def CreatePolygon():
                 count = len(current_path)
@@ -126,32 +127,49 @@ class GCODEReader(MeshReader):
                 if line[0] == ";":
                     continue
                 G = self.getInt(line, "G")
-                if G:
+                if G is not None:
                     if G == 0 or G == 1:
                         x = self.getFloat(line, "X")
                         y = self.getFloat(line, "Y")
                         z = self.getFloat(line, "Z")
                         e = self.getFloat(line, "E")
-                        if x:
+                        if x is not None:
                             current_x = x
-                        if y:
+                        if y is not None:
                             current_y = y
-                        if z:
+                        if z is not None:
                             current_z = z
-                        if e and e > 0:
-                            current_path.append([current_x, current_z, -current_y])
+                        if e is not None:
+                            if e >= current_e:
+                                current_path.append([current_x, current_z, -current_y])
+                            else:
+                                if len(current_path) > 1:
+                                    CreatePolygon()
+                                else:
+                                    current_path.clear()
+                            current_e = e
                         else:
                             if len(current_path) > 1:
                                 CreatePolygon()
+                            else:
+                                current_path.clear()
+                    elif G == 28:
+                        x = self.getFloat(line, "X")
+                        y = self.getFloat(line, "Y")
+                        if x is not None:
+                            current_x += x
+                        if y is not None:
+                            current_y += y
+                        current_z = 0
                     elif G == 92:
                         x = self.getFloat(line, "X")
                         y = self.getFloat(line, "Y")
                         z = self.getFloat(line, "Z")
-                        if x:
+                        if x is not None:
                             current_x += x
-                        if y:
+                        if y is not None:
                             current_y += y
-                        if z:
+                        if z is not None:
                             current_z += z
 
             if len(current_path) > 1:
