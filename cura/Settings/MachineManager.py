@@ -148,7 +148,17 @@ class MachineManager(QObject):
 
             if matching_extruder and matching_extruder.findContainer({"type": "material"}).getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                self._auto_materials_changed[str(index)] = containers[0].getId()
+                if matching_extruder:
+                    variant_container = matching_extruder.findContainer({"type": "variant"})
+                if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and variant_container:
+                    variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), variant_container)
+                    for container in containers:
+                        if container.getMetaDataEntry("variant") == variant_id:
+                            self._auto_materials_changed[str(index)] = container.getId()
+                            break
+                else:
+                    # Just use the first result we found.
+                    self._auto_materials_changed[str(index)] = containers[0].getId()
                 self._printer_output_devices[0].materialHotendChangedMessage(self._materialHotendChangedCallback)
         else:
             Logger.log("w", "No material definition found for printer definition %s and GUID %s" % (definition_id, material_id))
