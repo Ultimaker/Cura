@@ -47,5 +47,13 @@ Generic PLA profile. Serves as an example file, data in this file is not correct
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker Original"/>
             <setting key="standby temperature">150</setting>
         </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 3"/>
+            <hotend id="BB 0.4" />
+            <hotend id="AA 0.4">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+        </machine>
     </settings>
 </fdmmaterial>
