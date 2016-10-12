@@ -3,6 +3,7 @@
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from PyQt5.QtWidgets import QMessageBox
+from UM import Util
 
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -503,6 +504,14 @@ class MachineManager(QObject):
                 return quality.getMetaDataEntry("quality_type")
         return ""
 
+    @pyqtProperty(bool, notify = activeQualityChanged)
+    def isActiveQualitySupported(self):
+        if self._active_container_stack:
+            quality = self._active_container_stack.findContainer(type = "quality")
+            if quality:
+                return Util.parseBool(quality.getMetaDataEntry("supported", True))
+        return ""
+
     ##  Get the Quality ID associated with the currently active extruder
     #   Note that this only returns the "quality", not the "quality_changes"
     #   \returns QualityID (string) if found, empty string otherwise
@@ -512,7 +521,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = activeQualityChanged)
     def activeQualityContainerId(self):
         # We're using the active stack instead of the global stack in case the list of qualities differs per extruder
-        if self._active_container_stack:
+        if self._global_container_stack:
             quality = self._active_container_stack.findContainer(type = "quality")
             if quality:
                 return quality.getId()
