@@ -2354,7 +2354,7 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
-                    "resolve": "'everywhere' if 'everywhere' in extruderValues('support_type') else buildplate",
+                    "resolve": "'everywhere' if 'everywhere' in extruderValues('support_type') else 'buildplate'",
                     "enabled": "support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
