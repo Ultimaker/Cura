@@ -118,14 +118,8 @@ class LayerView(View):
             if type(node) is ConvexHullNode and not Selection.isSelected(node.getWatchedNode()):
                 continue
 
-            flag = False
-            try:
-                flag = node.gcode
-            except AttributeError:
-                pass
-
             if not node.render(renderer):
-                if node.getMeshData() and node.isVisible() and not flag:
+                if node.getMeshData() and node.isVisible():
                     renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
     def setLayer(self, value):
