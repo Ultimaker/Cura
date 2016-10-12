@@ -314,9 +314,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and self._connection_state_before_timeout:
             if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
                 self._recreate_network_manager_count += 1
+                counter = 0  # Counter to prevent possible indefinite while loop.
                 # It can happen that we had a very long timeout (multiple times the recreate time).
                 # In that case we should jump through the point that the next update won't be right away.
-                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
+                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time and counter < 10:
+                    counter += 1
                     self._recreate_network_manager_count += 1
                 Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", time_since_last_response)
                 self._createNetworkManager()
