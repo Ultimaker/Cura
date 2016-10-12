@@ -230,6 +230,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + ":8080/?action=snapshot")
         image_request = QNetworkRequest(url)
         self._manager.get(image_request)
+        self._last_request_time = time()
 
     ##  Set the authentication state.
     #   \param auth_state \type{AuthState} Enum value representing the new auth state
