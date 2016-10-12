@@ -110,9 +110,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "definition": quality_changes_container.getDefinition().getId()
             }
 
-            if self._material_id and self._material_id != "empty_material":
-                criteria["material"] = self._material_id
-
             quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
                 UM.Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
