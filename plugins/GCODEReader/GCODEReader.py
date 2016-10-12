@@ -140,7 +140,7 @@ class GCODEReader(MeshReader):
                         if z is not None:
                             current_z = z
                         if e is not None:
-                            if e >= current_e:
+                            if e > current_e:
                                 current_path.append([current_x, current_z, -current_y])
                             else:
                                 if len(current_path) > 1:
@@ -151,15 +151,15 @@ class GCODEReader(MeshReader):
                         else:
                             if len(current_path) > 1:
                                 CreatePolygon()
-                            else:
+                            elif G == 1:
                                 current_path.clear()
                     elif G == 28:
                         x = self.getFloat(line, "X")
                         y = self.getFloat(line, "Y")
                         if x is not None:
-                            current_x += x
+                            current_x = x
                         if y is not None:
-                            current_y += y
+                            current_y = y
                         current_z = 0
                     elif G == 92:
                         x = self.getFloat(line, "X")
@@ -189,13 +189,18 @@ class GCODEReader(MeshReader):
             mesh_builder.addCube(10, 10, 10, Vector(0, -5, 0))
 
             scene_node.setMeshData(mesh_builder.build())
-            scene_node.setPosition(Vector(0,0,0))
+
+            settings = Application.getInstance().getGlobalContainerStack()
+            machine_width = settings.getProperty("machine_width", "value")
+            machine_depth = settings.getProperty("machine_depth", "value")
+
+            scene_node.setPosition(Vector(-machine_width/2, 0, machine_depth/2))
 
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
                 view.resetLayerData()
 
-            #scene_node.setEnabled(False)
+            scene_node.setEnabled(False)
             #scene_node.setSelectable(False)
 
         return scene_node
