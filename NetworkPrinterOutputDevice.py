@@ -631,6 +631,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._compressing_print = False
             if self._post_reply:
                 self._post_reply.abort()
+                self._post_reply = None
             Application.getInstance().showPrintMonitor.emit(False)
 
     ##  Attempt to start a new print.
@@ -747,6 +748,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._post_reply.abort()
                 self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
                 Logger.log("d", "Uploading of print failed after %s", time() - self._send_gcode_start)
+                self._post_reply = None
                 self._progress_message.hide()
 
             self.setConnectionState(ConnectionState.error)
@@ -901,6 +903,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             elif "print_job" in reply_url:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 Logger.log("d", "Uploading of print succeeded after %s", time() - self._send_gcode_start)
+                # Only reset the _post_reply if it was the same one.
+                if reply == self._post_reply:
+                    self._post_reply = None
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
