@@ -3699,7 +3699,7 @@
                     "default_value": true,
                     "resolve": "any(extruderValues('prime_tower_wipe_enabled'))",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
                 "dual_pre_wipe":
                 {
@@ -3710,7 +3710,7 @@
                     "default_value": true,
                     "resolve": "any(extruderValues('dual_pre_wipe'))",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
                 "multiple_mesh_overlap":
                 {
