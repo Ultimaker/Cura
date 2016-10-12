@@ -45,16 +45,11 @@ class LayerPass(RenderPass):
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay)
 
         for node in DepthFirstIterator(self._scene.getRoot()):
-            flag = False
-            try:
-                flag = node.gcode
-            except AttributeError:
-                pass
 
             if isinstance(node, ToolHandle):
                 tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
 
-            elif isinstance(node, SceneNode) and (node.getMeshData() or flag) and node.isVisible():
+            elif isinstance(node, SceneNode) and (node.getMeshData()) and node.isVisible():
                 layer_data = node.callDecoration("getLayerData")
                 if not layer_data:
                     continue

@@ -48,6 +48,16 @@ class GCODEReader(MeshReader):
 
             scene_node.getBoundingBox = getBoundingBox
             scene_node.gcode = True
+            backend = Application.getInstance().getBackend()
+            backend._pauseSlicing = True
+            backend.backendStateChange.emit(0)
+
+            mesh_builder = MeshBuilder()
+            mesh_builder.setFileName(file_name)
+
+            mesh_builder.addCube(10,10,10)
+
+            scene_node.setMeshData(mesh_builder.build())
 
             layer_data = LayerDataBuilder.LayerDataBuilder()
             layer_count = 1

@@ -69,6 +69,8 @@ class CuraEngineBackend(Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
+        self._pauseSlicing = False
+
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
@@ -399,7 +401,8 @@ class CuraEngineBackend(Backend):
     #
     #   This indicates that we should probably re-slice soon.
     def _onChanged(self, *args, **kwargs):
-        self._change_timer.start()
+        if not self._pauseSlicing:
+            self._change_timer.start()
 
     ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):
