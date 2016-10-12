@@ -244,7 +244,7 @@ Column
                     }
 
                 }
-                property var valueWarning: Cura.MachineManager.activeQualityContainerId == "empty_quality"
+                property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
 
                 enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
@@ -292,7 +292,7 @@ Column
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
-            property var valueWarning: Cura.MachineManager.activeQualityId == "empty_quality"
+            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
             menu: ProfileMenu { }
 
             UM.SimpleButton
