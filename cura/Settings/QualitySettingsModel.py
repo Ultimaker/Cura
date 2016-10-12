@@ -117,11 +117,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition = quality_container.getDefinition()
-        if definition:
-            definition_id = definition.getId()
-        else:
-            definition_id = "empty_quality"
+        definition_id = quality_container.getDefinition().getId()
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
