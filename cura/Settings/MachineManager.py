@@ -223,6 +223,9 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
+
+        old_active_container_stack = self._active_container_stack
+
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:
             self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -232,8 +235,16 @@ class MachineManager(QObject):
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
         else:
             self._active_container_stack = self._global_container_stack
+
+        old_active_stack_valid = self._active_stack_valid
         self._active_stack_valid = not self._checkStackForErrors(self._active_container_stack)
-        self.activeStackValidationChanged.emit()
+        if old_active_stack_valid != self._active_stack_valid:
+            self.activeStackValidationChanged.emit()
+
+        if old_active_container_stack != self._active_container_stack:
+            # Many methods and properties related to the active quality actually depend
+            # on _active_container_stack. If it changes, then the properties change.
+            self.activeQualityChanged.emit()
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
@@ -475,11 +486,11 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityId(self):
-        if self._global_container_stack:
-            quality = self._global_container_stack.findContainer({"type": "quality_changes"})
+        if self._active_container_stack:
+            quality = self._active_container_stack.findContainer({"type": "quality_changes"})
             if quality and quality != self._empty_quality_changes_container:
                 return quality.getId()
-            quality = self._global_container_stack.findContainer({"type": "quality"})
+            quality = self._active_container_stack.findContainer({"type": "quality"})
             if quality:
                 return quality.getId()
         return ""
@@ -490,6 +501,21 @@ class MachineManager(QObject):
             quality = self._global_container_stack.findContainer(type = "quality")
             if quality:
                 return quality.getMetaDataEntry("quality_type")
+        return ""
+
+    ##  Get the Quality ID associated with the currently active extruder
+    #   Note that this only returns the "quality", not the "quality_changes"
+    #   \returns QualityID (string) if found, empty string otherwise
+    #   \sa activeQualityId()
+    #   \todo Ideally, this method would be named activeQualityId(), and the other one
+    #         would be named something like activeQualityOrQualityChanges() for consistency
+    @pyqtProperty(str, notify = activeQualityChanged)
+    def activeQualityContainerId(self):
+        # We're using the active stack instead of the global stack in case the list of qualities differs per extruder
+        if self._active_container_stack:
+            quality = self._active_container_stack.findContainer(type = "quality")
+            if quality:
+                return quality.getId()
         return ""
 
     @pyqtProperty(str, notify = activeQualityChanged)

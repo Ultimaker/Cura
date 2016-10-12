@@ -62,7 +62,7 @@ UM.ManagementPage
         Button
         {
             text: catalog.i18nc("@label", "Create")
-            enabled: base.canCreateProfile()
+            enabled: base.canCreateProfile() && Cura.MachineManager.activeQualityId != "empty_quality"
             visible: base.canCreateProfile()
             iconName: "list-add";
 
@@ -78,7 +78,7 @@ UM.ManagementPage
         Button
         {
             text: catalog.i18nc("@label", "Duplicate")
-            enabled: ! base.canCreateProfile()
+            enabled: ! base.canCreateProfile() && Cura.MachineManager.activeQualityId != "empty_quality"
             visible: ! base.canCreateProfile()
             iconName: "list-add";
 
