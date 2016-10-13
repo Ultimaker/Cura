@@ -392,7 +392,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "machine_max_feedrate_x": {
+                "machine_max_feedrate_x":
+                {
                     "label": "Maximum Speed X",
                     "description": "The maximum speed for the motor of the X-direction.",
                     "unit": "mm/s",
@@ -402,7 +403,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_feedrate_y": {
+                "machine_max_feedrate_y":
+                {
                     "label": "Maximum Speed Y",
                     "description": "The maximum speed for the motor of the Y-direction.",
                     "unit": "mm/s",
@@ -412,7 +414,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_feedrate_z": {
+                "machine_max_feedrate_z":
+                {
                     "label": "Maximum Speed Z",
                     "description": "The maximum speed for the motor of the Z-direction.",
                     "unit": "mm/s",
@@ -422,7 +425,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_feedrate_e": {
+                "machine_max_feedrate_e":
+                {
                     "label": "Maximum Feedrate",
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
@@ -432,7 +436,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_x": {
+                "machine_max_acceleration_x":
+                {
                     "label": "Maximum Acceleration X",
                     "description": "Maximum acceleration for the motor of the X-direction",
                     "unit": "mm/s²",
@@ -442,7 +447,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_y": {
+                "machine_max_acceleration_y":
+                {
                     "label": "Maximum Acceleration Y",
                     "description": "Maximum acceleration for the motor of the Y-direction.",
                     "unit": "mm/s²",
@@ -452,7 +458,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_z": {
+                "machine_max_acceleration_z":
+                {
                     "label": "Maximum Acceleration Z",
                     "description": "Maximum acceleration for the motor of the Z-direction.",
                     "unit": "mm/s²",
@@ -462,7 +469,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_e": {
+                "machine_max_acceleration_e":
+                {
                     "label": "Maximum Filament Acceleration",
                     "description": "Maximum acceleration for the motor of the filament.",
                     "unit": "mm/s²",
@@ -472,7 +480,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_acceleration": {
+                "machine_acceleration":
+                {
                     "label": "Default Acceleration",
                     "description": "The default acceleration of print head movement.",
                     "unit": "mm/s²",
@@ -482,7 +491,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_jerk_xy": {
+                "machine_max_jerk_xy":
+                {
                     "label": "Default X-Y Jerk",
                     "description": "Default jerk for movement in the horizontal plane.",
                     "unit": "mm/s",
@@ -492,7 +502,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_jerk_z": {
+                "machine_max_jerk_z":
+                {
                     "label": "Default Z Jerk",
                     "description": "Default jerk for the motor of the Z-direction.",
                     "unit": "mm/s",
@@ -502,7 +513,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_jerk_e": {
+                "machine_max_jerk_e":
+                {
                     "label": "Default Filament Jerk",
                     "description": "Default jerk for the motor of the filament.",
                     "unit": "mm/s",
@@ -512,7 +524,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_minimum_feedrate": {
+                "machine_minimum_feedrate":
+                {
                     "label": "Minimum Feedrate",
                     "description": "The minimal movement speed of the print head.",
                     "unit": "mm/s",
@@ -839,7 +852,7 @@
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": true
                 },
-                "outer_inset_first": 
+                "outer_inset_first":
                 {
                     "label": "Outer Before Inner Walls",
                     "description": "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
