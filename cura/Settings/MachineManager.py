@@ -387,8 +387,16 @@ class MachineManager(QObject):
         top_container.removeInstance(key, postpone_emit=True)
         send_emits_containers.append(top_container)
 
-        stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if stack:
+        linked = not self._global_container_stack.getProperty(key, "settable_per_extruder") or \
+                      self._global_container_stack.getProperty(key, "limit_to_extruder") != "-1"
+
+        if not linked:
+            stack = ExtruderManager.getInstance().getActiveExtruderStack()
+            stacks = [stack]
+        else:
+            stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+
+        for stack in stacks:
             container = stack.getTop()
             container.removeInstance(key, postpone_emit=True)
             send_emits_containers.append(container)
