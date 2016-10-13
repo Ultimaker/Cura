@@ -131,7 +131,8 @@ class QualityManager:
     #
     #   \param global_container_stack \type{ContainerStack} the global machine definition
     #   \param extruder_stacks \type{List[ContainerStack]} the list of extruder stacks
-    #   \return \type{List[InstanceContainer]} the list of the matching qualities
+    #   \return \type{List[InstanceContainer]} the list of the matching qualities. The quality profiles
+    #       return come from the first extruder in the given list of extruders.
     def findAllUsableQualitiesForMachineAndExtruders(self, global_container_stack, extruder_stacks):
         global_machine_definition = global_container_stack.getBottom()
 

@@ -28,5 +28,14 @@ class ProfilesModel(InstanceContainersModel):
         if global_container_stack is None:
             return []
 
+        # Get the  list of extruders and place the selected extruder at the front of the list.
+        extruder_manager = ExtruderManager.getInstance()
+        active_extruder = extruder_manager.getActiveExtruderStack()
+        extruder_stacks = extruder_manager.getActiveExtruderStacks()
+        extruder_stacks.remove(active_extruder)
+        extruder_stacks = [active_extruder] + extruder_stacks
+
+        # Fetch the list of useable qualities across all extruders.
+        # The actual list of quality profiles come from the first extruder in the extruder list.
         return QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
-                                                              ExtruderManager.getInstance().getActiveExtruderStacks())
+                                                                                         extruder_stacks)
