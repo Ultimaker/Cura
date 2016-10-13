@@ -49,11 +49,44 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from contextlib import contextmanager
+
 import sys
 import os.path
 import numpy
 import copy
 import urllib
+import os
+import time
+
+CONFIG_LOCK_FILENAME = "cura.lock"
+
+##  Contextmanager to create a lock file and remove it afterwards.
+@contextmanager
+def lockFile(filename):
+    try:
+        with open(filename, 'w') as lock_file:
+            lock_file.write("Lock file - Cura is currently writing")
+    except:
+        Logger.log("e", "Could not create lock file [%s]" % filename)
+    yield
+    try:
+        if os.path.exists(filename):
+            os.remove(filename)
+    except:
+        Logger.log("e", "Could not delete lock file [%s]" % filename)
+
+
+##  Wait for a lock file to disappear
+#   the maximum allowable age is settable; if the file is too old, it will be ignored too
+def waitFileDisappear(filename, max_age_seconds=10, msg=""):
+    now = time.time()
+    while os.path.exists(filename) and now < os.path.getmtime(filename) + max_age_seconds and now > os.path.getmtime(filename):
+        if msg:
+            Logger.log("d", msg)
+        time.sleep(1)
+        now = time.time()
+
 
 numpy.seterr(all="ignore")
 
@@ -86,14 +119,24 @@ class CuraApplication(QtApplication):
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
+        # this setting can be changed for each group in one-at-a-time mode
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True, read_only = True)
+
+        # From which stack the setting would inherit if not defined per object (handled in the engine)
+        # AND for settings which are not settable_per_mesh:
+        # which extruder is the only extruder this setting is obtained from
         SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1")
+
+        # For settings which are not settable_per_mesh and not settable_per_extruder:
+        # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
+        SettingFunction.registerOperator("resolveOrValue", cura.Settings.ExtruderManager.getResolveOrValue)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -112,16 +155,18 @@ class CuraApplication(QtApplication):
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
-        self._version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager(
+        UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
                 ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences")
+                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", UM.Settings.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._setting_inheritance_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -189,6 +234,9 @@ class CuraApplication(QtApplication):
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
+        # Set the filename to create if cura is writing in the config dir.
+        self._config_lock_filename = os.path.join(Resources.getConfigStoragePath(), CONFIG_LOCK_FILENAME)
+        self.waitConfigLockFile()
         ContainerRegistry.getInstance().load()
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
@@ -269,6 +317,12 @@ class CuraApplication(QtApplication):
 
             self._recent_files.append(QUrl.fromLocalFile(f))
 
+    ## Lock file check: if (another) Cura is writing in the Config dir.
+    #  one may not be able to read a valid set of files while writing. Not entirely fool-proof,
+    #  but works when you start Cura shortly after shutting down.
+    def waitConfigLockFile(self):
+        waitFileDisappear(self._config_lock_filename, max_age_seconds=10, msg="Waiting for Cura to finish writing in the config dir...")
+
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
@@ -296,38 +350,43 @@ class CuraApplication(QtApplication):
         if not self._started: # Do not do saving during application start
             return
 
-        for instance in ContainerRegistry.getInstance().findInstanceContainers():
-            if not instance.isDirty():
-                continue
+        self.waitConfigLockFile()
 
-            try:
-                data = instance.serialize()
-            except NotImplementedError:
-                continue
-            except Exception:
-                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                continue
+        # When starting Cura, we check for the lockFile which is created and deleted here
+        with lockFile(self._config_lock_filename):
 
-            mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
-            file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
-            instance_type = instance.getMetaDataEntry("type")
-            path = None
-            if instance_type == "material":
-                path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-            elif instance_type == "quality" or instance_type == "quality_changes":
-                path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
-            elif instance_type == "user":
-                path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
-            elif instance_type == "variant":
-                path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+            for instance in ContainerRegistry.getInstance().findInstanceContainers():
+                if not instance.isDirty():
+                    continue
 
-            if path:
-                instance.setPath(path)
-                with SaveFile(path, "wt", -1, "utf-8") as f:
-                    f.write(data)
+                try:
+                    data = instance.serialize()
+                except NotImplementedError:
+                    continue
+                except Exception:
+                    Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                    continue
 
-        for stack in ContainerRegistry.getInstance().findContainerStacks():
-            self.saveStack(stack)
+                mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
+                file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
+                instance_type = instance.getMetaDataEntry("type")
+                path = None
+                if instance_type == "material":
+                    path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
+                elif instance_type == "quality" or instance_type == "quality_changes":
+                    path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
+                elif instance_type == "user":
+                    path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
+                elif instance_type == "variant":
+                    path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+
+                if path:
+                    instance.setPath(path)
+                    with SaveFile(path, "wt", -1, "utf-8") as f:
+                        f.write(data)
+
+            for stack in ContainerRegistry.getInstance().findContainerStacks():
+                self.saveStack(stack)
 
     def saveStack(self, stack):
         if not stack.isDirty():
@@ -426,7 +485,7 @@ class CuraApplication(QtApplication):
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         cura.Settings.ExtruderManager.getInstance()
         qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
-
+        qmlRegisterSingletonType(cura.Settings.SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
@@ -448,6 +507,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = cura.Settings.MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getSettingInheritanceManager(self, *args):
+        if self._setting_inheritance_manager is None:
+            self._setting_inheritance_manager = cura.Settings.SettingInheritanceManager.createSettingInheritanceManager()
+        return self._setting_inheritance_manager
 
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
@@ -485,6 +549,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel")
+        qmlRegisterType(cura.Settings.QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
+        qmlRegisterType(cura.Settings.UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
 
@@ -579,8 +646,6 @@ class CuraApplication(QtApplication):
                     op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
-        pass
-
     ##  Remove an object from the scene.
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
@@ -594,17 +659,17 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
-            group_node = None
-            if node.getParent():
-                group_node = node.getParent()
-                op = RemoveSceneNodeOperation(node)
+            op = GroupedOperation()
+            op.addOperation(RemoveSceneNodeOperation(node))
+
+            group_node = node.getParent()
+            if group_node:
+                # Note that at this point the node has not yet been deleted
+                if len(group_node.getChildren()) <= 2 and group_node.callDecoration("isGroup"):
+                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
 
             op.push()
-            if group_node:
-                if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
-                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
-                    op = RemoveSceneNodeOperation(group_node)
-                    op.push()
 
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
@@ -800,11 +865,14 @@ class CuraApplication(QtApplication):
             return
 
         # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren()]
-        middle_x = sum([v.x for v in object_centers]) / len(object_centers)
-        middle_y = sum([v.y for v in object_centers]) / len(object_centers)
-        middle_z = sum([v.z for v in object_centers]) / len(object_centers)
-        offset = Vector(middle_x, middle_y, middle_z)
+        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren() if node.getMeshData()]
+        if object_centers and len(object_centers) > 0:
+            middle_x = sum([v.x for v in object_centers]) / len(object_centers)
+            middle_y = sum([v.y for v in object_centers]) / len(object_centers)
+            middle_z = sum([v.z for v in object_centers]) / len(object_centers)
+            offset = Vector(middle_x, middle_y, middle_z)
+        else:
+            offset = Vector(0, 0, 0)
 
         # Move each node to the same position.
         for center, node in zip(object_centers, group_node.getChildren()):

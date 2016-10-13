@@ -31,7 +31,7 @@ Item {
             spacing: UM.Theme.getSize("default_margin").width
             Label
             {
-                text: catalog.i18nc("@label", "Print model with")
+                text: catalog.i18nc("@label Followed by extruder selection drop-down.", "Print model with")
                 anchors.verticalCenter: extruderSelector.verticalCenter
 
                 color: UM.Theme.getColor("setting_control_text")
@@ -151,10 +151,11 @@ Item {
 
         Column
         {
-            spacing: UM.Theme.getSize("default_lining").height
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
-            height: contents.count * UM.Theme.getSize("section").height < 200 ? contents.count * UM.Theme.getSize("section").height : 200
+            property int maximumHeight: 200 * Screen.devicePixelRatio
+            height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
+
             ScrollView
             {
                 height: parent.height
@@ -163,6 +164,7 @@ Item {
                 ListView
                 {
                     id: contents
+                    spacing: UM.Theme.getSize("default_lining").height
 
                     model: UM.SettingDefinitionsModel
                     {
@@ -259,6 +261,14 @@ Item {
                             watchedProperties: [ "value", "enabled", "validationState" ]
                             storeIndex: 0
                             removeUnusedValue: false
+                        }
+
+                        // If the extruder by which the object needs to be printed is changed, ensure that the
+                        // display is also notified of the fact.
+                        Connections
+                        {
+                            target: extruderSelector
+                            onActivated: provider.forcePropertiesChanged()
                         }
                     }
                 }

@@ -1,19 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" viewBox="0 0 30 30" xml:space="preserve">
-<g>
-	<g>
-		<rect x="0" y="0" width="1.2" height="30"/>
-		<rect x="28.8" y="0" width="1.2" height="30"/>
-		<rect x="0" y="28.8" width="30" height="1.2"/>
-		<rect x="0" y="0" width="30" height="1.2"/>
-	</g>
-	<rect x="14.4" y="-5.4" transform="matrix(0.7071 0.7071 -0.7071 0.7071 14.9999 -6.2122)" width="1.2" height="40.8"/>
-	<polygon points="0.7,10 0.1,8.9 9,0.1 9.8,0.9 	"/>
-	<rect x="24.5" y="19" transform="matrix(0.7071 0.7071 -0.7071 0.7071 25.0689 -10.4098)" width="1.2" height="12.2"/>
-	<rect x="14.4" y="-5.4" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.2136 14.9987)" width="1.2" height="40.8"/>
-	<polyline points="0.8,20.1 9.6,29 8.8,29.8 0,21 	"/>
-	<rect x="24.5" y="-1.2" transform="matrix(0.7071 -0.7071 0.7071 0.7071 3.8484 19.2136)" width="1.2" height="12.2"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+    <path d="M0 0h1.2v30H0zm28.8 0H30v30h-1.2z"/>
+    <path d="M0 28.8h30V30H0zM0 0h30v1.2H0z"/>
+    <path d="M29 .152l.85.848L.999 29.85.151 29zM.7 10L.1 8.9 9 .1l.8.8zm28.258 10.349l.848.849-8.626 8.626-.849-.848z"/>
+    <path d="M.15.998L1 .15 29.849 29l-.849.848zM.8 20.1L9.6 29l-.8.8L0 21M20.324 1.041l.848-.848L29.8 8.819l-.849.849z"/>
 </svg>

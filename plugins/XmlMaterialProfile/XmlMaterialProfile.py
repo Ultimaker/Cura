@@ -189,7 +189,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             try:
                 product = UM.Dictionary.findKey(self.__product_id_map, definition_id)
             except ValueError:
-                continue
+                # An unknown product id; export it anyway
+                product = definition_id
 
             builder.start("machine")
             builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product":  product})

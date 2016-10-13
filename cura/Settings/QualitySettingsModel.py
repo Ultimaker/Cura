@@ -16,8 +16,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     LabelRole = Qt.UserRole + 2
     UnitRole = Qt.UserRole + 3
     ProfileValueRole = Qt.UserRole + 4
-    UserValueRole = Qt.UserRole + 5
-    CategoryRole = Qt.UserRole + 6
+    ProfileValueSourceRole = Qt.UserRole + 5
+    UserValueRole = Qt.UserRole + 6
+    CategoryRole = Qt.UserRole + 7
 
     def __init__(self, parent = None):
         super().__init__(parent = parent)
@@ -25,13 +26,15 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self._container_registry = UM.Settings.ContainerRegistry.getInstance()
 
         self._extruder_id = None
-        self._quality = None
-        self._material = None
+        self._extruder_definition_id = None
+        self._quality_id = None
+        self._material_id = None
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.UnitRole, "unit")
         self.addRoleName(self.ProfileValueRole, "profile_value")
+        self.addRoleName(self.ProfileValueSourceRole, "profile_value_source")
         self.addRoleName(self.UserValueRole, "user_value")
         self.addRoleName(self.CategoryRole, "category")
 
@@ -46,30 +49,41 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     def extruderId(self):
         return self._extruder_id
 
+    def setExtruderDefinition(self, extruder_definition):
+        if extruder_definition != self._extruder_definition_id:
+            self._extruder_definition_id = extruder_definition
+            self._update()
+            self.extruderDefinitionChanged.emit()
+
+    extruderDefinitionChanged = pyqtSignal()
+    @pyqtProperty(str, fset = setExtruderDefinition, notify = extruderDefinitionChanged)
+    def extruderDefinition(self):
+        return self._extruder_definition_id
+
     def setQuality(self, quality):
-        if quality != self._quality:
-            self._quality = quality
+        if quality != self._quality_id:
+            self._quality_id = quality
             self._update()
             self.qualityChanged.emit()
 
     qualityChanged = pyqtSignal()
     @pyqtProperty(str, fset = setQuality, notify = qualityChanged)
     def quality(self):
-        return self._quality
+        return self._quality_id
 
     def setMaterial(self, material):
-        if material != self._material:
-            self._material = material
+        if material != self._material_id:
+            self._material_id = material
             self._update()
             self.materialChanged.emit()
 
     materialChanged = pyqtSignal()
     @pyqtProperty(str, fset = setMaterial, notify = materialChanged)
     def material(self):
-        return self._material
+        return self._material_id
 
     def _update(self):
-        if not self._quality:
+        if not self._quality_id:
             return
 
         items = []
@@ -77,9 +91,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         settings = collections.OrderedDict()
         definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
 
-        containers = self._container_registry.findInstanceContainers(id = self._quality)
+        containers = self._container_registry.findInstanceContainers(id = self._quality_id)
         if not containers:
-            UM.Logger.log("w", "Could not find a quality container with id %s", self._quality)
+            UM.Logger.log("w", "Could not find a quality container with id %s", self._quality_id)
             return
 
         quality_container = None
@@ -92,12 +106,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
             criteria = {
                 "type": "quality",
-                "quality_type": quality_changes_container.getMetaDataEntry("quality"),
+                "quality_type": quality_changes_container.getMetaDataEntry("quality_type"),
                 "definition": quality_changes_container.getDefinition().getId()
             }
-
-            if self._material:
-                criteria["material"] = self._material
 
             quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
@@ -110,8 +121,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
-        if self._material:
-            criteria["material"] = self._material
+        if self._material_id and self._material_id != "empty_material":
+            criteria["material"] = self._material_id
 
         criteria["extruder"] = self._extruder_id
 
@@ -122,9 +133,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             new_criteria.pop("extruder")
             containers = self._container_registry.findInstanceContainers(**new_criteria)
 
-        if not containers:
+        if not containers and "material" in criteria:
             # Try again, this time without material
-            criteria.pop("material")
+            criteria.pop("material", None)
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
@@ -133,13 +144,14 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
-            UM.Logger.log("Could not find any quality containers matching the search criteria %s" % str(criteria))
+            UM.Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
             return
 
         if quality_changes_container:
-            criteria = {"type": "quality_changes", "quality": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
-            if self._extruder_id != "":
-                criteria["extruder"] = self._extruder_id
+            criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
+            if self._extruder_definition_id != "":
+                criteria["extruder"] = self._extruder_definition_id
+                criteria["name"] = quality_changes_container.getName()
             else:
                 criteria["extruder"] = None
 
@@ -157,9 +169,11 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 continue
 
             profile_value = None
+            profile_value_source = ""
             for container in containers:
                 new_value = container.getProperty(definition.key, "value")
                 if new_value is not None:
+                    profile_value_source = container.getMetaDataEntry("type")
                     profile_value = new_value
 
             user_value = None
@@ -182,11 +196,13 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 # If a setting is settable per extruder (not global) and we're looking at global tab, don't show this value.
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
+
             items.append({
                 "key": definition.key,
                 "label": definition.label,
                 "unit": definition.unit,
                 "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
+                "profile_value_source": profile_value_source,
                 "user_value": "" if user_value is None else str(user_value),
                 "category": current_category
             })

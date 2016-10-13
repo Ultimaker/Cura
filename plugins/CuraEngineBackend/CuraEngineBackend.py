@@ -230,7 +230,7 @@ class CuraEngineBackend(Backend):
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
             if Application.getInstance().getPlatformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
-                                            "The selected material is imcompatible with the selected machine or configuration."))
+                                            "The selected material is incompatible with the selected machine or configuration."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
@@ -336,6 +336,7 @@ class CuraEngineBackend(Backend):
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
             self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data)
+            self._process_layers_job.finished.connect(self._onProcessLayersFinished)
             self._process_layers_job.start()
             self._stored_optimized_layer_data = []
 
@@ -411,6 +412,7 @@ class CuraEngineBackend(Backend):
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
                 if self._stored_optimized_layer_data and not self._slicing:
                     self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data)
+                    self._process_layers_job.finished.connect(self._onProcessLayersFinished)
                     self._process_layers_job.start()
                     self._stored_optimized_layer_data = []
             else:
@@ -463,3 +465,5 @@ class CuraEngineBackend(Backend):
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
+    def _onProcessLayersFinished(self, job):
+        self._process_layers_job = None

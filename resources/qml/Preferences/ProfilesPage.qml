@@ -15,26 +15,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Profiles");
     property var extrudersModel: Cura.ExtrudersModel{}
 
-    model: UM.InstanceContainersModel
-    {
-        filter:
-        {
-            var result = { "type": "quality*", "extruder": null };
-            if(Cura.MachineManager.filterQualityByMachine)
-            {
-                result.definition = Cura.MachineManager.activeQualityDefinitionId;
-                if(Cura.MachineManager.hasMaterials)
-                {
-                    result.material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeMachineId];
-                }
-            }
-            else
-            {
-                result.definition = "fdmprinter"
-            }
-            return result
-        }
-    }
+    model: Cura.QualityAndUserProfilesModel { }
 
     section.property: "readOnly"
     section.delegate: Rectangle
@@ -70,7 +51,11 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
             enabled: base.currentItem != null ? base.currentItem.id != Cura.MachineManager.activeQualityId : false;
-            onClicked: Cura.MachineManager.setActiveQuality(base.currentItem.id)
+            onClicked:
+            {
+                Cura.MachineManager.setActiveQuality(base.currentItem.id)
+                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
+            }
         },
 
         // Create button
@@ -134,7 +119,7 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             onClicked: exportDialog.open()
-            enabled: currentItem != null
+            enabled: currentItem != null && !base.currentItem.readOnly
         }
     ]
 
@@ -223,6 +208,8 @@ UM.ManagementPage
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
+            currentIndex: ExtruderManager.activeExtruderIndex + 1;
+
             ProfileTab
             {
                 title: catalog.i18nc("@title:tab", "Global Settings");
@@ -238,6 +225,7 @@ UM.ManagementPage
                 {
                     title: model.name;
                     extruderId: model.id;
+                    extruderDefinition: model.definition;
                     quality: base.currentItem != null ? base.currentItem.id : "";
                     material: Cura.MachineManager.allActiveMaterialIds[model.id]
                 }
@@ -350,18 +338,16 @@ UM.ManagementPage
             folder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var profiles_to_export = [base.currentItem.id]
-                for(var extruder_nr in base.extrudersModel.items)
-                {
-                    profiles_to_export.push(ExtruderManager.getQualityChangesIdByExtruderStackId(base.extrudersModel.items[extruder_nr].id))
-                }
-                var result = base.model.exportProfile(profiles_to_export, fileUrl, selectedNameFilter)
+                var containers = Cura.ContainerManager.findInstanceContainers({"type": "quality_changes", "name": base.currentItem.name})
+                var result = base.model.exportProfile(containers, fileUrl, selectedNameFilter)
+
                 if(result && result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical
                     messageDialog.text = result.message
                     messageDialog.open()
                 }
+
                 // else pop-up Message thing from python code
                 CuraApplication.setDefaultPath("dialog_profile_path", folder)
             }

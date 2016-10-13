@@ -52,7 +52,7 @@ Menu
             filter:
             {
                 "type": "variant",
-                "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
+                "definition": Cura.MachineManager.activeQualityDefinitionId //Only show variants of this machine
             }
         }
         MenuItem {

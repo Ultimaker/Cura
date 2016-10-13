@@ -1,6 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import gc
+
 from UM.Job import Job
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
@@ -63,6 +65,12 @@ class ProcessSlicedLayersJob(Job):
                 if self._progress:
                     self._progress.hide()
                 return
+
+        # Force garbage collection.
+        # For some reason, Python has a tendency to keep the layer data
+        # in memory longer than needed. Forcing the GC to run here makes
+        # sure any old layer data is really cleaned up before adding new.
+        gc.collect()
 
         mesh = MeshData()
         layer_data = LayerDataBuilder.LayerDataBuilder()

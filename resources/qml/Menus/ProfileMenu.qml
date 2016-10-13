@@ -13,10 +13,7 @@ Menu
 
     Instantiator
     {
-        model: UM.InstanceContainersModel
-        {
-            filter: menu.getFilter({ "type": "quality" });
-        }
+        model: Cura.ProfilesModel { }
 
         MenuItem
         {
@@ -36,13 +33,8 @@ Menu
     Instantiator
     {
         id: customProfileInstantiator
-        model: UM.InstanceContainersModel
+        model: Cura.UserProfilesModel
         {
-            filter: menu.getFilter({
-                "type": "quality_changes",
-                "extruder": null,
-                "definition": Cura.MachineManager.filterQualityByMachine ? Cura.MachineManager.activeQualityDefinitionId : "fdmprinter"
-                });
             onModelReset: customSeparator.visible = rowCount() > 0
         }
 

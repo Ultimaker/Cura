@@ -121,6 +121,7 @@ class PrintInformation(QObject):
     @pyqtSlot(str, result = str)
     def createJobName(self, base_name):
         base_name = self._stripAccents(base_name)
+        self._setAbbreviatedMachineName()
         if Preferences.getInstance().getValue("cura/jobname_prefix"):
             return self._abbr_machine + "_" + base_name
         else:
@@ -129,7 +130,12 @@ class PrintInformation(QObject):
     ##  Created an acronymn-like abbreviated machine name from the currently active machine name
     #   Called each time the global stack is switched
     def _setAbbreviatedMachineName(self):
-        global_stack_name = Application.getInstance().getGlobalContainerStack().getName()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            self._abbr_machine = ""
+            return
+
+        global_stack_name = global_container_stack.getName()
         split_name = global_stack_name.split(" ")
         abbr_machine = ""
         for word in split_name:

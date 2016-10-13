@@ -22,7 +22,6 @@ UM.MainWindow
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-
         // Workaround silly issues with QML Action's shortcut property.
         //
         // Currently, there is no way to define shortcuts as "Application Shortcut".
@@ -403,7 +402,18 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
-                source: Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+                source:
+                {
+                    if(!base.monitoringPrint)
+                    {
+                        return "";
+                    }
+                    if(Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage)
+                    {
+                        return Cura.MachineManager.printerOutputDevices[0].cameraImage;
+                    }
+                    return "";
+                }
             }
 
             UM.MessageStack
@@ -656,10 +666,13 @@ UM.MainWindow
             for(var i in fileUrls)
             {
                 UM.MeshFileHandler.readLocalFile(fileUrls[i])
-            }
 
-            var meshName = backgroundItem.getMeshName(fileUrl.toString())
-            backgroundItem.hasMesh(decodeURIComponent(meshName))
+                if (i == fileUrls.length - 1)
+                {
+                    var meshName = backgroundItem.getMeshName(fileUrls.toString())
+                    backgroundItem.hasMesh(decodeURIComponent(meshName))
+                }
+            }
         }
     }
 

@@ -66,8 +66,14 @@ class LegacyProfileReader(ProfileReader):
     def read(self, file_name):
         if file_name.split(".")[-1] != "ini":
             return None
+
+        multi_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value") > 1
+        if multi_extrusion:
+            Logger.log("e", "Unable to import legacy profile %s. Multi extrusion is not supported", file_name)
+            raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
+
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
-        profile = InstanceContainer("Imported Legacy Profile") #Create an empty profile.
+        profile = InstanceContainer("Imported Legacy Profile") # Create an empty profile.
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
@@ -130,5 +136,6 @@ class LegacyProfileReader(ProfileReader):
         if len(profile.getAllKeys()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
         profile.setDirty(True)
-        profile.addMetaDataEntry("type", "quality")
+        profile.addMetaDataEntry("type", "quality_changes")
+        profile.addMetaDataEntry("quality", "normal")
         return profile

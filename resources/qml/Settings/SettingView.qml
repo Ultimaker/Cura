@@ -30,9 +30,10 @@ ScrollView
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-            exclude: ["machine_settings"]
+            exclude: ["machine_settings", "infill_mesh", "infill_mesh_order"]
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
+            onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
         }
 
         delegate: Loader
@@ -136,6 +137,8 @@ ScrollView
                 key: model.key ? model.key : ""
                 watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                 storeIndex: 0
+                // Due to the way setPropertyValue works, removeUnusedValue gives the correct output in case of resolve
+                removeUnusedValue: model.resolve == undefined
             }
 
             Connections
@@ -149,6 +152,15 @@ ScrollView
                 }
                 onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
                 onHideTooltip: base.hideTooltip()
+                onShowAllHiddenInheritedSettings:
+                {
+                    var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
+                    for(var i = 0; i < children_with_override.length; i++)
+                    {
+                        definitionsModel.setVisible(children_with_override[i], true)
+                    }
+                    Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
+                }
             }
         }
 
