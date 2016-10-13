@@ -320,7 +320,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time and counter < 10:
                     counter += 1
                     self._recreate_network_manager_count += 1
-                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", time_since_last_response)
+                Logger.log("d", "Timeout lasted over %.0f seconds (%.1fs), re-checking connection.", self._recreate_network_manager_time, time_since_last_response)
                 self._createNetworkManager()
                 return
 
@@ -495,7 +495,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         print_information = Application.getInstance().getPrintInformation()
 
-        # Check if PrintCores / materials  are loaded at all. Any failure in these results in an Error.
+        # Check if print cores / materials are loaded at all. Any failure in these results in an error.
         for index in range(0, self._num_extruders):
             if print_information.materialLengths[index] != 0:
                 if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
