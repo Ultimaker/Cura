@@ -148,8 +148,7 @@ class MachineManager(QObject):
 
             if matching_extruder and matching_extruder.findContainer({"type": "material"}).getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                if matching_extruder:
-                    variant_container = matching_extruder.findContainer({"type": "variant"})
+                variant_container = matching_extruder.findContainer({"type": "variant"})
                 if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and variant_container:
                     variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), variant_container)
                     for container in containers:
