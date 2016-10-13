@@ -769,8 +769,13 @@ class MachineManager(QObject):
 
         if extruder_stacks:
             # Add an extra entry for the global stack.
-            result.append({"stack": global_container_stack, "quality": result[0]["quality"],
-                           "quality_changes": empty_quality_changes})
+            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = "True")
+
+            if not global_quality:
+                global_quality = self._empty_quality_container
+
+            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": empty_quality_changes})
+
         return result
 
     ##  Determine the quality and quality changes settings for the current machine for a quality changes name.
