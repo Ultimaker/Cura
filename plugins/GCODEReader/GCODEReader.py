@@ -4,11 +4,15 @@
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Mesh.MeshData import MeshData
 import os
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Math.Vector import Vector
+from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
+from UM.Preferences import Preferences
 
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
@@ -59,6 +63,14 @@ class GCODEReader(MeshReader):
 
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
+            scene = Application.getInstance().getController().getScene()
+            if getattr(scene, "gcode_list"):
+                setattr(scene, "gcode_list", None)
+            for node in DepthFirstIterator(scene.getRoot()):
+                if node.callDecoration("getLayerData"):
+                    node.getParent().removeChild(node)
+            Application.getInstance().deleteAll()
+
             scene_node = SceneNode()
 
             # mesh_builder = MeshBuilder()
@@ -73,11 +85,14 @@ class GCODEReader(MeshReader):
             #
             # scene_node.setMeshData(mesh_builder.build())
 
-            # scene_node.getBoundingBox = getBoundingBox
+            def getBoundingBox():
+                return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
+
+            scene_node.getBoundingBox = getBoundingBox
             scene_node.gcode = True
-            backend = Application.getInstance().getBackend()
-            backend._pauseSlicing = True
-            backend.backendStateChange.emit(0)
+            # backend = Application.getInstance().getBackend()
+            # backend._pauseSlicing = True
+            # backend.backendStateChange.emit(0)
 
             file = open(file_name, "r")
 
@@ -183,12 +198,17 @@ class GCODEReader(MeshReader):
             scene_node_parent = Application.getInstance().getBuildVolume()
             scene_node.setParent(scene_node_parent)
 
-            mesh_builder = MeshBuilder()
-            mesh_builder.setFileName(file_name)
+            # mesh_builder = MeshBuilder()
+            # mesh_builder.setFileName(file_name)
+            #
+            # mesh_builder.addCube(10, 10, 10, Vector(0, -5, 0))
 
-            mesh_builder.addCube(10, 10, 10, Vector(0, -5, 0))
+            # scene_node.setMeshData(mesh_builder.build())
+            # scene_node.setMeshData(MeshData(file_name=file_name))
 
-            scene_node.setMeshData(mesh_builder.build())
+            # Application.getInstance().getPrintInformation().JobName(file_name)
+
+            Preferences.getInstance().setValue("cura/jobname_prefix", False)
 
             settings = Application.getInstance().getGlobalContainerStack()
             machine_width = settings.getProperty("machine_width", "value")
@@ -200,7 +220,7 @@ class GCODEReader(MeshReader):
             if view.getPluginId() == "LayerView":
                 view.resetLayerData()
 
-            scene_node.setEnabled(False)
+            # scene_node.setEnabled(False)
             #scene_node.setSelectable(False)
 
         return scene_node
