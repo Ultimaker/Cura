@@ -58,17 +58,34 @@ class GCODEReader(MeshReader):
         except:
             return None
 
+    def onSceneChanged(self, obj):
+        scene = Application.getInstance().getController().getScene()
+
+        def findAny():
+            for node in DepthFirstIterator(scene.getRoot()):
+                if hasattr(node, "gcode"):
+                    return True
+            return False
+
+        if not findAny():
+            # Preferences.getInstance().setValue("cura/jobname_prefix", True)
+            backend = Application.getInstance().getBackend()
+            backend._pauseSlicing = False
+        else:
+            backend = Application.getInstance().getBackend()
+            backend._pauseSlicing = True
+            backend.backendStateChange.emit(1)
+
     def read(self, file_name):
         scene_node = None
 
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
             scene = Application.getInstance().getController().getScene()
-            if getattr(scene, "gcode_list"):
-                setattr(scene, "gcode_list", None)
-            for node in DepthFirstIterator(scene.getRoot()):
-                if node.callDecoration("getLayerData"):
-                    node.getParent().removeChild(node)
+            scene.sceneChanged.connect(self.onSceneChanged)
+            # for node in DepthFirstIterator(scene.getRoot()):
+            #     if node.callDecoration("getLayerData"):
+            #         node.getParent().removeChild(node)
             Application.getInstance().deleteAll()
 
             scene_node = SceneNode()
@@ -91,9 +108,9 @@ class GCODEReader(MeshReader):
             scene_node.getBoundingBox = getBoundingBox
             scene_node.gcode = True
             backend = Application.getInstance().getBackend()
-            # backend._pauseSlicing = True
+            backend._pauseSlicing = True
             # backend.close()
-            backend.backendStateChange.emit(0)
+            backend.backendStateChange.emit(1)
 
             file = open(file_name, "r")
 
@@ -199,6 +216,12 @@ class GCODEReader(MeshReader):
             scene_node_parent = Application.getInstance().getBuildVolume()
             scene_node.setParent(scene_node_parent)
 
+            settings = Application.getInstance().getGlobalContainerStack()
+            machine_width = settings.getProperty("machine_width", "value")
+            machine_depth = settings.getProperty("machine_depth", "value")
+
+            scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
+
             # mesh_builder = MeshBuilder()
             # mesh_builder.setFileName(file_name)
             #
@@ -210,12 +233,6 @@ class GCODEReader(MeshReader):
             # Application.getInstance().getPrintInformation().JobName(file_name)
 
             Preferences.getInstance().setValue("cura/jobname_prefix", False)
-
-            settings = Application.getInstance().getGlobalContainerStack()
-            machine_width = settings.getProperty("machine_width", "value")
-            machine_depth = settings.getProperty("machine_depth", "value")
-
-            scene_node.setPosition(Vector(-machine_width/2, 0, machine_depth/2))
 
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
