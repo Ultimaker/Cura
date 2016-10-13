@@ -273,13 +273,6 @@ Cura.MachineAction
         }
     }
 
-    Label
-    {
-        // TODO: move use this in an appropriate location
-        visible: false
-        text: catalog.i18nc("@label:", "Print Again")
-    }
-
     UM.Dialog
     {
         id: manualPrinterDialog
