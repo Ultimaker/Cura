@@ -3649,7 +3649,7 @@
                 "prime_tower_min_volume":
                 {
                     "label": "Prime Tower Minimum Volume",
-                    "description": "The minimum volume each layer of the prime tower in order to purge enough material.",
+                    "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
                     "unit": "mm³",
                     "type": "float",
                     "default_value": 4.544,
@@ -3663,8 +3663,8 @@
                     {
                         "prime_tower_wall_thickness":
                         {
-                            "label": "Prime Tower Wall Thickness",
-                            "description": "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
+                            "label": "Prime Tower Thickness",
+                            "description": "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0.8,
