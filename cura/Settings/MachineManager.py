@@ -387,7 +387,8 @@ class MachineManager(QObject):
         top_container.removeInstance(key, postpone_emit=True)
         send_emits_containers.append(top_container)
 
-        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+        stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        if stack:
             container = stack.getTop()
             container.removeInstance(key, postpone_emit=True)
             send_emits_containers.append(container)
