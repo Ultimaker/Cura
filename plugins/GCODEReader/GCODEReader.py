@@ -90,9 +90,10 @@ class GCODEReader(MeshReader):
 
             scene_node.getBoundingBox = getBoundingBox
             scene_node.gcode = True
-            # backend = Application.getInstance().getBackend()
+            backend = Application.getInstance().getBackend()
             # backend._pauseSlicing = True
-            # backend.backendStateChange.emit(0)
+            # backend.close()
+            backend.backendStateChange.emit(0)
 
             file = open(file_name, "r")
 
