@@ -29,8 +29,9 @@ class QualityAndUserProfilesModel(ProfilesModel):
         extruder_manager = ExtruderManager.getInstance()
         active_extruder = extruder_manager.getActiveExtruderStack()
         extruder_stacks = extruder_manager.getActiveExtruderStacks()
-        extruder_stacks.remove(active_extruder)
-        extruder_stacks = [active_extruder] + extruder_stacks
+        if active_extruder in extruder_stacks:
+            extruder_stacks.remove(active_extruder)
+            extruder_stacks = [active_extruder] + extruder_stacks
 
         # Fetch the list of useable qualities across all extruders.
         # The actual list of quality profiles come from the first extruder in the extruder list.
