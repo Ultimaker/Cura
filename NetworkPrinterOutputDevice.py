@@ -167,10 +167,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._compressing_print = False
 
         printer_type = self._properties.get(b"machine", b"").decode("utf-8")
-        if printer_type == "9511.0":
-            self._updatePrinterType("UM3Extended")
-        elif printer_type == "9066.0":
-            self._updatePrinterType("UM3")
+        if printer_type.startswith("9511"):
+            self._updatePrinterType("ultimaker3_extended")
+        elif printer_type.startswith("9066"):
+            self._updatePrinterType("ultimaker3")
         else:
             self._updatePrinterType("unknown")
 

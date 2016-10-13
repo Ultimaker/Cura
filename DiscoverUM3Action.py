@@ -39,6 +39,11 @@ class DiscoverUM3Action(MachineAction):
             self._network_plugin.printerListChanged.connect(self._onPrinterDiscoveryChanged)
             self.printersChanged.emit()
 
+    ##  Re-filters the list of printers.
+    @pyqtSlot()
+    def reset(self):
+        self.printersChanged.emit()
+
     @pyqtSlot()
     def restartDiscovery(self):
         # Ensure that there is a bit of time after a printer has been discovered.
@@ -75,7 +80,14 @@ class DiscoverUM3Action(MachineAction):
     @pyqtProperty("QVariantList", notify = printersChanged)
     def foundDevices(self):
         if self._network_plugin:
+            if Application.getInstance().getGlobalContainerStack():
+                global_printer_type = Application.getInstance().getGlobalContainerStack().getBottom().getId()
+            else:
+                global_printer_type = "unknown"
+
             printers = list(self._network_plugin.getPrinters().values())
+            # TODO; There are still some testing printers that don't have a correct printer type, so don't filter out unkown ones just yet.
+            printers = [printer for printer in printers if printer.printerType == global_printer_type or printer.printerType == "unknown"]
             printers.sort(key = lambda k: k.name)
             return printers
         else:
