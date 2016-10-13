@@ -148,8 +148,7 @@ class MachineManager(QObject):
 
             if matching_extruder and matching_extruder.findContainer({"type": "material"}).getMetaDataEntry("GUID") != material_id:
                 # Save the material that needs to be changed. Multiple changes will be handled by the callback.
-                if matching_extruder:
-                    variant_container = matching_extruder.findContainer({"type": "variant"})
+                variant_container = matching_extruder.findContainer({"type": "variant"})
                 if self._global_container_stack.getBottom().getMetaDataEntry("has_variants") and variant_container:
                     variant_id = self.getQualityVariantId(self._global_container_stack.getBottom(), variant_container)
                     for container in containers:
@@ -388,7 +387,16 @@ class MachineManager(QObject):
         top_container.removeInstance(key, postpone_emit=True)
         send_emits_containers.append(top_container)
 
-        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
+        linked = not self._global_container_stack.getProperty(key, "settable_per_extruder") or \
+                      self._global_container_stack.getProperty(key, "limit_to_extruder") != "-1"
+
+        if not linked:
+            stack = ExtruderManager.getInstance().getActiveExtruderStack()
+            stacks = [stack]
+        else:
+            stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+
+        for stack in stacks:
             container = stack.getTop()
             container.removeInstance(key, postpone_emit=True)
             send_emits_containers.append(container)
