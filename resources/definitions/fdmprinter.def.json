@@ -3697,7 +3697,6 @@
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": true,
-                    "resolve": "any(extruderValues('prime_tower_wipe_enabled'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3708,7 +3707,6 @@
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": true,
-                    "resolve": "any(extruderValues('dual_pre_wipe'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
