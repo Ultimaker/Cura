@@ -25,9 +25,18 @@ class QualityAndUserProfilesModel(ProfilesModel):
         machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
         quality_changes_list = quality_manager.findAllQualityChangesForMachine(machine_definition)
 
-        # Fetch the list of qualities
+        # Get the  list of extruders and place the selected extruder at the front of the list.
+        extruder_manager = ExtruderManager.getInstance()
+        active_extruder = extruder_manager.getActiveExtruderStack()
+        extruder_stacks = extruder_manager.getActiveExtruderStacks()
+        if active_extruder in extruder_stacks:
+            extruder_stacks.remove(active_extruder)
+            extruder_stacks = [active_extruder] + extruder_stacks
+
+        # Fetch the list of useable qualities across all extruders.
+        # The actual list of quality profiles come from the first extruder in the extruder list.
         quality_list =  QualityManager.getInstance().findAllUsableQualitiesForMachineAndExtruders(global_container_stack,
-                                                              ExtruderManager.getInstance().getActiveExtruderStacks())
+                                                                                                  extruder_stacks)
 
         # Filter the quality_change by the list of available quality_types
         quality_type_set = set([x.getMetaDataEntry("quality_type") for x in quality_list])
