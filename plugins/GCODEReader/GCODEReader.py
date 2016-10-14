@@ -71,10 +71,14 @@ class GCODEReader(MeshReader):
             # Preferences.getInstance().setValue("cura/jobname_prefix", True)
             backend = Application.getInstance().getBackend()
             backend._pauseSlicing = False
+            Application.getInstance().setHideSettings(False)
+            #Application.getInstance().getPrintInformation()._setAbbreviatedMachineName()
         else:
             backend = Application.getInstance().getBackend()
             backend._pauseSlicing = True
             backend.backendStateChange.emit(1)
+            Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
+            Application.getInstance().setHideSettings(True)
 
     def read(self, file_name):
         scene_node = None
@@ -213,6 +217,8 @@ class GCODEReader(MeshReader):
             decorator.setLayerData(layer_mesh)
             scene_node.addDecorator(decorator)
 
+            Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
+
             scene_node_parent = Application.getInstance().getBuildVolume()
             scene_node.setParent(scene_node_parent)
 
@@ -230,9 +236,10 @@ class GCODEReader(MeshReader):
             # scene_node.setMeshData(mesh_builder.build())
             # scene_node.setMeshData(MeshData(file_name=file_name))
 
-            Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
+
 
             Preferences.getInstance().setValue("cura/jobname_prefix", True)
+
 
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":

@@ -1007,3 +1007,18 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str)
     def log(self, msg):
         Logger.log("d", msg)
+
+    _hide_settings = False
+
+    HideSettingsChanged = pyqtSignal(bool)
+
+    @pyqtSlot(bool)
+    def setHideSettings(self, hide):
+        self._hide_settings = hide
+        self.HideSettingsChanged.emit(hide)
+
+    @pyqtProperty(bool, notify=HideSettingsChanged)
+    def hideSettings(self):
+        return self._hide_settings
+
+
