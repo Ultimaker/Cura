@@ -3693,6 +3693,17 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "anti_support_mesh":
+                {
+                    "label": "Anti Overhang Mesh",
+                    "description": "Use this mesh to specify where no part of the model should be detected as overhang. This can be used to remove unwanted support structure.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "magic_mesh_surface_mode":
                 {
                     "label": "Surface Mode",
