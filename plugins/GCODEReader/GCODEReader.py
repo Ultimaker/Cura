@@ -230,9 +230,9 @@ class GCODEReader(MeshReader):
             # scene_node.setMeshData(mesh_builder.build())
             # scene_node.setMeshData(MeshData(file_name=file_name))
 
-            # Application.getInstance().getPrintInformation().JobName(file_name)
+            Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
 
-            Preferences.getInstance().setValue("cura/jobname_prefix", False)
+            Preferences.getInstance().setValue("cura/jobname_prefix", True)
 
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
