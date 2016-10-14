@@ -76,7 +76,7 @@ class GCODEReader(MeshReader):
         else:
             backend = Application.getInstance().getBackend()
             backend._pauseSlicing = True
-            backend.backendStateChange.emit(1)
+            backend.backendStateChange.emit(3)
             Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
             Application.getInstance().setHideSettings(True)
 
@@ -115,6 +115,9 @@ class GCODEReader(MeshReader):
             backend._pauseSlicing = True
             backend.close()
             backend.backendStateChange.emit(1)
+
+            glist = getattr(Application.getInstance().getController().getScene(), "gcode_list")
+            glist.clear()
 
             file = open(file_name, "r")
 
@@ -159,6 +162,7 @@ class GCODEReader(MeshReader):
             # current_path.append([10, 10, 10])
             # while file.readable():
             for line in file:
+                glist.append(line)
                 if len(line) == 0:
                     continue
                 if line[0] == ";":
@@ -239,6 +243,8 @@ class GCODEReader(MeshReader):
 
 
             Preferences.getInstance().setValue("cura/jobname_prefix", True)
+
+
 
 
             view = Application.getInstance().getController().getActiveView()
