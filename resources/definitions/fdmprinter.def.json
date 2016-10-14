@@ -3693,7 +3693,7 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
-                "anti_support_mesh":
+                "anti_overhang_mesh":
                 {
                     "label": "Anti Overhang Mesh",
                     "description": "Use this mesh to specify where no part of the model should be detected as overhang. This can be used to remove unwanted support structure.",
