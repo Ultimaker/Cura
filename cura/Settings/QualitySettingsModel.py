@@ -117,7 +117,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = quality_container.getDefinition().getId()
+        definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
@@ -150,8 +150,10 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         if quality_changes_container:
             criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
             if self._extruder_definition_id != "":
-                criteria["extruder"] = self._extruder_definition_id
-                criteria["name"] = quality_changes_container.getName()
+                extruder_definitions = self._container_registry.findDefinitionContainers(id = self._extruder_definition_id)
+                if extruder_definitions:
+                    criteria["extruder"] = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
+                    criteria["name"] = quality_changes_container.getName()
             else:
                 criteria["extruder"] = None
 
