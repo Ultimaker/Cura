@@ -230,6 +230,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + ":8080/?action=snapshot")
         image_request = QNetworkRequest(url)
         self._manager.get(image_request)
+        self._last_request_time = time()
 
     ##  Set the authentication state.
     #   \param auth_state \type{AuthState} Enum value representing the new auth state
@@ -313,11 +314,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._last_response_time and self._connection_state_before_timeout:
             if time_since_last_response > self._recreate_network_manager_time * self._recreate_network_manager_count:
                 self._recreate_network_manager_count += 1
+                counter = 0  # Counter to prevent possible indefinite while loop.
                 # It can happen that we had a very long timeout (multiple times the recreate time).
                 # In that case we should jump through the point that the next update won't be right away.
-                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time:
+                while time_since_last_response - self._recreate_network_manager_time * self._recreate_network_manager_count > self._recreate_network_manager_time and counter < 10:
+                    counter += 1
                     self._recreate_network_manager_count += 1
-                Logger.log("d", "Timeout lasted over 30 seconds (%.1fs), re-checking connection.", time_since_last_response)
+                Logger.log("d", "Timeout lasted over %.0f seconds (%.1fs), re-checking connection.", self._recreate_network_manager_time, time_since_last_response)
                 self._createNetworkManager()
                 return
 
@@ -439,6 +442,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
 
     def close(self):
+        Logger.log("d", "Closing connection of printer %s with ip %s", self._key, self._address)
         self._updateJobState("")
         self.setConnectionState(ConnectionState.closed)
         if self._progress_message:
@@ -464,6 +468,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Reset timeout state
         self._connection_state_before_timeout = None
         self._last_response_time = time()
+        self._last_request_time = None
 
         # Stop update timers
         self._update_timer.stop()
@@ -490,7 +495,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         print_information = Application.getInstance().getPrintInformation()
 
-        # Check if PrintCores / materials  are loaded at all. Any failure in these results in an Error.
+        # Check if print cores / materials are loaded at all. Any failure in these results in an error.
         for index in range(0, self._num_extruders):
             if print_information.materialLengths[index] != 0:
                 if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
@@ -630,6 +635,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._compressing_print = False
             if self._post_reply:
                 self._post_reply.abort()
+                self._post_reply = None
             Application.getInstance().showPrintMonitor.emit(False)
 
     ##  Attempt to start a new print.
@@ -746,6 +752,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._post_reply.abort()
                 self._post_reply.uploadProgress.disconnect(self._onUploadProgress)
                 Logger.log("d", "Uploading of print failed after %s", time() - self._send_gcode_start)
+                self._post_reply = None
                 self._progress_message.hide()
 
             self.setConnectionState(ConnectionState.error)
@@ -900,6 +907,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             elif "print_job" in reply_url:
                 reply.uploadProgress.disconnect(self._onUploadProgress)
                 Logger.log("d", "Uploading of print succeeded after %s", time() - self._send_gcode_start)
+                # Only reset the _post_reply if it was the same one.
+                if reply == self._post_reply:
+                    self._post_reply = None
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
