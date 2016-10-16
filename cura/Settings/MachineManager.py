@@ -397,9 +397,10 @@ class MachineManager(QObject):
             stacks = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
 
         for stack in stacks:
-            container = stack.getTop()
-            container.removeInstance(key, postpone_emit=True)
-            send_emits_containers.append(container)
+            if stack is not None:
+                container = stack.getTop()
+                container.removeInstance(key, postpone_emit=True)
+                send_emits_containers.append(container)
 
         for container in send_emits_containers:
             container.sendPostponedEmits()
