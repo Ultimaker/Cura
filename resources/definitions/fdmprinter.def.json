@@ -1171,7 +1171,7 @@
                     "description": "The temperature used for the heated build plate. Set at 0 to pre-heat the printer manually.",
                     "unit": "°C",
                     "type": "float",
-                    "resolve": "sum(extruderValues('material_bed_temperature')) / len(extruderValues('material_bed_temperature'))",
+                    "resolve": "max(extruderValues('material_bed_temperature'))",
                     "default_value": 60,
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",

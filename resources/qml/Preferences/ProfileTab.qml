@@ -38,8 +38,8 @@ Tab
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
                     text: styleData.value
-                    font.strikeout: styleData.column == 1 && quality == Cura.MachineManager.activeQualityId && setting.user_value != ""
-                    font.italic: setting.profile_value_source == "quality_changes" || (quality == Cura.MachineManager.activeQualityId && setting.user_value != "")
+                    font.strikeout: styleData.column == 1 && quality == Cura.MachineManager.globalQualityId && setting.user_value != ""
+                    font.italic: setting.profile_value_source == "quality_changes" || (quality == Cura.MachineManager.globalQualityId && setting.user_value != "")
                     opacity: font.strikeout ? 0.5 : 1
                     color: styleData.textColor
                     elide: Text.ElideRight
@@ -65,7 +65,7 @@ Tab
         {
             role: "user_value"
             title: catalog.i18nc("@title:column", "Current");
-            visible: quality == Cura.MachineManager.activeQualityId
+            visible: quality == Cura.MachineManager.globalQualityId
             width: parent.width * 0.18
             delegate: itemDelegate
         }

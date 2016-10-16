@@ -106,7 +106,7 @@ class GCodeWriter(MeshWriter):
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+        for extruder in sorted(ExtruderManager.getInstance().getMachineExtruders(stack.getId()), key = lambda k: k.getMetaDataEntry("position")):
             extruder_quality = extruder.findContainer({"type": "quality_changes"})
             if not extruder_quality:
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
