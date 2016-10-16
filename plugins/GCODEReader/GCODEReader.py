@@ -123,13 +123,6 @@ class GCODEReader(MeshReader):
 
             layer_data = LayerDataBuilder.LayerDataBuilder()
 
-            layer_id = 0
-
-            layer_data.addLayer(layer_id)
-            this_layer = layer_data.getLayer(layer_id)
-            layer_data.setLayerHeight(layer_id, 0)
-            layer_data.setLayerThickness(layer_id, 0.1)
-
             current_extruder = 1
             current_path = []
             current_x = 0
@@ -137,18 +130,47 @@ class GCODEReader(MeshReader):
             current_z = 0
             current_e = 0
 
+            layers = []
+            for line in file:
+                glist.append(line)
+                if len(line) == 0:
+                    continue
+                if line[0] == ";":
+                    continue
+                G = self.getInt(line, "G")
+                if G is not None:
+                    if G == 0 or G == 1:
+                        z = self.getFloat(line, "Z")
+                        if z is not None and z not in layers and z >= 0:
+                            layers.append(z)
+            layers.sort()
+            file.seek(0)
+
+            for layer in layers:
+                layer_id = layers.index(layer)
+                layer_data.addLayer(layer_id)
+                layer_data.setLayerHeight(layer_id, layer)
+                layer_data.setLayerThickness(layer_id, 0.25)
+
             def CreatePolygon():
+                try:
+                    this_layer = layer_data.getLayer(layers.index(current_path[0][1]))
+                except ValueError:
+                    current_path.clear()
+                    return
                 count = len(current_path)
                 line_types = numpy.empty((count-1, 1), numpy.int32)
                 line_types[:, 0] = 1
                 line_widths = numpy.empty((count-1, 1), numpy.int32)
-                line_widths[:, 0] = 1
+                line_widths[:, 0] = 0.5
                 points = numpy.empty((count, 3), numpy.float32)
                 i = 0
                 for point in current_path:
                     points[i, 0] = point[0]
                     points[i, 1] = point[1]
                     points[i, 2] = point[2]
+                    if i > 0:
+                        line_types[i-1] = point[3]
                     i += 1
 
                 this_poly = LayerPolygon.LayerPolygon(layer_data, current_extruder, line_types, points, line_widths)
@@ -158,11 +180,7 @@ class GCODEReader(MeshReader):
 
                 current_path.clear()
 
-            # current_path.append([0, 0, 0])
-            # current_path.append([10, 10, 10])
-            # while file.readable():
             for line in file:
-                glist.append(line)
                 if len(line) == 0:
                     continue
                 if line[0] == ";":
@@ -174,26 +192,32 @@ class GCODEReader(MeshReader):
                         y = self.getFloat(line, "Y")
                         z = self.getFloat(line, "Z")
                         e = self.getFloat(line, "E")
+                        z_changed = False
                         if x is not None:
                             current_x = x
                         if y is not None:
                             current_y = y
                         if z is not None:
+                            if not current_z == z:
+                                z_changed = True
                             current_z = z
                         if e is not None:
                             if e > current_e:
-                                current_path.append([current_x, current_z, -current_y])
+                                current_path.append([current_x, current_z, -current_y, 1])
                             else:
-                                if len(current_path) > 1:
-                                    CreatePolygon()
-                                else:
-                                    current_path.clear()
+                                current_path.append([current_x, current_z, -current_y, 0])
                             current_e = e
                         else:
+                            # if G == 0:
+                            #     current_path.append([current_x, current_z, -current_y, 6])
+                            # else:
+                                current_path.append([current_x, current_z, -current_y, 0])
+                        if z_changed:
                             if len(current_path) > 1:
                                 CreatePolygon()
-                            elif G == 1:
+                            else:
                                 current_path.clear()
+
                     elif G == 28:
                         x = self.getFloat(line, "X")
                         y = self.getFloat(line, "Y")
