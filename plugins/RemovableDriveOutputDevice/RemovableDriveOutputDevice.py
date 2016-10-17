@@ -50,15 +50,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         extension = file_formats[0]["extension"]
 
         if file_name is None:
-            for n in BreadthFirstIterator(node):
-                if n.getMeshData():
-                    file_name = n.getName()
-                    if file_name:
-                        break
-
-        if not file_name:
-            Logger.log("e", "Could not determine a proper file name when trying to write to %s, aborting", self.getName())
-            raise OutputDeviceError.WriteRequestFailedError()
+            file_name = self._automaticFileName(node)
 
         if extension:  # Not empty string.
             extension = "." + extension
@@ -87,6 +79,21 @@ class RemovableDriveOutputDevice(OutputDevice):
         except OSError as e:
             Logger.log("e", "Operating system would not let us write to %s: %s", file_name, str(e))
             raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
+
+    ##  Generate a file name automatically for the specified nodes to be saved
+    #   in.
+    #
+    #   The name generated will be the name of one of the nodes. Which node that
+    #   is can not be guaranteed.
+    #
+    #   \param root A node for which to generate a file name.
+    def _automaticFileName(self, root):
+        for child in BreadthFirstIterator(root):
+            if child.getMeshData():
+                name = child.getName()
+                if name:
+                    return name
+        raise OutputDeviceError.WriteRequestFailedError("Could not find a file name when trying to write to {device}.".format(device = self.getName()))
 
     def _onProgress(self, job, progress):
         if hasattr(job, "_message"):
