@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 import os.path
 
 from UM.Application import Application
@@ -25,7 +28,16 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self._stream = None
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+    ##  Request the specified nodes to be written to the removable drive.
+    #
+    #   \param nodes A collection of scene nodes that should be written to the
+    #   removable drive.
+    #   \param file_name \type{string} A suggestion for the file name to write
+    #   to. If none is provided, a file name will be made from the names of the
+    #   meshes.
+    #   \param limit_mimetypes Should we limit the available MIME types to the
+    #   MIME types available to the currently active machine?
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
         filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
@@ -50,7 +62,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         extension = file_formats[0]["extension"]
 
         if file_name is None:
-            file_name = self._automaticFileName(node)
+            file_name = self._automaticFileName(nodes)
 
         if extension:  # Not empty string.
             extension = "." + extension
@@ -60,7 +72,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
             self._stream = open(file_name, "wt", buffering = 1)
-            job = WriteMeshJob(writer, self._stream, node, MeshWriter.OutputMode.TextMode)
+            job = WriteMeshJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
@@ -86,13 +98,14 @@ class RemovableDriveOutputDevice(OutputDevice):
     #   The name generated will be the name of one of the nodes. Which node that
     #   is can not be guaranteed.
     #
-    #   \param root A node for which to generate a file name.
-    def _automaticFileName(self, root):
-        for child in BreadthFirstIterator(root):
-            if child.getMeshData():
-                name = child.getName()
-                if name:
-                    return name
+    #   \param nodes A collection of nodes for which to generate a file name.
+    def _automaticFileName(self, nodes):
+        for root in nodes:
+            for child in BreadthFirstIterator(root):
+                if child.getMeshData():
+                    name = child.getName()
+                    if name:
+                        return name
         raise OutputDeviceError.WriteRequestFailedError("Could not find a file name when trying to write to {device}.".format(device = self.getName()))
 
     def _onProgress(self, job, progress):

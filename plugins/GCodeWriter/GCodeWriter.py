@@ -46,7 +46,17 @@ class GCodeWriter(MeshWriter):
     def __init__(self):
         super().__init__()
 
-    def write(self, stream, node, mode = MeshWriter.OutputMode.TextMode):
+    ##  Writes the g-code for the entire scene to a stream.
+    #
+    #   Note that even though the function accepts a collection of nodes, the
+    #   entire scene is always written to the file since it is not possible to
+    #   separate the g-code for just specific nodes.
+    #
+    #   \param stream The stream to write the g-code to.
+    #   \param nodes This is ignored.
+    #   \param mode Additional information on how to format the g-code in the
+    #   file. This must always be text mode.
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
         if mode != MeshWriter.OutputMode.TextMode:
             Logger.log("e", "GCode Writer does not support non-text mode.")
             return False

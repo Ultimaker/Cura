@@ -49,7 +49,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._printer_state = ""
         self._printer_type = "unknown"
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
 
     ## Signals
