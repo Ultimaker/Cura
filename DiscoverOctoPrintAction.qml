@@ -184,7 +184,7 @@ Cura.MachineAction
                     }
                     Label
                     {
-                        width: parent.width * 0.7 
+                        width: parent.width * 0.7
                         wrapMode: Text.WordWrap
                         text: base.selectedInstance ? "%1:%2".arg(base.selectedInstance.ipAddress).arg(String(base.selectedInstance.port)) : ""
                     }
@@ -205,20 +205,35 @@ Cura.MachineAction
                 Label
                 {
                     text: catalog.i18nc("@label", "Please enter the API key to access OctoPrint above. You can get the OctoPrint API key through the OctoPrint web page.")
-                    width: parent.width
+                    width: parent.width - UM.Theme.getSize("default_margin").width
                     wrapMode: Text.WordWrap
                 }
 
-                CheckBox
+                Column
                 {
-                    id: autoPrintCheckBox
-                    text: catalog.i18nc("@label", "Automatically start print job after uploading")
-                    checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print") != "false"
-                    onClicked:
-                    {
-                        manager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print", String(checked))
-                    }
                     width: parent.width
+                    spacing: UM.Theme.getSize("default_lining").height
+
+                    CheckBox
+                    {
+                        id: autoPrintCheckBox
+                        text: catalog.i18nc("@label", "Automatically start print job after uploading")
+                        checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print") != "false"
+                        onClicked:
+                        {
+                            manager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_auto_print", String(checked))
+                        }
+                    }
+                    CheckBox
+                    {
+                        id: storeOnSdCheckBox
+                        text: catalog.i18nc("@label", "Store gcode on SD card (if available)")
+                        checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_store_sd") == "true"
+                        onClicked:
+                        {
+                            manager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_store_sd", String(checked))
+                        }
+                    }
                 }
 
                 Flow

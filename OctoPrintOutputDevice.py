@@ -360,7 +360,11 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             self._post_part.setBody(single_string_file_data.encode())
             self._post_multi_part.append(self._post_part)
 
-            url = QUrl(self._api_url + "files/local")
+            destination = "local"
+            if parseBool(global_container_stack.getMetaDataEntry("octoprint_store_sd", False)):
+                destination = "sdcard"
+
+            url = QUrl(self._api_url + "files/" + destination)
 
             ##  Create the QT request
             self._post_request = QNetworkRequest(url)
@@ -532,8 +536,12 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 self._progress_message.hide()
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
                 if not self._auto_print:
-                    file_name = QUrl(reply.header(QNetworkRequest.LocationHeader).toString()).fileName()
-                    message = Message(i18n_catalog.i18nc("@info:status", "Saved to OctoPrint as {0}").format(file_name))
+                    location = reply.header(QNetworkRequest.LocationHeader)
+                    if location:
+                        file_name = QUrl(reply.header(QNetworkRequest.LocationHeader).toString()).fileName()
+                        message = Message(i18n_catalog.i18nc("@info:status", "Saved to OctoPrint as {0}").format(file_name))
+                    else:
+                        message = Message(i18n_catalog.i18nc("@info:status", "Saved to OctoPrint"))
                     message.addAction("open_browser", i18n_catalog.i18nc("@action:button", "Open OctoPrint..."), "globe",
                                         i18n_catalog.i18nc("@info:tooltip", "Open the OctoPrint web interface"))
                     message.actionTriggered.connect(self._onMessageActionTriggered)
