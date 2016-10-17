@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Logger import Logger
@@ -474,7 +477,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.stop()
         self._camera_timer.stop()
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+    ##  Request the current scene to be sent to a network-connected printer.
+    #
+    #   \param nodes A collection of scene nodes to send. This is ignored.
+    #   \param file_name \type{string} A suggestion for a file name to write.
+    #   This is ignored.
+    #   \param filter_by_machine Whether to filter MIME types by machine. This
+    #   is ignored.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
         if self._progress != 0:
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
             self._error_message.show()
