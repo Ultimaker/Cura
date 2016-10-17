@@ -9,6 +9,7 @@ from UM.Preferences import Preferences
 
 import time
 import json
+import re
 
 ##      This plugin handles the connection detection & creation of output device objects for OctoPrint-connected printers.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -36,6 +37,8 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
             self._manual_instances = {}
         if not isinstance(self._manual_instances, dict):
             self._manual_instances = {}
+
+        self._name_regex = re.compile("OctoPrint instance (\".*\"\.|on )(.*)\.")
 
     addInstanceSignal = Signal()
     removeInstanceSignal = Signal()
@@ -135,7 +138,13 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
             key = name
-            name = name.replace("OctoPrint instance ", "")
+            result = self._name_regex.match(name)
+            if result:
+                if result.group(1) == "on ":
+                    name = result.group(2)
+                else:
+                    name = result.group(1) + result.group(2)
+
             Logger.log("d", "Bonjour service added: %s" % name)
 
             # First try getting info from zeroconf cache
