@@ -793,9 +793,10 @@ class MachineManager(QObject):
             result.append({"stack": stack, "quality": quality, "quality_changes": quality_changes})
 
         if extruder_stacks:
-            # Duplicate the quality from the 1st extruder into the global stack. If anyone
-            # then looks in the global stack, they should get a reasonable view.
-            result.append({"stack": global_container_stack, "quality": result[0]["quality"], "quality_changes": global_quality_changes})
+            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material], global_quality = "True")
+            if not global_quality:
+                global_quality = self._empty_quality_container
+            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
         else:
             result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
 
