@@ -1297,36 +1297,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_hop_enabled": {
-                    "label": "Z Hop when Retracted",
-                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_hop_only_when_collides": {
-                    "label": "Z Hop Only Over Printed Parts",
-                    "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_hop": {
-                    "label": "Z Hop Height",
-                    "description": "The height difference when performing a Z Hop.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1,
-                    "minimum_value_warning": "0.75 * machine_nozzle_size",
-                    "maximum_value_warning": "10",
-                    "enabled": "retraction_enable and retraction_hop_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
@@ -2184,6 +2154,36 @@
                     "minimum_value_warning": "machine_nozzle_tip_outer_diameter * 0.5",
                     "maximum_value_warning": "machine_nozzle_tip_outer_diameter * 5",
                     "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop_enabled": {
+                    "label": "Z Hop when Retracted",
+                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop_only_when_collides": {
+                    "label": "Z Hop Only Over Printed Parts",
+                    "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop": {
+                    "label": "Z Hop Height",
+                    "description": "The height difference when performing a Z Hop.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value_warning": "0.75 * machine_nozzle_size",
+                    "maximum_value_warning": "10",
+                    "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
