@@ -170,9 +170,14 @@ class SettingInheritanceManager(QObject):
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+            self._global_container_stack.containersChanged.disconnect(self._onContainersChanged)
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         if self._global_container_stack:
+            self._global_container_stack.containersChanged.connect(self._onContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+        self._onActiveExtruderChanged()
+
+    def _onContainersChanged(self, container):
         self._onActiveExtruderChanged()
 
     @staticmethod
