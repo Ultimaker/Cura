@@ -149,10 +149,10 @@ Cura.MachineAction
             Column
             {
                 width: parent.width * 0.5
-                visible: base.selectedInstance != null
                 spacing: UM.Theme.getSize("default_margin").height
                 Label
                 {
+                    visible: base.selectedInstance != null
                     width: parent.width
                     wrapMode: Text.WordWrap
                     text: base.selectedInstance ? base.selectedInstance.name : ""
@@ -161,6 +161,7 @@ Cura.MachineAction
                 }
                 Grid
                 {
+                    visible: base.selectedInstance != null
                     width: parent.width
                     columns: 2
                     rowSpacing: UM.Theme.getSize("default_lining").height
@@ -204,6 +205,7 @@ Cura.MachineAction
 
                 Label
                 {
+                    visible: base.selectedInstance != null
                     text: catalog.i18nc("@label", "Please enter the API key to access OctoPrint above. You can get the OctoPrint API key through the OctoPrint web page.")
                     width: parent.width - UM.Theme.getSize("default_margin").width
                     wrapMode: Text.WordWrap
@@ -211,6 +213,7 @@ Cura.MachineAction
 
                 Column
                 {
+                    visible: base.selectedInstance != null
                     width: parent.width
                     spacing: UM.Theme.getSize("default_lining").height
 
@@ -238,6 +241,7 @@ Cura.MachineAction
 
                 Flow
                 {
+                    visible: base.selectedInstance != null
                     spacing: UM.Theme.getSize("default_margin").width
 
                     Button
@@ -258,8 +262,26 @@ Cura.MachineAction
                         }
                     }
                 }
+
+                Label
+                {
+                    text: catalog.i18nc("@label", "Note: Printing UltiGCode using OctoPrint does not work. Please switch your Gcode flavour to RepRap (Marlin/Sprinter).")
+                    width: parent.width - UM.Theme.getSize("default_margin").width
+                    wrapMode: Text.WordWrap
+                    visible: machineGCodeFlavorProvider.properties.value == "UltiGCode"
+                }
             }
         }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineGCodeFlavorProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_gcode_flavor"
+        watchedProperties: [ "value" ]
+        storeIndex: 4
     }
 
     UM.Dialog
