@@ -2412,7 +2412,7 @@ msgctxt "@label"
 msgid ""
 "Do you want to change the PrintCores and materials in Cura to match your "
 "printer?"
-msgstr "The print core or material configuration in the current selected printer have been changed. Would you like to update these settings in Cura?"
+msgstr "Would you like to update your current printer configuration into Cura?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:924
 msgctxt "@label"
