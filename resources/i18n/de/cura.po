@@ -2295,39 +2295,10 @@ msgid ""
 "Click to open the profile manager."
 msgstr "Einige Einstellungswerte unterscheiden sich von den im Profil gespeicherten Werten.\n\nKlicken Sie, um den Profilmanager zu öffnen."
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
-msgid "Modify G-Code"
-msgstr "G-Code ändern"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:12
-msgctxt "@label"
-msgid "Post Processing"
-msgstr "Nachbearbeitung"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:16
-msgctxt "Description of plugin"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Erweiterung, die eine Nachbearbeitung von Skripten ermöglicht, die von Benutzern erstellt wurden."
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
-msgctxt "@title:window"
-msgid "Post Processing Plugin"
-msgstr "Plugin Nachbearbeitung"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
-msgctxt "@label"
-msgid "Post Processing Scripts"
-msgstr "Skripts Nachbearbeitung"
-
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:218
 msgctxt "@action"
 msgid "Add a script"
 msgstr "Ein Skript hinzufügen"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:264
-msgctxt "@label"
-msgid "Settings"
-msgstr "Einstellungen"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:456
 msgctxt "@info:tooltip"
