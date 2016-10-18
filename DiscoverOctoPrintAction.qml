@@ -323,7 +323,7 @@ Cura.MachineAction
 
                 Label
                 {
-                    text: catalog.i18nc("@alabel","Instance Name")
+                    text: catalog.i18nc("@label","Instance Name")
                     width: parent.width * 0.4
                 }
 
@@ -340,7 +340,7 @@ Cura.MachineAction
 
                 Label
                 {
-                    text: catalog.i18nc("@alabel","IP Address or Hostname")
+                    text: catalog.i18nc("@label","IP Address or Hostname")
                     width: parent.width * 0.4
                 }
 
@@ -357,7 +357,7 @@ Cura.MachineAction
 
                 Label
                 {
-                    text: catalog.i18nc("@alabel","Port Number")
+                    text: catalog.i18nc("@label","Port Number")
                     width: parent.width * 0.4
                 }
 
@@ -374,7 +374,7 @@ Cura.MachineAction
 
                 Label
                 {
-                    text: catalog.i18nc("@alabel","Path")
+                    text: catalog.i18nc("@label","Path")
                     width: parent.width * 0.4
                 }
 
