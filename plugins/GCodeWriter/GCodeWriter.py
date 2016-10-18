@@ -13,6 +13,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 import re #For escaping characters in the settings.
 import json
+import copy
 
 ##  Writes g-code to a file.
 #
@@ -70,7 +71,7 @@ class GCodeWriter(MeshWriter):
             flat_container.setDefinition(instance_container1.getDefinition())
         else:
             flat_container.setDefinition(instance_container2.getDefinition())
-        flat_container.setMetaData(instance_container2.getMetaData())
+        flat_container.setMetaData(copy.deepcopy(instance_container2.getMetaData()))
 
         for key in instance_container2.getAllKeys():
             flat_container.setProperty(key, "value", instance_container2.getProperty(key, "value"))
