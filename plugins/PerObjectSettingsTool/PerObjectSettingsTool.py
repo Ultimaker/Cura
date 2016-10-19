@@ -84,11 +84,20 @@ class PerObjectSettingsTool(Tool):
                 default_stack = ExtruderManager.getInstance().getExtruderStack(0)
                 if default_stack:
                     default_stack_id = default_stack.getId()
-                else: default_stack_id = global_container_stack.getId()
+                else:
+                    default_stack_id = global_container_stack.getId()
 
             root_node = Application.getInstance().getController().getScene().getRoot()
             for node in DepthFirstIterator(root_node):
-                node.callDecoration("setActiveExtruder", default_stack_id)
+                new_stack_id = default_stack_id
+                # Get position of old extruder stack for this node
+                old_extruder_pos = node.callDecoration("getActiveExtruderPosition")
+                if old_extruder_pos is not None:
+                    # Fetch current (new) extruder stack at position
+                    new_stack = ExtruderManager.getInstance().getExtruderStack(old_extruder_pos)
+                    if new_stack:
+                        new_stack_id = new_stack.getId()
+                node.callDecoration("setActiveExtruder", new_stack_id)
 
             self._updateEnabled()
 

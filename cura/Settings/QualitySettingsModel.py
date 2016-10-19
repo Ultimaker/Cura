@@ -110,9 +110,6 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 "definition": quality_changes_container.getDefinition().getId()
             }
 
-            if self._material_id and self._material_id != "empty_material":
-                criteria["material"] = self._material_id
-
             quality_container = self._container_registry.findInstanceContainers(**criteria)
             if not quality_container:
                 UM.Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
@@ -120,7 +117,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = quality_container.getDefinition().getId()
+        definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
@@ -136,9 +133,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             new_criteria.pop("extruder")
             containers = self._container_registry.findInstanceContainers(**new_criteria)
 
-        if not containers:
+        if not containers and "material" in criteria:
             # Try again, this time without material
-            criteria.pop("material")
+            criteria.pop("material", None)
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
@@ -147,14 +144,16 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             containers = self._container_registry.findInstanceContainers(**criteria)
 
         if not containers:
-            UM.Logger.log("Could not find any quality containers matching the search criteria %s" % str(criteria))
+            UM.Logger.log("w", "Could not find any quality containers matching the search criteria %s" % str(criteria))
             return
 
         if quality_changes_container:
             criteria = {"type": "quality_changes", "quality_type": quality_type, "definition": definition_id, "name": quality_changes_container.getName()}
             if self._extruder_definition_id != "":
-                criteria["extruder"] = self._extruder_definition_id
-                criteria["name"] = quality_changes_container.getName()
+                extruder_definitions = self._container_registry.findDefinitionContainers(id = self._extruder_definition_id)
+                if extruder_definitions:
+                    criteria["extruder"] = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
+                    criteria["name"] = quality_changes_container.getName()
             else:
                 criteria["extruder"] = None
 

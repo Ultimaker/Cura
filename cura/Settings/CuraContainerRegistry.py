@@ -142,6 +142,7 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \return \type{Dict} dict with a 'status' key containing the string 'ok' or 'error', and a 'message' key
     #       containing a message for the user
     def importProfile(self, file_name):
+        Logger.log("d", "Attempting to import profile %s", file_name)
         if not file_name:
             return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
 
@@ -181,7 +182,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     for profile in profile_or_list:
                         if profile_index >= 0:
                             if len(machine_extruders) > profile_index:
-                                extruder_id = machine_extruders[profile_index].getBottom().getId()
+                                extruder_id = Application.getInstance().getMachineManager().getQualityDefinitionId(machine_extruders[profile_index].getBottom())
                                 # Ensure the extruder profiles get non-conflicting names
                                 # NB: these are not user-facing
                                 if "extruder" in profile.getMetaData():
