@@ -121,7 +121,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+        enabled: Cura.MachineManager.areStacksValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings");
         onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
@@ -137,7 +137,7 @@ Item
     Action
     {
         id: addProfileAction;
-        enabled: Cura.MachineManager.isActiveStackValid && Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.areStacksValid && Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings...");
     }
 
