@@ -761,6 +761,7 @@ class MachineManager(QObject):
             global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = "True")
 
             if not global_quality:
+                Logger.log("w", "Could not find a global quality profile for quality type %s and machine %s, using empty", quality_type, global_container_stack.getId())
                 global_quality = self._empty_quality_container
 
             result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": empty_quality_changes})
@@ -813,6 +814,7 @@ class MachineManager(QObject):
         if extruder_stacks:
             global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material], global_quality = "True")
             if not global_quality:
+                Logger.log("w", "Could not find a global quality profile for quality type %s and machine %s, using empty", quality_type, global_container_stack.getId())
                 global_quality = self._empty_quality_container
             result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
         else:
