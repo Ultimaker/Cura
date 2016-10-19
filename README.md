@@ -1,5 +1,5 @@
 # UM3NetworkPrintingPlugin
-Secret plugin to enable wifi printing from Cura to UM3
+Plugin to enable wifi printing from Cura to UM3.
 
 Intructions
 ----
