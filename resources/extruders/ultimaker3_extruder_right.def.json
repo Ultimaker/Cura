@@ -1,0 +1,30 @@
+{
+    "id": "ultimaker3_extruder_right",
+    "version": 2,
+    "name": "Print core 2",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "ultimaker3",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 7.0 },
+        "machine_nozzle_offset_y": { "default_value": 3.9 },
+
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "default_value": 213 },
+        "machine_extruder_start_pos_y": { "default_value": 189 },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "default_value": 213 },
+        "machine_extruder_end_pos_y": { "default_value": 189 },
+        "machine_nozzle_head_distance": { "default_value": 4.2 },
+        "extruder_prime_pos_x": { "default_value": 182, "enabled": false },
+        "extruder_prime_pos_y": { "default_value": 6, "enabled": false },
+        "extruder_prime_pos_z": { "default_value": 2, "enabled": false }
+    }
+}

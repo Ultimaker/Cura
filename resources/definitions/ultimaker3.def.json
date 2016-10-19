@@ -1,0 +1,84 @@
+{
+    "id": "ultimaker3",
+    "version": 2,
+    "name": "Ultimaker 3",
+    "inherits": "ultimaker",
+    "metadata": {
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker",
+        "category": "Ultimaker",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+        "platform": "ultimaker3_platform.obj",
+        "platform_texture": "Ultimaker3backplate.png",
+        "platform_offset": [0, 0, 0],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_machine_materials": true,
+        "has_variant_materials": true,
+        "has_variants": true,
+        "preferred_variant": "*aa*",
+        "preferred_quality": "*Normal*",
+        "variants_name": "Print core",
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker3_extruder_left",
+            "1": "ultimaker3_extruder_right"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_usb_connection": false
+    },
+
+
+
+    "overrides": {
+        "machine_name": { "default_value": "Ultimaker 3" },
+        "machine_width": { "default_value": 215 },
+        "machine_depth": { "default_value": 215 },
+        "machine_height": { "default_value": 200 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_nozzle_heat_up_speed": { "default_value": 0.8 },
+        "machine_nozzle_cool_down_speed": { "default_value": 1 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value":
+            [
+                [ -40, 10 ],
+                [ -40, -30 ],
+                [ 60, 10 ],
+                [ 60, -30 ]
+            ]
+        },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_gcode_flavor": { "default_value": "Griffin" },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_acceleration": { "default_value": 3000 },
+        "gantry_height": { "default_value": 60 },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_disallowed_areas": { "default_value": [
+            [[-91.5, -115], [-115, -115], [-115, -104.6], [-91.5, -104.6]],
+            [[-99.5, -104.6], [-115, -104.6], [-115, 104.6], [-99.5, 104.6]],
+            [[-94.5, 104.6], [-115, 104.6], [-115, 105.5], [-94.5, 105.5]],
+            [[-91.4, 105.5], [-115, 105.5], [-115, 115], [-91.4, 115]],
+
+            [[77.3, -115], [77.3, -98.6], [115, -98.6], [115, -115]],
+            [[97.2, -98.6], [97.2, -54.5], [113, -54.5], [113, -98.6]],
+            [[100.5, -54.5], [100.5, 99.3], [115, 99.3], [115, -54.5]],
+            [[77, 99.3], [77, 115], [115, 115], [115, 99.3]]
+        ]},
+        "machine_show_variants": { "default_value": true },
+        "machine_extruder_count": { "default_value": 2 },
+        "print_sequence": {"enabled": false},
+        "extruder_prime_pos_abs": { "default_value": true },
+        "extruder_prime_pos_x": { "enabled": false },
+        "extruder_prime_pos_y": { "enabled": false },
+        "machine_start_gcode": { "default_value": "" },
+        "machine_end_gcode": { "default_value": "" },
+        "prime_tower_position_x": { "default_value": 175 },
+        "prime_tower_position_y": { "default_value": 179 },
+        "speed_prime_tower": { "default_value": 30 }
+    }
+}
