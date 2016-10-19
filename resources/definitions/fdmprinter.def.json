@@ -940,6 +940,14 @@
             "type": "category",
             "children":
             {
+                "infill_hollow":
+                {
+                    "label": "Hollow out object",
+                    "description": "Remove all infill and make the inside of the object eligible for support.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "infill_sparse_density":
                 {
                     "label": "Infill Density",
