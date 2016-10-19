@@ -283,6 +283,7 @@ class CuraApplication(QtApplication):
                 cool_fan_enabled
             support
                 support_enable
+                support_extruder_nr
                 support_type
                 support_interface_density
             platform_adhesion
@@ -293,7 +294,6 @@ class CuraApplication(QtApplication):
                 raft_surface_layers
             dual
                 adhesion_extruder_nr
-                support_extruder_nr
                 prime_tower_enable
                 prime_tower_size
                 prime_tower_position_x

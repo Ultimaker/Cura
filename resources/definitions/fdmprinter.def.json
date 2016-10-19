@@ -2343,6 +2343,51 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
+                "support_extruder_nr":
+                {
+                    "label": "Support Extruder",
+                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
+                    "type": "extruder",
+                    "default_value": "0",
+                    "enabled": "support_enable and machine_extruder_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children": {
+                        "support_infill_extruder_nr":
+                        {
+                            "label": "Support Infill Extruder",
+                            "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "support_extruder_nr",
+                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "support_extruder_nr_layer_0":
+                        {
+                            "label": "First Layer Support Extruder",
+                            "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "support_extruder_nr",
+                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "support_interface_extruder_nr":
+                        {
+                            "label": "Support Interface Extruder",
+                            "description": "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "support_extruder_nr",
+                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
+                },
                 "support_type":
                 {
                     "label": "Support Placement",
@@ -3327,51 +3372,6 @@
                     "enabled": "machine_extruder_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
-                },
-                "support_extruder_nr":
-                {
-                    "label": "Support Extruder",
-                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
-                    "type": "extruder",
-                    "default_value": "0",
-                    "enabled": "support_enable and machine_extruder_count > 1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "children": {
-                        "support_infill_extruder_nr":
-                        {
-                            "label": "Support Infill Extruder",
-                            "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
-                            "type": "extruder",
-                            "default_value": "0",
-                            "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        },
-                        "support_extruder_nr_layer_0":
-                        {
-                            "label": "First Layer Support Extruder",
-                            "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
-                            "type": "extruder",
-                            "default_value": "0",
-                            "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        },
-                        "support_interface_extruder_nr":
-                        {
-                            "label": "Support Interface Extruder",
-                            "description": "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion.",
-                            "type": "extruder",
-                            "default_value": "0",
-                            "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        }
-                    }
                 },
                 "prime_tower_enable":
                 {
