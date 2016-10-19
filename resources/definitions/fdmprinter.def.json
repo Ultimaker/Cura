@@ -3693,10 +3693,10 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
-                "support_mesh":
+                "overhang_mesh":
                 {
-                    "label": "Support Mesh",
-                    "description": "Use this mesh to specify support areas. This can be used to generate support structure.",
+                    "label": "Overhang Mesh",
+                    "description": "Use this mesh to specify areas which should be supported. This can be used to generate support structure.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true,
