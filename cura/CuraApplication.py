@@ -288,12 +288,12 @@ class CuraApplication(QtApplication):
                 support_interface_density
             platform_adhesion
                 adhesion_type
+                adhesion_extruder_nr
                 brim_width
                 raft_airgap
                 layer_0_z_overlap
                 raft_surface_layers
             dual
-                adhesion_extruder_nr
                 prime_tower_enable
                 prime_tower_size
                 prime_tower_position_x
