@@ -2367,7 +2367,7 @@
                 "cool_min_layer_time":
                 {
                     "label": "Minimum Layer Time",
-                    "description": "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer.",
+                    "description": "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
                     "unit": "s",
                     "type": "float",
                     "default_value": 5,
