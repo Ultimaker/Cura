@@ -81,6 +81,8 @@ class QualityManager:
     #                               specified then the currently selected machine definition is used.
     #   \param material_containers (Optional) \type{List[ContainerInstance]} If nothing is specified then
     #                               the current set of selected materials is used.
+    #   \param kwargs Keyword arguments. Passed along to ContainerRegistry and used as additional search
+    ##                              criteria when searching for quality profiles.
     #   \return the matching quality container \type{ContainerInstance}
     def findQualityByQualityType(self, quality_type, machine_definition=None, material_containers=None, **kwargs):
         criteria = kwargs
