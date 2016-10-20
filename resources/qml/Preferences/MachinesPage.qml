@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -229,7 +229,7 @@ UM.ManagementPage
             }
         }
 
-        UM.I18nCatalog { id: catalog; name: "uranium"; }
+        UM.I18nCatalog { id: catalog; name: "cura"; }
 
         UM.ConfirmRemoveDialog
         {

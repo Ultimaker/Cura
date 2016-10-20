@@ -1297,36 +1297,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_hop_enabled": {
-                    "label": "Z Hop when Retracted",
-                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_hop_only_when_collides": {
-                    "label": "Z Hop Only Over Printed Parts",
-                    "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_hop": {
-                    "label": "Z Hop Height",
-                    "description": "The height difference when performing a Z Hop.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1,
-                    "minimum_value_warning": "0.75 * machine_nozzle_size",
-                    "maximum_value_warning": "10",
-                    "enabled": "retraction_enable and retraction_hop_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
@@ -1403,15 +1373,6 @@
                             "settable_per_extruder": true
                         }
                     }
-                },
-                "retraction_hop_after_extruder_switch": {
-                    "label": "Z Hop After Extruder Switch",
-                    "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "retraction_hop_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
                 }
             }
         },
@@ -2186,6 +2147,45 @@
                     "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "retraction_hop_enabled": {
+                    "label": "Z Hop when Retracted",
+                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop_only_when_collides": {
+                    "label": "Z Hop Only Over Printed Parts",
+                    "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop": {
+                    "label": "Z Hop Height",
+                    "description": "The height difference when performing a Z Hop.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value_warning": "0.75 * machine_nozzle_size",
+                    "maximum_value_warning": "10",
+                    "enabled": "retraction_enable and retraction_hop_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop_after_extruder_switch": {
+                    "label": "Z Hop After Extruder Switch",
+                    "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_hop_enabled and machine_extruder_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -2342,6 +2342,51 @@
                     "default_value": false,
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
+                },
+                "support_extruder_nr":
+                {
+                    "label": "Support Extruder",
+                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
+                    "type": "extruder",
+                    "default_value": "0",
+                    "enabled": "support_enable and machine_extruder_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children": {
+                        "support_infill_extruder_nr":
+                        {
+                            "label": "Support Infill Extruder",
+                            "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "support_extruder_nr",
+                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "support_extruder_nr_layer_0":
+                        {
+                            "label": "First Layer Support Extruder",
+                            "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "support_extruder_nr",
+                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "support_interface_extruder_nr":
+                        {
+                            "label": "Support Interface Extruder",
+                            "description": "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "support_extruder_nr",
+                            "enabled": "support_enable and machine_extruder_count > 1",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
                 },
                 "support_type":
                 {
@@ -2778,6 +2823,16 @@
                     },
                     "default_value": "brim",
                     "resolve": "'raft' if 'raft' in extruderValues('adhesion_type') else ('brim' if 'brim' in extruderValues('adhesion_type') else 'skirt')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "adhesion_extruder_nr":
+                {
+                    "label": "Build Plate Adhesion Extruder",
+                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
+                    "type": "extruder",
+                    "default_value": "0",
+                    "enabled": "machine_extruder_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3318,61 +3373,6 @@
             "enabled": "machine_extruder_count > 1",
             "children":
             {
-                "adhesion_extruder_nr":
-                {
-                    "label": "Build Plate Adhesion Extruder",
-                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
-                    "type": "extruder",
-                    "default_value": "0",
-                    "enabled": "machine_extruder_count > 1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "support_extruder_nr":
-                {
-                    "label": "Support Extruder",
-                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
-                    "type": "extruder",
-                    "default_value": "0",
-                    "enabled": "support_enable and machine_extruder_count > 1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "children": {
-                        "support_infill_extruder_nr":
-                        {
-                            "label": "Support Infill Extruder",
-                            "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
-                            "type": "extruder",
-                            "default_value": "0",
-                            "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        },
-                        "support_extruder_nr_layer_0":
-                        {
-                            "label": "First Layer Support Extruder",
-                            "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
-                            "type": "extruder",
-                            "default_value": "0",
-                            "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        },
-                        "support_interface_extruder_nr":
-                        {
-                            "label": "Support Interface Extruder",
-                            "description": "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion.",
-                            "type": "extruder",
-                            "default_value": "0",
-                            "value": "support_extruder_nr",
-                            "enabled": "support_enable and machine_extruder_count > 1",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        }
-                    }
-                },
                 "prime_tower_enable":
                 {
                     "label": "Enable Prime Tower",

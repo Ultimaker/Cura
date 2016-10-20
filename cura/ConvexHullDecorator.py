@@ -200,6 +200,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
                     if len(vertex_data) >= 4:
                         convex_hull = hull.getConvexHull()
                         offset_hull = self._offsetHull(convex_hull)
+            else:
+                return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
