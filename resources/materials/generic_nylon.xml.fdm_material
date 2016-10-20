@@ -23,9 +23,15 @@ Generic Nylon profile. Serves as an example file, data in this file is not corre
         <setting key="standby temperature">175</setting>
 
         <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 3"/>
+            <hotend id="BB 0.4" />
+            <hotend id="AA 0.4">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+        </machine>
+        <machine>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2+"/>
             <machine_identifier manufacturer="Ultimaker" product="Ultimaker 2 Extended+"/>
-            <setting key="hardware compatible">yes</setting>
 
             <hotend id="0.25 mm" />
             <hotend id="0.4 mm" />
