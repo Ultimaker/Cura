@@ -347,5 +347,67 @@ UM.PreferencesPage
                 onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
             }
         }
+
+        Label
+        {
+            font.bold: true
+            visible: checkUpdatesCheckbox.visible || sendDataCheckbox.visible
+            text: catalog.i18nc("@label","Developer")
+        }
+
+        Row
+        {
+            spacing: UM.Theme.getSize("default_margin").width
+            Label
+            {
+                id: loggerLogLevelLabel
+                text: catalog.i18nc("@label","Log-Level:")
+                anchors.verticalCenter: languageComboBox.verticalCenter
+            }
+
+            ComboBox
+            {
+                id: loggerLogLevelComboBox
+                model: ListModel
+                {
+                    id: loggerLogLevelList
+
+                    Component.onCompleted: {
+                        append({ text: "CRITICAL", level: "50" })
+                        append({ text: "ERROR",    level: "40" })
+                        append({ text: "WARNING",  level: "30" })
+                        append({ text: "INFO",     level: "20" })
+                        append({ text: "DEBUG",    level: "10" })
+                    }
+                }
+
+                currentIndex:
+                {
+                    var level = UM.Preferences.getValue("logger/log_level_console");
+                    for(var i = 0; i < languageList.count; ++i)
+                    {
+                        if(model.get(i).level == level)
+                        {
+                            return level
+                        }
+                    }
+                }
+                onActivated: UM.Preferences.setValue("logger/log_level_console", model.get(index).level)
+
+                Component.onCompleted:
+                {
+                    // Because ListModel is stupid and does not allow using qsTr() for values.
+                    for(var i = 0; i < languageList.count; ++i)
+                    {
+                        languageList.setProperty(i, "text", languageList.get(i).text);
+                    }
+
+                    // Glorious hack time. ComboBox does not update the text properly after changing the
+                    // model. So change the indices around to force it to update.
+                    currentIndex += 1;
+                    currentIndex -= 1;
+                }
+            }
+        }
     }
 }
