@@ -2295,25 +2295,6 @@ msgid ""
 "Click to open the profile manager."
 msgstr "Bazı ayar değerleri profilinizde saklanan değerlerden farklıdır.\n\nProfil yöneticisini açmak için tıklayın."
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
-msgid "Modify G-Code"
-msgstr "GCode Değiştir"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:12
-msgctxt "@label"
-msgid "Post Processing"
-msgstr "Son İşleme"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:16
-msgctxt "Description of plugin"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Kullanıcının oluşturduğu komut dosyalarına son işleme için izin veren uzantı"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
-msgctxt "@title:window"
-msgid "Post Processing Plugin"
-msgstr "Son İşleme Uzantısı"
-
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
 msgctxt "@label"
 msgid "Post Processing Scripts"
@@ -2333,3 +2314,318 @@ msgstr "Ayarlar"
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts"
 msgstr "Etkin son işleme dosyalarını değiştir"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Manages network connections to Ultimaker 3 printers"
+msgstr "Ultimaker 3 yazıcıları için ağ bağlantılarını yönetir"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:100
+msgctxt "@action:button"
+msgid "Print over network"
+msgstr "Ağ üzerinden yazdır"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:101
+msgctxt "@properties:tooltip"
+msgid "Print over network"
+msgstr "Ağ üzerinden yazdır"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:143
+msgctxt "@info:status"
+msgid ""
+"Access to the printer requested. Please approve the request on the printer"
+msgstr "İstenen yazıcıya erişim. Lütfen yazıcı isteğini onaylayın"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:144
+msgctxt "@info:status"
+msgid ""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:145
+msgctxt "@action:button"
+msgid "Retry"
+msgstr "Yeniden dene"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:145
+msgctxt "@info:tooltip"
+msgid "Re-send the access request"
+msgstr "Erişim talebini yeniden gönder"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:147
+msgctxt "@info:status"
+msgid "Access to the printer accepted"
+msgstr "Kabul edilen yazıcıya erişim"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:148
+msgctxt "@info:status"
+msgid "No access to print with this printer. Unable to send print job."
+msgstr "Bu yazıcıyla yazdırmaya erişim yok. Yazdırma işi gönderilemedi."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:149
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:28
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:72
+msgctxt "@action:button"
+msgid "Request Access"
+msgstr "Erişim Talep Et"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:149
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:27
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:71
+msgctxt "@info:tooltip"
+msgid "Send access request to the printer"
+msgstr "Yazıcıya erişim talebi gönder"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:232
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Connected over the network to {0}. Please approve the access request on the "
+"printer."
+msgstr "Ağ üzerinden şuraya bağlandı: {0}. Lütfen yazıcıya erişim isteğini onaylayın."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:239
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Connected over the network to {0}."
+msgstr "Ağ üzerinden şuraya bağlandı: {0}."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:252
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Connected over the network to {0}. No access to control the printer."
+msgstr "Ağ üzerinden şuraya bağlandı: {0}. Yazıcıyı kontrol etmek için erişim yok."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:257
+msgctxt "@info:status"
+msgid "Access request was denied on the printer."
+msgstr "Yazıcıya erişim talebi reddedildi."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:260
+msgctxt "@info:status"
+msgid "Access request failed due to a timeout."
+msgstr "Erişim talebi zaman aşımı nedeniyle başarısız oldu."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:323
+msgctxt "@info:status"
+msgid "The connection with the network was lost."
+msgstr "Ağ bağlantısı kaybedildi."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:354
+msgctxt "@info:status"
+msgid ""
+"The connection with the printer was lost. Check your printer to see if it is "
+"connected."
+msgstr "Yazıcı bağlantısı kaybedildi. Yazıcınızın bağlı olup olmadığını kontrol edin."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:466
+msgctxt "@info:status"
+msgid ""
+"Unable to start a new print job because the printer is busy. Please check "
+"the printer."
+msgstr "Yazıcı meşgul olduğu için yeni bir yazdırma başlatılamıyor. Lütfen yazıcıyı kontrol edin."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:471
+#, python-format
+msgctxt "@info:status"
+msgid ""
+"Unable to start a new print job, printer is busy. Current printer status is "
+"%s."
+msgstr "Yazıcı meşgul, yeni bir yazdırma başlatılamıyor. Geçerli yazıcı durumu: %s."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:491
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No PrinterCore loaded in slot {0}"
+msgstr "Yeni bir yazdırma başlatılamıyor. {0} yuvasına PrinterCore yüklenmedi"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:498
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No material loaded in slot {0}"
+msgstr "Yeni bir yazdırma başlatılamıyor. {0} yuvasına Malzeme yüklenmedi"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:509
+#, python-brace-format
+msgctxt "@label"
+msgid "Not enough material for spool {0}."
+msgstr "Biriktirme {0} için yeterli malzeme yok."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:519
+#, python-brace-format
+msgctxt "@label"
+msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr "Farklı PrintCore (Cura: {0}, Yazıcı: {1}), ekstrüder {2} için seçildi"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:533
+#, python-brace-format
+msgctxt "@label"
+msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr "Farklı malzeme (Cura: {0}, Yazıcı: {1}), ekstrüder {2} için seçildi"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:536
+msgctxt "@label"
+msgid "Are you sure you wish to print with the selected configuration?"
+msgstr "Seçilen yapılandırma ile yazdırmak istediğinizden emin misiniz?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:537
+msgctxt "@label"
+msgid ""
+"There is a mismatch between the configuration of the printer and Cura. For "
+"the best result, always slice for the PrintCores and materials that are "
+"inserted in your printer."
+msgstr "Yazıcı yapılandırması ve Cura arasında uyumsuzluk var. En iyi sonucu almak istiyorsanız, her zaman PrintCore ve yazıcıya eklenen malzemeler için dilimleme yapın."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:543
+msgctxt "@window:title"
+msgid "Mismatched configuration"
+msgstr "Uyumsuz yapılandırma"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:633
+msgctxt "@info:status"
+msgid "Sending data to printer"
+msgstr "Veriler yazıcıya gönderiliyor"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:680
+msgctxt "@info:status"
+msgid "Unable to send data to printer. Is another job still active?"
+msgstr "Veriler yazıcıya gönderilemedi. Hala etkin olan başka bir iş var mı?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:804
+msgctxt "@label:MonitorStatus"
+msgid "Print aborted. Please check the printer"
+msgstr "Yazdırma durduruldu. Lütfen yazıcıyı kontrol edin"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:810
+msgctxt "@label:MonitorStatus"
+msgid "Pausing print..."
+msgstr "Yazdırma duraklatılıyor..."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:812
+msgctxt "@label:MonitorStatus"
+msgid "Resuming print..."
+msgstr "Yazdırma devam ediyor..."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:920
+msgctxt "@window:title"
+msgid "Changes on the Printer"
+msgstr "Yazıcıdaki Değişiklikler"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:922
+msgctxt "@label"
+msgid ""
+"Do you want to change the PrintCores and materials in Cura to match your "
+"printer?"
+msgstr "Yazıcıya uyumlu hale getirmek için PrintCore ve Cura’daki malzemeleri değiştirmek istiyor musunuz?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:924
+msgctxt "@label"
+msgid ""
+"The PrintCores and/or materials on your printer were changed. For the best "
+"result, always slice for the PrintCores and materials that are inserted in "
+"your printer."
+msgstr "PrintCore ve/veya yazıcınızdaki malzemeler değiştirildi. En iyi sonucu almak istiyorsanız, her zaman PrintCore ve yazıcıya eklenen malzemeler için dilimleme yapın."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
+msgctxt "@action"
+msgid "Connect via Network"
+msgstr "Ağ ile Bağlan"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:57
+msgctxt "@title:window"
+msgid "Connect to Networked Printer"
+msgstr "Ağ Yazıcısına Bağlan"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:67
+msgctxt "@label"
+msgid ""
+"To print directly to your printer over the network, please make sure your "
+"printer is connected to the network using a network cable or by connecting "
+"your printer to your WIFI network. If you don't connect Cura with your "
+"printer, you can still use a USB drive to transfer g-code files to your "
+"printer.\n"
+"\n"
+"Select your printer from the list below:"
+msgstr "Yazıcınıza ağ üzerinden doğrudan bağlamak için, lütfen yazıcınızın ağ kablosu kullanan bir ağa bağlı olduğundan emin olun veya yazıcınızı WiFi ağına bağlayın. Cura'ya yazıcınız ile bağlanamıyorsanız g-code dosyalarını yazıcınıza aktarmak için USB sürücüsü kullanabilirsiniz.\n\nAşağıdaki listeden yazıcınızı seçin:"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:106
+msgctxt "@action:button"
+msgid "Refresh"
+msgstr "Yenile"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:198
+msgctxt "@label"
+msgid ""
+"If your printer is not listed, read the <a href='%1'>network-printing "
+"troubleshooting guide</a>"
+msgstr "Yazıcınız listede yoksa <a href=’%1’>ağ yazdırma sorun giderme kılavuzunu</a> okuyun"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:225
+msgctxt "@label"
+msgid "Type"
+msgstr "Tür"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:231
+msgctxt "@label"
+msgid "Ultimaker 3"
+msgstr "Ultimaker 3"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:231
+msgctxt "@label"
+msgid "Ultimaker 3 Extended"
+msgstr "Genişletilmiş Ultimaker 3"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:237
+msgctxt "@label"
+msgid "Firmware version"
+msgstr "Üretici yazılımı sürümü"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:249
+msgctxt "@label"
+msgid "Address"
+msgstr "Adres"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:263
+msgctxt "@label"
+msgid "The printer at this address has not yet responded."
+msgstr "Bu adresteki yazıcı henüz yanıt vermedi."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:268
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:38
+msgctxt "@action:button"
+msgid "Connect"
+msgstr "Bağlan"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:280
+msgctxt "@label:"
+msgid "Print Again"
+msgstr "Yeniden Yazdır"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:289
+msgctxt "@title:window"
+msgid "Printer Address"
+msgstr "Yazıcı Adresi"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:319
+msgctxt "@alabel"
+msgid "Enter the IP address or hostname of your printer on the network."
+msgstr "IP adresini veya yazıcınızın ağ üzerindeki ana bilgisayar adını girin."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:346
+msgctxt "@action:button"
+msgid "Ok"
+msgstr "Tamam"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:37
+msgctxt "@info:tooltip"
+msgid "Connect to a printer"
+msgstr "Yazıcıya Bağlan"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:116
+msgctxt "@info:tooltip"
+msgid "Load the configuration of the printer into Cura"
+msgstr "Yazıcı yapılandırmasını Cura’ya yükle"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:117
+msgctxt "@action:button"
+msgid "Activate Configuration"
+msgstr "Yapılandırmayı Etkinleştir"

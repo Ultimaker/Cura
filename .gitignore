@@ -8,6 +8,7 @@ docs/html
 resources/i18n/en
 resources/i18n/x-test
 resources/firmware
+resources/materials
 LC_MESSAGES
 
 # Editors and IDEs.

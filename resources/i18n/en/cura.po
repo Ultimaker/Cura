@@ -535,7 +535,7 @@ msgid ""
 "The selected material is imcompatible with the selected machine or "
 "configuration."
 msgstr ""
-"The selected material is imcompatible with the selected machine or "
+"The selected material is incompatible with the selected machine or "
 "configuration."
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:666
@@ -2387,3 +2387,37 @@ msgstr ""
 "Some setting values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:519
+#, python-brace-format
+msgctxt "@label"
+msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}"
+
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No PrinterCore loaded in slot {0}"
+msgstr "Unable to start a new print job. No print core loaded in slot {0}"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:537
+msgctxt "@label"
+msgid ""
+"There is a mismatch between the configuration of the printer and Cura. For "
+"the best result, always slice for the PrintCores and materials that are "
+"inserted in your printer."
+msgstr "There is a mismatch between the configuration of the printer and Cura. For the best result, always slice for the print cores and materials that are inserted in your printer."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:922
+msgctxt "@label"
+msgid ""
+"Do you want to change the PrintCores and materials in Cura to match your "
+"printer?"
+msgstr "Would you like to update your current printer configuration into Cura?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:924
+msgctxt "@label"
+msgid ""
+"The PrintCores and/or materials on your printer were changed. For the best "
+"result, always slice for the PrintCores and materials that are inserted in "
+"your printer."
+msgstr "The print cores and/or materials on your printer were changed. For the best result, always slice for the print cores and materials that are inserted in your printer."
