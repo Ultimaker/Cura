@@ -34,7 +34,7 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.activeVariantChanged)
         self.globalContainerChanged.connect(self.activeQualityChanged)
 
-        self._stacks_valid = None
+        self._stacks_have_errors = None
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
@@ -233,10 +233,10 @@ class MachineManager(QObject):
             quality.nameChanged.connect(self._onQualityNameChanged)
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
-    def _updateStacksValid(self):
-        old_stacks_valid = self._stacks_valid
-        self._stacks_valid = self._checkStacksValid()
-        if old_stacks_valid != self._stacks_valid:
+    def _updateStacksHaveErrors(self):
+        old_stacks_have_errors = self._stacks_have_errors
+        self._stacks_have_errors = self._checkStacksHaveErrors()
+        if old_stacks_have_errors != self._stacks_have_errors:
             self.stacksValidationChanged.emit()
 
     def _onActiveExtruderStackChanged(self):
@@ -254,7 +254,7 @@ class MachineManager(QObject):
         else:
             self._active_container_stack = self._global_container_stack
 
-        self._updateStacksValid()
+        self._updateStacksHaveErrors()
 
         if old_active_container_stack != self._active_container_stack:
             # Many methods and properties related to the active quality actually depend
@@ -277,18 +277,18 @@ class MachineManager(QObject):
             self.activeStackValueChanged.emit()
 
         if property_name == "validationState":
-            if self._stacks_valid:
+            if not self._stacks_have_errors:
                 # fast update, we only have to look at the current changed property
                 if self._active_container_stack.getProperty(key, "settable_per_extruder"):
                     changed_validation_state = self._active_container_stack.getProperty(key, property_name)
                 else:
                     changed_validation_state = self._global_container_stack.getProperty(key, property_name)
                 if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
-                    self._stacks_valid = False
+                    self._stacks_have_errors = True
                     self.stacksValidationChanged.emit()
             else:
                 # Normal check
-                self._updateStacksValid()
+                self._updateStacksHaveErrors()
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id):
@@ -342,30 +342,18 @@ class MachineManager(QObject):
     def _createUniqueName(self, container_type, current_name, new_name, fallback_name):
         return UM.Settings.ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
-    ##  Convenience function to check if a stack is valid.
-    def _checkStackValid(self, stack):
-        if stack is None:
+    def _checkStacksHaveErrors(self):
+        if self._global_container_stack is not None and self._global_container_stack.hasErrors():
             return True
-
-        for key in stack.getAllKeys():
-            validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
-                return False
-        return True
-
-    ##  Return True if used stacks are valid.
-    def _checkStacksValid(self):
-        if not self._checkStackValid(self._global_container_stack):
-            return False
 
         if self._global_container_stack is None:
-            return True
+            return False
         stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
         for stack in stacks:
-            if not self._checkStackValid(stack):
-                return False
+            if stack.hasErrors():
+                return True
 
-        return True
+        return False
 
     ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
     @pyqtSlot()
@@ -425,11 +413,11 @@ class MachineManager(QObject):
             container.sendPostponedEmits()
 
     ##  Check if none of the stacks contain error states
-    #   Note that the _stacks_valid is cached due to performance issues
+    #   Note that the _stacks_have_errors is cached due to performance issues
     #   Calling _checkStack(s)ForErrors on every change is simply too expensive
     @pyqtProperty(bool, notify = stacksValidationChanged)
-    def areStacksValid(self):
-        return bool(self._stacks_valid)
+    def stacksHaveErrors(self):
+        return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = activeStackChanged)
     def activeUserProfileId(self):
