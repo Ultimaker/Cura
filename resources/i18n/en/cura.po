@@ -1911,8 +1911,8 @@ msgstr "Printer Monitor"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
 msgctxt "@title:tab"
-msgid "Simple"
-msgstr "Simple"
+msgid "Recommended"
+msgstr "Recommended"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
 msgctxt "@title:tab"

@@ -1831,8 +1831,8 @@ msgstr "Druckerbildschirm"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
 msgctxt "@title:tab"
-msgid "Simple"
-msgstr "Einfach"
+msgid "Recommended"
+msgstr "Empfohlen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
 msgctxt "@title:tab"

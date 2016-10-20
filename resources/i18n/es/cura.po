@@ -1831,13 +1831,13 @@ msgstr "Monitor de la impresora"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
 msgctxt "@title:tab"
-msgid "Simple"
-msgstr "Básica"
+msgid "Recommended"
+msgstr "Recomendado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
 msgctxt "@title:tab"
 msgid "Advanced"
-msgstr "Avanzada"
+msgstr "Avanzado"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:18

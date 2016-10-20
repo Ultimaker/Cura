@@ -379,7 +379,7 @@ Rectangle
 
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), item: sidebarSimple })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple })
         modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), item: sidebarAdvanced })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
