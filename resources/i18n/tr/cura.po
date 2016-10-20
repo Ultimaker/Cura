@@ -1831,8 +1831,8 @@ msgstr "Yazıcı İzleyici"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
 msgctxt "@title:tab"
-msgid "Simple"
-msgstr "Basit"
+msgid "Recommended"
+msgstr "Önerilen Ayarlar"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
 msgctxt "@title:tab"
