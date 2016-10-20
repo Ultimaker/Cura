@@ -474,6 +474,26 @@ class MachineManager(QObject):
 
         return result
 
+    ##  Gets the layer height of the currently active quality profile.
+    #
+    #   This is indicated together with the name of the active quality profile.
+    #
+    #   \return The layer height of the currently active quality profile.
+    @pyqtProperty(float, notify=activeQualityChanged)
+    def activeQualityLayerHeight(self):
+        if not self._global_container_stack:
+            return 0
+
+        quality = self._global_container_stack.findContainer({"type": "quality_changes"})
+        if quality and quality.hasProperty("layer_height", "value"):
+            print(quality.getProperty("layer_height", "value"))
+            return quality.getProperty("layer_height", "value")
+        quality = self._global_container_stack.findContainer({"type": "quality"})
+        if quality and quality.hasProperty("layer_height", "value"): #This depends on layer_height always being present in the quality.
+                                                                     #If it isn't, there is no way we can find the layer_height while excluding any layer_height in the user profile.
+            return quality.getProperty("layer_height", "value")
+        return 0
+
     ##  Get the Material ID associated with the currently active material
     #   \returns MaterialID (string) if found, empty string otherwise
     @pyqtProperty(str, notify=activeQualityChanged)
