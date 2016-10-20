@@ -310,7 +310,7 @@ UM.ManagementPage
             folder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var result = base.model.importProfile(fileUrl)
+                var result = Cura.ContainerManager.importProfile(fileUrl);
                 messageDialog.text = result.message
                 if(result.status == "ok")
                 {
@@ -339,7 +339,7 @@ UM.ManagementPage
             onAccepted:
             {
                 var containers = Cura.ContainerManager.findInstanceContainers({"type": "quality_changes", "name": base.currentItem.name})
-                var result = base.model.exportProfile(containers, fileUrl, selectedNameFilter)
+                var result = Cura.ContainerManager.exportProfile(containers, fileUrl, selectedNameFilter)
 
                 if(result && result.status == "error")
                 {
