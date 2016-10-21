@@ -288,7 +288,7 @@ Column
             text: {
                 var result = Cura.MachineManager.activeQualityName;
                 if (Cura.MachineManager.activeQualityLayerHeight > 0) {
-                    result += " <font color=\"" + UM.Theme.getColor("text_inactive") + "\">";
+                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
                     result += " - ";
                     result += Cura.MachineManager.activeQualityLayerHeight + "mm";
                     result += "</font>";
