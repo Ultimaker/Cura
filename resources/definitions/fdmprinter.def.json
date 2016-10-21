@@ -3546,6 +3546,17 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
+                },
+                "carve_multiple_volumes":
+                {
+                    "label": "Remove Mesh Intersection",
+                    "description": "Remove areas where multiple objecs are overlapping with each other. This is may be used if merged dual material objects overlap with each other.",
+                    "type": "bool",
+                    "default_value": true,
+                    "value": "machine_extruder_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
                 }
             }
         },
