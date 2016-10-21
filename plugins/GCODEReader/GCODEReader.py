@@ -58,35 +58,33 @@ class GCODEReader(MeshReader):
         except:
             return None
 
-    def onSceneChanged(self, obj):
-        scene = Application.getInstance().getController().getScene()
+    def parent_changed(self, node):
+        if node.getParent() is None:
+            scene = Application.getInstance().getController().getScene()
 
-        def findAny():
-            for node in DepthFirstIterator(scene.getRoot()):
-                if hasattr(node, "gcode"):
-                    return True
-            return False
+            def findAny():
+                for node1 in DepthFirstIterator(scene.getRoot()):
+                    if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
+                        return True
+                return False
 
-        if not findAny():
-            # Preferences.getInstance().setValue("cura/jobname_prefix", True)
             backend = Application.getInstance().getBackend()
-            backend._pauseSlicing = False
-            Application.getInstance().setHideSettings(False)
-            #Application.getInstance().getPrintInformation()._setAbbreviatedMachineName()
-        else:
-            backend = Application.getInstance().getBackend()
-            backend._pauseSlicing = True
-            backend.backendStateChange.emit(3)
-            Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
-            Application.getInstance().setHideSettings(True)
+            if not findAny():
+                backend._pauseSlicing = False
+                Application.getInstance().setHideSettings(False)
+                Application.getInstance().getPrintInformation()._pre_sliced = False
+            else:
+                backend._pauseSlicing = True
+                backend.backendStateChange.emit(3)
+                Application.getInstance().getPrintInformation()._pre_sliced = True
+                Application.getInstance().setHideSettings(True)
+
 
     def read(self, file_name):
         scene_node = None
 
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
-            scene = Application.getInstance().getController().getScene()
-            scene.sceneChanged.connect(self.onSceneChanged)
             # for node in DepthFirstIterator(scene.getRoot()):
             #     if node.callDecoration("getLayerData"):
             #         node.getParent().removeChild(node)
@@ -245,7 +243,12 @@ class GCODEReader(MeshReader):
             decorator.setLayerData(layer_mesh)
             scene_node.addDecorator(decorator)
 
-            Application.getInstance().getPrintInformation()._abbr_machine = "Pre-sliced"
+            Application.getInstance().getPrintInformation()._pre_sliced = True
+
+
+
+
+            scene_node.parentChanged.connect(self.parent_changed)
 
             scene_node_parent = Application.getInstance().getBuildVolume()
             scene_node.setParent(scene_node_parent)
@@ -256,6 +259,8 @@ class GCODEReader(MeshReader):
 
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
+
+
             # mesh_builder = MeshBuilder()
             # mesh_builder.setFileName(file_name)
             #
@@ -263,11 +268,6 @@ class GCODEReader(MeshReader):
 
             # scene_node.setMeshData(mesh_builder.build())
             # scene_node.setMeshData(MeshData(file_name=file_name))
-
-
-
-            Preferences.getInstance().setValue("cura/jobname_prefix", True)
-
 
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":

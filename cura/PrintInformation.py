@@ -49,6 +49,8 @@ class PrintInformation(QObject):
         self._material_lengths = []
         self._material_weights = []
 
+        self._pre_sliced = False
+
         self._backend = Application.getInstance().getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
@@ -122,7 +124,9 @@ class PrintInformation(QObject):
     def createJobName(self, base_name):
         base_name = self._stripAccents(base_name)
         self._setAbbreviatedMachineName()
-        if Preferences.getInstance().getValue("cura/jobname_prefix"):
+        if self._pre_sliced:
+            return "Pre-sliced_" + base_name
+        elif Preferences.getInstance().getValue("cura/jobname_prefix"):
             return self._abbr_machine + "_" + base_name
         else:
             return base_name
