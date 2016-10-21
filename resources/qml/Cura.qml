@@ -406,7 +406,8 @@ UM.MainWindow
                 iconSource: UM.Theme.getIcon("viewmode");
 
                 style: UM.Theme.styles.tool_button;
-                tooltip: '';
+                tooltip: "";
+                enabled: !PrintInformation.isPreSliced
                 menu: ViewMenu { }
             }
 

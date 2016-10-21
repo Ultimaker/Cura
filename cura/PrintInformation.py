@@ -63,6 +63,16 @@ class PrintInformation(QObject):
 
     currentPrintTimeChanged = pyqtSignal()
 
+    preSlicedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=preSlicedChanged)
+    def isPreSliced(self):
+        return self._pre_sliced
+
+    def setPreSliced(self, pre_sliced):
+        self._pre_sliced = pre_sliced
+        self.preSlicedChanged.emit()
+
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
         return self._current_print_time

@@ -72,11 +72,11 @@ class GCODEReader(MeshReader):
             if not findAny():
                 backend._pauseSlicing = False
                 Application.getInstance().setHideSettings(False)
-                Application.getInstance().getPrintInformation()._pre_sliced = False
+                Application.getInstance().getPrintInformation().setPreSliced(False)
             else:
                 backend._pauseSlicing = True
                 backend.backendStateChange.emit(3)
-                Application.getInstance().getPrintInformation()._pre_sliced = True
+                Application.getInstance().getPrintInformation().setPreSliced(True)
                 Application.getInstance().setHideSettings(True)
 
 
