@@ -1,0 +1,30 @@
+{
+    "id": "prusa_mendel_i3",
+    "name": "Prusa Mendel i3",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Ultimaker",
+        "manufacturer": "Unknown",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "platform_offset": [ 0, 0, 0]
+    },
+
+    "overrides": {
+        "prime_tower_size": { "default_value": 8.660254037844387 },
+        "machine_nozzle_size": { "default_value": 0.5 },
+        "material_print_temperature": { "default_value": 240 },
+        "layer_height": { "default_value": 0.2 },
+        "speed_travel": { "default_value": 150 },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_height": { "default_value": 200 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_depth": { "default_value": 185 },
+        "machine_width": { "default_value": 198 },
+        "machine_name": { "default_value": "Prusa Mendel i3" }
+    }
+}
