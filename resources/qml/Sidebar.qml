@@ -289,7 +289,7 @@ Rectangle
 
     Label {
         id: settingsModeLabel
-        text: catalog.i18nc("@label:listbox", "Print Setup");
+        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Not possible to modify slicing settings or re-slice\nwhile a GCODE file is open");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
@@ -297,7 +297,7 @@ Rectangle
         width: parent.width * 0.45 - 2 * UM.Theme.getSize("default_margin").width
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
-        visible: !monitoringPrint && !hideSettings
+        visible: !monitoringPrint
         elide: Text.ElideRight
     }
 
