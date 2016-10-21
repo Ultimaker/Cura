@@ -285,7 +285,16 @@ Column
         ToolButton
         {
             id: globalProfileSelection
-            text: Cura.MachineManager.activeQualityName
+            text: {
+                var result = Cura.MachineManager.activeQualityName;
+                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
+                    result += " - ";
+                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
+                    result += "</font>";
+                }
+                return result;
+            }
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
             width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width

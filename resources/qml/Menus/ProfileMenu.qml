@@ -17,7 +17,7 @@ Menu
 
         MenuItem
         {
-            text: model.name
+            text: model.name + " - " + model.layer_height
             checkable: true
             checked: Cura.MachineManager.activeQualityChangesId == "empty_quality_changes" && Cura.MachineManager.activeQualityType == model.metadata.quality_type
             exclusiveGroup: group
@@ -40,7 +40,7 @@ Menu
 
         MenuItem
         {
-            text: model.name
+            text: model.name + " - " + model.layer_height
             checkable: true
             checked: Cura.MachineManager.globalQualityId == model.id
             exclusiveGroup: group
