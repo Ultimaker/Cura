@@ -1181,6 +1181,22 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "material_bed_temperature_layer_0":
+                {
+                    "label": "Build Plate Temperature Initial Layer",
+                    "description": "The temperature used for the heated build plate at the first layer.",
+                    "unit": "°C",
+                    "type": "float",
+                    "resolve": "max(extruderValues('material_bed_temperature_layer_0'))",
+                    "default_value": 60,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "260",
+                    "enabled": "machine_heated_bed",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "material_diameter":
                 {
                     "label": "Diameter",
