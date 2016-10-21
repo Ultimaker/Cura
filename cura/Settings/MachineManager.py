@@ -478,21 +478,27 @@ class MachineManager(QObject):
     #
     #   This is indicated together with the name of the active quality profile.
     #
-    #   \return The layer height of the currently active quality profile.
+    #   \return The layer height of the currently active quality profile. If
+    #   there is no quality profile, this returns 0.
     @pyqtProperty(float, notify=activeQualityChanged)
     def activeQualityLayerHeight(self):
         if not self._global_container_stack:
             return 0
 
-        quality = self._global_container_stack.findContainer({"type": "quality_changes"})
-        if quality and quality.hasProperty("layer_height", "value"):
-            print(quality.getProperty("layer_height", "value"))
-            return quality.getProperty("layer_height", "value")
+        quality_changes = self._global_container_stack.findContainer({"type": "quality_changes"})
+        if quality_changes:
+            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality_changes.getId())
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(self._global_container_stack)
+            return value
         quality = self._global_container_stack.findContainer({"type": "quality"})
-        if quality and quality.hasProperty("layer_height", "value"): #This depends on layer_height always being present in the quality.
-                                                                     #If it isn't, there is no way we can find the layer_height while excluding any layer_height in the user profile.
-            return quality.getProperty("layer_height", "value")
-        return 0
+        if quality:
+            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality.getId())
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(self._global_container_stack)
+            return value
+
+        return 0 #No quality profile.
 
     ##  Get the Material ID associated with the currently active material
     #   \returns MaterialID (string) if found, empty string otherwise
