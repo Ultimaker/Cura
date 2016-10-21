@@ -55,6 +55,8 @@ class ProfilesModel(InstanceContainersModel):
         container_registry = ContainerRegistry.getInstance()
         machine_manager = Application.getInstance().getMachineManager()
 
+        unit = global_container_stack.getBottom().getProperty("layer_height", "unit")
+
         for item in super()._recomputeItems():
             profile = container_registry.findContainers(id = item["id"])
             if not profile:
@@ -65,7 +67,7 @@ class ProfilesModel(InstanceContainersModel):
             #Easy case: This profile defines its own layer height.
             profile = profile[0]
             if profile.hasProperty("layer_height", "value"):
-                item["layer_height"] = str(profile.getProperty("layer_height", "value")) + "mm"
+                item["layer_height"] = str(profile.getProperty("layer_height", "value")) + unit
                 yield item
                 continue
 
@@ -80,7 +82,7 @@ class ProfilesModel(InstanceContainersModel):
                 else: #No global container stack in the results:
                     quality = quality_results[0]["quality"] #Take any of the extruders.
                 if quality and quality.hasProperty("layer_height", "value"):
-                    item["layer_height"] = str(quality.getProperty("layer_height", "value")) + "mm"
+                    item["layer_height"] = str(quality.getProperty("layer_height", "value")) + unit
                     yield item
                     continue
 
@@ -90,5 +92,5 @@ class ProfilesModel(InstanceContainersModel):
                 skip_until_container = global_container_stack.findContainer({"type": "variant"})
                 if not skip_until_container: #No variant in stack.
                     skip_until_container = global_container_stack.getBottom()
-            item["layer_height"] = str(global_container_stack.getRawProperty("layer_height", "value", skip_until_container = skip_until_container.getId())) + "mm" #Fall through to the currently loaded material.
+            item["layer_height"] = str(global_container_stack.getRawProperty("layer_height", "value", skip_until_container = skip_until_container.getId())) + unit #Fall through to the currently loaded material.
             yield item
