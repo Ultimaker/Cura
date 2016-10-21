@@ -272,6 +272,8 @@ class GCODEReader(MeshReader):
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
                 view.resetLayerData()
+                view.setLayer(999999)
+                view.calculateMaxLayers()
 
             # scene_node.setEnabled(False)
             #scene_node.setSelectable(False)
