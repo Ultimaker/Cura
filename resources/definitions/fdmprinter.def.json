@@ -2217,6 +2217,42 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "start_layers_at_same_position":
+                {
+                    "label": "Start Layers Near Same Point",
+                    "description": "Start printing the objects in each layer near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
+                },
+                "layer_start_x":
+                {
+                    "label": "Layer Start X",
+                    "description": "The X coordinate of the position near where to start printing objects each layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value": "0",
+                    "enabled": "start_layers_at_same_position",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
+                },
+                "layer_start_y":
+                {
+                    "label": "Layer Start Y",
+                    "description": "The Y coordinate of the position near where to start printing objects each layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value": "0",
+                    "enabled": "start_layers_at_same_position",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
+                },
                 "retraction_hop_enabled": {
                     "label": "Z Hop when Retracted",
                     "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
