@@ -1001,6 +1001,7 @@
                         "lines": "Lines",
                         "triangles": "Triangles",
                         "cubic": "Cubic",
+                        "cubicsubdiv": "Cubic Subdivision",
                         "tetrahedral": "Tetrahedral",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
@@ -1009,6 +1010,31 @@
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "settable_per_mesh": true
+                },
+                "sub_div_rad_mult":
+                {
+                    "label": "Cubic Subdivision Radius",
+                    "description": "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "200",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
+                    "settable_per_mesh": true
+                },
+                "sub_div_rad_add":
+                {
+                    "label": "Cubic Subdivision Shell",
+                    "description": "An addition to the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to a thicker shell of small cubes near the boundary of the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.4,
+                    "value": "wall_line_width_x",
+                    "minimum_value_warning": "-1 * infill_line_distance",
+                    "maximum_value_warning": "5 * infill_line_distance",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "infill_overlap":
