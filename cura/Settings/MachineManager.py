@@ -713,7 +713,7 @@ class MachineManager(QObject):
 
         # Get quality container and optionally the quality_changes container.
         if container_type == "quality":
-            new_quality_settings_list = self._determineQualityAndQualityChangesForQualityType(quality_type)
+            new_quality_settings_list = self.determineQualityAndQualityChangesForQualityType(quality_type)
         elif container_type == "quality_changes":
             new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
         else:
@@ -749,7 +749,7 @@ class MachineManager(QObject):
     #
     #   \param quality_name \type{str} the name of the quality.
     #   \return \type{List[Dict]} with keys "stack", "quality" and "quality_changes".
-    def _determineQualityAndQualityChangesForQualityType(self, quality_type):
+    def determineQualityAndQualityChangesForQualityType(self, quality_type):
         quality_manager = QualityManager.getInstance()
         result = []
         empty_quality_changes = self._empty_quality_changes_container
