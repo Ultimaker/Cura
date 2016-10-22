@@ -1,12 +1,12 @@
 {
     "id": "rigid3d_zero",
-    "name": "Rigid3d_Zero",
+    "name": "Rigid3D Zero",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Ultimaker",
-        "manufacturer": "Unknown",
+        "manufacturer": "Rigid3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0]
