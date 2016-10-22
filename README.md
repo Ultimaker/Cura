@@ -1,5 +1,8 @@
 # OctoPrintPlugin
-Cura plugin which enables printing directly to OctoPrint and monitoring the process
+Cura plugin which enables printing directly to OctoPrint and monitoring the progress
+
+This plugin started out as a fork of the UM3NetworkPrinting plugin:
+https://github.com/Ultimaker/UM3NetworkPrintingPlugin
 
 Installation
 ----
