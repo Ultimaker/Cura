@@ -24,3 +24,26 @@ How to use
   available in the OctoPrint settings.
 - From this point on, the print monitor should be functional and you should be
   able to switch to "Print to Octoprint" on the bottom of the sidebar.
+
+Notes on UltiGCode (Ultimaker 2/Ultimaker 2+)
+----
+The Ultimaker 2(+) family uses a flavor of GCode named UltiGCode. Unfortunately printing
+using UltiGCode flavor does not work when printing over the USB connection. That is why
+using OctoPrint does not work with UltiGCode flavor.
+
+For the Ultimaker 2/Ultimaker 2 Extended, you can use "Machine Settings" on the
+"Printers" pane of the preferences to change your GCode flavor to "RepRap 
+(Marlin/Sprinter)".
+
+The Ultimaker 2+/Ultimaker 2 Extended+ currently don't support "Machine Settings". You
+can use one of these alternative printer definitions instead:
+<dl>
+<dt>Ultimaker2+</dt>
+<dd>https://gist.github.com/fieldOfView/bf536254add126fd4c7b36bc347fce73</dd>
+<dt>Ultimaker2 Extended+</dt>
+<dd>https://gist.github.com/fieldOfView/a52caf946d0a0df522c22298a6c94209</dd>
+</dl>
+Copy these files into the resources/definitions folder of your Cura application.
+Restart Cura and add a new printer. You should see the option to add a Ultimaker
+2+ (RepRap) and/or Ultimaker 2 Extended+ (RepRap) (depending on which file(s)
+you installed.
