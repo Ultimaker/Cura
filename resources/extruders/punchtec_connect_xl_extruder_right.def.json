@@ -4,7 +4,7 @@
     "name": "1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "ord",
+        "machine": "punchtec_connect_xl",
         "position": "1"
     },
 
