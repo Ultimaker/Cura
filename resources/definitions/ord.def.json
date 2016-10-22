@@ -1,12 +1,12 @@
 {
     "id": "ord",
-    "name": "Ord",
+    "name": "ORD",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Ultimaker",
-        "manufacturer": "Unknown",
+        "manufacturer": "ORD Solutions",
         "category": "Other",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
