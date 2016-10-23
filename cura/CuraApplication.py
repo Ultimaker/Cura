@@ -19,6 +19,9 @@ from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.Validator import Validator
+from types import MethodType
+
+from UM.Qt.Bindings.MeshFileHandlerProxy import MeshFileHandlerProxy
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -534,6 +537,54 @@ class CuraApplication(QtApplication):
                 continue
 
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
+
+    loadingFiles = []
+
+    @pyqtSlot(QUrl)
+    def loadFile(self, file):
+        scene = self.getController().getScene()
+
+        def findAny():
+            for node1 in DepthFirstIterator(scene.getRoot()):
+                if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
+                    return True
+            return False
+        if findAny():
+            self.deleteAll()
+
+        if not file.isValid():
+            return
+
+        supported_extensions = [".gcode", ".g"]
+
+        f = file.toLocalFile()
+
+        if len(self.loadingFiles) > 0:
+            extension = os.path.splitext(f)[1]
+            if extension.lower() in supported_extensions:
+                return
+            extension = os.path.splitext(self.loadingFiles[0])[1]
+            if extension.lower() in supported_extensions:
+                return
+
+        self.loadingFiles.append(f)
+
+        job = ReadMeshJob(f)
+        job.finished.connect(self._readMeshFinished)
+        job.start()
+
+    def _readMeshFinished(self, job):
+        node = job.getResult()
+        if node != None:
+            filename = job.getFileName()
+            node.setSelectable(True)
+            node.setName(filename)
+            self.loadingFiles.remove(filename)
+
+            op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
+            op.push()
+
+            self.getController().getScene().sceneChanged.emit(node)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():

@@ -269,16 +269,16 @@ UM.MainWindow
                     if(drop.urls.length > 0)
                     {
                         // Import models
+                        var imported_model = -1;
                         for(var i in drop.urls)
                         {
                             // There is no endsWith in this version of JS...
                             if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
                                 // Drop an object
-                                UM.MeshFileHandler.readLocalFile(drop.urls[i]);
-                                if (i == drop.urls.length - 1)
+                                Printer.loadFile(drop.urls[i]);
+                                if (imported_model == -1)
                                 {
-                                    var meshName = backgroundItem.getMeshName(drop.urls[i].toString());
-                                    backgroundItem.hasMesh(decodeURIComponent(meshName));
+                                    imported_model = i;
                                 }
                             }
                         }
@@ -296,6 +296,11 @@ UM.MainWindow
                                 messageDialog.icon = StandardIcon.Critical
                             }
                             messageDialog.open()
+                        }
+                        if (imported_model != -1)
+                        {
+                            var meshName = backgroundItem.getMeshName(drop.urls[imported_model].toString())
+                            backgroundItem.hasMesh(decodeURIComponent(meshName))
                         }
                     }
                 }
@@ -732,14 +737,11 @@ UM.MainWindow
 
             for(var i in fileUrls)
             {
-                UM.MeshFileHandler.readLocalFile(fileUrls[i])
-
-                if (i == fileUrls.length - 1)
-                {
-                    var meshName = backgroundItem.getMeshName(fileUrls.toString())
-                    backgroundItem.hasMesh(decodeURIComponent(meshName))
-                }
+                Printer.loadFile(fileUrls[i])
             }
+
+            var meshName = backgroundItem.getMeshName(fileUrls[0].toString())
+            backgroundItem.hasMesh(decodeURIComponent(meshName))
         }
     }
 

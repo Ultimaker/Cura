@@ -14,11 +14,13 @@ from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 from UM.Preferences import Preferences
 
+
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura import LayerPolygon
 
 import numpy
+from types import MethodType
 
 
 from UM.Job import Job
