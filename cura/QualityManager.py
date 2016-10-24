@@ -82,8 +82,9 @@ class QualityManager:
     #   \param material_containers (Optional) \type{List[ContainerInstance]} If nothing is specified then
     #                               the current set of selected materials is used.
     #   \return the matching quality container \type{ContainerInstance}
-    def findQualityByQualityType(self, quality_type, machine_definition=None, material_containers=None):
-        criteria = {"type": "quality"}
+    def findQualityByQualityType(self, quality_type, machine_definition=None, material_containers=None, **kwargs):
+        criteria = kwargs
+        criteria["type"] = "quality"
         if quality_type:
             criteria["quality_type"] = quality_type
         result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
@@ -218,7 +219,7 @@ class QualityManager:
         result = []
         for container in containers:
             # If the machine specifies we should filter by material, exclude containers that do not match any active material.
-            if filter_by_material and container.getMetaDataEntry("material") not in material_ids:
+            if filter_by_material and container.getMetaDataEntry("material") not in material_ids and not "global_quality" in kwargs:
                 continue
             result.append(container)
         return result

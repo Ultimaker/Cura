@@ -194,10 +194,27 @@ Item {
                 // Inherit button needs to be visible if;
                 // - User made changes that override any loaded settings
                 // - This setting item uses inherit button at all
+                // - The revert button is not visible.
                 // - The type of the value of any deeper container is an "object" (eg; is a function)
                 visible:
                 {
-                    return showInheritButton && Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+                    if(!base.showInheritButton)
+                    {
+                        return false;
+                    }
+
+                    if(revertButton.visible)
+                    {
+                        // The revert button already indicates there is a custom value for this setting, making this button superfluous.
+                        return false;
+                    }
+
+                    if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
+                    {
+                        return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+                    }
+
+                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
                 }
 
                 height: parent.height;
