@@ -566,7 +566,7 @@ class MachineManager(QObject):
             quality = self._active_container_stack.findContainer(type = "quality")
             if quality:
                 return Util.parseBool(quality.getMetaDataEntry("supported", True))
-        return ""
+        return False
 
     ##  Get the Quality ID associated with the currently active extruder
     #   Note that this only returns the "quality", not the "quality_changes"
