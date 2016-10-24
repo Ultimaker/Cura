@@ -111,7 +111,7 @@ class MachineInstance:
         user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
         if not os.path.exists(user_storage):
             os.makedirs(user_storage)
-        with open(user_profile_file, "w") as file_handle:
+        with open(user_profile_file, "w", encoding = "utf-8") as file_handle:
             user_profile.write(file_handle)
         version_upgrade_manager.upgradeExtraFile(user_storage, urllib.parse.quote_plus(self._name), "user")
 

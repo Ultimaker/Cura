@@ -382,7 +382,7 @@ class CuraApplication(QtApplication):
 
                 if path:
                     instance.setPath(path)
-                    with SaveFile(path, "wt", -1, "utf-8") as f:
+                    with SaveFile(path, "wt") as f:
                         f.write(data)
 
             for stack in ContainerRegistry.getInstance().findContainerStacks():
@@ -409,7 +409,7 @@ class CuraApplication(QtApplication):
             path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
         if path:
             stack.setPath(path)
-            with SaveFile(path, "wt", -1, "utf-8") as f:
+            with SaveFile(path, "wt") as f:
                 f.write(data)
 
 
