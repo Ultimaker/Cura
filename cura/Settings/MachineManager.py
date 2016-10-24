@@ -225,11 +225,26 @@ class MachineManager(QObject):
             self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
-            material = self._global_container_stack.findContainer({"type": "material"})
-            material.nameChanged.connect(self._onMaterialNameChanged)
 
-            quality = self._global_container_stack.findContainer({"type": "quality"})
-            quality.nameChanged.connect(self._onQualityNameChanged)
+            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+                # For multi-extrusion machines, we do not want variant or material profiles in the stack,
+                # because these are extruder specific and may cause wrong values to be used for extruders
+                # that did not specify a value in the extruder.
+                global_variant = self._global_container_stack.findContainer(type = "variant")
+                if global_variant != self._empty_variant_container:
+                    self._global_container_stack.replaceContainer(self._global_container_stack.getContainerIndex(global_variant), self._empty_variant_container)
+
+                global_material = self._global_container_stack.findContainer(type = "material")
+                if global_material != self._empty_material_container:
+                    self._global_container_stack.replaceContainer(self._global_container_stack.getContainerIndex(global_material), self._empty_material_container)
+
+            else:
+                material = self._global_container_stack.findContainer({"type": "material"})
+                material.nameChanged.connect(self._onMaterialNameChanged)
+
+                quality = self._global_container_stack.findContainer({"type": "quality"})
+                quality.nameChanged.connect(self._onQualityNameChanged)
+
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
@@ -769,8 +784,13 @@ class MachineManager(QObject):
 
         if extruder_stacks:
             # Add an extra entry for the global stack.
-            result.append({"stack": global_container_stack, "quality": result[0]["quality"],
-                           "quality_changes": empty_quality_changes})
+            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = "True")
+
+            if not global_quality:
+                global_quality = self._empty_quality_container
+
+            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": empty_quality_changes})
+
         return result
 
     ##  Determine the quality and quality changes settings for the current machine for a quality changes name.
@@ -793,7 +813,10 @@ class MachineManager(QObject):
         # For the global stack, find a quality which matches the quality_type in
         # the quality changes profile and also satisfies any material constraints.
         quality_type = global_quality_changes.getMetaDataEntry("quality_type")
-        global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+        if global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [], global_quality = True)
+        else:
+            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
 
         # Find the values for each extruder.
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -814,9 +837,10 @@ class MachineManager(QObject):
             result.append({"stack": stack, "quality": quality, "quality_changes": quality_changes})
 
         if extruder_stacks:
-            # Duplicate the quality from the 1st extruder into the global stack. If anyone
-            # then looks in the global stack, they should get a reasonable view.
-            result.append({"stack": global_container_stack, "quality": result[0]["quality"], "quality_changes": global_quality_changes})
+            global_quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material], global_quality = "True")
+            if not global_quality:
+                global_quality = self._empty_quality_container
+            result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
         else:
             result.append({"stack": global_container_stack, "quality": global_quality, "quality_changes": global_quality_changes})
 
