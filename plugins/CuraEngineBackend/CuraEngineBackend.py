@@ -230,7 +230,7 @@ class CuraEngineBackend(Backend):
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
             if Application.getInstance().getPlatformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
-                                            "The selected material is imcompatible with the selected machine or configuration."))
+                                            "The selected material is incompatible with the selected machine or configuration."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:

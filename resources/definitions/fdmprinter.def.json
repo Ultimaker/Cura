@@ -276,7 +276,9 @@
                     "label": "Disallowed areas",
                     "description": "A list of polygons with areas the print head is not allowed to enter.",
                     "type": "polygons",
-                    "default_value": [],
+                    "default_value":
+                    [
+                    ],
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -390,7 +392,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "machine_max_feedrate_x": {
+                "machine_max_feedrate_x":
+                {
                     "label": "Maximum Speed X",
                     "description": "The maximum speed for the motor of the X-direction.",
                     "unit": "mm/s",
@@ -400,7 +403,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_feedrate_y": {
+                "machine_max_feedrate_y":
+                {
                     "label": "Maximum Speed Y",
                     "description": "The maximum speed for the motor of the Y-direction.",
                     "unit": "mm/s",
@@ -410,7 +414,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_feedrate_z": {
+                "machine_max_feedrate_z":
+                {
                     "label": "Maximum Speed Z",
                     "description": "The maximum speed for the motor of the Z-direction.",
                     "unit": "mm/s",
@@ -420,7 +425,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_feedrate_e": {
+                "machine_max_feedrate_e":
+                {
                     "label": "Maximum Feedrate",
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
@@ -430,7 +436,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_x": {
+                "machine_max_acceleration_x":
+                {
                     "label": "Maximum Acceleration X",
                     "description": "Maximum acceleration for the motor of the X-direction",
                     "unit": "mm/s²",
@@ -440,7 +447,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_y": {
+                "machine_max_acceleration_y":
+                {
                     "label": "Maximum Acceleration Y",
                     "description": "Maximum acceleration for the motor of the Y-direction.",
                     "unit": "mm/s²",
@@ -450,7 +458,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_z": {
+                "machine_max_acceleration_z":
+                {
                     "label": "Maximum Acceleration Z",
                     "description": "Maximum acceleration for the motor of the Z-direction.",
                     "unit": "mm/s²",
@@ -460,7 +469,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_acceleration_e": {
+                "machine_max_acceleration_e":
+                {
                     "label": "Maximum Filament Acceleration",
                     "description": "Maximum acceleration for the motor of the filament.",
                     "unit": "mm/s²",
@@ -470,7 +480,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_acceleration": {
+                "machine_acceleration":
+                {
                     "label": "Default Acceleration",
                     "description": "The default acceleration of print head movement.",
                     "unit": "mm/s²",
@@ -480,7 +491,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_jerk_xy": {
+                "machine_max_jerk_xy":
+                {
                     "label": "Default X-Y Jerk",
                     "description": "Default jerk for movement in the horizontal plane.",
                     "unit": "mm/s",
@@ -490,7 +502,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_jerk_z": {
+                "machine_max_jerk_z":
+                {
                     "label": "Default Z Jerk",
                     "description": "Default jerk for the motor of the Z-direction.",
                     "unit": "mm/s",
@@ -500,7 +513,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_max_jerk_e": {
+                "machine_max_jerk_e":
+                {
                     "label": "Default Filament Jerk",
                     "description": "Default jerk for the motor of the filament.",
                     "unit": "mm/s",
@@ -510,7 +524,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_minimum_feedrate": {
+                "machine_minimum_feedrate":
+                {
                     "label": "Minimum Feedrate",
                     "description": "The minimal movement speed of the print head.",
                     "unit": "mm/s",
@@ -579,7 +594,7 @@
                             "minimum_value": "0.0001",
                             "minimum_value_warning": "0.75 * machine_nozzle_size",
                             "maximum_value_warning": "2 * machine_nozzle_size",
-                            "value":"line_width",
+                            "value": "line_width",
                             "default_value": 0.4,
                             "type": "float",
                             "settable_per_mesh": true,
@@ -594,7 +609,7 @@
                                     "minimum_value_warning": "0.75 * machine_nozzle_size if outer_inset_first else 0.1 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "default_value": 0.4,
-                                    "value":"wall_line_width",
+                                    "value": "wall_line_width",
                                     "type": "float",
                                     "settable_per_mesh": true
                                 },
@@ -607,7 +622,7 @@
                                     "minimum_value_warning": "0.5 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "default_value": 0.4,
-                                    "value":"wall_line_width",
+                                    "value": "wall_line_width",
                                     "type": "float",
                                     "settable_per_mesh": true
                                 }
@@ -837,7 +852,7 @@
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": true
                 },
-                "outer_inset_first": 
+                "outer_inset_first":
                 {
                     "label": "Outer Before Inner Walls",
                     "description": "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
@@ -862,7 +877,8 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "travel_compensate_overlapping_walls_0_enabled": {
+                        "travel_compensate_overlapping_walls_0_enabled":
+                        {
                             "label": "Compensate Outer Wall Overlaps",
                             "description": "Compensate the flow for parts of an outer wall being printed where there is already a wall in place.",
                             "type": "bool",
@@ -870,7 +886,8 @@
                             "value": "travel_compensate_overlapping_walls_enabled",
                             "settable_per_mesh": true
                         },
-                        "travel_compensate_overlapping_walls_x_enabled": {
+                        "travel_compensate_overlapping_walls_x_enabled":
+                        {
                             "label": "Compensate Inner Wall Overlaps",
                             "description": "Compensate the flow for parts of an inner wall being printed where there is already a wall in place.",
                             "type": "bool",
@@ -998,7 +1015,8 @@
                         }
                     }
                 },
-                "skin_overlap": {
+                "skin_overlap":
+                {
                     "label": "Skin Overlap Percentage",
                     "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
                     "unit": "%",
@@ -1009,8 +1027,10 @@
                     "value": "5 if top_bottom_pattern != 'concentric' else 0",
                     "enabled": "top_bottom_pattern != 'concentric'",
                     "settable_per_mesh": true,
-                    "children": {
-                        "skin_overlap_mm": {
+                    "children":
+                    {
+                        "skin_overlap_mm":
+                        {
                             "label": "Skin Overlap",
                             "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
                             "unit": "mm",
@@ -1021,9 +1041,9 @@
                             "value": "skin_line_width * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
                             "enabled": "top_bottom_pattern != 'concentric'",
                             "settable_per_mesh": true
-                         }
-                     }
-                 },
+                        }
+                    }
+                },
                 "infill_wipe_dist":
                 {
                     "label": "Infill Wipe Distance",
@@ -1131,7 +1151,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_extrusion_cool_down_speed": {
+                "material_extrusion_cool_down_speed":
+                {
                     "label": "Extrusion Cool Down Speed Modifier",
                     "description": "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",
                     "unit": "°C/s",
@@ -1144,7 +1165,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_bed_temperature": {
+                "material_bed_temperature":
+                {
                     "label": "Build Plate Temperature",
                     "description": "The temperature used for the heated build plate. Set at 0 to pre-heat the printer manually.",
                     "unit": "°C",
@@ -1159,7 +1181,8 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "material_diameter": {
+                "material_diameter":
+                {
                     "label": "Diameter",
                     "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
                     "unit": "mm",
@@ -1171,7 +1194,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_flow": {
+                "material_flow":
+                {
                     "label": "Flow",
                     "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
                     "unit": "%",
@@ -1182,7 +1206,8 @@
                     "maximum_value_warning": "150",
                     "settable_per_mesh": true
                 },
-                "retraction_enable": {
+                "retraction_enable":
+                {
                     "label": "Enable Retraction",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
                     "type": "bool",
@@ -1190,7 +1215,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_amount": {
+                "retraction_amount":
+                {
                     "label": "Retraction Distance",
                     "description": "The length of material retracted during a retraction move.",
                     "unit": "mm",
@@ -1202,7 +1228,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_speed": {
+                "retraction_speed":
+                {
                     "label": "Retraction Speed",
                     "description": "The speed at which the filament is retracted and primed during a retraction move.",
                     "unit": "mm/s",
@@ -1215,8 +1242,10 @@
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "children": {
-                        "retraction_retract_speed": {
+                    "children":
+                    {
+                        "retraction_retract_speed":
+                        {
                             "label": "Retraction Retract Speed",
                             "description": "The speed at which the filament is retracted during a retraction move.",
                             "unit": "mm/s",
@@ -1231,7 +1260,8 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "retraction_prime_speed": {
+                        "retraction_prime_speed":
+                        {
                             "label": "Retraction Prime Speed",
                             "description": "The speed at which the filament is primed during a retraction move.",
                             "unit": "mm/s",
@@ -1248,7 +1278,8 @@
                         }
                     }
                 },
-                "retraction_extra_prime_amount": {
+                "retraction_extra_prime_amount":
+                {
                     "label": "Retraction Extra Prime Amount",
                     "description": "Some material can ooze away during a travel move, which can be compensated for here.",
                     "unit": "mm³",
@@ -1260,7 +1291,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_min_travel": {
+                "retraction_min_travel":
+                {
                     "label": "Retraction Minimum Travel",
                     "description": "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area.",
                     "unit": "mm",
@@ -1273,7 +1305,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_count_max": {
+                "retraction_count_max":
+                {
                     "label": "Maximum Retraction Count",
                     "description": "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
                     "default_value": 90,
@@ -1284,7 +1317,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_extrusion_window": {
+                "retraction_extrusion_window":
+                {
                     "label": "Minimum Extrusion Distance Window",
                     "description": "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
                     "unit": "mm",
@@ -1548,7 +1582,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "speed_layer_0": {
+                "speed_layer_0":
+                {
                     "label": "Initial Layer Speed",
                     "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate.",
                     "unit": "mm/s",
@@ -1589,7 +1624,8 @@
                         }
                     }
                 },
-                "skirt_brim_speed": {
+                "skirt_brim_speed":
+                {
                     "label": "Skirt/Brim Speed",
                     "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt or brim at a different speed.",
                     "unit": "mm/s",
@@ -1652,9 +1688,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-
-
-                "acceleration_enabled": {
+                "acceleration_enabled":
+                {
                     "label": "Enable Acceleration Control",
                     "description": "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality.",
                     "type": "bool",
@@ -1663,7 +1698,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "acceleration_print": {
+                "acceleration_print":
+                {
                     "label": "Print Acceleration",
                     "description": "The acceleration with which printing happens.",
                     "unit": "mm/s²",
@@ -1674,8 +1710,10 @@
                     "default_value": 3000,
                     "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": true,
-                    "children": {
-                        "acceleration_infill": {
+                    "children":
+                    {
+                        "acceleration_infill":
+                        {
                             "label": "Infill Acceleration",
                             "description": "The acceleration with which infill is printed.",
                             "unit": "mm/s²",
@@ -1688,7 +1726,8 @@
                             "enabled": "resolveOrValue('acceleration_enabled') and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
-                        "acceleration_wall": {
+                        "acceleration_wall":
+                        {
                             "label": "Wall Acceleration",
                             "description": "The acceleration with which the walls are printed.",
                             "unit": "mm/s²",
@@ -1700,8 +1739,10 @@
                             "value": "acceleration_print",
                             "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true,
-                            "children": {
-                                "acceleration_wall_0": {
+                            "children":
+                            {
+                                "acceleration_wall_0":
+                                {
                                     "label": "Outer Wall Acceleration",
                                     "description": "The acceleration with which the outermost walls are printed.",
                                     "unit": "mm/s²",
@@ -1714,7 +1755,8 @@
                                     "enabled": "resolveOrValue('acceleration_enabled')",
                                     "settable_per_mesh": true
                                 },
-                                "acceleration_wall_x": {
+                                "acceleration_wall_x":
+                                {
                                     "label": "Inner Wall Acceleration",
                                     "description": "The acceleration with which all inner walls are printed.",
                                     "unit": "mm/s²",
@@ -1729,7 +1771,8 @@
                                 }
                             }
                         },
-                        "acceleration_topbottom": {
+                        "acceleration_topbottom":
+                        {
                             "label": "Top/Bottom Acceleration",
                             "description": "The acceleration with which top/bottom layers are printed.",
                             "unit": "mm/s²",
@@ -1742,7 +1785,8 @@
                             "enabled": "resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": true
                         },
-                        "acceleration_support": {
+                        "acceleration_support":
+                        {
                             "label": "Support Acceleration",
                             "description": "The acceleration with which the support structure is printed.",
                             "unit": "mm/s²",
@@ -1756,8 +1800,10 @@
                             "settable_per_mesh": false,
                             "limit_to_extruder": "support_extruder_nr",
                             "settable_per_extruder": true,
-                            "children": {
-                                "acceleration_support_infill": {
+                            "children":
+                            {
+                                "acceleration_support_infill":
+                                {
                                     "label": "Support Infill Acceleration",
                                     "description": "The acceleration with which the infill of support is printed.",
                                     "unit": "mm/s²",
@@ -1772,7 +1818,8 @@
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
-                                "acceleration_support_interface": {
+                                "acceleration_support_interface":
+                                {
                                     "label": "Support Interface Acceleration",
                                     "description": "The acceleration with which the roofs and bottoms of support are printed. Printing them at lower accelerations can improve overhang quality.",
                                     "unit": "mm/s²",
@@ -1789,7 +1836,8 @@
                                 }
                             }
                         },
-                        "acceleration_prime_tower": {
+                        "acceleration_prime_tower":
+                        {
                             "label": "Prime Tower Acceleration",
                             "description": "The acceleration with which the prime tower is printed.",
                             "unit": "mm/s²",
@@ -1804,7 +1852,8 @@
                         }
                     }
                 },
-                "acceleration_travel": {
+                "acceleration_travel":
+                {
                     "label": "Travel Acceleration",
                     "description": "The acceleration with which travel moves are made.",
                     "unit": "mm/s²",
@@ -1817,7 +1866,8 @@
                     "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false
                 },
-                "acceleration_layer_0": {
+                "acceleration_layer_0":
+                {
                     "label": "Initial Layer Acceleration",
                     "description": "The acceleration for the initial layer.",
                     "unit": "mm/s²",
@@ -1829,7 +1879,8 @@
                     "maximum_value_warning": "10000",
                     "enabled": "resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": true,
-                    "children": {
+                    "children":
+                    {
                         "acceleration_print_layer_0":
                         {
                             "label": "Initial Layer Print Acceleration",
@@ -1861,7 +1912,8 @@
                         }
                     }
                 },
-                "acceleration_skirt_brim": {
+                "acceleration_skirt_brim":
+                {
                     "label": "Skirt/Brim Acceleration",
                     "description": "The acceleration with which the skirt and brim are printed. Normally this is done with the initial layer acceleration, but sometimes you might want to print the skirt or brim at a different acceleration.",
                     "unit": "mm/s²",
@@ -1875,8 +1927,8 @@
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
-
-                "jerk_enabled": {
+                "jerk_enabled":
+                {
                     "label": "Enable Jerk Control",
                     "description": "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality.",
                     "type": "bool",
@@ -1885,7 +1937,8 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "jerk_print": {
+                "jerk_print":
+                {
                     "label": "Print Jerk",
                     "description": "The maximum instantaneous velocity change of the print head.",
                     "unit": "mm/s",
@@ -1896,8 +1949,10 @@
                     "default_value": 20,
                     "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": true,
-                    "children": {
-                        "jerk_infill": {
+                    "children":
+                    {
+                        "jerk_infill":
+                        {
                             "label": "Infill Jerk",
                             "description": "The maximum instantaneous velocity change with which infill is printed.",
                             "unit": "mm/s",
@@ -1910,7 +1965,8 @@
                             "enabled": "resolveOrValue('jerk_enabled') and infill_sparse_density > 0",
                             "settable_per_mesh": true
                         },
-                        "jerk_wall": {
+                        "jerk_wall":
+                        {
                             "label": "Wall Jerk",
                             "description": "The maximum instantaneous velocity change with which the walls are printed.",
                             "unit": "mm/s",
@@ -1922,8 +1978,10 @@
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true,
-                            "children": {
-                                "jerk_wall_0": {
+                            "children":
+                            {
+                                "jerk_wall_0":
+                                {
                                     "label": "Outer Wall Jerk",
                                     "description": "The maximum instantaneous velocity change with which the outermost walls are printed.",
                                     "unit": "mm/s",
@@ -1936,7 +1994,8 @@
                                     "enabled": "resolveOrValue('jerk_enabled')",
                                     "settable_per_mesh": true
                                 },
-                                "jerk_wall_x": {
+                                "jerk_wall_x":
+                                {
                                     "label": "Inner Wall Jerk",
                                     "description": "The maximum instantaneous velocity change with which all inner walls are printed.",
                                     "unit": "mm/s",
@@ -1951,7 +2010,8 @@
                                 }
                             }
                         },
-                        "jerk_topbottom": {
+                        "jerk_topbottom":
+                        {
                             "label": "Top/Bottom Jerk",
                             "description": "The maximum instantaneous velocity change with which top/bottom layers are printed.",
                             "unit": "mm/s",
@@ -1964,7 +2024,8 @@
                             "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": true
                         },
-                        "jerk_support": {
+                        "jerk_support":
+                        {
                             "label": "Support Jerk",
                             "description": "The maximum instantaneous velocity change with which the support structure is printed.",
                             "unit": "mm/s",
@@ -1978,8 +2039,10 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "support_extruder_nr",
-                            "children": {
-                                "jerk_support_infill": {
+                            "children":
+                            {
+                                "jerk_support_infill":
+                                {
                                     "label": "Support Infill Jerk",
                                     "description": "The maximum instantaneous velocity change with which the infill of support is printed.",
                                     "unit": "mm/s",
@@ -1994,7 +2057,8 @@
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
-                                "jerk_support_interface": {
+                                "jerk_support_interface":
+                                {
                                     "label": "Support Interface Jerk",
                                     "description": "The maximum instantaneous velocity change with which the roofs and bottoms of support are printed.",
                                     "unit": "mm/s",
@@ -2011,7 +2075,8 @@
                                 }
                             }
                         },
-                        "jerk_prime_tower": {
+                        "jerk_prime_tower":
+                        {
                             "label": "Prime Tower Jerk",
                             "description": "The maximum instantaneous velocity change with which the prime tower is printed.",
                             "unit": "mm/s",
@@ -2026,7 +2091,8 @@
                         }
                     }
                 },
-                "jerk_travel": {
+                "jerk_travel":
+                {
                     "label": "Travel Jerk",
                     "description": "The maximum instantaneous velocity change with which travel moves are made.",
                     "unit": "mm/s",
@@ -2039,7 +2105,8 @@
                     "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false
                 },
-                "jerk_layer_0": {
+                "jerk_layer_0":
+                {
                     "label": "Initial Layer Jerk",
                     "description": "The print maximum instantaneous velocity change for the initial layer.",
                     "unit": "mm/s",
@@ -2051,7 +2118,8 @@
                     "maximum_value_warning": "50",
                     "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": true,
-                    "children": {
+                    "children":
+                    {
                         "jerk_print_layer_0":
                         {
                             "label": "Initial Layer Print Jerk",
@@ -2083,7 +2151,8 @@
                         }
                     }
                 },
-                "jerk_skirt_brim": {
+                "jerk_skirt_brim":
+                {
                     "label": "Skirt/Brim Jerk",
                     "description": "The maximum instantaneous velocity change with which the skirt and brim are printed.",
                     "unit": "mm/s",
@@ -2294,7 +2363,7 @@
                 "cool_min_layer_time":
                 {
                     "label": "Minimum Layer Time",
-                    "description": "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer.",
+                    "description": "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
                     "unit": "s",
                     "type": "float",
                     "default_value": 5,
@@ -2461,7 +2530,8 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "children": {
+                    "children":
+                    {
                         "support_line_distance":
                         {
                             "label": "Support Line Distance",
@@ -2536,11 +2606,13 @@
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
-                "support_xy_overrides_z": {
+                "support_xy_overrides_z":
+                {
                     "label": "Support Distance Priority",
                     "description": "Whether the Support X/Y Distance overrides the Support Z Distance or vice versa. When X/Y overrides Z the X/Y distance can push away the support from the model, influencing the actual Z distance to the overhang. We can disable this by not applying the X/Y distance around overhangs.",
                     "type": "enum",
-                    "options": {
+                    "options":
+                    {
                         "xy_overrides_z": "X/Y overrides Z",
                         "z_overrides_xy": "Z overrides X/Y"
                     },
@@ -2549,7 +2621,8 @@
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
-                "support_xy_distance_overhang": {
+                "support_xy_distance_overhang":
+                {
                     "label": "Minimum Support X/Y Distance",
                     "description": "Distance of the support structure from the overhang in the X/Y directions. ",
                     "unit": "mm",
@@ -2947,7 +3020,8 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
-                "layer_0_z_overlap": {
+                "layer_0_z_overlap":
+                {
                     "label": "Initial Layer Z Overlap",
                     "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
                     "unit": "mm",
@@ -3185,7 +3259,8 @@
                         }
                     }
                 },
-                "raft_acceleration": {
+                "raft_acceleration":
+                {
                     "label": "Raft Print Acceleration",
                     "description": "The acceleration with which the raft is printed.",
                     "unit": "mm/s²",
@@ -3198,8 +3273,10 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
-                    "children": {
-                        "raft_surface_acceleration": {
+                    "children":
+                    {
+                        "raft_surface_acceleration":
+                        {
                             "label": "Raft Top Print Acceleration",
                             "description": "The acceleration with which the top raft layers are printed.",
                             "unit": "mm/s²",
@@ -3213,7 +3290,8 @@
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
-                        "raft_interface_acceleration": {
+                        "raft_interface_acceleration":
+                        {
                             "label": "Raft Middle Print Acceleration",
                             "description": "The acceleration with which the middle raft layer is printed.",
                             "unit": "mm/s²",
@@ -3227,7 +3305,8 @@
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
-                        "raft_base_acceleration": {
+                        "raft_base_acceleration":
+                        {
                             "label": "Raft Base Print Acceleration",
                             "description": "The acceleration with which the base raft layer is printed.",
                             "unit": "mm/s²",
@@ -3243,7 +3322,8 @@
                         }
                     }
                 },
-                "raft_jerk": {
+                "raft_jerk":
+                {
                     "label": "Raft Print Jerk",
                     "description": "The jerk with which the raft is printed.",
                     "unit": "mm/s",
@@ -3256,8 +3336,10 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr",
-                    "children": {
-                        "raft_surface_jerk": {
+                    "children":
+                    {
+                        "raft_surface_jerk":
+                        {
                             "label": "Raft Top Print Jerk",
                             "description": "The jerk with which the top raft layers are printed.",
                             "unit": "mm/s",
@@ -3271,7 +3353,8 @@
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
-                        "raft_interface_jerk": {
+                        "raft_interface_jerk":
+                        {
                             "label": "Raft Middle Print Jerk",
                             "description": "The jerk with which the middle raft layer is printed.",
                             "unit": "mm/s",
@@ -3285,7 +3368,8 @@
                             "settable_per_mesh": false,
                             "limit_to_extruder": "adhesion_extruder_nr"
                         },
-                        "raft_base_jerk": {
+                        "raft_base_jerk":
+                        {
                             "label": "Raft Base Print Jerk",
                             "description": "The jerk with which the base raft layer is printed.",
                             "unit": "mm/s",
@@ -3301,7 +3385,8 @@
                         }
                     }
                 },
-                "raft_fan_speed": {
+                "raft_fan_speed":
+                {
                     "label": "Raft Fan Speed",
                     "description": "The fan speed for the raft.",
                     "unit": "%",
@@ -3546,6 +3631,17 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
+                },
+                "carve_multiple_volumes":
+                {
+                    "label": "Remove Mesh Intersection",
+                    "description": "Remove areas where multiple objecs are overlapping with each other. This is may be used if merged dual material objects overlap with each other.",
+                    "type": "bool",
+                    "default_value": true,
+                    "value": "machine_extruder_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
                 }
             }
         },
@@ -3682,13 +3778,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "conical_overhang_enabled": {
+                "conical_overhang_enabled":
+                {
                     "label": "Make Overhang Printable",
                     "description": "Change the geometry of the printed model such that minimal support is required. Steep overhangs will become shallow overhangs. Overhanging areas will drop down to become more vertical.",
                     "type": "bool",
                     "default_value": false
                 },
-                "conical_overhang_angle": {
+                "conical_overhang_angle":
+                {
                     "label": "Maximum Model Angle",
                     "description": "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way.",
                     "unit": "°",

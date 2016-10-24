@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
@@ -426,7 +426,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._error_state = error
         self.onError.emit()
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+    ##  Request the current scene to be sent to a USB-connected printer.
+    #
+    #   \param nodes A collection of scene nodes to send. This is ignored.
+    #   \param file_name \type{string} A suggestion for a file name to write.
+    #   This is ignored.
+    #   \param filter_by_machine Whether to filter MIME types by machine. This
+    #   is ignored.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
 
