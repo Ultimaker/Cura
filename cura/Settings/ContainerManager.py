@@ -650,7 +650,10 @@ class ContainerManager(QObject):
         new_change_instances = []
         for container in QualityManager.getInstance().findQualityChangesByName(quality_changes_name,
                                                               machine_definition):
-            new_unique_id = self._createUniqueId(container.getId(), base_name)
+            base_id = container.getMetaDataEntry("extruder")
+            if not base_id:
+                base_id = container.getDefinition().getId()
+            new_unique_id = self._createUniqueId(base_id, base_name)
             new_container = container.duplicate(new_unique_id, base_name)
             new_change_instances.append(new_container)
             self._container_registry.addContainer(new_container)
@@ -788,6 +791,7 @@ class ContainerManager(QObject):
 
         # Create a new quality_changes container for the quality.
         quality_changes = UM.Settings.InstanceContainer(self._createUniqueId(base_id, new_name))
+        print(quality_changes.getId())
         quality_changes.setName(new_name)
         quality_changes.addMetaDataEntry("type", "quality_changes")
         quality_changes.addMetaDataEntry("quality_type", quality_container.getMetaDataEntry("quality_type"))
