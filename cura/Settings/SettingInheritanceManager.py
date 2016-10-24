@@ -56,9 +56,11 @@ class SettingInheritanceManager(QObject):
         if new_active_stack != self._active_container_stack:  # Check if changed
             if self._active_container_stack:  # Disconnect signal from old container (if any)
                 self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+                self._active_container_stack.containersChanged.disconnect(self._onContainersChanged)
 
             self._active_container_stack = new_active_stack
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._active_container_stack.containersChanged.connect(self._onContainersChanged)
             self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
 
     def _onPropertyChanged(self, key, property_name):
@@ -178,7 +180,9 @@ class SettingInheritanceManager(QObject):
         self._onActiveExtruderChanged()
 
     def _onContainersChanged(self, container):
-        self._onActiveExtruderChanged()
+        # TODO: Multiple container changes in sequence now cause quite a few recalculations.
+        # This isn't that big of an issue, but it could be in the future.
+        self._update()
 
     @staticmethod
     def createSettingInheritanceManager(engine=None, script_engine=None):
