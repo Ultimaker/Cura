@@ -38,6 +38,22 @@ class SettingInheritanceManager(QObject):
                 result.append(key)
         return result
 
+    @pyqtSlot(str, str, result = "QStringList")
+    def getOverridesForExtruder(self, key, extruder):
+        extruder = cura.Settings.ExtruderManager.getInstance().getExtruderStack(extruder)
+        if not extruder:
+            return []
+
+        definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
+        if not definitions:
+            return
+        result = []
+        for key in definitions[0].getAllKeys():
+            if self._settingIsOverwritingInheritance(key, extruder):
+                result.append(key)
+
+        return result
+
     @pyqtSlot(str)
     def manualRemoveOverride(self, key):
         if key in self._settings_with_inheritance_warning:
@@ -115,22 +131,23 @@ class SettingInheritanceManager(QObject):
         return self._settings_with_inheritance_warning
 
     ##  Check if a setting has an inheritance function that is overwritten
-    def _settingIsOverwritingInheritance(self, key):
+    def _settingIsOverwritingInheritance(self, key, stack = None):
         has_setting_function = False
-        stack = self._active_container_stack
+        if not stack:
+            stack = self._active_container_stack
         containers = []
 
         ## Check if the setting has a user state. If not, it is never overwritten.
-        has_user_state = self._active_container_stack.getProperty(key, "state") == UM.Settings.InstanceState.User
+        has_user_state = stack.getProperty(key, "state") == UM.Settings.InstanceState.User
         if not has_user_state:
             return False
 
         ## If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
-        if not self._active_container_stack.getProperty(key, "enabled"):
+        if not stack.getProperty(key, "enabled"):
             return False
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        if isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
+        if isinstance(stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.
