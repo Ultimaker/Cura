@@ -56,6 +56,8 @@ class ProfilesModel(InstanceContainersModel):
         machine_manager = Application.getInstance().getMachineManager()
 
         unit = global_container_stack.getBottom().getProperty("layer_height", "unit")
+        if not unit:
+            unit = ""
 
         for item in super()._recomputeItems():
             profile = container_registry.findContainers(id = item["id"])
