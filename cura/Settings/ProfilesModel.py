@@ -80,7 +80,10 @@ class ProfilesModel(InstanceContainersModel):
                         quality = quality_result["quality"]
                         break
                 else: #No global container stack in the results:
-                    quality = quality_results[0]["quality"] #Take any of the extruders.
+                    if quality_results:
+                        quality = quality_results[0]["quality"] #Take any of the extruders.
+                    else:
+                        quality = None
                 if quality and quality.hasProperty("layer_height", "value"):
                     item["layer_height"] = str(quality.getProperty("layer_height", "value")) + unit
                     yield item
