@@ -49,6 +49,8 @@ class BuildVolume(SceneNode):
         self._shader = None
 
         self._origin_mesh = None
+        self._origin_line_length = 20
+        self._origin_line_width = 0.5
 
         self._grid_mesh = None
         self._grid_shader = None
@@ -178,32 +180,31 @@ class BuildVolume(SceneNode):
 
         mb = MeshBuilder()
 
+        # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
             origin = (Vector(min_w, min_h, min_d) + Vector(max_w, min_h, max_d)) / 2
         else:
             origin = Vector(min_w, min_h, max_d)
 
-        axes_length = 10
-        axes_width = 0.5
         mb.addCube(
-            width = axes_length,
-            height = axes_width,
-            depth = axes_width,
-            center = origin + Vector(axes_length / 2, 0, 0),
+            width = self._origin_line_length,
+            height = self._origin_line_width,
+            depth = self._origin_line_width,
+            center = origin + Vector(self._origin_line_length / 2, 0, 0),
             color = self.XAxisColor
         )
         mb.addCube(
-            width = axes_width,
-            height = axes_length,
-            depth = axes_width,
-            center = origin + Vector(0, axes_length / 2, 0),
+            width = self._origin_line_width,
+            height = self._origin_line_length,
+            depth = self._origin_line_width,
+            center = origin + Vector(0, self._origin_line_length / 2, 0),
             color = self.YAxisColor
         )
         mb.addCube(
-            width = axes_width,
-            height = axes_width,
-            depth = axes_length,
-            center = origin - Vector(0, 0, axes_length / 2),
+            width = self._origin_line_width,
+            height = self._origin_line_width,
+            depth = self._origin_line_length,
+            center = origin - Vector(0, 0, self._origin_line_length / 2),
             color = self.ZAxisColor
         )
         self._origin_mesh = mb.build()
