@@ -33,6 +33,9 @@ PRIME_CLEARANCE = 1.5
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
     VolumeOutlineColor = Color(12, 169, 227, 255)
+    XAxisColor = Color(255, 0, 0, 255)
+    YAxisColor = Color(0, 0, 255, 255)
+    ZAxisColor = Color(0, 255, 0, 255)
 
     raftThicknessChanged = Signal()
 
@@ -44,6 +47,8 @@ class BuildVolume(SceneNode):
         self._depth = 0
 
         self._shader = None
+
+        self._origin_mesh = None
 
         self._grid_mesh = None
         self._grid_shader = None
@@ -128,6 +133,7 @@ class BuildVolume(SceneNode):
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
+        renderer.queueNode(self, mesh = self._origin_mesh)
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
@@ -169,6 +175,38 @@ class BuildVolume(SceneNode):
         mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
         self.setMeshData(mb.build())
+
+        mb = MeshBuilder()
+
+        if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
+            origin = (Vector(min_w, min_h, min_d) + Vector(max_w, min_h, max_d)) / 2
+        else:
+            origin = Vector(min_w, min_h, max_d)
+
+        axes_length = 10
+        axes_width = 0.5
+        mb.addCube(
+            width = axes_length,
+            height = axes_width,
+            depth = axes_width,
+            center = origin + Vector(axes_length / 2, 0, 0),
+            color = self.XAxisColor
+        )
+        mb.addCube(
+            width = axes_width,
+            height = axes_length,
+            depth = axes_width,
+            center = origin + Vector(0, axes_length / 2, 0),
+            color = self.YAxisColor
+        )
+        mb.addCube(
+            width = axes_width,
+            height = axes_width,
+            depth = axes_length,
+            center = origin - Vector(0, 0, axes_length / 2),
+            color = self.ZAxisColor
+        )
+        self._origin_mesh = mb.build()
 
         mb = MeshBuilder()
         mb.addQuad(
