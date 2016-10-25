@@ -50,8 +50,11 @@ class ExtruderManager(QObject):
     @pyqtProperty(int, notify = extrudersChanged)
     def extruderCount(self):
         if not UM.Application.getInstance().getGlobalContainerStack():
-            return 0 # No active machine, so no extruders.
-        return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
+            return 0  # No active machine, so no extruders.
+        try:
+            return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
+        except KeyError:
+            return 0
 
     @pyqtProperty("QVariantMap", notify=extrudersChanged)
     def extruderIds(self):
