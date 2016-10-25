@@ -169,15 +169,14 @@ class CuraContainerRegistry(ContainerRegistry):
                 return { "status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, str(e))}
             if profile_or_list: # Success!
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
+                new_name = self.uniqueName(name_seed)
                 if type(profile_or_list) is not list:
                     profile = profile_or_list
-                    self._configureProfile(profile, name_seed)
+                    self._configureProfile(profile, name_seed, new_name)
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
                 else:
                     profile_index = -1
                     global_profile = None
-
-                    new_name = self.uniqueName(name_seed)
 
                     for profile in profile_or_list:
                         if profile_index >= 0:

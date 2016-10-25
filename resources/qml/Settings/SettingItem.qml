@@ -194,18 +194,11 @@ Item {
                 // Inherit button needs to be visible if;
                 // - User made changes that override any loaded settings
                 // - This setting item uses inherit button at all
-                // - The revert button is not visible.
                 // - The type of the value of any deeper container is an "object" (eg; is a function)
                 visible:
                 {
                     if(!base.showInheritButton)
                     {
-                        return false;
-                    }
-
-                    if(revertButton.visible)
-                    {
-                        // The revert button already indicates there is a custom value for this setting, making this button superfluous.
                         return false;
                     }
 
