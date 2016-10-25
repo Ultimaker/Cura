@@ -67,6 +67,8 @@ class LegacyProfileReader(ProfileReader):
         if file_name.split(".")[-1] != "ini":
             return None
         global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return None
 
         multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
         if multi_extrusion:
