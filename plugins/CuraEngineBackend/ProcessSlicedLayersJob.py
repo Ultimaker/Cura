@@ -60,7 +60,6 @@ class ProcessSlicedLayersJob(Job):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 node.getParent().removeChild(node)
-                # break
             if self._abort_requested:
                 if self._progress:
                     self._progress.hide()

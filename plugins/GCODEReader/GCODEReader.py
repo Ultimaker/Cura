@@ -3,16 +3,12 @@
 # Uranium is released under the terms of the AGPLv3 or higher.
 
 from UM.Mesh.MeshReader import MeshReader
-from UM.Mesh.MeshBuilder import MeshBuilder
-from UM.Mesh.MeshData import MeshData
 import os
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Math.Vector import Vector
-from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
-from UM.Preferences import Preferences
 
 
 from cura import LayerDataBuilder
@@ -20,10 +16,7 @@ from cura import LayerDataDecorator
 from cura import LayerPolygon
 
 import numpy
-from types import MethodType
 
-
-from UM.Job import Job
 
 class GCODEReader(MeshReader):
     def __init__(self):
@@ -35,9 +28,6 @@ class GCODEReader(MeshReader):
         if n < 1:
             return None
         m = line.find(' ', n)
-        # m2 = line.find(';', n)
-        # if m < 0:
-        #     m = m2
         try:
             if m < 0:
                 return int(line[n:])
@@ -50,9 +40,6 @@ class GCODEReader(MeshReader):
         if n < 1:
             return None
         m = line.find(' ', n)
-        # m2 = line.find(';', n)
-        # if m < 0:
-        #     m = m2
         try:
             if m < 0:
                 return float(line[n:])
@@ -81,30 +68,14 @@ class GCODEReader(MeshReader):
                 Application.getInstance().getPrintInformation().setPreSliced(True)
                 Application.getInstance().setHideSettings(True)
 
-
     def read(self, file_name):
         scene_node = None
 
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
-            # for node in DepthFirstIterator(scene.getRoot()):
-            #     if node.callDecoration("getLayerData"):
-            #         node.getParent().removeChild(node)
             Application.getInstance().deleteAll()
 
             scene_node = SceneNode()
-
-            # mesh_builder = MeshBuilder()
-            # mesh_builder.setFileName(file_name)
-            #
-            # mesh_builder.addCube(
-            #     width=5,
-            #     height=5,
-            #     depth=5,
-            #     center=Vector(0, 2.5, 0)
-            # )
-            #
-            # scene_node.setMeshData(mesh_builder.build())
 
             def getBoundingBox():
                 return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
@@ -208,10 +179,7 @@ class GCODEReader(MeshReader):
                                 current_path.append([current_x, current_z, -current_y, 0])
                             current_e = e
                         else:
-                            # if G == 0:
-                            #     current_path.append([current_x, current_z, -current_y, 6])
-                            # else:
-                                current_path.append([current_x, current_z, -current_y, 0])
+                            current_path.append([current_x, current_z, -current_y, 0])
                         if z_changed:
                             if len(current_path) > 1:
                                 CreatePolygon()
@@ -247,9 +215,6 @@ class GCODEReader(MeshReader):
 
             Application.getInstance().getPrintInformation()._pre_sliced = True
 
-
-
-
             scene_node.parentChanged.connect(self.parent_changed)
 
             scene_node_parent = Application.getInstance().getBuildVolume()
@@ -261,23 +226,10 @@ class GCODEReader(MeshReader):
 
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
-
-
-            # mesh_builder = MeshBuilder()
-            # mesh_builder.setFileName(file_name)
-            #
-            # mesh_builder.addCube(10, 10, 10, Vector(0, -5, 0))
-
-            # scene_node.setMeshData(mesh_builder.build())
-            # scene_node.setMeshData(MeshData(file_name=file_name))
-
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
                 view.resetLayerData()
                 view.setLayer(999999)
                 view.calculateMaxLayers()
-
-            # scene_node.setEnabled(False)
-            #scene_node.setSelectable(False)
 
         return scene_node

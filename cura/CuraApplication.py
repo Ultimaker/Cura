@@ -19,9 +19,6 @@ from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.Validator import Validator
-from types import MethodType
-
-from UM.Qt.Bindings.MeshFileHandlerProxy import MeshFileHandlerProxy
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
