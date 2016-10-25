@@ -140,5 +140,5 @@ class LegacyProfileReader(ProfileReader):
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
         profile.setDirty(True)
         profile.addMetaDataEntry("type", "quality_changes")
-        profile.addMetaDataEntry("quality", "normal")
+        profile.addMetaDataEntry("quality_type", "normal")
         return profile
