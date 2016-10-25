@@ -202,6 +202,13 @@ Item {
                         return false;
                     }
 
+                    if(!propertyProvider.properties.enabled)
+                    {
+                        // Note: This is not strictly necessary since a disabled setting is hidden anyway.
+                        // But this will cause the binding to be re-evaluated when the enabled property changes.
+                        return false;
+                    }
+
                     if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
