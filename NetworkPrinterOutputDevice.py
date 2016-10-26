@@ -545,9 +545,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             remote_material_name = remote_materials[0].getName()
                         warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
 
+                try:
+                    is_offset_calibrated = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["offset"]["state"] == "valid"
+                except KeyError:  # Older versions of the API don't expose the offset property, so we must asume that all is well.
+                    is_offset_calibrated = True
+
+                if not is_offset_calibrated:
+                    warnings.append(i18n_catalog.i18nc("@label", "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
-            informative_text = i18n_catalog.i18nc("@label", "There is a mismatch between the configuration of the printer and Cura. "
+            informative_text = i18n_catalog.i18nc("@label", "There is a mismatch between the configuration or calibration of the printer and Cura. "
                                                 "For the best result, always slice for the PrintCores and materials that are inserted in your printer.")
             detailed_text = ""
             for warning in warnings:
