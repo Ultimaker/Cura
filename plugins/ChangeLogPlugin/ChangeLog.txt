@@ -3,9 +3,12 @@
 The layer height of each profile is now shown in the profile selection menu.
 
 *Bug fixes
-Upgrading from version 2.1 on OSX works again.
-You can import g-code from related machines as profile.
-Fixed inheritance taking from the wrong extruder.
+Editing material settings has actual effect on the prints again
+Upgrading from version 2.1 on OSX works again
+You can import g-code from related machines as profile
+Fixed inheritance taking from the wrong extruder
+The i-symbol is updated properly
+Fixed a freeze that could sometimes occur while printing via Wi-Fi
 
 [2.3.0]
 *Multi Extrusion Support
