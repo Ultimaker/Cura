@@ -574,10 +574,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.startPrint()
 
     def _configurationMismatchMessageCallback(self, button):
-        if button == QMessageBox.Yes:
-            self.startPrint()
-        else:
-            Application.getInstance().showPrintMonitor.emit(False)
+        def delayedCallback():
+            if button == QMessageBox.Yes:
+                self.startPrint()
+            else:
+                Application.getInstance().showPrintMonitor.emit(False)
+        # For some unknown reason Cura on OSX will hang if we do the call back code
+        # immediately without first returning and leaving QML's event system.
+        QTimer.singleShot(100, delayedCallback)
 
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
