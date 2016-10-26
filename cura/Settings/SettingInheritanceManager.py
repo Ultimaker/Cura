@@ -5,6 +5,7 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 import UM.Settings
 from UM.Application import Application
 import cura.Settings
+from UM.Logger import Logger
 
 
 ##    The settingInheritance manager is responsible for checking each setting in order to see if one of the "deeper"
@@ -39,9 +40,13 @@ class SettingInheritanceManager(QObject):
         return result
 
     @pyqtSlot(str, str, result = "QStringList")
-    def getOverridesForExtruder(self, key, extruder):
-        extruder = cura.Settings.ExtruderManager.getInstance().getExtruderStack(extruder)
+    def getOverridesForExtruder(self, key, extruder_index):
+        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
+        if not multi_extrusion:
+            return self._settings_with_inheritance_warning
+        extruder = cura.Settings.ExtruderManager.getInstance().getExtruderStack(extruder_index)
         if not extruder:
+            Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
             return []
 
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
