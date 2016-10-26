@@ -9,9 +9,8 @@ Fixed inheritance taking from the wrong extruder.
 Moved z-hop and extruder selection settings to a better category.
 
 [2.3.0]
-
 *Speed improvements
-The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layerview is significantly faster and slicing speed is slightly improved.
+The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layer view is significantly faster and slicing speed is slightly improved.
 
 *Multi Extrusion Support
 Machines with multiple extruders are now supported. If you’ve got the Ultimaker Original with the dual extrusion upgrade kit, we’ve got you covered.
