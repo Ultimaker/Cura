@@ -9,9 +9,6 @@ Fixed inheritance taking from the wrong extruder.
 Moved z-hop and extruder selection settings to a better category.
 
 [2.3.0]
-*Speed improvements
-The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layer view is significantly faster and slicing speed is slightly improved.
-
 *Multi Extrusion Support
 Machines with multiple extruders are now supported. Ultimaker 3 printers and Ultimaker Original printers with dual extrusion upgrade kit are currently supported.
 
@@ -24,11 +21,14 @@ You can monitor your print on an Ultimaker 3 with a live camera feed. Requires W
 *Material and Print Core Synchronization
 Connecting to an Ultimaker 3 now gives you the option to synchronize the materials in Cura with what is loaded in the printer.
 
-*Custom Machine Support
-It’s now much easier to use Cura with custom machines. You can edit the machine settings when you load a new custom machine.
+*Speed improvements
+The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layer view is significantly faster and slicing speed is slightly improved.
 
 *Improved Position Tool
 Place objects precisely where you want them by manually entering the values for the position.
+
+*Custom Machine Support
+It’s now much easier to use Cura with custom machines. You can edit the machine settings when you load a new custom machine.
 
 *Improved Grouping
 It's now possible to transform objects that are already grouped.
