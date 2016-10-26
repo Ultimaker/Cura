@@ -161,7 +161,8 @@ class QualityManager:
     #   \return \type{List[InstanceContainer]} a list of the basic materials or an empty list if one could not be found.
     def _getBasicMaterials(self, material_container):
         base_material = material_container.getMetaDataEntry("material")
-        if material_container.getDefinition().getMetaDataEntry("has_machine_quality"):
+        material_container_definition = material_container.getDefinition()
+        if material_container_definition and material_container_definition.getMetaDataEntry("has_machine_quality"):
             definition_id = material_container.getDefinition().getMetaDataEntry("quality_definition", material_container.getDefinition().getId())
         else:
             definition_id = "fdmprinter"
