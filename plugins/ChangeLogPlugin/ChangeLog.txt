@@ -6,7 +6,6 @@ The layer height of each profile is now shown in the profile selection menu.
 Upgrading from version 2.1 on OSX works again.
 You can import g-code from related machines as profile.
 Fixed inheritance taking from the wrong extruder.
-Moved z-hop and extruder selection settings to a better category.
 
 [2.3.0]
 *Multi Extrusion Support
