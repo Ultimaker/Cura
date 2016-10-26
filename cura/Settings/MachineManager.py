@@ -769,6 +769,8 @@ class MachineManager(QObject):
         result = []
         empty_quality_changes = self._empty_quality_changes_container
         global_container_stack = self._global_container_stack
+        if not global_container_stack:
+            return []
         global_machine_definition = quality_manager.getParentMachineDefinition(global_container_stack.getBottom())
 
         extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
