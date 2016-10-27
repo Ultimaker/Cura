@@ -71,12 +71,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         #        "extruders": [
         #            {
         #                "feeder": {"max_speed": 45.0, "jerk": 5.0, "acceleration": 3000.0},
-        #                "active_material": {"GUID": "xxxxxxx", "length_remaining": -1.0},
+        #                "active_material": {"guid": "xxxxxxx", "length_remaining": -1.0},
         #                "hotend": {"temperature": {"target": 0.0, "current": 22.8}, "id": "AA 0.4"}
         #            },
         #            {
         #                "feeder": {"max_speed": 45.0, "jerk": 5.0, "acceleration": 3000.0},
-        #                "active_material": {"GUID": "xxxx", "length_remaining": -1.0},
+        #                "active_material": {"guid": "xxxx", "length_remaining": -1.0},
         #                "hotend": {"temperature": {"target": 0.0, "current": 22.8}, "id": "BB 0.4"}
         #            }
         #        ],
@@ -424,7 +424,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             temperature = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]["current"]
             self._setHotendTemperature(index, temperature)
             try:
-                material_id = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]
+                material_id = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
             except KeyError:
                 material_id = ""
             self._setMaterialId(index, material_id)
@@ -514,7 +514,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
                     self._error_message.show()
                     return
-                if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"] == "":
+                if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":
                     Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
                     self._error_message = Message(
                         i18n_catalog.i18nc("@info:status",
@@ -543,7 +543,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
                 if material:
-                    remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["GUID"]
+                    remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
                     if material.getMetaDataEntry("GUID") != remote_material_guid:
                         Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
                                    remote_material_guid,
@@ -555,9 +555,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                             remote_material_name = remote_materials[0].getName()
                         warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
 
+                try:
+                    is_offset_calibrated = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["offset"]["state"] == "valid"
+                except KeyError:  # Older versions of the API don't expose the offset property, so we must asume that all is well.
+                    is_offset_calibrated = True
+
+                if not is_offset_calibrated:
+                    warnings.append(i18n_catalog.i18nc("@label", "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
-            informative_text = i18n_catalog.i18nc("@label", "There is a mismatch between the configuration of the printer and Cura. "
+            informative_text = i18n_catalog.i18nc("@label", "There is a mismatch between the configuration or calibration of the printer and Cura. "
                                                 "For the best result, always slice for the PrintCores and materials that are inserted in your printer.")
             detailed_text = ""
             for warning in warnings:
@@ -576,10 +584,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.startPrint()
 
     def _configurationMismatchMessageCallback(self, button):
-        if button == QMessageBox.Yes:
-            self.startPrint()
-        else:
-            Application.getInstance().showPrintMonitor.emit(False)
+        def delayedCallback():
+            if button == QMessageBox.Yes:
+                self.startPrint()
+            else:
+                Application.getInstance().showPrintMonitor.emit(False)
+        # For some unknown reason Cura on OSX will hang if we do the call back code
+        # immediately without first returning and leaving QML's event system.
+        QTimer.singleShot(100, delayedCallback)
 
     def isConnected(self):
         return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
