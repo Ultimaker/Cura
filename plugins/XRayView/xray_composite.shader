@@ -23,6 +23,10 @@ fragment =
     uniform vec4 u_outline_color;
     uniform vec4 u_error_color;
 
+    const vec3 x_axis = vec3(1.0, 0.0, 0.0);
+    const vec3 y_axis = vec3(0.0, 1.0, 0.0);
+    const vec3 z_axis = vec3(0.0, 0.0, 1.0);
+
     varying vec2 v_uvs;
 
     float kernel[9];
@@ -51,7 +55,15 @@ fragment =
             sum += color * (kernel[i] / u_outline_strength);
         }
 
-        gl_FragColor = mix(result, vec4(abs(sum.a)) * u_outline_color, abs(sum.a));
+        vec4 layer1 = texture2D(u_layer1, v_uvs);
+        if((layer1.rgb == x_axis || layer1.rgb == y_axis || layer1.rgb == z_axis))
+        {
+            gl_FragColor = result;
+        }
+        else
+        {
+            gl_FragColor = mix(result, vec4(abs(sum.a)) * u_outline_color, abs(sum.a));
+        }
     }
 
 [defaults]
