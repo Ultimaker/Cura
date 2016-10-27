@@ -549,7 +549,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
-        qmlRegisterType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel")
+        qmlRegisterSingletonType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel", cura.Settings.ProfilesModel.createProfilesModel)
         qmlRegisterType(cura.Settings.QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
         qmlRegisterType(cura.Settings.UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
