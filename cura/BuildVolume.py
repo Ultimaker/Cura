@@ -592,7 +592,7 @@ class BuildVolume(SceneNode):
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
         support_expansion = 0
-        if self._getSettingFromSupportInfillExtruder("support_offset"):
+        if self._getSettingFromSupportInfillExtruder("support_offset") and self._global_container_stack.getProperty("support_enable", "value"):
             support_expansion += self._getSettingFromSupportInfillExtruder("support_offset")
 
         farthest_shield_distance = 0
@@ -604,7 +604,7 @@ class BuildVolume(SceneNode):
         move_from_wall_radius = 0  # Moves that start from outer wall.
         if self._getSettingFromAdhesionExtruder("infill_wipe_dist"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
-        if self._getSettingFromAdhesionExtruder("travel_avoid_distance"):
+        if self._getSettingFromAdhesionExtruder("travel_avoid_distance") and self._getSettingFromAdhesionExtruder("travel_avoid_other_parts"):
             move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
 
         #Now combine our different pieces of data to get the final border size.
@@ -621,4 +621,4 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]

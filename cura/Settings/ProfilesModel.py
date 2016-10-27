@@ -25,6 +25,21 @@ class ProfilesModel(InstanceContainersModel):
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
         Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
+    # Factory function, used by QML
+    @staticmethod
+    def createProfilesModel(engine, js_engine):
+        return ProfilesModel.getInstance()
+
+    ##  Get the singleton instance for this class.
+    @classmethod
+    def getInstance(cls):
+        # Note: Explicit use of class name to prevent issues with inheritance.
+        if ProfilesModel.__instance is None:
+            ProfilesModel.__instance = cls()
+        return ProfilesModel.__instance
+
+    __instance = None
+
     ##  Fetch the list of containers to display.
     #
     #   See UM.Settings.Models.InstanceContainersModel._fetchInstanceContainers().

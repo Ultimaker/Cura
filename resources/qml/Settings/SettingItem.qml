@@ -208,12 +208,14 @@ Item {
                         // But this will cause the binding to be re-evaluated when the enabled property changes.
                         return false;
                     }
-
+                    if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
+                    {
+                        return false;
+                    }
                     if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
                     }
-
                     return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
                 }
 
