@@ -265,15 +265,26 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     ##  Start requesting data from the instance
     def connect(self):
         #self.close()  # Ensure that previous connection (if any) is killed.
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return
 
         self._createNetworkManager()
 
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
-        self._update_camera()
+
         Logger.log("d", "Connection with instance %s with ip %s started", self._key, self._address)
         self._update_timer.start()
-        self._camera_timer.start()
+
+        if parseBool(global_container_stack.getMetaDataEntry("octoprint_show_camera", False)):
+            self._update_camera()
+            self._camera_timer.start()
+        else:
+            self._camera_timer.stop()
+            self._camera_image = QImage()
+            self.newImage.emit()
+
         self._last_response_time = None
         self.setAcceptsCommands(False)
         self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connecting to OctoPrint on {0}").format(self._key))

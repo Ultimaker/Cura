@@ -229,6 +229,16 @@ Cura.MachineAction
                     }
                     CheckBox
                     {
+                        id: showCameraCheckBox
+                        text: catalog.i18nc("@label", "Show webcam image (if available)")
+                        checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_show_camera") == "true"
+                        onClicked:
+                        {
+                            manager.setContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_show_camera", String(checked))
+                        }
+                    }
+                    CheckBox
+                    {
                         id: storeOnSdCheckBox
                         text: catalog.i18nc("@label", "Store gcode on SD card (if available)")
                         checked: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMachineId, "octoprint_store_sd") == "true"
