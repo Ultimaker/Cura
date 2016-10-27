@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2016-09-20 14:48+0000\n"
+"POT-Creation-Date: 2016-10-27 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -816,6 +816,20 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "outer_inset_first label"
+msgid "Outer Before Inner Walls"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "outer_inset_first description"
+msgid ""
+"Prints walls in order of outside to inside when enabled. This can help "
+"improve dimensional accuracy in X and Y when using a high viscosity plastic "
+"like ABS; however it can decrease outer surface print quality, especially on "
+"overhangs."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
 msgstr ""
@@ -1311,42 +1325,6 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "retraction_hop_enabled label"
-msgid "Z Hop when Retracted"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop_enabled description"
-msgid ""
-"Whenever a retraction is done, the build plate is lowered to create "
-"clearance between the nozzle and the print. It prevents the nozzle from "
-"hitting the print during travel moves, reducing the chance to knock the "
-"print from the build plate."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop_only_when_collides label"
-msgid "Z Hop Only Over Printed Parts"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop_only_when_collides description"
-msgid ""
-"Only perform a Z Hop when moving over printed parts which cannot be avoided "
-"by horizontal motion by Avoid Printed Parts when Traveling."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop label"
-msgid "Z Hop Height"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop description"
-msgid "The height difference when performing a Z Hop."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr ""
@@ -1403,19 +1381,6 @@ msgctxt "switch_extruder_prime_speed description"
 msgid ""
 "The speed at which the filament is pushed back after a nozzle switch "
 "retraction."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop_after_extruder_switch label"
-msgid "Z Hop After Extruder Switch"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "retraction_hop_after_extruder_switch description"
-msgid ""
-"After the machine switched from one extruder to the other, the build plate "
-"is lowered to create clearance between the nozzle and the print. This "
-"prevents the nozzle from leaving oozed material on the outside of a print."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2071,6 +2036,55 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "retraction_hop_enabled label"
+msgid "Z Hop when Retracted"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_enabled description"
+msgid ""
+"Whenever a retraction is done, the build plate is lowered to create "
+"clearance between the nozzle and the print. It prevents the nozzle from "
+"hitting the print during travel moves, reducing the chance to knock the "
+"print from the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_only_when_collides label"
+msgid "Z Hop Only Over Printed Parts"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_only_when_collides description"
+msgid ""
+"Only perform a Z Hop when moving over printed parts which cannot be avoided "
+"by horizontal motion by Avoid Printed Parts when Traveling."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop label"
+msgid "Z Hop Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop description"
+msgid "The height difference when performing a Z Hop."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch label"
+msgid "Z Hop After Extruder Switch"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch description"
+msgid ""
+"After the machine switched from one extruder to the other, the build plate "
+"is lowered to create clearance between the nozzle and the print. This "
+"prevents the nozzle from leaving oozed material on the outside of a print."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "cooling label"
 msgid "Cooling"
 msgstr ""
@@ -2176,7 +2190,9 @@ msgctxt "cool_min_layer_time description"
 msgid ""
 "The minimum time spent in a layer. This forces the printer to slow down, to "
 "at least spend the time set here in one layer. This allows the printed "
-"material to cool down properly before printing the next layer."
+"material to cool down properly before printing the next layer. Layers may "
+"still take shorter than the minimal layer time if Lift Head is disabled and "
+"if the Minimum Speed would otherwise be violated."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2225,6 +2241,54 @@ msgctxt "support_enable description"
 msgid ""
 "Enable support structures. These structures support parts of the model with "
 "severe overhangs."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_extruder_nr label"
+msgid "Support Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_extruder_nr description"
+msgid ""
+"The extruder train to use for printing the support. This is used in multi-"
+"extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_extruder_nr label"
+msgid "Support Infill Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_extruder_nr description"
+msgid ""
+"The extruder train to use for printing the infill of the support. This is "
+"used in multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_extruder_nr_layer_0 label"
+msgid "First Layer Support Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_extruder_nr_layer_0 description"
+msgid ""
+"The extruder train to use for printing the first layer of support infill. "
+"This is used in multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_extruder_nr label"
+msgid "Support Interface Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_extruder_nr description"
+msgid ""
+"The extruder train to use for printing the roofs and bottoms of the support. "
+"This is used in multi-extrusion."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2688,6 +2752,18 @@ msgid "Raft"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "adhesion_extruder_nr label"
+msgid "Build Plate Adhesion Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adhesion_extruder_nr description"
+msgid ""
+"The extruder train to use for printing the skirt/brim/raft. This is used in "
+"multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr ""
@@ -3101,66 +3177,6 @@ msgid "Settings used for printing with multiple extruders."
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "adhesion_extruder_nr label"
-msgid "Build Plate Adhesion Extruder"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "adhesion_extruder_nr description"
-msgid ""
-"The extruder train to use for printing the skirt/brim/raft. This is used in "
-"multi-extrusion."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_extruder_nr label"
-msgid "Support Extruder"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_extruder_nr description"
-msgid ""
-"The extruder train to use for printing the support. This is used in multi-"
-"extrusion."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_infill_extruder_nr label"
-msgid "Support Infill Extruder"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_infill_extruder_nr description"
-msgid ""
-"The extruder train to use for printing the infill of the support. This is "
-"used in multi-extrusion."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_extruder_nr_layer_0 label"
-msgid "First Layer Support Extruder"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_extruder_nr_layer_0 description"
-msgid ""
-"The extruder train to use for printing the first layer of support infill. "
-"This is used in multi-extrusion."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_interface_extruder_nr label"
-msgid "Support Interface Extruder"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_interface_extruder_nr description"
-msgid ""
-"The extruder train to use for printing the roofs and bottoms of the support. "
-"This is used in multi-extrusion."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_enable label"
 msgid "Enable Prime Tower"
 msgstr ""
@@ -3334,6 +3350,18 @@ msgid ""
 "a layer with big holes. Enabling this option keeps those parts which cannot "
 "be stitched. This option should be used as a last resort option when "
 "everything else fails to produce proper GCode."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "carve_multiple_volumes label"
+msgid "Remove Mesh Intersection"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "carve_multiple_volumes description"
+msgid ""
+"Remove areas where multiple objecs are overlapping with each other. This is "
+"may be used if merged dual material objects overlap with each other."
 msgstr ""
 
 #: fdmprinter.def.json
