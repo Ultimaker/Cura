@@ -31,6 +31,7 @@ class ThreeMFReader(MeshReader):
             "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
         }
         self._base_name = ""
+        self._unit = None
 
     def _createNodeFromObject(self, object, name = ""):
         node = SceneNode()
@@ -117,6 +118,7 @@ class ThreeMFReader(MeshReader):
         self._base_name = os.path.basename(file_name)
         try:
             self._root = ET.parse(archive.open("3D/3dmodel.model"))
+            self._unit = self._root.getroot().get("unit")
 
             build_items = self._root.findall("./3mf:build/3mf:item", self._namespaces)
 
@@ -148,5 +150,35 @@ class ThreeMFReader(MeshReader):
             translation = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2, z=0,
                                  y=-global_container_stack.getProperty("machine_depth", "value") / 2)
             result.translate(translation)
+        result.scale(self._getScaleFromUnit(self._unit))
         result.setEnabled(False) # The result should not be moved in any way, so disable it.
         return result
+
+    ##  Create a scale vector based on a unit string.
+    #   The core spec defines the following:
+    #   * micron
+    #   * millimeter (default)
+    #   * centimeter
+    #   * inch
+    #   * foot
+    #   * meter
+    def _getScaleFromUnit(self, unit):
+        if unit is None:
+            unit = "millimeter"
+        if unit == "micron":
+            scale = 0.001
+        elif unit == "millimeter":
+            scale = 1
+        elif unit == "centimeter":
+            scale = 10
+        elif unit == "inch":
+            scale = 25.4
+        elif unit == "foot":
+            scale = 304.8
+        elif unit == "meter":
+            scale = 1000
+        else:
+            Logger.log("w", "Unrecognised unit %s used. Assuming mm instead", unit)
+            scale = 1
+
+        return Vector(scale, scale, scale)
