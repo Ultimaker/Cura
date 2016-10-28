@@ -449,7 +449,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_material.setName(self.getName())
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
-                    new_material.setMetaDataEntry("compatible", machine_compatibility)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_material.getMetaData()["compatible"] = machine_compatibility
 
                     for key, value in global_setting_values.items():
                         new_material.setProperty(key, "value", value, definition)
@@ -495,7 +496,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
-                    new_hotend_material.setMetaDataEntry("compatible", hotend_compatibility)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
 
                     for key, value in global_setting_values.items():
                         new_hotend_material.setProperty(key, "value", value, definition)
