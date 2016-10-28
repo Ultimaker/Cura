@@ -481,6 +481,15 @@ class BuildVolume(SceneNode):
     def _getSettingFromAdhesionExtruder(self, setting_key, property = "value"):
         return self._getSettingFromExtruder(setting_key, "adhesion_extruder_nr", property)
 
+    ##  Private convenience function to get a setting from every extruder.
+    #
+    #   For single extrusion machines, this gets the setting from the global
+    #   stack.
+    #
+    #   \return A sequence of setting values, one for each extruder.
+    def _getSettingFromAllExtruders(self, setting_key, property = "value"):
+        return ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+
     ##  Private convenience function to get a setting from the support infill
     #   extruder.
     #
@@ -563,10 +572,12 @@ class BuildVolume(SceneNode):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        if self._getSettingFromAdhesionExtruder("infill_wipe_dist"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
-        if self._getSettingFromAdhesionExtruder("travel_avoid_distance") and self._getSettingFromAdhesionExtruder("travel_avoid_other_parts"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
+        move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
+        avoid_enabled_per_extruder = self._getSettingFromAllExtruders(("travel_avoid_other_parts"))
+        avoid_distance_per_extruder = self._getSettingFromAllExtruders("travel_avoid_distance")
+        for index, avoid_other_parts_enabled in enumerate(avoid_enabled_per_extruder): #For each extruder (or just global).
+            if avoid_other_parts_enabled:
+                move_from_wall_radius = max(move_from_wall_radius, avoid_distance_per_extruder[index]) #Index of the same extruder.
 
         #Now combine our different pieces of data to get the final border size.
         #Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
