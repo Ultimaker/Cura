@@ -34,6 +34,13 @@ class SetParentOperation(Operation.Operation):
         if new_parent:
             current_parent = self._node.getParent()
             if current_parent:
+                # Special casing for groups that have been removed.
+                # In that case we want to put them back where they belong before checking the depth difference.
+                # If we don't, we always get 0.
+                old_parent = new_parent.callDecoration("getOldParent")
+                if old_parent:
+                    new_parent.callDecoration("getNode").setParent(old_parent)
+
                 # Based on the depth difference, we need to do something different.
                 depth_difference = current_parent.getDepth() - new_parent.getDepth()
                 child_transformation = self._node.getLocalTransformation()
