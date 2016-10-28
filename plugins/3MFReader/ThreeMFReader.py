@@ -11,9 +11,8 @@ from UM.Scene.GroupDecorator import GroupDecorator
 import UM.Application
 from UM.Job import Job
 
-from UM.Math.Quaternion import Quaternion
 
-import math
+import os.path
 import zipfile
 
 try:
@@ -31,9 +30,11 @@ class ThreeMFReader(MeshReader):
             "3mf": "http://schemas.microsoft.com/3dmanufacturing/core/2015/02",
             "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
         }
+        self._base_name = ""
 
     def _createNodeFromObject(self, object, name = ""):
         node = SceneNode()
+        node.setName(name)
         mesh_builder = MeshBuilder()
         vertex_list = []
 
@@ -42,8 +43,7 @@ class ThreeMFReader(MeshReader):
             for component in components:
                 id = component.get("objectid")
                 new_object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
-
-                new_node = self._createNodeFromObject(new_object)
+                new_node = self._createNodeFromObject(new_object, self._base_name + "_" + str(id))
                 node.addChild(new_node)
                 transform = component.get("transform")
                 if transform is not None:
@@ -114,6 +114,7 @@ class ThreeMFReader(MeshReader):
         result = SceneNode()
         # The base object of 3mf is a zipped archive.
         archive = zipfile.ZipFile(file_name, "r")
+        self._base_name = os.path.basename(file_name)
         try:
             self._root = ET.parse(archive.open("3D/3dmodel.model"))
 
@@ -122,7 +123,7 @@ class ThreeMFReader(MeshReader):
             for build_item in build_items:
                 id = build_item.get("objectid")
                 object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
-                build_item_node = self._createNodeFromObject(object)
+                build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
                 transform = build_item.get("transform")
                 if transform is not None:
                     build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
