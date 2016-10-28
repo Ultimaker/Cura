@@ -32,14 +32,20 @@ class SetParentOperation(Operation.Operation):
     #   \param new_parent The new parent. Note: this argument can be None, which would hide the node from the scene.
     def _set_parent(self, new_parent):
         if new_parent:
-            self._node.setPosition(self._node.getWorldPosition() - new_parent.getWorldPosition())
             current_parent = self._node.getParent()
             if current_parent:
-                self._node.scale(current_parent.getScale() / new_parent.getScale())
-                self._node.rotate(current_parent.getOrientation())
-            else:
-                self._node.scale(Vector(1, 1, 1) / new_parent.getScale())
-            self._node.rotate(new_parent.getOrientation().getInverse())
+                # Based on the depth difference, we need to do something different.
+                depth_difference = current_parent.getDepth() - new_parent.getDepth()
+                child_transformation = self._node.getLocalTransformation()
+                if depth_difference > 0:
+                    parent_transformation = current_parent.getLocalTransformation()
+                    # A node in the chain was removed, so we need to squash the parent info into all the nodes, so positions remain the same.
+                    self._node.setTransformation(parent_transformation.multiply(child_transformation))
+                else:
+                    # A node is inserted into the chain, so use the inverse of the parent to set the transformation of it's children.
+                    parent_transformation = new_parent.getLocalTransformation()
+                    result = parent_transformation.getInverse().multiply(child_transformation, copy = True)
+                    self._node.setTransformation(result)
 
         self._node.setParent(new_parent)
 
