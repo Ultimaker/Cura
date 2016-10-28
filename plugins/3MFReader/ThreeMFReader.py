@@ -54,10 +54,6 @@ class ThreeMFReader(MeshReader):
             vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
             Job.yieldThread()
 
-        # If this object has no vertices and just one child, just return the child.
-        if len(vertex_list) == 0 and len(node.getChildren()) == 1:
-            return node.getChildren()[0]
-
         if len(node.getChildren()) > 0:
             group_decorator = GroupDecorator()
             node.addDecorator(group_decorator)
@@ -76,20 +72,10 @@ class ThreeMFReader(MeshReader):
 
             Job.yieldThread()
 
-        # Rotate the model; We use a different coordinate frame.
-        rotation = Matrix()
-        rotation.setByRotationAxis(-0.5 * math.pi, Vector(1, 0, 0))
-        flip_matrix = Matrix()
-
-        flip_matrix._data[1, 1] = 0
-        flip_matrix._data[1, 2] = 1
-        flip_matrix._data[2, 1] = 1
-        flip_matrix._data[2, 2] = 0
-
         # TODO: We currently do not check for normals and simply recalculate them.
         mesh_builder.calculateNormals()
         mesh_builder.setFileName(name)
-        mesh_data = mesh_builder.build().getTransformed(flip_matrix)
+        mesh_data = mesh_builder.build()
 
         if len(mesh_data.getVertices()):
             node.setMeshData(mesh_data)
@@ -122,13 +108,6 @@ class ThreeMFReader(MeshReader):
         temp_mat._data[1, 3] = splitted_transformation[10]
         temp_mat._data[2, 3] = splitted_transformation[11]
 
-        flip_matrix = Matrix()
-        flip_matrix._data[1, 1] = 0
-        flip_matrix._data[1, 2] = 1
-        flip_matrix._data[2, 1] = 1
-        flip_matrix._data[2, 2] = 0
-        temp_mat.multiply(flip_matrix)
-
         return temp_mat
 
     def read(self, file_name):
@@ -158,9 +137,14 @@ class ThreeMFReader(MeshReader):
             return None
 
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
-
+        flip_matrix = Matrix()
+        flip_matrix._data[1, 1] = 0
+        flip_matrix._data[1, 2] = 1
+        flip_matrix._data[2, 1] = 1
+        flip_matrix._data[2, 2] = 0
+        result.setTransformation(flip_matrix)
         if global_container_stack:
-            translation = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2, y=0,
-                                 z=global_container_stack.getProperty("machine_depth", "value") / 2)
-            result.translate(translation, SceneNode.TransformSpace.World)
+            translation = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2, z=0,
+                                 y=global_container_stack.getProperty("machine_depth", "value") / 2)
+            result.translate(translation)
         return result
