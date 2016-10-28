@@ -23,19 +23,11 @@ class MachineNameValidator(QObject):
         except AttributeError: #Doesn't support statvfs. Probably because it's not a Unix system.
             filename_max_length = 255 #Assume it's Windows on NTFS.
         machine_name_max_length = filename_max_length - len("_current_settings.") - len(UM.Settings.ContainerRegistry.getMimeTypeForContainer(UM.Settings.InstanceContainer).preferredSuffix)
-        # Characters that urllib.parse.quote_plus escapes count for 3! So now we
-        # must devise a regex that allows only 3 normal characters or 1 special
-        # character, and that up to [machine_name_max_length / 3] times.
+        # Characters that urllib.parse.quote_plus escapes count for 12! So now
+        # we must devise a regex that allows only 12 normal characters or 1
+        # special character, and that up to [machine_name_max_length / 12] times.
         maximum_special_characters = int(machine_name_max_length / 12)
         unescaped = r"[a-zA-Z0-9_\-\.\/]"
-        #single_length = r"[\u0000-\u007F]"
-        #double_length = r"[\u0080-\u07FF]"
-        #triple_length = r"[\u0800-\uFFFF]"
-        #quadruple_length = r"[\u10000-\u10FFFF]"
-        #self.machine_name_regex = r"((((" + unescaped + r"{0,3}|" + single_length + r"){0,2}" \
-        #                          + r"|" + double_length + r"){0,2}" \
-        #                          + r"|" + triple_length + r"){0,2}" \
-        #                          + r"|" + quadruple_length + r"){0," + str(maximum_special_characters) + r"}"
         self.machine_name_regex = r"((" + unescaped + "){0,12}|.){0," + str(maximum_special_characters) + r"}"
 
     validationChanged = pyqtSignal()
