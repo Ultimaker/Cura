@@ -148,4 +148,5 @@ class ThreeMFReader(MeshReader):
             translation = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2, z=0,
                                  y=global_container_stack.getProperty("machine_depth", "value") / 2)
             result.translate(translation)
+        result.setEnabled(False) # The result should not be moved in any way, so disable it.
         return result
