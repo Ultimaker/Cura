@@ -56,14 +56,11 @@ class MachineNameValidator(QObject):
     def updateValidation(self, new_name):
         is_valid = self.validate(new_name, 0)
         if is_valid == QValidator.Acceptable:
-            print("VALID")
             self.validation_regex = "^.*$" #Matches anything.
         else:
-            print("BROKEN!")
             self.validation_regex = "a^" #Never matches (unless you manage to get "a" before the start of the string... good luck).
         self.validationChanged.emit()
 
     @pyqtProperty("QRegExp", notify=validationChanged)
     def machineNameRegex(self):
-        print(self.machine_name_regex)
         return QRegExp(self.machine_name_regex)
