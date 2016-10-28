@@ -248,7 +248,6 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self):
         self.blurSettings.emit()  # Ensure no-one has focus.
-
         old_active_container_stack = self._active_container_stack
 
         if self._active_container_stack and self._active_container_stack != self._global_container_stack:

@@ -539,7 +539,7 @@ UM.MainWindow
         target: Cura.MachineManager
         onBlurSettings:
         {
-            contentItem.focus = true
+            forceActiveFocus()
         }
     }
 
