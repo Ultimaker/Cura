@@ -28,7 +28,7 @@ class MachineNameValidator(QObject):
         # special character, and that up to [machine_name_max_length / 12] times.
         maximum_special_characters = int(machine_name_max_length / 12)
         unescaped = r"[a-zA-Z0-9_\-\.\/]"
-        self.machine_name_regex = r"((" + unescaped + "){0,12}|.){0," + str(maximum_special_characters) + r"}"
+        self.machine_name_regex = r"^((" + unescaped + "){0,12}|.){0," + str(maximum_special_characters) + r"}$"
 
     validationChanged = pyqtSignal()
 
@@ -56,14 +56,11 @@ class MachineNameValidator(QObject):
     def updateValidation(self, new_name):
         is_valid = self.validate(new_name, 0)
         if is_valid == QValidator.Acceptable:
-            print("VALID")
             self.validation_regex = "^.*$" #Matches anything.
         else:
-            print("BROKEN!")
             self.validation_regex = "a^" #Never matches (unless you manage to get "a" before the start of the string... good luck).
         self.validationChanged.emit()
 
     @pyqtProperty("QRegExp", notify=validationChanged)
     def machineNameRegex(self):
-        print(self.machine_name_regex)
         return QRegExp(self.machine_name_regex)
