@@ -155,6 +155,6 @@
         "wall_0_inset": { "value": "0" },
         "wall_line_width_x": { "value": "round(line_width * 0.3 / 0.35, 2)" },
         "wall_thickness": { "value": "1" },
-        "xy_offset": { "value": "-0.14" }
+        "xy_offset": { "value": "-0.14", "comment": "This is a hack to compensate for oversized prints. CURA-2845" }
     }
 }
