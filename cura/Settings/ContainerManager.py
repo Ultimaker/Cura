@@ -611,13 +611,12 @@ class ContainerManager(QObject):
 
         if base_name is None:
             base_name = quality_name
-
         # Try to find a Quality with the name.
-        containers = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_instances)
-        if containers:
-            container = containers[0]
+        container = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_instances)
+        if container:
+            UM.Logger.log("d", "We found a quality to duplicate.")
             return self._duplicateQualityForMachineType(container, base_name, machine_definition)
-
+        UM.Logger.log("d", "We found a quality_changes to duplicate.")
         # Assume it is a quality changes.
         return self._duplicateQualityChangesForMachineType(quality_name, base_name, machine_definition)
 
