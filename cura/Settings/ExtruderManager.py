@@ -270,7 +270,11 @@ class ExtruderManager(QObject):
     def getAllExtruderValues(self, setting_key):
         return self.getAllExtruderSettings(setting_key, "value")
 
-    ##  Gets a
+    ##  Gets a property of a setting for all extruders.
+    #
+    #   \param setting_key  \type{str} The setting to get the property of.
+    #   \param property  \type{str} The property to get.
+    #   \return \type{List} the list of results
     def getAllExtruderSettings(self, setting_key, property):
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_container_stack.getProperty("machine_extruder_count", "value") <= 1:
