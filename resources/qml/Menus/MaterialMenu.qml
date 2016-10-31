@@ -153,6 +153,7 @@ Menu
         else
         {
             result.definition = "fdmprinter";
+            result.compatible = true; //NB: Only checks for compatibility in global version of material, but we don't have machine-specific materials anyway.
         }
         return result;
     }
