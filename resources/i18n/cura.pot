@@ -1831,7 +1831,7 @@ msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
 msgctxt "@title:tab"
-msgid "Simple"
+msgid "Recommended"
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383

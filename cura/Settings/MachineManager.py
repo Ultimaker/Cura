@@ -474,6 +474,32 @@ class MachineManager(QObject):
 
         return result
 
+    ##  Gets the layer height of the currently active quality profile.
+    #
+    #   This is indicated together with the name of the active quality profile.
+    #
+    #   \return The layer height of the currently active quality profile. If
+    #   there is no quality profile, this returns 0.
+    @pyqtProperty(float, notify=activeQualityChanged)
+    def activeQualityLayerHeight(self):
+        if not self._global_container_stack:
+            return 0
+
+        quality_changes = self._global_container_stack.findContainer({"type": "quality_changes"})
+        if quality_changes:
+            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality_changes.getId())
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(self._global_container_stack)
+            return value
+        quality = self._global_container_stack.findContainer({"type": "quality"})
+        if quality:
+            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality.getId())
+            if isinstance(value, UM.Settings.SettingFunction):
+                value = value(self._global_container_stack)
+            return value
+
+        return 0 #No quality profile.
+
     ##  Get the Material ID associated with the currently active material
     #   \returns MaterialID (string) if found, empty string otherwise
     @pyqtProperty(str, notify=activeQualityChanged)
@@ -687,7 +713,7 @@ class MachineManager(QObject):
 
         # Get quality container and optionally the quality_changes container.
         if container_type == "quality":
-            new_quality_settings_list = self._determineQualityAndQualityChangesForQualityType(quality_type)
+            new_quality_settings_list = self.determineQualityAndQualityChangesForQualityType(quality_type)
         elif container_type == "quality_changes":
             new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
         else:
@@ -723,7 +749,7 @@ class MachineManager(QObject):
     #
     #   \param quality_name \type{str} the name of the quality.
     #   \return \type{List[Dict]} with keys "stack", "quality" and "quality_changes".
-    def _determineQualityAndQualityChangesForQualityType(self, quality_type):
+    def determineQualityAndQualityChangesForQualityType(self, quality_type):
         quality_manager = QualityManager.getInstance()
         result = []
         empty_quality_changes = self._empty_quality_changes_container
