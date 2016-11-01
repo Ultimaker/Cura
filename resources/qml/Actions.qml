@@ -131,7 +131,11 @@ Item
         id: resetProfileAction;
         enabled: Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Discard current settings");
-        onTriggered: Cura.ContainerManager.clearUserContainers();
+        onTriggered:
+        {
+            forceActiveFocus();
+            Cura.ContainerManager.clearUserContainers();
+        }
     }
 
     Action
