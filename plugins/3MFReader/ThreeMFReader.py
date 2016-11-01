@@ -113,6 +113,8 @@ class ThreeMFReader(MeshReader):
 
     def read(self, file_name):
         result = SceneNode()
+        group_decorator = GroupDecorator()
+        result.addDecorator(group_decorator)
         # The base object of 3mf is a zipped archive.
         archive = zipfile.ZipFile(file_name, "r")
         self._base_name = os.path.basename(file_name)
@@ -129,6 +131,34 @@ class ThreeMFReader(MeshReader):
                 transform = build_item.get("transform")
                 if transform is not None:
                     build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
+                global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+                # Create a transformation Matrix to convert from 3mf worldspace into ours.
+                # First step: flip the y and z axis.
+                transformation_matrix = Matrix()
+                transformation_matrix._data[1, 1] = 0
+                transformation_matrix._data[1, 2] = 1
+                transformation_matrix._data[2, 1] = -1
+                transformation_matrix._data[2, 2] = 0
+
+                # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
+                # build volume.
+                if global_container_stack:
+                    translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y = -global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z = 0)
+                    translation_matrix = Matrix()
+                    translation_matrix.setByTranslation(translation_vector)
+                    transformation_matrix.multiply(translation_matrix)
+
+                # Third step: 3MF also defines a unit, wheras Cura always assumes mm.
+                scale_matrix = Matrix()
+                scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
+                transformation_matrix.multiply(scale_matrix)
+
+                # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
+                build_item_node.setTransformation(build_item_node.getLocalTransformation().preMultiply(transformation_matrix))
+
                 result.addChild(build_item_node)
 
         except Exception as e:
@@ -139,18 +169,7 @@ class ThreeMFReader(MeshReader):
         except:
             return None
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
-        flip_matrix = Matrix()
-        flip_matrix._data[1, 1] = 0
-        flip_matrix._data[1, 2] = 1
-        flip_matrix._data[2, 1] = -1
-        flip_matrix._data[2, 2] = 0
-        result.setTransformation(flip_matrix)
-        if global_container_stack:
-            translation = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2, z=0,
-                                 y=-global_container_stack.getProperty("machine_depth", "value") / 2)
-            result.translate(translation)
-        result.scale(self._getScaleFromUnit(self._unit))
+
         result.setEnabled(False) # The result should not be moved in any way, so disable it.
         return result
 
