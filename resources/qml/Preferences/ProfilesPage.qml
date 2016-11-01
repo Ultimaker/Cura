@@ -62,7 +62,7 @@ UM.ManagementPage
         Button
         {
             text: catalog.i18nc("@label", "Create")
-            enabled: base.canCreateProfile()
+            enabled: base.canCreateProfile() && !Cura.MachineManager.stacksHaveErrors
             visible: base.canCreateProfile()
             iconName: "list-add";
 
