@@ -2257,12 +2257,12 @@ msgstr "Regola il posizionamento delle strutture di supporto. Il posizionamento 
 #: fdmprinter.def.json
 msgctxt "support_type option buildplate"
 msgid "Touching Buildplate"
-msgstr "Sostegno solo delle pareti esterne"
+msgstr "Contatto con il Piano di Stampa"
 
 #: fdmprinter.def.json
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
-msgstr "In tutti i possibili punti"
+msgstr "In Tutti i Possibili Punti"
 
 #: fdmprinter.def.json
 msgctxt "support_angle label"

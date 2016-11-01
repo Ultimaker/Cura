@@ -160,13 +160,13 @@ msgstr "Salvato su unità rimovibile {0} come {1}"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:103
 msgctxt "@action:button"
 msgid "Eject"
-msgstr "Espelli"
+msgstr "Rimuovi"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:103
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "Espelli il dispositivo rimovibile {0}"
+msgstr "Rimuovi il dispositivo rimovibile {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108
 #, python-brace-format
@@ -2008,7 +2008,7 @@ msgstr "Sel&eziona tutti i modelli"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:248
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Clear Build Plate"
-msgstr "&Cancella piano di stampa"
+msgstr "&Cancellare piano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:258
 msgctxt "@action:inmenu menubar:file"
