@@ -3904,7 +3904,7 @@
                 },
                 "infill_hollow":
                 {
-                    "label": "Hollow out Objects",
+                    "label": "Hollow Out Objects",
                     "description": "Remove all infill and make the inside of the object eligible for support.",
                     "type": "bool",
                     "default_value": false,
