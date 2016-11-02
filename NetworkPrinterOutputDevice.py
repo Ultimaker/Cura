@@ -100,7 +100,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
-        self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print over network"))
+        self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
         self.setIconName("print")
 
