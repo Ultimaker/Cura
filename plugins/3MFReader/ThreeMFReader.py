@@ -127,6 +127,21 @@ class ThreeMFReader(MeshReader):
             for build_item in build_items:
                 id = build_item.get("objectid")
                 object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
+                if "type" in object.attrib:
+                    if object.attrib["type"] == "support" or object.attrib["type"] == "other":
+                        # Ignore support objects, as cura does not support these.
+                        # We can't guarantee that they wont be made solid.
+                        # We also ignore "other", as I have no idea what to do with them.
+                        Logger.log("w", "3MF file contained an object of type %s which is not supported by Cura", object.attrib["type"])
+                        continue
+                    elif object.attrib["type"] == "solidsupport" or object.attrib["type"] == "model":
+                        pass  # Load these as normal
+                    else:
+                        # We should technically fail at this point because it's an invalid 3MF, but try to continue anyway.
+                        Logger.log("e", "3MF file contained an object of type %s which is not supported by the 3mf spec",
+                                   object.attrib["type"])
+                        continue
+
                 build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
                 transform = build_item.get("transform")
                 if transform is not None:
