@@ -131,7 +131,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._image_request = None
         self._image_reply = None
 
-        self._use_stream = True
+        self._use_stream = False
         self._stream_buffer = b""
         self._stream_buffer_start_index = -1
 
@@ -491,11 +491,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.stop()
         self._camera_timer.stop()
 	
-	if self._image_reply:
+        if self._image_reply:
             self._image_reply.abort()
             self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
             self._image_reply = None
-        self._image_request = None
+            self._image_request = None
 
     ##  Request the current scene to be sent to a network-connected printer.
     #
