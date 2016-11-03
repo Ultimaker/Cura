@@ -9,6 +9,10 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
+from UM.Message import Message
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 
 from cura import LayerDataBuilder
@@ -16,6 +20,7 @@ from cura import LayerDataDecorator
 from cura import LayerPolygon
 
 import numpy
+import math
 
 
 class GCODEReader(MeshReader):
@@ -92,6 +97,14 @@ class GCODEReader(MeshReader):
 
             file = open(file_name, "r")
 
+            file_lines = 0
+            current_line = 0
+            for line in file:
+                file_lines += 1
+            file.seek(0)
+
+            file_step = math.floor(file_lines / 100)
+
             layer_data = LayerDataBuilder.LayerDataBuilder()
 
             current_extruder = 1
@@ -101,6 +114,10 @@ class GCODEReader(MeshReader):
             current_z = 0
             current_e = 0
             current_layer = 0
+
+            message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0, dismissable=False)
+            message.setProgress(0)
+            message.show()
 
             def CreatePolygon():
                 countvalid = False
@@ -142,6 +159,10 @@ class GCODEReader(MeshReader):
                 return True
 
             for line in file:
+                current_line += 1
+                if current_line % file_step == 0:
+                    # print(current_line/file_lines*100)
+                    message.setProgress(math.floor(current_line/file_lines*100))
                 if len(line) == 0:
                     continue
                 if line[0] == ";":
@@ -203,6 +224,8 @@ class GCODEReader(MeshReader):
             decorator = LayerDataDecorator.LayerDataDecorator()
             decorator.setLayerData(layer_mesh)
             scene_node.addDecorator(decorator)
+
+            message.hide()
 
             Application.getInstance().getPrintInformation()._pre_sliced = True
 
