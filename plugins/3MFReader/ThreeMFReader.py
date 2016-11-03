@@ -11,7 +11,6 @@ from UM.Scene.GroupDecorator import GroupDecorator
 import UM.Application
 from UM.Job import Job
 
-
 import os.path
 import zipfile
 
@@ -112,9 +111,7 @@ class ThreeMFReader(MeshReader):
         return temp_mat
 
     def read(self, file_name):
-        result = SceneNode()
-        group_decorator = GroupDecorator()
-        result.addDecorator(group_decorator)
+        result = []
         # The base object of 3mf is a zipped archive.
         archive = zipfile.ZipFile(file_name, "r")
         self._base_name = os.path.basename(file_name)
@@ -174,18 +171,11 @@ class ThreeMFReader(MeshReader):
                 # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
                 build_item_node.setTransformation(build_item_node.getLocalTransformation().preMultiply(transformation_matrix))
 
-                result.addChild(build_item_node)
+                result.append(build_item_node)
 
         except Exception as e:
-            Logger.log("e", "exception occured in 3mf reader: %s", e)
-        try:  # Selftest - There might be more functions that should fail
-            bounding_box = result.getBoundingBox()
-            bounding_box.isValid()
-        except:
-            return None
+            Logger.log("e", "An exception occurred in 3mf reader: %s", e)
 
-
-        result.setEnabled(False) # The result should not be moved in any way, so disable it.
         return result
 
     ##  Create a scale vector based on a unit string.
