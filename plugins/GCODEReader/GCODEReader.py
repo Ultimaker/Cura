@@ -100,35 +100,24 @@ class GCODEReader(MeshReader):
             current_y = 0
             current_z = 0
             current_e = 0
-
-            layers = []
-            for line in file:
-                glist.append(line)
-                if len(line) == 0:
-                    continue
-                if line[0] == ";":
-                    continue
-                G = self.getInt(line, "G")
-                if G is not None:
-                    if G == 0 or G == 1:
-                        z = self.getFloat(line, "Z")
-                        if z is not None and z not in layers and z >= 0:
-                            layers.append(z)
-            layers.sort()
-            file.seek(0)
-
-            for layer in layers:
-                layer_id = layers.index(layer)
-                layer_data.addLayer(layer_id)
-                layer_data.setLayerHeight(layer_id, layer)
-                layer_data.setLayerThickness(layer_id, 0.25)
+            current_layer = 0
 
             def CreatePolygon():
+                countvalid = False
+                for point in current_path:
+                    if point[3] > 0:
+                        countvalid += 1
+                if countvalid < 2:
+                    current_path.clear()
+                    return False
                 try:
-                    this_layer = layer_data.getLayer(layers.index(current_path[0][1]))
+                    layer_data.addLayer(current_layer)
+                    layer_data.setLayerHeight(current_layer, current_path[0][1])
+                    layer_data.setLayerThickness(current_layer, 0.25)
+                    this_layer = layer_data.getLayer(current_layer)
                 except ValueError:
                     current_path.clear()
-                    return
+                    return False
                 count = len(current_path)
                 line_types = numpy.empty((count-1, 1), numpy.int32)
                 line_types[:, 0] = 1
@@ -150,6 +139,7 @@ class GCODEReader(MeshReader):
                 this_layer.polygons.append(this_poly)
 
                 current_path.clear()
+                return True
 
             for line in file:
                 if len(line) == 0:
@@ -181,8 +171,9 @@ class GCODEReader(MeshReader):
                         else:
                             current_path.append([current_x, current_z, -current_y, 0])
                         if z_changed:
-                            if len(current_path) > 1:
-                                CreatePolygon()
+                            if len(current_path) > 1 and current_z > 0:
+                                if CreatePolygon():
+                                    current_layer += 1
                             else:
                                 current_path.clear()
 
