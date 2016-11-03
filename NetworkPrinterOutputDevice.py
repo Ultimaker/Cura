@@ -128,6 +128,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._camera_timer.setSingleShot(False)
         self._camera_timer.timeout.connect(self._update_camera)
 
+        self._image_request = None
+        self._image_reply = None
+
+        self._use_stream = True
+        self._stream_buffer = b""
+        self._stream_buffer_start_index = -1
+
         self._camera_image_id = 0
 
         self._authentication_counter = 0
@@ -225,6 +232,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     @pyqtProperty(str, constant=True)
     def ipAddress(self):
         return self._address
+
+    def _start_camera_stream(self):
+        ## Request new image
+        url = QUrl("http://" + self._address + ":8080/?action=stream")
+        self._image_request = QNetworkRequest(url)
+        self._image_reply = self._manager.get(self._image_request)
+        self._image_reply.downloadProgress.connect(self._onStreamDownloadProgress)
 
     def _update_camera(self):
         if not self._manager.networkAccessible():
@@ -476,6 +490,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         # Stop update timers
         self._update_timer.stop()
         self._camera_timer.stop()
+	
+	if self._image_reply:
+            self._image_reply.abort()
+            self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            self._image_reply = None
+        self._image_request = None
 
     ##  Request the current scene to be sent to a network-connected printer.
     #
@@ -505,7 +525,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         print_information = Application.getInstance().getPrintInformation()
 
-        # Check if print cores / materials are loaded at all. Any failure in these results in an error.
+        # Check if PrintCores / materials are loaded at all. Any failure in these results in an Error.
         for index in range(0, self._num_extruders):
             if print_information.materialLengths[index] != 0:
                 if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
@@ -604,7 +624,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
-        self._update_camera()
+        if not self._use_stream:
+            self._update_camera()
         Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
 
         ## Check if this machine was authenticated before.
@@ -612,7 +633,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_key", None)
 
         self._update_timer.start()
-        self._camera_timer.start()
+        if self._use_stream:
+            self._start_camera_stream()
+        else:
+            self._camera_timer.start()
 
     ##  Stop requesting data from printer
     def disconnect(self):
@@ -941,6 +965,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply_url, reply.readAll(), status_code)
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
+
+    def _onStreamDownloadProgress(self, bytes_received, bytes_total):
+        # An MJPG stream is (for our purpose) a stream of concatenated JPG images.
+        # JPG images start with the marker 0xFFD8, and end with 0xFFD9
+        self._stream_buffer += self._image_reply.readAll()
+
+        if self._stream_buffer_start_index == -1:
+            self._stream_buffer_start_index = self._stream_buffer.indexOf(b'\xff\xd8')
+        stream_buffer_end_index = self._stream_buffer.lastIndexOf(b'\xff\xd9')
+        # If this happens to be more than a single frame, then so be it; the JPG decoder will
+        # ignore the extra data. We do it like this in order not to get a buildup of frames
+
+        if self._stream_buffer_start_index != -1 and stream_buffer_end_index != -1:
+            jpg_data = self._stream_buffer[self._stream_buffer_start_index:stream_buffer_end_index + 2]
+            self._stream_buffer = self._stream_buffer[stream_buffer_end_index + 2:]
+            self._stream_buffer_start_index = -1
+
+            self._camera_image.loadFromData(jpg_data)
+            self.newImage.emit()
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
