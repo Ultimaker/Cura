@@ -164,7 +164,12 @@ class StartSliceJob(Job):
                     indices = mesh_data.getIndices()
                     if indices is not None:
                         #TODO: This is a very slow way of doing it! It also locks up the GUI.
-                        verts = numpy.array([verts[vert_index] for face in indices for vert_index in face])
+                        flat_vert_list = []
+                        for face in indices:
+                            for vert_index in face:
+                                flat_vert_list.append(verts[vert_index])
+                                Job.yieldThread()
+                        verts = numpy.array(flat_vert_list)
                     else:
                         verts = numpy.array(verts)
 
@@ -238,6 +243,7 @@ class StartSliceJob(Job):
             else:
                 # Normal case
                 settings[key] = stack.getProperty(key, "value")
+            Job.yieldThread()
 
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
@@ -250,6 +256,7 @@ class StartSliceJob(Job):
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting_message.value = str(value).encode("utf-8")
+            Job.yieldThread()
 
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
@@ -266,6 +273,7 @@ class StartSliceJob(Job):
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder
+            Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
     #   \param node \type{SceneNode} Node to check.
