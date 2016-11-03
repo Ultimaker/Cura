@@ -555,14 +555,15 @@ class CuraApplication(QtApplication):
         supported_extensions = [".gcode", ".g"]
 
         f = file.toLocalFile()
-
+        extension = os.path.splitext(f)[1]
         if len(self.loadingFiles) > 0:
-            extension = os.path.splitext(f)[1]
             if extension.lower() in supported_extensions:
                 return
             extension = os.path.splitext(self.loadingFiles[0])[1]
             if extension.lower() in supported_extensions:
                 return
+        elif extension.lower() in supported_extensions:
+            self.getController().setActiveView("LayerView")
 
         self.loadingFiles.append(f)
 
