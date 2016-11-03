@@ -170,7 +170,7 @@ UM.ManagementPage
 
             Button
             {
-                text: catalog.i18nc("@action:button", "Discard current settings");
+                text: catalog.i18nc("@action:button", "Discard current changes");
                 enabled: Cura.MachineManager.hasUserSettings
                 onClicked: Cura.ContainerManager.clearUserContainers();
             }
