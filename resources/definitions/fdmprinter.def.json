@@ -3902,6 +3902,14 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_hollow":
+                {
+                    "label": "Hollow Out Objects",
+                    "description": "Remove all infill and make the inside of the object eligible for support.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "magic_fuzzy_skin_enabled":
                 {
                     "label": "Fuzzy Skin",
