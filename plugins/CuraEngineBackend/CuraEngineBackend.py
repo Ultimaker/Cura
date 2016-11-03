@@ -296,7 +296,7 @@ class CuraEngineBackend(Backend):
         self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
-            Logger.log("e", "A socket error caused the connection to be reset")
+            Logger.log("w", "A socket error caused the connection to be reset")
 
     ##  A setting has changed, so check if we must reslice.
     #
