@@ -117,6 +117,7 @@ UM.PreferencesPage
                     containerId: Cura.MachineManager.activeDefinitionId
                     showAll: true
                     exclude: ["machine_settings"]
+                    showAncestors: true
                     expanded: ["*"]
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
                 }
