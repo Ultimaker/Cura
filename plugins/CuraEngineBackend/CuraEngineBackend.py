@@ -239,7 +239,20 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. Please check your settings for errors."))
+                extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                error_keys = []
+                for extruder in extruders:
+                    error_keys.extend(extruder.getErrorKeys())
+                else:
+                    error_keys = self._global_container_stack.getErrorKeys()
+
+                error_labels = set()
+                definition_container = self._global_container_stack.getBottom()
+                for key in error_keys:
+                    error_labels.add(definition_container.findDefinitions(key = key)[0].label)
+
+                error_labels = ", ".join(error_labels)
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
