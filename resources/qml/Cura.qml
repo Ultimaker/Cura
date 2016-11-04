@@ -402,6 +402,16 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
+                onVisibleChanged:
+                {
+                    if(visible)
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].startCamera()
+                    } else
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].stopCamera()
+                    }
+                }
                 source:
                 {
                     if(!base.monitoringPrint)
