@@ -16,6 +16,7 @@ import zipfile
 
 try:
     import xml.etree.cElementTree as ET
+    Logger.log("w", "Unable to load cElementTree, switching to slower version")
 except ImportError:
     import xml.etree.ElementTree as ET
 
