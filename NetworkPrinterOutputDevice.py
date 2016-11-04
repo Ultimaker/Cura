@@ -124,14 +124,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._update_timer.timeout.connect(self._update)
 
         self._camera_timer = QTimer()
-        self._camera_timer.setInterval(2000)  # Todo: Add preference for camera update interval
+        self._camera_timer.setInterval(500)  # Todo: Add preference for camera update interval
         self._camera_timer.setSingleShot(False)
-        self._camera_timer.timeout.connect(self._update_camera)
+        self._camera_timer.timeout.connect(self._updateCamera)
 
         self._image_request = None
         self._image_reply = None
 
-        self._use_stream = False
+        self._use_stream = True
         self._stream_buffer = b""
         self._stream_buffer_start_index = -1
 
@@ -233,14 +233,28 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def ipAddress(self):
         return self._address
 
-    def _start_camera_stream(self):
+    def _stopCamera(self):
+        self._camera_timer.stop()
+        if self._image_reply:
+            self._image_reply.abort()
+            self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            self._image_reply = None
+            self._image_request = None
+
+    def _startCamera(self):
+        if self._use_stream:
+            self._startCameraStream()
+        else:
+            self._camera_timer.start()
+
+    def _startCameraStream(self):
         ## Request new image
         url = QUrl("http://" + self._address + ":8080/?action=stream")
         self._image_request = QNetworkRequest(url)
         self._image_reply = self._manager.get(self._image_request)
         self._image_reply.downloadProgress.connect(self._onStreamDownloadProgress)
 
-    def _update_camera(self):
+    def _updateCamera(self):
         if not self._manager.networkAccessible():
             return
         ## Request new image
@@ -489,13 +503,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         # Stop update timers
         self._update_timer.stop()
-        self._camera_timer.stop()
-	
-        if self._image_reply:
-            self._image_reply.abort()
-            self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-            self._image_reply = None
-            self._image_request = None
+
+        self.stopCamera()
 
     ##  Request the current scene to be sent to a network-connected printer.
     #
@@ -625,7 +634,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
         if not self._use_stream:
-            self._update_camera()
+            self._updateCamera()
         Logger.log("d", "Connection with printer %s with ip %s started", self._key, self._address)
 
         ## Check if this machine was authenticated before.
@@ -633,10 +642,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._authentication_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_key", None)
 
         self._update_timer.start()
-        if self._use_stream:
-            self._start_camera_stream()
-        else:
-            self._camera_timer.start()
+        #self.startCamera()
 
     ##  Stop requesting data from printer
     def disconnect(self):
@@ -969,6 +975,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _onStreamDownloadProgress(self, bytes_received, bytes_total):
         # An MJPG stream is (for our purpose) a stream of concatenated JPG images.
         # JPG images start with the marker 0xFFD8, and end with 0xFFD9
+        if self._image_reply is None:
+            return
         self._stream_buffer += self._image_reply.readAll()
 
         if self._stream_buffer_start_index == -1:
