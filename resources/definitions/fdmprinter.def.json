@@ -1140,6 +1140,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_print_temperature_layer_0":
+                {
+                    "label": "Printing Temperature Initial Layer",
+                    "description": "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 215,
+                    "value": "material_print_temperature + 5",
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "260",
+                    "enabled": "not (material_flow_dependent_temperature)",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -1173,6 +1188,22 @@
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature'))",
+                    "default_value": 60,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "260",
+                    "enabled": "machine_heated_bed",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "material_bed_temperature_layer_0":
+                {
+                    "label": "Build Plate Temperature Initial Layer",
+                    "description": "The temperature used for the heated build plate at the first layer.",
+                    "unit": "°C",
+                    "type": "float",
+                    "resolve": "max(extruderValues('material_bed_temperature_layer_0'))",
                     "default_value": 60,
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
