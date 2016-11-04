@@ -979,6 +979,7 @@
                         "cubic": "Cubic",
                         "tetrahedral": "Tetrahedral",
                         "concentric": "Concentric",
+                        "concentric_3d": "Concentric 3D",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "grid",
@@ -2534,6 +2535,7 @@
                         "grid": "Grid",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
+                        "concentric_3d": "Concentric 3D",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "zigzag",
@@ -2823,6 +2825,7 @@
                         "grid": "Grid",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
+                        "concentric_3d": "Concentric 3D",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "concentric",
