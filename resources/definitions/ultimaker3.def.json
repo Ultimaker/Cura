@@ -106,6 +106,8 @@
         "jerk_wall": { "value": "math.ceil(jerk_print * 10 / 25)" },
         "jerk_wall_0": { "value": "math.ceil(jerk_wall * 5 / 10)" },
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
+        "layer_start_x": { "value": "sum(extruderValues('extruder_prime_pos_x')) / len(extruderValues('extruder_prime_pos_x'))" },
+        "layer_start_y": { "value": "sum(extruderValues('extruder_prime_pos_y')) / len(extruderValues('extruder_prime_pos_y'))" },
         "line_width": { "value": "machine_nozzle_size * 0.875" },
         "machine_min_cool_heat_time_window": { "value": "15" },
         "material_print_temperature": { "value": "200" },
