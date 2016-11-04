@@ -261,8 +261,9 @@ class ContainerManager(QObject):
 
     @pyqtSlot(str, result = bool)
     def isContainerUsed(self, container_id):
-        UM.Logger.log("d", "Checking if container %s is currently used in the active stacks", container_id)
-        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        UM.Logger.log("d", "Checking if container %s is currently used", container_id)
+        containers = self._container_registry.findContainerStacks()
+        for stack in containers:
             if container_id in [child.getId() for child in stack.getContainers()]:
                 UM.Logger.log("d", "The container is in use by %s", stack.getId())
                 return True

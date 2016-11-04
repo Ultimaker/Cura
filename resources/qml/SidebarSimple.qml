@@ -126,7 +126,7 @@ Item
                             {
                                 return UM.Theme.getColor("setting_control_disabled_text")
                             }
-                            return UM.Theme.getColor("text")
+                            return UM.Theme.getColor("setting_control_disabled_text")
                         }
                     }
 
