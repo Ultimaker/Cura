@@ -4,7 +4,7 @@
 import os.path
 import urllib
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl, QVariant
 from PyQt5.QtWidgets import QMessageBox
 
 import UM.PluginRegistry
@@ -805,3 +805,50 @@ class ContainerManager(QObject):
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
         return quality_changes
+
+
+    ##  Import profiles from a list of file_urls.
+    #   Each QUrl item must end with .curaprofile, or it will not be imported.
+    #
+    #   \param QVariant<QUrl>, essentially a list with QUrl objects.
+    #   \return Dict with keys status, text
+    @pyqtSlot(QVariant, result="QVariantMap")
+    def importProfiles(self, file_urls):
+        status = "ok"
+        results = {"ok": [], "error": []}
+        for file_url in file_urls:
+            if not file_url.isValid():
+                continue
+            path = file_url.toLocalFile()
+            if not path:
+                continue
+            if not path.endswith(".curaprofile"):
+                continue
+
+            single_result = UM.Settings.ContainerRegistry.getInstance().importProfile(path)
+            if single_result["status"] == "error":
+                status = "error"
+            results[single_result["status"]].append(single_result["message"])
+
+        return {
+            "status": status,
+            "message": "\n".join(results["ok"] + results["error"])}
+
+    ##  Import single profile, file_url does not have to end with curaprofile
+    @pyqtSlot(QUrl, result="QVariantMap")
+    def importProfile(self, file_url):
+        if not file_url.isValid():
+            return
+        path = file_url.toLocalFile()
+        if not path:
+            return
+        return UM.Settings.ContainerRegistry.getInstance().importProfile(path)
+
+    @pyqtSlot("QVariantList", QUrl, str)
+    def exportProfile(self, instance_id, file_url, file_type):
+        if not file_url.isValid():
+            return
+        path = file_url.toLocalFile()
+        if not path:
+            return
+        UM.Settings.ContainerRegistry.getInstance().exportProfile(instance_id, path, file_type)
