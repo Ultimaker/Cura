@@ -202,9 +202,9 @@ class GCODEReader(MeshReader):
                             current_z = z
                         if e is not None:
                             if e > current_e:
-                                current_path.append([current_x, current_z, -current_y, 1])
+                                current_path.append([current_x, current_z, -current_y, 1])  # extrusion
                             else:
-                                current_path.append([current_x, current_z, -current_y, 0])
+                                current_path.append([current_x, current_z, -current_y, 2])  # retraction
                             current_e = e
                         else:
                             current_path.append([current_x, current_z, -current_y, 0])
