@@ -28,6 +28,9 @@ class GCODEReader(MeshReader):
     def __init__(self):
         super(GCODEReader, self).__init__()
         self._supported_extensions = [".gcode", ".g"]
+        Application.getInstance().hideMessageSignal.connect(self.onHideMessage)
+        self.cancelled = False
+        self.message = None
 
     def getInt(self, line, code):
         n = line.find(code) + 1
@@ -52,6 +55,10 @@ class GCODEReader(MeshReader):
             return float(line[n:m])
         except:
             return None
+
+    def onHideMessage(self, m):
+        if m == self.message:
+            self.cancelled = True
 
     def parent_changed(self, node):
         if node.getParent() is None:
@@ -80,6 +87,7 @@ class GCODEReader(MeshReader):
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
             Logger.log("d", "Preparing to load %s" % file_name)
+            self.cancelled = False
             Application.getInstance().deleteAll()
 
             scene_node = SceneNode()
@@ -120,9 +128,9 @@ class GCODEReader(MeshReader):
             current_e = 0
             current_layer = 0
 
-            message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0, dismissable=False)
-            message.setProgress(0)
-            message.show()
+            self.message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0)
+            self.message.setProgress(0)
+            self.message.show()
 
             Logger.log("d", "Parsing %s" % file_name)
 
@@ -166,9 +174,12 @@ class GCODEReader(MeshReader):
                 return True
 
             for line in file:
+                if self.cancelled:
+                    Logger.log("w", "Parsing %s cancelled" % file_name)
+                    return None
                 current_line += 1
                 if current_line % file_step == 0:
-                    message.setProgress(math.floor(current_line/file_lines*100))
+                    self.message.setProgress(math.floor(current_line/file_lines*100))
                 if len(line) == 0:
                     continue
                 if line[0] == ";":
@@ -233,7 +244,7 @@ class GCODEReader(MeshReader):
             scene_node.addDecorator(decorator)
 
             Logger.log("d", "Finished parsing %s" % file_name)
-            message.hide()
+            self.message.hide()
 
             if current_layer == 0:
                 Logger.log("w", "File %s don't contain any valid layers" % file_name)
