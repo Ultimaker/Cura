@@ -23,7 +23,7 @@ def getMetaData():
             },
             {
                 "extension": "g",
-                "description": i18n_catalog.i18nc("@item:inlistbox", "GCODE File")
+                "description": i18n_catalog.i18nc("@item:inlistbox", "G File")
             }
         ]
     }
