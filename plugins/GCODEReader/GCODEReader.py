@@ -104,6 +104,7 @@ class GCODEReader(MeshReader):
             file.seek(0)
 
             file_step = math.floor(file_lines / 100)
+            file_step = 1 if file_step < 1 else file_step
 
             layer_data = LayerDataBuilder.LayerDataBuilder()
 
