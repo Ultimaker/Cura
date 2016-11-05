@@ -10,6 +10,7 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 from UM.Message import Message
+from UM.Logger import Logger
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -78,6 +79,7 @@ class GCODEReader(MeshReader):
 
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
+            Logger.log("d", "Preparing to load %s" % file_name)
             Application.getInstance().deleteAll()
 
             scene_node = SceneNode()
@@ -94,6 +96,8 @@ class GCODEReader(MeshReader):
 
             glist = getattr(Application.getInstance().getController().getScene(), "gcode_list")
             glist.clear()
+
+            Logger.log("d", "Opening file %s" % file_name)
 
             file = open(file_name, "r")
 
@@ -119,6 +123,8 @@ class GCODEReader(MeshReader):
             message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0, dismissable=False)
             message.setProgress(0)
             message.show()
+
+            Logger.log("d", "Parsing %s" % file_name)
 
             def CreatePolygon():
                 countvalid = False
@@ -162,7 +168,6 @@ class GCODEReader(MeshReader):
             for line in file:
                 current_line += 1
                 if current_line % file_step == 0:
-                    # print(current_line/file_lines*100)
                     message.setProgress(math.floor(current_line/file_lines*100))
                 if len(line) == 0:
                     continue
@@ -219,14 +224,19 @@ class GCODEReader(MeshReader):
                             current_z += z
 
             if len(current_path) > 1:
-                CreatePolygon()
+                if CreatePolygon():
+                    current_layer += 1
 
             layer_mesh = layer_data.build()
             decorator = LayerDataDecorator.LayerDataDecorator()
             decorator.setLayerData(layer_mesh)
             scene_node.addDecorator(decorator)
 
+            Logger.log("d", "Finished parsing %s" % file_name)
             message.hide()
+
+            if current_layer == 0:
+                Logger.log("w", "File %s don't contain any valid layers" % file_name)
 
             Application.getInstance().getPrintInformation()._pre_sliced = True
 
@@ -246,5 +256,7 @@ class GCODEReader(MeshReader):
                 view.resetLayerData()
                 view.setLayer(999999)
                 view.calculateMaxLayers()
+
+            Logger.log("d", "Loaded %s" % file_name)
 
         return scene_node
