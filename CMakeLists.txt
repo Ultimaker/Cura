@@ -26,21 +26,27 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
 endif()
 
 find_package(PythonInterp 3.4.0 REQUIRED)
+if(EXISTS /etc/debian_version)
+    # Running on a debian-based system, which requires special handling for python modules.
+    set(PYTHON_SITE_PACKAGES_DIR lib/python${PYTHON_VERSION_MAJOR}/dist-packages CACHE STRING "Directory to install Python bindings to")
+else()
+    set(PYTHON_SITE_PACKAGES_DIR lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages CACHE STRING "Directory to install Python bindings to")
+endif()
 
 install(DIRECTORY resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
 install(DIRECTORY plugins
         DESTINATION lib/cura)
+install(DIRECTORY cura
+        DESTINATION ${PYTHON_SITE_PACKAGES_DIR}
+        FILES_MATCHING PATTERN *.py)
+install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+        DESTINATION ${PYTHON_SITE_PACKAGES_DIR}/cura)
 if(NOT APPLE AND NOT WIN32)
     install(FILES cura_app.py
             DESTINATION ${CMAKE_INSTALL_BINDIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
             RENAME cura)
-    install(DIRECTORY cura
-            DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages
-            FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
-            DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
     install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES cura.appdata.xml
@@ -52,11 +58,6 @@ else()
     install(FILES cura_app.py
             DESTINATION ${CMAKE_INSTALL_BINDIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-    install(DIRECTORY cura
-            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
-            FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
-            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
 
 include(CPackConfig.cmake)
