@@ -37,8 +37,8 @@ class LayerPolygon:
 
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.
-        self._colors = self.__color_map[self._types]
-        self._color_map = self.__color_map
+        self._color_map = self.__color_map * [1, 1, 1, self._extruder] # The alpha component is used to store the extruder nr
+        self._colors = self._color_map[self._types]
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
@@ -172,31 +172,17 @@ class LayerPolygon:
 
         return normals
 
-    __color_mapping = {
-        NoneType: Color(1.0, 1.0, 1.0, 1.0),
-        Inset0Type: Color(1.0, 0.0, 0.0, 1.0),
-        InsetXType: Color(0.0, 1.0, 0.0, 1.0),
-        SkinType: Color(1.0, 1.0, 0.0, 1.0),
-        SupportType: Color(0.0, 1.0, 1.0, 1.0),
-        SkirtType: Color(0.0, 1.0, 1.0, 1.0),
-        InfillType: Color(1.0, 0.75, 0.0, 1.0),
-        SupportInfillType: Color(0.0, 1.0, 1.0, 1.0),
-        MoveCombingType: Color(0.0, 0.0, 1.0, 1.0),
-        MoveRetractionType: Color(0.5, 0.5, 1.0, 1.0),
-        SupportInterfaceType: Color(0.25, 0.75, 1.0, 1.0),
-    }
-
     # Should be generated in better way, not hardcoded.
     __color_map = numpy.array([
-        [1.0, 1.0, 1.0, 1.0],
-        [1.0, 0.0, 0.0, 1.0],
-        [0.0, 1.0, 0.0, 1.0],
-        [1.0, 1.0, 0.0, 1.0],
-        [0.0, 1.0, 1.0, 1.0],
-        [0.0, 1.0, 1.0, 1.0],
-        [1.0, 0.75, 0.0, 1.0],
-        [0.0, 1.0, 1.0, 1.0],
-        [0.0, 0.0, 1.0, 1.0],
-        [0.5, 0.5, 1.0, 1.0],
-        [0.25, 0.75, 1.0, 1.0]
+        [1.0,  1.0,  1.0, 1.0], # NoneType
+        [1.0,  0.0,  0.0, 1.0], # Inset0Type
+        [0.0,  1.0,  0.0, 1.0], # InsetXType
+        [1.0,  1.0,  0.0, 1.0], # SkinType
+        [0.0,  1.0,  1.0, 1.0], # SupportType
+        [0.0,  1.0,  1.0, 1.0], # SkirtType
+        [1.0,  0.75, 0.0, 1.0], # InfillType
+        [0.0,  1.0,  1.0, 1.0], # SupportInfillType
+        [0.0,  0.0,  1.0, 1.0], # MoveCombingType
+        [0.5,  0.5,  1.0, 1.0], # MoveRetractionType
+        [0.25, 0.75, 1.0, 1.0]  # SupportInterfaceType
     ])

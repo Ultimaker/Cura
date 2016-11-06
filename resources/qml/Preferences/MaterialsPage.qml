@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -21,15 +21,16 @@ UM.ManagementPage
             var result = { "type": "material" }
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
-                result.definition = Cura.MachineManager.activeDefinitionId
+                result.definition = Cura.MachineManager.activeQualityDefinitionId;
                 if(Cura.MachineManager.hasVariants)
                 {
-                    result.variant = Cura.MachineManager.activeVariantId
+                    result.variant = Cura.MachineManager.activeQualityVariantId;
                 }
             }
             else
             {
-                result.definition = "fdmprinter"
+                result.definition = "fdmprinter";
+                result.compatible = true; //NB: Only checks for compatibility in global version of material, but we don't have machine-specific materials anyway.
             }
             return result
         }
@@ -254,6 +255,7 @@ UM.ManagementPage
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
                 }
+                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
             }
         }
 

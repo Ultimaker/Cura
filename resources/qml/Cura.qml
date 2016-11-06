@@ -22,7 +22,6 @@ UM.MainWindow
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-
         // Workaround silly issues with QML Action's shortcut property.
         //
         // Currently, there is no way to define shortcuts as "Application Shortcut".
@@ -140,7 +139,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: Cura.ExtrudersModel { }
+                    model: Cura.ExtrudersModel { simpleNames: true }
                     Menu {
                         title: model.name
                         visible: machineExtruderCount.properties.value > 1
@@ -247,14 +246,34 @@ UM.MainWindow
                 {
                     if(drop.urls.length > 0)
                     {
+                        // Import models
                         for(var i in drop.urls)
                         {
-                            UM.MeshFileHandler.readLocalFile(drop.urls[i]);
-                            if (i == drop.urls.length - 1)
-                            {
-                                var meshName = backgroundItem.getMeshName(drop.urls[i].toString())
-                                backgroundItem.hasMesh(decodeURIComponent(meshName))
+                            // There is no endsWith in this version of JS...
+                            if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
+                                // Drop an object
+                                UM.MeshFileHandler.readLocalFile(drop.urls[i]);
+                                if (i == drop.urls.length - 1)
+                                {
+                                    var meshName = backgroundItem.getMeshName(drop.urls[i].toString());
+                                    backgroundItem.hasMesh(decodeURIComponent(meshName));
+                                }
                             }
+                        }
+
+                        // Import profiles
+                        var import_result = Cura.ContainerManager.importProfiles(drop.urls);
+                        if (import_result.message !== "") {
+                            messageDialog.text = import_result.message
+                            if(import_result.status == "ok")
+                            {
+                                messageDialog.icon = StandardIcon.Information
+                            }
+                            else
+                            {
+                                messageDialog.icon = StandardIcon.Critical
+                            }
+                            messageDialog.open()
                         }
                     }
                 }
@@ -403,7 +422,28 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
-                source: Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+                onVisibleChanged:
+                {
+                    if(visible)
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].startCamera()
+                    } else
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].stopCamera()
+                    }
+                }
+                source:
+                {
+                    if(!base.monitoringPrint)
+                    {
+                        return "";
+                    }
+                    if(Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage)
+                    {
+                        return Cura.MachineManager.printerOutputDevices[0].cameraImage;
+                    }
+                    return "";
+                }
             }
 
             UM.MessageStack
@@ -529,7 +569,7 @@ UM.MainWindow
         target: Cura.MachineManager
         onBlurSettings:
         {
-            contentItem.focus = true
+            forceActiveFocus()
         }
     }
 
@@ -641,8 +681,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-        //TODO: Support multiple file selection, workaround bug in KDE file dialog
-        //selectMultiple: true
+        selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
@@ -653,9 +692,17 @@ UM.MainWindow
             folder = f;
 
             CuraApplication.setDefaultPath("dialog_load_path", folder);
-            UM.MeshFileHandler.readLocalFile(fileUrl)
-            var meshName = backgroundItem.getMeshName(fileUrl.toString())
-            backgroundItem.hasMesh(decodeURIComponent(meshName))
+
+            for(var i in fileUrls)
+            {
+                UM.MeshFileHandler.readLocalFile(fileUrls[i])
+
+                if (i == fileUrls.length - 1)
+                {
+                    var meshName = backgroundItem.getMeshName(fileUrls.toString())
+                    backgroundItem.hasMesh(decodeURIComponent(meshName))
+                }
+            }
         }
     }
 

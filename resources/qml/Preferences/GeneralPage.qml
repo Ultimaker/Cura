@@ -1,5 +1,5 @@
-// Copyright (c) 2015 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2016 Ultimaker B.V.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -90,13 +90,14 @@ UM.PreferencesPage
                     id: languageList
 
                     Component.onCompleted: {
-                        append({ text: catalog.i18nc("@item:inlistbox", "English"), code: "en" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Finnish"), code: "fi" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "French"), code: "fr" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "German"), code: "de" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Italian"), code: "it" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Dutch"), code: "nl" })
-                        append({ text: catalog.i18nc("@item:inlistbox", "Spanish"), code: "es" })
+                        append({ text: "English", code: "en" })
+                        append({ text: "Deutsch", code: "de" })
+                        append({ text: "Español", code: "es" })
+                        append({ text: "Suomi", code: "fi" })
+                        append({ text: "Français", code: "fr" })
+                        append({ text: "Italiano", code: "it" })
+                        append({ text: "Nederlands", code: "nl" })
+                        append({ text: "Türkçe", code: "tr" })
                     }
                 }
 

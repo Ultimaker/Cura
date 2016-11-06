@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -207,6 +207,7 @@ UM.ManagementPage
             anchors.topMargin: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").width
+            visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
 
             Component.onCompleted:
             {
@@ -228,7 +229,7 @@ UM.ManagementPage
             }
         }
 
-        UM.I18nCatalog { id: catalog; name: "uranium"; }
+        UM.I18nCatalog { id: catalog; name: "cura"; }
 
         UM.ConfirmRemoveDialog
         {
@@ -250,6 +251,8 @@ UM.ManagementPage
         {
             id: renameDialog;
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
+            property var machine_name_validator: Cura.MachineNameValidator { }
+            validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null;
             onAccepted:
             {
                 Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim());

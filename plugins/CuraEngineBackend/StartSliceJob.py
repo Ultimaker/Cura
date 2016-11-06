@@ -75,7 +75,7 @@ class StartSliceJob(Job):
             return
 
         # Don't slice if there is a setting with an error value.
-        if not Application.getInstance().getMachineManager().isActiveStackValid:
+        if Application.getInstance().getMachineManager().stacksHaveErrors:
             self.setResult(StartJobResult.SettingError)
             return
 
@@ -160,7 +160,18 @@ class StartSliceJob(Job):
 
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
-                    verts = numpy.array(mesh_data.getVertices())
+                    verts = mesh_data.getVertices()
+                    indices = mesh_data.getIndices()
+                    if indices is not None:
+                        #TODO: This is a very slow way of doing it! It also locks up the GUI.
+                        flat_vert_list = []
+                        for face in indices:
+                            for vert_index in face:
+                                flat_vert_list.append(verts[vert_index])
+                                Job.yieldThread()
+                        verts = numpy.array(flat_vert_list)
+                    else:
+                        verts = numpy.array(verts)
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
@@ -198,6 +209,9 @@ class StartSliceJob(Job):
         material_instance_container = stack.findContainer({"type": "material"})
 
         for key in stack.getAllKeys():
+            # Do not send settings that are not settable_per_extruder.
+            if stack.getProperty(key, "settable_per_extruder") == False:
+                continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             if key == "material_guid" and material_instance_container:
@@ -229,6 +243,7 @@ class StartSliceJob(Job):
             else:
                 # Normal case
                 settings[key] = stack.getProperty(key, "value")
+            Job.yieldThread()
 
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
@@ -241,6 +256,7 @@ class StartSliceJob(Job):
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting_message.value = str(value).encode("utf-8")
+            Job.yieldThread()
 
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
@@ -257,6 +273,7 @@ class StartSliceJob(Job):
                 setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder
+            Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
     #   \param node \type{SceneNode} Node to check.

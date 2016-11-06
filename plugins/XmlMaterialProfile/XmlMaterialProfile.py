@@ -189,7 +189,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             try:
                 product = UM.Dictionary.findKey(self.__product_id_map, definition_id)
             except ValueError:
-                continue
+                # An unknown product id; export it anyway
+                product = definition_id
 
             builder.start("machine")
             builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product":  product})
@@ -410,6 +411,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
 
+        self.addMetaDataEntry("compatible", global_compatibility)
+
         self._dirty = False
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
@@ -446,6 +449,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_material.setName(self.getName())
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_material.getMetaData()["compatible"] = machine_compatibility
 
                     for key, value in global_setting_values.items():
                         new_material.setProperty(key, "value", value, definition)
@@ -491,7 +496,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
-                    new_hotend_material.addMetaDataEntry("compatible", hotend_compatibility)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
 
                     for key, value in global_setting_values.items():
                         new_hotend_material.setProperty(key, "value", value, definition)
@@ -504,14 +510,6 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
                     new_hotend_material._dirty = False
                     UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
-
-        if not global_compatibility:
-            # Change the type of this container so it is not shown as an option in menus.
-            # This uses InstanceContainer.setMetaDataEntry because otherwise all containers that
-            # share this basefile are also updated.
-            dirty = self.isDirty()
-            super().setMetaDataEntry("type", "incompatible_material")
-            super().setDirty(dirty) # reset dirty flag after setMetaDataEntry
 
     def _addSettingElement(self, builder, instance):
         try:

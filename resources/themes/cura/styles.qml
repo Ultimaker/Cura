@@ -188,12 +188,13 @@ QtObject {
             }
 
             label: Item {
-                Image {
+                UM.RecolorImage {
                     anchors.centerIn: parent;
                     opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
                     width: Theme.getSize("button_icon").width;
                     height: Theme.getSize("button_icon").height;
+                    color: Theme.getColor("button_text")
 
                     sourceSize: Theme.getSize("button_icon")
                 }
@@ -236,7 +237,7 @@ QtObject {
                     SequentialAnimation on x {
                         id: xAnim
                         property int animEndPoint: Theme.getSize("message").width - (Theme.getSize("default_margin").width * 2) - Theme.getSize("progressbar_control").width
-                        running: control.indeterminate
+                        running: control.indeterminate && control.visible
                         loops: Animation.Infinite
                         NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
                         NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}

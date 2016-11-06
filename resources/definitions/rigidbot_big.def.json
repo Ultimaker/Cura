@@ -91,16 +91,13 @@
             "default_value": 0
         },
         "skirt_line_count": {
-            "default_value": 3,
-            "enabled": "adhesion_type == \"Skirt\""
+            "default_value": 3
         },
         "skirt_gap": {
-            "default_value": 4,
-            "enabled": "adhesion_type == \"Skirt\""
+            "default_value": 4
         },
         "skirt_brim_minimal_length": {
-            "default_value": 200,
-            "enabled": "adhesion_type == \"Skirt\""
+            "default_value": 200
         }
     }
 }

@@ -8,6 +8,7 @@ The ISP AVR programmer can load firmware into AVR chips. Which are commonly used
 """
 
 from . import chipDB
+from UM.Logger import Logger
 
 class IspBase():
     """
@@ -22,11 +23,11 @@ class IspBase():
             raise IspError("Chip with signature: " + str(self.getSignature()) + "not found")
         self.chipErase()
         
-        print("Flashing %i bytes" % len(flash_data))
+        Logger.log("d", "Flashing %i bytes", len(flash_data))
         self.writeFlash(flash_data)
-        print("Verifying %i bytes" % len(flash_data))
+        Logger.log("d", "Verifying %i bytes", len(flash_data))
         self.verifyFlash(flash_data)
-        print("Completed")
+        Logger.log("d", "Completed")
 
     def getSignature(self):
         """

@@ -20,8 +20,12 @@ Menu
         id: automaticNozzle
         text:
         {
-            var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
-            return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(nozzleName);
+            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex)
+            {
+                var nozzleName = Cura.MachineManager.printerOutputDevices[0].hotendIds[extruderIndex];
+                return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(nozzleName);
+            }
+            return "";
         }
         visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].hotendIds.length > extruderIndex
         onTriggered:
@@ -48,7 +52,7 @@ Menu
             filter:
             {
                 "type": "variant",
-                "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
+                "definition": Cura.MachineManager.activeQualityDefinitionId //Only show variants of this machine
             }
         }
         MenuItem {

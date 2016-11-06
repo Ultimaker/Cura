@@ -11,6 +11,7 @@ import time
 from serial import Serial
 from serial import SerialException
 from serial import SerialTimeoutException
+from UM.Logger import Logger
 
 from . import ispBase, intelHex
 
@@ -84,7 +85,7 @@ class Stk500v2(ispBase.IspBase):
         #Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
         page_size = self.chip["pageSize"] * 2
         flash_size = page_size * self.chip["pageCount"]
-        print("Writing flash")
+        Logger.log("d", "Writing flash")
         if flash_size > 0xFFFF:
             self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
         else:
@@ -151,7 +152,6 @@ class Stk500v2(ispBase.IspBase):
                 raise ispBase.IspError("Timeout")
             b = struct.unpack(">B", s)[0]
             checksum ^= b
-            #print(hex(b))
             if state == "Start":
                 if b == 0x1B:
                     state = "GetSeq"
@@ -206,7 +206,7 @@ def main():
     """ Entry point to call the stk500v2 programmer from the commandline. """
     import threading
     if sys.argv[1] == "AUTO":
-        print(portList())
+        Logger.log("d", portList())
         for port in portList():
             threading.Thread(target=runProgrammer, args=(port,sys.argv[2])).start()
             time.sleep(5)

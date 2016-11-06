@@ -186,20 +186,21 @@ Rectangle
 
     Label {
         id: settingsModeLabel
-        text: catalog.i18nc("@label:listbox","Print Setup");
+        text: catalog.i18nc("@label:listbox", "Print Setup");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width/100*45
+        width: parent.width * 0.45 - 2 * UM.Theme.getSize("default_margin").width
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: !monitoringPrint
+        elide: Text.ElideRight
     }
 
     Rectangle {
         id: settingsModeSelection
-        width: parent.width/100*55
+        width: parent.width * 0.55
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -262,7 +263,7 @@ Rectangle
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width/100*45
+        width: parent.width * 0.45
         font: UM.Theme.getFont("large")
         color: UM.Theme.getColor("text")
         visible: monitoringPrint
@@ -378,8 +379,8 @@ Rectangle
 
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), item: sidebarSimple })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), item: sidebarAdvanced })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
 

@@ -34,7 +34,7 @@ Item {
     signal contextMenuRequested()
     signal showTooltip(string text);
     signal hideTooltip();
-
+    signal showAllHiddenInheritedSettings(string category_id)
     property string tooltipText:
     {
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
@@ -56,12 +56,12 @@ Item {
 
         if(affects_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
+            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
         }
 
         if(affected_by_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
+            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
         }
 
         return tooltip
@@ -196,19 +196,28 @@ Item {
                 // - This setting item uses inherit button at all
                 // - The type of the value of any deeper container is an "object" (eg; is a function)
                 visible:
-                 {
-                    var state = base.state == "InstanceState.User";
-                    var has_setting_function = false;
-                    for (var i = 1; i < base.stackLevels.length; i++)
+                {
+                    if(!base.showInheritButton)
                     {
-                        has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
-                        if(has_setting_function)
-                        {
-                            break;
-                        }
+                        return false;
                     }
-                    return state && base.showInheritButton && has_setting_function && typeof(propertyProvider.getPropertyValue("value", base.stackLevels[0])) != "object"
-                 }
+
+                    if(!propertyProvider.properties.enabled)
+                    {
+                        // Note: This is not strictly necessary since a disabled setting is hidden anyway.
+                        // But this will cause the binding to be re-evaluated when the enabled property changes.
+                        return false;
+                    }
+                    if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
+                    {
+                        return false;
+                    }
+                    if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
+                    {
+                        return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+                    }
+                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
+                }
 
                 height: parent.height;
                 width: height;
@@ -227,10 +236,9 @@ Item {
                             break;
                         }
                     }
-
-                    if(last_entry == 4 && base.stackLevel == 0 && base.stackLevels.length == 2)
+                    if((last_entry == 4 || last_entry == 11) && base.stackLevel == 0 && base.stackLevels.length == 2)
                     {
-                        // Special case of the inherit reset. If only the definition (4th container) and the first
+                        // Special case of the inherit reset. If only the definition (4th or 11th) container) and the first
                         // entry (user container) are set, we can simply remove the container.
                         propertyProvider.removeFromContainer(0)
                     }

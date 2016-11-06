@@ -71,8 +71,9 @@ class SolidView(View):
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
-
                     uniforms = {}
+                    shade_factor = 1.0
+
                     if not multi_extrusion:
                         if global_container_stack:
                             material = global_container_stack.findContainer({ "type": "material" })
@@ -87,13 +88,17 @@ class SolidView(View):
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
 
                         material_color = self._extruders_model.getItem(extruder_index)["color"]
+
+                        if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                            # Shade objects that are printed with the non-active extruder 25% darker
+                            shade_factor = 0.6
                     try:
                         # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
                         # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
                         uniforms["diffuse_color"] = [
-                            int(material_color[1:3], 16) / 255,
-                            int(material_color[3:5], 16) / 255,
-                            int(material_color[5:7], 16) / 255,
+                            shade_factor * int(material_color[1:3], 16) / 255,
+                            shade_factor * int(material_color[3:5], 16) / 255,
+                            shade_factor * int(material_color[5:7], 16) / 255,
                             1.0
                         ]
                     except ValueError:

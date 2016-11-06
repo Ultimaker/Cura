@@ -20,8 +20,12 @@ Menu
         id: automaticMaterial
         text:
         {
-            var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
-            return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(materialName);
+            if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex)
+            {
+                var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
+                return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(materialName);
+            }
+            return "";
         }
         visible: printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex
         onTriggered:
@@ -149,6 +153,7 @@ Menu
         else
         {
             result.definition = "fdmprinter";
+            result.compatible = true; //NB: Only checks for compatibility in global version of material, but we don't have machine-specific materials anyway.
         }
         return result;
     }

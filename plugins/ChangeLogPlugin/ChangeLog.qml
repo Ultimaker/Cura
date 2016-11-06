@@ -2,7 +2,7 @@
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
@@ -11,33 +11,31 @@ import UM 1.1 as UM
 UM.Dialog
 {
     id: base
-    minimumWidth: 400 * Screen.devicePixelRatio
-    minimumHeight: 300 * Screen.devicePixelRatio
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width * 0.75
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height * 0.75
     width: minimumWidth
     height: minimumHeight
     title: catalog.i18nc("@label", "Changelog")
 
-    ScrollView
+    TextArea
     {
-        width: parent.width
-        height: parent.height - 25
-        Label
-        {
-            text: manager.getChangeLogString()
-            width:base.width - 35
-            wrapMode: Text.Wrap;
-        }
+        anchors.fill: parent
+        text: manager.getChangeLogString()
+        readOnly: true;
+        textFormat: TextEdit.RichText
     }
-    Button
-    {
-        UM.I18nCatalog
+
+    rightButtons: [
+        Button
         {
-            id: catalog
-            name: "cura"
+            UM.I18nCatalog
+            {
+                id: catalog
+                name: "cura"
+            }
+
+            text: catalog.i18nc("@action:button", "Close")
+            onClicked: base.hide()
         }
-        anchors.bottom:parent.bottom
-        text: catalog.i18nc("@action:button", "Close")
-        onClicked: base.hide()
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
+    ]
 }
