@@ -19,7 +19,6 @@ from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-
 class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def __init__(self, serial_port):
