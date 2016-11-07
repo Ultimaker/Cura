@@ -4399,6 +4399,49 @@
                     "settable_per_meshgroup": false
                 }
             }
+        },
+        "command_line_settings": {
+            "label": "Command Line Settings",
+            "description": "Settings which are only used if CuraEngine isn't called from the Cura frontend.",
+            "type": "category",
+            "enabled": false,
+            "children": {
+                "center_object": {
+                    "description": "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved.",
+                    "type": "bool",
+                    "label": "Center object",
+                    "default_value": true,
+                    "enabled": false
+                },
+                "mesh_position_x": {
+                    "description": "Offset applied to the object in the x direction.",
+                    "type": "float",
+                    "label": "Mesh position x",
+                    "default_value": 0,
+                    "enabled": false
+                },
+                "mesh_position_y": {
+                    "description": "Offset applied to the object in the y direction.",
+                    "type": "float",
+                    "label": "Mesh position y",
+                    "default_value": 0,
+                    "enabled": false
+                },
+                "mesh_position_z": {
+                    "description": "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'.",
+                    "type": "float",
+                    "label": "Mesh position z",
+                    "default_value": 0,
+                    "enabled": false
+                },
+                "mesh_rotation_matrix": {
+                    "label": "Mesh Rotation Matrix",
+                    "description": "Transformation matrix to be applied to the model when loading it from file.",
+                    "type": "str",
+                    "default_value": "[[1,0,0], [0,1,0], [0,0,1]]",
+                    "enabled": false
+                }
+            }
         }
     }
 }
