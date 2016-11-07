@@ -686,10 +686,9 @@ class CuraApplication(QtApplication):
             while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
-            new_node = copy.deepcopy(current_node)
-
             op = GroupedOperation()
             for _ in range(count):
+                new_node = copy.deepcopy(current_node)
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
