@@ -17,6 +17,7 @@ import zipfile
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
+    Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!

@@ -7,7 +7,6 @@ This is a python 3 conversion of the code created by David Braam for the Cura pr
 import io
 from UM.Logger import Logger
 
-
 def readHex(filename):
     """
     Read an verify an intel hex file. Return the data as an list of bytes.

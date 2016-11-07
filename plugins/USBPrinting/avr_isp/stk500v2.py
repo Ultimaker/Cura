@@ -3,7 +3,6 @@ STK500v2 protocol implementation for programming AVR chips.
 The STK500v2 protocol is used by the ArduinoMega2560 and a few other Arduino platforms to load firmware.
 This is a python 3 conversion of the code created by David Braam for the Cura project.
 """
-import os
 import struct
 import sys
 import time
@@ -28,7 +27,7 @@ class Stk500v2(ispBase.IspBase):
             self.close()
         try:
             self.serial = Serial(str(port), speed, timeout=1, writeTimeout=10000)
-        except SerialException as e:
+        except SerialException:
             raise ispBase.IspError("Failed to open serial port")
         except:
             raise ispBase.IspError("Unexpected error while connecting to serial port:" + port + ":" + str(sys.exc_info()[0]))
@@ -92,7 +91,7 @@ class Stk500v2(ispBase.IspBase):
             self.sendMessage([0x06, 0x00, 0x00, 0x00, 0x00])
         load_count = (len(flash_data) + page_size - 1) / page_size
         for i in range(0, int(load_count)):
-            recv = self.sendMessage([0x13, page_size >> 8, page_size & 0xFF, 0xc1, 0x0a, 0x40, 0x4c, 0x20, 0x00, 0x00] + flash_data[(i * page_size):(i * page_size + page_size)])
+            self.sendMessage([0x13, page_size >> 8, page_size & 0xFF, 0xc1, 0x0a, 0x40, 0x4c, 0x20, 0x00, 0x00] + flash_data[(i * page_size):(i * page_size + page_size)])
             if self.progress_callback is not None:
                 if self._has_checksum:
                     self.progress_callback(i + 1, load_count)
@@ -183,11 +182,11 @@ class Stk500v2(ispBase.IspBase):
 def portList():
     ret = []
     import _winreg
-    key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
+    key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM") #@UndefinedVariable
     i=0
     while True:
         try:
-            values = _winreg.EnumValue(key, i)
+            values = _winreg.EnumValue(key, i) #@UndefinedVariable
         except:
             return ret
         if "USBSER" in values[0]:
@@ -206,7 +205,7 @@ def main():
     """ Entry point to call the stk500v2 programmer from the commandline. """
     import threading
     if sys.argv[1] == "AUTO":
-        Logger.log("d", portList())
+        Logger.log("d", "portList(): ", repr(portList()))
         for port in portList():
             threading.Thread(target=runProgrammer, args=(port,sys.argv[2])).start()
             time.sleep(5)
