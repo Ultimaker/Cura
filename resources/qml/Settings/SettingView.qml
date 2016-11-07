@@ -30,7 +30,7 @@ ScrollView
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-            exclude: ["machine_settings", "infill_mesh", "infill_mesh_order"]
+            exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order"] # TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
             onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
