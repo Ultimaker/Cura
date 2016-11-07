@@ -75,7 +75,7 @@ class StartSliceJob(Job):
             return
 
         # Don't slice if there is a setting with an error value.
-        if not Application.getInstance().getMachineManager().isActiveStackValid:
+        if Application.getInstance().getMachineManager().stacksHaveErrors:
             self.setResult(StartJobResult.SettingError)
             return
 

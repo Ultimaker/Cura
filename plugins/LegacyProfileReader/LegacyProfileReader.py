@@ -66,8 +66,11 @@ class LegacyProfileReader(ProfileReader):
     def read(self, file_name):
         if file_name.split(".")[-1] != "ini":
             return None
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return None
 
-        multi_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value") > 1
+        multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
         if multi_extrusion:
             Logger.log("e", "Unable to import legacy profile %s. Multi extrusion is not supported", file_name)
             raise Exception("Unable to import legacy profile. Multi extrusion is not supported")
@@ -117,7 +120,7 @@ class LegacyProfileReader(ProfileReader):
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
-        current_printer_definition = Application.getInstance().getGlobalContainerStack().getBottom()
+        current_printer_definition = global_container_stack.getBottom()
         profile.setDefinition(current_printer_definition)
         for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
@@ -137,5 +140,5 @@ class LegacyProfileReader(ProfileReader):
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
         profile.setDirty(True)
         profile.addMetaDataEntry("type", "quality_changes")
-        profile.addMetaDataEntry("quality", "normal")
+        profile.addMetaDataEntry("quality_type", "normal")
         return profile

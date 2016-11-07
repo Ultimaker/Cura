@@ -40,7 +40,7 @@
             "value": "speed_wall_0"
         },
         "machine_height": {
-            "default_value": 203
+            "default_value": 205
         },
         "machine_show_variants": {
             "default_value": true

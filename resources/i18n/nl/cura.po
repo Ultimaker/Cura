@@ -1836,8 +1836,8 @@ msgstr "Aanbevolen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
 msgctxt "@title:tab"
-msgid "Advanced"
-msgstr "Geavanceerd"
+msgid "Custom"
+msgstr "Aangepast"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:18

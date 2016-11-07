@@ -14,7 +14,7 @@
         "platform_texture": "Ultimaker3Extendedbackplate.png",
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,
-	"has_machine_materials": true,
+        "has_machine_materials": true,
         "has_variant_materials": true,
         "has_materials": true,
         "has_variants": true,

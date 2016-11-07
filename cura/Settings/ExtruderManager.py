@@ -50,8 +50,11 @@ class ExtruderManager(QObject):
     @pyqtProperty(int, notify = extrudersChanged)
     def extruderCount(self):
         if not UM.Application.getInstance().getGlobalContainerStack():
-            return 0 # No active machine, so no extruders.
-        return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
+            return 0  # No active machine, so no extruders.
+        try:
+            return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
+        except KeyError:
+            return 0
 
     @pyqtProperty("QVariantMap", notify=extrudersChanged)
     def extruderIds(self):
@@ -265,17 +268,25 @@ class ExtruderManager(QObject):
         container_registry.addContainer(container_stack)
 
     def getAllExtruderValues(self, setting_key):
+        return self.getAllExtruderSettings(setting_key, "value")
+
+    ##  Gets a property of a setting for all extruders.
+    #
+    #   \param setting_key  \type{str} The setting to get the property of.
+    #   \param property  \type{str} The property to get.
+    #   \return \type{List} the list of results
+    def getAllExtruderSettings(self, setting_key, property):
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
-        multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return [global_container_stack.getProperty(setting_key, "value")]
+        if global_container_stack.getProperty("machine_extruder_count", "value") <= 1:
+            return [global_container_stack.getProperty(setting_key, property)]
 
         result = []
         for index in self.extruderIds:
             extruder_stack_id = self.extruderIds[str(index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
-            result.append(stack.getProperty(setting_key, "value"))
+            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            result.append(stack.getProperty(setting_key, property))
         return result
+
 
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #

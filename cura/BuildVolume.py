@@ -33,6 +33,9 @@ PRIME_CLEARANCE = 1.5
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
     VolumeOutlineColor = Color(12, 169, 227, 255)
+    XAxisColor = Color(255, 0, 0, 255)
+    YAxisColor = Color(0, 0, 255, 255)
+    ZAxisColor = Color(0, 255, 0, 255)
 
     raftThicknessChanged = Signal()
 
@@ -44,6 +47,10 @@ class BuildVolume(SceneNode):
         self._depth = 0
 
         self._shader = None
+
+        self._origin_mesh = None
+        self._origin_line_length = 20
+        self._origin_line_width = 0.5
 
         self._grid_mesh = None
         self._grid_shader = None
@@ -128,6 +135,7 @@ class BuildVolume(SceneNode):
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
+        renderer.queueNode(self, mesh = self._origin_mesh)
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
@@ -169,6 +177,37 @@ class BuildVolume(SceneNode):
         mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
         self.setMeshData(mb.build())
+
+        mb = MeshBuilder()
+
+        # Indication of the machine origin
+        if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
+            origin = (Vector(min_w, min_h, min_d) + Vector(max_w, min_h, max_d)) / 2
+        else:
+            origin = Vector(min_w, min_h, max_d)
+
+        mb.addCube(
+            width = self._origin_line_length,
+            height = self._origin_line_width,
+            depth = self._origin_line_width,
+            center = origin + Vector(self._origin_line_length / 2, 0, 0),
+            color = self.XAxisColor
+        )
+        mb.addCube(
+            width = self._origin_line_width,
+            height = self._origin_line_length,
+            depth = self._origin_line_width,
+            center = origin + Vector(0, self._origin_line_length / 2, 0),
+            color = self.YAxisColor
+        )
+        mb.addCube(
+            width = self._origin_line_width,
+            height = self._origin_line_width,
+            depth = self._origin_line_length,
+            center = origin - Vector(0, 0, self._origin_line_length / 2),
+            color = self.ZAxisColor
+        )
+        self._origin_mesh = mb.build()
 
         mb = MeshBuilder()
         mb.addQuad(
@@ -481,6 +520,15 @@ class BuildVolume(SceneNode):
     def _getSettingFromAdhesionExtruder(self, setting_key, property = "value"):
         return self._getSettingFromExtruder(setting_key, "adhesion_extruder_nr", property)
 
+    ##  Private convenience function to get a setting from every extruder.
+    #
+    #   For single extrusion machines, this gets the setting from the global
+    #   stack.
+    #
+    #   \return A sequence of setting values, one for each extruder.
+    def _getSettingFromAllExtruders(self, setting_key, property = "value"):
+        return ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+
     ##  Private convenience function to get a setting from the support infill
     #   extruder.
     #
@@ -553,7 +601,7 @@ class BuildVolume(SceneNode):
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 
         support_expansion = 0
-        if self._getSettingFromSupportInfillExtruder("support_offset"):
+        if self._getSettingFromSupportInfillExtruder("support_offset") and self._global_container_stack.getProperty("support_enable", "value"):
             support_expansion += self._getSettingFromSupportInfillExtruder("support_offset")
 
         farthest_shield_distance = 0
@@ -563,10 +611,12 @@ class BuildVolume(SceneNode):
             farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        if self._getSettingFromAdhesionExtruder("infill_wipe_dist"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("infill_wipe_dist"))
-        if self._getSettingFromAdhesionExtruder("travel_avoid_distance"):
-            move_from_wall_radius = max(move_from_wall_radius, self._getSettingFromAdhesionExtruder("travel_avoid_distance"))
+        move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
+        avoid_enabled_per_extruder = self._getSettingFromAllExtruders(("travel_avoid_other_parts"))
+        avoid_distance_per_extruder = self._getSettingFromAllExtruders("travel_avoid_distance")
+        for index, avoid_other_parts_enabled in enumerate(avoid_enabled_per_extruder): #For each extruder (or just global).
+            if avoid_other_parts_enabled:
+                move_from_wall_radius = max(move_from_wall_radius, avoid_distance_per_extruder[index]) #Index of the same extruder.
 
         #Now combine our different pieces of data to get the final border size.
         #Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
@@ -582,4 +632,4 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]

@@ -13,7 +13,7 @@ Menu
 
     Instantiator
     {
-        model: Cura.ProfilesModel { }
+        model: Cura.ProfilesModel 
 
         MenuItem
         {

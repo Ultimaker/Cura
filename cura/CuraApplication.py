@@ -382,7 +382,7 @@ class CuraApplication(QtApplication):
 
                 if path:
                     instance.setPath(path)
-                    with SaveFile(path, "wt", -1, "utf-8") as f:
+                    with SaveFile(path, "wt") as f:
                         f.write(data)
 
             for stack in ContainerRegistry.getInstance().findContainerStacks():
@@ -409,7 +409,7 @@ class CuraApplication(QtApplication):
             path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
         if path:
             stack.setPath(path)
-            with SaveFile(path, "wt", -1, "utf-8") as f:
+            with SaveFile(path, "wt") as f:
                 f.write(data)
 
 
@@ -549,11 +549,12 @@ class CuraApplication(QtApplication):
         qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
-        qmlRegisterType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel")
+        qmlRegisterSingletonType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel", cura.Settings.ProfilesModel.createProfilesModel)
         qmlRegisterType(cura.Settings.QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
         qmlRegisterType(cura.Settings.UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(cura.Settings.MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
 
         qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 

@@ -5,6 +5,7 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 import UM.Settings
 from UM.Application import Application
 import cura.Settings
+from UM.Logger import Logger
 
 
 ##    The settingInheritance manager is responsible for checking each setting in order to see if one of the "deeper"
@@ -38,6 +39,26 @@ class SettingInheritanceManager(QObject):
                 result.append(key)
         return result
 
+    @pyqtSlot(str, str, result = "QStringList")
+    def getOverridesForExtruder(self, key, extruder_index):
+        multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
+        if not multi_extrusion:
+            return self._settings_with_inheritance_warning
+        extruder = cura.Settings.ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        if not extruder:
+            Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
+            return []
+
+        definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
+        if not definitions:
+            return
+        result = []
+        for key in definitions[0].getAllKeys():
+            if self._settingIsOverwritingInheritance(key, extruder):
+                result.append(key)
+
+        return result
+
     @pyqtSlot(str)
     def manualRemoveOverride(self, key):
         if key in self._settings_with_inheritance_warning:
@@ -56,9 +77,11 @@ class SettingInheritanceManager(QObject):
         if new_active_stack != self._active_container_stack:  # Check if changed
             if self._active_container_stack:  # Disconnect signal from old container (if any)
                 self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+                self._active_container_stack.containersChanged.disconnect(self._onContainersChanged)
 
             self._active_container_stack = new_active_stack
             self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._active_container_stack.containersChanged.connect(self._onContainersChanged)
             self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
 
     def _onPropertyChanged(self, key, property_name):
@@ -113,22 +136,23 @@ class SettingInheritanceManager(QObject):
         return self._settings_with_inheritance_warning
 
     ##  Check if a setting has an inheritance function that is overwritten
-    def _settingIsOverwritingInheritance(self, key):
+    def _settingIsOverwritingInheritance(self, key, stack = None):
         has_setting_function = False
-        stack = self._active_container_stack
+        if not stack:
+            stack = self._active_container_stack
         containers = []
 
         ## Check if the setting has a user state. If not, it is never overwritten.
-        has_user_state = self._active_container_stack.getProperty(key, "state") == UM.Settings.InstanceState.User
+        has_user_state = stack.getProperty(key, "state") == UM.Settings.InstanceState.User
         if not has_user_state:
             return False
 
         ## If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
-        if not self._active_container_stack.getProperty(key, "enabled"):
+        if not stack.getProperty(key, "enabled"):
             return False
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        if isinstance(self._active_container_stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
+        if isinstance(stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.
@@ -178,7 +202,9 @@ class SettingInheritanceManager(QObject):
         self._onActiveExtruderChanged()
 
     def _onContainersChanged(self, container):
-        self._onActiveExtruderChanged()
+        # TODO: Multiple container changes in sequence now cause quite a few recalculations.
+        # This isn't that big of an issue, but it could be in the future.
+        self._update()
 
     @staticmethod
     def createSettingInheritanceManager(engine=None, script_engine=None):

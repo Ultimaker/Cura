@@ -25,6 +25,21 @@ class ProfilesModel(InstanceContainersModel):
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._update)
         Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._update)
 
+    # Factory function, used by QML
+    @staticmethod
+    def createProfilesModel(engine, js_engine):
+        return ProfilesModel.getInstance()
+
+    ##  Get the singleton instance for this class.
+    @classmethod
+    def getInstance(cls):
+        # Note: Explicit use of class name to prevent issues with inheritance.
+        if ProfilesModel.__instance is None:
+            ProfilesModel.__instance = cls()
+        return ProfilesModel.__instance
+
+    __instance = None
+
     ##  Fetch the list of containers to display.
     #
     #   See UM.Settings.Models.InstanceContainersModel._fetchInstanceContainers().
@@ -56,6 +71,8 @@ class ProfilesModel(InstanceContainersModel):
         machine_manager = Application.getInstance().getMachineManager()
 
         unit = global_container_stack.getBottom().getProperty("layer_height", "unit")
+        if not unit:
+            unit = ""
 
         for item in super()._recomputeItems():
             profile = container_registry.findContainers(id = item["id"])
@@ -80,7 +97,10 @@ class ProfilesModel(InstanceContainersModel):
                         quality = quality_result["quality"]
                         break
                 else: #No global container stack in the results:
-                    quality = quality_results[0]["quality"] #Take any of the extruders.
+                    if quality_results:
+                        quality = quality_results[0]["quality"] #Take any of the extruders.
+                    else:
+                        quality = None
                 if quality and quality.hasProperty("layer_height", "value"):
                     item["layer_height"] = str(quality.getProperty("layer_height", "value")) + unit
                     yield item

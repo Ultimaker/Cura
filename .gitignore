@@ -26,3 +26,10 @@ LC_MESSAGES
 
 # Debian packaging
 debian*
+
+#Externally located plug-ins.
+plugins/Doodle3D-cura-plugin
+plugins/GodMode
+plugins/PostProcessingPlugin
+plugins/UM3NetworkPrinting
+plugins/X3GWriter

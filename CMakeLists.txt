@@ -43,6 +43,8 @@ if(NOT APPLE AND NOT WIN32)
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
     install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+    install(FILES cura.appdata.xml
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/appdata)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
             RENAME cura.xml )

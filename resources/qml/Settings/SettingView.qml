@@ -99,9 +99,9 @@ ScrollView
                 when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                 value:
                 {
-                    if(!model.settable_per_extruder)
+                    if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
                     {
-                        //Not settable per extruder, so we must pick global.
+                        //Not settable per extruder or there only is global, so we must pick global.
                         return Cura.MachineManager.activeMachineId;
                     }
                     if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)

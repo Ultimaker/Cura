@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 import os.path
 
 from UM.Application import Application
@@ -17,7 +20,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         super().__init__(device_id)
 
         self.setName(device_name)
-        self.setShortDescription(catalog.i18nc("@action:button", "Save to Removable Drive"))
+        self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Save to Removable Drive"))
         self.setDescription(catalog.i18nc("@item:inlistbox", "Save to Removable Drive {0}").format(device_name))
         self.setIconName("save_sd")
         self.setPriority(1)
@@ -25,7 +28,16 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self._stream = None
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+    ##  Request the specified nodes to be written to the removable drive.
+    #
+    #   \param nodes A collection of scene nodes that should be written to the
+    #   removable drive.
+    #   \param file_name \type{string} A suggestion for the file name to write
+    #   to. If none is provided, a file name will be made from the names of the
+    #   meshes.
+    #   \param limit_mimetypes Should we limit the available MIME types to the
+    #   MIME types available to the currently active machine?
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
         filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
@@ -50,15 +62,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         extension = file_formats[0]["extension"]
 
         if file_name is None:
-            for n in BreadthFirstIterator(node):
-                if n.getMeshData():
-                    file_name = n.getName()
-                    if file_name:
-                        break
-
-        if not file_name:
-            Logger.log("e", "Could not determine a proper file name when trying to write to %s, aborting", self.getName())
-            raise OutputDeviceError.WriteRequestFailedError()
+            file_name = self._automaticFileName(nodes)
 
         if extension:  # Not empty string.
             extension = "." + extension
@@ -67,8 +71,8 @@ class RemovableDriveOutputDevice(OutputDevice):
         try:
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
-            self._stream = open(file_name, "wt", buffering = 1)
-            job = WriteMeshJob(writer, self._stream, node, MeshWriter.OutputMode.TextMode)
+            self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
+            job = WriteMeshJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
@@ -87,6 +91,22 @@ class RemovableDriveOutputDevice(OutputDevice):
         except OSError as e:
             Logger.log("e", "Operating system would not let us write to %s: %s", file_name, str(e))
             raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
+
+    ##  Generate a file name automatically for the specified nodes to be saved
+    #   in.
+    #
+    #   The name generated will be the name of one of the nodes. Which node that
+    #   is can not be guaranteed.
+    #
+    #   \param nodes A collection of nodes for which to generate a file name.
+    def _automaticFileName(self, nodes):
+        for root in nodes:
+            for child in BreadthFirstIterator(root):
+                if child.getMeshData():
+                    name = child.getName()
+                    if name:
+                        return name
+        raise OutputDeviceError.WriteRequestFailedError("Could not find a file name when trying to write to {device}.".format(device = self.getName()))
 
     def _onProgress(self, job, progress):
         if hasattr(job, "_message"):
