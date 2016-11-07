@@ -258,7 +258,7 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().setDefault("general/visible_settings", """
             machine_settings
-                resolution
+            resolution
                 layer_height
             shell
                 wall_thickness
