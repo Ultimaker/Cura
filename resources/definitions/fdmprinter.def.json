@@ -4410,7 +4410,7 @@
                     "description": "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved.",
                     "type": "bool",
                     "label": "Center object",
-                    "default_value": true,
+                    "default_value": false,
                     "enabled": false
                 },
                 "mesh_position_x": {
