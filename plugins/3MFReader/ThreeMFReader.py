@@ -10,6 +10,10 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
 import UM.Application
 from UM.Job import Job
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+from UM.Application import Application
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.QualityManager import QualityManager
 
 import os.path
 import zipfile
@@ -54,6 +58,46 @@ class ThreeMFReader(MeshReader):
         for vertex in object.findall(".//3mf:vertex", self._namespaces):
             vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
             Job.yieldThread()
+
+        xml_settings = list(object.findall(".//cura:setting", self._namespaces))
+
+        # Add the setting override decorator, so we can add settings to this node.
+        if xml_settings:
+            node.addDecorator(SettingOverrideDecorator())
+
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            # Ensure the correct next container for the SettingOverride decorator is set.
+            if global_container_stack:
+                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+                # Ensure that all extruder data is reset
+                if not multi_extrusion:
+                    default_stack_id = global_container_stack.getId()
+                else:
+                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                    if default_stack:
+                        default_stack_id = default_stack.getId()
+                    else:
+                        default_stack_id = global_container_stack.getId()
+                node.callDecoration("setActiveExtruder", default_stack_id)
+
+                # Get the definition & set it
+                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
+                node.callDecoration("getStack").getTop().setDefinition(definition)
+
+        setting_container = node.callDecoration("getStack").getTop()
+        for setting in xml_settings:
+            setting_key = setting.get("key")
+            setting_value = setting.text
+
+            # Extruder_nr is a special case.
+            if setting_key == "extruder_nr":
+                extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
+                if extruder_stack:
+                    node.callDecoration("setActiveExtruder", extruder_stack.getId())
+                else:
+                    Logger.log("w", "Unable to find extruder in position %s", setting_value)
+                continue
+            setting_container.setProperty(setting_key,"value", setting_value)
 
         if len(node.getChildren()) > 0:
             group_decorator = GroupDecorator()
