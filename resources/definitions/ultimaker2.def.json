@@ -89,7 +89,13 @@
         "material_print_temperature": {
             "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\""
         },
+        "material_print_temperature_layer_0": {
+            "enabled": "machine_gcode_flavor != \"UltiGCode\""
+        },
         "material_bed_temperature": {
+            "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\""
+        },
+        "material_bed_temperature_layer_0": {
             "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\""
         },
         "machine_max_feedrate_x": {
