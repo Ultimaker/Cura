@@ -1148,7 +1148,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
-                    "enabled": "not (material_flow_dependent_temperature)",
+                    "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1163,7 +1163,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
-                    "enabled": "not (material_flow_dependent_temperature)",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1204,7 +1204,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
-                    "enabled": "machine_heated_bed",
+                    "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1220,7 +1220,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
-                    "enabled": "machine_heated_bed",
+                    "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1235,6 +1235,7 @@
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "0.4",
                     "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1248,6 +1249,7 @@
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": true
                 },
                 "retraction_enable":
@@ -1268,7 +1270,7 @@
                     "default_value": 6.5,
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
-                    "enabled": "retraction_enable",
+                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1283,7 +1285,7 @@
                     "minimum_value_warning": "1",
                     "maximum_value": "machine_max_feedrate_e",
                     "maximum_value_warning": "70",
-                    "enabled": "retraction_enable",
+                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
@@ -1299,7 +1301,7 @@
                             "maximum_value": "machine_max_feedrate_e",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
-                            "enabled": "retraction_enable",
+                            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -1315,7 +1317,7 @@
                             "maximum_value": "machine_max_feedrate_e",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
-                            "enabled": "retraction_enable",
+                            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
