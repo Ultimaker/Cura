@@ -135,7 +135,7 @@ class PrintInformation(QObject):
         base_name = self._stripAccents(base_name)
         self._setAbbreviatedMachineName()
         if self._pre_sliced:
-            return "Pre-sliced_" + base_name
+            return "Pre-sliced file " + base_name
         elif Preferences.getInstance().getValue("cura/jobname_prefix"):
             return self._abbr_machine + "_" + base_name
         else:
