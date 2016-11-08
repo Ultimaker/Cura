@@ -40,10 +40,10 @@ class MachineSettingsAction(MachineAction):
             if variant and variant.getId() == "empty_variant":
                 # There is an empty variant that we can use to store the machine settings
                 container_index = global_container_stack.getContainerIndex(variant)
-                machine_settings_variant = self._createMachineVariant(global_container_stack, container_index)
+                machine_settings_variant = self._createMachineSettingsVariant(global_container_stack, container_index)
             else:
                 # Add a second variant before the current variant to store the machine settings
-                machine_settings_variant = self._createMachineVariant(global_container_stack)
+                machine_settings_variant = self._createMachineSettingsVariant(global_container_stack)
 
         # Notify the UI in which container to store the machine settings data
         container_index = global_container_stack.getContainerIndex(machine_settings_variant)
@@ -68,8 +68,7 @@ class MachineSettingsAction(MachineAction):
         if container_index:
             global_container_stack.replaceContainer(container_index, machine_settings_variant)
         else:
-            index = len(global_container_stack.getContainers()) - 1
-            global_container_stack.insertContainer(index, machine_settings_variant)
+            global_container_stack.insertContainer(-1, machine_settings_variant)
         return machine_settings_variant
 
     containerIndexChanged = pyqtSignal()
