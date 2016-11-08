@@ -273,17 +273,20 @@ Cura.MachineAction
                         Label
                         {
                             text: catalog.i18nc("@label", "Nozzle size")
+                            visible: !Cura.MachineManager.hasVariants
                         }
                         TextField
                         {
                             id: nozzleSizeField
                             text: machineNozzleSizeProvider.properties.value
+                            visible: !Cura.MachineManager.hasVariants
                             validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
                         }
                         Label
                         {
                             text: catalog.i18nc("@label", "mm")
+                            visible: !Cura.MachineManager.hasVariants
                         }
                     }
                 }
