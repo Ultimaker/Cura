@@ -12,7 +12,7 @@ def getMetaData():
             "name": i18n_catalog.i18nc("@label", "GCODE Reader"),
             "author": "Victor Larchenko",
             "version": "1.0",
-            "description": i18n_catalog.i18nc("@info:whatsthis", "Makes it possbile to read GCODE files."),
+            "description": i18n_catalog.i18nc("@info:whatsthis", "Allows displaying GCODE files."),
             "api": 3
         },
         "mesh_reader": [
