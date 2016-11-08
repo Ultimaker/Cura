@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 
 from cura.MachineAction import MachineAction
 import cura.Settings.CuraContainerRegistry
@@ -19,23 +19,35 @@ class MachineSettingsAction(MachineAction):
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
 
+        self._container_index = 0
+
         cura.Settings.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     def _reset(self):
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             variant = global_container_stack.findContainer({"type": "variant"})
-            if variant and variant.getId() == "empty_variant":
+            if variant:
                 variant_index = global_container_stack.getContainerIndex(variant)
-                self._createVariant(global_container_stack, variant_index)
+                if variant_index != self._container_index:
+                    self._container_index = variant_index
+                    self.containerIndexChanged.emit()
+                if variant.getId() == "empty_variant":
+                    self._createVariant(global_container_stack, self._container_index)
 
-    def _createVariant(self, global_container_stack, variant_index):
+    def _createVariant(self, global_container_stack):
         # Create and switch to a variant to store the settings in
         new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_variant")
         new_variant.addMetaDataEntry("type", "variant")
         new_variant.setDefinition(global_container_stack.getBottom())
         UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
-        global_container_stack.replaceContainer(variant_index, new_variant)
+        global_container_stack.replaceContainer(self._container_index, new_variant)
+
+    containerIndexChanged = pyqtSignal()
+
+    @pyqtProperty(int, notify = containerIndexChanged)
+    def containerIndex(self):
+        return self._container_index
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions

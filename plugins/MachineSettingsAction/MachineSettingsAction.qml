@@ -377,7 +377,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_width"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -387,7 +387,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_depth"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -397,7 +397,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_height"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -407,7 +407,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_heated_bed"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -417,7 +417,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_center_is_zero"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -427,7 +427,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_gcode_flavor"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -437,7 +437,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_nozzle_size"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -447,7 +447,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "gantry_height"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -457,7 +457,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_head_with_fans_polygon"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
 
@@ -468,7 +468,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_start_gcode"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -478,7 +478,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_end_gcode"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
 }
