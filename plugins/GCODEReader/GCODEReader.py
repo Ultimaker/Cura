@@ -247,7 +247,7 @@ class GCODEReader(MeshReader):
             self.message.hide()
 
             if current_layer == 0:
-                Logger.log("w", "File %s don't contain any valid layers" % file_name)
+                Logger.log("w", "File %s doesn't contain any valid layers" % file_name)
 
             Application.getInstance().getPrintInformation()._pre_sliced = True
 
