@@ -24,9 +24,9 @@ import numpy
 import math
 
 
-class GCODEReader(MeshReader):
+class GCodeReader(MeshReader):
     def __init__(self):
-        super(GCODEReader, self).__init__()
+        super(GCodeReader, self).__init__()
         self._supported_extensions = [".gcode", ".g"]
         Application.getInstance().hideMessageSignal.connect(self.onHideMessage)
         self.cancelled = False

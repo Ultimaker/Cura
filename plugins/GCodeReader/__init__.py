@@ -2,7 +2,7 @@
 # Uranium is released under the terms of the AGPLv3 or higher.
 
 #Shoopdawoop
-from . import GCODEReader
+from . import GCodeReader
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("uranium")
@@ -29,4 +29,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "mesh_reader": GCODEReader.GCODEReader() }
+    return { "mesh_reader": GCodeReader.GCodeReader() }
