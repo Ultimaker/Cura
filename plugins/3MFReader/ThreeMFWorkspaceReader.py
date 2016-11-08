@@ -5,6 +5,7 @@ from UM.Workspace.WorkspaceReader import WorkspaceReader
 class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self):
         super().__init__()
+        self._supported_extensions = [".3mf"]
 
     def preRead(self, file_name):
         return WorkspaceReader.PreReadResult.accepted
