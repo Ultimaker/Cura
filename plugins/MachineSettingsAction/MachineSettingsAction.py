@@ -69,7 +69,7 @@ class MachineSettingsAction(MachineAction):
             global_container_stack.replaceContainer(container_index, machine_settings_variant)
         else:
             index = len(global_container_stack.getContainers()) - 1
-            global_container_stack.addContainer(machine_settings_variant, index)
+            global_container_stack.insertContainer(index, machine_settings_variant)
         return machine_settings_variant
 
     containerIndexChanged = pyqtSignal()
