@@ -80,7 +80,7 @@ class GCodeReader(MeshReader):
         return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
 
     @staticmethod
-    def createPolygon(layer_data, path, layer_id, extruder):
+    def createPolygon(layer_data, path, layer_id, extruder, extruder_offsets):
         countvalid = 0
         for point in path:
             if point[3] > 0:
@@ -104,11 +104,14 @@ class GCodeReader(MeshReader):
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
         for point in path:
-            points[i, 0] = point[0]
-            points[i, 1] = point[1]
+            points[i, 0] = point[0] + extruder_offsets[extruder]['x']
+            points[i, 1] = point[1] + extruder_offsets[extruder]['y']
             points[i, 2] = point[2]
             if i > 0:
-                line_types[i - 1] = point[3]
+                if point[3] == 1:
+                    line_types[i - 1] = extruder + 1
+                else:
+                    line_types[i - 1] = point[3]
             i += 1
 
         this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, points, line_widths)
@@ -152,7 +155,8 @@ class GCodeReader(MeshReader):
             file_step = max(math.floor(file_lines / 100), 1)
             layer_data = LayerDataBuilder.LayerDataBuilder()
 
-            current_extruder = 1
+            current_extruder = 0
+            extruder_offsets = {0: {'x': 0, 'y': 0}}
             current_path = []
             current_x = 0
             current_y = 0
@@ -203,7 +207,7 @@ class GCodeReader(MeshReader):
                             current_path.append([current_x, current_z, -current_y, 0])
                         if z_changed:
                             if len(current_path) > 1 and current_z > 0:
-                                if self.createPolygon(layer_data, current_path, current_layer, current_extruder):
+                                if self.createPolygon(layer_data, current_path, current_layer, current_extruder, extruder_offsets):
                                     current_layer += 1
                             else:
                                 current_path.clear()
@@ -226,9 +230,30 @@ class GCodeReader(MeshReader):
                             current_y += y
                         if z is not None:
                             current_z += z
+                    elif G == 10:
+                        x = self.getFloat(line, "X")
+                        y = self.getFloat(line, "Y")
+                        p = self.getInt(line, "P")
+                        if p is not None:
+                            if extruder_offsets.get(p, None) is None:
+                                extruder_offsets[p] = {'x': 0, 'y': 0}
+                                print(p, type(p))
+                            if x is not None:
+                                extruder_offsets[p]['x'] = x
+                            if y is not None:
+                                extruder_offsets[p]['y'] = y
+
+                T = self.getInt(line, "T")
+                if T is not None:
+                    current_extruder = T
+                    if len(current_path) > 1 and current_z > 0:
+                        if self.createPolygon(layer_data, current_path, current_layer, current_extruder, extruder_offsets):
+                            current_layer += 1
+                    else:
+                        current_path.clear()
 
             if len(current_path) > 1:
-                if self.createPolygon(layer_data, current_path, current_layer, current_extruder):
+                if self.createPolygon(layer_data, current_path, current_layer, current_extruder, extruder_offsets):
                     current_layer += 1
 
             layer_mesh = layer_data.build()
