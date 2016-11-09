@@ -605,6 +605,11 @@ UM.MainWindow
             }
         }
 
+        MultiplyObjectOptions
+        {
+            id: multiplyObjectOptions
+        }
+
         Connections
         {
             target: Cura.Actions.multiplyObject
@@ -612,7 +617,9 @@ UM.MainWindow
             {
                 if(objectContextMenu.objectId != 0)
                 {
-                    Printer.multiplyObject(objectContextMenu.objectId, 1);
+                    multiplyObjectOptions.objectId = objectContextMenu.objectId;
+                    multiplyObjectOptions.visible = true;
+                    multiplyObjectOptions.reset();
                     objectContextMenu.objectId = 0;
                 }
             }
