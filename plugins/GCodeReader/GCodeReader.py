@@ -31,7 +31,8 @@ class GCodeReader(MeshReader):
         self.cancelled = False
         self.message = None
 
-    def getInt(self, line, code):
+    @staticmethod
+    def getInt(line, code):
         n = line.find(code) + 1
         if n < 1:
             return None
@@ -43,7 +44,8 @@ class GCodeReader(MeshReader):
         except:
             return None
 
-    def getFloat(self, line, code):
+    @staticmethod
+    def getFloat(line, code):
         n = line.find(code) + 1
         if n < 1:
             return None
@@ -59,18 +61,18 @@ class GCodeReader(MeshReader):
         if m == self.message:
             self.cancelled = True
 
-    def parent_changed(self, node):
+    @staticmethod
+    def onParentChanged(node):
         if node.getParent() is None:
             scene = Application.getInstance().getController().getScene()
 
-            def findAny():
-                for node1 in DepthFirstIterator(scene.getRoot()):
-                    if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
-                        return True
-                return False
+            isAny = False
+            for node1 in DepthFirstIterator(scene.getRoot()):
+                if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
+                    isAny = True
 
             backend = Application.getInstance().getBackend()
-            if not findAny():
+            if not isAny:
                 backend._pauseSlicing = False
                 Application.getInstance().setHideSettings(False)
                 Application.getInstance().getPrintInformation().setPreSliced(False)
@@ -79,6 +81,50 @@ class GCodeReader(MeshReader):
                 backend.backendStateChange.emit(3)
                 Application.getInstance().getPrintInformation().setPreSliced(True)
                 Application.getInstance().setHideSettings(True)
+
+    @staticmethod
+    def getNullBoundingBox():
+        return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
+
+    @staticmethod
+    def createPolygon(layer_data, path, layer_id, extruder):
+        countvalid = 0
+        for point in path:
+            if point[3] > 0:
+                countvalid += 1
+        if countvalid < 2:
+            path.clear()
+            return False
+        try:
+            layer_data.addLayer(layer_id)
+            layer_data.setLayerHeight(layer_id, path[0][1])
+            layer_data.setLayerThickness(layer_id, 0.25)
+            this_layer = layer_data.getLayer(layer_id)
+        except ValueError:
+            path.clear()
+            return False
+        count = len(path)
+        line_types = numpy.empty((count - 1, 1), numpy.int32)
+        line_types[:, 0] = 1
+        line_widths = numpy.empty((count - 1, 1), numpy.int32)
+        line_widths[:, 0] = 0.5
+        points = numpy.empty((count, 3), numpy.float32)
+        i = 0
+        for point in path:
+            points[i, 0] = point[0]
+            points[i, 1] = point[1]
+            points[i, 2] = point[2]
+            if i > 0:
+                line_types[i - 1] = point[3]
+            i += 1
+
+        this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, points, line_widths)
+        this_poly.buildCache()
+
+        this_layer.polygons.append(this_poly)
+
+        path.clear()
+        return True
 
     def read(self, file_name):
         scene_node = None
@@ -90,11 +136,7 @@ class GCodeReader(MeshReader):
             Application.getInstance().deleteAll()
 
             scene_node = SceneNode()
-
-            def getBoundingBox():
-                return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
-
-            scene_node.getBoundingBox = getBoundingBox
+            scene_node.getBoundingBox = self.getNullBoundingBox
             scene_node.gcode = True
             backend = Application.getInstance().getBackend()
             backend._pauseSlicing = True
@@ -114,9 +156,7 @@ class GCodeReader(MeshReader):
                 file_lines += 1
             file.seek(0)
 
-            file_step = math.floor(file_lines / 100)
-            file_step = 1 if file_step < 1 else file_step
-
+            file_step = max(math.floor(file_lines / 100), 1)
             layer_data = LayerDataBuilder.LayerDataBuilder()
 
             current_extruder = 1
@@ -132,45 +172,6 @@ class GCodeReader(MeshReader):
             self.message.show()
 
             Logger.log("d", "Parsing %s" % file_name)
-
-            def CreatePolygon():
-                countvalid = False
-                for point in current_path:
-                    if point[3] > 0:
-                        countvalid += 1
-                if countvalid < 2:
-                    current_path.clear()
-                    return False
-                try:
-                    layer_data.addLayer(current_layer)
-                    layer_data.setLayerHeight(current_layer, current_path[0][1])
-                    layer_data.setLayerThickness(current_layer, 0.25)
-                    this_layer = layer_data.getLayer(current_layer)
-                except ValueError:
-                    current_path.clear()
-                    return False
-                count = len(current_path)
-                line_types = numpy.empty((count-1, 1), numpy.int32)
-                line_types[:, 0] = 1
-                line_widths = numpy.empty((count-1, 1), numpy.int32)
-                line_widths[:, 0] = 0.5
-                points = numpy.empty((count, 3), numpy.float32)
-                i = 0
-                for point in current_path:
-                    points[i, 0] = point[0]
-                    points[i, 1] = point[1]
-                    points[i, 2] = point[2]
-                    if i > 0:
-                        line_types[i-1] = point[3]
-                    i += 1
-
-                this_poly = LayerPolygon.LayerPolygon(layer_data, current_extruder, line_types, points, line_widths)
-                this_poly.buildCache()
-
-                this_layer.polygons.append(this_poly)
-
-                current_path.clear()
-                return True
 
             for line in file:
                 if self.cancelled:
@@ -209,7 +210,7 @@ class GCodeReader(MeshReader):
                             current_path.append([current_x, current_z, -current_y, 0])
                         if z_changed:
                             if len(current_path) > 1 and current_z > 0:
-                                if CreatePolygon():
+                                if self.createPolygon(layer_data, current_path, current_layer, current_extruder):
                                     current_layer += 1
                             else:
                                 current_path.clear()
@@ -234,7 +235,7 @@ class GCodeReader(MeshReader):
                             current_z += z
 
             if len(current_path) > 1:
-                if CreatePolygon():
+                if self.createPolygon(layer_data, current_path, current_layer, current_extruder):
                     current_layer += 1
 
             layer_mesh = layer_data.build()
@@ -250,7 +251,7 @@ class GCodeReader(MeshReader):
 
             Application.getInstance().getPrintInformation()._pre_sliced = True
 
-            scene_node.parentChanged.connect(self.parent_changed)
+            scene_node.parentChanged.connect(self.onParentChanged)
 
             scene_node_parent = Application.getInstance().getBuildVolume()
             scene_node.setParent(scene_node_parent)
