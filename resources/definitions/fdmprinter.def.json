@@ -1261,6 +1261,14 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "retract_at_layer_change":{
+                    "label": "Retract at Layer Change",
+                    "description": "Retract the filament when the nozzle is moving to the next layer.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_amount":
                 {
                     "label": "Retraction Distance",
