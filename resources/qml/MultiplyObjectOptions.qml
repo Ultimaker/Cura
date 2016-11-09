@@ -12,7 +12,7 @@ UM.Dialog
     id: base
 
     //: Dialog title
-    title: catalog.i18nc("@title:window", "Duplicate Model")
+    title: catalog.i18nc("@title:window", "Multiply Model")
 
     minimumWidth: 400 * Screen.devicePixelRatio
     minimumHeight: 80 * Screen.devicePixelRatio
