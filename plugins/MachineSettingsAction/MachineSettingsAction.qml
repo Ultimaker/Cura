@@ -311,6 +311,8 @@ Cura.MachineAction
                         id: machineStartGcodeField
                         width: parent.width
                         height: parent.height - y
+                        font: UM.Theme.getFont("fixed")
+                        wrapMode: TextEdit.NoWrap
                         text: machineStartGcodeProvider.properties.value
                         onActiveFocusChanged:
                         {
@@ -333,6 +335,8 @@ Cura.MachineAction
                         id: machineEndGcodeField
                         width: parent.width
                         height: parent.height - y
+                        font: UM.Theme.getFont("fixed")
+                        wrapMode: TextEdit.NoWrap
                         text: machineEndGcodeProvider.properties.value
                         onActiveFocusChanged:
                         {
