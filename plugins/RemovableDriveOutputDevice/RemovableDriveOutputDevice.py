@@ -6,7 +6,7 @@ import os.path
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Mesh.WriteMeshJob import WriteMeshJob
+from UM.FileHandler.WriteFileJob import WriteFileJob
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
@@ -37,13 +37,17 @@ class RemovableDriveOutputDevice(OutputDevice):
     #   meshes.
     #   \param limit_mimetypes Should we limit the available MIME types to the
     #   MIME types available to the currently active machine?
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
         # Formats supported by this application (File types that we can actually write)
-        file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
+        if file_handler:
+            file_formats = file_handler.getSupportedFileTypesWrite()
+        else:
+            file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
+
         if filter_by_machine:
             container = Application.getInstance().getGlobalContainerStack().findContainer({"file_formats": "*"})
 
@@ -58,7 +62,11 @@ class RemovableDriveOutputDevice(OutputDevice):
             raise OutputDeviceError.WriteRequestFailedError()
 
         # Just take the first file format available.
-        writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"])
+        if file_handler is not None:
+            writer = file_handler.getWriterByMimeType(file_formats[0]["mime_type"])
+        else:
+            writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"])
+
         extension = file_formats[0]["extension"]
 
         if file_name is None:
@@ -72,7 +80,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
             self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
-            job = WriteMeshJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
+            job = WriteFileJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
