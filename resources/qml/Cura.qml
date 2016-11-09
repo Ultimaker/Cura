@@ -107,6 +107,12 @@ UM.MainWindow
                         onObjectRemoved: saveAllMenu.removeItem(object)
                     }
                 }
+                MenuItem
+                {
+                    id: saveWorkspaceMenu
+                    text: catalog.i18nc("@title:menu menubar:file","Save Workspace")
+                    onTriggered: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" });
+                }
 
                 MenuItem { action: Cura.Actions.reloadAll; }
 
