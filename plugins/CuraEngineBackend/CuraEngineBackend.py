@@ -152,6 +152,8 @@ class CuraEngineBackend(Backend):
     ##  Perform a slice of the scene.
     def slice(self):
         Logger.log("d", "Starting slice job...")
+        if self._pauseSlicing:
+            return
         self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack:  # We shouldn't be slicing.
             # try again in a short time
@@ -395,7 +397,8 @@ class CuraEngineBackend(Backend):
 
     ##  Manually triggers a reslice
     def forceSlice(self):
-        self._change_timer.start()
+        if not self._pauseSlicing:
+            self._change_timer.start()
 
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #

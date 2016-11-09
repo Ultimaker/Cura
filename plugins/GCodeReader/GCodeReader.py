@@ -31,6 +31,8 @@ class GCodeReader(MeshReader):
         self.cancelled = False
         self.message = None
 
+        self.scene_node = None
+
     @staticmethod
     def getInt(line, code):
         n = line.find(code) + 1
@@ -61,26 +63,17 @@ class GCodeReader(MeshReader):
         if m == self.message:
             self.cancelled = True
 
-    @staticmethod
-    def onParentChanged(node):
-        if node.getParent() is None:
-            scene = Application.getInstance().getController().getScene()
-
-            isAny = False
-            for node1 in DepthFirstIterator(scene.getRoot()):
-                if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
-                    isAny = True
-
-            backend = Application.getInstance().getBackend()
-            if not isAny:
-                backend._pauseSlicing = False
-                Application.getInstance().setHideSettings(False)
-                Application.getInstance().getPrintInformation().setPreSliced(False)
-            else:
-                backend._pauseSlicing = True
-                backend.backendStateChange.emit(3)
-                Application.getInstance().getPrintInformation().setPreSliced(True)
-                Application.getInstance().setHideSettings(True)
+    def onParentChanged(self, node):
+        backend = Application.getInstance().getBackend()
+        if self.scene_node is not None and self.scene_node.getParent() is None:
+            self.scene_node = None
+            backend._pauseSlicing = False
+            Application.getInstance().setHideSettings(False)
+            Application.getInstance().getPrintInformation().setPreSliced(False)
+        else:
+            backend._pauseSlicing = True
+            Application.getInstance().getPrintInformation().setPreSliced(True)
+            Application.getInstance().setHideSettings(True)
 
     @staticmethod
     def getNullBoundingBox():
@@ -127,21 +120,21 @@ class GCodeReader(MeshReader):
         return True
 
     def read(self, file_name):
-        scene_node = None
-
         extension = os.path.splitext(file_name)[1]
         if extension.lower() in self._supported_extensions:
             Logger.log("d", "Preparing to load %s" % file_name)
             self.cancelled = False
             Application.getInstance().deleteAll()
 
-            scene_node = SceneNode()
-            scene_node.getBoundingBox = self.getNullBoundingBox
-            scene_node.gcode = True
+            self.scene_node = SceneNode()
+            self.scene_node.getBoundingBox = self.getNullBoundingBox
+            self.scene_node.gcode = True
+            self.scene_node.parentChanged.connect(self.onParentChanged)
+
             backend = Application.getInstance().getBackend()
             backend._pauseSlicing = True
             backend.close()
-            backend.backendStateChange.emit(1)
+            backend.backendStateChange.emit(3)
 
             glist = getattr(Application.getInstance().getController().getScene(), "gcode_list")
             glist.clear()
@@ -241,7 +234,9 @@ class GCodeReader(MeshReader):
             layer_mesh = layer_data.build()
             decorator = LayerDataDecorator.LayerDataDecorator()
             decorator.setLayerData(layer_mesh)
-            scene_node.addDecorator(decorator)
+
+            self.scene_node.removeDecorator("LayerDataDecorator")
+            self.scene_node.addDecorator(decorator)
 
             Logger.log("d", "Finished parsing %s" % file_name)
             self.message.hide()
@@ -249,18 +244,13 @@ class GCodeReader(MeshReader):
             if current_layer == 0:
                 Logger.log("w", "File %s doesn't contain any valid layers" % file_name)
 
-            Application.getInstance().getPrintInformation()._pre_sliced = True
-
-            scene_node.parentChanged.connect(self.onParentChanged)
-
-            scene_node_parent = Application.getInstance().getBuildVolume()
-            scene_node.setParent(scene_node_parent)
+            Application.getInstance().getPrintInformation().setPreSliced(True)
 
             settings = Application.getInstance().getGlobalContainerStack()
             machine_width = settings.getProperty("machine_width", "value")
             machine_depth = settings.getProperty("machine_depth", "value")
 
-            scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
+            self.scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
@@ -270,4 +260,4 @@ class GCodeReader(MeshReader):
 
             Logger.log("d", "Loaded %s" % file_name)
 
-        return scene_node
+        return self.scene_node

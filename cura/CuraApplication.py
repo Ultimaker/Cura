@@ -541,13 +541,10 @@ class CuraApplication(QtApplication):
     def loadFile(self, file):
         scene = self.getController().getScene()
 
-        def findAny():
-            for node1 in DepthFirstIterator(scene.getRoot()):
-                if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
-                    return True
-            return False
-        if findAny():
-            self.deleteAll()
+        for node1 in DepthFirstIterator(scene.getRoot()):
+            if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
+                self.deleteAll()
+                break
 
         if not file.isValid():
             return
