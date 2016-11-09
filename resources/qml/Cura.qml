@@ -424,6 +424,10 @@ UM.MainWindow
                 visible: base.monitoringPrint
                 onVisibleChanged:
                 {
+                    if(Cura.MachineManager.printerOutputDevices.length == 0 )
+                    {
+                        return;
+                    }
                     if(visible)
                     {
                         Cura.MachineManager.printerOutputDevices[0].startCamera()
