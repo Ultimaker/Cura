@@ -700,7 +700,11 @@ class X3DReader(MeshReader):
                 if not c is None:
                     pt = c.attrib.get("point")
                     if pt:
-                        co = [float(x) for x in pt.split()]
+                        # allow the list of float values in 'point' attribute to 
+                        # be separated by commas or whitespace as per spec of 
+                        # XML encoding of X3D 
+                        # Ref  ISO/IEC 19776-1:2015 : Section 5.1.2
+                        co = [float(x) for vec in pt.split(',') for x in vec.split()]
                         num_verts = len(co) // 3
                         self.verts = numpy.empty((4, num_verts), dtype=numpy.float32)
                         self.verts[3,:] = numpy.ones((num_verts), dtype=numpy.float32)
