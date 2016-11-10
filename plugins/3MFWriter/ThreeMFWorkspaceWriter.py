@@ -62,8 +62,8 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         file_suffix = ContainerRegistry.getMimeTypeForContainer(type(container)).suffixes[0]
 
         # Some containers have a base file, which should then be the file to use.
-        base_file = container.getMetaDataEntry("base_file", None)
-        if base_file:
+        if "base_file" in container.getMetaData():
+            base_file = container.getMetaDataEntry("base_file")
             container = ContainerRegistry.getInstance().findContainers(id = base_file)[0]
 
         file_name = "Cura/%s.%s" % (container.getId(), file_suffix)
