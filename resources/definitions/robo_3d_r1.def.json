@@ -27,7 +27,7 @@
         "material_bed_temperature": { "default_value": 60 },
         "support_angle": { "default_value": 50 },
         "speed_layer_0": { "default_value": 30 },
-        "line_width": { "default_value": 0.39999999999999997 },
+        "line_width": { "default_value": 0.4 },
         "speed_infill": { "default_value": 60 },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "support_enable": { "default_value": true },
