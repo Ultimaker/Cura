@@ -51,6 +51,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         mesh_writer.setStoreArchive(False)
         return True
 
+    ##  Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
+    #   \param container That follows the \type{ContainerInterface} to archive.
+    #   \param archive The archive to write to.
     @staticmethod
     def _writeContainerToArchive(container, archive):
         if type(container) == type(ContainerRegistry.getInstance().getEmptyInstanceContainer()):
@@ -66,9 +69,10 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         file_name = "Cura/%s.%s" % (container.getId(), file_suffix)
 
         if file_name in archive.namelist():
-            return  # File was already saved, no need to do it again.
+            return  # File was already saved, no need to do it again. Uranium guarantees unique ID's, so this should hold.
 
         file_in_archive = zipfile.ZipInfo(file_name)
+        # For some reason we have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
         file_in_archive.compress_type = zipfile.ZIP_DEFLATED
 
         archive.writestr(file_in_archive, container.serialize())
