@@ -99,7 +99,7 @@ class GCodeReader(MeshReader):
         count = len(path)
         line_types = numpy.empty((count - 1, 1), numpy.int32)
         line_types[:, 0] = 1
-        line_widths = numpy.empty((count - 1, 1), numpy.int32)
+        line_widths = numpy.empty((count - 1, 1), numpy.float32)
         line_widths[:, 0] = 0.5
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
