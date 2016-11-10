@@ -43,7 +43,6 @@
         "layer_height": { "default_value": 0.25 },
         "speed_print": { "default_value": 30 },
         "machine_extruder_count": { "default_value": 1 },
-        "machine_heated_bed": { "default_value": false },
         "machine_center_is_zero": { "default_value": false },
         "machine_height": { "default_value": 190 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
