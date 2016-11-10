@@ -8,7 +8,7 @@
         "author": "Ultimaker",
         "manufacturer": "MakerBot",
         "category": "Other",
-        "file_formats": "text/x-gcode",
+        "file_formats": "application/x3g",
         "platform_offset": [ 0, 0, 0]
     },
 
