@@ -1,6 +1,8 @@
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.Application import Application
 from UM.Preferences import Preferences
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.ExtruderManager import ExtruderManager
 import zipfile
 from io import StringIO
 
@@ -20,30 +22,50 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         mesh_writer.write(stream, nodes, mode)
         archive = mesh_writer.getArchive()
 
-        # Add global container stack data to the archive.
         global_container_stack = Application.getInstance().getGlobalContainerStack()
-        global_stack_file = zipfile.ZipInfo("Cura/%s.stack.cfg" % global_container_stack.getId())
-        global_stack_file.compress_type = zipfile.ZIP_DEFLATED
-        archive.writestr(global_stack_file, global_container_stack.serialize())
 
-        # Write user changes to the archive.
-        global_user_instance_container = global_container_stack.getTop()
-        global_user_instance_file = zipfile.ZipInfo("Cura/%s.inst.cfg" % global_user_instance_container.getId())
-        global_user_instance_container.compress_type = zipfile.ZIP_DEFLATED
-        archive.writestr(global_user_instance_file, global_user_instance_container.serialize())
+        # Add global container stack data to the archive.
+        self._writeContainerToArchive(global_container_stack, archive)
 
-        # Write quality changes to the archive.
-        global_quality_changes = global_container_stack.findContainer({"type": "quality_changes"})
-        global_quality_changes_file = zipfile.ZipInfo("Cura/%s.inst.cfg" % global_quality_changes.getId())
-        global_quality_changes.compress_type = zipfile.ZIP_DEFLATED
-        archive.writestr(global_quality_changes_file, global_quality_changes.serialize())
+        # Also write all containers in the stack to the file
+        for container in global_container_stack.getContainers():
+            self._writeContainerToArchive(container, archive)
+
+        # Check if the machine has extruders and save all that data as well.
+        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()):
+            self._writeContainerToArchive(extruder_stack, archive)
+            for container in extruder_stack.getContainers():
+                self._writeContainerToArchive(container, archive)
 
         # Write preferences to archive
         preferences_file = zipfile.ZipInfo("Cura/preferences.cfg")
         preferences_string = StringIO()
         Preferences.getInstance().writeToFile(preferences_string)
         archive.writestr(preferences_file, preferences_string.getvalue())
+
         # Close the archive & reset states.
         archive.close()
         mesh_writer.setStoreArchive(False)
         return True
+
+    @staticmethod
+    def _writeContainerToArchive(container, archive):
+        if type(container) == type(ContainerRegistry.getInstance().getEmptyInstanceContainer()):
+            return  # Empty file, do nothing.
+
+        file_suffix = ContainerRegistry.getMimeTypeForContainer(type(container)).suffixes[0]
+
+        # Some containers have a base file, which should then be the file to use.
+        base_file = container.getMetaDataEntry("base_file", None)
+        if base_file:
+            container = ContainerRegistry.getInstance().findContainers(id = base_file)[0]
+
+        file_name = "Cura/%s.%s" % (container.getId(), file_suffix)
+
+        if file_name in archive.namelist():
+            return  # File was already saved, no need to do it again.
+
+        file_in_archive = zipfile.ZipInfo(file_name)
+        file_in_archive.compress_type = zipfile.ZIP_DEFLATED
+
+        archive.writestr(file_in_archive, container.serialize())
