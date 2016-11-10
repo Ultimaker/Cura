@@ -20,7 +20,10 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
         mesh_writer.setStoreArchive(True)
         mesh_writer.write(stream, nodes, mode)
+
         archive = mesh_writer.getArchive()
+        if archive is None:  # This happens if there was no mesh data to write.
+            archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
 
