@@ -2373,6 +2373,20 @@
                     "settable_per_extruder": true,
                     "children":
                     {
+                        "cool_fan_speed_0":
+                        {
+                            "label": "Initial Fan Speed",
+                            "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
+                            "unit": "%",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "value": "cool_fan_speed",
+                            "default_value": 100,
+                            "enabled": "cool_fan_enabled",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
                         "cool_fan_speed_min":
                         {
                             "label": "Regular Fan Speed",
@@ -2418,7 +2432,7 @@
                 "cool_fan_full_at_height":
                 {
                     "label": "Regular Fan Speed at Height",
-                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from zero to regular fan speed.",
+                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.5,
