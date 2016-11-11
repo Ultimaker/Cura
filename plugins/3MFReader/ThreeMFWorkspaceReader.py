@@ -81,7 +81,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_changes_instance_containers = []
         for instance_container_file in instance_container_files:
             container_id = instance_container_file.replace("Cura/", "")
-            container_id = instance_container_file.replace(".%s" % instance_container_suffix, "")
+            container_id = container_id.replace(".%s" % instance_container_suffix, "")
             instance_container = InstanceContainer(container_id)
 
             # Deserialize InstanceContainer by converting read data from bytes to string
