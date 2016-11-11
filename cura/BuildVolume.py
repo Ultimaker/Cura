@@ -429,9 +429,9 @@ class BuildVolume(SceneNode):
                 if prime_tower_collision: #Already found a collision.
                     break
             if not prime_tower_collision:
-                result_areas[extruder_id].extend(prime_tower_areas)
+                result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
             else:
-                self._error_areas.extend(prime_tower_areas)
+                self._error_areas.extend(prime_tower_areas[extruder_id])
 
         self._has_errors = len(self._error_areas) > 0
 
