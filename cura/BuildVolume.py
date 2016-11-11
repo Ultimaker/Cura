@@ -433,32 +433,18 @@ class BuildVolume(SceneNode):
 
         # Add prime tower location as disallowed area.
         prime_tower_collision = False
-        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
-            prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
-            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
-            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
-
-            prime_tower_area = Polygon([
-                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y],
-                [prime_tower_x - prime_tower_size, prime_tower_y],
-            ])
-            # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
-            prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
-
-            #Check if the prime tower area intersects with any of the other areas.
-            #If this is the case, add it to the error area's so it can be drawn in red.
-            #If not, add it back to disallowed area's, so it's rendered as normal.
+        prime_tower_areas = self._computeDisallowedAreasPrinted()
+        for prime_tower_area in prime_tower_areas:
             for area in result_areas:
                 if prime_tower_area.intersectsPolygon(area) is not None:
                     prime_tower_collision = True
                     break
-
-            if not prime_tower_collision:
-                result_areas.append(prime_tower_area)
-            else:
-                self._error_areas.append(prime_tower_area)
+            if prime_tower_collision: #Already found a collision.
+                break
+        if not prime_tower_collision:
+            result_areas.extend(prime_tower_areas)
+        else:
+            self._error_areas.extend(prime_tower_areas)
 
         # The buildplate has errors if either prime tower or prime has a colission.
         self._has_errors = prime_tower_collision or prime_collision
@@ -473,6 +459,23 @@ class BuildVolume(SceneNode):
     #   \return A list of polygons that represent the disallowed areas.
     def _computeDisallowedAreasPrinted(self):
         result = []
+        #Currently, the only normally printed object is the prime tower.
+        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
+            prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
+            machine_width = self._global_container_stack.getProperty("machine_width", "value")
+            machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
+            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
+            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
+
+            prime_tower_area = Polygon([
+                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y],
+                [prime_tower_x - prime_tower_size, prime_tower_y],
+            ])
+            result.append(prime_tower_area)
+
+        return result
 
     ##  Computes the disallowed areas that are statically placed in the machine.
     #
