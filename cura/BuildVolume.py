@@ -500,31 +500,31 @@ class BuildVolume(SceneNode):
         #Add the border around the edge of the build volume.
         if border_size == 0:
             return result #No need to add this border.
-        half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
-        half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
+        machine_width = self._global_container_stack.getProperty("machine_width", "value")
+        machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         result.append(Polygon(numpy.array([
-            [-half_machine_width, -half_machine_depth],
-            [-half_machine_width, half_machine_depth],
-            [-half_machine_width + border_size, half_machine_depth - border_size],
-            [-half_machine_width + border_size, -half_machine_depth + border_size]
+            [-machine_width * 1.5, -machine_width * 1.5], #Times 1.5 because that makes it still extend over the entire build volume if the nozzle offset is the entire machine width.
+            [-machine_width * 1.5, machine_depth * 1.5],
+            [-machine_width / 2 + border_size, machine_depth / 2 - border_size],
+            [-machine_width / 2 + border_size, -machine_depth / 2 + border_size]
         ], numpy.float32)))
         result.append(Polygon(numpy.array([
-            [half_machine_width, half_machine_depth],
-            [half_machine_width, -half_machine_depth],
-            [half_machine_width - border_size, -half_machine_depth + border_size],
-            [half_machine_width - border_size, half_machine_depth - border_size]
+            [machine_width * 1.5, machine_depth * 1.5],
+            [machine_width * 1.5, -machine_depth * 1.5],
+            [machine_width / 2 - border_size, -machine_depth / 2 + border_size],
+            [machine_width / 2 - border_size, machine_depth / 2 - border_size]
         ], numpy.float32)))
         result.append(Polygon(numpy.array([
-            [-half_machine_width, half_machine_depth],
-            [half_machine_width, half_machine_depth],
-            [half_machine_width - border_size, half_machine_depth - border_size],
-            [-half_machine_width + border_size, half_machine_depth - border_size]
+            [-machine_width * 1.5, machine_depth * 1.5],
+            [machine_width * 1.5, machine_depth * 1.5],
+            [machine_width / 2 - border_size, machine_depth / 2 - border_size],
+            [-machine_width / 2 + border_size, machine_depth / 2 - border_size]
         ], numpy.float32)))
         result.append(Polygon(numpy.array([
-            [half_machine_width, -half_machine_depth],
-            [-half_machine_width, -half_machine_depth],
-            [-half_machine_width + border_size, -half_machine_depth + border_size],
-            [half_machine_width - border_size, -half_machine_depth + border_size]
+            [machine_width * 1.5, -machine_depth * 1.5],
+            [-machine_width * 1.5, -machine_depth * 1.5],
+            [-machine_width / 2 + border_size, -machine_depth / 2 + border_size],
+            [machine_width / 2 - border_size, -machine_depth / 2 + border_size]
         ], numpy.float32)))
 
         return result
