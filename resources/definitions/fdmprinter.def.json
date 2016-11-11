@@ -950,12 +950,38 @@
                     "type": "enum",
                     "options":
                     {
-                        "back": "Back",
+                        "back": "User Specified",
                         "shortest": "Shortest",
                         "random": "Random"
                     },
                     "default_value": "shortest",
                     "settable_per_mesh": true
+                },
+                "z_seam_x":
+                {
+                    "label": "Z Seam X",
+                    "description": "The X coordinate of the position near where to start printing each part in a layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "value": "machine_width / 2",
+                    "enabled": "'back' in extruderValues('z_seam_type')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
+                },
+                "z_seam_y":
+                {
+                    "label": "Z Seam Y",
+                    "description": "The Y coordinate of the position near where to start printing each part in a layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "value": "machine_depth / 2",
+                    "enabled": "'back' in extruderValues('z_seam_type')",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
                 },
                 "skin_no_small_gaps_heuristic":
                 {
