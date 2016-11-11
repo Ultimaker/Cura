@@ -402,14 +402,14 @@ class BuildVolume(SceneNode):
 
         # Check if prime positions intersect with disallowed areas
         prime_collision = False
-        if disallowed_areas:
-            for area in disallowed_areas:
-                poly = Polygon(numpy.array(area, numpy.float32))
+        for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
+            poly = Polygon(numpy.array(area, numpy.float32))
 
-                # Minkowski with zero, to ensure that the polygon is correct & watertight.
-                poly = poly.getMinkowskiHull(Polygon.approximatedCircle(0))
-                disallowed_polygons.append(poly)
+            # Minkowski with zero, to ensure that the polygon is correct & watertight.
+            poly = poly.getMinkowskiHull(Polygon.approximatedCircle(0))
+            disallowed_polygons.append(poly)
 
+        if disallowed_polygons:
             extruder_manager = ExtruderManager.getInstance()
             extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
             prime_polygons = []
@@ -450,46 +450,8 @@ class BuildVolume(SceneNode):
 
             disallowed_polygons.extend(prime_polygons)
 
-        disallowed_border_size = self._getEdgeDisallowedSize()
-
         # Extend every area already in the disallowed_areas with the skirt size.
-        if disallowed_areas:
-            for poly in disallowed_polygons:
-                poly = poly.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
-                areas.append(poly)
-
-        # Add the skirt areas around the borders of the build plate.
-        if disallowed_border_size > 0:
-            half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
-            half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
-
-            areas.append(Polygon(numpy.array([
-                [-half_machine_width, -half_machine_depth],
-                [-half_machine_width, half_machine_depth],
-                [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size],
-                [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size]
-            ], numpy.float32)))
-
-            areas.append(Polygon(numpy.array([
-                [half_machine_width, half_machine_depth],
-                [half_machine_width, -half_machine_depth],
-                [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size],
-                [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size]
-            ], numpy.float32)))
-
-            areas.append(Polygon(numpy.array([
-                [-half_machine_width, half_machine_depth],
-                [half_machine_width, half_machine_depth],
-                [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size],
-                [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size]
-            ], numpy.float32)))
-
-            areas.append(Polygon(numpy.array([
-                [half_machine_width, -half_machine_depth],
-                [-half_machine_width, -half_machine_depth],
-                [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size],
-                [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size]
-            ], numpy.float32)))
+        areas.extend(self._computeDisallowedAreasStatic())
 
         # Check if the prime tower area intersects with any of the other areas.
         # If this is the case, add it to the error area's so it can be drawn in red.
@@ -510,6 +472,58 @@ class BuildVolume(SceneNode):
         # The buildplate has errors if either prime tower or prime has a colission.
         self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = areas
+
+    ##  Computes the disallowed areas that are statically placed in the machine.
+    #
+    #   These disallowed areas need to be offset with the negative of the nozzle
+    #   offset to check if the disallowed areas are intersected.
+    #
+    #   \return A list of polygons that represent the disallowed areas. These
+    #   areas are not offset with any nozzle offset yet.
+    def _computeDisallowedAreasStatic(self):
+        result = []
+        if not self._global_container_stack:
+            return result
+        disallowed_border_size = self._getEdgeDisallowedSize()
+
+        machine_disallowed_areas = copy.deepcopy(self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
+        if machine_disallowed_areas:
+            for area in machine_disallowed_areas:
+                polygon = Polygon(numpy.array(area, numpy.float32))
+                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                result.append(polygon)
+
+        #Add the border around the edge of the build volume.
+        if disallowed_border_size == 0:
+            return result #No need to add this border.
+        half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
+        half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
+        result.append(Polygon(numpy.array([
+            [-half_machine_width, -half_machine_depth],
+            [-half_machine_width, half_machine_depth],
+            [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size],
+            [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size]
+        ], numpy.float32)))
+        result.append(Polygon(numpy.array([
+            [half_machine_width, half_machine_depth],
+            [half_machine_width, -half_machine_depth],
+            [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size],
+            [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size]
+        ], numpy.float32)))
+        result.append(Polygon(numpy.array([
+            [-half_machine_width, half_machine_depth],
+            [half_machine_width, half_machine_depth],
+            [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size],
+            [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size]
+        ], numpy.float32)))
+        result.append(Polygon(numpy.array([
+            [half_machine_width, -half_machine_depth],
+            [-half_machine_width, -half_machine_depth],
+            [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size],
+            [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size]
+        ], numpy.float32)))
+
+        return result
 
     ##  Private convenience function to get a setting from the adhesion
     #   extruder.
