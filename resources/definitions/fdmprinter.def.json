@@ -921,6 +921,18 @@
                         }
                     }
                 },
+                "fill_perimeter_gaps": {
+                    "label": "Fill Gaps Between Walls",
+                    "description": "Fills the gaps between walls where no walls fit.",
+                    "type": "enum",
+                    "options": {
+                        "nowhere": "Nowhere",
+                        "everywhere": "Everywhere",
+                        "skin": "Skin"
+                    },
+                    "default_value": "everywhere",
+                    "settable_per_mesh": true
+                },
                 "xy_offset":
                 {
                     "label": "Horizontal Expansion",
