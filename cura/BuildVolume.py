@@ -470,6 +470,7 @@ class BuildVolume(SceneNode):
                 [prime_tower_x, prime_tower_y],
                 [prime_tower_x - prime_tower_size, prime_tower_y],
             ])
+            prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             result.append(prime_tower_area)
 
         return result
