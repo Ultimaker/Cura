@@ -384,7 +384,6 @@ class BuildVolume(SceneNode):
         disallowed_polygons = []
 
         # Check if prime positions intersect with disallowed areas
-        prime_collision = False
         for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
             poly = Polygon(numpy.array(area, numpy.float32))
 
@@ -424,7 +423,6 @@ class BuildVolume(SceneNode):
                     prime_polygons.append(prime_polygon)
                 else:
                     self._error_areas.append(prime_polygon)
-                    prime_collision = collision or prime_collision
 
             disallowed_polygons.extend(prime_polygons)
 
@@ -446,8 +444,7 @@ class BuildVolume(SceneNode):
         else:
             self._error_areas.extend(prime_tower_areas)
 
-        # The buildplate has errors if either prime tower or prime has a colission.
-        self._has_errors = prime_tower_collision or prime_collision
+        self._has_errors = len(self._error_areas) > 0
         self._disallowed_areas = result_areas
 
     ##  Computes the disallowed areas for objects that are printed.
