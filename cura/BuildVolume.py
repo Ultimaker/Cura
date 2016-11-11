@@ -447,7 +447,7 @@ class BuildVolume(SceneNode):
             disallowed_polygons.extend(prime_polygons)
 
         # Extend every area already in the disallowed_areas with the skirt size.
-        areas = self._computeDisallowedAreasStatic()
+        result_areas = self._computeDisallowedAreasStatic()
 
         # Check if the prime tower area intersects with any of the other areas.
         # If this is the case, add it to the error area's so it can be drawn in red.
@@ -456,18 +456,18 @@ class BuildVolume(SceneNode):
         if prime_tower_area:
             # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
-            for area in areas:
+            for area in result_areas:
                 if prime_tower_area.intersectsPolygon(area) is not None:
                     prime_tower_collision = True
                     break
 
             if not prime_tower_collision:
-                areas.append(prime_tower_area)
+                result_areas.append(prime_tower_area)
             else:
                 self._error_areas.append(prime_tower_area)
         # The buildplate has errors if either prime tower or prime has a colission.
         self._has_errors = prime_tower_collision or prime_collision
-        self._disallowed_areas = areas
+        self._disallowed_areas = result_areas
 
     ##  Computes the disallowed areas that are statically placed in the machine.
     #
