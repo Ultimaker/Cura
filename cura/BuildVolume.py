@@ -379,7 +379,7 @@ class BuildVolume(SceneNode):
         self._error_areas = []
 
         disallowed_border_size = self._getEdgeDisallowedSize()
-        result_areas = self._computeDisallowedAreasStatic()
+        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size)
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -481,49 +481,50 @@ class BuildVolume(SceneNode):
     #   These disallowed areas need to be offset with the negative of the nozzle
     #   offset to check if the disallowed areas are intersected.
     #
+    #   \param border_size The size with which to offset the disallowed areas
+    #   due to skirt, brim, travel avoid distance, etc.
     #   \return A list of polygons that represent the disallowed areas. These
     #   areas are not offset with any nozzle offset yet.
-    def _computeDisallowedAreasStatic(self):
+    def _computeDisallowedAreasStatic(self, border_size):
         result = []
         if not self._global_container_stack:
             return result
-        disallowed_border_size = self._getEdgeDisallowedSize()
 
         machine_disallowed_areas = copy.deepcopy(self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
         if machine_disallowed_areas:
             for area in machine_disallowed_areas:
                 polygon = Polygon(numpy.array(area, numpy.float32))
-                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
                 result.append(polygon)
 
         #Add the border around the edge of the build volume.
-        if disallowed_border_size == 0:
+        if border_size == 0:
             return result #No need to add this border.
         half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
         half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
         result.append(Polygon(numpy.array([
             [-half_machine_width, -half_machine_depth],
             [-half_machine_width, half_machine_depth],
-            [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size],
-            [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size]
+            [-half_machine_width + border_size, half_machine_depth - border_size],
+            [-half_machine_width + border_size, -half_machine_depth + border_size]
         ], numpy.float32)))
         result.append(Polygon(numpy.array([
             [half_machine_width, half_machine_depth],
             [half_machine_width, -half_machine_depth],
-            [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size],
-            [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size]
+            [half_machine_width - border_size, -half_machine_depth + border_size],
+            [half_machine_width - border_size, half_machine_depth - border_size]
         ], numpy.float32)))
         result.append(Polygon(numpy.array([
             [-half_machine_width, half_machine_depth],
             [half_machine_width, half_machine_depth],
-            [half_machine_width - disallowed_border_size, half_machine_depth - disallowed_border_size],
-            [-half_machine_width + disallowed_border_size, half_machine_depth - disallowed_border_size]
+            [half_machine_width - border_size, half_machine_depth - border_size],
+            [-half_machine_width + border_size, half_machine_depth - border_size]
         ], numpy.float32)))
         result.append(Polygon(numpy.array([
             [half_machine_width, -half_machine_depth],
             [-half_machine_width, -half_machine_depth],
-            [-half_machine_width + disallowed_border_size, -half_machine_depth + disallowed_border_size],
-            [half_machine_width - disallowed_border_size, -half_machine_depth + disallowed_border_size]
+            [-half_machine_width + border_size, -half_machine_depth + border_size],
+            [half_machine_width - border_size, -half_machine_depth + border_size]
         ], numpy.float32)))
 
         return result
