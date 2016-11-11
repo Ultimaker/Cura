@@ -7,8 +7,10 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-import zipfile
+from UM.Preferences import Preferences
 
+import zipfile
+import io
 
 ##    Base implementation for reading 3MF workspace files.
 class ThreeMFWorkspaceReader(WorkspaceReader):
@@ -38,6 +40,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         archive = zipfile.ZipFile(file_name, "r")
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
+
+        # Create a shadow copy of the preferences (we don't want all of the preferences, but we do want to re-use its
+        # parsing code.
+        temp_preferences = Preferences()
+        temp_preferences.readFromFile(io.TextIOWrapper(archive.open("Cura/preferences.cfg")))  # We need to wrap it, else the archive parser breaks.
+
+        # Copy a number of settings from the temp preferences to the global
+        global_preferences = Preferences.getInstance()
+        global_preferences.setValue("general/visible_settings", temp_preferences.getValue("general/visible_settings"))
+        global_preferences.setValue("cura/categories_expanded", temp_preferences.getValue("cura/categories_expanded"))
+        Application.getInstance().expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # TODO: For the moment we use pretty naive existence checking. If the ID is the same, we assume in quite a few
         # TODO: cases that the container loaded is the same (most notable in materials & definitions).
@@ -90,9 +103,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if container_type == "user":
                 user_instance_containers.append(instance_container)
             elif container_type == "quality_changes":
+                # Check if quality changes already exists.
+                quality_changes = container_registry.findInstanceContainers(id = container_id)
+                if not quality_changes:
+                    container_registry.addContainer(instance_container)
                 quality_changes_instance_containers.append(instance_container)
             else:
                 continue
+
 
         # Get the stack(s) saved in the workspace.
         '''container_stack_suffix = ContainerRegistry.getMimeTypeForContainer(ContainerStack).suffixes[0]
