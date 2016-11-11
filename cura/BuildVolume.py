@@ -378,6 +378,8 @@ class BuildVolume(SceneNode):
 
         self._error_areas = []
 
+        result_areas = self._computeDisallowedAreasStatic()
+
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
 
@@ -402,6 +404,7 @@ class BuildVolume(SceneNode):
 
                 prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
                 prime_polygon = prime_polygon.translate(prime_x, prime_y)
+                prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(0))
                 collision = False
 
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
@@ -424,10 +427,7 @@ class BuildVolume(SceneNode):
                 else:
                     self._error_areas.append(prime_polygon)
 
-            disallowed_polygons.extend(prime_polygons)
-
-        # Extend every area already in the disallowed_areas with the skirt size.
-        result_areas = self._computeDisallowedAreasStatic()
+            result_areas.extend(prime_polygons)
 
         # Add prime tower location as disallowed area.
         prime_tower_collision = False
