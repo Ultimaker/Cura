@@ -927,8 +927,7 @@
                     "type": "enum",
                     "options": {
                         "nowhere": "Nowhere",
-                        "everywhere": "Everywhere",
-                        "skin": "Skin"
+                        "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
                     "settable_per_mesh": true
