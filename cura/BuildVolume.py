@@ -401,13 +401,8 @@ class BuildVolume(SceneNode):
                 prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2
                 prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
 
-                prime_polygon = Polygon([
-                    [prime_x - PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
-                    [prime_x + PRIME_CLEARANCE, prime_y - PRIME_CLEARANCE],
-                    [prime_x + PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
-                    [prime_x - PRIME_CLEARANCE, prime_y + PRIME_CLEARANCE],
-                ])
-                prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(0))
+                prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
+                prime_polygon = prime_polygon.translate(prime_x, prime_y)
                 collision = False
 
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
@@ -468,6 +463,16 @@ class BuildVolume(SceneNode):
         # The buildplate has errors if either prime tower or prime has a colission.
         self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = result_areas
+
+    ##  Computes the disallowed areas for objects that are printed.
+    #
+    #   These disallowed areas are not offset with the negative of the nozzle
+    #   offset, since the engine already performs the offset for us to make sure
+    #   they are printed in head-coordinates instead of nozzle-coordinates.
+    #
+    #   \return A list of polygons that represent the disallowed areas.
+    def _computeDisallowedAreasPrinted(self):
+        result = []
 
     ##  Computes the disallowed areas that are statically placed in the machine.
     #
