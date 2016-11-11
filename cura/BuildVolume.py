@@ -381,55 +381,41 @@ class BuildVolume(SceneNode):
         extruder_manager = ExtruderManager.getInstance()
         used_extruders = extruder_manager.getUsedExtruderStacks()
         disallowed_border_size = self._getEdgeDisallowedSize()
-        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders)
 
-        machine_width = self._global_container_stack.getProperty("machine_width", "value")
-        machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
+        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
+        prime_areas = self._computeDisallowedAreasPrime(disallowed_border_size, used_extruders)
+        prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
 
-        disallowed_polygons = []
+        #Check if prime positions intersect with disallowed areas.
+        for extruder in used_extruders:
+            extruder_id = extruder.getId()
 
-        # Check if prime positions intersect with disallowed areas
-        for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
-            poly = Polygon(numpy.array(area, numpy.float32))
-
-            # Minkowski with zero, to ensure that the polygon is correct & watertight.
-            poly = poly.getMinkowskiHull(Polygon.approximatedCircle(0))
-            disallowed_polygons.append(poly)
-
-        if disallowed_polygons:
-            extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
-            prime_polygons = []
-            # Each extruder has it's own prime location
-            for extruder in extruders:
-                prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2
-                prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
-
-                prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
-                prime_polygon = prime_polygon.translate(prime_x, prime_y)
-                prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
-                collision = False
-
-                # Check if prime polygon is intersecting with any of the other disallowed areas.
-                # Note that we check the prime area without bed adhesion.
-                for poly in disallowed_polygons:
-                    if prime_polygon.intersectsPolygon(poly) is not None:
+            collision = False
+            for prime_polygon in prime_areas[extruder_id]:
+                for disallowed_polygon in prime_disallowed_areas:
+                    if prime_polygon.intersectsPolygon(disallowed_polygon) is not None:
                         collision = True
                         break
+                if collision:
+                    break
 
-                # Also collide with other prime positions
-                for poly in prime_polygons:
-                    if prime_polygon.intersectsPolygon(poly) is not None:
-                        collision = True
+                #Also check other prime positions (without additional offset).
+                for other_extruder_id in prime_areas:
+                    if extruder_id == other_extruder_id: #It is allowed to collide with itself.
+                        continue
+                    for other_prime_polygon in prime_areas[other_extruder_id]:
+                        if prime_polygon.intersectsPolygon(other_prime_polygon):
+                            collision = True
+                            break
+                    if collision:
                         break
+                if collision:
+                    break
 
-                if not collision:
-                    # Prime area is valid. Add as normal.
-                    # Once it's added like this, it will recieve a bed adhesion offset, just like the others.
-                    prime_polygons.append(prime_polygon)
-                else:
-                    self._error_areas.append(prime_polygon)
 
-            result_areas.extend(prime_polygons)
+            if not collision:
+                #Prime areas are valid. Add as normal.
+                result_areas[extruder_id].extend(prime_areas[extruder_id])
 
         # Add prime tower location as disallowed area.
         prime_tower_collision = False
@@ -467,7 +453,7 @@ class BuildVolume(SceneNode):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
+            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
 
             prime_tower_area = Polygon([
@@ -479,6 +465,33 @@ class BuildVolume(SceneNode):
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
                 result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.
+
+        return result
+
+    ##  Computes the disallowed areas for the prime locations.
+    #
+    #   These are special because they are not subject to things like brim or
+    #   travel avoidance. They do get a dilute with the border size though
+    #   because they may not intersect with brims and such of other objects.
+    #
+    #   \param border_size The size with which to offset the disallowed areas
+    #   due to skirt, brim, travel avoid distance, etc.
+    #   \param used_extruders The extruder stacks to generate disallowed areas
+    #   for.
+    #   \return A dictionary with for each used extruder ID the prime areas.
+    def _computeDisallowedAreasPrime(self, border_size, used_extruders):
+        result = {}
+
+        machine_width = self._global_container_stack.getProperty("machine_width", "value")
+        machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
+        for extruder in used_extruders:
+            prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+            prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
+
+            prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
+            prime_polygon = prime_polygon.translate(prime_x, prime_y)
+            prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
+            result[extruder.getId()] = [prime_polygon]
 
         return result
 
