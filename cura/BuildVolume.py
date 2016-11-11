@@ -392,7 +392,7 @@ class BuildVolume(SceneNode):
 
             collision = False
             for prime_polygon in prime_areas[extruder_id]:
-                for disallowed_polygon in prime_disallowed_areas:
+                for disallowed_polygon in prime_disallowed_areas[extruder_id]:
                     if prime_polygon.intersectsPolygon(disallowed_polygon) is not None:
                         collision = True
                         break
