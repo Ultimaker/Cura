@@ -377,7 +377,6 @@ class BuildVolume(SceneNode):
             return
 
         self._error_areas = []
-        areas = []
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -448,7 +447,7 @@ class BuildVolume(SceneNode):
             disallowed_polygons.extend(prime_polygons)
 
         # Extend every area already in the disallowed_areas with the skirt size.
-        areas.extend(self._computeDisallowedAreasStatic())
+        areas = self._computeDisallowedAreasStatic()
 
         # Check if the prime tower area intersects with any of the other areas.
         # If this is the case, add it to the error area's so it can be drawn in red.
