@@ -332,6 +332,7 @@ class ExtruderManager(QObject):
         #The support extruders.
         if support_enabled:
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_infill_extruder_nr", "value"))])
+            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_extruder_nr_layer_0", "value"))])
             if support_interface_enabled:
                 used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_interface_extruder_nr", "value"))])
 
