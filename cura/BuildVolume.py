@@ -380,20 +380,7 @@ class BuildVolume(SceneNode):
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-        prime_tower_area = None
 
-        # Add prime tower location as disallowed area.
-        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
-            prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
-            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
-            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
-
-            prime_tower_area = Polygon([
-                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y - prime_tower_size],
-                [prime_tower_x, prime_tower_y],
-                [prime_tower_x - prime_tower_size, prime_tower_y],
-            ])
         disallowed_polygons = []
 
         # Check if prime positions intersect with disallowed areas
@@ -449,13 +436,25 @@ class BuildVolume(SceneNode):
         # Extend every area already in the disallowed_areas with the skirt size.
         result_areas = self._computeDisallowedAreasStatic()
 
-        # Check if the prime tower area intersects with any of the other areas.
-        # If this is the case, add it to the error area's so it can be drawn in red.
-        # If not, add it back to disallowed area's, so it's rendered as normal.
+        # Add prime tower location as disallowed area.
         prime_tower_collision = False
-        if prime_tower_area:
+        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
+            prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
+            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2
+            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
+
+            prime_tower_area = Polygon([
+                [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y - prime_tower_size],
+                [prime_tower_x, prime_tower_y],
+                [prime_tower_x - prime_tower_size, prime_tower_y],
+            ])
             # Using Minkowski of 0 fixes the prime tower area so it's rendered correctly
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
+
+            #Check if the prime tower area intersects with any of the other areas.
+            #If this is the case, add it to the error area's so it can be drawn in red.
+            #If not, add it back to disallowed area's, so it's rendered as normal.
             for area in result_areas:
                 if prime_tower_area.intersectsPolygon(area) is not None:
                     prime_tower_collision = True
@@ -465,6 +464,7 @@ class BuildVolume(SceneNode):
                 result_areas.append(prime_tower_area)
             else:
                 self._error_areas.append(prime_tower_area)
+
         # The buildplate has errors if either prime tower or prime has a colission.
         self._has_errors = prime_tower_collision or prime_collision
         self._disallowed_areas = result_areas
