@@ -378,8 +378,10 @@ class BuildVolume(SceneNode):
 
         self._error_areas = []
 
+        extruder_manager = ExtruderManager.getInstance()
+        used_extruders = extruder_manager.getUsedExtruderStacks()
         disallowed_border_size = self._getEdgeDisallowedSize()
-        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size)
+        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders)
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -395,7 +397,6 @@ class BuildVolume(SceneNode):
             disallowed_polygons.append(poly)
 
         if disallowed_polygons:
-            extruder_manager = ExtruderManager.getInstance()
             extruders = extruder_manager.getMachineExtruders(self._global_container_stack.getId())
             prime_polygons = []
             # Each extruder has it's own prime location
@@ -432,7 +433,7 @@ class BuildVolume(SceneNode):
 
         # Add prime tower location as disallowed area.
         prime_tower_collision = False
-        prime_tower_areas = self._computeDisallowedAreasPrinted()
+        prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
         for prime_tower_area in prime_tower_areas:
             for area in result_areas:
                 if prime_tower_area.intersectsPolygon(area) is not None:
@@ -448,15 +449,19 @@ class BuildVolume(SceneNode):
         self._has_errors = len(self._error_areas) > 0
         self._disallowed_areas = result_areas
 
-    ##  Computes the disallowed areas for objects that are printed.
+    ##  Computes the disallowed areas for objects that are printed with print
+    #   features.
     #
-    #   These disallowed areas are not offset with the negative of the nozzle
-    #   offset, since the engine already performs the offset for us to make sure
-    #   they are printed in head-coordinates instead of nozzle-coordinates.
+    #   This means that the brim, travel avoidance and such will be applied to
+    #   these features.
     #
-    #   \return A list of polygons that represent the disallowed areas.
-    def _computeDisallowedAreasPrinted(self):
-        result = []
+    #   \return A dictionary with for each used extruder ID the disallowed areas
+    #   where that extruder may not print.
+    def _computeDisallowedAreasPrinted(self, used_extruders):
+        result = {}
+        for extruder in used_extruders:
+            result[extruder.getId()] = []
+
         #Currently, the only normally printed object is the prime tower.
         if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
@@ -472,60 +477,72 @@ class BuildVolume(SceneNode):
                 [prime_tower_x - prime_tower_size, prime_tower_y],
             ])
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
-            result.append(prime_tower_area)
+            for extruder in used_extruders:
+                result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.
 
         return result
 
     ##  Computes the disallowed areas that are statically placed in the machine.
     #
-    #   These disallowed areas need to be offset with the negative of the nozzle
-    #   offset to check if the disallowed areas are intersected.
+    #   It computes different disallowed areas depending on the offset of the
+    #   extruder. The resulting dictionary will therefore have an entry for each
+    #   extruder that is used.
     #
     #   \param border_size The size with which to offset the disallowed areas
     #   due to skirt, brim, travel avoid distance, etc.
-    #   \return A list of polygons that represent the disallowed areas. These
-    #   areas are not offset with any nozzle offset yet.
-    def _computeDisallowedAreasStatic(self, border_size):
-        result = []
-        if not self._global_container_stack:
-            return result
+    #   \param used_extruders The extruder stacks to generate disallowed areas
+    #   for.
+    #   \return A dictionary with for each used extruder ID the disallowed areas
+    #   where that extruder may not print.
+    def _computeDisallowedAreasStatic(self, border_size, used_extruders):
+        #Convert disallowed areas to polygons and dilate them.
+        machine_disallowed_polygons = []
+        for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
+            polygon = Polygon(numpy.array(area, numpy.float32))
+            polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
+            machine_disallowed_polygons.append(polygon)
 
-        machine_disallowed_areas = copy.deepcopy(self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
-        if machine_disallowed_areas:
-            for area in machine_disallowed_areas:
-                polygon = Polygon(numpy.array(area, numpy.float32))
-                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
-                result.append(polygon)
+        result = {}
+        for extruder in used_extruders:
+            extruder_id = extruder.getId()
+            offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
+            offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
+            result[extruder_id] = []
 
-        #Add the border around the edge of the build volume.
-        if border_size == 0:
-            return result #No need to add this border.
-        machine_width = self._global_container_stack.getProperty("machine_width", "value")
-        machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-        result.append(Polygon(numpy.array([
-            [-machine_width * 1.5, -machine_width * 1.5], #Times 1.5 because that makes it still extend over the entire build volume if the nozzle offset is the entire machine width.
-            [-machine_width * 1.5, machine_depth * 1.5],
-            [-machine_width / 2 + border_size, machine_depth / 2 - border_size],
-            [-machine_width / 2 + border_size, -machine_depth / 2 + border_size]
-        ], numpy.float32)))
-        result.append(Polygon(numpy.array([
-            [machine_width * 1.5, machine_depth * 1.5],
-            [machine_width * 1.5, -machine_depth * 1.5],
-            [machine_width / 2 - border_size, -machine_depth / 2 + border_size],
-            [machine_width / 2 - border_size, machine_depth / 2 - border_size]
-        ], numpy.float32)))
-        result.append(Polygon(numpy.array([
-            [-machine_width * 1.5, machine_depth * 1.5],
-            [machine_width * 1.5, machine_depth * 1.5],
-            [machine_width / 2 - border_size, machine_depth / 2 - border_size],
-            [-machine_width / 2 + border_size, machine_depth / 2 - border_size]
-        ], numpy.float32)))
-        result.append(Polygon(numpy.array([
-            [machine_width * 1.5, -machine_depth * 1.5],
-            [-machine_width * 1.5, -machine_depth * 1.5],
-            [-machine_width / 2 + border_size, -machine_depth / 2 + border_size],
-            [machine_width / 2 - border_size, -machine_depth / 2 + border_size]
-        ], numpy.float32)))
+            for polygon in machine_disallowed_polygons:
+                result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
+
+            #Add the border around the edge of the build volume.
+            half_machine_width = self._global_container_stack.getProperty("machine_width", "value")
+            half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
+            if border_size + offset_x > 0:
+                result[extruder_id].append(Polygon(numpy.array([
+                    [-half_machine_width, -half_machine_depth],
+                    [-half_machine_width, half_machine_depth],
+                    [-half_machine_width + border_size + offset_x, half_machine_depth - border_size + offset_y],
+                    [-half_machine_width + border_size + offset_x, -half_machine_depth + border_size + offset_y]
+                ], numpy.float32)))
+            if border_size - offset_x > 0:
+                result[extruder_id].append(Polygon(numpy.array([
+                    [half_machine_width, half_machine_depth],
+                    [half_machine_width, -half_machine_depth],
+                    [half_machine_width - border_size + offset_x, -half_machine_depth + border_size + offset_y],
+                    [half_machine_width - border_size + offset_x, half_machine_depth - border_size + offset_y]
+                ], numpy.float32)))
+            if border_size - offset_y > 0:
+                result[extruder_id].append(Polygon(numpy.array([
+                    [-half_machine_width, half_machine_depth],
+                    [half_machine_width, half_machine_depth],
+                    [half_machine_width - border_size, half_machine_depth - border_size],
+                    [-half_machine_width + border_size, half_machine_depth - border_size]
+                ], numpy.float32)))
+            if border_size + offset_y > 0:
+                result[extruder_id].append(Polygon(numpy.array([
+                    [half_machine_width, -half_machine_depth],
+                    [-half_machine_width, -half_machine_depth],
+                    [-half_machine_width + border_size, -half_machine_depth + border_size],
+                    [half_machine_width - border_size, -half_machine_depth + border_size]
+                ], numpy.float32)))
 
         return result
 
