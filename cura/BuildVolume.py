@@ -434,7 +434,10 @@ class BuildVolume(SceneNode):
                 self._error_areas.extend(prime_tower_areas)
 
         self._has_errors = len(self._error_areas) > 0
-        self._disallowed_areas = result_areas
+
+        self._disallowed_areas = []
+        for extruder_id in result_areas:
+            self._disallowed_areas.extend(result_areas[extruder_id])
 
     ##  Computes the disallowed areas for objects that are printed with print
     #   features.
