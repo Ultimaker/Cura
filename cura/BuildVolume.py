@@ -376,7 +376,6 @@ class BuildVolume(SceneNode):
         if not self._global_container_stack:
             return
 
-        self._has_errors = False  # Reset.
         self._error_areas = []
         areas = []
 
