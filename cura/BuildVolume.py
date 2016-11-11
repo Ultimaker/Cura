@@ -378,6 +378,7 @@ class BuildVolume(SceneNode):
 
         self._error_areas = []
 
+        disallowed_border_size = self._getEdgeDisallowedSize()
         result_areas = self._computeDisallowedAreasStatic()
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
@@ -404,7 +405,7 @@ class BuildVolume(SceneNode):
 
                 prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
                 prime_polygon = prime_polygon.translate(prime_x, prime_y)
-                prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(0))
+                prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
                 collision = False
 
                 # Check if prime polygon is intersecting with any of the other disallowed areas.
