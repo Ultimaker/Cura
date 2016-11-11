@@ -74,8 +74,6 @@
         "prime_tower_position_x": { "default_value": 175 },
         "prime_tower_position_y": { "default_value": 179 },
 
-        "extruder_prime_pos_x": { "enabled": false },
-        "extruder_prime_pos_y": { "enabled": false },
         "print_sequence": {"enabled": false},
 
         "acceleration_enabled": { "value": "True" },

@@ -23,8 +23,8 @@
         "machine_extruder_end_pos_x": { "default_value": 213 },
         "machine_extruder_end_pos_y": { "default_value": 189 },
         "machine_nozzle_head_distance": { "default_value": 4.2 },
-        "extruder_prime_pos_x": { "default_value": 182, "enabled": false },
-        "extruder_prime_pos_y": { "default_value": 6, "enabled": false },
-        "extruder_prime_pos_z": { "default_value": 2, "enabled": false }
+        "extruder_prime_pos_x": { "default_value": 182 },
+        "extruder_prime_pos_y": { "default_value": 6 },
+        "extruder_prime_pos_z": { "default_value": 2 }
     }
 }
