@@ -420,17 +420,18 @@ class BuildVolume(SceneNode):
         # Add prime tower location as disallowed area.
         prime_tower_collision = False
         prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
-        for prime_tower_area in prime_tower_areas:
-            for area in result_areas:
-                if prime_tower_area.intersectsPolygon(area) is not None:
-                    prime_tower_collision = True
+        for extruder_id in prime_tower_areas:
+            for prime_tower_area in prime_tower_areas[extruder_id]:
+                for area in result_areas[extruder_id]:
+                    if prime_tower_area.intersectsPolygon(area) is not None:
+                        prime_tower_collision = True
+                        break
+                if prime_tower_collision: #Already found a collision.
                     break
-            if prime_tower_collision: #Already found a collision.
-                break
-        if not prime_tower_collision:
-            result_areas.extend(prime_tower_areas)
-        else:
-            self._error_areas.extend(prime_tower_areas)
+            if not prime_tower_collision:
+                result_areas[extruder_id].extend(prime_tower_areas)
+            else:
+                self._error_areas.extend(prime_tower_areas)
 
         self._has_errors = len(self._error_areas) > 0
         self._disallowed_areas = result_areas
