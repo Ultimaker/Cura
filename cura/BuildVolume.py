@@ -378,8 +378,6 @@ class BuildVolume(SceneNode):
 
         self._has_errors = False  # Reset.
         self._error_areas = []
-        disallowed_areas = copy.deepcopy(
-            self._global_container_stack.getProperty("machine_disallowed_areas", "value"))
         areas = []
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
