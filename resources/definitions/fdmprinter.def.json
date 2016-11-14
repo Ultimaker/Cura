@@ -1167,6 +1167,34 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_initial_print_temperature":
+                {
+                    "label": "Initial Printing Temperature",
+                    "description": "The minimal temperature while heating up to the Printing Temperature at which printing can already start.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 190,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_final_print_temperature":
+                {
+                    "label": "Final Printing Temperature",
+                    "description": "The temperature to which to already start cooling down just before the end of printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 180,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
