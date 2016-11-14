@@ -188,8 +188,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     if self._resolve_strategies["quality_changes"] == "override":
                         quality_changes[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
-                    else:
-                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                 quality_changes_instance_containers.append(instance_container)
             else:
                 continue
@@ -257,8 +255,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             global_stack.containersChanged.emit(container)
 
         for stack in extruder_stacks:
+            stack.setNextStack(global_stack)
             for container in stack.getContainers():
                 stack.containersChanged.emit(container)
+
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
         return nodes
