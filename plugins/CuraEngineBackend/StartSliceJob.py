@@ -251,6 +251,9 @@ class StartSliceJob(Job):
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
 
+        settings["print_bed_temperature"] = settings["material_bed_temperature"]
+        settings["print_temperature"] = settings["material_print_temperature"]
+
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
@@ -259,6 +262,8 @@ class StartSliceJob(Job):
             else:
                 setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
+
+
 
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
