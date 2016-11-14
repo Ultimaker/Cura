@@ -32,6 +32,19 @@ Item
 
         placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
+        style: TextFieldStyle
+        {
+            textColor: UM.Theme.getColor("setting_control_text");
+            font: UM.Theme.getFont("default");
+            background: Rectangle
+            {
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+
+                color: UM.Theme.getColor("setting_control")
+            }
+        }
+
         property var expandedCategories
         property bool lastFilterEmpty: true
 
