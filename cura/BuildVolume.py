@@ -554,15 +554,15 @@ class BuildVolume(SceneNode):
                 result[extruder_id].append(Polygon(numpy.array([
                     [-half_machine_width, half_machine_depth],
                     [half_machine_width, half_machine_depth],
-                    [half_machine_width - border_size, half_machine_depth - border_size],
-                    [-half_machine_width + border_size, half_machine_depth - border_size]
+                    [half_machine_width - border_size + offset_x, half_machine_depth - border_size + offset_y],
+                    [-half_machine_width + border_size + offset_x, half_machine_depth - border_size + offset_y]
                 ], numpy.float32)))
             if border_size + offset_y > 0:
                 result[extruder_id].append(Polygon(numpy.array([
                     [half_machine_width, -half_machine_depth],
                     [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width + border_size, -half_machine_depth + border_size],
-                    [half_machine_width - border_size, -half_machine_depth + border_size]
+                    [-half_machine_width + border_size + offset_x, -half_machine_depth + border_size + offset_y],
+                    [half_machine_width - border_size + offset_x, -half_machine_depth + border_size + offset_y]
                 ], numpy.float32)))
 
         return result
