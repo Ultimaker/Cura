@@ -1,6 +1,6 @@
 {
     "id": "ord",
-    "name": "ORD",
+    "name": "RoVa3D",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -36,6 +36,6 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_depth": { "default_value": 250 },
         "machine_width": { "default_value": 215 },
-        "machine_name": { "default_value": "Ord" }
+        "machine_name": { "default_value": "RoVa3D" }
     }
 }
