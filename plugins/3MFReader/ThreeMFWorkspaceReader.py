@@ -10,6 +10,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.Preferences import Preferences
 from .WorkspaceDialog import WorkspaceDialog
+
+from cura.Settings.ExtruderManager import ExtruderManager
+
 import zipfile
 import io
 
@@ -248,6 +251,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if old_container.getId() == old_id:
                         quality_changes_index = stack.getContainerIndex(old_container)
                         stack.replaceContainer(quality_changes_index, container)
+
+        for stack in extruder_stacks:
+            if global_stack.getId() not in ExtruderManager.getInstance()._extruder_trains:
+                ExtruderManager.getInstance()._extruder_trains[global_stack.getId()] = {}
+            #TODO: This is nasty hack; this should be made way more robust (setter?)
+            ExtruderManager.getInstance()._extruder_trains[global_stack.getId()][stack.getMetaDataEntry("position")] = stack
 
         Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
         # Notify everything/one that is to notify about changes.
