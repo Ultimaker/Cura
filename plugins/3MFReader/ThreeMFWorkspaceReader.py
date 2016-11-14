@@ -31,6 +31,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._resolve_strategies = {}
 
+        self._id_mapping = {}
+
+    ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
+    #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
+    def getNewId(self, old_id):
+        if old_id not in self._id_mapping:
+            self._id_mapping[old_id] = self._container_registry.uniqueName(old_id)
+        return self._id_mapping[old_id]
+
     def preRead(self, file_name):
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
         if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
@@ -101,10 +110,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         global_preferences.setValue("cura/categories_expanded", temp_preferences.getValue("cura/categories_expanded"))
         Application.getInstance().expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
+        self._id_mapping = {}
+
         # TODO: For the moment we use pretty naive existence checking. If the ID is the same, we assume in quite a few
         # TODO: cases that the container loaded is the same (most notable in materials & definitions).
         # TODO: It might be possible that we need to add smarter checking in the future.
-
+        Logger.log("d", "Workspace loading is checking definitions...")
         # Get all the definition files & check if they exist. If not, add them.
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
@@ -115,6 +126,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
                 self._container_registry.addContainer(definition_container)
 
+        Logger.log("d", "Workspace loading is checking materials...")
         # Get all the material files and check if they exist. If not, add them.
         xml_material_profile = self._getXmlProfileClass()
         if self._material_container_suffix is None:
@@ -129,6 +141,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                     self._container_registry.addContainer(material_container)
 
+        Logger.log("d", "Workspace loading is checking instance containers...")
         # Get quality_changes and user profiles saved in the workspace
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         user_instance_containers = []
@@ -152,7 +165,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
                         extruder_id = instance_container.getMetaDataEntry("extruder", None)
                         if extruder_id:
-                            new_id = self._container_registry.uniqueName(extruder_id) + "_current_settings"
+                            new_id = self.getNewId(extruder_id) + "_current_settings"
                             instance_container._id = new_id
                             instance_container.setName(new_id)
                             self._container_registry.addContainer(instance_container)
@@ -160,7 +173,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                         machine_id = instance_container.getMetaDataEntry("machine", None)
                         if machine_id:
-                            new_id = self._container_registry.uniqueName(machine_id) + "_current_settings"
+                            new_id = self.getNewId(machine_id) + "_current_settings"
                             instance_container._id = new_id
                             instance_container.setName(new_id)
                             self._container_registry.addContainer(instance_container)
@@ -182,10 +195,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 continue
 
         # Get the stack(s) saved in the workspace.
+        Logger.log("d", "Workspace loading is checking stacks containers...")
         container_stack_files = [name for name in cura_file_names if name.endswith(self._container_stack_suffix)]
         global_stack = None
         extruder_stacks = []
-
         for container_stack_file in container_stack_files:
             container_id = self._stripFileToId(container_stack_file)
 
@@ -196,7 +209,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if self._resolve_strategies["machine"] == "override":
                     container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
                 else:
-                    new_id = self._container_registry.uniqueName(container_id)
+                    new_id = self.getNewId(container_id)
                     stack = ContainerStack(new_id)
                     stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
                     # Ensure a unique ID and name
@@ -220,7 +233,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 old_id = container.getId()
                 container.setName(self._container_registry.uniqueName(container.getName()))
                 # We're not really supposed to change the ID in normal cases, but this is an exception.
-                container._id = self._container_registry.uniqueName(container.getId())
+                container._id = self.getNewId(container.getId())
 
                 # The container was not added yet, as it didn't have an unique ID. It does now, so add it.
                 self._container_registry.addContainer(container)
@@ -238,6 +251,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         quality_changes_index = stack.getContainerIndex(old_container)
                         stack.replaceContainer(quality_changes_index, container)
 
+        Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
         # Notify everything/one that is to notify about changes.
         for container in global_stack.getContainers():
             global_stack.containersChanged.emit(container)
@@ -245,7 +259,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for stack in extruder_stacks:
             for container in stack.getContainers():
                 stack.containersChanged.emit(container)
-
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
         return nodes
