@@ -303,7 +303,7 @@ class ExtruderManager(QObject):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
-        if global_stack.getProperty("machine_extruder_count", "value") == 0: #For single extrusion.
+        if global_stack.getProperty("machine_extruder_count", "value") <= 1: #For single extrusion.
             return [global_stack]
 
         used_extruder_stack_ids = set()
