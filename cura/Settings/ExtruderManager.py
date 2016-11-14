@@ -287,7 +287,6 @@ class ExtruderManager(QObject):
             result.append(stack.getProperty(setting_key, property))
         return result
 
-
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #
     #   \param machine_id The machine to remove the extruders for.
