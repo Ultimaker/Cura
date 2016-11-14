@@ -32,9 +32,25 @@ Item
 
         placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
+        property var expandedCategories
+        property bool lastFilterEmpty: true
+
         onTextChanged: {
             definitionsModel.filter = {"label": "*" + text};
-            definitionsModel.expanded = text.length > 0 ? ["*"] : [""]
+            var _filterEmpty = (text.length == 0);
+            if(_filterEmpty != lastFilterEmpty)
+            {
+                if(!_filterEmpty)
+                {
+                    expandedCategories = definitionsModel.expanded.slice();
+                    definitionsModel.expanded = ["*"];
+                }
+                else
+                {
+                    definitionsModel.expanded = expandedCategories;
+                }
+                lastFilterEmpty = _filterEmpty;
+            }
         }
     }
 
@@ -55,7 +71,8 @@ Item
             spacing: UM.Theme.getSize("default_lining").height;
             cacheBuffer: 1000000;   // Set a large cache to effectively just cache every list item.
 
-            model: UM.SettingDefinitionsModel {
+            model: UM.SettingDefinitionsModel
+            {
                 id: definitionsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
