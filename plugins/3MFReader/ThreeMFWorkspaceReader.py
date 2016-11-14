@@ -148,8 +148,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     if self._resolve_strategies["machine"] == "override":
                         user_containers[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
-                    else:
-                        user_containers.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                    elif self._resolve_strategies["machine"] == "new":
+                        # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
+                        extruder_id = instance_container.getMetaDataEntry("extruder", None)
+                        if extruder_id:
+                            new_id = self._container_registry.uniqueName(extruder_id) + "_current_settings"
+                            instance_container._id = new_id
+                            instance_container.setName(new_id)
+                            self._container_registry.addContainer(instance_container)
+                            continue
+
+                        machine_id = instance_container.getMetaDataEntry("machine", None)
+                        if machine_id:
+                            new_id = self._container_registry.uniqueName(machine_id) + "_current_settings"
+                            instance_container._id = new_id
+                            instance_container.setName(new_id)
+                            self._container_registry.addContainer(instance_container)
                         # TODO: Handle other resolve strategies
                         pass
                 user_instance_containers.append(instance_container)
@@ -182,8 +196,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if self._resolve_strategies["machine"] == "override":
                     container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
                 else:
-                    # TODO: Handle other resolve strategies
-                    pass
+                    new_id = self._container_registry.uniqueName(container_id)
+                    stack = ContainerStack(new_id)
+                    stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                    # Ensure a unique ID and name
+                    stack._id = new_id
+                    stack.setName(self._container_registry.uniqueName(stack.getName()))
+                    self._container_registry.addContainer(stack)
             else:
                 stack = ContainerStack(container_id)
                 # Deserialize stack by converting read data from bytes to string
@@ -211,6 +230,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if old_container.getId() == old_id:
                     quality_changes_index = global_stack.getContainerIndex(old_container)
                     global_stack.replaceContainer(quality_changes_index, container)
+                    continue
 
                 for stack in extruder_stacks:
                     old_container = stack.findContainer({"type": "quality_changes"})
@@ -235,6 +255,5 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _getXmlProfileClass(self):
         for type_name, container_type in self._container_registry.getContainerTypes():
-            print(type_name, container_type)
             if type_name == "XmlMaterialProfile":
                 return container_type
