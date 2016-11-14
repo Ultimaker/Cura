@@ -3821,7 +3821,7 @@
             {
                 "draft_shield_enabled":
                 {
-                    "label": "Enable Draft Shield",
+                    "label": "Enable Draught Shield",
                     "description": "This will create a wall around the model, which traps (hot) air and shields against exterior airflow. Especially useful for materials which warp easily.",
                     "type": "bool",
                     "default_value": false,
@@ -3830,8 +3830,8 @@
                 },
                 "draft_shield_dist":
                 {
-                    "label": "Draft Shield X/Y Distance",
-                    "description": "Distance of the draft shield from the print, in the X/Y directions.",
+                    "label": "Draught Shield X/Y Distance",
+                    "description": "Distance of the draught shield from the print, in the X/Y directions.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -3844,8 +3844,8 @@
                 },
                 "draft_shield_height_limitation":
                 {
-                    "label": "Draft Shield Limitation",
-                    "description": "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height.",
+                    "label": "Draught Shield Limitation",
+                    "description": "Set the height of the draught shield. Choose to print the draught shield at the full height of the model or at a limited height.",
                     "type": "enum",
                     "options":
                     {
@@ -3860,8 +3860,8 @@
                 },
                 "draft_shield_height":
                 {
-                    "label": "Draft Shield Height",
-                    "description": "Height limitation of the draft shield. Above this height no draft shield will be printed.",
+                    "label": "Draught Shield Height",
+                    "description": "Height limitation of the draught shield. Above this height no draught shield will be printed.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
