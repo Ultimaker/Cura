@@ -523,7 +523,11 @@ class BuildVolume(SceneNode):
         for extruder in used_extruders:
             extruder_id = extruder.getId()
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
+            if not offset_x:
+                offset_x = 0
             offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
+            if not offset_y:
+                offset_y = 0
             result[extruder_id] = []
 
             for polygon in machine_disallowed_polygons:
