@@ -540,35 +540,47 @@ class BuildVolume(SceneNode):
                 result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
 
             #Add the border around the edge of the build volume.
+            left_unreachable_border = 0
+            right_unreachable_border = 0
+            top_unreachable_border = 0
+            bottom_unreachable_border = 0
+            #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
+            for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
+                other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
+                other_offset_y = other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                left_unreachable_border = min(left_unreachable_border, other_offset_x - offset_x)
+                right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
+                top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
+                bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
-            if border_size + offset_x > 0:
+            if border_size - left_unreachable_border > 0:
                 result[extruder_id].append(Polygon(numpy.array([
                     [-half_machine_width, -half_machine_depth],
                     [-half_machine_width, half_machine_depth],
-                    [-half_machine_width + border_size + offset_x, half_machine_depth - border_size + offset_y],
-                    [-half_machine_width + border_size + offset_x, -half_machine_depth + border_size + offset_y]
+                    [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                    [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
                 ], numpy.float32)))
-            if border_size - offset_x > 0:
+            if border_size + right_unreachable_border > 0:
                 result[extruder_id].append(Polygon(numpy.array([
                     [half_machine_width, half_machine_depth],
                     [half_machine_width, -half_machine_depth],
-                    [half_machine_width - border_size + offset_x, -half_machine_depth + border_size + offset_y],
-                    [half_machine_width - border_size + offset_x, half_machine_depth - border_size + offset_y]
+                    [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                    [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
                 ], numpy.float32)))
-            if border_size - offset_y > 0:
+            if border_size + bottom_unreachable_border > 0:
                 result[extruder_id].append(Polygon(numpy.array([
                     [-half_machine_width, half_machine_depth],
                     [half_machine_width, half_machine_depth],
-                    [half_machine_width - border_size + offset_x, half_machine_depth - border_size + offset_y],
-                    [-half_machine_width + border_size + offset_x, half_machine_depth - border_size + offset_y]
+                    [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                    [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
                 ], numpy.float32)))
-            if border_size + offset_y > 0:
+            if border_size - top_unreachable_border > 0:
                 result[extruder_id].append(Polygon(numpy.array([
                     [half_machine_width, -half_machine_depth],
                     [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width + border_size + offset_x, -half_machine_depth + border_size + offset_y],
-                    [half_machine_width - border_size + offset_x, -half_machine_depth + border_size + offset_y]
+                    [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                    [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
                 ], numpy.float32)))
 
         return result
