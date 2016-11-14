@@ -162,7 +162,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if self._resolve_strategies["quality_changes"] == "override":
                         quality_changes[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                     else:
-                        quality_changes.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                 quality_changes_instance_containers.append(instance_container)
             else:
                 continue
@@ -194,6 +194,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stacks.append(stack)
             else:
                 global_stack = stack
+
+        if self._resolve_strategies["quality_changes"] == "new":
+            # Quality changes needs to get a new ID, added to registry and to the right stacks
+            for container in quality_changes_instance_containers:
+                old_id = container.getId()
+                container.setName(self._container_registry.uniqueName(container.getName()))
+                # We're not really supposed to change the ID in normal cases, but this is an exception.
+                container._id = self._container_registry.uniqueName(container.getId())
+
+                # The container was not added yet, as it didn't have an unique ID. It does now, so add it.
+                self._container_registry.addContainer(container)
+
+                # Replace the quality changes container
+                old_container = global_stack.findContainer({"type": "quality_changes"})
+                if old_container.getId() == old_id:
+                    quality_changes_index = global_stack.getContainerIndex(old_container)
+                    global_stack.replaceContainer(quality_changes_index, container)
+
+                for stack in extruder_stacks:
+                    old_container = stack.findContainer({"type": "quality_changes"})
+                    if old_container.getId() == old_id:
+                        quality_changes_index = stack.getContainerIndex(old_container)
+                        stack.replaceContainer(quality_changes_index, container)
 
         # Notify everything/one that is to notify about changes.
         for container in global_stack.getContainers():
