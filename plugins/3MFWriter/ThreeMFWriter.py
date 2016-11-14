@@ -57,10 +57,6 @@ class ThreeMFWriter(MeshWriter):
         return self._archive
 
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
-        try:
-            MeshWriter._meshNodes(nodes).__next__()
-        except StopIteration:
-            return False #Don't write anything if there is no mesh data.
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
         try:
@@ -86,7 +82,7 @@ class ThreeMFWriter(MeshWriter):
             build = ET.SubElement(model, "build")
 
             added_nodes = []
-
+            index = 0  # Ensure index always exists (even if there are no nodes to write)
             # Write all nodes with meshData to the file as objects inside the resource tag
             for index, n in enumerate(MeshWriter._meshNodes(nodes)):
                 added_nodes.append(n)  # Save the nodes that have mesh data
