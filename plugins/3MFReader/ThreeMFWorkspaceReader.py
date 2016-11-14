@@ -56,30 +56,31 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
         container_stack_files = [name for name in cura_file_names if name.endswith(self._container_stack_suffix)]
 
-        conflict = False
+        machine_conflict = False
+        quality_changes_conflict = False
         for container_stack_file in container_stack_files:
             container_id = self._stripFileToId(container_stack_file)
             stacks = self._container_registry.findContainerStacks(id=container_id)
             if stacks:
-                conflict = True
+                machine_conflict = True
                 break
 
         # Check if any quality_changes instance container is in conflict.
-        if not conflict:
-            instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
-            for instance_container_file in instance_container_files:
-                container_id = self._stripFileToId(instance_container_file)
-                instance_container = InstanceContainer(container_id)
+        instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
+        for instance_container_file in instance_container_files:
+            container_id = self._stripFileToId(instance_container_file)
+            instance_container = InstanceContainer(container_id)
 
-                # Deserialize InstanceContainer by converting read data from bytes to string
-                instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
-                container_type = instance_container.getMetaDataEntry("type")
-                if container_type == "quality_changes":
-                    # Check if quality changes already exists.
-                    quality_changes = self._container_registry.findInstanceContainers(id = container_id)
-                    if quality_changes:
-                        conflict = True
-        if conflict:
+            # Deserialize InstanceContainer by converting read data from bytes to string
+            instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+            container_type = instance_container.getMetaDataEntry("type")
+            if container_type == "quality_changes":
+                # Check if quality changes already exists.
+                quality_changes = self._container_registry.findInstanceContainers(id = container_id)
+                if quality_changes:
+                    quality_changes_conflict = True
+
+        if machine_conflict or quality_changes_conflict:
             # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
             self._resolve_strategies = {}
             self._dialog.show()
@@ -87,9 +88,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if self._dialog.getResult() == "cancel":
                 return WorkspaceReader.PreReadResult.cancelled
             result = self._dialog.getResult()
-            # TODO: In the future it could be that machine & quality changes will have different resolve strategies
-            self._resolve_strategies = {"machine": result, "quality_changes": result}
-            pass
+
+            self._resolve_strategies = {"machine": None, "quality_changes": None}
+            if machine_conflict:
+                self._resolve_strategies["machine"] = result
+            if quality_changes_conflict:
+                self._resolve_strategies["quality_changes"] = result
+
         return WorkspaceReader.PreReadResult.accepted
 
     def read(self, file_name):
