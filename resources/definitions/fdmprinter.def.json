@@ -283,6 +283,18 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "nozzle_disallowed_areas":
+                {
+                    "label": "Nozzle Disallowed Areas",
+                    "description": "A list of polygons with areas the nozzle is not allowed to enter.",
+                    "type": "polygons",
+                    "default_value":
+                    [
+                    ],
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_head_polygon":
                 {
                     "label": "Machine head polygon",
