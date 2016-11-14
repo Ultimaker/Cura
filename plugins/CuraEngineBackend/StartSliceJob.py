@@ -4,6 +4,7 @@
 import numpy
 from string import Formatter
 from enum import IntEnum
+import time
 
 from UM.Job import Job
 from UM.Application import Application
@@ -254,6 +255,16 @@ class StartSliceJob(Job):
         settings["print_bed_temperature"] = settings["material_bed_temperature"]
         settings["print_temperature"] = settings["material_print_temperature"]
 
+        settings["time"] = time.strftime('%H:%M:%S')
+        settings["date"] = time.strftime('%d-%m-%Y')
+        settings["day"] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
+
+        settings["print_time"] = Application.getInstance().getPrintInformation().currentPrintTime
+        settings["filament_amount"] = Application.getInstance().getPrintInformation().materialLengths
+        settings["filament_weight"] = Application.getInstance().getPrintInformation().materialWeights
+        settings["filament_cost"] = None
+        settings["profile_string"] = None
+
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
@@ -262,8 +273,6 @@ class StartSliceJob(Job):
             else:
                 setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
-
-
 
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
