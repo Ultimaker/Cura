@@ -438,6 +438,7 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []
         for extruder_id in result_areas:
             self._disallowed_areas.extend(result_areas[extruder_id])
+        print("FINAL:", self._disallowed_areas)
 
     ##  Computes the disallowed areas for objects that are printed with print
     #   features.
@@ -534,8 +535,8 @@ class BuildVolume(SceneNode):
                 result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
 
             #Add the border around the edge of the build volume.
-            half_machine_width = self._global_container_stack.getProperty("machine_width", "value")
-            half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
+            half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
+            half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
             if border_size + offset_x > 0:
                 result[extruder_id].append(Polygon(numpy.array([
                     [-half_machine_width, -half_machine_depth],
