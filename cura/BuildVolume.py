@@ -417,6 +417,12 @@ class BuildVolume(SceneNode):
                 #Prime areas are valid. Add as normal.
                 result_areas[extruder_id].extend(prime_areas[extruder_id])
 
+            nozzle_disallowed_areas = extruder.getProperty("nozzle_disallowed_areas", "value")
+            for area in nozzle_disallowed_areas:
+                polygon = Polygon(numpy.array(area, numpy.float32))
+                polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                result_areas[extruder_id].append(polygon) #Don't perform the offset on these.
+
         # Add prime tower location as disallowed area.
         prime_tower_collision = False
         prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
