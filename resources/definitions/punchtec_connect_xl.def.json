@@ -9,6 +9,11 @@
         "manufacturer": "Punchtec",
         "category": "Other",
         "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "punchtec_connect_xl_extruder_0",
+            "1": "punchtec_connect_xl_extruder_1"
+        },
         "platform_offset": [ 0, 0, 0]
     },
 
