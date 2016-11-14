@@ -29,7 +29,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._instance_container_suffix = ContainerRegistry.getMimeTypeForContainer(InstanceContainer).suffixes[0]
         self._container_stack_suffix = ContainerRegistry.getMimeTypeForContainer(ContainerStack).suffixes[0]
 
-        self._resolve_strategy = None
+        self._resolve_strategies = {}
 
     def preRead(self, file_name):
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
@@ -69,13 +69,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         conflict = True
         if conflict:
             # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
-            self._resolve_strategy = None
+            self._resolve_strategies = {}
             self._dialog.show()
             self._dialog.waitForClose()
             if self._dialog.getResult() == "cancel":
                 return WorkspaceReader.PreReadResult.cancelled
-
-            self._resolve_strategy = self._dialog.getResult()
+            result = self._dialog.getResult()
+            # TODO: In the future it could be that machine & quality changes will have different resolve strategies
+            self._resolve_strategies = {"machine": result, "quality_changes": result}
             pass
         return WorkspaceReader.PreReadResult.accepted
 
@@ -145,9 +146,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not user_containers:
                     self._container_registry.addContainer(instance_container)
                 else:
-                    if self._resolve_strategy == "override":
+                    if self._resolve_strategies["machine"] == "override":
                         user_containers[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                     else:
+                        user_containers.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                         # TODO: Handle other resolve strategies
                         pass
                 user_instance_containers.append(instance_container)
@@ -157,8 +159,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not quality_changes:
                     self._container_registry.addContainer(instance_container)
                 else:
-                    if self._resolve_strategy == "override":
+                    if self._resolve_strategies["quality_changes"] == "override":
                         quality_changes[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                    else:
+                        quality_changes.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                 quality_changes_instance_containers.append(instance_container)
             else:
                 continue
@@ -171,12 +175,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for container_stack_file in container_stack_files:
             container_id = self._stripFileToId(container_stack_file)
 
-
             # Check if a stack by this ID already exists;
             container_stacks = self._container_registry.findContainerStacks(id=container_id)
             if container_stacks:
                 stack = container_stacks[0]
-                if self._resolve_strategy == "override":
+                if self._resolve_strategies["machine"] == "override":
                     container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
                 else:
                     # TODO: Handle other resolve strategies
@@ -185,13 +188,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack = ContainerStack(container_id)
                 # Deserialize stack by converting read data from bytes to string
                 stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
-
                 self._container_registry.addContainer(stack)
 
             if stack.getMetaDataEntry("type") == "extruder_train":
                 extruder_stacks.append(stack)
             else:
                 global_stack = stack
+
         # Notify everything/one that is to notify about changes.
         for container in global_stack.getContainers():
             global_stack.containersChanged.emit(container)
