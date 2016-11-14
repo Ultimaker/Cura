@@ -44,10 +44,12 @@ Item
                 {
                     expandedCategories = definitionsModel.expanded.slice();
                     definitionsModel.expanded = ["*"];
+                    definitionsModel.showAncestors = true
                 }
                 else
                 {
                     definitionsModel.expanded = expandedCategories;
+                    definitionsModel.showAncestors = false
                 }
                 lastFilterEmpty = _filterEmpty;
             }
