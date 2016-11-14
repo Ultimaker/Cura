@@ -147,6 +147,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     if self._resolve_strategy == "override":
                         user_containers[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                    else:
+                        # TODO: Handle other resolve strategies
+                        pass
                 user_instance_containers.append(instance_container)
             elif container_type == "quality_changes":
                 # Check if quality changes already exists.
@@ -168,22 +171,37 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for container_stack_file in container_stack_files:
             container_id = self._stripFileToId(container_stack_file)
 
-            stack = ContainerStack(container_id)
+
             # Check if a stack by this ID already exists;
             container_stacks = self._container_registry.findContainerStacks(id=container_id)
             if container_stacks:
+                stack = container_stacks[0]
                 if self._resolve_strategy == "override":
                     container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                else:
+                    # TODO: Handle other resolve strategies
+                    pass
             else:
+                stack = ContainerStack(container_id)
                 # Deserialize stack by converting read data from bytes to string
                 stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+
                 self._container_registry.addContainer(stack)
 
             if stack.getMetaDataEntry("type") == "extruder_train":
                 extruder_stacks.append(stack)
             else:
                 global_stack = stack
+        # Notify everything/one that is to notify about changes.
+        for container in global_stack.getContainers():
+            global_stack.containersChanged.emit(container)
 
+        for stack in extruder_stacks:
+            for container in stack.getContainers():
+                stack.containersChanged.emit(container)
+
+        # Actually change the active machine.
+        Application.getInstance().setGlobalContainerStack(global_stack)
         return nodes
 
     def _stripFileToId(self, file):
