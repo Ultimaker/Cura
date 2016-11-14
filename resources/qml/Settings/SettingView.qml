@@ -27,7 +27,8 @@ Item
             top: parent.top
             left: parent.left
             leftMargin: UM.Theme.getSize("default_margin").width
-            //right: parent.right
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         placeholderText: catalog.i18nc("@label:textbox", "Filter...")
@@ -57,12 +58,14 @@ Item
                 {
                     expandedCategories = definitionsModel.expanded.slice();
                     definitionsModel.expanded = ["*"];
-                    definitionsModel.showAncestors = true
+                    definitionsModel.showAncestors = true;
+                    definitionsModel.showAll = true;
                 }
                 else
                 {
                     definitionsModel.expanded = expandedCategories;
-                    definitionsModel.showAncestors = false
+                    definitionsModel.showAncestors = false;
+                    definitionsModel.showAll = false;
                 }
                 lastFilterEmpty = _filterEmpty;
             }
