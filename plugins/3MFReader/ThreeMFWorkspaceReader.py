@@ -171,17 +171,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             new_id = self.getNewId(extruder_id) + "_current_settings"
                             instance_container._id = new_id
                             instance_container.setName(new_id)
+                            instance_container.setMetaDataEntry("extruder", self.getNewId(extruder_id))
                             self._container_registry.addContainer(instance_container)
-                            continue
 
                         machine_id = instance_container.getMetaDataEntry("machine", None)
                         if machine_id:
                             new_id = self.getNewId(machine_id) + "_current_settings"
                             instance_container._id = new_id
                             instance_container.setName(new_id)
+                            instance_container.setMetaDataEntry("machine", self.getNewId(machine_id))
                             self._container_registry.addContainer(instance_container)
-                        # TODO: Handle other resolve strategies
-                        pass
                 user_instance_containers.append(instance_container)
             elif container_type == "quality_changes":
                 # Check if quality changes already exists.
@@ -209,14 +208,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack = container_stacks[0]
                 if self._resolve_strategies["machine"] == "override":
                     container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
-                else:
+                elif self._resolve_strategies["machine"] == "new":
                     new_id = self.getNewId(container_id)
                     stack = ContainerStack(new_id)
                     stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+
+                    # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
+                    # bound machine also needs to change.
+                    if stack.getMetaDataEntry("machine", None):
+                        stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
                     # Ensure a unique ID and name
                     stack._id = new_id
                     stack.setName(self._container_registry.uniqueName(stack.getName()))
                     self._container_registry.addContainer(stack)
+                else:
+                    Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
             else:
                 stack = ContainerStack(container_id)
                 # Deserialize stack by converting read data from bytes to string
@@ -227,6 +233,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stacks.append(stack)
             else:
                 global_stack = stack
+
+        if self._resolve_strategies["machine"] == "new":
+            # A new machine was made, but it was serialized with the wrong user container. Fix that now.
+            for container in user_instance_containers:
+                extruder_id = container.getMetaDataEntry("extruder", None)
+                if extruder_id:
+                    for extruder in extruder_stacks:
+                        if extruder.getId() == extruder_id:
+                            extruder.replaceContainer(0, container)
+                            continue
+                machine_id = container.getMetaDataEntry("machine", None)
+                if machine_id:
+                    if global_stack.getId() == machine_id:
+                        global_stack.replaceContainer(0, container)
+                        continue
 
         if self._resolve_strategies["quality_changes"] == "new":
             # Quality changes needs to get a new ID, added to registry and to the right stacks
