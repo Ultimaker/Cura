@@ -213,13 +213,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     stack = ContainerStack(new_id)
                     stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
 
+                    # Ensure a unique ID and name
+                    stack._id = new_id
+
                     # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
                     # bound machine also needs to change.
                     if stack.getMetaDataEntry("machine", None):
                         stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
-                    # Ensure a unique ID and name
-                    stack._id = new_id
-                    stack.setName(self._container_registry.uniqueName(stack.getName()))
+
+                    if stack.getMetaDataEntry("type") != "extruder_train":
+                        # Only machines need a new name, stacks may be non-unique
+                        stack.setName(self._container_registry.uniqueName(stack.getName()))
                     self._container_registry.addContainer(stack)
                 else:
                     Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
