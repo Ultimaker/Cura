@@ -1,6 +1,6 @@
 {
     "id": "punchtec_connect_xl",
-    "name": "punchtec Connect XL",
+    "name": "Punchtec Connect XL",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -31,6 +31,6 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_depth": { "default_value": 304 },
         "machine_width": { "default_value": 304 },
-        "machine_name": { "default_value": "Connect XL" }
+        "machine_name": { "default_value": "Punchtec Connect XL" }
     }
 }
