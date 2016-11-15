@@ -214,7 +214,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: enableSupportCheckBox.verticalCenter
-            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 45 - 3 * UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "Enable Support");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -259,7 +259,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 45 - 3 * UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "Support Extruder");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -269,6 +269,7 @@ Item
             id: supportExtruderCombobox
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
             model: extruderModel
+            textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
 
             anchors.top: enableSupportCheckBox.bottom
             anchors.topMargin: {
@@ -280,7 +281,7 @@ Item
             }
             anchors.left: supportExtruderLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            width: parent.width / 100 * 65
+            width: parent.width / 100 * 55
             height: {
                 if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) {
                     // default height when control is enabled
@@ -317,13 +318,12 @@ Item
             }
         }
 
-
         Label{
             id: adhesionHelperLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: adhesionCheckBox.verticalCenter
-            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 45 - 3 * UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "Build Plate Adhesion");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
