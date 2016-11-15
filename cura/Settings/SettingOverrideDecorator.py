@@ -61,6 +61,12 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def getActiveExtruder(self):
         return self._extruder_stack
 
+    ##  Gets the signal that emits if the active extruder changed.
+    #
+    #   This can then be accessed via a decorator.
+    def getActiveExtruderChangedSignal(self):
+        return self.activeExtruderChanged
+
     ##  Gets the currently active extruders position
     #
     #   \return An extruder's position, or None if no position info is available.

@@ -110,6 +110,9 @@ class BuildVolume(SceneNode):
                 per_mesh_stack = node.callDecoration("getStack")
                 if per_mesh_stack:
                     per_mesh_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+                active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
+                if active_extruder_changed is not None:
+                    node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreas)
                 node.decoratorsChanged.disconnect(self._onNodeDecoratorChanged)
 
             self._scene_objects = new_scene_objects
@@ -122,6 +125,10 @@ class BuildVolume(SceneNode):
         per_mesh_stack = node.callDecoration("getStack")
         if per_mesh_stack:
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
+        active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
+        if active_extruder_changed is not None:
+            active_extruder_changed.connect(self._updateDisallowedAreas)
+            self._updateDisallowedAreas()
 
     def setWidth(self, width):
         if width: self._width = width
