@@ -14,6 +14,7 @@ Item
     id: base;
 
     property Action configureSettings;
+    property bool findingSettings;
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
 
@@ -47,14 +48,14 @@ Item
         }
 
         property var expandedCategories
-        property bool lastFilterEmpty: true
+        property bool lastFindingSettings: false
 
         onTextChanged: {
             definitionsModel.filter = {"label": "*" + text};
-            var _filterEmpty = (text.length == 0);
-            if(_filterEmpty != lastFilterEmpty)
+            findingSettings = (text.length > 0);
+            if(findingSettings != lastFindingSettings)
             {
-                if(!_filterEmpty)
+                if(findingSettings)
                 {
                     expandedCategories = definitionsModel.expanded.slice();
                     definitionsModel.expanded = ["*"];
@@ -67,7 +68,7 @@ Item
                     definitionsModel.showAncestors = false;
                     definitionsModel.showAll = false;
                 }
-                lastFilterEmpty = _filterEmpty;
+                lastFindingSettings = findingSettings;
             }
         }
     }
@@ -211,6 +212,7 @@ Item
                     onContextMenuRequested:
                     {
                         contextMenu.key = model.key;
+                        contextMenu.settingVisible = model.visible;
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
@@ -258,6 +260,7 @@ Item
 
                 property string key
                 property var provider
+                property bool settingVisible
 
                 MenuItem
                 {
@@ -276,8 +279,36 @@ Item
                 MenuItem
                 {
                     //: Settings context menu action
+                    visible: !findingSettings;
                     text: catalog.i18nc("@action:menu", "Hide this setting");
                     onTriggered: definitionsModel.hide(contextMenu.key);
+                }
+                MenuItem
+                {
+                    //: Settings context menu action
+                    text:
+                    {
+                        if (contextMenu.settingVisible)
+                        {
+                            return catalog.i18nc("@action:menu", "Don't show this setting");
+                        }
+                        else
+                        {
+                            return catalog.i18nc("@action:menu", "Keep this setting visible");
+                        }
+                    }
+                    visible: findingSettings;
+                    onTriggered:
+                    {
+                        if (contextMenu.settingVisible)
+                        {
+                            definitionsModel.hide(contextMenu.key);
+                        }
+                        else
+                        {
+                            definitionsModel.show(contextMenu.key);
+                        }
+                    }
                 }
                 MenuItem
                 {
