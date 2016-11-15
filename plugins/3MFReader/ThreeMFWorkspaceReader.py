@@ -82,17 +82,23 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         if machine_conflict or quality_changes_conflict:
             # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
-            self._resolve_strategies = {}
+            self._dialog.setMachineConflict(machine_conflict)
+            self._dialog.setQualityChangesConflict(quality_changes_conflict)
             self._dialog.show()
             self._dialog.waitForClose()
-            if self._dialog.getResult() == "cancel":
+            if self._dialog.getResult() == {}:
                 return WorkspaceReader.PreReadResult.cancelled
             result = self._dialog.getResult()
+            # If there is no conflict, ignore the data.
+            print("beep", result)
+            if not machine_conflict:
+                result["machine"] = None
+            if not quality_changes_conflict:
+                result["quality_changes"] = None
 
-            if machine_conflict:
-                self._resolve_strategies["machine"] = result
-            if quality_changes_conflict:
-                self._resolve_strategies["quality_changes"] = result
+
+            self._resolve_strategies = result
+            print("STRATEGY WAS", self._resolve_strategies)
 
         return WorkspaceReader.PreReadResult.accepted
 

@@ -1,7 +1,8 @@
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject, pyqtProperty
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
+from UM.Logger import Logger
 
 import os
 import threading
@@ -16,9 +17,35 @@ class WorkspaceDialog(QObject):
         self._view = None
         self._qml_url = "WorkspaceDialog.qml"
         self._lock = threading.Lock()
-        self._result = None  # What option did the user pick?
+        self._default_strategy = "override"
+        self._result = {"machine": self._default_strategy, "quality_changes": self._default_strategy}
         self._visible = False
         self.showDialogSignal.connect(self.__show)
+
+        self._has_quality_changes_conflict = False
+        self._has_machine_conflict = False
+
+    machineConflictChanged = pyqtSignal()
+    qualityChangesConflictChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = machineConflictChanged)
+    def machineConflict(self):
+        return self._has_machine_conflict
+
+    @pyqtProperty(bool, notify=qualityChangesConflictChanged)
+    def qualityChangesConflict(self):
+        return self._has_quality_changes_conflict
+
+    @pyqtSlot(str, str)
+    def setResolveStrategy(self, key, strategy):
+        if key in self._result:
+            self._result[key] = strategy
+
+    def setMachineConflict(self, machine_conflict):
+        self._has_machine_conflict = machine_conflict
+
+    def setQualityChangesConflict(self, quality_changes_conflict):
+        self._has_quality_changes_conflict = quality_changes_conflict
 
     def getResult(self):
         return self._result
@@ -29,11 +56,15 @@ class WorkspaceDialog(QObject):
         self._context = QQmlContext(Application.getInstance()._engine.rootContext())
         self._context.setContextProperty("manager", self)
         self._view = self._component.create(self._context)
+        if self._view is None:
+            Logger.log("e", "QQmlComponent status %s", self._component.status())
+            Logger.log("e", "QQmlComponent errorString %s", self._component.errorString())
 
     def show(self):
         # Emit signal so the right thread actually shows the view.
         self._lock.acquire()
-        self._result = None
+        # Reset the result
+        self._result = {"machine": self._default_strategy, "quality_changes": self._default_strategy}
         self._visible = True
         self.showDialogSignal.emit()
 
@@ -41,7 +72,7 @@ class WorkspaceDialog(QObject):
     ##  Used to notify the dialog so the lock can be released.
     def notifyClosed(self):
         if self._result is None:
-            self._result = "cancel"
+            self._result = {}
         self._lock.release()
 
     def hide(self):
@@ -50,22 +81,15 @@ class WorkspaceDialog(QObject):
         self._view.hide()
 
     @pyqtSlot()
-    def onOverrideButtonClicked(self):
+    def onOkButtonClicked(self):
         self._view.hide()
         self.hide()
-        self._result = "override"
-
-    @pyqtSlot()
-    def onNewButtonClicked(self):
-        self._view.hide()
-        self.hide()
-        self._result = "new"
 
     @pyqtSlot()
     def onCancelButtonClicked(self):
         self._view.hide()
         self.hide()
-        self._result = "cancel"
+        self._result = {}
 
     ##  Block thread until the dialog is closed.
     def waitForClose(self):
@@ -76,4 +100,5 @@ class WorkspaceDialog(QObject):
     def __show(self):
         if self._view is None:
             self._createViewFromQML()
-        self._view.show()
+        if self._view:
+            self._view.show()
