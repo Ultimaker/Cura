@@ -104,9 +104,7 @@ class BuildVolume(SceneNode):
         root = Application.getInstance().getController().getScene().getRoot()
         new_number_of_objects = len([node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode])
         if new_number_of_objects != self._number_of_objects:
-            recalculate = False
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
-                recalculate = (new_number_of_objects < 2 and self._number_of_objects > 1) or (new_number_of_objects > 1 and self._number_of_objects < 2)
+            recalculate = new_number_of_objects != self._number_of_objects
             self._number_of_objects = new_number_of_objects
             if recalculate:
                 self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
