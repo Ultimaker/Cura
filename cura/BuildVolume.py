@@ -112,7 +112,7 @@ class BuildVolume(SceneNode):
                     per_mesh_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
                 active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
                 if active_extruder_changed is not None:
-                    node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreas)
+                    node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._onNodeDecoratorChanged)
 
             self._scene_objects = new_scene_objects
@@ -127,8 +127,8 @@ class BuildVolume(SceneNode):
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
         active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
         if active_extruder_changed is not None:
-            active_extruder_changed.connect(self._updateDisallowedAreas)
-            self._updateDisallowedAreas()
+            active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
+            self._updateDisallowedAreasAndRebuild()
 
     def setWidth(self, width):
         if width: self._width = width
@@ -390,6 +390,17 @@ class BuildVolume(SceneNode):
 
     def hasErrors(self):
         return self._has_errors
+
+    ##  Calls _updateDisallowedAreas and makes sure the changes appear in the
+    #   scene.
+    #
+    #   This is required for a signal to trigger the update in one go. The
+    #   ``_updateDisallowedAreas`` method itself shouldn't call ``rebuild``,
+    #   since there may be other changes before it needs to be rebuilt, which
+    #   would hit performance.
+    def _updateDisallowedAreasAndRebuild(self):
+        self._updateDisallowedAreas()
+        self.rebuild()
 
     def _updateDisallowedAreas(self):
         if not self._global_container_stack:
