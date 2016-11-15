@@ -35,7 +35,7 @@ Item
         Label{
             id: infillLabel
             //: Infill selection label
-            text: catalog.i18nc("@label", "Infill:");
+            text: catalog.i18nc("@label", "Infill");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             anchors.top: parent.top
@@ -210,13 +210,121 @@ Item
         height: childrenRect.height
 
         Label{
+            id: enableSupportLabel
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: enableSupportCheckBox.verticalCenter
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Enable Support");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        CheckBox{
+            id: enableSupportCheckBox
+            anchors.top: parent.top
+            anchors.left: enableSupportLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+            style: UM.Theme.styles.checkbox;
+            enabled: base.settingsEnabled
+
+            checked: supportEnabled.properties.value == "True";
+
+            MouseArea {
+                id: enableSupportMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: true
+                onClicked:
+                {
+                    // The value is a string "True" or "False"
+                    supportEnabled.setPropertyValue("value", supportEnabled.properties.value != "True");
+                }
+                onEntered:
+                {
+                    base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
+                        catalog.i18nc("@label", supportEnabled.properties.description));
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
+            }
+        }
+
+        Label{
+            id: supportExtruderLabel
+            visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: supportExtruderCombobox.verticalCenter
+            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label", "Support Extruder");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
+        ComboBox {
+            id: supportExtruderCombobox
+            visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
+            model: extruderModel
+
+            anchors.top: enableSupportCheckBox.bottom
+            anchors.topMargin: {
+                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) {
+                    return UM.Theme.getSize("default_margin").height;
+                } else {
+                    return 0;
+                }
+            }
+            anchors.left: supportExtruderLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            width: parent.width / 100 * 65
+            height: {
+                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) {
+                    // default height when control is enabled
+                    return UM.Theme.getSize("setting_control").height;
+                } else {
+                    return 0;
+                }
+            }
+
+            style: UM.Theme.styles.combobox
+            enabled: base.settingsEnabled
+            property alias _hovered: supportExtruderMouseArea.containsMouse
+
+            currentIndex: parseFloat(supportExtruderNr.properties.value)  // supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) : -1
+            onActivated: {
+                // Send the extruder nr as a string.
+                supportExtruderNr.setPropertyValue("value", String(index));
+            }
+            MouseArea {
+                id: supportExtruderMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                enabled: base.settingsEnabled
+                acceptedButtons: Qt.NoButton
+                onEntered:
+                {
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    base.hideTooltip();
+                }
+            }
+        }
+
+
+        Label{
             id: adhesionHelperLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: adhesionCheckBox.verticalCenter
             width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
-            //: Bed adhesion label
-            text: catalog.i18nc("@label", "Helper Parts:");
+            text: catalog.i18nc("@label", "Build Plate Adhesion");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -225,12 +333,12 @@ Item
             id: adhesionCheckBox
             property alias _hovered: adhesionMouseArea.containsMouse
 
-            anchors.top: parent.top
+            anchors.top: supportExtruderCombobox.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: adhesionHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable printing build-plate adhesion helper checkbox
-            text: catalog.i18nc("@option:check", "Print Build Plate Adhesion");
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
 
@@ -269,98 +377,6 @@ Item
             }
         }
 
-        Label{
-            id: supportHelperLabel
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: supportCheckBox.verticalCenter
-            width: parent.width / 100 * 35 - 3 * UM.Theme.getSize("default_margin").width
-            //: Support label
-            text: "";
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
-
-        CheckBox{
-            id: supportCheckBox
-            visible: machineExtruderCount.properties.value <= 1
-            property alias _hovered: supportMouseArea.containsMouse
-
-            anchors.top: adhesionCheckBox.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: supportHelperLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-            //: Setting enable support checkbox
-            text: catalog.i18nc("@option:check", "Print Support Structure");
-            style: UM.Theme.styles.checkbox;
-            enabled: base.settingsEnabled
-
-            checked: supportEnabled.properties.value == "True"
-            MouseArea {
-                id: supportMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: base.settingsEnabled
-                onClicked:
-                {
-                    supportEnabled.setPropertyValue("value", !parent.checked)
-                }
-                onEntered:
-                {
-                    base.showTooltip(supportCheckBox, Qt.point(-supportCheckBox.x, 0),
-                        catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
-                }
-                onExited:
-                {
-                    base.hideTooltip();
-                }
-            }
-        }
-
-        ComboBox {
-            id: supportExtruderCombobox
-            visible: machineExtruderCount.properties.value > 1
-            model: extruderModel
-
-            anchors.top: adhesionCheckBox.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: supportHelperLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            width: parent.width / 100 * 65
-
-            style: UM.Theme.styles.combobox
-            enabled: base.settingsEnabled
-            property alias _hovered: supportExtruderMouseArea.containsMouse
-
-            currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
-            onActivated: {
-                if(index==0) {
-                    supportEnabled.setPropertyValue("value", false);
-                } else {
-                    supportEnabled.setPropertyValue("value", true);
-                    // Send the extruder nr as a string.
-                    supportExtruderNr.setPropertyValue("value", String(index - 1));
-                }
-            }
-            MouseArea {
-                id: supportExtruderMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: base.settingsEnabled
-                acceptedButtons: Qt.NoButton
-                onEntered:
-                {
-                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
-                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
-                }
-                onExited:
-                {
-                    base.hideTooltip();
-                }
-            }
-        }
-
         ListModel {
             id: extruderModel
             Component.onCompleted: populateExtruderModel()
@@ -377,13 +393,9 @@ Item
     function populateExtruderModel()
     {
         extruderModel.clear();
-        extruderModel.append({
-            text: catalog.i18nc("@label", "Don't print support"),
-            color: ""
-        })
         for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++) {
             extruderModel.append({
-                text: catalog.i18nc("@label", "Print support using %1").arg(extruders.getItem(extruderNumber).name),
+                text: extruders.getItem(extruderNumber).name,
                 color: extruders.getItem(extruderNumber).color
             })
         }
@@ -438,7 +450,7 @@ Item
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "support_enable"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "description" ]
         storeIndex: 0
     }
 
