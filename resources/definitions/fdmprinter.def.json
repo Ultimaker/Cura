@@ -1216,6 +1216,7 @@
                     "default_value": 0.5,
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
+                    "maximum_value": "machine_nozzle_heat_up_speed",
                     "enabled": "False",
                     "comments": "old enabled function: material_flow_dependent_temperature or machine_extruder_count > 1",
                     "settable_per_mesh": false,
