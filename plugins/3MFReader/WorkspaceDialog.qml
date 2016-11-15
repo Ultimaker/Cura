@@ -116,7 +116,7 @@ UM.Dialog
                         id: qualityChangesResolveComboBox
                         onActivated:
                         {
-                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
+                            manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
                         }
                     }
                 }
