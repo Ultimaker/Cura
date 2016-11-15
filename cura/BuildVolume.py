@@ -119,7 +119,6 @@ class BuildVolume(SceneNode):
     #
     #   \param node The node for which the decorators changed.
     def _onNodeDecoratorChanged(self, node):
-        print("NODE DECORATOR CHANGED!", node)
         per_mesh_stack = node.callDecoration("getStack")
         if per_mesh_stack:
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
