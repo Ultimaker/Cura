@@ -104,10 +104,8 @@ class BuildVolume(SceneNode):
         root = Application.getInstance().getController().getScene().getRoot()
         new_number_of_objects = len([node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode])
         if new_number_of_objects != self._number_of_objects:
-            recalculate = new_number_of_objects != self._number_of_objects
             self._number_of_objects = new_number_of_objects
-            if recalculate:
-                self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
+            self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
 
     def setWidth(self, width):
         if width: self._width = width
