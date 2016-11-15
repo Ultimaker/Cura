@@ -75,8 +75,8 @@ class BuildVolume(SceneNode):
         self._has_errors = False
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
-        # Number of objects loaded at the moment.
-        self._number_of_objects = 0
+        #Objects loaded at the moment. We are connected to the property changed events of these objects.
+        self._scene_objects = set()
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(100)
@@ -102,10 +102,27 @@ class BuildVolume(SceneNode):
 
     def _onChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
-        new_number_of_objects = len([node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode])
-        if new_number_of_objects != self._number_of_objects:
-            self._number_of_objects = new_number_of_objects
+        new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode)
+        if new_scene_objects != self._scene_objects:
+            for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
+                node.decoratorsChanged.connect(self._onNodeDecoratorChanged)
+            for node in self._scene_objects - new_scene_objects: #Nodes that were removed from the scene.
+                per_mesh_stack = node.callDecoration("getStack")
+                if per_mesh_stack:
+                    per_mesh_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+                node.decoratorsChanged.disconnect(self._onNodeDecoratorChanged)
+
+            self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
+
+    ##  Updates the listeners that listen for changes in per-mesh stacks.
+    #
+    #   \param node The node for which the decorators changed.
+    def _onNodeDecoratorChanged(self, node):
+        print("NODE DECORATOR CHANGED!", node)
+        per_mesh_stack = node.callDecoration("getStack")
+        if per_mesh_stack:
+            per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
 
     def setWidth(self, width):
         if width: self._width = width
@@ -320,7 +337,7 @@ class BuildVolume(SceneNode):
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and self._number_of_objects > 1:
+            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._build_volume_message.show()
@@ -343,7 +360,7 @@ class BuildVolume(SceneNode):
         rebuild_me = False
         if setting_key == "print_sequence":
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and self._number_of_objects > 1:
+            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._build_volume_message.show()
@@ -354,7 +371,7 @@ class BuildVolume(SceneNode):
                 self._build_volume_message.hide()
             rebuild_me = True
 
-        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings:
+        if setting_key in self._skirt_settings or setting_key in self._prime_settings or setting_key in self._tower_settings or setting_key == "print_sequence" or setting_key in self._ooze_shield_settings or setting_key in self._distance_settings or setting_key in self._extruder_settings:
             self._updateDisallowedAreas()
             rebuild_me = True
 
@@ -703,3 +720,4 @@ class BuildVolume(SceneNode):
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]
+    _extruder_settings = ["support_enable", "support_interface_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_interface_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
