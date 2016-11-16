@@ -99,6 +99,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
                         break
+        try:
+            archive.open("Cura/preferences.cfg")
+        except KeyError:
+            # If there is no preferences file, it's not a workspace, so notify user of failure.
+            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            return WorkspaceReader.PreReadResult.failed
 
         if machine_conflict or quality_changes_conflict or material_conflict:
             # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
