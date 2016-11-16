@@ -9,7 +9,7 @@
         "manufacturer": "IMADE3D",
         "category": "Other",
         "platform": "jellybox_platform.stl",
-        "platform_offset": [ 0, 0, 0],
+        "platform_offset": [ 0, -0.3, 0],
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "has_machine_materials": true
