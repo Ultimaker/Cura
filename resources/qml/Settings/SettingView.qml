@@ -18,10 +18,24 @@ Item
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
 
-    TextField
+    Rectangle
     {
-        id: filter;
-        visible: !monitoringPrint
+        id: filterContainer
+
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color:
+        {
+            if(mouseArea.containsMouse || clearFilterButton.containsMouse)
+            {
+                return UM.Theme.getColor("setting_control_border_highlight");
+            }
+            else
+            {
+                return UM.Theme.getColor("setting_control_border");
+            }
+        }
+
+        color: UM.Theme.getColor("setting_control")
 
         anchors
         {
@@ -31,51 +45,94 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
+        height: UM.Theme.getSize("setting_control").height
 
-        placeholderText: catalog.i18nc("@label:textbox", "Filter...")
-
-        style: TextFieldStyle
+        TextField
         {
-            textColor: UM.Theme.getColor("setting_control_text");
-            font: UM.Theme.getFont("default");
-            background: Rectangle
-            {
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            id: filter;
+            visible: !monitoringPrint
 
-                color: UM.Theme.getColor("setting_control")
+            anchors.left: parent.left
+            anchors.right: clearFilterButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+            placeholderText: catalog.i18nc("@label:textbox", "Filter...")
+
+            style: TextFieldStyle
+            {
+                textColor: UM.Theme.getColor("setting_control_text");
+                font: UM.Theme.getFont("default");
+                background: Item {}
+            }
+
+            property var expandedCategories
+            property bool lastFindingSettings: false
+
+            onTextChanged:
+            {
+                definitionsModel.filter = {"label": "*" + text};
+                findingSettings = (text.length > 0);
+                if(findingSettings != lastFindingSettings)
+                {
+                    if(findingSettings)
+                    {
+                        expandedCategories = definitionsModel.expanded.slice();
+                        definitionsModel.expanded = ["*"];
+                        definitionsModel.showAncestors = true;
+                        definitionsModel.showAll = true;
+                    }
+                    else
+                    {
+                        definitionsModel.expanded = expandedCategories;
+                        definitionsModel.showAncestors = false;
+                        definitionsModel.showAll = false;
+                    }
+                    lastFindingSettings = findingSettings;
+                }
+            }
+
+            Keys.onEscapePressed:
+            {
+                filter.text = "";
             }
         }
 
-        property var expandedCategories
-        property bool lastFindingSettings: false
+        MouseArea
+        {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
+            cursorShape: Qt.IBeamCursor
+        }
 
-        onTextChanged: {
-            definitionsModel.filter = {"label": "*" + text};
-            findingSettings = (text.length > 0);
-            if(findingSettings != lastFindingSettings)
+        UM.SimpleButton
+        {
+            id: clearFilterButton
+            iconSource: UM.Theme.getIcon("cross1")
+            visible: findingSettings
+
+            height: parent.height * 0.4
+            width: visible ? height : 0
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+            color: UM.Theme.getColor("setting_control_button")
+            hoverColor: UM.Theme.getColor("setting_control_button_hover")
+
+            onClicked:
             {
-                if(findingSettings)
-                {
-                    expandedCategories = definitionsModel.expanded.slice();
-                    definitionsModel.expanded = ["*"];
-                    definitionsModel.showAncestors = true;
-                    definitionsModel.showAll = true;
-                }
-                else
-                {
-                    definitionsModel.expanded = expandedCategories;
-                    definitionsModel.showAncestors = false;
-                    definitionsModel.showAll = false;
-                }
-                lastFindingSettings = findingSettings;
+                filter.text = "";
+                filter.setActiveFocus();
             }
         }
     }
 
     ScrollView
     {
-        anchors.top: filter.bottom;
+        anchors.top: filterContainer.bottom;
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
