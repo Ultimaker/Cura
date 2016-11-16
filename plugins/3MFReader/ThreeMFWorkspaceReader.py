@@ -78,7 +78,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if quality_changes:
-                    quality_changes_conflict = True
+                    # Check if there really is a conflict by comparing the values
+                    if quality_changes[0] != instance_container:
+                        quality_changes_conflict = True
+                        break
 
         if machine_conflict or quality_changes_conflict:
             # There is a conflict; User should choose to either update the existing data, add everything as new data or abort

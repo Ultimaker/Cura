@@ -43,9 +43,11 @@ class WorkspaceDialog(QObject):
 
     def setMachineConflict(self, machine_conflict):
         self._has_machine_conflict = machine_conflict
+        self.machineConflictChanged.emit()
 
     def setQualityChangesConflict(self, quality_changes_conflict):
         self._has_quality_changes_conflict = quality_changes_conflict
+        self.qualityChangesConflictChanged.emit()
 
     def getResult(self):
         return self._result
