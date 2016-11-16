@@ -50,6 +50,10 @@ class WorkspaceDialog(QObject):
         self.qualityChangesConflictChanged.emit()
 
     def getResult(self):
+        if "machine" in self._result and not self._has_machine_conflict:
+            self._result["machine"] = None
+        if "quality_changes" in self._result and not self._has_quality_changes_conflict:
+            self._result["quality_changes"] = None
         return self._result
 
     def _createViewFromQML(self):

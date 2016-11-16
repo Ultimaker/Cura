@@ -92,13 +92,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if self._dialog.getResult() == {}:
                 return WorkspaceReader.PreReadResult.cancelled
 
-            result = self._dialog.getResult()
-            # If there is no conflict, ignore the data.
-            if not machine_conflict:
-                result["machine"] = None
-            if not quality_changes_conflict:
-                result["quality_changes"] = None
-            self._resolve_strategies = result
+            self._resolve_strategies = self._dialog.getResult()
 
         return WorkspaceReader.PreReadResult.accepted
 
