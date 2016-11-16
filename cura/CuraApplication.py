@@ -573,11 +573,17 @@ class CuraApplication(QtApplication):
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
-            if not self.getController().getActiveTool():
+            if self.getController().getActiveTool():
+                # If the tool has been disabled by the new selection
+                if not self.getController().getActiveTool().getEnabled():
+                    # Default
+                    self.getController().setActiveTool("TranslateTool")
+            else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
                     self._previous_active_tool = None
                 else:
+                    # Default
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
