@@ -301,11 +301,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         quality_changes_index = stack.getContainerIndex(old_container)
                         stack.replaceContainer(quality_changes_index, container)
 
-        # TODO: This is nasty hack; this should be made way more robust (setter?)
-        if global_stack.getId() not in ExtruderManager.getInstance()._extruder_trains:
-            ExtruderManager.getInstance()._extruder_trains[global_stack.getId()] = {}
         for stack in extruder_stacks:
-            ExtruderManager.getInstance()._extruder_trains[global_stack.getId()][stack.getMetaDataEntry("position")] = stack
+            ExtruderManager.getInstance().registerExtruder(stack, global_stack.getId())
+        else:
+            # Machine has no extruders, but it needs to be registered with the extruder manager.
+            ExtruderManager.getInstance().registerExtruder(None, global_stack.getId())
 
         Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
         # Notify everything/one that is to notify about changes.
