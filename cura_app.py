@@ -9,6 +9,12 @@ import platform
 
 from UM.Platform import Platform
 
+#WORKAROUND: CURA-2611
+# Avoids to create python compiled files if Cura is frozen.
+# Makes sense on Windows, where we don't want pyc files in our plugin directories.
+if hasattr(sys, 'frozen'):
+    sys.dont_write_bytecode = True
+
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
