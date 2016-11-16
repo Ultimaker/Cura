@@ -15,6 +15,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 import zipfile
 import io
+import configparser
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -62,8 +63,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_id = self._stripFileToId(container_stack_file)
             stacks = self._container_registry.findContainerStacks(id=container_id)
             if stacks:
-                machine_conflict = True
-                break
+                # Check if there are any changes at all in any of the container stacks.
+                id_list = self._getContainerIdListFromSerialized(archive.open(container_stack_file).read().decode("utf-8"))
+                for index, container_id in enumerate(id_list):
+                    if stacks[0].getContainer(index).getId() != container_id:
+                        machine_conflict = True
+                        break
 
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
@@ -161,8 +166,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                     self._container_registry.addContainer(material_container)
                 else:
-                    if self._resolve_strategies["material"] == "override":
-                        pass
+                    pass
 
 
         Logger.log("d", "Workspace loading is checking instance containers...")
@@ -328,3 +332,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for type_name, container_type in self._container_registry.getContainerTypes():
             if type_name == "XmlMaterialProfile":
                 return container_type
+
+    ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
+    def _getContainerIdListFromSerialized(self, serialized):
+        parser = configparser.ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser.read_string(serialized)
+        container_string = parser["general"].get("containers", "")
+        container_list = container_string.split(",")
+        return [container_id for container_id in container_list if container_id != ""]
