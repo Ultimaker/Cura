@@ -27,6 +27,7 @@ UM.Dialog
         {
             machineResolveComboBox.currentIndex = 0
             qualityChangesResolveComboBox.currentIndex = 0
+            materialConflictComboBox.currentIndex = 0
         }
     }
     Item
@@ -117,6 +118,35 @@ UM.Dialog
                         onActivated:
                         {
                             manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
+                        }
+                    }
+                }
+            }
+            UM.TooltipArea
+            {
+                id: materialResolveTooltip
+                width: parent.width
+                height: visible ? 25 : 0
+                text: catalog.i18nc("@info:tooltip", "How should the conflict in the material(s) be resolved?")
+                visible: false #manager.materialConflict
+                Row
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label","Material")
+                        width: 150
+                    }
+
+                    ComboBox
+                    {
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        id: materialResolveComboBox
+                        onActivated:
+                        {
+                            manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
                         }
                     }
                 }

@@ -65,6 +65,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 machine_conflict = True
                 break
 
+        material_conflict = False
+        xml_material_profile = self._getXmlProfileClass()
+        if self._material_container_suffix is None:
+            self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).suffixes[0]
+        if xml_material_profile:
+            material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
+            for material_container_file in material_container_files:
+                container_id = self._stripFileToId(material_container_file)
+                materials = self._container_registry.findInstanceContainers(id=container_id)
+                if materials and not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
+                    material_conflict = True
+
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         for instance_container_file in instance_container_files:
@@ -83,10 +95,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         quality_changes_conflict = True
                         break
 
-        if machine_conflict or quality_changes_conflict:
+        if machine_conflict or quality_changes_conflict or material_conflict:
             # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
             self._dialog.setMachineConflict(machine_conflict)
             self._dialog.setQualityChangesConflict(quality_changes_conflict)
+            self._dialog.setMaterialConflict(material_conflict)
             self._dialog.show()
             self._dialog.waitForClose()
             if self._dialog.getResult() == {}:
@@ -147,6 +160,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container = xml_material_profile(container_id)
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                     self._container_registry.addContainer(material_container)
+                else:
+                    if self._resolve_strategies["material"] == "override":
+                        pass
+
 
         Logger.log("d", "Workspace loading is checking instance containers...")
         # Get quality_changes and user profiles saved in the workspace
@@ -194,6 +211,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 else:
                     if self._resolve_strategies["quality_changes"] == "override":
                         quality_changes[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                    elif self._resolve_strategies["quality_changes"] is None:
+                        # The ID already exists, but nothing in the values changed, so do nothing.
+                        pass
                 quality_changes_instance_containers.append(instance_container)
             else:
                 continue
