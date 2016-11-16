@@ -873,7 +873,7 @@ class CuraApplication(QtApplication):
             return
 
         # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getBoundingBox().center for node in group_node.getChildren()]
+        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getAllChildren() if node.getMeshData()]
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
@@ -884,7 +884,7 @@ class CuraApplication(QtApplication):
         # Move each node to the same position.
         for center, node in zip(object_centers, group_node.getChildren()):
             # Align the object and also apply the offset to center it inside the group.
-            node.translate(-1 * (center - offset), SceneNode.TransformSpace.World)
+            node.setPosition(center - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
