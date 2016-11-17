@@ -128,7 +128,7 @@ UM.Dialog
                 width: parent.width
                 height: visible ? 25 : 0
                 text: catalog.i18nc("@info:tooltip", "How should the conflict in the material(s) be resolved?")
-                visible: false //manager.materialConflict
+                visible: manager.materialConflict
                 Row
                 {
                     width: parent.width

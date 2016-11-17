@@ -158,6 +158,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.addContainer(definition_container)
 
         Logger.log("d", "Workspace loading is checking materials...")
+        material_containers = []
         # Get all the material files and check if they exist. If not, add them.
         xml_material_profile = self._getXmlProfileClass()
         if self._material_container_suffix is None:
@@ -172,8 +173,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                     self._container_registry.addContainer(material_container)
                 else:
-                    pass
-
+                    if not materials[0].isReadOnly():  # Only create new materials if they are not read only.
+                        if self._resolve_strategies["material"] == "override":
+                            materials[0].deserialize(archive.open(material_container_file).read().decode("utf-8"))
+                        elif self._resolve_strategies["material"] == "new":
+                            # Note that we *must* deserialize it with a new ID, as multiple containers will be
+                            # auto created & added.
+                            material_container = xml_material_profile(self.getNewId(container_id))
+                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
+                            self._container_registry.addContainer(material_container)
+                            material_containers.append(material_container)
 
         Logger.log("d", "Workspace loading is checking instance containers...")
         # Get quality_changes and user profiles saved in the workspace
@@ -310,6 +319,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if old_container.getId() == old_id:
                         quality_changes_index = stack.getContainerIndex(old_container)
                         stack.replaceContainer(quality_changes_index, container)
+
+        if self._resolve_strategies["material"] == "new":
+            for material in material_containers:
+                old_material = global_stack.findContainer({"type": "material"})
+                if old_material.getId() in self._id_mapping:
+                    material_index = global_stack.getContainerIndex(old_material)
+                    global_stack.replaceContainer(material_index, material)
+                    continue
+
+                for stack in extruder_stacks:
+                    old_material = stack.findContainer({"type": "material"})
+                    if old_material.getId() in self._id_mapping:
+                        material_index = stack.getContainerIndex(old_material)
+                        stack.replaceContainer(material_index, material)
+                        continue
 
         for stack in extruder_stacks:
             ExtruderManager.getInstance().registerExtruder(stack, global_stack.getId())
