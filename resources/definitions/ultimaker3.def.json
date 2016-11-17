@@ -34,7 +34,7 @@
 
     "overrides": {
         "machine_name": { "default_value": "Ultimaker 3" },
-        "machine_width": { "default_value": 215 },
+        "machine_width": { "default_value": 233 },
         "machine_depth": { "default_value": 215 },
         "machine_height": { "default_value": 200 },
         "machine_heated_bed": { "default_value": true },
@@ -44,10 +44,10 @@
         {
             "default_value":
             [
-                [ -40, 10 ],
-                [ -40, -30 ],
-                [ 60, 10 ],
-                [ 60, -30 ]
+                [ -29, 6.1 ],
+                [ -29, -33.9 ],
+                [ 71, 6.1 ],
+                [ 71, -33.9 ]
             ]
         },
         "machine_gcode_flavor": { "default_value": "Griffin" },
@@ -57,15 +57,12 @@
         "machine_acceleration": { "default_value": 3000 },
         "gantry_height": { "default_value": 60 },
         "machine_disallowed_areas": { "default_value": [
-            [[-91.5, -115], [-115, -115], [-115, -104.6], [-91.5, -104.6]],
-            [[-99.5, -104.6], [-115, -104.6], [-115, 104.6], [-99.5, 104.6]],
-            [[-94.5, 104.6], [-115, 104.6], [-115, 105.5], [-94.5, 105.5]],
-            [[-91.4, 105.5], [-115, 105.5], [-115, 115], [-91.4, 115]],
-
-            [[77.3, -115], [77.3, -98.6], [115, -98.6], [115, -115]],
-            [[97.2, -98.6], [97.2, -54.5], [113, -54.5], [113, -98.6]],
-            [[100.5, -54.5], [100.5, 99.3], [115, 99.3], [115, -54.5]],
-            [[77, 99.3], [77, 115], [115, 115], [115, 99.3]]
+            [[92.8, -53.4], [92.8, -97.5], [116.5, -97.5], [116.5, -53.4]],
+            [[73.8, 107.5], [73.8, 100.5], [116.5, 100.5], [116.5, 107.5]],
+            [[74.6, 107.5], [74.6, 100.5], [116.5, 100.5], [116.5, 107.5]],
+            [[74.9, -97.5], [74.9, -107.5], [116.5, -107.5], [116.5, -97.5]],
+            [[-116.5, -103.5], [-116.5, -107.5], [-100.9, -107.5], [-100.9, -103.5]],
+            [[-116.5, 105.8], [-96.9, 105.8], [-96.9, 107.5], [-116.5, 107.5]]
         ]},
         "machine_extruder_count": { "default_value": 2 },
         "extruder_prime_pos_abs": { "default_value": true },
@@ -74,8 +71,6 @@
         "prime_tower_position_x": { "default_value": 175 },
         "prime_tower_position_y": { "default_value": 179 },
 
-        "extruder_prime_pos_x": { "enabled": false },
-        "extruder_prime_pos_y": { "enabled": false },
         "print_sequence": {"enabled": false},
 
         "acceleration_enabled": { "value": "True" },

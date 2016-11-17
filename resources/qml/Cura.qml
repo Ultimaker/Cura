@@ -435,6 +435,10 @@ UM.MainWindow
                 visible: base.monitoringPrint
                 onVisibleChanged:
                 {
+                    if(Cura.MachineManager.printerOutputDevices.length == 0 )
+                    {
+                        return;
+                    }
                     if(visible)
                     {
                         Cura.MachineManager.printerOutputDevices[0].startCamera()
@@ -580,7 +584,7 @@ UM.MainWindow
         target: Cura.MachineManager
         onBlurSettings:
         {
-            forceActiveFocus()
+            contentItem.forceActiveFocus()
         }
     }
 
@@ -616,6 +620,11 @@ UM.MainWindow
             }
         }
 
+        MultiplyObjectOptions
+        {
+            id: multiplyObjectOptions
+        }
+
         Connections
         {
             target: Cura.Actions.multiplyObject
@@ -623,7 +632,9 @@ UM.MainWindow
             {
                 if(objectContextMenu.objectId != 0)
                 {
-                    Printer.multiplyObject(objectContextMenu.objectId, 1);
+                    multiplyObjectOptions.objectId = objectContextMenu.objectId;
+                    multiplyObjectOptions.visible = true;
+                    multiplyObjectOptions.reset();
                     objectContextMenu.objectId = 0;
                 }
             }

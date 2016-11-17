@@ -86,12 +86,6 @@
         "machine_nozzle_expansion_angle": {
             "default_value": 45
         },
-        "material_print_temperature": {
-            "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "material_bed_temperature": {
-            "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\""
-        },
         "machine_max_feedrate_x": {
             "default_value": 300
         },
@@ -106,24 +100,6 @@
         },
         "machine_acceleration": {
             "default_value": 3000
-        },
-        "material_diameter": {
-            "enabled": "machine_gcode_flavor != \"UltiGCode\""
-        },
-        "material_flow": {
-            "enabled": "machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_amount": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_speed": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_retract_speed": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
-        },
-        "retraction_prime_speed": {
-            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\""
         }
     }
 }

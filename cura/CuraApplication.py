@@ -558,7 +558,9 @@ class CuraApplication(QtApplication):
 
         qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
-        qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+        # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
+        actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
+        qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
 
         engine.rootContext().setContextProperty("ExtruderManager", cura.Settings.ExtruderManager.getInstance())
 
@@ -571,11 +573,17 @@ class CuraApplication(QtApplication):
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
-            if not self.getController().getActiveTool():
+            if self.getController().getActiveTool():
+                # If the tool has been disabled by the new selection
+                if not self.getController().getActiveTool().getEnabled():
+                    # Default
+                    self.getController().setActiveTool("TranslateTool")
+            else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
                     self._previous_active_tool = None
                 else:
+                    # Default
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
@@ -686,10 +694,9 @@ class CuraApplication(QtApplication):
             while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
-            new_node = copy.deepcopy(current_node)
-
             op = GroupedOperation()
             for _ in range(count):
+                new_node = copy.deepcopy(current_node)
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
@@ -866,7 +873,7 @@ class CuraApplication(QtApplication):
             return
 
         # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getBoundingBox().center for node in group_node.getChildren()]
+        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getAllChildren() if node.getMeshData()]
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
@@ -877,7 +884,7 @@ class CuraApplication(QtApplication):
         # Move each node to the same position.
         for center, node in zip(object_centers, group_node.getChildren()):
             # Align the object and also apply the offset to center it inside the group.
-            node.translate(-1 * (center - offset), SceneNode.TransformSpace.World)
+            node.setPosition(center - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
