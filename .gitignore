@@ -1,4 +1,4 @@
-#Compiled and generated things.
+# Compiled and generated things.
 build
 *.pyc
 __pycache__
@@ -31,6 +31,5 @@ debian*
 plugins/Doodle3D-cura-plugin
 plugins/GodMode
 plugins/PostProcessingPlugin
-plugins/UM3NetworkPrinting
 plugins/X3GWriter
 
