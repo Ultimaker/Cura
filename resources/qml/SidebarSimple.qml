@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2016 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -25,14 +25,16 @@ Item
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    Rectangle{
+    Rectangle
+    {
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
         width: base.width / 100 * 35 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        Label{
+        Label
+        {
             id: infillLabel
             //: Infill selection label
             text: catalog.i18nc("@label", "Infill");
@@ -45,7 +47,8 @@ Item
         }
     }
 
-    Flow {
+    Flow
+    {
         id: infillCellRight
 
         height: childrenRect.height;
@@ -55,9 +58,11 @@ Item
         anchors.left: infillCellLeft.right
         anchors.top: infillCellLeft.top
 
-        Repeater {
+        Repeater
+        {
             id: infillListView
-            property int activeIndex: {
+            property int activeIndex:
+            {
                 var density = parseInt(infillDensity.properties.value)
                 for(var i = 0; i < infillModel.count; ++i)
                 {
@@ -71,17 +76,20 @@ Item
             }
             model: infillModel;
 
-            Item {
+            Item
+            {
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                Rectangle{
+                Rectangle
+                {
                     id: infillIconLining
 
                     width: (infillCellRight.width - 3 * UM.Theme.getSize("default_margin").width) / 4;
                     height: width
 
-                    border.color: {
+                    border.color:
+                    {
                         if(!base.settingsEnabled)
                         {
                             return UM.Theme.getColor("setting_control_disabled_border")
@@ -97,7 +105,8 @@ Item
                         return UM.Theme.getColor("setting_control_border")
                     }
                     border.width: UM.Theme.getSize("default_lining").width
-                    color: {
+                    color:
+                    {
                         if(infillListView.activeIndex == index)
                         {
                             if(!base.settingsEnabled)
@@ -109,7 +118,8 @@ Item
                         return "transparent"
                     }
 
-                    UM.RecolorImage {
+                    UM.RecolorImage
+                    {
                         id: infillIcon
                         anchors.fill: parent;
                         anchors.margins: UM.Theme.getSize("infill_button_margin").width
@@ -130,7 +140,8 @@ Item
                         }
                     }
 
-                    MouseArea {
+                    MouseArea
+                    {
                         id: infillMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
@@ -141,15 +152,18 @@ Item
                                 infillDensity.setPropertyValue("value", model.percentage)
                             }
                         }
-                        onEntered: {
+                        onEntered:
+                        {
                             base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, 0), model.text);
                         }
-                        onExited: {
+                        onExited:
+                        {
                             base.hideTooltip();
                         }
                     }
                 }
-                Label{
+                Label
+                {
                     id: infillLabel
                     font: UM.Theme.getFont("default")
                     anchors.top: infillIconLining.bottom
@@ -160,7 +174,8 @@ Item
             }
         }
 
-        ListModel {
+        ListModel
+        {
             id: infillModel
 
             Component.onCompleted:
@@ -201,7 +216,8 @@ Item
         }
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: helpersCell
         anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -209,7 +225,8 @@ Item
         anchors.right: parent.right
         height: childrenRect.height
 
-        Label{
+        Label
+        {
             id: enableSupportLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -220,7 +237,8 @@ Item
             color: UM.Theme.getColor("text");
         }
 
-        CheckBox{
+        CheckBox
+        {
             id: enableSupportCheckBox
             anchors.top: parent.top
             anchors.left: enableSupportLabel.right
@@ -231,7 +249,8 @@ Item
 
             checked: supportEnabled.properties.value == "True";
 
-            MouseArea {
+            MouseArea
+            {
                 id: enableSupportMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
@@ -253,7 +272,8 @@ Item
             }
         }
 
-        Label{
+        Label
+        {
             id: supportExtruderLabel
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
             anchors.left: parent.left
@@ -265,28 +285,37 @@ Item
             color: UM.Theme.getColor("text");
         }
 
-        ComboBox {
+        ComboBox
+        {
             id: supportExtruderCombobox
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
             model: extruderModel
             textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
 
             anchors.top: enableSupportCheckBox.bottom
-            anchors.topMargin: {
-                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) {
+            anchors.topMargin:
+            {
+                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
+                {
                     return UM.Theme.getSize("default_margin").height;
-                } else {
+                }
+                else
+                {
                     return 0;
                 }
             }
             anchors.left: supportExtruderLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             width: parent.width / 100 * 55
-            height: {
-                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)) {
+            height:
+            {
+                if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
+                {
                     // default height when control is enabled
                     return UM.Theme.getSize("setting_control").height;
-                } else {
+                }
+                else
+                {
                     return 0;
                 }
             }
@@ -296,11 +325,13 @@ Item
             property alias _hovered: supportExtruderMouseArea.containsMouse
 
             currentIndex: parseFloat(supportExtruderNr.properties.value)  // supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) : -1
-            onActivated: {
+            onActivated:
+            {
                 // Send the extruder nr as a string.
                 supportExtruderNr.setPropertyValue("value", String(index));
             }
-            MouseArea {
+            MouseArea
+            {
                 id: supportExtruderMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
@@ -318,7 +349,8 @@ Item
             }
         }
 
-        Label{
+        Label
+        {
             id: adhesionHelperLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -329,7 +361,8 @@ Item
             color: UM.Theme.getColor("text");
         }
 
-        CheckBox{
+        CheckBox
+        {
             id: adhesionCheckBox
             property alias _hovered: adhesionMouseArea.containsMouse
 
@@ -344,7 +377,8 @@ Item
 
             checked: platformAdhesionType.properties.value != "skirt"
 
-            MouseArea {
+            MouseArea
+            {
                 id: adhesionMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
@@ -377,7 +411,8 @@ Item
             }
         }
 
-        ListModel {
+        ListModel
+        {
             id: extruderModel
             Component.onCompleted: populateExtruderModel()
         }
@@ -393,7 +428,8 @@ Item
     function populateExtruderModel()
     {
         extruderModel.clear();
-        for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++) {
+        for(var extruderNumber = 0; extruderNumber < extruders.rowCount() ; extruderNumber++)
+        {
             extruderModel.append({
                 text: extruders.getItem(extruderNumber).name,
                 color: extruders.getItem(extruderNumber).color
@@ -401,7 +437,8 @@ Item
         }
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: tipsCell
         anchors.top: helpersCell.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -409,7 +446,8 @@ Item
         width: parent.width
         height: childrenRect.height
 
-        Label{
+        Label
+        {
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
