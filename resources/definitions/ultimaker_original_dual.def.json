@@ -72,9 +72,6 @@
         "machine_extruder_count": {
             "default_value": 2
         },
-        "print_sequence": {
-            "enabled": false
-        },
         "prime_tower_position_x": {
             "default_value": 185
         },
