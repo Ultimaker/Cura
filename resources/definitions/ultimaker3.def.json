@@ -71,8 +71,6 @@
         "prime_tower_position_x": { "default_value": 175 },
         "prime_tower_position_y": { "default_value": 179 },
 
-        "print_sequence": {"enabled": false},
-
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
