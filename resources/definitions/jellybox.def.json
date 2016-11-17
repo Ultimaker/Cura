@@ -16,7 +16,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "JellyBOX" },
+        "machine_name": { "default_value": "IMADE3D JellyBOX" },
         "machine_width": { "default_value": 170 },
         "machine_height": { "default_value": 145 },
         "machine_depth": { "default_value": 160 },
