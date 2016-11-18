@@ -5,6 +5,7 @@ import configparser #To read config files.
 import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
+from UM.Logger import Logger
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
@@ -80,6 +81,7 @@ class Profile:
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
 
         if self._name == "Current settings":
+            Logger.log("w", "Unable to upgrade this profile. Skipping it.")
             return None, None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
 
         config = configparser.ConfigParser(interpolation = None)
