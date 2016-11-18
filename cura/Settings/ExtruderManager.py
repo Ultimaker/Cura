@@ -336,8 +336,8 @@ class ExtruderManager(QObject):
             if support_interface_enabled:
                 used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_interface_extruder_nr", "value"))])
 
-        #The platform adhesion extruder. Not used if using brim and brim width is 0.
-        if global_stack.getProperty("adhesion_type", "value") != "brim" or global_stack.getProperty("brim_line_count", "value") > 0:
+        #The platform adhesion extruder. Not used if using none.
+        if global_stack.getProperty("adhesion_type", "value") != "none":
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("adhesion_extruder_nr", "value"))])
 
         return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
