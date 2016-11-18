@@ -165,7 +165,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         machine_container_map = {}
         machine_nozzle_map = {}
 
-        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"))
+        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self._id)
         for container in all_containers:
             definition_id = container.getDefinition().id
             if definition_id == "fdmprinter":
