@@ -209,7 +209,17 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 if not variant_containers:
                     continue
 
-                builder.start("hotend", { "id": variant_containers[0].getName() })
+                builder.start("hotend", {"id": variant_containers[0].getName()})
+
+                # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
+                compatible = hotend.getMetaDataEntry("compatible")
+                if compatible is not None:
+                    builder.start("setting", {"key": "hardware compatible"})
+                    if compatible:
+                        builder.data("yes")
+                    else:
+                        builder.data("no")
+                    builder.end("setting")
 
                 for instance in hotend.findInstances():
                     if container.getInstance(instance.definition.key) and container.getProperty(instance.definition.key, "value") == instance.value:
