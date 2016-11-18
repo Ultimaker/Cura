@@ -243,9 +243,8 @@ class CuraEngineBackend(Backend):
                 error_keys = []
                 for extruder in extruders:
                     error_keys.extend(extruder.getErrorKeys())
-                else:
+                if not extruders:
                     error_keys = self._global_container_stack.getErrorKeys()
-
                 error_labels = set()
                 definition_container = self._global_container_stack.getBottom()
                 for key in error_keys:
