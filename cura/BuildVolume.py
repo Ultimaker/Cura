@@ -27,7 +27,7 @@ import UM.Settings.ContainerRegistry
 
 
 # Setting for clearance around the prime
-PRIME_CLEARANCE = 1.5
+PRIME_CLEARANCE = 6.5
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
