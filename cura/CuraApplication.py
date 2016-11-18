@@ -778,7 +778,10 @@ class CuraApplication(QtApplication):
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
                 if node.getBoundingBox():
-                    op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0)))
             op.push()
 
     ## Reset all transformations on nodes with mesh data.
@@ -802,7 +805,9 @@ class CuraApplication(QtApplication):
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
                 if node.getBoundingBox():
                     center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
-                    op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
 
     ##  Reload all mesh data on the screen from file.
