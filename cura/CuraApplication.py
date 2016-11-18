@@ -799,11 +799,9 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                center_y = 0
-                if node.callDecoration("isGroup"):
-                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
-                else:
-                    center_y = node.getMeshData().getCenterPosition().y
+
+                center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
 
