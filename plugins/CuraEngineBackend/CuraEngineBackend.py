@@ -220,6 +220,9 @@ class CuraEngineBackend(Backend):
     #
     #   \param job The start slice job that was just finished.
     def _onStartSliceCompleted(self, job):
+        if self._error_message:
+            self._error_message.hide()
+
         # Note that cancelled slice jobs can still call this method.
         if self._start_slice_job is job:
             self._start_slice_job = None
@@ -257,6 +260,14 @@ class CuraEngineBackend(Backend):
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             return
+
+        if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."))
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
