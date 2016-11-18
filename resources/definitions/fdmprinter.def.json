@@ -3762,6 +3762,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
+                },
+                "alternate_carve_order":
+                {
+                    "label": "Alternate Mesh Removal",
+                    "description": "With every layer switch from which model intersecting volumes are removed, so that the overlapping volumes become interwoven.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "carve_multiple_volumes",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
                 }
             }
         },
