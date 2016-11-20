@@ -366,11 +366,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._connection_state = connection_state
             self.connectionStateChanged.emit(self._id)
 
-    ##  Check the connection state of this output device.
-    #   /param connection_state ConnectionState enum.
-    def isConnectionState(self, connection_state):
-        return self._connection_state == connection_state
-
     @pyqtProperty(str, notify = connectionTextChanged)
     def connectionText(self):
         return self._connection_text
