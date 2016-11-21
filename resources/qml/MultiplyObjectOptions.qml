@@ -19,7 +19,7 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
-    property int objectId: 0;
+    property var objectId: 0;
     onAccepted: Printer.multiplyObject(base.objectId, parseInt(copiesField.text))
 
     property variant catalog: UM.I18nCatalog { name: "cura" }
