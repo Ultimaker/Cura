@@ -27,10 +27,17 @@ class QualityManager:
     #                               specified then the currently selected machine definition is used.
     #   \param material_containers (Optional) \type{List[ContainerInstance]} If nothing is specified then
     #                               the current set of selected materials is used.
-    #   \return the matching quality containers \type{List[ContainerInstance]}
+    #   \return the matching quality container \type{ContainerInstance}
     def findQualityByName(self, quality_name, machine_definition=None, material_containers=None):
         criteria = {"type": "quality", "name": quality_name}
-        return self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+        result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+
+        # Fall back to using generic materials and qualities if nothing could be found.
+        if not result and material_containers and len(material_containers) == 1:
+            basic_materials = self._getBasicMaterials(material_containers[0])
+            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
+
+        return result[0] if result else None
 
     ##  Find a quality changes container by name.
     #

@@ -20,7 +20,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         super().__init__(device_id)
 
         self.setName(device_name)
-        self.setShortDescription(catalog.i18nc("@action:button", "Save to Removable Drive"))
+        self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Save to Removable Drive"))
         self.setDescription(catalog.i18nc("@item:inlistbox", "Save to Removable Drive {0}").format(device_name))
         self.setIconName("save_sd")
         self.setPriority(1)

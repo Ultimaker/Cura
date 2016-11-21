@@ -1,14 +1,14 @@
 [2.3.1]
 *Layer Height in Profile Selection
-The layer height of each profile is now shown in the profile selection menu.
+Added the layer height to the profile selection menu.
 
 *Bug fixes
-Editing material settings has actual effect on the prints again
-Upgrading from version 2.1 on OSX works again
-You can import g-code from related machines as profile
-Fixed inheritance taking from the wrong extruder
-The i-symbol is updated properly
-Fixed a freeze that could sometimes occur while printing via Wi-Fi
+Fixed the option to import g-code from related machines as a profile
+Fixed a bug where editing material settings has no effect on 3D prints
+Fixed an issue with automatic profile importing on Cura 2.1 on Mac OSX
+Fixed an inheritance issue for dual extrusion
+Fixed an issue with "i" symbol updates
+Fixed a freeze that can occur while printing via Wi-Fi
 
 [2.3.0]
 *Multi Extrusion Support

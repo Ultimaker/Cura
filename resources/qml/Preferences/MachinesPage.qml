@@ -251,6 +251,8 @@ UM.ManagementPage
         {
             id: renameDialog;
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
+            property var machine_name_validator: Cura.MachineNameValidator { }
+            validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null;
             onAccepted:
             {
                 Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim());

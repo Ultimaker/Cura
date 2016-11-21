@@ -134,6 +134,20 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _setJobState(self, job_state):
         Logger.log("w", "_setJobState is not implemented by this output device")
 
+    @pyqtSlot()
+    def startCamera(self):
+        self._startCamera()
+
+    def _startCamera(self):
+        Logger.log("w", "_startCamera is not implemented by this output device")
+
+    @pyqtSlot()
+    def stopCamera(self):
+        self._stopCamera()
+
+    def _stopCamera(self):
+        Logger.log("w", "_stopCamera is not implemented by this output device")
+
     @pyqtProperty(str, notify = jobNameChanged)
     def jobName(self):
         return self._job_name

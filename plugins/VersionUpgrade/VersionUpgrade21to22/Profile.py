@@ -5,6 +5,7 @@ import configparser #To read config files.
 import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
+from UM.Logger import Logger
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.

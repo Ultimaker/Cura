@@ -4,7 +4,7 @@
 import os.path
 import urllib
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl, QVariant
 from PyQt5.QtWidgets import QMessageBox
 
 import UM.PluginRegistry
@@ -261,8 +261,9 @@ class ContainerManager(QObject):
 
     @pyqtSlot(str, result = bool)
     def isContainerUsed(self, container_id):
-        UM.Logger.log("d", "Checking if container %s is currently used in the active stacks", container_id)
-        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        UM.Logger.log("d", "Checking if container %s is currently used", container_id)
+        containers = self._container_registry.findContainerStacks()
+        for stack in containers:
             if container_id in [child.getId() for child in stack.getContainers()]:
                 UM.Logger.log("d", "The container is in use by %s", stack.getId())
                 return True
@@ -611,13 +612,12 @@ class ContainerManager(QObject):
 
         if base_name is None:
             base_name = quality_name
-
         # Try to find a Quality with the name.
-        containers = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_instances)
-        if containers:
-            container = containers[0]
+        container = QualityManager.getInstance().findQualityByName(quality_name, machine_definition, material_instances)
+        if container:
+            UM.Logger.log("d", "We found a quality to duplicate.")
             return self._duplicateQualityForMachineType(container, base_name, machine_definition)
-
+        UM.Logger.log("d", "We found a quality_changes to duplicate.")
         # Assume it is a quality changes.
         return self._duplicateQualityChangesForMachineType(quality_name, base_name, machine_definition)
 
@@ -791,7 +791,6 @@ class ContainerManager(QObject):
 
         # Create a new quality_changes container for the quality.
         quality_changes = UM.Settings.InstanceContainer(self._createUniqueId(base_id, new_name))
-        print(quality_changes.getId())
         quality_changes.setName(new_name)
         quality_changes.addMetaDataEntry("type", "quality_changes")
         quality_changes.addMetaDataEntry("quality_type", quality_container.getMetaDataEntry("quality_type"))
@@ -806,3 +805,50 @@ class ContainerManager(QObject):
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
         return quality_changes
+
+
+    ##  Import profiles from a list of file_urls.
+    #   Each QUrl item must end with .curaprofile, or it will not be imported.
+    #
+    #   \param QVariant<QUrl>, essentially a list with QUrl objects.
+    #   \return Dict with keys status, text
+    @pyqtSlot(QVariant, result="QVariantMap")
+    def importProfiles(self, file_urls):
+        status = "ok"
+        results = {"ok": [], "error": []}
+        for file_url in file_urls:
+            if not file_url.isValid():
+                continue
+            path = file_url.toLocalFile()
+            if not path:
+                continue
+            if not path.endswith(".curaprofile"):
+                continue
+
+            single_result = UM.Settings.ContainerRegistry.getInstance().importProfile(path)
+            if single_result["status"] == "error":
+                status = "error"
+            results[single_result["status"]].append(single_result["message"])
+
+        return {
+            "status": status,
+            "message": "\n".join(results["ok"] + results["error"])}
+
+    ##  Import single profile, file_url does not have to end with curaprofile
+    @pyqtSlot(QUrl, result="QVariantMap")
+    def importProfile(self, file_url):
+        if not file_url.isValid():
+            return
+        path = file_url.toLocalFile()
+        if not path:
+            return
+        return UM.Settings.ContainerRegistry.getInstance().importProfile(path)
+
+    @pyqtSlot("QVariantList", QUrl, str)
+    def exportProfile(self, instance_id, file_url, file_type):
+        if not file_url.isValid():
+            return
+        path = file_url.toLocalFile()
+        if not path:
+            return
+        UM.Settings.ContainerRegistry.getInstance().exportProfile(instance_id, path, file_type)

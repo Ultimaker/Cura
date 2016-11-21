@@ -10,7 +10,10 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
 import UM.Application
 from UM.Job import Job
-
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+from UM.Application import Application
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.QualityManager import QualityManager
 
 import os.path
 import zipfile
@@ -18,6 +21,7 @@ import zipfile
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
+    Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
@@ -54,6 +58,46 @@ class ThreeMFReader(MeshReader):
         for vertex in object.findall(".//3mf:vertex", self._namespaces):
             vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
             Job.yieldThread()
+
+        xml_settings = list(object.findall(".//cura:setting", self._namespaces))
+
+        # Add the setting override decorator, so we can add settings to this node.
+        if xml_settings:
+            node.addDecorator(SettingOverrideDecorator())
+
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            # Ensure the correct next container for the SettingOverride decorator is set.
+            if global_container_stack:
+                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+                # Ensure that all extruder data is reset
+                if not multi_extrusion:
+                    default_stack_id = global_container_stack.getId()
+                else:
+                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                    if default_stack:
+                        default_stack_id = default_stack.getId()
+                    else:
+                        default_stack_id = global_container_stack.getId()
+                node.callDecoration("setActiveExtruder", default_stack_id)
+
+                # Get the definition & set it
+                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
+                node.callDecoration("getStack").getTop().setDefinition(definition)
+
+        setting_container = node.callDecoration("getStack").getTop()
+        for setting in xml_settings:
+            setting_key = setting.get("key")
+            setting_value = setting.text
+
+            # Extruder_nr is a special case.
+            if setting_key == "extruder_nr":
+                extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
+                if extruder_stack:
+                    node.callDecoration("setActiveExtruder", extruder_stack.getId())
+                else:
+                    Logger.log("w", "Unable to find extruder in position %s", setting_value)
+                continue
+            setting_container.setProperty(setting_key,"value", setting_value)
 
         if len(node.getChildren()) > 0:
             group_decorator = GroupDecorator()
@@ -112,7 +156,7 @@ class ThreeMFReader(MeshReader):
         return temp_mat
 
     def read(self, file_name):
-        result = SceneNode()
+        result = []
         # The base object of 3mf is a zipped archive.
         archive = zipfile.ZipFile(file_name, "r")
         self._base_name = os.path.basename(file_name)
@@ -125,33 +169,58 @@ class ThreeMFReader(MeshReader):
             for build_item in build_items:
                 id = build_item.get("objectid")
                 object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
+                if "type" in object.attrib:
+                    if object.attrib["type"] == "support" or object.attrib["type"] == "other":
+                        # Ignore support objects, as cura does not support these.
+                        # We can't guarantee that they wont be made solid.
+                        # We also ignore "other", as I have no idea what to do with them.
+                        Logger.log("w", "3MF file contained an object of type %s which is not supported by Cura", object.attrib["type"])
+                        continue
+                    elif object.attrib["type"] == "solidsupport" or object.attrib["type"] == "model":
+                        pass  # Load these as normal
+                    else:
+                        # We should technically fail at this point because it's an invalid 3MF, but try to continue anyway.
+                        Logger.log("e", "3MF file contained an object of type %s which is not supported by the 3mf spec",
+                                   object.attrib["type"])
+                        continue
+
                 build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
                 transform = build_item.get("transform")
                 if transform is not None:
                     build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
-                result.addChild(build_item_node)
+                global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+
+                # Create a transformation Matrix to convert from 3mf worldspace into ours.
+                # First step: flip the y and z axis.
+                transformation_matrix = Matrix()
+                transformation_matrix._data[1, 1] = 0
+                transformation_matrix._data[1, 2] = 1
+                transformation_matrix._data[2, 1] = -1
+                transformation_matrix._data[2, 2] = 0
+
+                # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
+                # build volume.
+                if global_container_stack:
+                    translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y = -global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z = 0)
+                    translation_matrix = Matrix()
+                    translation_matrix.setByTranslation(translation_vector)
+                    transformation_matrix.multiply(translation_matrix)
+
+                # Third step: 3MF also defines a unit, wheras Cura always assumes mm.
+                scale_matrix = Matrix()
+                scale_matrix.setByScaleVector(self._getScaleFromUnit(self._unit))
+                transformation_matrix.multiply(scale_matrix)
+
+                # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
+                build_item_node.setTransformation(build_item_node.getLocalTransformation().preMultiply(transformation_matrix))
+
+                result.append(build_item_node)
 
         except Exception as e:
-            Logger.log("e", "exception occured in 3mf reader: %s", e)
-        try:  # Selftest - There might be more functions that should fail
-            bounding_box = result.getBoundingBox()
-            bounding_box.isValid()
-        except:
-            return None
+            Logger.log("e", "An exception occurred in 3mf reader: %s", e)
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
-        flip_matrix = Matrix()
-        flip_matrix._data[1, 1] = 0
-        flip_matrix._data[1, 2] = 1
-        flip_matrix._data[2, 1] = -1
-        flip_matrix._data[2, 2] = 0
-        result.setTransformation(flip_matrix)
-        if global_container_stack:
-            translation = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2, z=0,
-                                 y=-global_container_stack.getProperty("machine_depth", "value") / 2)
-            result.translate(translation)
-        result.scale(self._getScaleFromUnit(self._unit))
-        result.setEnabled(False) # The result should not be moved in any way, so disable it.
         return result
 
     ##  Create a scale vector based on a unit string.

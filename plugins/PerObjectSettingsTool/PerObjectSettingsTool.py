@@ -22,6 +22,7 @@ class PerObjectSettingsTool(Tool):
 
         self._advanced_mode = False
         self._multi_extrusion = False
+        self._single_model_selected = False
 
         Selection.selectionChanged.connect(self.propertyChanged)
 
@@ -30,6 +31,8 @@ class PerObjectSettingsTool(Tool):
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
+        Selection.selectionChanged.connect(self._updateEnabled)
+
 
     def event(self, event):
         super().event(event)
@@ -102,4 +105,11 @@ class PerObjectSettingsTool(Tool):
             self._updateEnabled()
 
     def _updateEnabled(self):
-        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._advanced_mode or self._multi_extrusion)
+        selected_objects = Selection.getAllSelectedObjects()
+        if len(selected_objects)> 1:
+            self._single_model_selected = False
+        elif len(selected_objects) == 1 and selected_objects[0].callDecoration("isGroup"):
+            self._single_model_selected = False # Group is selected, so tool needs to be disabled
+        else:
+            self._single_model_selected = True
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, (self._advanced_mode or self._multi_extrusion) and self._single_model_selected)

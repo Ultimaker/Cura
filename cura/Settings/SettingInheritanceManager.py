@@ -163,13 +163,15 @@ class SettingInheritanceManager(QObject):
         for container in containers:
             try:
                 value = container.getProperty(key, "value")
-                if value is not None:
-                    has_setting_function = isinstance(value, UM.Settings.SettingFunction)
-                    if has_setting_function is False:
-                        has_non_function_value = True
-                        continue
             except AttributeError:
                 continue
+            if value is not None:
+                # If a setting doesn't use any keys, it won't change it's value, so treat it as if it's a fixed value
+                has_setting_function = isinstance(value, UM.Settings.SettingFunction) and len(value.getUsedSettingKeys()) > 0
+                if has_setting_function is False:
+                    has_non_function_value = True
+                    continue
+
             if has_setting_function:
                 break  # There is a setting function somewhere, stop looking deeper.
         return has_setting_function and has_non_function_value
