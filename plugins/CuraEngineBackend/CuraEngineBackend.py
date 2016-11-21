@@ -82,7 +82,7 @@ class CuraEngineBackend(Backend):
         self._onGlobalStackChanged()
 
         self._active_extruder_stack = None
-        cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        cura.Settings.ExtruderManager.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
         # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
@@ -449,7 +449,7 @@ class CuraEngineBackend(Backend):
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
-        self._active_extruder_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
+        self._active_extruder_stack = cura.Settings.ExtruderManager.ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
 

@@ -25,7 +25,7 @@ class Profile:
     #
     #   \param serialised A string with the contents of a profile.
     #   \param filename The supposed filename of the profile, without extension.
-    def __init__(self, serialised, filename):
+    def __init__(self, serialised: str, filename: str):
         self._filename = filename
 
         parser = configparser.ConfigParser(interpolation = None)

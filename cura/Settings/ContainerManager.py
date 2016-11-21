@@ -8,17 +8,19 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 import UM.PluginRegistry
-import UM.Settings
 import UM.SaveFile
 import UM.Platform
 import UM.MimeTypeDatabase
 import UM.Logger
 
-import cura.Settings
-
+from UM.Application import Application
 from UM.MimeTypeDatabase import MimeTypeNotFoundError
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
+
+from cura.Settings.ExtruderManager import ExtruderManager
+
 catalog = i18nCatalog("cura")
 
 ##  Manager class that contains common actions to deal with containers in Cura.
@@ -30,7 +32,7 @@ class ContainerManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._registry = UM.Settings.ContainerRegistry.getInstance()
+        self._registry = ContainerRegistry.getInstance()
         self._container_name_filters = {}
 
     ##  Create a duplicate of the specified container
@@ -246,7 +248,7 @@ class ContainerManager(QObject):
     @pyqtSlot(str, result = bool)
     def isContainerUsed(self, container_id):
         UM.Logger.log("d", "Checking if container %s is currently used in the active stacks", container_id)
-        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             if container_id in [child.getId() for child in stack.getContainers()]:
                 UM.Logger.log("d", "The container is in use by %s", stack.getId())
                 return True
@@ -357,12 +359,12 @@ class ContainerManager(QObject):
         except MimeTypeNotFoundError:
             return { "status": "error", "message": "Could not determine mime type of file" }
 
-        container_type = UM.Settings.ContainerRegistry.getContainerForMimeType(mime_type)
+        container_type = ContainerRegistry.getContainerForMimeType(mime_type)
         if not container_type:
             return { "status": "error", "message": "Could not find a container to handle the specified file."}
 
         container_id = urllib.parse.unquote_plus(mime_type.stripExtension(os.path.basename(file_url)))
-        container_id = UM.Settings.ContainerRegistry.getInstance().uniqueName(container_id)
+        container_id = ContainerRegistry.getInstance().uniqueName(container_id)
 
         container = container_type(container_id)
 
@@ -374,7 +376,7 @@ class ContainerManager(QObject):
 
         container.setName(container_id)
 
-        UM.Settings.ContainerRegistry.getInstance().addContainer(container)
+        ContainerRegistry.getInstance().addContainer(container)
 
         return { "status": "success", "message": "Successfully imported container {0}".format(container.getName()) }
 
@@ -386,13 +388,13 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if successful, False if not.
     @pyqtSlot(result = bool)
     def updateQualityChanges(self):
-        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return False
 
-        UM.Application.getInstance().getMachineManager().blurSettings.emit()
+        Application.getInstance().getMachineManager().blurSettings.emit()
 
-        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
             quality_changes = stack.findContainer(type = "quality_changes")
             if not quality_changes or quality_changes.isReadOnly():
@@ -401,17 +403,17 @@ class ContainerManager(QObject):
 
             self._performMerge(quality_changes, stack.getTop())
 
-        UM.Application.getInstance().getMachineManager().activeQualityChanged.emit()
+        Application.getInstance().getMachineManager().activeQualityChanged.emit()
 
         return True
 
     ##  Clear the top-most (user) containers of the active stacks.
     @pyqtSlot()
     def clearUserContainers(self):
-        UM.Application.getInstance().getMachineManager().blurSettings.emit()
+        Application.getInstance().getMachineManager().blurSettings.emit()
 
         # Go through global and extruder stacks and clear their topmost container (the user settings).
-        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             stack.getTop().clear()
 
     ##  Create quality changes containers from the user containers in the active stacks.
@@ -423,7 +425,7 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if the operation was successfully, False if not.
     @pyqtSlot(result = bool)
     def createQualityChanges(self):
-        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return False
 
@@ -432,12 +434,12 @@ class ContainerManager(QObject):
             UM.Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
             return False
 
-        UM.Application.getInstance().getMachineManager().blurSettings.emit()
+        Application.getInstance().getMachineManager().blurSettings.emit()
 
-        unique_name = UM.Settings.ContainerRegistry.getInstance().uniqueName(quality_container.getName())
+        unique_name = ContainerRegistry.getInstance().uniqueName(quality_container.getName())
 
         # Go through the active stacks and create quality_changes containers from the user containers.
-        for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             user_container = stack.getTop()
             quality_container = stack.findContainer(type = "quality")
             quality_changes_container = stack.findContainer(type = "quality_changes")
@@ -541,7 +543,7 @@ class ContainerManager(QObject):
         container_type = containers[0].getMetaDataEntry("type")
         if container_type == "quality":
             for container in self._getFilteredContainers(name = quality_name, type = "quality"):
-                for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+                for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
                     new_changes = self._createQualityChanges(container, new_name, stack.getId())
                     UM.Settings.ContainerRegistry.getInstance().addContainer(new_changes)
         elif container_type == "quality_changes":
@@ -620,7 +622,7 @@ class ContainerManager(QObject):
     #
     #   \return A generator that iterates over the list of containers matching the search criteria.
     def _getFilteredContainers(self, **kwargs):
-        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return False
 
@@ -635,7 +637,7 @@ class ContainerManager(QObject):
 
         material_ids = []
         if filter_by_material:
-            for stack in cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
                 material_ids.append(stack.findContainer(type = "material").getId())
 
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)

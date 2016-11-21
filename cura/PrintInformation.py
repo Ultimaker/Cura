@@ -7,7 +7,7 @@ from UM.Application import Application
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
 
-import cura.Settings.ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import math
 import os.path
@@ -85,7 +85,7 @@ class PrintInformation(QObject):
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths = []
         self._material_weights = []
-        extruder_stacks = list(cura.Settings.ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
+        extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
         for index, amount in enumerate(material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.

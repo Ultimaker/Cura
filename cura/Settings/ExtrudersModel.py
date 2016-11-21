@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
 import UM.Qt.ListModel
 
-from . import ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  Model that holds extruders.
 #
@@ -100,7 +100,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             self.clear()
             changed = True
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = UM.Application.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             if self._add_global:
                 material = global_container_stack.findContainer({ "type": "material" })

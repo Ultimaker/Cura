@@ -5,11 +5,10 @@ import collections
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
-import UM.Application
 import UM.Logger
 import UM.Qt
-import UM.Settings
-
+from UM.Application import Application
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     KeyRole = Qt.UserRole + 1
@@ -75,7 +74,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         settings = collections.OrderedDict()
         definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = self._quality)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(id = self._quality)
         if not containers:
             UM.Logger.log("w", "Could not find a quality container with id %s", self._quality)
             return
@@ -97,7 +96,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if self._material:
                 criteria["material"] = self._material
 
-            quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            quality_container = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if not quality_container:
                 UM.Logger.log("w", "Could not find a quality container matching quality changes %s", quality_changes_container.getId())
                 return
@@ -113,22 +112,22 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         criteria["extruder"] = self._extruder_id
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
         if not containers:
             # Try again, this time without extruder
             new_criteria = criteria.copy()
             new_criteria.pop("extruder")
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**new_criteria)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(**new_criteria)
 
         if not containers:
             # Try again, this time without material
             criteria.pop("material")
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         if not containers:
             # Try again, this time without material or extruder
             criteria.pop("extruder") # "material" has already been popped
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         if not containers:
             UM.Logger.log("Could not find any quality containers matching the search criteria %s" % str(criteria))
@@ -136,7 +135,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         if quality_changes_container:
             criteria = {"type": "quality_changes", "quality": quality_type, "extruder": self._extruder_id, "definition": definition_id }
-            changes = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            changes = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             if changes:
                 containers.extend(changes)
 
@@ -154,9 +153,9 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
             user_value = None
             if not self._extruder_id:
-                user_value = UM.Application.getInstance().getGlobalContainerStack().getTop().getProperty(definition.key, "value")
+                user_value = Application.getInstance().getGlobalContainerStack().getTop().getProperty(definition.key, "value")
             else:
-                extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_id)
+                extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_id)
                 if extruder_stack:
                     user_value = extruder_stack[0].getTop().getProperty(definition.key, "value")
 

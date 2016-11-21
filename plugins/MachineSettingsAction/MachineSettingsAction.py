@@ -9,7 +9,7 @@ import cura.Settings.CuraContainerRegistry
 import UM.Application
 import UM.Settings.InstanceContainer
 import UM.Settings.DefinitionContainer
-import UM.Logger
+from UM.Logger import Logger
 
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
@@ -19,10 +19,10 @@ class MachineSettingsAction(MachineAction):
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
 
-        cura.Settings.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+        cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     def _reset(self):
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = UM.Application.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             variant = global_container_stack.findContainer({"type": "variant"})
             if variant and variant.getId() == "empty_variant":
@@ -39,28 +39,28 @@ class MachineSettingsAction(MachineAction):
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
-        if isinstance(container, UM.Settings.DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
+        if isinstance(container, UM.Settings.DefinitionContainer.DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             if container.getProperty("machine_extruder_count", "value") > 1:
                 # Multiextruder printers are not currently supported
-                UM.Logger.log("d", "Not attaching MachineSettingsAction to %s; Multi-extrusion printers are not supported", container.getId())
+                Logger.log("d", "Not attaching MachineSettingsAction to %s; Multi-extrusion printers are not supported", container.getId())
                 return
             if container.getMetaDataEntry("has_variants", False):
                 # Machines that use variants are not currently supported
-                UM.Logger.log("d", "Not attaching MachineSettingsAction to %s; Machines that use variants are not supported", container.getId())
+                Logger.log("d", "Not attaching MachineSettingsAction to %s; Machines that use variants are not supported", container.getId())
                 return
 
-            UM.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+            UM.Application.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     @pyqtSlot()
     def forceUpdate(self):
         # Force rebuilding the build volume by reloading the global container stack.
         # This is a bit of a hack, but it seems quick enough.
-        UM.Application.getInstance().globalContainerStackChanged.emit()
+        UM.Application.Application.getInstance().globalContainerStackChanged.emit()
 
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
         # Updates the has_materials metadata flag after switching gcode flavor
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = UM.Application.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             definition = global_container_stack.getBottom()
             if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):

@@ -6,14 +6,14 @@ from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 from UM.Application import Application
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
-import UM.Settings.Models
+import UM.Settings.Models.SettingVisibilityHandler
 
 from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherits-stack setting values from different extruders.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  The per object setting visibility handler ensures that only setting
 #   definitions that have a matching instance Container are returned as visible.
-class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler):
+class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 

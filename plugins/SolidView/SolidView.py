@@ -13,6 +13,7 @@ from UM.Settings.Validator import ValidatorState
 from UM.View.GL.OpenGL import OpenGL
 
 import cura.Settings
+import cura.Settings.ExtrudersModel
 
 import math
 
@@ -26,7 +27,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
 
-        self._extruders_model = cura.Settings.ExtrudersModel()
+        self._extruders_model = cura.Settings.ExtrudersModel.ExtrudersModel()
 
     def beginRendering(self):
         scene = self.getController().getScene()
