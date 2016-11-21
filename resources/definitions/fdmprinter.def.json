@@ -2896,7 +2896,7 @@
                             "type": "float",
                             "default_value": 0.4,
                             "minimum_value": "0",
-                            "minimum_value_warning": "support_interface_line_width",
+                            "minimum_value_warning": "support_interface_line_width - 0.0001",
                             "value": "0 if support_interface_density == 0 else (support_interface_line_width * 100) / support_interface_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
