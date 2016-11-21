@@ -68,6 +68,9 @@ material_map = {
 	"PP-Coffee": "protopasta-aromatic-coffee-PLA",
 	"PP-HT-PLA": "protopasta-high-temp-PLA",
 	"nGen": "nGen",
+	"PP-Matte-HT-PLA": "protopasta-high-temp-PLA",
+	"silk": "silk",
+	"linen": "linen",
 	
 	# Advanced
 	"Alloy910": "alloy910",
@@ -81,6 +84,8 @@ material_map = {
 	"T-Glase": "t-glase",
 	"Bronzefill": "colorfabb-metal-filled",
 	"Copperfill": "colorfabb-metal-filled",
+	"HT": "HT-5300",
+	"PC-MAX": "polymaker-PC-MAX",
 	
 	# Expert
 	"PP-Conductive": "protopasta-conductive-PLA",
@@ -119,19 +124,15 @@ material_map = {
 	"NGEN_ninjaflex": "nGen-ninjaflex",
 	"NGEN_semiflex": "nGen-semiflex",
 	"INOVA_semiflex": "CS-INOVA-1800-semiflex",
-	"ABS_scaffold": "ABS-scaffold-support",
-	"HIPS_scaffold": "HIPS-scaffold-support",
 	
 	#Experimental
-	"HT": "HT-5300",
 	"b-pet": "b-pet",
-	"PC-MAX": "polymaker-PC-MAX",
 	"wood-bamboo": "woodFill-bambooFill",
 	"polyflex": "polyflex",
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
-	"silk": "silk",
-	"linen": "linen",
+	"ABS_scaffold": "ABS-scaffold-support",
+	"HIPS_scaffold": "HIPS-scaffold-support"
 }
 
 material_order = {
@@ -154,6 +155,9 @@ material_order = {
 	"PP-Coffee":           17,
 	"PP-HT-PLA":           18,
 	"nGen":                19,
+	"PP-Matte-HT-PLA":     20,
+	"silk":                21,
+	"linen":               22,
 	
 	# Advanced
 	"INOVA-1800":          50,
@@ -167,6 +171,8 @@ material_order = {
 	"T-Glase":             58,
 	"Bronzefill":          59,
 	"Copperfill":          60,
+	"HT":                  61,
+	"PC-MAX":              62,
 	
 	# Expert
 	"PP-Conductive":      500,
@@ -205,19 +211,15 @@ material_order = {
 	"NGEN_ninjaflex":     108,
 	"NGEN_semiflex":      109,
 	"INOVA_semiflex":     110,
-	"ABS_scaffold":       111,
-	"HIPS_scaffold":      112,
 	
 	#Experimental
-	"HT":                5001,
 	"b-pet":             5002,
-	"PC-MAX":            5003,
 	"wood-bamboo":       5004,
 	"polyflex":          5006,
 	"armadillo":         5007,
 	"brassfill":         5008,
-	"silk":              5009,
-	"linen":             5010,
+	"ABS_scaffold":      5009,
+	"HIPS_scaffold":     5010
 }
 
 material_types = {
@@ -240,6 +242,9 @@ material_types = {
 	"PP-Coffee": "Intermediate",
 	"PP-HT-PLA": "Intermediate",
 	"nGen": "Intermediate",
+	"PP-Matte-HT-PLA": "Intermediate",
+	"silk": "Intermediate",
+	"linen": "Intermediate",
 	
 	# Advanced
 	"Alloy910": "Advanced",
@@ -253,6 +258,8 @@ material_types = {
 	"T-Glase": "Advanced",
 	"Bronzefill": "Advanced",
 	"Copperfill": "Advanced",
+	"HT": "Advanced",
+	"PC-MAX": "Advanced",
 	
 	# Expert
 	"PP-Conductive": "Expert",
@@ -290,8 +297,8 @@ material_types = {
 	"NGEN_ninjaflex": "Expert",
 	"NGEN_semiflex": "Expert",
 	"INOVA_semiflex": "Expert",
-	"ABS_scaffold": "Expert",
-	"HIPS_scaffold": "Expert",
+	#"ABS_scaffold": "Expert",
+	#"HIPS_scaffold": "Expert",
 	
 	# 'Experimental' is assumed when the material has no other category 
 }
@@ -316,6 +323,9 @@ material_names = {
 	"PP-Coffee": "Coffee PLA (Proto-pasta)",
 	"PP-HT-PLA": "High Temp PLA (Proto-pasta)",
 	"nGen": "nGen (colorFabb)",
+	"PP-Matte-HT-PLA": "Matte Fiber HTPLA (Proto-pasta)",
+	"silk": "BioFila Silk (twoBEars)",
+	"linen": "BioFila Linen (twoBEars)",
 	
 	# Advanced
 	"Alloy910": "Alloy 910 (Taulman)",
@@ -329,6 +339,8 @@ material_names = {
 	"T-Glase": "t-glase (Taulman)",
 	"Bronzefill": "bronzeFill (colorFabb)",
 	"Copperfill": "copperFill (colorFabb)",
+	"HT": "HT (colorFabb)",
+	"PC-MAX": "PC-MAX (Polymaker)",
 	
 	# Expert
 	"PP-Conductive": "Conductive (Proto-pasta)",
@@ -367,19 +379,15 @@ material_names = {
 	"NGEN_ninjaflex": "nGen & Ninjaflex",
 	"NGEN_semiflex": "nGen & Semiflex",
 	"INOVA_semiflex": "INOVA & Semiflex",
-	"ABS_scaffold": "ABS & Scaffold Support",
-	"HIPS_scaffold": "HIPS & Scaffold Support",
 	
 	# Experimental
-	"HT": "HT (colorFabb)",
 	"b-pet": "B-Pet",
-	"PC-MAX": "PC-MAX (Polymaker)",
 	"wood-bamboo": "WoodFill & BambooFill",
 	"polyflex": "PolyFlex (Polymaker)",
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
-	"silk": "BioFila Silk (twoBEars)",
-	"linen": "BioFila Linen (twoBEars)",
+	"ABS_scaffold": "ABS & Scaffold Support",
+	"HIPS_scaffold": "HIPS & Scaffold Support"
 }
 
 material_url = {
@@ -402,6 +410,7 @@ material_url = {
 	"PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
 #	"PP-HT-PLA": "",
 	"nGen": "lulzbot.com/store/filament/ngen",
+#	"PP-Matte-HT-PLA": "",
 
 	# Advanced
 	"Alloy910": "lulzbot.com/store/filament/alloy-910",
@@ -452,8 +461,6 @@ material_url = {
 #	"NGEN_ninjaflex": "",
 #	"NGEN_semiflex": "",
 #	"INOVA_semiflex": "",
-#	"ABS_scaffold": "",
-#	"HIPS_scaffold": "",
 
 	# Experimental
 #	"HT": "",
@@ -465,6 +472,8 @@ material_url = {
 #	"brassfill": "",
 #	"silk": "",
 #	"linen": "",
+#	"ABS_scaffold": "",
+#	"HIPS_scaffold": ""
 }
 
 bed_prep_materials = {
@@ -482,6 +491,8 @@ bed_prep_materials = {
 	"645-Nylon",
 	"PC-ABS",
 	"nGen",
+	"HT",
+	"PC-MAX",
 }
 
 profile_map = {
