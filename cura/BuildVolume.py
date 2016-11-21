@@ -27,7 +27,7 @@ import UM.Settings.ContainerRegistry
 
 
 # Setting for clearance around the prime
-PRIME_CLEARANCE = 1.5
+PRIME_CLEARANCE = 6.5
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
@@ -701,6 +701,8 @@ class BuildVolume(SceneNode):
                     bed_adhesion_size += value
         elif adhesion_type == "raft":
             bed_adhesion_size = self._getSettingFromAdhesionExtruder("raft_margin")
+        elif adhesion_type == "none":
+            bed_adhesion_size = 0
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
 

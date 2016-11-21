@@ -581,6 +581,8 @@ class CuraApplication(QtApplication):
             else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
+                    if not self.getController().getActiveTool().getEnabled():
+                        self.getController().setActiveTool("TranslateTool")
                     self._previous_active_tool = None
                 else:
                     # Default
@@ -777,7 +779,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
+                if node.getBoundingBox():
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0)))
             op.push()
 
     ## Reset all transformations on nodes with mesh data.
@@ -799,11 +805,10 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                center_y = 0
-                if node.callDecoration("isGroup"):
+                if node.getBoundingBox():
                     center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
                 else:
-                    center_y = node.getMeshData().getCenterPosition().y
+                    center_y = 0
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
 
