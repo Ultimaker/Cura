@@ -581,6 +581,8 @@ class CuraApplication(QtApplication):
             else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
+                    if not self.getController().getActiveTool().getEnabled():
+                        self.getController().setActiveTool("TranslateTool")
                     self._previous_active_tool = None
                 else:
                     # Default
