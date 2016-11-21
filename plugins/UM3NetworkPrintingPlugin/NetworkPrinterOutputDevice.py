@@ -200,6 +200,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "Authentication was required. Setting up authenticator.")
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
+        else:
+            Logger.log("d", "No authentication was required. The id is: %s", self._authentication_id)
 
     def getProperties(self):
         return self._properties
