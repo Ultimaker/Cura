@@ -1190,6 +1190,34 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_initial_print_temperature":
+                {
+                    "label": "Initial Printing Temperature",
+                    "description": "The minimal temperature while heating up to the Printing Temperature at which printing can already start.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 190,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_final_print_temperature":
+                {
+                    "label": "Final Printing Temperature",
+                    "description": "The temperature to which to already start cooling down just before the end of printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 180,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -1211,6 +1239,7 @@
                     "default_value": 0.5,
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
+                    "maximum_value": "machine_nozzle_heat_up_speed",
                     "enabled": "False",
                     "comments": "old enabled function: material_flow_dependent_temperature or machine_extruder_count > 1",
                     "settable_per_mesh": false,
