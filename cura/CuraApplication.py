@@ -877,8 +877,15 @@ class CuraApplication(QtApplication):
             Logger.log("d", "mergeSelected: Exception:", e)
             return
 
-        # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getAllChildren() if node.getMeshData()]
+        meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
+
+        # Compute the center of the objects
+        object_centers = []
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            orientation = node.getOrientation().toMatrix()
+            rotated_mesh = mesh.getTransformed(orientation)
+            center = rotated_mesh.getCenterPosition().scale(node.getScale())
+            object_centers.append(center)
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
@@ -886,10 +893,15 @@ class CuraApplication(QtApplication):
             offset = Vector(middle_x, middle_y, middle_z)
         else:
             offset = Vector(0, 0, 0)
+
         # Move each node to the same position.
-        for center, node in zip(object_centers, group_node.getChildren()):
-            # Align the object and also apply the offset to center it inside the group.
-            node.setPosition(center - offset)
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            orientation = node.getOrientation().toMatrix()
+            rotated_mesh = mesh.getTransformed(orientation)
+
+            # Align the object around its zero position
+            # and also apply the offset to center it inside the group.
+            node.setPosition(-rotated_mesh.getZeroPosition().scale(node.getScale()) - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
