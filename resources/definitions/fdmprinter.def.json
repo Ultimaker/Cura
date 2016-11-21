@@ -1020,6 +1020,7 @@
                     "type": "float",
                     "default_value": 100,
                     "minimum_value": "0",
+                    "minimum_value_warning": "100",
                     "maximum_value_warning": "200",
                     "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
                     "settable_per_mesh": true
