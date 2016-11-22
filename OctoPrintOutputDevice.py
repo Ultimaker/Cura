@@ -43,7 +43,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._base_url = "http://%s:%d%s" % (self._address, self._port, self._path)
         self._api_url = self._base_url + self._api_prefix
-        self._camera_url = "http://%s:8080/?action=snapshot" % self._address
+        self._camera_url = "http://%s:8080/?action=stream" % self._address
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
@@ -66,6 +66,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._image_request = None
         self._image_reply = None
+        self._stream_buffer = b""
+        self._stream_buffer_start_index = -1
 
         self._post_request = None
         self._post_reply = None
@@ -87,13 +89,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._update_timer.setSingleShot(False)
         self._update_timer.timeout.connect(self._update)
 
-        self._camera_timer = QTimer()
-        self._camera_timer.setInterval(500)  # Todo: Add preference for camera update interval
-        self._camera_timer.setSingleShot(False)
-        self._camera_timer.timeout.connect(self._update_camera)
-
         self._camera_image_id = 0
-
         self._camera_image = QImage()
 
         self._connection_state_before_timeout = None
@@ -155,11 +151,29 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def baseURL(self):
         return self._base_url
 
-    def _update_camera(self):
-        ## Request new image
+    def _startCamera(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack or not parseBool(global_container_stack.getMetaDataEntry("octoprint_show_camera", False)):
+            return
+
+        # Start streaming mjpg stream
         url = QUrl(self._camera_url)
         self._image_request = QNetworkRequest(url)
         self._image_reply = self._manager.get(self._image_request)
+        self._image_reply.downloadProgress.connect(self._onStreamDownloadProgress)
+
+    def _stopCamera(self):
+        if self._image_reply:
+            self._image_reply.abort()
+            self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
+            self._image_reply = None
+        self._image_request = None
+
+        self._stream_buffer = b""
+        self._stream_buffer_start_index = -1
+
+        self._camera_image = QImage()
+        self.newImage.emit()
 
     def _update(self):
         if self._last_response_time:
@@ -250,9 +264,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         if self._error_message:
             self._error_message.hide()
         self._update_timer.stop()
-        self._camera_timer.stop()
-        self._camera_image = QImage()
-        self.newImage.emit()
+
+        self._stopCamera()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -264,26 +277,12 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from the instance
     def connect(self):
-        #self.close()  # Ensure that previous connection (if any) is killed.
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
-            return
-
         self._createNetworkManager()
 
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
-
         Logger.log("d", "Connection with instance %s with ip %s started", self._key, self._address)
         self._update_timer.start()
-
-        if parseBool(global_container_stack.getMetaDataEntry("octoprint_show_camera", False)):
-            self._update_camera()
-            self._camera_timer.start()
-        else:
-            self._camera_timer.stop()
-            self._camera_image = QImage()
-            self.newImage.emit()
 
         self._last_response_time = None
         self.setAcceptsCommands(False)
@@ -529,13 +528,6 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 else:
                     pass  # TODO: Handle errors
 
-            elif "snapshot" in reply.url().toString():  # Update from camera:
-                if http_status_code == 200:
-                    self._camera_image.loadFromData(reply.readAll())
-                    self.newImage.emit()
-                else:
-                    pass  # TODO: Handle errors
-
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             if "files" in reply.url().toString():  # Result from /files command:
                 if http_status_code == 201:
@@ -566,6 +558,21 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         else:
             Logger.log("d", "OctoPrintOutputDevice got an unhandled operation %s", reply.operation())
+
+    def _onStreamDownloadProgress(self, bytes_received, bytes_total):
+        self._stream_buffer += self._image_reply.readAll()
+
+        if self._stream_buffer_start_index == -1:
+            self._stream_buffer_start_index = self._stream_buffer.indexOf(b'\xff\xd8')
+        stream_buffer_end_index = self._stream_buffer.lastIndexOf(b'\xff\xd9')
+
+        if self._stream_buffer_start_index != -1 and stream_buffer_end_index != -1:
+            jpg_data = self._stream_buffer[self._stream_buffer_start_index:stream_buffer_end_index + 2]
+            self._stream_buffer = self._stream_buffer[stream_buffer_end_index + 2:]
+            self._stream_buffer_start_index = -1
+
+            self._camera_image.loadFromData(jpg_data)
+            self.newImage.emit()
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
