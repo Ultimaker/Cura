@@ -19,6 +19,7 @@ from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.Validator import Validator
+from UM.Message import Message
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -32,6 +33,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 
 from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -289,6 +291,8 @@ class CuraApplication(QtApplication):
 
             self._recent_files.append(QUrl.fromLocalFile(f))
 
+        self.changeLayerViewSignal.connect(self.changeToLayerView)
+
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
@@ -536,31 +540,45 @@ class CuraApplication(QtApplication):
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
     loadingFiles = []
+    non_sliceable_extensions = [".gcode", ".g"]
+
+    changeLayerViewSignal = pyqtSignal()
+
+    def changeToLayerView(self):
+        self.getController().setActiveView("LayerView")
 
     @pyqtSlot(QUrl)
     def loadFile(self, file):
         scene = self.getController().getScene()
 
-        for node1 in DepthFirstIterator(scene.getRoot()):
-            if hasattr(node1, "gcode") and getattr(node1, "gcode") is True:
-                self.deleteAll()
-                break
-
         if not file.isValid():
             return
 
-        supported_extensions = [".gcode", ".g"]
+        for node in DepthFirstIterator(scene.getRoot()):
+            if hasattr(node, "gcode") and getattr(node, "gcode") is True:
+                self.deleteAll()
+                break
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
+        filename = os.path.basename(f)
         if len(self.loadingFiles) > 0:
-            if extension.lower() in supported_extensions:
+            # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
+            if extension.lower() in self.non_sliceable_extensions:
+                message = Message(
+                    catalog.i18nc("@info:status", "Only one G-code file can be loaded at a time. Skipped importing {0}",
+                                  filename))
+                message.show()
                 return
+            # If file being loaded is non-slicable file, then prevent loading of any other files
             extension = os.path.splitext(self.loadingFiles[0])[1]
-            if extension.lower() in supported_extensions:
+            if extension.lower() in self.non_sliceable_extensions:
+                message = Message(
+                    catalog.i18nc("@info:status",
+                                  "Can't open any other file if G-code is loading. Skipped importing {0}",
+                                  filename))
+                message.show()
                 return
-        elif extension.lower() in supported_extensions:
-            self.getController().setActiveView("LayerView")
 
         self.loadingFiles.append(f)
 
@@ -570,11 +588,16 @@ class CuraApplication(QtApplication):
 
     def _readMeshFinished(self, job):
         node = job.getResult()
+        filename = job.getFileName()
+        self.loadingFiles.remove(filename)
+
         if node != None:
-            filename = job.getFileName()
             node.setSelectable(True)
-            node.setName(filename)
-            self.loadingFiles.remove(filename)
+            node.setName(os.path.basename(filename))
+
+            extension = os.path.splitext(filename)[1]
+            if extension.lower() in self.non_sliceable_extensions:
+                self.changeLayerViewSignal.emit()
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
@@ -1056,14 +1079,14 @@ class CuraApplication(QtApplication):
 
     _hide_settings = False
 
-    HideSettingsChanged = pyqtSignal(bool)
+    hideSettingsChanged = pyqtSignal(bool)
 
     @pyqtSlot(bool)
     def setHideSettings(self, hide):
         self._hide_settings = hide
-        self.HideSettingsChanged.emit(hide)
+        self.hideSettingsChanged.emit(hide)
 
-    @pyqtProperty(bool, notify=HideSettingsChanged)
+    @pyqtProperty(bool, fset=setHideSettings, notify=hideSettingsChanged)
     def hideSettings(self):
         return self._hide_settings
 

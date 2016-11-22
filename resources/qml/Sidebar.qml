@@ -289,7 +289,7 @@ Rectangle
 
     Label {
         id: settingsModeLabel
-        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Not possible to modify slicing settings or re-slice\nwhile a GCODE file is open");
+        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom

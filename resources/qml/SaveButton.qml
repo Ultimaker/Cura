@@ -14,7 +14,6 @@ Rectangle {
 
     property real progress: UM.Backend.progress;
     property int backendState: UM.Backend.state;
-    property bool backendPaused: UM.Backend.paused;
     property bool activity: Printer.getPlatformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
@@ -23,11 +22,6 @@ Rectangle {
         if(!activity)
         {
             return catalog.i18nc("@label:PrintjobStatus", "Please load a 3d model");
-        }
-
-        if (backendPaused)
-        {
-            return catalog.i18nc("@label:PrintjobStatus", "Slicing temporary disabled");
         }
 
         switch(base.backendState)
@@ -40,6 +34,8 @@ Rectangle {
                 return catalog.i18nc("@label:PrintjobStatus %1 is target operation","Ready to %1").arg(UM.OutputDeviceManager.activeDeviceShortDescription);
             case 4:
                 return catalog.i18nc("@label:PrintjobStatus", "Unable to Slice");
+            case 5:
+                return catalog.i18nc("@label:PrintjobStatus", "Slicing unavailable");
             default:
                 return "";
         }

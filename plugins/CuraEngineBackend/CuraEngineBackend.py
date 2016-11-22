@@ -69,7 +69,7 @@ class CuraEngineBackend(Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
-        self._pauseSlicing = False
+        self._pause_slicing = False
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
@@ -116,6 +116,7 @@ class CuraEngineBackend(Backend):
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
+        self.backendStateChange.connect(self._onBackendStateChanged)
 
         # When a tool operation is in progress, don't slice. So we need to listen for tool operations.
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
@@ -152,7 +153,7 @@ class CuraEngineBackend(Backend):
     ##  Perform a slice of the scene.
     def slice(self):
         Logger.log("d", "Starting slice job...")
-        if self._pauseSlicing:
+        if self._pause_slicing:
             return
         self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack:  # We shouldn't be slicing.
@@ -186,6 +187,12 @@ class CuraEngineBackend(Backend):
         self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
+
+    def _onBackendStateChanged(self, state):
+        if state == BackendState.SlicingDisabled:
+            self._pause_slicing = True
+        else:
+            self._pause_slicing = False
 
     ##  Terminate the engine process.
     def _terminate(self):
@@ -397,15 +404,13 @@ class CuraEngineBackend(Backend):
 
     ##  Manually triggers a reslice
     def forceSlice(self):
-        if not self._pauseSlicing:
-            self._change_timer.start()
+        self._change_timer.start()
 
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #
     #   This indicates that we should probably re-slice soon.
     def _onChanged(self, *args, **kwargs):
-        if not self._pauseSlicing:
-            self._change_timer.start()
+        self._change_timer.start()
 
     ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):

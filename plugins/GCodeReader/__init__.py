@@ -4,21 +4,21 @@
 from . import GCodeReader
 
 from UM.i18n import i18nCatalog
-i18n_catalog = i18nCatalog("uranium")
+i18n_catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
         "plugin": {
-            "name": i18n_catalog.i18nc("@label", "GCODE Reader"),
+            "name": i18n_catalog.i18nc("@label", "G-code Reader"),
             "author": "Victor Larchenko",
             "version": "1.0",
-            "description": i18n_catalog.i18nc("@info:whatsthis", "Allows displaying GCODE files."),
+            "description": i18n_catalog.i18nc("@info:whatsthis", "Allows loading and displaying G-code files."),
             "api": 3
         },
         "mesh_reader": [
             {
                 "extension": "gcode",
-                "description": i18n_catalog.i18nc("@item:inlistbox", "GCODE File")
+                "description": i18n_catalog.i18nc("@item:inlistbox", "G-code File")
             },
             {
                 "extension": "g",

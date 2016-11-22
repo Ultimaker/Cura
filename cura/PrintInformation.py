@@ -13,6 +13,9 @@ import math
 import os.path
 import unicodedata
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 ##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
 #   This class contains all the logic relating to calculation and slicing for the
@@ -66,7 +69,7 @@ class PrintInformation(QObject):
     preSlicedChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify=preSlicedChanged)
-    def isPreSliced(self):
+    def preSliced(self):
         return self._pre_sliced
 
     def setPreSliced(self, pre_sliced):
@@ -134,10 +137,8 @@ class PrintInformation(QObject):
     def createJobName(self, base_name):
         base_name = self._stripAccents(base_name)
         self._setAbbreviatedMachineName()
-        if len(base_name) > 100:
-            base_name = "%s..." % base_name[:100]
         if self._pre_sliced:
-            return "Pre-sliced file " + base_name
+            return catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
         elif Preferences.getInstance().getValue("cura/jobname_prefix"):
             return self._abbr_machine + "_" + base_name
         else:

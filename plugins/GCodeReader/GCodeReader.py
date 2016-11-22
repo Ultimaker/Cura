@@ -10,6 +10,7 @@ from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 from UM.Message import Message
 from UM.Logger import Logger
+from UM.Backend.Backend import BackendState
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -67,11 +68,11 @@ class GCodeReader(MeshReader):
         backend = Application.getInstance().getBackend()
         if self.scene_node is not None and self.scene_node.getParent() is None:
             self.scene_node = None
-            backend._pauseSlicing = False
+            backend.backendStateChange.emit(BackendState.NotStarted)
             Application.getInstance().setHideSettings(False)
             Application.getInstance().getPrintInformation().setPreSliced(False)
         else:
-            backend._pauseSlicing = True
+            backend.backendStateChange.emit(BackendState.SlicingDisabled)
             Application.getInstance().getPrintInformation().setPreSliced(True)
             Application.getInstance().setHideSettings(True)
 
@@ -135,9 +136,8 @@ class GCodeReader(MeshReader):
             self.scene_node.parentChanged.connect(self.onParentChanged)
 
             backend = Application.getInstance().getBackend()
-            backend._pauseSlicing = True
             backend.close()
-            backend.backendStateChange.emit(3)
+            backend.backendStateChange.emit(BackendState.SlicingDisabled)
 
             glist = getattr(Application.getInstance().getController().getScene(), "gcode_list")
             glist.clear()

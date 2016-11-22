@@ -11,7 +11,7 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View");
     id: menu
-    enabled: !PrintInformation.isPreSliced
+    enabled: !PrintInformation.preSliced
     Instantiator
     {
         model: UM.ViewModel { }
