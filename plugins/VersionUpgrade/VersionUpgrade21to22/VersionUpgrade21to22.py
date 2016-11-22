@@ -60,7 +60,7 @@ _printer_translations = {
 }
 
 _printer_translations_profiles = {
-    "ultimaker2plus": "um2p", #Does NOT get included in PLA profiles!
+    "ultimaker2plus": "um2p",
     "ultimaker2_extended_plus": "um2ep" #Has no profiles for CPE+, Nylon, PC and TPU!
 }
 
@@ -73,18 +73,18 @@ _profile_translations = {
     "Normal Quality": "normal",
     "High Quality": "high",
     "Ulti Quality": "high", #This one doesn't have an equivalent. Map it to high.
-    "abs_0.25_normal": "um2p_abs_0.25_normal",
+    "abs_0.25_normal": "um2p_abs_0.25_high",
     "abs_0.4_fast": "um2p_abs_0.4_fast",
     "abs_0.4_high": "um2p_abs_0.4_high",
     "abs_0.4_normal": "um2p_abs_0.4_normal",
     "abs_0.6_normal": "um2p_abs_0.6_normal",
-    "abs_0.8_normal": "um2p_abs_0.8_normal",
-    "cpe_0.25_normal": "um2p_cpe_0.25_normal",
+    "abs_0.8_normal": "um2p_abs_0.8_fast",
+    "cpe_0.25_normal": "um2p_cpe_0.25_high",
     "cpe_0.4_fast": "um2p_cpe_0.4_fast",
     "cpe_0.4_high": "um2p_cpe_0.4_high",
     "cpe_0.4_normal": "um2p_cpe_0.4_normal",
     "cpe_0.6_normal": "um2p_cpe_0.6_normal",
-    "cpe_0.8_normal": "um2p_cpe_0.8_normal",
+    "cpe_0.8_normal": "um2p_cpe_0.8_fast",
     "cpep_0.4_draft": "um2p_cpep_0.4_draft",
     "cpep_0.4_normal": "um2p_cpep_0.4_normal",
     "cpep_0.6_draft": "um2p_cpep_0.6_draft",
@@ -107,12 +107,12 @@ _profile_translations = {
     "pc_0.6_normal": "um2p_pc_0.6_normal",
     "pc_0.8_draft": "um2p_pc_0.8_draft",
     "pc_0.8_normal": "um2p_pc_0.8_normal",
-    "pla_0.25_normal": "pla_0.25_normal", #Note that the PLA profiles don't get the um2p_ prefix, though they are for UM2+.
-    "pla_0.4_fast": "pla_0.4_fast",
-    "pla_0.4_high": "pla_0.4_high",
-    "pla_0.4_normal": "pla_0.4_normal",
-    "pla_0.6_normal": "pla_0.6_normal",
-    "pla_0.8_normal": "pla_0.8_normal",
+    "pla_0.25_normal": "um2p_pla_0.25_high",
+    "pla_0.4_fast": "um2p_pla_0.4_fast",
+    "pla_0.4_high": "um2p_pla_0.4_high",
+    "pla_0.4_normal": "um2p_pla_0.4_normal",
+    "pla_0.6_normal": "um2p_pla_0.6_normal",
+    "pla_0.8_normal": "um2p_pla_0.8_fast",
     "tpu_0.25_high": "um2p_tpu_0.25_high",
     "tpu_0.4_normal": "um2p_tpu_0.4_normal",
     "tpu_0.6_fast": "um2p_tpu_0.6_fast"
@@ -154,12 +154,12 @@ _setting_name_translations = {
 _quality_fallbacks = {
     "ultimaker2_plus": {
         "ultimaker2_plus_0.25": {
-            "generic_abs": "um2p_abs_0.25_normal",
-            "generic_cpe": "um2p_cpe_0.25_normal",
+            "generic_abs": "um2p_abs_0.25_high",
+            "generic_cpe": "um2p_cpe_0.25_high",
             #No CPE+.
             "generic_nylon": "um2p_nylon_0.25_normal",
             "generic_pc": "um2p_pc_0.25_normal",
-            "generic_pla": "pla_0.25_normal",
+            "generic_pla": "um2p_pla_0.25_high",
             "generic_tpu": "um2p_tpu_0.25_high"
         },
         "ultimaker2_plus_0.4": {
@@ -168,7 +168,7 @@ _quality_fallbacks = {
             "generic_cpep": "um2p_cpep_0.4_normal",
             "generic_nylon": "um2p_nylon_0.4_normal",
             "generic_pc": "um2p_pc_0.4_normal",
-            "generic_pla": "pla_0.4_normal",
+            "generic_pla": "um2p_pla_0.4_normal",
             "generic_tpu": "um2p_tpu_0.4_normal"
         },
         "ultimaker2_plus_0.6": {
@@ -177,16 +177,16 @@ _quality_fallbacks = {
             "generic_cpep": "um2p_cpep_0.6_normal",
             "generic_nylon": "um2p_nylon_0.6_normal",
             "generic_pc": "um2p_pc_0.6_normal",
-            "generic_pla": "pla_0.6_normal",
+            "generic_pla": "um2p_pla_0.6_normal",
             "generic_tpu": "um2p_tpu_0.6_fast",
         },
         "ultimaker2_plus_0.8": {
-            "generic_abs": "um2p_abs_0.8_normal",
-            "generic_cpe": "um2p_cpe_0.8_normal",
+            "generic_abs": "um2p_abs_0.8_fast",
+            "generic_cpe": "um2p_cpe_0.8_fast",
             "generic_cpep": "um2p_cpep_0.8_normal",
             "generic_nylon": "um2p_nylon_0.8_normal",
             "generic_pc": "um2p_pc_0.8_normal",
-            "generic_pla": "pla_0.8_normal",
+            "generic_pla": "um2p_pla_0.8_fast",
             #No TPU.
         }
     }
