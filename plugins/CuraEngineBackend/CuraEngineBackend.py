@@ -220,6 +220,9 @@ class CuraEngineBackend(Backend):
     #
     #   \param job The start slice job that was just finished.
     def _onStartSliceCompleted(self, job):
+        if self._error_message:
+            self._error_message.hide()
+
         # Note that cancelled slice jobs can still call this method.
         if self._start_slice_job is job:
             self._start_slice_job = None
@@ -239,12 +242,32 @@ class CuraEngineBackend(Backend):
 
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
             if Application.getInstance().getPlatformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. Please check your settings for errors."))
+                extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                error_keys = []
+                for extruder in extruders:
+                    error_keys.extend(extruder.getErrorKeys())
+                if not extruders:
+                    error_keys = self._global_container_stack.getErrorKeys()
+                error_labels = set()
+                definition_container = self._global_container_stack.getBottom()
+                for key in error_keys:
+                    error_labels.add(definition_container.findDefinitions(key = key)[0].label)
+
+                error_labels = ", ".join(error_labels)
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
             else:
                 self.backendStateChange.emit(BackendState.NotStarted)
             return
+
+        if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."))
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
             if Application.getInstance().getPlatformActivity:
@@ -296,7 +319,7 @@ class CuraEngineBackend(Backend):
         self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
-            Logger.log("e", "A socket error caused the connection to be reset")
+            Logger.log("w", "A socket error caused the connection to be reset")
 
     ##  A setting has changed, so check if we must reslice.
     #

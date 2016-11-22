@@ -401,7 +401,7 @@ Item {
                     }
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
-                    exclude: [ "machine_settings" ]
+                    exclude: [ "machine_settings", "command_line_settings" ]
                 }
                 delegate:Loader
                 {

@@ -200,6 +200,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
                     if len(vertex_data) >= 4:
                         convex_hull = hull.getConvexHull()
                         offset_hull = self._offsetHull(convex_hull)
+            else:
+                return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
@@ -234,6 +236,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
             extra_margin = max(0, self._getSettingProperty("raft_margin", "value"))
         elif adhesion_type == "brim":
             extra_margin = max(0, self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+        elif adhesion_type == "none":
+            extra_margin = 0
         elif adhesion_type == "skirt":
             extra_margin = max(
                 0, self._getSettingProperty("skirt_gap", "value") +

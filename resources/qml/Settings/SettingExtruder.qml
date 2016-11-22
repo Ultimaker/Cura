@@ -21,7 +21,11 @@ SettingItem
             id: extruders_model
             onModelChanged: control.color = extruders_model.getItem(control.currentIndex).color
         }
-        property string color: extruders_model.getItem(control.currentIndex).color
+        property string color:
+        {
+            var model_color = extruders_model.getItem(control.currentIndex).color;
+            return (model_color) ? model_color : "";
+        }
 
         textRole: "name"
 

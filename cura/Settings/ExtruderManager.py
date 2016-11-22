@@ -5,6 +5,8 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject, QVariant #
 
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator #To find which extruders are used in the scene.
+from UM.Scene.SceneNode import SceneNode #To find which extruders are used in the scene.
 import UM.Settings.ContainerRegistry #Finding containers by ID.
 import UM.Settings.SettingFunction
 
@@ -50,8 +52,11 @@ class ExtruderManager(QObject):
     @pyqtProperty(int, notify = extrudersChanged)
     def extruderCount(self):
         if not UM.Application.getInstance().getGlobalContainerStack():
-            return 0 # No active machine, so no extruders.
-        return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
+            return 0  # No active machine, so no extruders.
+        try:
+            return len(self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()])
+        except KeyError:
+            return 0
 
     @pyqtProperty("QVariantMap", notify=extrudersChanged)
     def extruderIds(self):
@@ -265,17 +270,77 @@ class ExtruderManager(QObject):
         container_registry.addContainer(container_stack)
 
     def getAllExtruderValues(self, setting_key):
+        return self.getAllExtruderSettings(setting_key, "value")
+
+    ##  Gets a property of a setting for all extruders.
+    #
+    #   \param setting_key  \type{str} The setting to get the property of.
+    #   \param property  \type{str} The property to get.
+    #   \return \type{List} the list of results
+    def getAllExtruderSettings(self, setting_key, property):
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
-        multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
-        if not multi_extrusion:
-            return [global_container_stack.getProperty(setting_key, "value")]
+        if global_container_stack.getProperty("machine_extruder_count", "value") <= 1:
+            return [global_container_stack.getProperty(setting_key, property)]
 
         result = []
         for index in self.extruderIds:
             extruder_stack_id = self.extruderIds[str(index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
-            result.append(stack.getProperty(setting_key, "value"))
+            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            result.append(stack.getProperty(setting_key, property))
         return result
+
+    ##  Gets the extruder stacks that are actually being used at the moment.
+    #
+    #   An extruder stack is being used if it is the extruder to print any mesh
+    #   with, or if it is the support infill extruder, the support interface
+    #   extruder, or the bed adhesion extruder.
+    #
+    #   If there are no extruders, this returns the global stack as a singleton
+    #   list.
+    #
+    #   \return A list of extruder stacks.
+    def getUsedExtruderStacks(self):
+        global_stack = UM.Application.getInstance().getGlobalContainerStack()
+        container_registry = UM.Settings.ContainerRegistry.getInstance()
+
+        if global_stack.getProperty("machine_extruder_count", "value") <= 1: #For single extrusion.
+            return [global_stack]
+
+        used_extruder_stack_ids = set()
+
+        #Get the extruders of all meshes in the scene.
+        support_enabled = False
+        support_interface_enabled = False
+        scene_root = UM.Application.getInstance().getController().getScene().getRoot()
+        meshes = [node for node in DepthFirstIterator(scene_root) if type(node) is SceneNode and node.isSelectable()] #Only use the nodes that will be printed.
+        for mesh in meshes:
+            extruder_stack_id = mesh.callDecoration("getActiveExtruder")
+            if not extruder_stack_id: #No per-object settings for this node.
+                extruder_stack_id = self.extruderIds["0"]
+            used_extruder_stack_ids.add(extruder_stack_id)
+
+            #Get whether any of them use support.
+            per_mesh_stack = mesh.callDecoration("getStack")
+            if per_mesh_stack:
+                support_enabled |= per_mesh_stack.getProperty("support_enable", "value")
+                support_interface_enabled |= per_mesh_stack.getProperty("support_interface_enable", "value")
+            else: #Take the setting from the build extruder stack.
+                extruder_stack = container_registry.findContainerStacks(id = extruder_stack_id)[0]
+                support_enabled |= extruder_stack.getProperty("support_enable", "value")
+                support_interface_enabled |= extruder_stack.getProperty("support_enable", "value")
+
+        #The support extruders.
+        if support_enabled:
+            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_infill_extruder_nr", "value"))])
+            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_extruder_nr_layer_0", "value"))])
+            if support_interface_enabled:
+                used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_interface_extruder_nr", "value"))])
+
+        #The platform adhesion extruder. Not used if using none.
+        if global_stack.getProperty("adhesion_type", "value") != "none":
+            used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("adhesion_extruder_nr", "value"))])
+
+        return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
 
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #

@@ -3,21 +3,22 @@
 
 from UM.Operations.Operation import Operation
 from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Scene.SceneNode import SceneNode
 
 ##  A specialised operation designed specifically to modify the previous operation.
 class PlatformPhysicsOperation(Operation):
     def __init__(self, node, translation):
         super().__init__()
         self._node = node
-        self._old_position = node.getPosition()
-        self._new_position = node.getPosition() + translation
+        self._old_transformation = node.getLocalTransformation()
+        self._translation = translation
         self._always_merge = True
 
     def undo(self):
-        self._node.setPosition(self._old_position)
+        self._node.setTransformation(self._old_transformation)
 
     def redo(self):
-        self._node.setPosition(self._new_position)
+        self._node.translate(self._translation, SceneNode.TransformSpace.World)
 
     def mergeWith(self, other):
         group = GroupedOperation()
@@ -28,4 +29,4 @@ class PlatformPhysicsOperation(Operation):
         return group
 
     def __repr__(self):
-        return "PlatformPhysicsOperation(new_position = {0})".format(self._new_position)
+        return "PlatformPhysicsOperation(translation = {0})".format(self._translation)

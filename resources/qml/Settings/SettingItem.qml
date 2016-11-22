@@ -27,7 +27,8 @@ Item {
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var resolve: propertyProvider.properties.resolve
+    // There is no resolve property if there is only one stack.
+    property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -197,7 +198,26 @@ Item {
                 // - The type of the value of any deeper container is an "object" (eg; is a function)
                 visible:
                 {
-                    return showInheritButton && Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+                    if(!base.showInheritButton)
+                    {
+                        return false;
+                    }
+
+                    if(!propertyProvider.properties.enabled)
+                    {
+                        // Note: This is not strictly necessary since a disabled setting is hidden anyway.
+                        // But this will cause the binding to be re-evaluated when the enabled property changes.
+                        return false;
+                    }
+                    if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
+                    {
+                        return false;
+                    }
+                    if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
+                    {
+                        return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+                    }
+                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
                 }
 
                 height: parent.height;

@@ -19,13 +19,12 @@ from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-
 class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
-        self.setShortDescription(catalog.i18nc("@action:button", "Print via USB"))
+        self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))

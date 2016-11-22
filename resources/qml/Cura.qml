@@ -246,14 +246,34 @@ UM.MainWindow
                 {
                     if(drop.urls.length > 0)
                     {
+                        // Import models
                         for(var i in drop.urls)
                         {
-                            UM.MeshFileHandler.readLocalFile(drop.urls[i]);
-                            if (i == drop.urls.length - 1)
-                            {
-                                var meshName = backgroundItem.getMeshName(drop.urls[i].toString())
-                                backgroundItem.hasMesh(decodeURIComponent(meshName))
+                            // There is no endsWith in this version of JS...
+                            if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
+                                // Drop an object
+                                UM.MeshFileHandler.readLocalFile(drop.urls[i]);
+                                if (i == drop.urls.length - 1)
+                                {
+                                    var meshName = backgroundItem.getMeshName(drop.urls[i].toString());
+                                    backgroundItem.hasMesh(decodeURIComponent(meshName));
+                                }
                             }
+                        }
+
+                        // Import profiles
+                        var import_result = Cura.ContainerManager.importProfiles(drop.urls);
+                        if (import_result.message !== "") {
+                            messageDialog.text = import_result.message
+                            if(import_result.status == "ok")
+                            {
+                                messageDialog.icon = StandardIcon.Information
+                            }
+                            else
+                            {
+                                messageDialog.icon = StandardIcon.Critical
+                            }
+                            messageDialog.open()
                         }
                     }
                 }
@@ -402,6 +422,20 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
+                onVisibleChanged:
+                {
+                    if(Cura.MachineManager.printerOutputDevices.length == 0 )
+                    {
+                        return;
+                    }
+                    if(visible)
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].startCamera()
+                    } else
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].stopCamera()
+                    }
+                }
                 source:
                 {
                     if(!base.monitoringPrint)
@@ -539,7 +573,7 @@ UM.MainWindow
         target: Cura.MachineManager
         onBlurSettings:
         {
-            contentItem.focus = true
+            contentItem.forceActiveFocus()
         }
     }
 
@@ -575,6 +609,11 @@ UM.MainWindow
             }
         }
 
+        MultiplyObjectOptions
+        {
+            id: multiplyObjectOptions
+        }
+
         Connections
         {
             target: Cura.Actions.multiplyObject
@@ -582,7 +621,9 @@ UM.MainWindow
             {
                 if(objectContextMenu.objectId != 0)
                 {
-                    Printer.multiplyObject(objectContextMenu.objectId, 1);
+                    multiplyObjectOptions.objectId = objectContextMenu.objectId;
+                    multiplyObjectOptions.visible = true;
+                    multiplyObjectOptions.reset();
                     objectContextMenu.objectId = 0;
                 }
             }

@@ -5,6 +5,7 @@ See: http://en.wikipedia.org/wiki/Intel_HEX
 This is a python 3 conversion of the code created by David Braam for the Cura project.
 """
 import io
+from UM.Logger import Logger
 
 def readHex(filename):
     """
@@ -41,6 +42,6 @@ def readHex(filename):
         elif rec_type == 2:	#Extended Segment Address Record
             extra_addr = int(line[9:13], 16) * 16
         else:
-            print(rec_type, rec_len, addr, check_sum, line)
+            Logger.log("d", "%s, %s, %s, %s, %s", rec_type, rec_len, addr, check_sum, line)
     f.close()
     return data

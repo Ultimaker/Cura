@@ -20,7 +20,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         super().__init__(device_id)
 
         self.setName(device_name)
-        self.setShortDescription(catalog.i18nc("@action:button", "Save to Removable Drive"))
+        self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Save to Removable Drive"))
         self.setDescription(catalog.i18nc("@item:inlistbox", "Save to Removable Drive {0}").format(device_name))
         self.setIconName("save_sd")
         self.setPriority(1)
@@ -71,7 +71,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         try:
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
-            self._stream = open(file_name, "wt", buffering = 1)
+            self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
             job = WriteMeshJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)

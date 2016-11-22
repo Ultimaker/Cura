@@ -1,16 +1,36 @@
+[2.3.1]
+*Layer Height in Profile Selection
+Added the layer height to the profile selection menu.
+
+*Bug fixes
+Fixed the option to import g-code from related machines as a profile
+Fixed a bug where editing material settings has no effect on 3D prints
+Fixed an issue with automatic profile importing on Cura 2.1 on Mac OSX
+Fixed an inheritance issue for dual extrusion
+Fixed an issue with "i" symbol updates
+Fixed a freeze that can occur while printing via Wi-Fi
+
 [2.3.0]
+*Multi Extrusion Support
+Machines with multiple extruders are now supported. Ultimaker 3 printers and Ultimaker Original printers with dual extrusion upgrade kit are currently supported.
+
+*Network Printing for Ultimaker 3
+Sending a print to an Ultimaker 3 remotely via the network is now possible. Requires Wi-Fi or LAN to connect to the printer.
+
+*Print Monitoring for Ultimaker 3
+You can monitor your print on an Ultimaker 3 with a live camera feed. Requires Wi-Fi or LAN to connect to the printer.
+
+*Material and Print Core Synchronization
+Connecting to an Ultimaker 3 now gives you the option to synchronize the materials in Cura with what is loaded in the printer.
 
 *Speed improvements
-The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layerview is significantly faster and slicing speed is slightly improved.
-
-*Multi Extrusion Support
-Machines with multiple extruders are now supported. If you’ve got the Ultimaker Original with the dual extrusion upgrade kit, we’ve got you covered.
-
-*Custom Machine Support
-It’s now much easier to use Cura with custom machines. You can edit the machine settings when you load a new custom machine.
+The first thing you will notice is the speed. STL loading is now 10 to 20 times faster, layer view is significantly faster and slicing speed is slightly improved.
 
 *Improved Position Tool
 Place objects precisely where you want them by manually entering the values for the position.
+
+*Custom Machine Support
+It’s now much easier to use Cura with custom machines. You can edit the machine settings when you load a new custom machine.
 
 *Improved Grouping
 It's now possible to transform objects that are already grouped.
@@ -20,7 +40,7 @@ Select an individual item in a group or merged object and edit as usual. Just Ct
 Profile management is improved. You can now easily see and track changes made to your profiles.
 
 *Improved Setting Visibility
-Make multiple settings visible at once. The Visibility Overview setting indicates why a setting is not shown in the sidebar even if it is enabled.
+Make multiple settings visible at the same time with a checkbox. The Visibility Overview setting indicates why a setting is not shown in the sidebar even if it is enabled.
 
 *Improved time estimation
 Time estimations are more accurate. Based on our test time estimations should be within 5% accuracy for Ultimaker printers.
@@ -36,10 +56,10 @@ Configurations from older installations of Cura 2.1 are automatically imported i
 
 *Slicing features
 *Infill Types
-We've introduced two new infill types: Tetrahedral and Cubic. They change along with the Z-axis for more uniform strength in all directions. There are now 7 infill types to choose from.
+Two new infill types are now introduced: Tetrahedral and Cubic. They change along with the Z-axis for more uniform strength in all directions. There are now seven infill types to choose from.
 
 *Gradual Infill
-Now you can change the density of the infill based on the distance from the top layers. Your objects print faster, use less material, while top surfaces have the same quality.
+Gradual infill lets users adjust infill density, based on the distance from the top layers. This offers faster printing and reduced material requirements, whilst maintaining surface quality.
 
 *Set Acceleration and Jerk by Feature
 You can now set Jerk and Acceleration by feature-type (infill, walls, top/bottom, etc), for more precision.
@@ -56,7 +76,7 @@ Can’t avoid previously printed parts by horizontal moves? The Z Hop Only Over 
 *Skin and Wall Overlap
 The Skin Overlap setting allows you to overlap the skin lines with the walls for better adhesion.
 
-*Control Initial Layer Travel Speed
+*Adjust Initial Layer Travel Speed
 Set the travel speed of the initial layer(s) to reduce risk of extruder pulling the print from the bed.
 
 *Support Interface
@@ -66,39 +86,39 @@ It is now possible to print a support bottom as well as a support roof. Support 
 Deleting grouped objects
 Duplicating groups
 Bridging
-Drag and drop on the first run on Windows
+Drag and drop (first Windows run)
 Unretraction speeds
 Bottom layer in Spiralize mode
 Overlap Compensation
-Retractions on Raft
-Retractions now occur after each object printed in one-at-a-time mode.
-Rafts are no longer printed outside of build area.
-Spiralize no longer only spiralizes the first printed segment only.
-Line distance is now the actual line distance.
-Enabling raft doesn’t influence at which height the model is sliced any more.
-Brim is now always printed just once.
-Support roofs now only occur just below overhang.
+Raft retractions
+Retractions now occur after each object printed in one-at-a-time mode
+Rafts are no longer printed outside of build area
+Spiralize no longer limited to the first printed segment only
+Line distance is now the actual line distance
+Enabling raft doesn’t influence at which height the model is sliced any more
+Brim is now always printed just once
+Support roofs now only occur just below overhang
 
 *Minor changes
-Messages are now displayed 30 seconds instead of 10, making it less likely that certain messages are missed.
-You are now notified if you try to save to a locked SD card.
-Engine log is now included in the application log.
-Undo and Redo now work correctly with multiple operations.
-The last used folder is now remembered (instead of defaulting to home folder).
-Import X3D files.
-Made it possible to add multiple Per Model Settings at once.
-Bed Level and Checkup procedures for UMO+ can now be done without re-adding machine.
-Combing is applied in more cases and results in better paths.
-Infill thickness now supports Grid infill also for even multiples of the layer height.
-Support is no longer removed by unprintable thin parts of the model.
-Support is now generated on each layer it’s supposed to.
-Support doesn't go outside overhang areas any more.
-Support doesn't remove brim around the object any more.
-Brim is now also generated under the support.
-Draft shield and Ooze shield get their own brim or raft.
-Settings shared between skirt and brim now also activate when brim is selected.
-Compensate overlapping wall parts now also works for inner walls.
-You can now adjust the speed at which the bed is lowered each layer.
+Message display time increased to 30 seconds
+Notification if you try to save to a locked SD card
+Engine log now included in the application log
+Undo and Redo now function with multiple operations
+The last used folder is now remembered rather than defaulting to home folder
+Import X3D files
+Made it possible to add multiple Per Model Settings at once
+Bed Level and Checkup procedures for UMO+ can be performed without re-adding machine
+Combing applied in more cases and results in better paths
+Infill thickness now supports Grid infill also for even multiples of the layer height
+Support is no longer removed by unprintable thin parts of the model
+Support generated on each appropriate layer
+Support no longer goes outside overhang areas
+Support no longer removes brim around the object
+Brim is now also generated under the support
+Draft and Ooze shield get their own brim or raft
+Settings shared between skirt and brim now also activate when brim is selected
+Compensate overlapping wall parts now also works for inner walls
+Bed lowering speed can be adjusted for each layer
 
 [2.1.3]
 

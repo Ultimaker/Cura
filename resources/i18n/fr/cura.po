@@ -1831,13 +1831,13 @@ msgstr "Moniteur de l'imprimante"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
 msgctxt "@title:tab"
-msgid "Simple"
-msgstr "Simple"
+msgid "Recommended"
+msgstr "Recommandé"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
 msgctxt "@title:tab"
-msgid "Advanced"
-msgstr "Avancée"
+msgid "Custom"
+msgstr "Personnalisé"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:18
 #: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:18
@@ -2295,25 +2295,6 @@ msgid ""
 "Click to open the profile manager."
 msgstr "Certaines valeurs de paramètre sont différentes des valeurs enregistrées dans le profil.\n\nCliquez pour ouvrir le gestionnaire de profils."
 
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
-msgid "Modify G-Code"
-msgstr "Modifier le G-Code"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:12
-msgctxt "@label"
-msgid "Post Processing"
-msgstr "Post-traitement"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:16
-msgctxt "Description of plugin"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Extension qui permet le post-traitement des scripts créés par l'utilisateur"
-
-#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
-msgctxt "@title:window"
-msgid "Post Processing Plugin"
-msgstr "Plug-in de post-traitement"
-
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
 msgctxt "@label"
 msgid "Post Processing Scripts"
@@ -2333,3 +2314,318 @@ msgstr "Paramètres"
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts"
 msgstr "Modifier les scripts de post-traitement actifs"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Manages network connections to Ultimaker 3 printers"
+msgstr "Gère les connexions réseau vers les imprimantes Ultimaker 3"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:100
+msgctxt "@action:button"
+msgid "Print over network"
+msgstr "Imprimer sur le réseau"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:101
+msgctxt "@properties:tooltip"
+msgid "Print over network"
+msgstr "Imprimer sur le réseau"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:143
+msgctxt "@info:status"
+msgid ""
+"Access to the printer requested. Please approve the request on the printer"
+msgstr "Accès à l'imprimante demandé. Veuillez approuver la demande sur l'imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:144
+msgctxt "@info:status"
+msgid ""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:145
+msgctxt "@action:button"
+msgid "Retry"
+msgstr "Réessayer"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:145
+msgctxt "@info:tooltip"
+msgid "Re-send the access request"
+msgstr "Renvoyer la demande d'accès"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:147
+msgctxt "@info:status"
+msgid "Access to the printer accepted"
+msgstr "Accès à l'imprimante accepté"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:148
+msgctxt "@info:status"
+msgid "No access to print with this printer. Unable to send print job."
+msgstr "Aucun accès pour imprimer avec cette imprimante. Impossible d'envoyer la tâche d'impression."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:149
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:28
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:72
+msgctxt "@action:button"
+msgid "Request Access"
+msgstr "Demande d'accès"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:149
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:27
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:71
+msgctxt "@info:tooltip"
+msgid "Send access request to the printer"
+msgstr "Envoyer la demande d'accès à l'imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:232
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Connected over the network to {0}. Please approve the access request on the "
+"printer."
+msgstr "Connecté sur le réseau à {0}. Veuillez approuver la demande d'accès sur l'imprimante."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:239
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Connected over the network to {0}."
+msgstr "Connecté sur le réseau à {0}."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:252
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Connected over the network to {0}. No access to control the printer."
+msgstr "Connecté sur le réseau à {0}. Pas d'accès pour commander l'imprimante."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:257
+msgctxt "@info:status"
+msgid "Access request was denied on the printer."
+msgstr "La demande d'accès a été refusée sur l'imprimante."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:260
+msgctxt "@info:status"
+msgid "Access request failed due to a timeout."
+msgstr "Échec de la demande d'accès à cause de la durée limite."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:323
+msgctxt "@info:status"
+msgid "The connection with the network was lost."
+msgstr "La connexion avec le réseau a été perdue."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:354
+msgctxt "@info:status"
+msgid ""
+"The connection with the printer was lost. Check your printer to see if it is "
+"connected."
+msgstr "La connexion avec l'imprimante a été perdue. Vérifiez que votre imprimante est connectée."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:466
+msgctxt "@info:status"
+msgid ""
+"Unable to start a new print job because the printer is busy. Please check "
+"the printer."
+msgstr "Impossible de démarrer une nouvelle tâche d'impression car l'imprimante est occupée. Vérifiez l'imprimante."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:471
+#, python-format
+msgctxt "@info:status"
+msgid ""
+"Unable to start a new print job, printer is busy. Current printer status is "
+"%s."
+msgstr "Impossible de démarrer une nouvelle tâche d'impression car l'imprimante est occupée. L'état actuel de l'imprimante est %s."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:491
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No PrinterCore loaded in slot {0}"
+msgstr "Impossible de démarrer une nouvelle tâche d'impression car l'imprimante est occupée. Pas de PrinterCore inséré dans la fente {0}."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:498
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No material loaded in slot {0}"
+msgstr "Impossible de démarrer une nouvelle tâche d'impression car l'imprimante est occupée. Pas de matériau chargé dans la fente {0}."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:509
+#, python-brace-format
+msgctxt "@label"
+msgid "Not enough material for spool {0}."
+msgstr "Pas suffisamment de matériau pour bobine {0}."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:519
+#, python-brace-format
+msgctxt "@label"
+msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr "PrintCore différent (Cura : {0}, Imprimante : {1}) sélectionné pour l'extrudeuse {2}"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:533
+#, python-brace-format
+msgctxt "@label"
+msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr "Matériau différent (Cura : {0}, Imprimante : {1}) sélectionné pour l'extrudeuse {2}"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:536
+msgctxt "@label"
+msgid "Are you sure you wish to print with the selected configuration?"
+msgstr "Êtes-vous sûr(e) de vouloir imprimer avec la configuration sélectionnée ?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:537
+msgctxt "@label"
+msgid ""
+"There is a mismatch between the configuration of the printer and Cura. For "
+"the best result, always slice for the PrintCores and materials that are "
+"inserted in your printer."
+msgstr "Problème de compatibilité entre la configuration de l'imprimante et Cura. Pour un résultat optimal, découpez toujours pour les PrintCores et matériaux insérés dans votre imprimante."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:543
+msgctxt "@window:title"
+msgid "Mismatched configuration"
+msgstr "Configuration différente"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:633
+msgctxt "@info:status"
+msgid "Sending data to printer"
+msgstr "Envoi des données à l'imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:680
+msgctxt "@info:status"
+msgid "Unable to send data to printer. Is another job still active?"
+msgstr "Impossible d'envoyer les données à l'imprimante. Une autre tâche est-elle toujours active ?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:804
+msgctxt "@label:MonitorStatus"
+msgid "Print aborted. Please check the printer"
+msgstr "Abandon de l'impression. Vérifiez l'imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:810
+msgctxt "@label:MonitorStatus"
+msgid "Pausing print..."
+msgstr "Mise en pause de l'impression..."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:812
+msgctxt "@label:MonitorStatus"
+msgid "Resuming print..."
+msgstr "Reprise de l'impression..."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:920
+msgctxt "@window:title"
+msgid "Changes on the Printer"
+msgstr "Modifications sur l'imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:922
+msgctxt "@label"
+msgid ""
+"Do you want to change the PrintCores and materials in Cura to match your "
+"printer?"
+msgstr "Voulez-vous modifier les PrintCores et matériaux dans Cura pour correspondre à votre imprimante ?"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:924
+msgctxt "@label"
+msgid ""
+"The PrintCores and/or materials on your printer were changed. For the best "
+"result, always slice for the PrintCores and materials that are inserted in "
+"your printer."
+msgstr "Les PrintCores et/ou matériaux sur votre imprimante ont été modifiés. Pour un résultat optimal, découpez toujours pour les PrintCores et matériaux insérés dans votre imprimante."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
+msgctxt "@action"
+msgid "Connect via Network"
+msgstr "Connecter via le réseau"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:57
+msgctxt "@title:window"
+msgid "Connect to Networked Printer"
+msgstr "Connecter à l'imprimante en réseau"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:67
+msgctxt "@label"
+msgid ""
+"To print directly to your printer over the network, please make sure your "
+"printer is connected to the network using a network cable or by connecting "
+"your printer to your WIFI network. If you don't connect Cura with your "
+"printer, you can still use a USB drive to transfer g-code files to your "
+"printer.\n"
+"\n"
+"Select your printer from the list below:"
+msgstr "Pour imprimer directement sur votre imprimante sur le réseau, assurez-vous que votre imprimante est connectée au réseau via un câble réseau ou en connectant votre imprimante à votre réseau Wi-Fi. Si vous ne connectez pas Cura avec votre imprimante, vous pouvez utiliser une clé USB pour transférer les fichiers g-code sur votre imprimante.\n\nSélectionnez votre imprimante dans la liste ci-dessous :"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:106
+msgctxt "@action:button"
+msgid "Refresh"
+msgstr "Rafraîchir"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:198
+msgctxt "@label"
+msgid ""
+"If your printer is not listed, read the <a href='%1'>network-printing "
+"troubleshooting guide</a>"
+msgstr "Si votre imprimante n'apparaît pas dans la liste, lisez le <a href='%1'>guide de dépannage de l'impression en réseau</a>"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:225
+msgctxt "@label"
+msgid "Type"
+msgstr "Type"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:231
+msgctxt "@label"
+msgid "Ultimaker 3"
+msgstr "Ultimaker 3"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:231
+msgctxt "@label"
+msgid "Ultimaker 3 Extended"
+msgstr "Ultimaker 3 Extended"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:237
+msgctxt "@label"
+msgid "Firmware version"
+msgstr "Version du firmware"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:249
+msgctxt "@label"
+msgid "Address"
+msgstr "Adresse"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:263
+msgctxt "@label"
+msgid "The printer at this address has not yet responded."
+msgstr "L'imprimante à cette adresse n'a pas encore répondu."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:268
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:38
+msgctxt "@action:button"
+msgid "Connect"
+msgstr "Connecter"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:280
+msgctxt "@label:"
+msgid "Print Again"
+msgstr "Imprimer à nouveau"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:289
+msgctxt "@title:window"
+msgid "Printer Address"
+msgstr "Adresse de l'imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:319
+msgctxt "@alabel"
+msgid "Enter the IP address or hostname of your printer on the network."
+msgstr "Saisissez l'adresse IP ou le nom d'hôte de votre imprimante sur le réseau."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:346
+msgctxt "@action:button"
+msgid "Ok"
+msgstr "Ok"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:37
+msgctxt "@info:tooltip"
+msgid "Connect to a printer"
+msgstr "Connecter à une imprimante"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:116
+msgctxt "@info:tooltip"
+msgid "Load the configuration of the printer into Cura"
+msgstr "Charger la configuration de l'imprimante dans Cura"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:117
+msgctxt "@action:button"
+msgid "Activate Configuration"
+msgstr "Activer la configuration"

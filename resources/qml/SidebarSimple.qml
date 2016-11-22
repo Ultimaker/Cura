@@ -126,7 +126,7 @@ Item
                             {
                                 return UM.Theme.getColor("setting_control_disabled_text")
                             }
-                            return UM.Theme.getColor("text")
+                            return UM.Theme.getColor("setting_control_disabled_text")
                         }
                     }
 
@@ -327,7 +327,7 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            width: parent.width / 100 * 45
+            width: parent.width / 100 * 65
 
             style: UM.Theme.styles.combobox
             enabled: base.settingsEnabled

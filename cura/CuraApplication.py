@@ -7,6 +7,7 @@ from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -225,7 +226,7 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().setDefault("general/visible_settings", """
             machine_settings
-                resolution
+            resolution
                 layer_height
             shell
                 wall_thickness
@@ -250,17 +251,17 @@ class CuraApplication(QtApplication):
                 cool_fan_enabled
             support
                 support_enable
+                support_extruder_nr
                 support_type
                 support_interface_density
             platform_adhesion
                 adhesion_type
+                adhesion_extruder_nr
                 brim_width
                 raft_airgap
                 layer_0_z_overlap
                 raft_surface_layers
             dual
-                adhesion_extruder_nr
-                support_extruder_nr
                 prime_tower_enable
                 prime_tower_size
                 prime_tower_position_x
@@ -340,7 +341,7 @@ class CuraApplication(QtApplication):
 
                 if path:
                     instance.setPath(path)
-                    with SaveFile(path, "wt", -1, "utf-8") as f:
+                    with SaveFile(path, "wt") as f:
                         f.write(data)
 
             for stack in ContainerRegistry.getInstance().findContainerStacks():
@@ -367,7 +368,7 @@ class CuraApplication(QtApplication):
             path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
         if path:
             stack.setPath(path)
-            with SaveFile(path, "wt", -1, "utf-8") as f:
+            with SaveFile(path, "wt") as f:
                 f.write(data)
 
 
@@ -507,15 +508,18 @@ class CuraApplication(QtApplication):
         qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
-        qmlRegisterType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel")
+        qmlRegisterSingletonType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel", cura.Settings.ProfilesModel.createProfilesModel)
         qmlRegisterType(cura.Settings.QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
         qmlRegisterType(cura.Settings.UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(cura.Settings.MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
 
         qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
 
-        qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+        # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
+        actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
+        qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
 
         engine.rootContext().setContextProperty("ExtruderManager", cura.Settings.ExtruderManager.getInstance())
 
@@ -528,11 +532,19 @@ class CuraApplication(QtApplication):
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
-            if not self.getController().getActiveTool():
+            if self.getController().getActiveTool():
+                # If the tool has been disabled by the new selection
+                if not self.getController().getActiveTool().getEnabled():
+                    # Default
+                    self.getController().setActiveTool("TranslateTool")
+            else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
+                    if not self.getController().getActiveTool().getEnabled():
+                        self.getController().setActiveTool("TranslateTool")
                     self._previous_active_tool = None
                 else:
+                    # Default
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
@@ -643,10 +655,9 @@ class CuraApplication(QtApplication):
             while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
-            new_node = copy.deepcopy(current_node)
-
             op = GroupedOperation()
             for _ in range(count):
+                new_node = copy.deepcopy(current_node)
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
@@ -727,7 +738,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
+                if node.getBoundingBox():
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0)))
             op.push()
 
     ## Reset all transformations on nodes with mesh data.
@@ -749,11 +764,10 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                center_y = 0
-                if node.callDecoration("isGroup"):
+                if node.getBoundingBox():
                     center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
                 else:
-                    center_y = node.getMeshData().getCenterPosition().y
+                    center_y = 0
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
 
@@ -822,8 +836,18 @@ class CuraApplication(QtApplication):
             Logger.log("d", "mergeSelected: Exception:", e)
             return
 
-        # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren() if node.getMeshData()]
+        meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
+
+        # Compute the center of the objects
+        object_centers = []
+        # Forget about the translation that the original objects have
+        zero_translation = Matrix(data=numpy.zeros(3))
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
+            center = transformed_mesh.getCenterPosition()
+            object_centers.append(center)
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
@@ -833,9 +857,14 @@ class CuraApplication(QtApplication):
             offset = Vector(0, 0, 0)
 
         # Move each node to the same position.
-        for center, node in zip(object_centers, group_node.getChildren()):
-            # Align the object and also apply the offset to center it inside the group.
-            node.setPosition(center - offset)
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
+
+            # Align the object around its zero position
+            # and also apply the offset to center it inside the group.
+            node.setPosition(-transformed_mesh.getZeroPosition() - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
@@ -889,15 +918,16 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
 
     def _onFileLoaded(self, job):
-        node = job.getResult()
-        if node != None:
-            self.fileLoaded.emit(job.getFileName())
-            node.setSelectable(True)
-            node.setName(os.path.basename(job.getFileName()))
-            op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
-            op.push()
+        nodes = job.getResult()
+        for node in nodes:
+            if node is not None:
+                self.fileLoaded.emit(job.getFileName())
+                node.setSelectable(True)
+                node.setName(os.path.basename(job.getFileName()))
+                op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
+                op.push()
 
-            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
+                self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
