@@ -56,7 +56,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
         container_stack_files = [name for name in cura_file_names if name.endswith(self._container_stack_suffix)]
-        self._resolve_strategies = {"machine": None, "quality_changes": None}
+        self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
         machine_conflict = False
         quality_changes_conflict = False
         for container_stack_file in container_stack_files:
