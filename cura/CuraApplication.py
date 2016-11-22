@@ -130,7 +130,7 @@ class CuraApplication(QtApplication):
 
         # For settings which are not settable_per_mesh and not settable_per_extruder:
         # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
-        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
