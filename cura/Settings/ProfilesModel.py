@@ -38,7 +38,7 @@ class ProfilesModel(InstanceContainersModel):
             ProfilesModel.__instance = cls()
         return ProfilesModel.__instance
 
-    __instance = None
+    __instance = None   # type: 'ProfilesModel'
 
     ##  Fetch the list of containers to display.
     #

@@ -18,7 +18,7 @@ class QualityManager:
             QualityManager.__instance = cls()
         return QualityManager.__instance
 
-    __instance = None
+    __instance = None   # type: 'QualityManager'
 
     ##  Find a quality by name for a specific machine definition and materials.
     #
