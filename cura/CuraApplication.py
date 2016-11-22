@@ -546,6 +546,10 @@ class CuraApplication(QtApplication):
 
     def changeToLayerView(self):
         self.getController().setActiveView("LayerView")
+        view = self.getController().getActiveView()
+        view.resetLayerData()
+        view.setLayer(999999)
+        view.calculateMaxLayers()
 
     @pyqtSlot(QUrl)
     def loadFile(self, file):
