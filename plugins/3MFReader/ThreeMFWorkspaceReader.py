@@ -144,6 +144,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._id_mapping = {}
 
+        # We don't add containers right away, but wait right until right before the stack serialization.
+        # We do this so that if something goes wrong, it's easier to clean up.
+        containers_to_add = []
+
         # TODO: For the moment we use pretty naive existence checking. If the ID is the same, we assume in quite a few
         # TODO: cases that the container loaded is the same (most notable in materials & definitions).
         # TODO: It might be possible that we need to add smarter checking in the future.
@@ -172,7 +176,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not materials:
                     material_container = xml_material_profile(container_id)
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
-                    self._container_registry.addContainer(material_container)
+                    containers_to_add.append(material_container)
                 else:
                     if not materials[0].isReadOnly():  # Only create new materials if they are not read only.
                         if self._resolve_strategies["material"] == "override":
@@ -182,7 +186,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             # auto created & added.
                             material_container = xml_material_profile(self.getNewId(container_id))
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
-                            self._container_registry.addContainer(material_container)
+                            containers_to_add.append(material_container)
                             material_containers.append(material_container)
 
         Logger.log("d", "Workspace loading is checking instance containers...")
@@ -201,7 +205,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Check if quality changes already exists.
                 user_containers = self._container_registry.findInstanceContainers(id=container_id)
                 if not user_containers:
-                    self._container_registry.addContainer(instance_container)
+                    containers_to_add.append(instance_container)
                 else:
                     if self._resolve_strategies["machine"] == "override":
                         user_containers[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
@@ -213,7 +217,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             instance_container._id = new_id
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("extruder", self.getNewId(extruder_id))
-                            self._container_registry.addContainer(instance_container)
+                            containers_to_add.append(instance_container)
 
                         machine_id = instance_container.getMetaDataEntry("machine", None)
                         if machine_id:
@@ -221,13 +225,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             instance_container._id = new_id
                             instance_container.setName(new_id)
                             instance_container.setMetaDataEntry("machine", self.getNewId(machine_id))
-                            self._container_registry.addContainer(instance_container)
+                            containers_to_add.append(instance_container)
                 user_instance_containers.append(instance_container)
             elif container_type == "quality_changes":
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if not quality_changes:
-                    self._container_registry.addContainer(instance_container)
+                    containers_to_add.append(instance_container)
                 else:
                     if self._resolve_strategies["quality_changes"] == "override":
                         quality_changes[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
@@ -238,49 +242,67 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             else:
                 continue
 
+        # Add all the containers right before we try to add / serialize the stack
+        for container in containers_to_add:
+            self._container_registry.addContainer(container)
+
         # Get the stack(s) saved in the workspace.
         Logger.log("d", "Workspace loading is checking stacks containers...")
         container_stack_files = [name for name in cura_file_names if name.endswith(self._container_stack_suffix)]
         global_stack = None
         extruder_stacks = []
-        for container_stack_file in container_stack_files:
-            container_id = self._stripFileToId(container_stack_file)
+        container_stacks_added = []
+        try:
+            for container_stack_file in container_stack_files:
+                container_id = self._stripFileToId(container_stack_file)
 
-            # Check if a stack by this ID already exists;
-            container_stacks = self._container_registry.findContainerStacks(id=container_id)
-            if container_stacks:
-                stack = container_stacks[0]
-                if self._resolve_strategies["machine"] == "override":
-                    container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
-                elif self._resolve_strategies["machine"] == "new":
-                    new_id = self.getNewId(container_id)
-                    stack = ContainerStack(new_id)
-                    stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                # Check if a stack by this ID already exists;
+                container_stacks = self._container_registry.findContainerStacks(id=container_id)
+                if container_stacks:
+                    stack = container_stacks[0]
+                    if self._resolve_strategies["machine"] == "override":
+                        container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                    elif self._resolve_strategies["machine"] == "new":
+                        new_id = self.getNewId(container_id)
+                        stack = ContainerStack(new_id)
+                        stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
 
-                    # Ensure a unique ID and name
-                    stack._id = new_id
+                        # Ensure a unique ID and name
+                        stack._id = new_id
 
-                    # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
-                    # bound machine also needs to change.
-                    if stack.getMetaDataEntry("machine", None):
-                        stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
+                        # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
+                        # bound machine also needs to change.
+                        if stack.getMetaDataEntry("machine", None):
+                            stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
 
-                    if stack.getMetaDataEntry("type") != "extruder_train":
-                        # Only machines need a new name, stacks may be non-unique
-                        stack.setName(self._container_registry.uniqueName(stack.getName()))
-                    self._container_registry.addContainer(stack)
+                        if stack.getMetaDataEntry("type") != "extruder_train":
+                            # Only machines need a new name, stacks may be non-unique
+                            stack.setName(self._container_registry.uniqueName(stack.getName()))
+                        container_stacks_added.append(stack)
+                        self._container_registry.addContainer(stack)
+                    else:
+                        Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
                 else:
-                    Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
-            else:
-                stack = ContainerStack(container_id)
-                # Deserialize stack by converting read data from bytes to string
-                stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
-                self._container_registry.addContainer(stack)
+                    stack = ContainerStack(container_id)
+                    # Deserialize stack by converting read data from bytes to string
+                    stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                    container_stacks_added.append(stack)
+                    self._container_registry.addContainer(stack)
 
-            if stack.getMetaDataEntry("type") == "extruder_train":
-                extruder_stacks.append(stack)
-            else:
-                global_stack = stack
+                if stack.getMetaDataEntry("type") == "extruder_train":
+                    extruder_stacks.append(stack)
+                else:
+                    global_stack = stack
+        except:
+            Logger.log("W", "We failed to serialize the stack. Trying to clean up.")
+            # Something went really wrong. Try to remove any data that we added. 
+            for container in containers_to_add:
+                self._container_registry.getInstance().removeContainer(container.getId())
+
+            for container in container_stacks_added:
+                self._container_registry.getInstance().removeContainer(container.getId())
+
+            return None
 
         if self._resolve_strategies["machine"] == "new":
             # A new machine was made, but it was serialized with the wrong user container. Fix that now.
