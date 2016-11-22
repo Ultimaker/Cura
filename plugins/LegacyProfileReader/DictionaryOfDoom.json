@@ -70,7 +70,8 @@
         "magic_spiralize": "spiralize",
         "prime_tower_enable": "wipe_tower",
         "prime_tower_size": "math.sqrt(float(wipe_tower_volume) / float(layer_height))",
-        "ooze_shield_enabled": "ooze_shield"
+        "ooze_shield_enabled": "ooze_shield",
+        "skin_overlap": "fill_overlap"
     },
 
     "defaults": {

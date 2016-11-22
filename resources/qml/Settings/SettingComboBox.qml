@@ -87,23 +87,32 @@ SettingItem
         }
 
         onActivated: { forceActiveFocus(); propertyProvider.setPropertyValue("value", definition.options[index].key) }
-        onModelChanged: updateCurrentIndex();
 
-        Connections
+        Binding
         {
-            target: propertyProvider
-            onPropertiesChanged: control.updateCurrentIndex()
-        }
-
-        function updateCurrentIndex() {
-            for(var i = 0; i < definition.options.length; ++i) {
-                if(definition.options[i].key == propertyProvider.properties.value) {
-                    currentIndex = i;
-                    return;
+            target: control
+            property: "currentIndex"
+            value:
+            {
+                // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
+                var value;
+                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1)) {
+                    // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                    // we have to choose between the resolved value (default) and the global value
+                    // (if user has explicitly set this).
+                    value = base.resolve;
+                } else {
+                    value = propertyProvider.properties.value;
                 }
-            }
 
-            currentIndex = -1;
+                for(var i = 0; i < control.model.length; ++i) {
+                    if(control.model[i].key == value) {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
         }
     }
 }

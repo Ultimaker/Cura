@@ -24,6 +24,8 @@ class StartJobResult(IntEnum):
     Error = 2
     SettingError = 3
     NothingToSlice = 4
+    MaterialIncompatible = 5
+    BuildPlateError = 6
 
 
 ##  Formatter class that handles token expansion in start/end gcod
@@ -74,9 +76,20 @@ class StartSliceJob(Job):
             return
 
         # Don't slice if there is a setting with an error value.
-        if not Application.getInstance().getMachineManager().isActiveStackValid:
+        if Application.getInstance().getMachineManager().stacksHaveErrors:
             self.setResult(StartJobResult.SettingError)
             return
+
+        if Application.getInstance().getBuildVolume().hasErrors():
+            self.setResult(StartJobResult.BuildPlateError)
+            return
+
+        for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            material = extruder_stack.findContainer({"type": "material"})
+            if material:
+                if material.getMetaDataEntry("compatible") == False:
+                    self.setResult(StartJobResult.MaterialIncompatible)
+                    return
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
@@ -148,7 +161,18 @@ class StartSliceJob(Job):
 
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
-                    verts = numpy.array(mesh_data.getVertices())
+                    verts = mesh_data.getVertices()
+                    indices = mesh_data.getIndices()
+                    if indices is not None:
+                        #TODO: This is a very slow way of doing it! It also locks up the GUI.
+                        flat_vert_list = []
+                        for face in indices:
+                            for vert_index in face:
+                                flat_vert_list.append(verts[vert_index])
+                                Job.yieldThread()
+                        verts = numpy.array(flat_vert_list)
+                    else:
+                        verts = numpy.array(verts)
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
@@ -186,6 +210,9 @@ class StartSliceJob(Job):
         material_instance_container = stack.findContainer({"type": "material"})
 
         for key in stack.getAllKeys():
+            # Do not send settings that are not settable_per_extruder.
+            if stack.getProperty(key, "settable_per_extruder") == False:
+                continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             if key == "material_guid" and material_instance_container:
@@ -206,10 +233,18 @@ class StartSliceJob(Job):
             # Use resolvement value if available, or take the value
             resolved_value = stack.getProperty(key, "resolve")
             if resolved_value is not None:
-                settings[key] = resolved_value
+                # There is a resolvement value. Check if we need to use it.
+                user_container = stack.findContainer({"type": "user"})
+                quality_changes_container = stack.findContainer({"type": "quality_changes"})
+                if user_container.hasProperty(key,"value") or quality_changes_container.hasProperty(key,"value"):
+                    # Normal case
+                    settings[key] = stack.getProperty(key, "value")
+                else:
+                    settings[key] = resolved_value
             else:
                 # Normal case
                 settings[key] = stack.getProperty(key, "value")
+            Job.yieldThread()
 
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
@@ -222,22 +257,24 @@ class StartSliceJob(Job):
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting_message.value = str(value).encode("utf-8")
+            Job.yieldThread()
 
     ##  Sends for some settings which extruder they should fallback to if not
     #   set.
     #
-    #   This is only set for settings that have the global_inherits_stack
+    #   This is only set for settings that have the limit_to_extruder
     #   property.
     #
     #   \param stack The global stack with all settings, from which to read the
-    #   global_inherits_stack property.
+    #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack):
         for key in stack.getAllKeys():
-            extruder = int(round(float(stack.getProperty(key, "global_inherits_stack"))))
+            extruder = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
             if extruder >= 0: #Set to a specific extruder.
-                setting_extruder = self._slice_message.addRepeatedMessage("global_inherits_stack")
+                setting_extruder = self._slice_message.addRepeatedMessage("limit_to_extruder")
                 setting_extruder.name = key
                 setting_extruder.extruder = extruder
+            Job.yieldThread()
 
     ##  Check if a node has per object settings and ensure that they are set correctly in the message
     #   \param node \type{SceneNode} Node to check.

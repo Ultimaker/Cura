@@ -23,20 +23,25 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
+from cura.Settings.MachineNameValidator import MachineNameValidator
+from cura.Settings.ProfilesModel import ProfilesModel
+from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
+from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 
 from UM.i18n import i18nCatalog
+from cura.Settings.UserProfilesModel import UserProfilesModel
 
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
-from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 from . import CameraImageProvider
@@ -56,11 +61,44 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from contextlib import contextmanager
+
 import sys
 import os.path
 import numpy
 import copy
 import urllib
+import os
+import time
+
+CONFIG_LOCK_FILENAME = "cura.lock"
+
+##  Contextmanager to create a lock file and remove it afterwards.
+@contextmanager
+def lockFile(filename):
+    try:
+        with open(filename, 'w') as lock_file:
+            lock_file.write("Lock file - Cura is currently writing")
+    except:
+        Logger.log("e", "Could not create lock file [%s]" % filename)
+    yield
+    try:
+        if os.path.exists(filename):
+            os.remove(filename)
+    except:
+        Logger.log("e", "Could not delete lock file [%s]" % filename)
+
+
+##  Wait for a lock file to disappear
+#   the maximum allowable age is settable; if the file is too old, it will be ignored too
+def waitFileDisappear(filename, max_age_seconds=10, msg=""):
+    now = time.time()
+    while os.path.exists(filename) and now < os.path.getmtime(filename) + max_age_seconds and now > os.path.getmtime(filename):
+        if msg:
+            Logger.log("d", msg)
+        time.sleep(1)
+        now = time.time()
+
 
 numpy.seterr(all="ignore")
 
@@ -97,14 +135,24 @@ class CuraApplication(QtApplication):
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("settable_per_mesh", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_per_extruder", DefinitionPropertyType.Any, default = True, read_only = True)
+        # this setting can be changed for each group in one-at-a-time mode
         SettingDefinition.addSupportedProperty("settable_per_meshgroup", DefinitionPropertyType.Any, default = True, read_only = True)
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default = True, read_only = True)
-        SettingDefinition.addSupportedProperty("global_inherits_stack", DefinitionPropertyType.Function, default = "-1")
+
+        # From which stack the setting would inherit if not defined per object (handled in the engine)
+        # AND for settings which are not settable_per_mesh:
+        # which extruder is the only extruder this setting is obtained from
+        SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1")
+
+        # For settings which are not settable_per_mesh and not settable_per_extruder:
+        # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
+        SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -128,12 +176,14 @@ class CuraApplication(QtApplication):
             {
                 ("quality", UM.Settings.InstanceContainer.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences")
+                ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", UM.Settings.InstanceContainer.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._setting_inheritance_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
 
@@ -191,6 +241,8 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addContainer(empty_material_container)
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
+        empty_quality_container.setName("Not supported")
+        empty_quality_container.addMetaDataEntry("quality_type", "normal")
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
         empty_quality_changes_container = copy.deepcopy(empty_container)
@@ -198,6 +250,9 @@ class CuraApplication(QtApplication):
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
+        # Set the filename to create if cura is writing in the config dir.
+        self._config_lock_filename = os.path.join(Resources.getConfigStoragePath(), CONFIG_LOCK_FILENAME)
+        self.waitConfigLockFile()
         ContainerRegistry.getInstance().load()
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
@@ -219,7 +274,7 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().setDefault("general/visible_settings", """
             machine_settings
-                resolution
+            resolution
                 layer_height
             shell
                 wall_thickness
@@ -244,17 +299,17 @@ class CuraApplication(QtApplication):
                 cool_fan_enabled
             support
                 support_enable
+                support_extruder_nr
                 support_type
                 support_interface_density
             platform_adhesion
                 adhesion_type
+                adhesion_extruder_nr
                 brim_width
                 raft_airgap
                 layer_0_z_overlap
                 raft_surface_layers
             dual
-                adhesion_extruder_nr
-                support_extruder_nr
                 prime_tower_enable
                 prime_tower_size
                 prime_tower_position_x
@@ -280,6 +335,11 @@ class CuraApplication(QtApplication):
 
     def getContainerRegistry(self):
         return CuraContainerRegistry.getInstance()
+    ## Lock file check: if (another) Cura is writing in the Config dir.
+    #  one may not be able to read a valid set of files while writing. Not entirely fool-proof,
+    #  but works when you start Cura shortly after shutting down.
+    def waitConfigLockFile(self):
+        waitFileDisappear(self._config_lock_filename, max_age_seconds=10, msg="Waiting for Cura to finish writing in the config dir...")
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -308,58 +368,67 @@ class CuraApplication(QtApplication):
         if not self._started: # Do not do saving during application start
             return
 
-        for instance in ContainerRegistry.getInstance().findInstanceContainers():
-            if not instance.isDirty():
-                continue
+        self.waitConfigLockFile()
 
-            try:
-                data = instance.serialize()
-            except NotImplementedError:
-                continue
-            except Exception:
-                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                continue
+        # When starting Cura, we check for the lockFile which is created and deleted here
+        with lockFile(self._config_lock_filename):
 
-            mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
-            file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
-            instance_type = instance.getMetaDataEntry("type")
-            path = None
-            if instance_type == "material":
-                path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
-            elif instance_type == "quality" or instance_type == "quality_changes":
-                path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
-            elif instance_type == "user":
-                path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
-            elif instance_type == "variant":
-                path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+            for instance in ContainerRegistry.getInstance().findInstanceContainers():
+                if not instance.isDirty():
+                    continue
 
-            if path:
-                with SaveFile(path, "wt", -1, "utf-8") as f:
-                    f.write(data)
+                try:
+                    data = instance.serialize()
+                except NotImplementedError:
+                    continue
+                except Exception:
+                    Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                    continue
 
-        for stack in ContainerRegistry.getInstance().findContainerStacks():
-            if not stack.isDirty():
-                continue
+                mime_type = ContainerRegistry.getMimeTypeForContainer(type(instance))
+                file_name = urllib.parse.quote_plus(instance.getId()) + "." + mime_type.preferredSuffix
+                instance_type = instance.getMetaDataEntry("type")
+                path = None
+                if instance_type == "material":
+                    path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
+                elif instance_type == "quality" or instance_type == "quality_changes":
+                    path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
+                elif instance_type == "user":
+                    path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
+                elif instance_type == "variant":
+                    path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
 
-            try:
-                data = stack.serialize()
-            except NotImplementedError:
-                continue
-            except Exception:
-                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
-                continue
+                if path:
+                    instance.setPath(path)
+                    with SaveFile(path, "wt") as f:
+                        f.write(data)
 
-            mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
-            file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-            stack_type = stack.getMetaDataEntry("type", None)
-            path = None
-            if not stack_type or stack_type == "machine":
-                path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-            elif stack_type == "extruder_train":
-                path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-            if path:
-                with SaveFile(path, "wt", -1, "utf-8") as f:
-                    f.write(data)
+            for stack in ContainerRegistry.getInstance().findContainerStacks():
+                self.saveStack(stack)
+
+    def saveStack(self, stack):
+        if not stack.isDirty():
+            return
+        try:
+            data = stack.serialize()
+        except NotImplementedError:
+            return
+        except Exception:
+            Logger.logException("e", "An exception occurred when serializing container %s", stack.getId())
+            return
+
+        mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
+        file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
+        stack_type = stack.getMetaDataEntry("type", None)
+        path = None
+        if not stack_type or stack_type == "machine":
+            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+        elif stack_type == "extruder_train":
+            path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
+        if path:
+            stack.setPath(path)
+            with SaveFile(path, "wt") as f:
+                f.write(data)
 
 
     @pyqtSlot(str, result = QUrl)
@@ -434,6 +503,8 @@ class CuraApplication(QtApplication):
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         ExtruderManager.getInstance()
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
+                         self.getSettingInheritanceManager)
 
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
@@ -456,6 +527,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getSettingInheritanceManager(self, *args):
+        if self._setting_inheritance_manager is None:
+            self._setting_inheritance_manager = SettingInheritanceManager.createSettingInheritanceManager()
+        return self._setting_inheritance_manager
 
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
@@ -493,12 +569,18 @@ class CuraApplication(QtApplication):
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
+        qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
+        qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
 
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
-        qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+        # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
+        actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
+        qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
 
         engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
@@ -511,11 +593,19 @@ class CuraApplication(QtApplication):
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
-            if not self.getController().getActiveTool():
+            if self.getController().getActiveTool():
+                # If the tool has been disabled by the new selection
+                if not self.getController().getActiveTool().getEnabled():
+                    # Default
+                    self.getController().setActiveTool("TranslateTool")
+            else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
+                    if not self.getController().getActiveTool().getEnabled():
+                        self.getController().setActiveTool("TranslateTool")
                     self._previous_active_tool = None
                 else:
+                    # Default
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
@@ -523,8 +613,6 @@ class CuraApplication(QtApplication):
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
-            else:
-                self._previous_active_tool = None
 
     def _onToolOperationStopped(self, event):
         if self._center_after_select:
@@ -589,8 +677,6 @@ class CuraApplication(QtApplication):
                     op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
-        pass
-
     ##  Remove an object from the scene.
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
@@ -604,17 +690,17 @@ class CuraApplication(QtApplication):
             node = Selection.getSelectedObject(0)
 
         if node:
-            group_node = None
-            if node.getParent():
-                group_node = node.getParent()
-                op = RemoveSceneNodeOperation(node)
+            op = GroupedOperation()
+            op.addOperation(RemoveSceneNodeOperation(node))
+
+            group_node = node.getParent()
+            if group_node:
+                # Note that at this point the node has not yet been deleted
+                if len(group_node.getChildren()) <= 2 and group_node.callDecoration("isGroup"):
+                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
 
             op.push()
-            if group_node:
-                if len(group_node.getChildren()) == 1 and group_node.callDecoration("isGroup"):
-                    op.addOperation(SetParentOperation(group_node.getChildren()[0], group_node.getParent()))
-                    op = RemoveSceneNodeOperation(group_node)
-                    op.push()
 
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
@@ -630,10 +716,9 @@ class CuraApplication(QtApplication):
             while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
-            new_node = copy.deepcopy(current_node)
-
             op = GroupedOperation()
             for _ in range(count):
+                new_node = copy.deepcopy(current_node)
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
@@ -707,18 +792,21 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-
             nodes.append(node)
 
         if nodes:
             op = GroupedOperation()
             for node in nodes:
+                # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
-
+                if node.getBoundingBox():
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0)))
             op.push()
-    
-    ## Reset all transformations on nodes with mesh data. 
+
+    ## Reset all transformations on nodes with mesh data.
     @pyqtSlot()
     def resetAll(self):
         Logger.log("i", "Resetting all scene transformations")
@@ -734,14 +822,16 @@ class CuraApplication(QtApplication):
 
         if nodes:
             op = GroupedOperation()
-
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
-
+                if node.getBoundingBox():
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
-            
+
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
     def reloadAll(self):
@@ -806,20 +896,32 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("d", "mergeSelected: Exception:", e)
             return
-        multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
-        group_node.addDecorator(multi_material_decorator)
 
-        # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getMeshData().getCenterPosition().scale(node.getScale()) for node in group_node.getChildren()]
-        middle_x = sum([v.x for v in object_centers]) / len(object_centers)
-        middle_y = sum([v.y for v in object_centers]) / len(object_centers)
-        middle_z = sum([v.z for v in object_centers]) / len(object_centers)
-        offset = Vector(middle_x, middle_y, middle_z)
+        meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
+
+        # Compute the center of the objects
+        object_centers = []
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            orientation = node.getOrientation().toMatrix()
+            rotated_mesh = mesh.getTransformed(orientation)
+            center = rotated_mesh.getCenterPosition().scale(node.getScale())
+            object_centers.append(center)
+        if object_centers and len(object_centers) > 0:
+            middle_x = sum([v.x for v in object_centers]) / len(object_centers)
+            middle_y = sum([v.y for v in object_centers]) / len(object_centers)
+            middle_z = sum([v.z for v in object_centers]) / len(object_centers)
+            offset = Vector(middle_x, middle_y, middle_z)
+        else:
+            offset = Vector(0, 0, 0)
 
         # Move each node to the same position.
-        for center, node in zip(object_centers, group_node.getChildren()):
-            # Align the object and also apply the offset to center it inside the group.
-            node.setPosition(center - offset)
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            orientation = node.getOrientation().toMatrix()
+            rotated_mesh = mesh.getTransformed(orientation)
+
+            # Align the object around its zero position
+            # and also apply the offset to center it inside the group.
+            node.setPosition(-rotated_mesh.getZeroPosition().scale(node.getScale()) - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
@@ -873,15 +975,16 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
 
     def _onFileLoaded(self, job):
-        node = job.getResult()
-        if node != None:
-            self.fileLoaded.emit(job.getFileName())
-            node.setSelectable(True)
-            node.setName(os.path.basename(job.getFileName()))
-            op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
-            op.push()
+        nodes = job.getResult()
+        for node in nodes:
+            if node is not None:
+                self.fileLoaded.emit(job.getFileName())
+                node.setSelectable(True)
+                node.setName(os.path.basename(job.getFileName()))
+                op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
+                op.push()
 
-            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
+                self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():

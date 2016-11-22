@@ -14,6 +14,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "Innovo INVENTOR" },
         "machine_width": {
             "default_value": 340
         },
@@ -53,7 +54,7 @@
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_start_gcode": {
-            "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\n{IF_BED}M190 S{BED}\n{IF_EXT0}M104 T0 S{TEMP0}\n{IF_EXT0}M109 T0 S{TEMP0}\n{IF_EXT1}M104 T1 S{TEMP1}\n{IF_EXT1}M109 T1 S{TEMP1}\nG32 S3 ; auto level\nG92 E0 ; Reset extruder position"
+            "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM190 S{material_bed_temperature}\nM104 T0 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\nG32 S3 ; auto level\nG92 E0 ; Reset extruder position"
         },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off extruders\nM140 S0 ; heated bed heater off\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"

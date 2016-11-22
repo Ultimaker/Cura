@@ -27,14 +27,15 @@ Item {
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var resolve: propertyProvider.properties.resolve
+    // There is no resolve property if there is only one stack.
+    property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
     signal contextMenuRequested()
     signal showTooltip(string text);
     signal hideTooltip();
-
+    signal showAllHiddenInheritedSettings(string category_id)
     property string tooltipText:
     {
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
@@ -56,12 +57,12 @@ Item {
 
         if(affects_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
+            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
         }
 
         if(affected_by_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
+            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
         }
 
         return tooltip
@@ -138,7 +139,7 @@ Item {
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && !definition.settable_per_extruder && base.showLinkedSettingIcon
+                visible: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId && (!definition.settable_per_extruder || definition.limit_to_extruder != "-1") && base.showLinkedSettingIcon
 
                 height: parent.height;
                 width: height;
@@ -179,8 +180,8 @@ Item {
                 iconSource: UM.Theme.getIcon("reset")
 
                 onClicked: {
-                    revertButton.focus = true
-                    propertyProvider.removeFromContainer(0)
+                    revertButton.focus = true;
+                    Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key);
                 }
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
@@ -196,19 +197,28 @@ Item {
                 // - This setting item uses inherit button at all
                 // - The type of the value of any deeper container is an "object" (eg; is a function)
                 visible:
-                 {
-                    var state = base.state == "InstanceState.User";
-                    var has_setting_function = false;
-                    for (var i = 1; i < base.stackLevels.length; i++)
+                {
+                    if(!base.showInheritButton)
                     {
-                        has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";
-                        if(has_setting_function)
-                        {
-                            break;
-                        }
+                        return false;
                     }
-                    return state && base.showInheritButton && has_setting_function && typeof(propertyProvider.getPropertyValue("value", base.stackLevels[0])) != "object"
-                 }
+
+                    if(!propertyProvider.properties.enabled)
+                    {
+                        // Note: This is not strictly necessary since a disabled setting is hidden anyway.
+                        // But this will cause the binding to be re-evaluated when the enabled property changes.
+                        return false;
+                    }
+                    if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
+                    {
+                        return false;
+                    }
+                    if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
+                    {
+                        return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
+                    }
+                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
+                }
 
                 height: parent.height;
                 width: height;
@@ -227,10 +237,9 @@ Item {
                             break;
                         }
                     }
-
-                    if(last_entry == 4 && base.stackLevel == 0 && base.stackLevels.length == 2)
+                    if((last_entry == 4 || last_entry == 11) && base.stackLevel == 0 && base.stackLevels.length == 2)
                     {
-                        // Special case of the inherit reset. If only the definition (4th container) and the first
+                        // Special case of the inherit reset. If only the definition (4th or 11th) container) and the first
                         // entry (user container) are set, we can simply remove the container.
                         propertyProvider.removeFromContainer(0)
                     }
@@ -246,8 +255,8 @@ Item {
                         // This ensures that the value in any of the deeper containers need not be removed, which is
                         // needed for the reset button (which deletes the top value) to correctly go back to profile
                         // defaults.
-                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
                         propertyProvider.setPropertyValue("value", propertyProvider.getPropertyValue("value", last_entry))
+                        propertyProvider.setPropertyValue("state", "InstanceState.Calculated")
 
                     }
                 }

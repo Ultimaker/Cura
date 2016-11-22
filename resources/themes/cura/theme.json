@@ -52,6 +52,7 @@
         "secondary": [245, 245, 245, 255],
 
         "text": [24, 41, 77, 255],
+        "text_detail": [174, 174, 174, 128],
         "text_link": [12, 169, 227, 255],
         "text_inactive": [174, 174, 174, 255],
         "text_hover": [70, 84, 113, 255],
@@ -159,9 +160,17 @@
         "tooltip": [12, 169, 227, 255],
         "tooltip_text": [255, 255, 255, 255],
 
-        "message_background": [255, 255, 255, 255],
-        "message_text": [32, 166, 219, 255],
-        "message_dismiss": [127, 127, 127, 255],
+        "message_background": [24, 41, 77, 255],
+        "message_text": [255, 255, 255, 255],
+        "message_border": [24, 41, 77, 255],
+        "message_button": [255, 255, 255, 255],
+        "message_button_hover": [12, 169, 227, 255],
+        "message_button_active": [32, 166, 219, 255],
+        "message_button_text": [24, 41, 77, 255],
+        "message_button_text_hover": [255, 255, 255, 255],
+        "message_button_text_active": [255, 255, 255, 255],
+        "message_progressbar_background": [255, 255, 255, 255],
+        "message_progressbar_control": [12, 169, 227, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 

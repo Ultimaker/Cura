@@ -22,7 +22,6 @@ UM.MainWindow
     Component.onCompleted:
     {
         Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-
         // Workaround silly issues with QML Action's shortcut property.
         //
         // Currently, there is no way to define shortcuts as "Application Shortcut".
@@ -140,13 +139,13 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: Cura.ExtrudersModel { }
+                    model: Cura.ExtrudersModel { simpleNames: true }
                     Menu {
                         title: model.name
                         visible: machineExtruderCount.properties.value > 1
 
-                        NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants }
-                        MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials }
+                        NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
+                        MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
                         ProfileMenu { title: catalog.i18nc("@title:menu", "&Profile"); }
 
                         MenuSeparator { }
@@ -212,7 +211,7 @@ UM.MainWindow
                 //: Help menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
-                MenuItem { action: Cura.Actions.showEngineLog; }
+                MenuItem { action: Cura.Actions.showProfileFolder; }
                 MenuItem { action: Cura.Actions.documentation; }
                 MenuItem { action: Cura.Actions.reportBug; }
                 MenuSeparator { }
@@ -247,14 +246,34 @@ UM.MainWindow
                 {
                     if(drop.urls.length > 0)
                     {
+                        // Import models
                         for(var i in drop.urls)
                         {
-                            UM.MeshFileHandler.readLocalFile(drop.urls[i]);
-                            if (i == drop.urls.length - 1)
-                            {
-                                var meshName = backgroundItem.getMeshName(drop.urls[i].toString())
-                                backgroundItem.hasMesh(decodeURIComponent(meshName))
+                            // There is no endsWith in this version of JS...
+                            if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
+                                // Drop an object
+                                UM.MeshFileHandler.readLocalFile(drop.urls[i]);
+                                if (i == drop.urls.length - 1)
+                                {
+                                    var meshName = backgroundItem.getMeshName(drop.urls[i].toString());
+                                    backgroundItem.hasMesh(decodeURIComponent(meshName));
+                                }
                             }
+                        }
+
+                        // Import profiles
+                        var import_result = Cura.ContainerManager.importProfiles(drop.urls);
+                        if (import_result.message !== "") {
+                            messageDialog.text = import_result.message
+                            if(import_result.status == "ok")
+                            {
+                                messageDialog.icon = StandardIcon.Information
+                            }
+                            else
+                            {
+                                messageDialog.icon = StandardIcon.Critical
+                            }
+                            messageDialog.open()
                         }
                     }
                 }
@@ -346,6 +365,7 @@ UM.MainWindow
                     bottom: parent.bottom;
                     right: parent.right;
                 }
+                z: 1
                 onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
             }
@@ -402,7 +422,32 @@ UM.MainWindow
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
                 visible: base.monitoringPrint
-                source: Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage ? Cura.MachineManager.printerOutputDevices[0].cameraImage : ""
+                onVisibleChanged:
+                {
+                    if(Cura.MachineManager.printerOutputDevices.length == 0 )
+                    {
+                        return;
+                    }
+                    if(visible)
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].startCamera()
+                    } else
+                    {
+                        Cura.MachineManager.printerOutputDevices[0].stopCamera()
+                    }
+                }
+                source:
+                {
+                    if(!base.monitoringPrint)
+                    {
+                        return "";
+                    }
+                    if(Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage)
+                    {
+                        return Cura.MachineManager.printerOutputDevices[0].cameraImage;
+                    }
+                    return "";
+                }
             }
 
             UM.MessageStack
@@ -463,12 +508,11 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-            Cura.ContainerManager.createQualityChanges();
             preferences.setPage(4);
             preferences.show();
 
-            // Show the renameDialog after a very short delay so the preference page has time to initiate
-            showProfileNameDialogTimer.start();
+            // Create a new profile after a very short delay so the preference page has time to initiate
+            createProfileTimer.start();
         }
     }
 
@@ -515,11 +559,11 @@ UM.MainWindow
 
     Timer
     {
-        id: showProfileNameDialogTimer
+        id: createProfileTimer
         repeat: false
         interval: 1
 
-        onTriggered: preferences.getCurrentItem().showProfileNameDialog()
+        onTriggered: preferences.getCurrentItem().createProfile()
     }
 
     // BlurSettings is a way to force the focus away from any of the setting items.
@@ -529,7 +573,7 @@ UM.MainWindow
         target: Cura.MachineManager
         onBlurSettings:
         {
-            contentItem.focus = true
+            contentItem.forceActiveFocus()
         }
     }
 
@@ -565,6 +609,11 @@ UM.MainWindow
             }
         }
 
+        MultiplyObjectOptions
+        {
+            id: multiplyObjectOptions
+        }
+
         Connections
         {
             target: Cura.Actions.multiplyObject
@@ -572,7 +621,9 @@ UM.MainWindow
             {
                 if(objectContextMenu.objectId != 0)
                 {
-                    Printer.multiplyObject(objectContextMenu.objectId, 1);
+                    multiplyObjectOptions.objectId = objectContextMenu.objectId;
+                    multiplyObjectOptions.visible = true;
+                    multiplyObjectOptions.reset();
                     objectContextMenu.objectId = 0;
                 }
             }
@@ -641,8 +692,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-        //TODO: Support multiple file selection, workaround bug in KDE file dialog
-        //selectMultiple: true
+        selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
@@ -653,9 +703,17 @@ UM.MainWindow
             folder = f;
 
             CuraApplication.setDefaultPath("dialog_load_path", folder);
-            UM.MeshFileHandler.readLocalFile(fileUrl)
-            var meshName = backgroundItem.getMeshName(fileUrl.toString())
-            backgroundItem.hasMesh(decodeURIComponent(meshName))
+
+            for(var i in fileUrls)
+            {
+                UM.MeshFileHandler.readLocalFile(fileUrls[i])
+
+                if (i == fileUrls.length - 1)
+                {
+                    var meshName = backgroundItem.getMeshName(fileUrls.toString())
+                    backgroundItem.hasMesh(decodeURIComponent(meshName))
+                }
+            }
         }
     }
 
@@ -672,8 +730,15 @@ UM.MainWindow
 
     Connections
     {
-        target: Cura.Actions.showEngineLog
-        onTriggered: engineLog.visible = true;
+        target: Cura.Actions.showProfileFolder
+        onTriggered:
+        {
+            var path = UM.Resources.getPath(UM.Resources.Preferences, "");
+            if(Qt.platform.os == "windows") {
+                path = path.replace(/\\/g,"/");
+            }
+            Qt.openUrlExternally(path);
+        }
     }
 
     AddMachineDialog

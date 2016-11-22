@@ -20,18 +20,40 @@ SettingItem
 
         property bool checked:
         {
-            switch(propertyProvider.properties.value)
+            // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
+            // Stacklevels
+            // 0: user  -> unsaved change
+            // 1: quality changes  -> saved change
+            // 2: quality
+            // 3: material  -> user changed material in materials page
+            // 4: variant
+            // 5: machine
+            var value;
+            if ((base.resolve != "None") && (stackLevel != 0) && (stackLevel != 1)) {
+                // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                // we have to choose between the resolved value (default) and the global value
+                // (if user has explicitly set this).
+                value = base.resolve;
+            } else {
+                value = propertyProvider.properties.value;
+            }
+
+            switch(value)
             {
                 case "True":
-                    return true
+                    return true;
                 case "False":
-                    return false
+                    return false;
                 default:
-                    return propertyProvider.properties.value
+                    return value;
             }
         }
 
-        onClicked: { forceActiveFocus(); propertyProvider.setPropertyValue("value", !checked) }
+        onClicked:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", !checked);
+        }
 
         Rectangle
         {

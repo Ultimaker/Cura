@@ -1,5 +1,5 @@
 // Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
@@ -21,20 +21,73 @@ UM.ManagementPage
             var result = { "type": "material" }
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
-                result.definition = Cura.MachineManager.activeDefinitionId
+                result.definition = Cura.MachineManager.activeQualityDefinitionId;
                 if(Cura.MachineManager.hasVariants)
                 {
-                    result.variant = Cura.MachineManager.activeVariantId
+                    result.variant = Cura.MachineManager.activeQualityVariantId;
                 }
             }
             else
             {
-                result.definition = "fdmprinter"
+                result.definition = "fdmprinter";
+                result.compatible = true; //NB: Only checks for compatibility in global version of material, but we don't have machine-specific materials anyway.
             }
             return result
         }
 
         sectionProperty: "brand"
+    }
+
+    delegate: Rectangle
+    {
+        width: objectList.width;
+        height: childrenRect.height;
+        color: isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+        property bool isCurrentItem: ListView.isCurrentItem
+
+        Row
+        {
+            spacing: UM.Theme.getSize("default_margin").width / 2;
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.right: parent.right;
+            Rectangle
+            {
+                width: parent.height * 0.8
+                height: parent.height * 0.8
+                color: model.metadata.color_code
+                border.color: isCurrentItem ? palette.highlightedText : palette.text;
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Label
+            {
+                width: parent.width * 0.3
+                text: model.metadata.material
+                elide: Text.ElideRight
+                font.italic: model.id == activeId
+                color: isCurrentItem ? palette.highlightedText : palette.text;
+            }
+            Label
+            {
+                text: (model.name != model.metadata.material) ? model.name : ""
+                elide: Text.ElideRight
+                font.italic: model.id == activeId
+                color: isCurrentItem ? palette.highlightedText : palette.text;
+            }
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent;
+            onClicked:
+            {
+                if(!parent.ListView.isCurrentItem)
+                {
+                    parent.ListView.view.currentIndex = index;
+                    base.itemActivated();
+                }
+            }
+        }
     }
 
     activeId: Cura.MachineManager.activeMaterialId
@@ -84,17 +137,12 @@ UM.ManagementPage
             enabled: base.currentItem != null
             onClicked:
             {
-                var material_id = Cura.ContainerManager.duplicateContainer(base.currentItem.id)
+                var base_file = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "base_file")
+                // We need to copy the base container instead of the specific variant.
+                var material_id = base_file == "" ? Cura.ContainerManager.duplicateMaterial(base.currentItem.id): Cura.ContainerManager.duplicateMaterial(base_file)
                 if(material_id == "")
                 {
                     return
-                }
-
-                if(Cura.MachineManager.filterQualityByMachine)
-                {
-                    var quality_id = Cura.ContainerManager.duplicateContainer(Cura.MachineManager.activeQualityId)
-                    Cura.ContainerManager.setContainerMetaDataEntry(quality_id, "material", material_id)
-                    Cura.MachineManager.setActiveQuality(quality_id)
                 }
 
                 Cura.MachineManager.setActiveMaterial(material_id)
@@ -112,6 +160,7 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Import");
             iconName: "document-import";
             onClicked: importDialog.open();
+            visible: true;
         },
         Button
         {
@@ -123,8 +172,6 @@ UM.ManagementPage
     ]
 
     Item {
-        UM.I18nCatalog { id: catalog; name: "cura"; }
-
         visible: base.currentItem != null
         anchors.fill: parent
 
@@ -196,11 +243,19 @@ UM.ManagementPage
             object: base.currentItem != null ? base.currentItem.name : ""
             onYes:
             {
-                var containers = Cura.ContainerManager.findInstanceContainers({"id": base.currentItem.id})
+                // A material container can actually be multiple items, so we need to find (and remove) all of them.
+                var base_file = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "base_file")
+                if(base_file == "")
+                {
+                    base_file = base.currentItem.id
+                }
+                var guid = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "GUID")
+                var containers = Cura.ContainerManager.findInstanceContainers({"GUID": guid, "base_file": base_file, "type": "material"})
                 for(var i in containers)
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
                 }
+                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
             }
         }
 
@@ -274,6 +329,9 @@ UM.ManagementPage
         {
             id: messageDialog
         }
+
+        UM.I18nCatalog { id: catalog; name: "cura"; }
+        SystemPalette { id: palette }
     }
 
     onCurrentItemChanged:

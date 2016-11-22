@@ -30,9 +30,10 @@ ScrollView
             id: definitionsModel;
             containerId: Cura.MachineManager.activeDefinitionId
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-            exclude: ["machine_settings"]
+            exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
             expanded: Printer.expandedCategories
             onExpandedChanged: Printer.setExpandedCategories(expanded)
+            onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
         }
 
         delegate: Loader
@@ -40,7 +41,7 @@ ScrollView
             id: delegate
 
             width: UM.Theme.getSize("sidebar").width;
-            height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : 0
+            height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: provider.properties.enabled == "True" ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
@@ -89,24 +90,24 @@ ScrollView
             }
 
             // Binding to ensure that the right containerstack ID is set for the provider.
-            // This ensures that if a setting has a global_inherits_stack id (for instance; Support speed points to the
+            // This ensures that if a setting has a limit_to_extruder id (for instance; Support speed points to the
             // extruder that actually prints the support, as that is the setting we need to use to calculate the value)
             Binding
             {
                 target: provider
                 property: "containerStackId"
-                when: model.settable_per_extruder || (inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0);
+                when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                 value:
                 {
-                    if(!model.settable_per_extruder)
+                    if(!model.settable_per_extruder || machineExtruderCount.properties.value == 1)
                     {
-                        //Not settable per extruder, so we must pick global.
+                        //Not settable per extruder or there only is global, so we must pick global.
                         return Cura.MachineManager.activeMachineId;
                     }
-                    if(inheritStackProvider.properties.global_inherits_stack != null && inheritStackProvider.properties.global_inherits_stack >= 0)
+                    if(inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                     {
-                        //We have global_inherits_stack, so pick that stack.
-                        return ExtruderManager.extruderIds[String(inheritStackProvider.properties.global_inherits_stack)];
+                        //We have limit_to_extruder, so pick that stack.
+                        return ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
                     }
                     if(ExtruderManager.activeExtruderStackId)
                     {
@@ -125,7 +126,7 @@ ScrollView
                 id: inheritStackProvider
                 containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key
-                watchedProperties: [ "global_inherits_stack" ]
+                watchedProperties: [ "limit_to_extruder" ]
             }
 
             UM.SettingPropertyProvider
@@ -136,6 +137,8 @@ ScrollView
                 key: model.key ? model.key : ""
                 watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                 storeIndex: 0
+                // Due to the way setPropertyValue works, removeUnusedValue gives the correct output in case of resolve
+                removeUnusedValue: model.resolve == undefined
             }
 
             Connections
@@ -149,6 +152,15 @@ ScrollView
                 }
                 onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
                 onHideTooltip: base.hideTooltip()
+                onShowAllHiddenInheritedSettings:
+                {
+                    var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
+                    for(var i = 0; i < children_with_override.length; i++)
+                    {
+                        definitionsModel.setVisible(children_with_override[i], true)
+                    }
+                    Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
+                }
             }
         }
 

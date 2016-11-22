@@ -103,10 +103,12 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
         self._firmware_view.show()
 
-    @pyqtSlot()
-    def updateAllFirmware(self):
+    @pyqtSlot(str)
+    def updateAllFirmware(self, file_name):
+        if file_name.startswith("file://"):
+            file_name = QUrl(file_name).toLocalFile() # File dialogs prepend the path with file://, which we don't need / want
         if not self._usb_output_devices:
-            Message(i18n_catalog.i18nc("@info","Cannot update firmware, there were no connected printers found.")).show()
+            Message(i18n_catalog.i18nc("@info", "Unable to update firmware because there are no printers connected.")).show()
             return
 
         for printer_connection in self._usb_output_devices:
@@ -114,26 +116,26 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         self.spawnFirmwareInterface("")
         for printer_connection in self._usb_output_devices:
             try:
-                self._usb_output_devices[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
+                self._usb_output_devices[printer_connection].updateFirmware(file_name)
             except FileNotFoundError:
                 # Should only happen in dev environments where the resources/firmware folder is absent.
                 self._usb_output_devices[printer_connection].setProgress(100, 100)
-                Logger.log("w", "No firmware found for printer %s called '%s'" %(printer_connection, self._getDefaultFirmwareName()))
+                Logger.log("w", "No firmware found for printer %s called '%s'", printer_connection, file_name)
                 Message(i18n_catalog.i18nc("@info",
                     "Could not find firmware required for the printer at %s.") % printer_connection).show()
                 self._firmware_view.close()
 
                 continue
 
-    @pyqtSlot(str, result = bool)
-    def updateFirmwareBySerial(self, serial_port):
+    @pyqtSlot(str, str, result = bool)
+    def updateFirmwareBySerial(self, serial_port, file_name):
         if serial_port in self._usb_output_devices:
             self.spawnFirmwareInterface(self._usb_output_devices[serial_port].getSerialPort())
             try:
-                self._usb_output_devices[serial_port].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
+                self._usb_output_devices[serial_port].updateFirmware(file_name)
             except FileNotFoundError:
                 self._firmware_view.close()
-                Logger.log("e", "Could not find firmware required for this machine called '%s'" %(self._getDefaultFirmwareName()))
+                Logger.log("e", "Could not find firmware required for this machine called '%s'", file_name)
                 return False
             return True
         return False
@@ -147,7 +149,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
         return USBPrinterOutputDeviceManager._instance
 
-    def _getDefaultFirmwareName(self):
+    @pyqtSlot(result = str)
+    def getDefaultFirmwareName(self):
         # Check if there is a valid global container stack
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
@@ -193,13 +196,13 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 Logger.log("d", "Choosing basic firmware for machine %s.", machine_id)
                 hex_file = machine_without_extras[machine_id]  # Return "basic" firmware
         else:
-            Logger.log("e", "There is no firmware for machine %s.", machine_id)
+            Logger.log("w", "There is no firmware for machine %s.", machine_id)
 
         if hex_file:
-            return hex_file.format(baudrate=baudrate)
+            return Resources.getPath(CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
         else:
-            Logger.log("e", "Could not find any firmware for machine %s.", machine_id)
-            raise FileNotFoundError()
+            Logger.log("w", "Could not find any firmware for machine %s.", machine_id)
+            return ""
 
     ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):

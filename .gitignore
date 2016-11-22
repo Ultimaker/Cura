@@ -8,6 +8,8 @@ docs/html
 resources/i18n/en
 resources/i18n/x-test
 resources/firmware
+resources/materials
+LC_MESSAGES
 
 # Editors and IDEs.
 *kdev*
@@ -24,3 +26,10 @@ resources/firmware
 
 # Debian packaging
 debian*
+
+#Externally located plug-ins.
+plugins/Doodle3D-cura-plugin
+plugins/GodMode
+plugins/PostProcessingPlugin
+plugins/UM3NetworkPrinting
+plugins/X3GWriter

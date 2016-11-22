@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from UM.PluginRegistry import PluginRegistry
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
@@ -12,9 +13,11 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-
+from UM.Scene.SceneNode import SceneNode
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+from UM.Message import Message
+from UM.Application import Application
 
 from cura.ConvexHullNode import ConvexHullNode
 
@@ -26,18 +29,16 @@ from . import LayerViewProxy
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+from . import LayerPass
+
 import numpy
+import os.path
 
 ## View used to display g-code paths.
 class LayerView(View):
     def __init__(self):
         super().__init__()
-        self._shader = None
-        self._selection_shader = None
-        self._num_layers = 0
-        self._layer_percentage = 0  # what percentage of layers need to be shown (Slider gives value between 0 - 100)
-        self._proxy = LayerViewProxy.LayerViewProxy()
-        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+
         self._max_layers = 0
         self._current_layer_num = 0
         self._current_layer_mesh = None
@@ -46,16 +47,39 @@ class LayerView(View):
         self._activity = False
         self._old_max_layers = 0
 
+        self._busy = False
+
+        self._ghost_shader = None
+        self._layer_pass = None
+        self._composite_pass = None
+        self._old_layer_bindings = None
+        self._layerview_composite_shader = None
+        self._old_composite_shader = None
+
+        self._global_container_stack = None
+        self._proxy = LayerViewProxy.LayerViewProxy()
+        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._busy = False
+
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
     def getActivity(self):
         return self._activity
+
+    def getLayerPass(self):
+        if not self._layer_pass:
+            # Currently the RenderPass constructor requires a size > 0
+            # This should be fixed in RenderPass's constructor.
+            self._layer_pass = LayerPass.LayerPass(1, 1)
+            self._layer_pass.setLayerView(self)
+            self.getRenderer().addRenderPass(self._layer_pass)
+        return self._layer_pass
 
     def getCurrentLayer(self):
         return self._current_layer_num
@@ -84,9 +108,9 @@ class LayerView(View):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
-        if not self._selection_shader:
-            self._selection_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._selection_shader.setUniformValue("u_color", Color(32, 32, 32, 128))
+        if not self._ghost_shader:
+            self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
+            self._ghost_shader.setUniformValue("u_color", Color(32, 32, 32, 96))
 
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
@@ -96,30 +120,7 @@ class LayerView(View):
 
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
-                    if Selection.isSelected(node):
-                        renderer.queueNode(node, transparent = True, shader = self._selection_shader)
-                    layer_data = node.callDecoration("getLayerData")
-                    if not layer_data:
-                        continue
-
-                    # Render all layers below a certain number as line mesh instead of vertices.
-                    if self._current_layer_num - self._solid_layers > -1 and not self._only_show_top_layers:
-                        start = 0
-                        end = 0
-                        element_counts = layer_data.getElementCounts()
-                        for layer, counts in element_counts.items():
-                            if layer + self._solid_layers > self._current_layer_num:
-                                break
-                            end += counts
-
-                        # This uses glDrawRangeElements internally to only draw a certain range of lines.
-                        renderer.queueNode(node, mesh = layer_data, mode = RenderBatch.RenderMode.Lines, range = (start, end))
-
-                    if self._current_layer_mesh:
-                        renderer.queueNode(node, mesh = self._current_layer_mesh)
-
-                    if self._current_layer_jumps:
-                        renderer.queueNode(node, mesh = self._current_layer_jumps)
+                    renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
     def setLayer(self, value):
         if self._current_layer_num != value:
@@ -153,7 +154,7 @@ class LayerView(View):
 
             # The qt slider has a bit of weird behavior that if the maxvalue needs to be changed first
             # if it's the largest value. If we don't do this, we can have a slider block outside of the
-            # slider. 
+            # slider.
             if new_max_layers > self._current_layer_num:
                 self.maxLayersChanged.emit()
                 self.setLayer(int(self._max_layers))
@@ -166,7 +167,7 @@ class LayerView(View):
     currentLayerNumChanged = Signal()
 
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
-    #   as this caused some issues. 
+    #   as this caused some issues.
     def getProxy(self, engine, script_engine):
         return self._proxy
 
@@ -183,6 +184,50 @@ class LayerView(View):
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - 1)
                 return True
+
+        if event.type == Event.ViewActivateEvent:
+            # Make sure the LayerPass is created
+            self.getLayerPass()
+
+            Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+            self._onGlobalStackChanged()
+
+            if not self._layerview_composite_shader:
+                self._layerview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layerview_composite.shader"))
+
+            if not self._composite_pass:
+                self._composite_pass = self.getRenderer().getRenderPass("composite")
+
+            self._old_layer_bindings = self._composite_pass.getLayerBindings()[:] # make a copy so we can restore to it later
+            self._composite_pass.getLayerBindings().append("layerview")
+            self._old_composite_shader = self._composite_pass.getCompositeShader()
+            self._composite_pass.setCompositeShader(self._layerview_composite_shader)
+
+        elif event.type == Event.ViewDeactivateEvent:
+            self._wireprint_warning_message.hide()
+            Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
+            if self._global_container_stack:
+                self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+
+            self._composite_pass.setLayerBindings(self._old_layer_bindings)
+            self._composite_pass.setCompositeShader(self._old_composite_shader)
+
+    def _onGlobalStackChanged(self):
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._onPropertyChanged("wireframe_enabled", "value")
+        else:
+            self._wireprint_warning_message.hide()
+
+    def _onPropertyChanged(self, key, property_name):
+        if key == "wireframe_enabled" and property_name == "value":
+            if self._global_container_stack.getProperty("wireframe_enabled", "value"):
+                self._wireprint_warning_message.show()
+            else:
+                self._wireprint_warning_message.hide()
 
     def _startUpdateTopLayers(self):
         if self._top_layers_job:
@@ -278,3 +323,4 @@ class _CreateTopLayersJob(Job):
     def cancel(self):
         self._cancel = True
         super().cancel()
+

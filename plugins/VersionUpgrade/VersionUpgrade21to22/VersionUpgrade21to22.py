@@ -65,11 +65,63 @@ _printer_translations_profiles = {
 }
 
 ##  How to translate profile names from the old version to the new.
+#
+#   This must have an entry for every built-in profile, since it also services
+#   as a set for which profiles were built-in.
 _profile_translations = {
     "Low Quality": "low",
     "Normal Quality": "normal",
     "High Quality": "high",
-    "Ulti Quality": "high" #This one doesn't have an equivalent. Map it to high.
+    "Ulti Quality": "high", #This one doesn't have an equivalent. Map it to high.
+    "abs_0.25_normal": "um2p_abs_0.25_normal",
+    "abs_0.4_fast": "um2p_abs_0.4_fast",
+    "abs_0.4_high": "um2p_abs_0.4_high",
+    "abs_0.4_normal": "um2p_abs_0.4_normal",
+    "abs_0.6_normal": "um2p_abs_0.6_normal",
+    "abs_0.8_normal": "um2p_abs_0.8_normal",
+    "cpe_0.25_normal": "um2p_cpe_0.25_normal",
+    "cpe_0.4_fast": "um2p_cpe_0.4_fast",
+    "cpe_0.4_high": "um2p_cpe_0.4_high",
+    "cpe_0.4_normal": "um2p_cpe_0.4_normal",
+    "cpe_0.6_normal": "um2p_cpe_0.6_normal",
+    "cpe_0.8_normal": "um2p_cpe_0.8_normal",
+    "cpep_0.4_draft": "um2p_cpep_0.4_draft",
+    "cpep_0.4_normal": "um2p_cpep_0.4_normal",
+    "cpep_0.6_draft": "um2p_cpep_0.6_draft",
+    "cpep_0.6_normal": "um2p_cpep_0.6_normal",
+    "cpep_0.8_draft": "um2p_cpep_0.8_draft",
+    "cpep_0.8_normal": "um2p_cpep_0.8_normal",
+    "nylon_0.25_high": "um2p_nylon_0.25_high",
+    "nylon_0.25_normal": "um2p_nylon_0.25_normal",
+    "nylon_0.4_fast": "um2p_nylon_0.4_fast",
+    "nylon_0.4_normal": "um2p_nylon_0.4_normal",
+    "nylon_0.6_fast": "um2p_nylon_0.6_fast",
+    "nylon_0.6_normal": "um2p_nylon_0.6_normal",
+    "nylon_0.8_draft": "um2p_nylon_0.8_draft",
+    "nylon_0.8_normal": "um2p_nylon_0.8_normal",
+    "pc_0.25_high": "um2p_pc_0.25_high",
+    "pc_0.25_normal": "um2p_pc_0.25_normal",
+    "pc_0.4_fast": "um2p_pc_0.4_fast",
+    "pc_0.4_normal": "um2p_pc_0.4_normal",
+    "pc_0.6_fast": "um2p_pc_0.6_fast",
+    "pc_0.6_normal": "um2p_pc_0.6_normal",
+    "pc_0.8_draft": "um2p_pc_0.8_draft",
+    "pc_0.8_normal": "um2p_pc_0.8_normal",
+    "pla_0.25_normal": "pla_0.25_normal", #Note that the PLA profiles don't get the um2p_ prefix, though they are for UM2+.
+    "pla_0.4_fast": "pla_0.4_fast",
+    "pla_0.4_high": "pla_0.4_high",
+    "pla_0.4_normal": "pla_0.4_normal",
+    "pla_0.6_normal": "pla_0.6_normal",
+    "pla_0.8_normal": "pla_0.8_normal",
+    "tpu_0.25_high": "um2p_tpu_0.25_high",
+    "tpu_0.4_normal": "um2p_tpu_0.4_normal",
+    "tpu_0.6_fast": "um2p_tpu_0.6_fast"
+}
+
+##  Settings that are no longer in the new version.
+_removed_settings = {
+    "fill_perimeter_gaps",
+    "support_area_smoothing"
 }
 
 ##  How to translate setting names from the old version to the new.
@@ -78,6 +130,7 @@ _setting_name_translations = {
     "remove_overlapping_walls_enabled": "travel_compensate_overlapping_walls_enabled",
     "remove_overlapping_walls_x_enabled": "travel_compensate_overlapping_walls_x_enabled",
     "retraction_hop": "retraction_hop_enabled",
+    "skin_overlap": "infill_overlap",
     "skirt_line_width": "skirt_brim_line_width",
     "skirt_minimal_length": "skirt_brim_minimal_length",
     "skirt_speed": "skirt_brim_speed",
@@ -89,6 +142,54 @@ _setting_name_translations = {
     "support_roof_line_distance": "support_interface_line_distance",
     "support_roof_line_width": "support_interface_line_width",
     "support_roof_pattern": "support_interface_pattern"
+}
+
+##  Custom profiles become quality_changes. This dictates which quality to base
+#   the quality_changes profile on.
+#
+#   Which quality profile to base the quality_changes on depends on the machine,
+#   material and nozzle.
+#
+#   If a current configuration is missing, fall back to "normal".
+_quality_fallbacks = {
+    "ultimaker2_plus": {
+        "ultimaker2_plus_0.25": {
+            "generic_abs": "um2p_abs_0.25_normal",
+            "generic_cpe": "um2p_cpe_0.25_normal",
+            #No CPE+.
+            "generic_nylon": "um2p_nylon_0.25_normal",
+            "generic_pc": "um2p_pc_0.25_normal",
+            "generic_pla": "pla_0.25_normal",
+            "generic_tpu": "um2p_tpu_0.25_high"
+        },
+        "ultimaker2_plus_0.4": {
+            "generic_abs": "um2p_abs_0.4_normal",
+            "generic_cpe": "um2p_cpe_0.4_normal",
+            "generic_cpep": "um2p_cpep_0.4_normal",
+            "generic_nylon": "um2p_nylon_0.4_normal",
+            "generic_pc": "um2p_pc_0.4_normal",
+            "generic_pla": "pla_0.4_normal",
+            "generic_tpu": "um2p_tpu_0.4_normal"
+        },
+        "ultimaker2_plus_0.6": {
+            "generic_abs": "um2p_abs_0.6_normal",
+            "generic_cpe": "um2p_cpe_0.6_normal",
+            "generic_cpep": "um2p_cpep_0.6_normal",
+            "generic_nylon": "um2p_nylon_0.6_normal",
+            "generic_pc": "um2p_pc_0.6_normal",
+            "generic_pla": "pla_0.6_normal",
+            "generic_tpu": "um2p_tpu_0.6_fast",
+        },
+        "ultimaker2_plus_0.8": {
+            "generic_abs": "um2p_abs_0.8_normal",
+            "generic_cpe": "um2p_cpe_0.8_normal",
+            "generic_cpep": "um2p_cpep_0.8_normal",
+            "generic_nylon": "um2p_nylon_0.8_normal",
+            "generic_pc": "um2p_pc_0.8_normal",
+            "generic_pla": "pla_0.8_normal",
+            #No TPU.
+        }
+    }
 }
 
 ##  How to translate variants of specific machines from the old version to the
@@ -149,6 +250,25 @@ class VersionUpgrade21to22(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+
+    ##  Gets the fallback quality to use for a specific machine-variant-material
+    #   combination.
+    #
+    #   For custom profiles we fall back onto this quality profile, since we
+    #   don't know which quality profile it was based on.
+    #
+    #   \param machine The machine ID of the user's configuration in 2.2.
+    #   \param variant The variant ID of the user's configuration in 2.2.
+    #   \param material The material ID of the user's configuration in 2.2.
+    @staticmethod
+    def getQualityFallback(machine, variant, material):
+        if machine not in _quality_fallbacks:
+            return "normal"
+        if variant not in _quality_fallbacks[machine]:
+            return "normal"
+        if material not in _quality_fallbacks[machine][variant]:
+            return "normal"
+        return _quality_fallbacks[machine][variant][material]
 
     ##  Gets the set of built-in profile names in Cura 2.1.
     #
@@ -271,15 +391,21 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The same dictionary.
     @staticmethod
     def translateSettings(settings):
+        new_settings = {}
         for key, value in settings.items():
-            if key == "fill_perimeter_gaps": #Setting is removed.
-                del settings[key]
-            elif key == "retraction_combing": #Combing was made into an enum instead of a boolean.
-                settings[key] = "off" if (value == "False") else "all"
-            elif key in _setting_name_translations:
-                del settings[key]
-                settings[_setting_name_translations[key]] = value
-        return settings
+            if key in _removed_settings:
+                continue
+            if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                new_settings[key] = "off" if (value == "False") else "all"
+                continue
+            if key == "cool_fan_full_layer": #Layer counting was made one-indexed.
+                new_settings[key] = str(int(value) + 1)
+                continue
+            if key in _setting_name_translations:
+                new_settings[_setting_name_translations[key]] = value
+                continue
+            new_settings[key] = value
+        return new_settings
 
     ##  Translates a setting name for the change from Cura 2.1 to 2.2.
     #

@@ -5,6 +5,7 @@ import configparser #To read config files.
 import io #To write config files to strings as if they were files.
 
 import UM.VersionUpgrade
+from UM.Logger import Logger
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
@@ -49,7 +50,7 @@ class Profile:
         self._machine_type_id = parser.get("general", "machine_type", fallback = None)
         self._machine_variant_name = parser.get("general", "machine_variant", fallback = None)
         self._machine_instance_name = parser.get("general", "machine_instance", fallback = None)
-        if "material" in parser["general"]:
+        if "material" in parser["general"]: #Note: Material name is unused in this upgrade.
             self._material_name = parser.get("general", "material")
         elif self._type == "material":
             self._material_name = parser.get("general", "name", fallback = None)
@@ -80,7 +81,7 @@ class Profile:
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
 
         if self._name == "Current settings":
-            self._filename += "_current_settings" #This resolves a duplicate ID arising from how Cura 2.1 stores its current settings.
+            return None, None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
 
         config = configparser.ConfigParser(interpolation = None)
 
@@ -94,10 +95,8 @@ class Profile:
             config.set("general", "definition", "fdmprinter") #In this case, the machine definition is unknown, and it might now have machine-specific profiles, in which case this will fail.
 
         config.add_section("metadata")
-        if self._type:
-            config.set("metadata", "type", self._type)
-        else:
-            config.set("metadata", "type", "quality")
+        config.set("metadata", "quality_type", "normal") #This feature doesn't exist in 2.1 yet, so we don't know the actual quality type. For now, always base it on normal.
+        config.set("metadata", "type", "quality_changes")
         if self._weight:
             config.set("metadata", "weight", str(self._weight))
         if self._machine_variant_name:
@@ -107,13 +106,13 @@ class Profile:
                 config.set("metadata", "variant", self._machine_variant_name)
 
         if self._settings:
-            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
+            self._settings = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
             config.add_section("values")
             for key, value in self._settings.items():
                 config.set("values", key, str(value))
 
         if self._changed_settings_defaults:
-            VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
+            self._changed_settings_defaults = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
             config.add_section("defaults")
             for key, value in self._changed_settings_defaults.items():
                 config.set("defaults", key, str(value))
@@ -126,34 +125,6 @@ class Profile:
             for item in disabled_settings_defaults[1:]:
                 disabled_defaults_string += "," + str(item)
 
-        #Material metadata may cause the file to split, so do it last to minimise processing time (do more with the copy).
-        filenames = []
-        configs = []
-        if self._material_name and self._type != "material":
-            config.set("metadata", "material", self._material_name)
-            filenames.append(self._filename)
-            configs.append(config)
-        elif self._type != "material" and self._machine_type_id in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality():
-            #Split this profile into multiple profiles, one for each material.
-            _new_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()[self._machine_type_id]["materials"]
-            _new_variants = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.machinesWithMachineQuality()[self._machine_type_id]["variants"]
-            translated_machine = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinter(self._machine_type_id)
-            for material_id in _new_materials:
-                for variant_id in _new_variants:
-                    variant_id_new = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariant(variant_id, translated_machine)
-                    filenames.append("{profile}_{material}_{variant}".format(profile = self._filename, material = material_id, variant = variant_id_new))
-                    config_copy = configparser.ConfigParser(interpolation = None)
-                    config_copy.read_dict(config) #Copy the config to a new ConfigParser instance.
-                    variant_id_new_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(variant_id, translated_machine)
-                    config_copy.set("metadata", "material", "{material}_{variant}".format(material = material_id, variant = variant_id_new_materials))
-                    configs.append(config_copy)
-        else:
-            configs.append(config)
-            filenames.append(self._filename)
-
-        outputs = []
-        for config in configs:
-            output = io.StringIO()
-            config.write(output)
-            outputs.append(output.getvalue())
-        return filenames, outputs
+        output = io.StringIO()
+        config.write(output)
+        return [self._filename], [output.getvalue()]

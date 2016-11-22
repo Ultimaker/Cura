@@ -14,15 +14,27 @@ Column
     id: printMonitor
     property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
 
-    Cura.ExtrudersModel { id: extrudersModel }
-
-    Label
+    Cura.ExtrudersModel
     {
-        text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@label", "The printer is not connected.")
-        color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-        font: UM.Theme.getFont("default")
-        wrapMode: Text.WordWrap
-        width: base.width
+        id: extrudersModel
+        simpleNames: true
+    }
+
+    Item
+    {
+        width: base.width - 2 * UM.Theme.getSize("default_margin").width
+        height: childrenRect.height + UM.Theme.getSize("default_margin").height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+        Label
+        {
+            text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
+            color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+            font: UM.Theme.getFont("default")
+            wrapMode: Text.WordWrap
+            width: parent.width
+        }
     }
 
     Loader
@@ -83,6 +95,9 @@ Column
         {
             height: UM.Theme.getSize("setting_control").height
             width: base.width - 2 * UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
             Label
             {
                 width: parent.width * 0.4

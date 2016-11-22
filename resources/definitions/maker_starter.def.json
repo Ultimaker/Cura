@@ -13,6 +13,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "3DMaker Starter" },
         "machine_width": {
             "default_value": 210
         },
@@ -41,7 +42,7 @@
             "default_value": 55
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap"
+            "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_disallowed_areas": {
             "default_value": []
@@ -143,9 +144,9 @@
             "default_value": 15
         },
         "adhesion_type": {
-            "default_value": "Raft"
+            "default_value": "raft"
         },
-        "skirt_minimal_length": {
+        "skirt_brim_minimal_length": {
             "default_value": 100
         },
         "raft_base_line_spacing": {

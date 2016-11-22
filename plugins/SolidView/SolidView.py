@@ -12,12 +12,13 @@ from UM.Settings.Validator import ValidatorState
 
 from UM.View.GL.OpenGL import OpenGL
 
-import cura.Settings
-import cura.Settings.ExtrudersModel
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
 
 ## Standard view for mesh models.
+
 class SolidView(View):
     def __init__(self):
         super().__init__()
@@ -27,7 +28,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
 
-        self._extruders_model = cura.Settings.ExtrudersModel.ExtrudersModel()
+        self._extruders_model = ExtrudersModel()
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -46,22 +47,34 @@ class SolidView(View):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
+            multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+
+            if multi_extrusion:
+                support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
+                support_angle_stack = ExtruderManager.getInstance().getExtruderStack(support_extruder_nr)
+                if not support_angle_stack:
+                    support_angle_stack = global_container_stack
+            else:
+                support_angle_stack = global_container_stack
+
             if Preferences.getInstance().getValue("view/show_overhang"):
-                angle = global_container_stack.getProperty("support_angle", "value")
-                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") == ValidatorState.Valid:
+                angle = support_angle_stack.getProperty("support_angle", "value")
+                # Make sure the overhang angle is valid before passing it to the shader
+                # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)
+                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") in [None, ValidatorState.Valid]:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
-            multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
-
                     uniforms = {}
+                    shade_factor = 1.0
+
                     if not multi_extrusion:
                         if global_container_stack:
                             material = global_container_stack.findContainer({ "type": "material" })
@@ -76,13 +89,17 @@ class SolidView(View):
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
 
                         material_color = self._extruders_model.getItem(extruder_index)["color"]
+
+                        if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                            # Shade objects that are printed with the non-active extruder 25% darker
+                            shade_factor = 0.6
                     try:
                         # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
                         # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
                         uniforms["diffuse_color"] = [
-                            int(material_color[1:3], 16) / 255,
-                            int(material_color[3:5], 16) / 255,
-                            int(material_color[5:7], 16) / 255,
+                            shade_factor * int(material_color[1:3], 16) / 255,
+                            shade_factor * int(material_color[3:5], 16) / 255,
+                            shade_factor * int(material_color[5:7], 16) / 255,
                             1.0
                         ]
                     except ValueError:

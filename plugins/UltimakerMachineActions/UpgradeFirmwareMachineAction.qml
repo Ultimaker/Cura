@@ -5,6 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
+import QtQuick.Dialogs 1.2 // For filedialog
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -44,34 +45,45 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "The firmware shipping with new Ultimakers works, but upgrades have been made to make better prints, and make calibration easier.");
+            text: catalog.i18nc("@label", "The firmware shipping with new printers works, but new versions tend to have more features and improvements.");
         }
 
-        Label
-        {
-            id: upgradeText2
-            anchors.top: upgradeText1.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            width: parent.width
-            wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "Cura requires these new features and thus your firmware will most likely need to be upgraded. You can do so now.");
-        }
         Row
         {
-            anchors.top: upgradeText2.bottom
+            anchors.top: upgradeText1.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
+            property var firmwareName: Cura.USBPrinterManager.getDefaultFirmwareName()
             Button
             {
-                id: upgradeButton
-                text: catalog.i18nc("@action:button","Upgrade to Marlin Firmware");
+                id: autoUpgradeButton
+                text: catalog.i18nc("@action:button", "Automatically upgrade Firmware");
+                enabled: parent.firmwareName != ""
                 onClicked:
                 {
-                    Cura.USBPrinterManager.updateAllFirmware()
+                    Cura.USBPrinterManager.updateAllFirmware(parent.firmwareName)
                 }
             }
+            Button
+            {
+                id: manualUpgradeButton
+                text: catalog.i18nc("@action:button", "Upload custom Firmware");
+                onClicked:
+                {
+                    customFirmwareDialog.open()
+                }
+            }
+        }
+
+        FileDialog
+        {
+            id: customFirmwareDialog
+            title: catalog.i18nc("@title:window", "Select custom firmware")
+            nameFilters:  "Firmware image files (*.hex)"
+            selectExisting: true
+            onAccepted: Cura.USBPrinterManager.updateAllFirmware(fileUrl)
         }
     }
 }

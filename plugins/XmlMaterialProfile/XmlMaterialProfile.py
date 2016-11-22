@@ -1,14 +1,14 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import math
 import copy
 import io
 import xml.etree.ElementTree as ET
-import uuid
 
+from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.Util import parseBool
+from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -18,55 +18,34 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 class XmlMaterialProfile(InstanceContainer):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
+        self._inherited_files = []
 
-    ##  Overridden from InstanceContainer
-    def duplicate(self, new_id, new_name = None):
-        base_file = self.getMetaDataEntry("base_file", None)
-
-        if base_file != self.id:
-            containers = ContainerRegistry.getInstance().findInstanceContainers(id = base_file)
-            if containers:
-                new_basefile = containers[0].duplicate(self.getMetaDataEntry("brand") + "_" + new_id, new_name)
-                base_file = new_basefile.id
-                UM.Settings.ContainerRegistry.getInstance().addContainer(new_basefile)
-
-                new_id = self.getMetaDataEntry("brand") + "_" + new_id + "_" + self.getDefinition().getId()
-                variant = self.getMetaDataEntry("variant")
-                if variant:
-                    variant_containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant)
-                    if variant_containers:
-                        new_id += "_" + variant_containers[0].getName().replace(" ", "_")
-            has_base_file = True
-        else:
-            has_base_file = False
-
-        new_id = ContainerRegistry.getInstance().createUniqueName("material", self._id, new_id, "")
-        result = super().duplicate(new_id, new_name)
-        if has_base_file:
-            result.setMetaDataEntry("base_file", base_file)
-        else:
-            result.setMetaDataEntry("base_file", result.id)
-        return result
+    def getInheritedFiles(self):
+        return self._inherited_files
 
     ##  Overridden from InstanceContainer
     def setReadOnly(self, read_only):
         super().setReadOnly(read_only)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
-        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._read_only = read_only
+        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+            container._read_only = read_only  # prevent loop instead of calling setReadOnly
 
     ##  Overridden from InstanceContainer
+    #   set the meta data for all machine / variant combinations
     def setMetaDataEntry(self, key, value):
         if self.isReadOnly():
+            return
+        if self.getMetaDataEntry(key, None) == value:
+            # Prevent loop caused by for loop.
             return
 
         super().setMetaDataEntry(key, value)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
         # Update all containers that share GUID and basefile
-        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container.setMetaData(copy.deepcopy(self._metadata))
+        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+            container.setMetaDataEntry(key, value)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
@@ -81,7 +60,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         super().setName(new_name)
 
-        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is none, this is a basefile.
+        basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
         containers = ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
@@ -89,17 +68,20 @@ class XmlMaterialProfile(InstanceContainer):
             container.setName(new_name)
 
     ##  Overridden from InstanceContainer
-    def setProperty(self, key, property_name, property_value, container = None):
-        if self.isReadOnly():
-            return
-
-        super().setProperty(key, property_name, property_value)
-
-        basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is none, this is a basefile.
-        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container._dirty = True
+    # def setProperty(self, key, property_name, property_value, container = None):
+    #     if self.isReadOnly():
+    #         return
+    #
+    #     super().setProperty(key, property_name, property_value)
+    #
+    #     basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
+    #     for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+    #         if not container.isReadOnly():
+    #             container.setDirty(True)
 
     ##  Overridden from InstanceContainer
+    # base file: global settings + supported machines
+    # machine / variant combination: only changes for itself.
     def serialize(self):
         registry = ContainerRegistry.getInstance()
 
@@ -108,7 +90,7 @@ class XmlMaterialProfile(InstanceContainer):
             # Since we create an instance of XmlMaterialProfile for each machine and nozzle in the profile,
             # we should only serialize the "base" material definition, since that can then take care of
             # serializing the machine/nozzle specific profiles.
-            raise NotImplementedError("Cannot serialize non-root XML materials")
+            raise NotImplementedError("Ignoring serializing non-root XML materials, the data is contained in the base material")
 
         builder = ET.TreeBuilder()
 
@@ -150,6 +132,10 @@ class XmlMaterialProfile(InstanceContainer):
 
         for key, value in metadata.items():
             builder.start(key)
+            # Normally value is a string.
+            # Nones get handled well.
+            if isinstance(value, bool):
+                value = str(value)  # parseBool in deserialize expects 'True'.
             builder.data(value)
             builder.end(key)
 
@@ -177,7 +163,7 @@ class XmlMaterialProfile(InstanceContainer):
         machine_container_map = {}
         machine_nozzle_map = {}
 
-        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"))
+        all_containers = registry.findInstanceContainers(GUID = self.getMetaDataEntry("GUID"), base_file = self._id)
         for container in all_containers:
             definition_id = container.getDefinition().id
             if definition_id == "fdmprinter":
@@ -201,7 +187,8 @@ class XmlMaterialProfile(InstanceContainer):
             try:
                 product = UM.Dictionary.findKey(self.__product_id_map, definition_id)
             except ValueError:
-                continue
+                # An unknown product id; export it anyway
+                product = definition_id
 
             builder.start("machine")
             builder.start("machine_identifier", { "manufacturer": definition.getMetaDataEntry("manufacturer", ""), "product":  product})
@@ -220,7 +207,17 @@ class XmlMaterialProfile(InstanceContainer):
                 if not variant_containers:
                     continue
 
-                builder.start("hotend", { "id": variant_containers[0].getName() })
+                builder.start("hotend", {"id": variant_containers[0].getName()})
+
+                # Compatible is a special case, as it's added as a meta data entry (instead of an instance).
+                compatible = hotend.getMetaDataEntry("compatible")
+                if compatible is not None:
+                    builder.start("setting", {"key": "hardware compatible"})
+                    if compatible:
+                        builder.data("yes")
+                    else:
+                        builder.data("no")
+                    builder.end("setting")
 
                 for instance in hotend.findInstances():
                     if container.getInstance(instance.definition.key) and container.getProperty(instance.definition.key, "value") == instance.value:
@@ -242,9 +239,114 @@ class XmlMaterialProfile(InstanceContainer):
         _indent(root)
         stream = io.StringIO()
         tree = ET.ElementTree(root)
-        tree.write(stream, "unicode", True)
+        tree.write(stream, encoding="unicode", xml_declaration=True)
 
         return stream.getvalue()
+
+    # Recursively resolve loading inherited files
+    def _resolveInheritance(self, file_name):
+        xml = self._loadFile(file_name)
+
+        inherits = xml.find("./um:inherits", self.__namespaces)
+        if inherits is not None:
+            inherited = self._resolveInheritance(inherits.text)
+            xml = self._mergeXML(inherited, xml)
+
+        return xml
+
+    def _loadFile(self, file_name):
+        path = Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, file_name + ".xml.fdm_material")
+
+        with open(path, encoding="utf-8") as f:
+            contents = f.read()
+
+        self._inherited_files.append(path)
+        return ET.fromstring(contents)
+
+    # The XML material profile can have specific settings for machines.
+    # Some machines share profiles, so they are only created once.
+    # This function duplicates those elements so that each machine tag only has one identifier.
+    def _expandMachinesXML(self, element):
+        settings_element = element.find("./um:settings", self.__namespaces)
+        machines = settings_element.iterfind("./um:machine", self.__namespaces)
+        machines_to_add = []
+        machines_to_remove = []
+        for machine in machines:
+            identifiers = list(machine.iterfind("./um:machine_identifier", self.__namespaces))
+            has_multiple_identifiers = len(identifiers) > 1
+            if has_multiple_identifiers:
+                # Multiple identifiers found. We need to create a new machine element and copy all it's settings there.
+                for identifier in identifiers:
+                    new_machine = copy.deepcopy(machine)
+                    # Create list of identifiers that need to be removed from the copied element.
+                    other_identifiers = [self._createKey(other_identifier) for other_identifier in identifiers if other_identifier is not identifier]
+                    # As we can only remove by exact object reference, we need to look through the identifiers of copied machine.
+                    new_machine_identifiers = list(new_machine.iterfind("./um:machine_identifier", self.__namespaces))
+                    for new_machine_identifier in new_machine_identifiers:
+                        key = self._createKey(new_machine_identifier)
+                        # Key was in identifiers to remove, so this element needs to be purged
+                        if key in other_identifiers:
+                            new_machine.remove(new_machine_identifier)
+                    machines_to_add.append(new_machine)
+                machines_to_remove.append(machine)
+            else:
+                pass  # Machine only has one identifier. Nothing to do.
+        # Remove & add all required machines.
+        for machine_to_remove in machines_to_remove:
+            settings_element.remove(machine_to_remove)
+        for machine_to_add in machines_to_add:
+            settings_element.append(machine_to_add)
+        return element
+
+    def _mergeXML(self, first, second):
+        result = copy.deepcopy(first)
+        self._combineElement(self._expandMachinesXML(result), self._expandMachinesXML(second))
+        return result
+
+    def _createKey(self, element):
+        key = element.tag.split("}")[-1]
+        if "key" in element.attrib:
+            key += " key:" + element.attrib["key"]
+        if "manufacturer" in element.attrib:
+            key += " manufacturer:" + element.attrib["manufacturer"]
+        if "product" in element.attrib:
+            key += " product:" + element.attrib["product"]
+        if key == "machine":
+            for item in element:
+                if "machine_identifier" in item.tag:
+                    key += " " + item.attrib["product"]
+        return key
+
+    # Recursively merges XML elements. Updates either the text or children if another element is found in first.
+    # If it does not exist, copies it from second.
+    def _combineElement(self, first, second):
+        # Create a mapping from tag name to element.
+
+        mapping = {}
+        for element in first:
+            key = self._createKey(element)
+            mapping[key] = element
+        for element in second:
+            key = self._createKey(element)
+            if len(element):  # Check if element has children.
+                try:
+                    if "setting" in element.tag and not "settings" in element.tag:
+                        # Setting can have points in it. In that case, delete all values and override them.
+                        for child in list(mapping[key]):
+                            mapping[key].remove(child)
+                        for child in element:
+                            mapping[key].append(child)
+                    else:
+                        self._combineElement(mapping[key], element)  # Multiple elements, handle those.
+                except KeyError:
+                    mapping[key] = element
+                    first.append(element)
+            else:
+                try:
+                    mapping[key].text = element.text
+                except KeyError:  # Not in the mapping, so simply add it
+                    mapping[key] = element
+                    first.append(element)
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
@@ -255,6 +357,11 @@ class XmlMaterialProfile(InstanceContainer):
 
         # TODO: Add material verfication
         self.addMetaDataEntry("status", "unknown")
+
+        inherits = data.find("./um:inherits", self.__namespaces)
+        if inherits is not None:
+            inherited = self._resolveInheritance(inherits.text)
+            data = self._mergeXML(inherited, data)
 
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
@@ -312,6 +419,8 @@ class XmlMaterialProfile(InstanceContainer):
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
 
+        self.addMetaDataEntry("compatible", global_compatibility)
+
         self._dirty = False
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
@@ -333,8 +442,8 @@ class XmlMaterialProfile(InstanceContainer):
             for identifier in identifiers:
                 machine_id = self.__product_id_map.get(identifier.get("product"), None)
                 if machine_id is None:
-                    Logger.log("w", "Cannot create material for unknown machine %s", identifier.get("product"))
-                    continue
+                    # Lets try again with some naive heuristics.
+                    machine_id = identifier.get("product").replace(" ", "").lower()
 
                 definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = machine_id)
                 if not definitions:
@@ -348,6 +457,8 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material.setName(self.getName())
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_material.getMetaData()["compatible"] = machine_compatibility
 
                     for key, value in global_setting_values.items():
                         new_material.setProperty(key, "value", value, definition)
@@ -358,6 +469,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material._dirty = False
 
                     ContainerRegistry.getInstance().addContainer(new_material)
+
 
                 hotends = machine.iterfind("./um:hotend", self.__namespaces)
                 for hotend in hotends:
@@ -387,14 +499,13 @@ class XmlMaterialProfile(InstanceContainer):
                         else:
                             Logger.log("d", "Unsupported material setting %s", key)
 
-                    if not hotend_compatibility:
-                        continue
-
                     new_hotend_material = XmlMaterialProfile(self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_"))
                     new_hotend_material.setName(self.getName())
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
+                    # Don't use setMetadata, as that overrides it for all materials with same base file
+                    new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
 
                     for key, value in global_setting_values.items():
                         new_hotend_material.setProperty(key, "value", value, definition)
@@ -407,12 +518,6 @@ class XmlMaterialProfile(InstanceContainer):
 
                     new_hotend_material._dirty = False
                     ContainerRegistry.getInstance().addContainer(new_hotend_material)
-
-        if not global_compatibility:
-            # Change the type of this container so it is not shown as an option in menus.
-            # This uses InstanceContainer.setMetaDataEntry because otherwise all containers that
-            # share this basefile are also updated.
-            super().setMetaDataEntry("type", "incompatible_material")
 
     def _addSettingElement(self, builder, instance):
         try:

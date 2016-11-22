@@ -22,7 +22,7 @@ TabView
 
     Tab
     {
-        title: "Information"
+        title: catalog.i18nc("@title","Information")
         anchors
         {
             leftMargin: UM.Theme.getSize("default_margin").width
@@ -115,7 +115,7 @@ TabView
                     width: base.secondColumnWidth;
                     value: properties.density;
                     decimals: 2
-                    suffix: "g/cm"
+                    suffix: "g/cm³"
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
 
@@ -128,7 +128,7 @@ TabView
                     width: base.secondColumnWidth;
                     value: properties.diameter;
                     decimals: 2
-                    suffix: "mm³"
+                    suffix: "mm"
                     stepSize: 0.01
                     readOnly: !base.editingEnabled;
 

@@ -14,7 +14,6 @@ Column
 {
     id: base;
 
-    property int totalHeightHeader: childrenRect.height
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
 
     spacing: UM.Theme.getSize("default_margin").height
@@ -67,7 +66,7 @@ Column
         id: extrudersList
         property var index: 0
 
-        visible: machineExtruderCount.properties.value > 1
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
 
         boundsBehavior: Flickable.StopAtBounds
@@ -168,7 +167,7 @@ Column
         id: variantRow
 
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint
 
         anchors
         {
@@ -223,8 +222,9 @@ Column
                 width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
                 anchors.left: parent.left
                 style: UM.Theme.styles.sidebar_header_button
+                activeFocusOnPress: true;
 
-                menu: NozzleMenu { }
+                menu: NozzleMenu { extruderIndex: base.currentExtruderIndex }
             }
 
             ToolButton {
@@ -232,14 +232,30 @@ Column
                 text: Cura.MachineManager.activeMaterialName
                 tooltip: Cura.MachineManager.activeMaterialName
                 visible: Cura.MachineManager.hasMaterials
+                property var valueError:
+                {
+                    var data = Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeMaterialId, "compatible")
+                    if(data == "False")
+                    {
+                        return true
+                    }
+                    else
+                    {
+                        return false
+                    }
+
+                }
+                property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
+
                 enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
                 height: UM.Theme.getSize("setting_control").height
                 width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
                 anchors.right: parent.right
                 style: UM.Theme.styles.sidebar_header_button
+                activeFocusOnPress: true;
 
-                menu: MaterialMenu { }
+                menu: MaterialMenu { extruderIndex: base.currentExtruderIndex }
             }
         }
     }
@@ -248,6 +264,7 @@ Column
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint
 
         anchors
         {
@@ -270,14 +287,24 @@ Column
         ToolButton
         {
             id: globalProfileSelection
-            text: Cura.MachineManager.activeQualityName
+            text: {
+                var result = Cura.MachineManager.activeQualityName;
+                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
+                    result += " - ";
+                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
+                    result += "</font>";
+                }
+                return result;
+            }
             enabled: !extrudersList.visible || base.currentExtruderIndex  > -1
 
             width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
             tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
-
+            activeFocusOnPress: true;
+            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
             menu: ProfileMenu { }
 
             UM.SimpleButton
@@ -295,7 +322,11 @@ Column
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star");
 
-                onClicked: Cura.Actions.manageProfiles.trigger()
+                onClicked:
+                {
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
+                }
                 onEntered:
                 {
                     var content = catalog.i18nc("@tooltip","Some setting values are different from the values stored in the profile.\n\nClick to open the profile manager.")

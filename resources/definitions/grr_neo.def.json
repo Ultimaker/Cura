@@ -14,6 +14,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "German RepRap Neo" },
         "machine_width": {
             "default_value": 150
         },

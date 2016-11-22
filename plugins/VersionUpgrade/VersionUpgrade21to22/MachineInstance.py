@@ -2,9 +2,13 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import UM.VersionUpgrade #To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager #To schedule more files to be upgraded.
+import UM.Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+import os.path #To get the path to write new user profiles to.
+import urllib #To serialise the user container file name properly.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -79,39 +83,40 @@ class MachineInstance:
         variant_materials = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForMaterials(self._variant_name, type_name)
 
         #Convert to quality profile if we have one of the built-in profiles, otherwise convert to a quality-changes profile.
-        if has_machine_qualities:
-            material_name_in_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateMaterialForProfiles(self._active_material_name)
-            variant_name_in_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateVariantForProfiles(self._variant_name)
-            if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles(): #This is a built-in profile name. Convert to quality.
-                quality_name = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
-            else:
-                quality_name = "normal" #We have a quality-changes profile. Base it on normal, since we have no information to indicate which one it should be based on.
-            if self._active_material_name == "PLA" and self._type_name == "ultimaker2plus": #UM2+ uses a different naming scheme for PLA profiles.
-                active_quality = material_name_in_quality + "_" + variant_name_in_quality + "_" + quality_name
-            else:
-                printer_name_in_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translatePrinterForProfile(self._type_name)
-                active_quality = printer_name_in_quality + "_" + material_name_in_quality + "_" + variant_name_in_quality + "_" + quality_name
-
-            if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
-                active_quality_changes = "empty_quality_changes"
-            else: #No built-in profile. Translate this profile to quality-changes.
-                active_quality_changes = material_name_in_quality + "_" + variant_name_in_quality + "_" + quality_name
+        if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
+            active_quality_changes = "empty_quality_changes"
         else:
-            if self._active_profile_name in VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.builtInProfiles():
-                active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateProfile(self._active_profile_name)
-                active_quality_changes = "empty_quality_changes"
-            else:
-                active_quality = "normal"
-                active_quality_changes = self._active_profile_name
+            active_quality = VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.getQualityFallback(type_name, variant, active_material)
+            active_quality_changes = self._active_profile_name
 
         if has_machine_qualities: #This machine now has machine-quality profiles.
-            active_material += "_" + variant_materials #That means that the profile was split into multiple.
-            current_settings = "empty" #The profile didn't know the definition ID when it was upgraded, so it will have been invalid. Sorry, your current settings are lost now.
-        else:
-            current_settings = self._name + "_current_settings"
+            active_material += "_" + variant_materials
+
+        #Create a new user profile and schedule it to be upgraded.
+        user_profile = configparser.ConfigParser(interpolation = None)
+        user_profile["general"] = {
+            "version": "2",
+            "name": "Current settings",
+            "definition": type_name
+        }
+        user_profile["metadata"] = {
+            "type": "user",
+            "machine": self._name
+        }
+        user_profile["values"] = {}
+
+        version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
+        user_storage = os.path.join(UM.Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
+        user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
+        if not os.path.exists(user_storage):
+            os.makedirs(user_storage)
+        with open(user_profile_file, "w", encoding = "utf-8") as file_handle:
+            user_profile.write(file_handle)
+        version_upgrade_manager.upgradeExtraFile(user_storage, urllib.parse.quote_plus(self._name), "user")
 
         containers = [
-            current_settings,
+            self._name + "_current_settings", #The current profile doesn't know the definition ID when it was upgraded, only the instance ID, so it will be invalid. Sorry, your current settings are lost now.
             active_quality_changes,
             active_quality,
             active_material,

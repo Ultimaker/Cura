@@ -48,7 +48,15 @@ Item {
                 MouseArea {
                     anchors.fill: parent;
                     onClicked: {
-                        parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
+                        forceActiveFocus() //First grab focus, so all the text fields are updated
+                        if(parent.checked)
+                        {
+                            UM.Controller.setActiveTool(null)
+                        }
+                        else
+                        {
+                            UM.Controller.setActiveTool(model.id);
+                        }
                     }
                 }
             }
@@ -81,8 +89,6 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         color: UM.Theme.getColor("lining");
-        //border.width: UM.Theme.getSize("default_lining").width
-        //border.color: UM.Theme.getColor("lining")
 
         UM.PointingRectangle {
             id: panelBackground;

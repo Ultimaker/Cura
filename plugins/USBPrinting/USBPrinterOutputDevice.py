@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
@@ -19,13 +19,12 @@ from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-
 class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
-        self.setShortDescription(catalog.i18nc("@action:button", "Print via USB"))
+        self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
         self.setIconName("print")
         self.setConnectionText(catalog.i18nc("@info:status", "Connected via USB"))
@@ -140,7 +139,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
         if self._progress or self._connection_state != ConnectionState.connected:
-            self._error_message = Message(catalog.i18nc("@info:status", "Printer is busy or not connected. Unable to start a new job."))
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
             self._error_message.show()
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
@@ -426,7 +425,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._error_state = error
         self.onError.emit()
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False):
+    ##  Request the current scene to be sent to a USB-connected printer.
+    #
+    #   \param nodes A collection of scene nodes to send. This is ignored.
+    #   \param file_name \type{string} A suggestion for a file name to write.
+    #   This is ignored.
+    #   \param filter_by_machine Whether to filter MIME types by machine. This
+    #   is ignored.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
 

@@ -14,6 +14,7 @@
     },
 
     "overrides": {
+        "machine_name": { "default_value": "BQ Witbox 2" },
         "machine_start_gcode": {
             "default_value": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\n; -- end of START GCODE --"
         },
@@ -36,7 +37,7 @@
             "default_value": false
         },
         "machine_gcode_flavor": {
-            "default_value": "RepRap"
+            "default_value": "RepRap (Marlin/Sprinter)"
         },
         "material_print_temperature": {
             "default_value": 210

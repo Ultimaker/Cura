@@ -77,7 +77,7 @@ Cura.MachineAction
                         {
                             id: buildAreaWidthField
                             text: machineWidthProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: { machineWidthProvider.setPropertyValue("value", text); manager.forceUpdate() }
                         }
                         Label
@@ -93,7 +93,7 @@ Cura.MachineAction
                         {
                             id: buildAreaDepthField
                             text: machineDepthProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: { machineDepthProvider.setPropertyValue("value", text); manager.forceUpdate() }
                         }
                         Label
@@ -109,7 +109,7 @@ Cura.MachineAction
                         {
                             id: buildAreaHeightField
                             text: machineHeightProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: { machineHeightProvider.setPropertyValue("value", text); manager.forceUpdate() }
                         }
                         Label
@@ -147,8 +147,16 @@ Cura.MachineAction
 
                         ComboBox
                         {
-                            model: ["RepRap (Marlin/Sprinter)", "UltiGCode"]
-                            currentIndex: machineGCodeFlavorProvider.properties.value != model[1] ? 0 : 1
+                            model: ["RepRap (Marlin/Sprinter)", "UltiGCode", "Repetier"]
+                            currentIndex:
+                            {
+                                var index = model.indexOf(machineGCodeFlavorProvider.properties.value);
+                                if(index == -1)
+                                {
+                                    index = 0;
+                                }
+                                return index
+                            }
                             onActivated:
                             {
                                 machineGCodeFlavorProvider.setPropertyValue("value", model[index]);
@@ -182,7 +190,7 @@ Cura.MachineAction
                         {
                             id: printheadXMinField
                             text: getHeadPolygonCoord("x", "min")
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: setHeadPolygon()
                         }
                         Label
@@ -198,7 +206,7 @@ Cura.MachineAction
                         {
                             id: printheadYMinField
                             text: getHeadPolygonCoord("y", "min")
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: setHeadPolygon()
                         }
                         Label
@@ -214,7 +222,7 @@ Cura.MachineAction
                         {
                             id: printheadXMaxField
                             text: getHeadPolygonCoord("x", "max")
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: setHeadPolygon()
                         }
                         Label
@@ -230,7 +238,7 @@ Cura.MachineAction
                         {
                             id: printheadYMaxField
                             text: getHeadPolygonCoord("y", "max")
-                            validator: RegExpValidator { regExp: /[0-9]{0,6}/ }
+                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: setHeadPolygon()
                         }
                         Label

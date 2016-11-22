@@ -31,7 +31,7 @@ class ContainerSettingsModel(ListModel):
             self._update()
 
     def _update(self):
-        self.clear()
+        items = []
 
         if len(self._container_ids) == 0:
             return
@@ -64,14 +64,15 @@ class ContainerSettingsModel(ListModel):
                 else:
                     values.append("")
 
-            self.appendItem({
+            items.append({
                 "key": key,
                 "values": values,
                 "label": definition.label,
                 "unit": definition.unit,
                 "category": category.label
             })
-        self.sort(lambda k: (k["category"], k["key"]))
+        items.sort(key = lambda k: (k["category"], k["key"]))
+        self.setItems(items)
 
     ##  Set the ids of the containers which have the settings this model should list.
     #   Also makes sure the model updates when the containers have property changes

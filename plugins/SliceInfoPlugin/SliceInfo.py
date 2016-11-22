@@ -1,6 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from cura.CuraApplication import CuraApplication
+
 from UM.Extension import Extension
 from UM.Application import Application
 from UM.Preferences import Preferences
@@ -18,6 +20,8 @@ import math
 import urllib.request
 import urllib.parse
 import ssl
+import hashlib
+import json
 
 catalog = i18nCatalog("cura")
 
@@ -43,9 +47,11 @@ class SliceInfoJob(Job):
         if Platform.isOSX():
             kwoptions["context"] = ssl._create_unverified_context()
 
+        Logger.log("d", "Sending anonymous slice info to [%s]...", self.url)
+
         try:
             f = urllib.request.urlopen(self.url, **kwoptions)
-            Logger.log("i", "Sent anonymous slice info to %s", self.url)
+            Logger.log("i", "Sent anonymous slice info.")
             f.close()
         except urllib.error.HTTPError as http_exception:
             Logger.log("e", "An HTTP error occurred while trying to send slice information: %s" % http_exception)
@@ -65,7 +71,7 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
         if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura automatically sends slice info. You can disable this in preferences"), lifetime = 0, dismissable = False)
+            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymised slicing statistics. You can disable this in preferences"), lifetime = 0, dismissable = False)
             self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, "")
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
@@ -80,48 +86,27 @@ class SliceInfo(Extension):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
                 return # Do nothing, user does not want to send data
 
+            # Listing all files placed on the buildplate
+            modelhashes = []
+            for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
+                if type(node) is not SceneNode or not node.getMeshData():
+                    continue
+                modelhashes.append(node.getMeshData().getHash())
+
+            # Creating md5sums and formatting them as discussed on JIRA
+            modelhash_formatted = ",".join(modelhashes)
+
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
             # Get total material used (in mm^3)
             print_information = Application.getInstance().getPrintInformation()
             material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
 
-            # TODO: Send material per extruder instead of mashing it on a pile
-            material_used = math.pi * material_radius * material_radius * sum(print_information.materialLengths) #Volume of all materials used
+            # Send material per extruder
+            material_used = [str(math.pi * material_radius * material_radius * material_length) for material_length in print_information.materialLengths]
+            material_used = ",".join(material_used)
 
-            # Get model information (bounding boxes, hashes and transformation matrix)
-            models_info = []
-            for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        model_info = {}
-                        model_info["hash"] = node.getMeshData().getHash()
-                        model_info["bounding_box"] = {}
-                        model_info["bounding_box"]["minimum"] = {}
-                        model_info["bounding_box"]["minimum"]["x"] = node.getBoundingBox().minimum.x
-                        model_info["bounding_box"]["minimum"]["y"] = node.getBoundingBox().minimum.y
-                        model_info["bounding_box"]["minimum"]["z"] = node.getBoundingBox().minimum.z
-
-                        model_info["bounding_box"]["maximum"] = {}
-                        model_info["bounding_box"]["maximum"]["x"] = node.getBoundingBox().maximum.x
-                        model_info["bounding_box"]["maximum"]["y"] = node.getBoundingBox().maximum.y
-                        model_info["bounding_box"]["maximum"]["z"] = node.getBoundingBox().maximum.z
-                        model_info["transformation"] = str(node.getWorldTransformation().getData())
-
-                        models_info.append(model_info)
-
-            # Bundle the collected data
-            submitted_data = {
-                "processor": platform.processor(),
-                "machine": platform.machine(),
-                "platform": platform.platform(),
-                "settings": global_container_stack.serialize(), # global_container with references on used containers
-                "version": Application.getInstance().getVersion(),
-                "modelhash": "None",
-                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
-                "filament": material_used,
-                "language": Preferences.getInstance().getValue("general/language"),
-            }
+            containers = { "": global_container_stack.serialize() }
             for container in global_container_stack.getContainers():
                 container_id = container.getId()
                 try:
@@ -129,11 +114,23 @@ class SliceInfo(Extension):
                 except NotImplementedError:
                     Logger.log("w", "Container %s could not be serialized!", container_id)
                     continue
-
                 if container_serialized:
-                    submitted_data["settings_%s" %(container_id)] = container_serialized # This can be anything, eg. INI, JSON, etc.
+                    containers[container_id] = container_serialized
                 else:
                     Logger.log("i", "No data found in %s to be serialized!", container_id)
+
+            # Bundle the collected data
+            submitted_data = {
+                "processor": platform.processor(),
+                "machine": platform.machine(),
+                "platform": platform.platform(),
+                "settings": json.dumps(containers), # bundle of containers with their serialized contents
+                "version": Application.getInstance().getVersion(),
+                "modelhash": modelhash_formatted,
+                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
+                "filament": material_used,
+                "language": Preferences.getInstance().getValue("general/language"),
+            }
 
             # Convert data to bytes
             submitted_data = urllib.parse.urlencode(submitted_data)

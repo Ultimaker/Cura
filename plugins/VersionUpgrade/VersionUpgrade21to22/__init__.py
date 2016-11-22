@@ -35,6 +35,10 @@ def getMetaData():
             "preferences": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"."}
+            },
+            "user": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./user"}
             }
         }
     }
