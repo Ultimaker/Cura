@@ -168,16 +168,12 @@ class SettingInheritanceManager(QObject):
             if value is not None:
                 # If a setting doesn't use any keys, it won't change it's value, so treat it as if it's a fixed value
                 has_setting_function = isinstance(value, UM.Settings.SettingFunction) and len(value.getUsedSettingKeys()) > 0
-                if key == "prime_tower_size":
-                    print(container.getId())
                 if has_setting_function is False:
                     has_non_function_value = True
                     continue
 
             if has_setting_function:
                 break  # There is a setting function somewhere, stop looking deeper.
-        if key == "prime_tower_size":
-            print("YAY", has_setting_function, has_non_function_value)
         return has_setting_function and has_non_function_value
 
     def _update(self):
