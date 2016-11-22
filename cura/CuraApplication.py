@@ -7,6 +7,7 @@ from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -881,10 +882,13 @@ class CuraApplication(QtApplication):
 
         # Compute the center of the objects
         object_centers = []
+        # Forget about the translation that the original objects have
+        zero_translation = Matrix(data=numpy.zeros(3))
         for mesh, node in zip(meshes, group_node.getChildren()):
-            orientation = node.getOrientation().toMatrix()
-            rotated_mesh = mesh.getTransformed(orientation)
-            center = rotated_mesh.getCenterPosition().scale(node.getScale())
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
+            center = transformed_mesh.getCenterPosition()
             object_centers.append(center)
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
@@ -896,12 +900,13 @@ class CuraApplication(QtApplication):
 
         # Move each node to the same position.
         for mesh, node in zip(meshes, group_node.getChildren()):
-            orientation = node.getOrientation().toMatrix()
-            rotated_mesh = mesh.getTransformed(orientation)
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
 
             # Align the object around its zero position
             # and also apply the offset to center it inside the group.
-            node.setPosition(-rotated_mesh.getZeroPosition().scale(node.getScale()) - offset)
+            node.setPosition(-transformed_mesh.getZeroPosition() - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
