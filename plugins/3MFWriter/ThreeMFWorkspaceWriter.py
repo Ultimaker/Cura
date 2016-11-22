@@ -59,7 +59,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if type(container) == type(ContainerRegistry.getInstance().getEmptyInstanceContainer()):
             return  # Empty file, do nothing.
 
-        file_suffix = ContainerRegistry.getMimeTypeForContainer(type(container)).suffixes[0]
+        file_suffix = ContainerRegistry.getMimeTypeForContainer(type(container)).preferredSuffix
 
         # Some containers have a base file, which should then be the file to use.
         if "base_file" in container.getMetaData():
