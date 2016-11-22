@@ -7,6 +7,7 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.MimeTypeDatabase import MimeTypeDatabase
 
 from UM.Preferences import Preferences
 from .WorkspaceDialog import WorkspaceDialog
@@ -359,9 +360,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return file.replace("Cura/", "").split(".")[0]
 
     def _getXmlProfileClass(self):
-        for type_name, container_type in self._container_registry.getContainerTypes():
-            if type_name == "XmlMaterialProfile":
-                return container_type
+        return self._container_registry.getContainerForMimeType(MimeTypeDatabase.getMimeType("application/x-ultimaker-material-profile"))
 
     ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
     def _getContainerIdListFromSerialized(self, serialized):
