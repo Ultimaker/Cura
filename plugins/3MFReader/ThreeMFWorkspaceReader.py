@@ -28,10 +28,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
         self._container_registry = ContainerRegistry.getInstance()
-        self._definition_container_suffix = ContainerRegistry.getMimeTypeForContainer(DefinitionContainer).suffixes[0]
+        self._definition_container_suffix = ContainerRegistry.getMimeTypeForContainer(DefinitionContainer).preferredSuffix
         self._material_container_suffix = None # We have to wait until all other plugins are loaded before we can set it
-        self._instance_container_suffix = ContainerRegistry.getMimeTypeForContainer(InstanceContainer).suffixes[0]
-        self._container_stack_suffix = ContainerRegistry.getMimeTypeForContainer(ContainerStack).suffixes[0]
+        self._instance_container_suffix = ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix
+        self._container_stack_suffix = ContainerRegistry.getMimeTypeForContainer(ContainerStack).preferredSuffix
 
         self._resolve_strategies = {}
 
@@ -73,7 +73,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
         if self._material_container_suffix is None:
-            self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).suffixes[0]
+            self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).preferredSuffix
         if xml_material_profile:
             material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
             for material_container_file in material_container_files:
