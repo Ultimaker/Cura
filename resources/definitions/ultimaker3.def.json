@@ -70,6 +70,7 @@
         "machine_end_gcode": { "default_value": "" },
         "prime_tower_position_x": { "default_value": 175 },
         "prime_tower_position_y": { "default_value": 179 },
+        "prime_tower_wipe_enabled": { "default_value": false },
 
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },

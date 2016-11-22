@@ -3646,6 +3646,38 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "prime_tower_min_volume":
+                {
+                    "label": "Prime Tower Minimum Volume",
+                    "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "prime_tower_wall_thickness":
+                        {
+                            "label": "Prime Tower Thickness",
+                            "description": "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 2,
+                            "value": "max(2 * min(extruderValues('prime_tower_line_width')), 0.5 * (resolveOrValue('prime_tower_size') - math.sqrt(resolveOrValue('prime_tower_size') ** 2 - max(extruderValues('prime_tower_min_volume')) / resolveOrValue('layer_height'))))",
+                            "resolve": "max(extruderValues('prime_tower_wall_thickness'))",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "2 * min(extruderValues('prime_tower_line_width'))",
+                            "maximum_value_warning": "resolveOrValue('prime_tower_size') / 2",
+                            "enabled": "resolveOrValue('prime_tower_enable')",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
+                },
                 "prime_tower_position_x":
                 {
                     "label": "Prime Tower X Position",
@@ -3692,14 +3724,23 @@
                 },
                 "prime_tower_wipe_enabled":
                 {
-                    "label": "Wipe Nozzle on Prime Tower",
+                    "label": "Wipe Inactive Nozzle on Prime Tower",
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": true,
-                    "resolve": "any(extruderValues('prime_tower_wipe_enabled'))",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
+                },
+                "dual_pre_wipe":
+                {
+                    "label": "Wipe Nozzle After Switch",
+                    "description": "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "multiple_mesh_overlap":
                 {
