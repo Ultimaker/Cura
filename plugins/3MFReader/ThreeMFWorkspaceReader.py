@@ -113,7 +113,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._dialog.setQualityChangesConflict(quality_changes_conflict)
             self._dialog.setMaterialConflict(material_conflict)
             self._dialog.show()
+
+            # Block until the dialog is closed.
             self._dialog.waitForClose()
+
             if self._dialog.getResult() == {}:
                 return WorkspaceReader.PreReadResult.cancelled
 

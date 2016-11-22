@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject, pyqtProperty
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject, pyqtProperty, QCoreApplication
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
@@ -6,6 +6,7 @@ from UM.Logger import Logger
 
 import os
 import threading
+import time
 
 class WorkspaceDialog(QObject):
     showDialogSignal = pyqtSignal()
@@ -82,7 +83,8 @@ class WorkspaceDialog(QObject):
 
     def show(self):
         # Emit signal so the right thread actually shows the view.
-        self._lock.acquire()
+        if threading.current_thread() != threading.main_thread():
+            self._lock.acquire()
         # Reset the result
         self._result = {"machine": self._default_strategy,
                         "quality_changes": self._default_strategy,
@@ -116,8 +118,14 @@ class WorkspaceDialog(QObject):
     ##  Block thread until the dialog is closed.
     def waitForClose(self):
         if self._visible:
-            self._lock.acquire()
-            self._lock.release()
+            if threading.current_thread() != threading.main_thread():
+                self._lock.acquire()
+                self._lock.release()
+            else:
+                # If this is not run from a separate thread, we need to ensure that the events are still processed.
+                while self._visible:
+                    time.sleep(1 / 50)
+                    QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
     def __show(self):
         if self._view is None:
