@@ -214,7 +214,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: 0.5 * parent.width - (index == 1 ? toggleFilterButton.width : 0)
+                width: 0.5 * parent.width - (modesListModel.get(index).showFilterButton ? toggleFilterButton.width : 0)
                 text: model.text
                 exclusiveGroup: modeMenuGroup;
                 checkable: true;
@@ -268,8 +268,10 @@ Rectangle
         height: settingsModeSelection.height
         width: visible ? height : 0
 
-        visible: !monitoringPrint && base.currentModeIndex == 1
+        visible: !monitoringPrint && modesListModel.get(base.currentModeIndex).showFilterButton
         opacity: visible ? 1 : 0
+
+        onClicked: sidebarContents.currentItem.toggleFilterField()
 
         style: ButtonStyle
         {
@@ -415,8 +417,8 @@ Rectangle
 
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple, showFilterButton: false })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced, showFilterButton: true })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
 

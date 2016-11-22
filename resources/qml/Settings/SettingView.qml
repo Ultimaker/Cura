@@ -18,9 +18,23 @@ Item
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
 
+    function toggleFilterField()
+    {
+        filterContainer.visible = !filterContainer.visible
+        if(filterContainer.visible)
+        {
+            filter.forceActiveFocus();
+        }
+        else
+        {
+            filter.text = "";
+        }
+    }
+
     Rectangle
     {
         id: filterContainer
+        visible: false
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color:
@@ -45,7 +59,8 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
-        height: UM.Theme.getSize("setting_control").height
+        height: visible ? UM.Theme.getSize("setting_control").height : 0
+        Behavior on height { NumberAnimation { duration: 100 } }
 
         TextField
         {
@@ -125,7 +140,7 @@ Item
             onClicked:
             {
                 filter.text = "";
-                filter.setActiveFocus();
+                filter.forceActiveFocus();
             }
         }
     }
@@ -136,7 +151,8 @@ Item
         anchors.bottom: parent.bottom;
         anchors.right: parent.right;
         anchors.left: parent.left;
-        anchors.topMargin: UM.Theme.getSize("default_margin").width
+        anchors.topMargin: filterContainer.visible ? UM.Theme.getSize("default_margin").width : 0
+        Behavior on anchors.topMargin { NumberAnimation { duration: 100 } }
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
