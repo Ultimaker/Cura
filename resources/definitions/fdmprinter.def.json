@@ -1190,6 +1190,34 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_initial_print_temperature":
+                {
+                    "label": "Initial Printing Temperature",
+                    "description": "The minimal temperature while heating up to the Printing Temperature at which printing can already start.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 190,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_final_print_temperature":
+                {
+                    "label": "Final Printing Temperature",
+                    "description": "The temperature to which to already start cooling down just before the end of printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 180,
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -1211,6 +1239,7 @@
                     "default_value": 0.5,
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
+                    "maximum_value": "machine_nozzle_heat_up_speed",
                     "enabled": "False",
                     "comments": "old enabled function: material_flow_dependent_temperature or machine_extruder_count > 1",
                     "settable_per_mesh": false,
@@ -3734,7 +3763,7 @@
                 "meshfix_union_all":
                 {
                     "label": "Union Overlapping Volumes",
-                    "description": "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavities to disappear.",
+                    "description": "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
@@ -3766,7 +3795,7 @@
                 "carve_multiple_volumes":
                 {
                     "label": "Remove Mesh Intersection",
-                    "description": "Remove areas where multiple objects are overlapping with each other. This may be used if merged dual material objects overlap with each other.",
+                    "description": "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other.",
                     "type": "bool",
                     "default_value": true,
                     "value": "machine_extruder_count > 1",
@@ -3777,7 +3806,7 @@
                 "alternate_carve_order":
                 {
                     "label": "Alternate Mesh Removal",
-                    "description": "With every layer switch from which model intersecting volumes are removed, so that the overlapping volumes become interwoven.",
+                    "description": "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "carve_multiple_volumes",
