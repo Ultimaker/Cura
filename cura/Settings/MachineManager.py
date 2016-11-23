@@ -881,7 +881,7 @@ class MachineManager(QObject):
     def _askUserToKeepOrClearCurrentSettings(self):
         # Ask the user if the user profile should be cleared or not (discarding the current settings)
         # In Simple Mode we assume the user always wants to keep the (limited) current settings
-        details_text = catalog.i18nc("@label", "You made changes to the following setting(s):")
+        details_text = catalog.i18nc("@label", "You made changes to the following setting(s)/override(s):")
 
         # user changes in global stack
         details_list = [setting.definition.label for setting in self._global_container_stack.getTop().findInstances(**{})]
@@ -896,14 +896,19 @@ class MachineManager(QObject):
         # Format to output string
         details = "\n    ".join([details_text, ] + details_list)
 
-        Application.getInstance().messageBox(catalog.i18nc("@window:title", "Switched profiles"),
-                                             catalog.i18nc("@label",
-                                                           "Do you want to transfer your changed settings to this profile?"),
-                                             catalog.i18nc("@label",
-                                                           "If you transfer your settings they will override settings in the profile."),
-                                             details,
-                                             buttons=QMessageBox.Yes + QMessageBox.No, icon=QMessageBox.Question,
-                                             callback=self._keepUserSettingsDialogCallback)
+        num_changed_settings = len(details_list)
+        Application.getInstance().messageBox(
+            catalog.i18nc("@window:title", "Switched profiles"),
+            catalog.i18nc(
+                "@label",
+                "Do you want to transfer your %d changed setting(s)/override(s) to this profile?") % num_changed_settings,
+            catalog.i18nc(
+                "@label",
+                "If you transfer your settings they will override settings in the profile."),
+            details,
+            buttons=QMessageBox.Yes + QMessageBox.No,
+            icon=QMessageBox.Question,
+            callback=self._keepUserSettingsDialogCallback)
 
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:
