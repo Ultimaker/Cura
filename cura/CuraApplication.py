@@ -632,7 +632,7 @@ class CuraApplication(QtApplication):
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
 
-        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box) and scene_bounding_box.isValid():
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
