@@ -8,7 +8,10 @@ Installation
 ----
 * Manually:
   - Make sure your Cura version is 2.2 or newer
-  - Download or clone the repository into [Cura installation folder]/plugins/OctoPrintPlugin
+  - Download or clone the repository into [Cura installation folder]/plugins/OctoPrintPlugin 
+    or in the plugins folder inside the configuration folder. The configuration folder can be
+    found via Help -> Show Configuration Folder inside Cura.
+    NB: The folder of the plugin itself *must* be ```OctoPrintPlugin```
   - If you are running Cura from source, make sure you install python-zeroconf using pip: 
     ```pip3 install python3-zeroconf```.
     Released versions of Cura already meet this requirement.
