@@ -13,7 +13,7 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-
+from UM.Qt.Duration import DurationFormat
 
 import cura.Settings
 
@@ -385,6 +385,14 @@ class CuraEngineBackend(Backend):
     def _onSlicingFinishedMessage(self, message):
         self.backendStateChange.emit(BackendState.Done)
         self.processingProgress.emit(1.0)
+
+        for line in self._scene.gcode_list:
+            replaced = line.replace("{print_time}", str(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
+            replaced = replaced.replace("{filament_amount}", str(Application.getInstance().getPrintInformation().materialLengths))
+            replaced = replaced.replace("{filament_weight}", str(Application.getInstance().getPrintInformation().materialWeights))
+            replaced = replaced.replace("{filament_cost}", "Not yet implemented")
+
+            self._scene.gcode_list[self._scene.gcode_list.index(line)] = replaced
 
         self._slicing = False
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )

@@ -259,12 +259,6 @@ class StartSliceJob(Job):
         settings["date"] = time.strftime('%d-%m-%Y')
         settings["day"] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
 
-        settings["print_time"] = Application.getInstance().getPrintInformation().currentPrintTime
-        settings["filament_amount"] = Application.getInstance().getPrintInformation().materialLengths
-        settings["filament_weight"] = Application.getInstance().getPrintInformation().materialWeights
-        settings["filament_cost"] = None
-        settings["profile_string"] = None
-
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
