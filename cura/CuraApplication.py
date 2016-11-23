@@ -734,6 +734,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
@@ -773,6 +775,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -799,6 +803,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
