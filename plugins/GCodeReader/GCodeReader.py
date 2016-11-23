@@ -25,6 +25,7 @@ import math
 import re
 
 
+# Class for loading and parsing G-code files
 class GCodeReader(MeshReader):
     def __init__(self):
         super(GCodeReader, self).__init__()
