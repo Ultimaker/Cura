@@ -85,7 +85,7 @@ class SettingInheritanceManager(QObject):
             self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
 
     def _onPropertyChanged(self, key, property_name):
-        if property_name == "value" and self._global_container_stack:
+        if (property_name == "value" or property_name == "enabled") and self._global_container_stack:
             definitions = self._global_container_stack.getBottom().findDefinitions(key = key)
             if not definitions:
                 return
