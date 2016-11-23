@@ -297,6 +297,16 @@ class MachineManager(QObject):
                     changed_validation_state = self._active_container_stack.getProperty(key, property_name)
                 else:
                     changed_validation_state = self._global_container_stack.getProperty(key, property_name)
+
+                if changed_validation_state is None:
+                    # Setting is not validated. This can happen if there is only a setting definition.
+                    # We do need to validate it, because a setting defintions value can be set by a function, which could
+                    # be an invalid setting.
+                    definition = self._active_container_stack.getSettingDefinition(key)
+                    validator_type = UM.Settings.SettingDefinition.getValidatorForType(definition.type)
+                    if validator_type:
+                        validator = validator_type(key)
+                        changed_validation_state = validator(self._active_container_stack)
                 if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
                     self._stacks_have_errors = True
                     self.stacksValidationChanged.emit()
