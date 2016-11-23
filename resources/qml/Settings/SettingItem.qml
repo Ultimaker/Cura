@@ -209,14 +209,26 @@ Item {
                         // But this will cause the binding to be re-evaluated when the enabled property changes.
                         return false;
                     }
+
+                    // There are no settings with any warning.
                     if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
                     {
                         return false;
                     }
+
+                    // This setting has a resolve value, so an inheritance warning doesn't do anything.
+                    if(resolve != "None")
+                    {
+                        return false
+                    }
+
+                    // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
                     if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
                     }
+
+                    // Setting does have a limit_to_extruder property, so use that one instead.
                     return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
                 }
 
