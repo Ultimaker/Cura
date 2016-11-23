@@ -814,6 +814,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         if self._connection_state_before_timeout and reply.error() == QNetworkReply.NoError:  # There was a timeout, but we got a correct answer again.
             Logger.log("d", "We got a response (%s) from the server after %0.1f of silence. Going back to previous state %s", reply.url().toString(), time() - self._last_response_time, self._connection_state_before_timeout)
+
+            # Camera was active before timeout. Start it again
+            if self._camera_active:
+                self._startCamera()
+
             self.setConnectionState(self._connection_state_before_timeout)
             self._connection_state_before_timeout = None
 
