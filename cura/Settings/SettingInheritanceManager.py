@@ -167,7 +167,16 @@ class SettingInheritanceManager(QObject):
                 continue
             if value is not None:
                 # If a setting doesn't use any keys, it won't change it's value, so treat it as if it's a fixed value
-                has_setting_function = isinstance(value, UM.Settings.SettingFunction) and len(value.getUsedSettingKeys()) > 0
+                has_setting_function = isinstance(value, UM.Settings.SettingFunction)
+                if has_setting_function:
+                    for setting_key in value.getUsedSettingKeys():
+                        if setting_key in self._active_container_stack.getAllKeys():
+                            break # We found an actual setting. So has_setting_function can remain true
+                    else:
+                        # All of the setting_keys turned out to not be setting keys at all!
+                        # This can happen due enum keys also being marked as settings.
+                        has_setting_function = False
+
                 if has_setting_function is False:
                     has_non_function_value = True
                     continue
