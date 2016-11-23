@@ -22,6 +22,7 @@ from cura.LayerPolygon import LayerPolygon
 
 import numpy
 import math
+import re
 
 
 class GCodeReader(MeshReader):
@@ -39,7 +40,9 @@ class GCodeReader(MeshReader):
         n = line.find(code) + len(code)
         if n < 1:
             return None
-        m = line.find(' ', n)
+        pattern = re.compile("[;\s]")
+        match = pattern.search(line, n)
+        m = match.start() if math is not None else -1
         try:
             if m < 0:
                 return line[n:]
@@ -66,23 +69,18 @@ class GCodeReader(MeshReader):
             self._cancelled = True
 
     def _onParentChanged(self, node):
-        backend = Application.getInstance().getBackend()
         if self._scene_node is not None and self._scene_node.getParent() is None:
             self._scene_node = None
-            backend.backendStateChange.emit(BackendState.NotStarted)
+            Application.getInstance().getBackend().continueSlicing()
             Application.getInstance().setHideSettings(False)
             Application.getInstance().getPrintInformation().setPreSliced(False)
-        # else:
-        #     backend.backendStateChange.emit(BackendState.SlicingDisabled)
-        #     Application.getInstance().getPrintInformation().setPreSliced(True)
-        #     Application.getInstance().setHideSettings(True)
 
     @staticmethod
     def _getNullBoundingBox():
         return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
 
     @staticmethod
-    def _createPolygon(layer_data, path, layer_id, extruder):
+    def _createPolygon(layer_data, path, layer_id, extruder, thickness):
         countvalid = 0
         for point in path:
             if point[3] > 0:
@@ -92,7 +90,7 @@ class GCodeReader(MeshReader):
         try:
             layer_data.addLayer(layer_id)
             layer_data.setLayerHeight(layer_id, path[0][1])
-            layer_data.setLayerThickness(layer_id, 0.25)
+            layer_data.setLayerThickness(layer_id, thickness)
             this_layer = layer_data.getLayer(layer_id)
         except ValueError:
             return False
@@ -128,9 +126,7 @@ class GCodeReader(MeshReader):
         self._scene_node.gcode = True
         self._scene_node.parentChanged.connect(self._onParentChanged)
 
-        backend = Application.getInstance().getBackend()
-        backend.close()
-        backend.backendStateChange.emit(BackendState.SlicingDisabled)
+        Application.getInstance().getBackend().pauseSlicing()
 
         glist = []
         Application.getInstance().getController().getScene().gcode_list = glist
@@ -155,6 +151,7 @@ class GCodeReader(MeshReader):
             current_z = 0
             current_e = 0
             current_layer = 0
+            prev_z = 0
 
             self._message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0)
             self._message.setProgress(0)
@@ -188,6 +185,7 @@ class GCodeReader(MeshReader):
                         if z is not None:
                             if not current_z == z:
                                 z_changed = True
+                                prev_z = current_z
                             current_z = z
                         if e is not None:
                             if e > current_e:
@@ -196,10 +194,10 @@ class GCodeReader(MeshReader):
                                 current_path.append([current_x, current_y, current_z, LayerPolygon.MoveRetractionType])  # retraction
                             current_e = e
                         else:
-                            current_path.append([current_x, current_y, current_z, LayerPolygon.NoneType])
+                            current_path.append([current_x, current_y, current_z, LayerPolygon.MoveCombingType])
                         if z_changed:
                             if len(current_path) > 1 and current_z > 0:
-                                if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder):
+                                if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder, math.fabs(current_z - prev_z)):
                                     current_layer += 1
                                 current_path.clear()
                             else:
@@ -231,14 +229,14 @@ class GCodeReader(MeshReader):
                 if T is not None:
                     current_extruder = T
                     if len(current_path) > 1 and current_z > 0:
-                        if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder):
+                        if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder, math.fabs(current_z - prev_z)):
                             current_layer += 1
                         current_path.clear()
                     else:
                         current_path.clear()
 
             if len(current_path) > 1 and current_z > 0:
-                if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder):
+                if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder, math.fabs(current_z - prev_z)):
                     current_layer += 1
                 current_path.clear()
 

@@ -539,9 +539,6 @@ class CuraApplication(QtApplication):
 
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
-    loadingFiles = []
-    non_sliceable_extensions = [".gcode", ".g"]
-
     changeLayerViewSignal = pyqtSignal()
 
     def changeToLayerView(self):
@@ -550,63 +547,6 @@ class CuraApplication(QtApplication):
         view.resetLayerData()
         view.setLayer(999999)
         view.calculateMaxLayers()
-
-    @pyqtSlot(QUrl)
-    def loadFile(self, file):
-        scene = self.getController().getScene()
-
-        if not file.isValid():
-            return
-
-        for node in DepthFirstIterator(scene.getRoot()):
-            if hasattr(node, "gcode") and getattr(node, "gcode") is True:
-                self.deleteAll()
-                break
-
-        f = file.toLocalFile()
-        extension = os.path.splitext(f)[1]
-        filename = os.path.basename(f)
-        if len(self.loadingFiles) > 0:
-            # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
-            if extension.lower() in self.non_sliceable_extensions:
-                message = Message(
-                    catalog.i18nc("@info:status", "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                  filename))
-                message.show()
-                return
-            # If file being loaded is non-slicable file, then prevent loading of any other files
-            extension = os.path.splitext(self.loadingFiles[0])[1]
-            if extension.lower() in self.non_sliceable_extensions:
-                message = Message(
-                    catalog.i18nc("@info:status",
-                                  "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                  filename))
-                message.show()
-                return
-
-        self.loadingFiles.append(f)
-
-        job = ReadMeshJob(f)
-        job.finished.connect(self._readMeshFinished)
-        job.start()
-
-    def _readMeshFinished(self, job):
-        node = job.getResult()
-        filename = job.getFileName()
-        self.loadingFiles.remove(filename)
-
-        if node != None:
-            node.setSelectable(True)
-            node.setName(os.path.basename(filename))
-
-            extension = os.path.splitext(filename)[1]
-            if extension.lower() in self.non_sliceable_extensions:
-                self.changeLayerViewSignal.emit()
-
-            op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
-            op.push()
-
-            self.getController().getScene().sceneChanged.emit(node)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
