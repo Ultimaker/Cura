@@ -214,7 +214,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: 0.5 * parent.width - (modesListModel.get(index).showFilterButton ? toggleFilterButton.width : 0)
+                width: 0.5 * parent.width - (model.showFilterButton ? toggleFilterButton.width : 0)
                 text: model.text
                 exclusiveGroup: modeMenuGroup;
                 checkable: true;
