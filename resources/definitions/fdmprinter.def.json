@@ -2338,7 +2338,7 @@
                 "layer_start_x":
                 {
                     "label": "Layer Start X",
-                    "description": "The X coordinate of the position near where to start printing objects each layer.",
+                    "description": "The X coordinate of the position near where to find the part to start printing each layer.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -2351,7 +2351,7 @@
                 "layer_start_y":
                 {
                     "label": "Layer Start Y",
-                    "description": "The Y coordinate of the position near where to start printing objects each layer.",
+                    "description": "The Y coordinate of the position near where to find the part to start printing each layer.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
