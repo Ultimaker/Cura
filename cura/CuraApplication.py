@@ -632,7 +632,7 @@ class CuraApplication(QtApplication):
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
 
-        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box) and scene_bounding_box.isValid():
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
@@ -734,6 +734,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
@@ -773,6 +775,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -799,6 +803,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:

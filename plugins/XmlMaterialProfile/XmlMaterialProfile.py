@@ -425,7 +425,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         for entry in settings:
             key = entry.get("key")
             if key in self.__material_property_setting_map:
-                self.setProperty(self.__material_property_setting_map[key], "value", entry.text, self._definition)
+                self.setProperty(self.__material_property_setting_map[key], "value", entry.text)
                 global_setting_values[self.__material_property_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
@@ -484,10 +484,10 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_material.getMetaData()["compatible"] = machine_compatibility
 
                     for key, value in global_setting_values.items():
-                        new_material.setProperty(key, "value", value, definition)
+                        new_material.setProperty(key, "value", value)
 
                     for key, value in machine_setting_values.items():
-                        new_material.setProperty(key, "value", value, definition)
+                        new_material.setProperty(key, "value", value)
 
                     new_material._dirty = False
                     if not materials:
@@ -538,13 +538,13 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
 
                     for key, value in global_setting_values.items():
-                        new_hotend_material.setProperty(key, "value", value, definition)
+                        new_hotend_material.setProperty(key, "value", value)
 
                     for key, value in machine_setting_values.items():
-                        new_hotend_material.setProperty(key, "value", value, definition)
+                        new_hotend_material.setProperty(key, "value", value)
 
                     for key, value in hotend_setting_values.items():
-                        new_hotend_material.setProperty(key, "value", value, definition)
+                        new_hotend_material.setProperty(key, "value", value)
 
                     new_hotend_material._dirty = False
                     if not materials:  # It was not added yet, do so now.
