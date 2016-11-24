@@ -39,7 +39,7 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color:
         {
-            if(mouseArea.containsMouse || clearFilterButton.containsMouse)
+            if(hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
             {
                 return UM.Theme.getColor("setting_control_border_highlight");
             }
@@ -65,7 +65,6 @@ Item
         TextField
         {
             id: filter;
-            visible: !monitoringPrint
 
             anchors.left: parent.left
             anchors.right: clearFilterButton.left
@@ -114,7 +113,7 @@ Item
 
         MouseArea
         {
-            id: mouseArea
+            id: hoverMouseArea
             anchors.fill: parent
             hoverEnabled: true
             acceptedButtons: Qt.NoButton
