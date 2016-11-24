@@ -107,10 +107,7 @@ class GCodeReader(MeshReader):
             points[i, 1] = point[2]
             points[i, 2] = -point[1]
             if i > 0:
-                if point[3] == LayerPolygon.Inset0Type:
-                    line_types[i - 1] = extruder + 1
-                else:
-                    line_types[i - 1] = point[3]
+                line_types[i - 1] = point[3]
             i += 1
 
         this_poly = LayerPolygon(layer_data, extruder, line_types, points, line_widths)
