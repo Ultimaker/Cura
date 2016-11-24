@@ -51,7 +51,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self._camera_active = False
 
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         raise NotImplementedError("requestWrite needs to be implemented")
 
     ## Signals

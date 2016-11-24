@@ -152,6 +152,18 @@ class ExtruderManager(QObject):
         if changed:
             self.extrudersChanged.emit(machine_id)
 
+    def registerExtruder(self, extruder_train, machine_id):
+        changed = False
+
+        if machine_id not in self._extruder_trains:
+            self._extruder_trains[machine_id] = {}
+            changed = True
+        if extruder_train:
+            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
+            changed = True
+        if changed:
+            self.extrudersChanged.emit(machine_id)
+
     ##  Creates a container stack for an extruder train.
     #
     #   The container stack has an extruder definition at the bottom, which is
