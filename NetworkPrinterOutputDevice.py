@@ -515,7 +515,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         if self._progress != 0:
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
             self._error_message.show()
