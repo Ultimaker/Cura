@@ -214,7 +214,7 @@ Rectangle
                 anchors.left: parent.left
                 anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: parent.width / 2
+                width: 0.5 * parent.width - (model.showFilterButton ? toggleFilterButton.width : 0)
                 text: model.text
                 exclusiveGroup: modeMenuGroup;
                 checkable: true;
@@ -253,6 +253,44 @@ Rectangle
             anchors.top: parent.top
             anchors.left: parent.left
             width: parent.width
+        }
+    }
+
+    Button
+    {
+        id: toggleFilterButton
+
+        anchors.right: parent.right
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        anchors.top: headerSeparator.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+        height: settingsModeSelection.height
+        width: visible ? height : 0
+
+        visible: !monitoringPrint && modesListModel.get(base.currentModeIndex).showFilterButton
+        opacity: visible ? 1 : 0
+
+        onClicked: sidebarContents.currentItem.toggleFilterField()
+
+        style: ButtonStyle
+        {
+            background: Rectangle
+            {
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("toggle_checked_border")
+                color: visible ? UM.Theme.getColor("toggle_checked") : UM.Theme.getColor("toggle_hovered")
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+            label: UM.RecolorImage
+            {
+                anchors.verticalCenter: control.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+
+                source: UM.Theme.getIcon("search")
+                color: UM.Theme.getColor("toggle_checked_text")
+            }
         }
     }
 
@@ -379,8 +417,8 @@ Rectangle
 
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple, showFilterButton: false })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced, showFilterButton: true })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
 

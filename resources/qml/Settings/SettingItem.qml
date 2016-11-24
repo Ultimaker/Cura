@@ -118,6 +118,7 @@ Item {
             elide: Text.ElideMiddle;
 
             color: UM.Theme.getColor("setting_control_text");
+            opacity: (definition.visible) ? 1 : 0.5
             // emphasize the setting if it has a value in the user or quality profile
             font: base.doQualityUserSettingEmphasis && base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
