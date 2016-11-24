@@ -390,7 +390,9 @@ class CuraEngineBackend(Backend):
             replaced = line.replace("{print_time}", str(Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
             replaced = replaced.replace("{filament_amount}", str(Application.getInstance().getPrintInformation().materialLengths))
             replaced = replaced.replace("{filament_weight}", str(Application.getInstance().getPrintInformation().materialWeights))
+            # TODO: calculate filament cost
             replaced = replaced.replace("{filament_cost}", "Not yet implemented")
+            replaced = replaced.replace("{jobname}", str(Application.getInstance().getPrintInformation().jobName))
 
             self._scene.gcode_list[self._scene.gcode_list.index(line)] = replaced
 
