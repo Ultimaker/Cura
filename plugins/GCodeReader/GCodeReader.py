@@ -98,6 +98,7 @@ class GCodeReader(MeshReader):
         count = len(path)
         line_types = numpy.empty((count - 1, 1), numpy.int32)
         line_widths = numpy.empty((count - 1, 1), numpy.float32)
+        # TODO: need to calculate actual line width based on E values
         line_widths[:, 0] = 0.5
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
@@ -151,6 +152,7 @@ class GCodeReader(MeshReader):
             current_y = 0
             current_z = 0
             current_e = 0
+            current_block = LayerPolygon.Inset0Type
             current_layer = 0
             prev_z = 0
 
@@ -169,6 +171,20 @@ class GCodeReader(MeshReader):
                     self._message.setProgress(math.floor(current_line / file_lines * 100))
                 if len(line) == 0:
                     continue
+                if line.find(";TYPE:") == 0:
+                    type = line[6:].strip()
+                    if type == "WALL-INNER":
+                        current_block = LayerPolygon.InsetXType
+                    elif type == "WALL-OUTER":
+                        current_block = LayerPolygon.Inset0Type
+                    elif type == "SKIN":
+                        current_block = LayerPolygon.SkinType
+                    elif type == "SKIRT":
+                        current_block = LayerPolygon.SkirtType
+                    elif type == "SUPPORT":
+                        current_block = LayerPolygon.SupportType
+                    elif type == "FILL":
+                        current_block = LayerPolygon.InfillType
                 if line[0] == ";":
                     continue
                 G = self._getInt(line, "G")
@@ -190,7 +206,7 @@ class GCodeReader(MeshReader):
                             current_z = z
                         if e is not None:
                             if e > current_e:
-                                current_path.append([current_x, current_y, current_z, LayerPolygon.Inset0Type])  # extrusion
+                                current_path.append([current_x, current_y, current_z, current_block])  # extrusion
                             else:
                                 current_path.append([current_x, current_y, current_z, LayerPolygon.MoveRetractionType])  # retraction
                             current_e = e
