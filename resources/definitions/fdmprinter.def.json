@@ -2327,8 +2327,8 @@
                 },
                 "start_layers_at_same_position":
                 {
-                    "label": "Start Layers Near Same Point",
-                    "description": "Start printing the objects in each layer near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
+                    "label": "Start Layers With The Same Part",
+                    "description": "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
