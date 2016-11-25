@@ -285,6 +285,8 @@ class MachineManager(QObject):
         elif container_type == "quality":
             self.activeQualityChanged.emit()
 
+        self._updateStacksHaveErrors()
+
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
             # Notify UI items, such as the "changed" star in profile pull down menu.
