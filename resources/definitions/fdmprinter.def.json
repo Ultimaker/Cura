@@ -1196,7 +1196,7 @@
                     "description": "The minimal temperature while heating up to the Printing Temperature at which printing can already start.",
                     "unit": "°C",
                     "type": "float",
-                    "default_value": 190,
+                    "value": "max(-273.15, material_print_temperature - 10)",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
@@ -1210,7 +1210,7 @@
                     "description": "The temperature to which to already start cooling down just before the end of printing.",
                     "unit": "°C",
                     "type": "float",
-                    "default_value": 180,
+                    "value": "max(-273.15, material_print_temperature - 15)",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
@@ -2302,7 +2302,7 @@
                 },
                 "travel_avoid_other_parts":
                 {
-                    "label": "Avoid Printed Parts when Traveling",
+                    "label": "Avoid Printed Parts When Traveling",
                     "description": "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled.",
                     "type": "bool",
                     "default_value": true,
@@ -2327,7 +2327,7 @@
                 },
                 "start_layers_at_same_position":
                 {
-                    "label": "Start Layers With The Same Part",
+                    "label": "Start Layers with the Same Part",
                     "description": "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
                     "type": "bool",
                     "default_value": false,
@@ -2362,7 +2362,7 @@
                     "settable_per_meshgroup": true
                 },
                 "retraction_hop_enabled": {
-                    "label": "Z Hop when Retracted",
+                    "label": "Z Hop When Retracted",
                     "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
                     "type": "bool",
                     "default_value": false,
