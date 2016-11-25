@@ -965,10 +965,8 @@
                     "type": "float",
                     "default_value": 100.0,
                     "value": "machine_width / 2",
-                    "enabled": "'back' in extruderValues('z_seam_type')",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true
+                    "enabled": "z_seam_type == 'back'",
+                    "settable_per_mesh": true
                 },
                 "z_seam_y":
                 {
@@ -978,10 +976,8 @@
                     "type": "float",
                     "default_value": 100.0,
                     "value": "machine_depth / 2",
-                    "enabled": "'back' in extruderValues('z_seam_type')",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true
+                    "enabled": "z_seam_type == 'back'",
+                    "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
                 {
