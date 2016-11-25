@@ -904,7 +904,7 @@ class MachineManager(QObject):
                 "Do you want to transfer your %d changed setting(s)/override(s) to this profile?") % num_changed_settings,
             catalog.i18nc(
                 "@label",
-                "If you transfer your settings they will override settings in the profile."),
+                "If you transfer your settings they will override settings in the profile. If you don't transfer these settings, they will be lost."),
             details,
             buttons=QMessageBox.Yes + QMessageBox.No,
             icon=QMessageBox.Question,
