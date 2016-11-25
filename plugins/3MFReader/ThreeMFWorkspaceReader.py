@@ -8,7 +8,7 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase
-
+from UM.Job import Job
 from UM.Preferences import Preferences
 from .WorkspaceDialog import WorkspaceDialog
 
@@ -70,6 +70,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if stacks[0].getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
+            Job.yieldThread()
 
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
@@ -82,6 +83,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 materials = self._container_registry.findInstanceContainers(id=container_id)
                 if materials and not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
                     material_conflict = True
+                Job.yieldThread()
 
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
@@ -100,6 +102,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
                         break
+            Job.yieldThread()
         try:
             archive.open("Cura/preferences.cfg")
         except KeyError:
@@ -164,6 +167,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 definition_container = DefinitionContainer(container_id)
                 definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
                 self._container_registry.addContainer(definition_container)
+            Job.yieldThread()
 
         Logger.log("d", "Workspace loading is checking materials...")
         material_containers = []
@@ -191,6 +195,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                             containers_to_add.append(material_container)
                             material_containers.append(material_container)
+                Job.yieldThread()
 
         Logger.log("d", "Workspace loading is checking instance containers...")
         # Get quality_changes and user profiles saved in the workspace
@@ -204,6 +209,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Deserialize InstanceContainer by converting read data from bytes to string
             instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
             container_type = instance_container.getMetaDataEntry("type")
+            Job.yieldThread()
             if container_type == "user":
                 # Check if quality changes already exists.
                 user_containers = self._container_registry.findInstanceContainers(id=container_id)
@@ -296,6 +302,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stacks.append(stack)
                 else:
                     global_stack = stack
+                Job.yieldThread()
         except:
             Logger.log("W", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added. 
@@ -372,10 +379,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for container in global_stack.getContainers():
             global_stack.containersChanged.emit(container)
 
+        Job.yieldThread()
         for stack in extruder_stacks:
             stack.setNextStack(global_stack)
             for container in stack.getContainers():
                 stack.containersChanged.emit(container)
+            Job.yieldThread()
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
