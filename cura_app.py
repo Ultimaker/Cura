@@ -9,6 +9,11 @@ import platform
 
 from UM.Platform import Platform
 
+#WORKAROUND: UNKNOWN
+# For Ubuntu Unity this makes Qt use its own menu bar rather than pass it on to Unity.
+if Platform.isLinux():
+    os.putenv("UBUNTU_MENUPROXY", "0")
+
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if Platform.isLinux(): # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
