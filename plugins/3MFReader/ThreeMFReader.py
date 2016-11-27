@@ -14,6 +14,7 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
+from UM.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 
 import os.path
 import zipfile
@@ -234,6 +235,8 @@ class ThreeMFReader(MeshReader):
         except Exception as e:
             Logger.log("e", "An exception occurred in 3mf reader: %s", e)
 
+        sliceable_decorator = SliceableObjectDecorator()
+        result.addDecorator(sliceable_decorator)
         return result
 
     ##  Create a scale vector based on a unit string.

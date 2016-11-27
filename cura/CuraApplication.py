@@ -593,9 +593,12 @@ class CuraApplication(QtApplication):
     def updatePlatformActivity(self, node = None):
         count = 0
         scene_bounding_box = None
+        should_pause = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or (not node.getMeshData() and not hasattr(node, "gcode")):
+            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("shouldBlockSlicing")):
                 continue
+            if node.callDecoration("shouldBlockSlicing"):
+                should_pause = True
 
             count += 1
             if not scene_bounding_box:
@@ -604,6 +607,16 @@ class CuraApplication(QtApplication):
                 other_bb = node.getBoundingBox()
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
+
+        if not should_pause:
+            self.getBackend().continueSlicing()
+            self.setHideSettings(False)
+            if self.getPrintInformation():
+                self.getPrintInformation().setPreSliced(False)
+        else:
+            self.getBackend().pauseSlicing()
+            self.setHideSettings(True)
+            self.getPrintInformation().setPreSliced(True)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
@@ -725,7 +738,7 @@ class CuraApplication(QtApplication):
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
                 continue
-            if (not node.getMeshData() and not hasattr(node, "gcode")) and not node.callDecoration("isGroup"):
+            if (not node.getMeshData() and node.callDecoration("isSliceable")) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)

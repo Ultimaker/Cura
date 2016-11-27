@@ -19,6 +19,7 @@ catalog = i18nCatalog("cura")
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
+from UM.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 
 import numpy
 import math
@@ -33,8 +34,6 @@ class GCodeReader(MeshReader):
         Application.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
         self._message = None
-
-        self._scene_node = None
 
     @staticmethod
     def _getValue(line, code):
@@ -68,13 +67,6 @@ class GCodeReader(MeshReader):
     def _onHideMessage(self, message):
         if message == self._message:
             self._cancelled = True
-
-    def _onParentChanged(self, node):
-        if self._scene_node is not None and self._scene_node.getParent() is None:
-            self._scene_node = None
-            Application.getInstance().getBackend().continueSlicing()
-            Application.getInstance().setHideSettings(False)
-            Application.getInstance().getPrintInformation().setPreSliced(False)
 
     @staticmethod
     def _getNullBoundingBox():
@@ -120,12 +112,8 @@ class GCodeReader(MeshReader):
         Logger.log("d", "Preparing to load %s" % file_name)
         self._cancelled = False
 
-        self._scene_node = SceneNode()
-        self._scene_node.getBoundingBox = self._getNullBoundingBox  # Manually set bounding box, because mesh doesn't have mesh data
-        self._scene_node.gcode = True
-        self._scene_node.parentChanged.connect(self._onParentChanged)
-
-        Application.getInstance().getBackend().pauseSlicing()
+        scene_node = SceneNode()
+        scene_node.getBoundingBox = self._getNullBoundingBox  # Manually set bounding box, because mesh doesn't have mesh data
 
         glist = []
         Application.getInstance().getController().getScene().gcode_list = glist
@@ -257,9 +245,12 @@ class GCodeReader(MeshReader):
         layer_mesh = layer_data_builder.build()
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
+        scene_node.addDecorator(decorator)
 
-        self._scene_node.removeDecorator("LayerDataDecorator")
-        self._scene_node.addDecorator(decorator)
+        sliceable_decorator = SliceableObjectDecorator()
+        sliceable_decorator.setBlockSlicing(True)
+        sliceable_decorator.setSliceable(False)
+        scene_node.addDecorator(sliceable_decorator)
 
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
@@ -267,15 +258,12 @@ class GCodeReader(MeshReader):
         if current_layer == 0:
             Logger.log("w", "File %s doesn't contain any valid layers" % file_name)
 
-        Application.getInstance().getPrintInformation().setPreSliced(True)
-        Application.getInstance().setHideSettings(True)
-
         settings = Application.getInstance().getGlobalContainerStack()
         machine_width = settings.getProperty("machine_width", "value")
         machine_depth = settings.getProperty("machine_depth", "value")
 
-        self._scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
+        scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
         Logger.log("d", "Loaded %s" % file_name)
 
-        return self._scene_node
+        return scene_node
