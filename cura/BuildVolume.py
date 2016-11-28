@@ -219,14 +219,14 @@ class BuildVolume(SceneNode):
             # Bottom and top 'ellipse' of the build volume
             mb = MeshBuilder()
             mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - 0.2, 0), color = self.VolumeOutlineColor)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0), color = self.VolumeOutlineColor)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self.VolumeOutlineColor)
             self.setMeshData(mb.build())
 
             # Build plate grid mesh
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y)
+            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - 0.2, 0))
             sections = mb.getVertexCount()
-            mb.addVertex(0, 0, 0)
+            mb.addVertex(0, min_h - 0.2, 0)
             for n in range(0, sections-1):
                 mb.addIndices([sections, n + 1, n])
 
