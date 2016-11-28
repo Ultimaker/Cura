@@ -380,6 +380,8 @@ class CuraApplication(QtApplication):
                     path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+                elif instance_type == "definition_changes":
+                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
 
                 if path:
                     instance.setPath(path)
