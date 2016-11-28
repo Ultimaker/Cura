@@ -1132,7 +1132,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
                     "maximum_value": "20 - math.log(infill_line_distance) / math.log(2)",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
@@ -1145,7 +1145,7 @@
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0",
+                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "infill_before_walls":
