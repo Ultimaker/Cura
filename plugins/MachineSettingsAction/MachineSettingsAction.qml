@@ -145,7 +145,11 @@ Cura.MachineAction
                             id: centerIsZeroCheckBox
                             text: catalog.i18nc("@option:check", "Machine Center is Zero")
                             checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
-                            onClicked: machineCenterIsZeroProvider.setPropertyValue("value", checked)
+                            onClicked:
+                            {
+                                    machineCenterIsZeroProvider.setPropertyValue("value", checked);
+                                    manager.forceUpdate();
+                            }
                         }
                         CheckBox
                         {
