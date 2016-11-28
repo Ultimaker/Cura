@@ -22,6 +22,7 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import copy
+import math
 
 import UM.Settings.ContainerRegistry
 
@@ -607,34 +608,78 @@ class BuildVolume(SceneNode):
                 bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
-            if border_size - left_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width, half_machine_depth],
-                    [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
-                    [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
-                ], numpy.float32)))
-            if border_size + right_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [half_machine_width, half_machine_depth],
-                    [half_machine_width, -half_machine_depth],
-                    [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
-                    [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
-                ], numpy.float32)))
-            if border_size + bottom_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [-half_machine_width, half_machine_depth],
-                    [half_machine_width, half_machine_depth],
-                    [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
-                    [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
-                ], numpy.float32)))
-            if border_size - top_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [half_machine_width, -half_machine_depth],
-                    [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
-                    [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
-                ], numpy.float32)))
+            if self._shape.lower() != "elliptic":
+                if border_size - left_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width, half_machine_depth],
+                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
+                    ], numpy.float32)))
+                if border_size + right_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [half_machine_width, half_machine_depth],
+                        [half_machine_width, -half_machine_depth],
+                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
+                    ], numpy.float32)))
+                if border_size + bottom_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, half_machine_depth],
+                        [half_machine_width, half_machine_depth],
+                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
+                    ], numpy.float32)))
+                if border_size - top_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [half_machine_width, -half_machine_depth],
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
+                    ], numpy.float32)))
+            else:
+                sections = 32
+                arc_vertex = [0, half_machine_depth - border_size]
+                for i in range(0, sections):
+                    quadrant = math.floor(4 * i / sections)
+                    vertices = []
+                    if quadrant == 0:
+                        vertices.append([-half_machine_width, half_machine_depth])
+                    elif quadrant == 1:
+                        vertices.append([-half_machine_width, -half_machine_depth])
+                    elif quadrant == 2:
+                        vertices.append([half_machine_width, -half_machine_depth])
+                    elif quadrant == 3:
+                        vertices.append([half_machine_width, half_machine_depth])
+                    vertices.append(arc_vertex)
+
+                    angle = 2 * math.pi * (i + 1) / sections
+                    arc_vertex = [-(half_machine_width - border_size) * math.sin(angle), (half_machine_depth - border_size) * math.cos(angle)]
+                    vertices.append(arc_vertex)
+
+                    result[extruder_id].append(Polygon(numpy.array(vertices, numpy.float32)))
+
+                if border_size > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width, half_machine_depth],
+                        [-half_machine_width + border_size, 0]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, half_machine_depth],
+                        [ half_machine_width, half_machine_depth],
+                        [ 0, half_machine_depth - border_size]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [ half_machine_width, half_machine_depth],
+                        [ half_machine_width, -half_machine_depth],
+                        [ half_machine_width - border_size, 0]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [ half_machine_width,-half_machine_depth],
+                        [-half_machine_width,-half_machine_depth],
+                        [ 0, -half_machine_depth + border_size]
+                    ], numpy.float32)))
 
         return result
 
