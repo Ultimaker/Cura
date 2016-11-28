@@ -1000,7 +1000,7 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        mesh_data = job.getResult().getMeshData()
+        mesh_data = job.getResult()[0].getMeshData()
         if mesh_data:
             job._node.setMeshData(mesh_data)
         else:
