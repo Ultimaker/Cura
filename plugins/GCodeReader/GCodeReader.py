@@ -140,6 +140,7 @@ class GCodeReader(MeshReader):
             current_block = LayerPolygon.Inset0Type
             current_layer = 0
             prev_z = 0
+            center_is_zero = False
 
             self._message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0)
             self._message.setProgress(0)
@@ -173,11 +174,15 @@ class GCodeReader(MeshReader):
                 if line[0] == ";":
                     continue
                 G = self._getInt(line, "G")
+                x = self._getFloat(line, "X")
+                y = self._getFloat(line, "Y")
+                z = self._getFloat(line, "Z")
+                if x is not None and x < 0:
+                    center_is_zero = True
+                if y is not None and y < 0:
+                    center_is_zero = True
                 if G is not None:
                     if G == 0 or G == 1:
-                        x = self._getFloat(line, "X")
-                        y = self._getFloat(line, "Y")
-                        z = self._getFloat(line, "Z")
                         e = self._getFloat(line, "E")
                         z_changed = False
                         if x is not None:
@@ -206,17 +211,12 @@ class GCodeReader(MeshReader):
                                 current_path.clear()
 
                     elif G == 28:
-                        x = self._getFloat(line, "X")
-                        y = self._getFloat(line, "Y")
                         if x is not None:
                             current_x = x
                         if y is not None:
                             current_y = y
                         current_z = 0
                     elif G == 92:
-                        x = self._getFloat(line, "X")
-                        y = self._getFloat(line, "Y")
-                        z = self._getFloat(line, "Z")
                         e = self._getFloat(line, "E")
                         if x is not None:
                             current_x = x
@@ -262,7 +262,8 @@ class GCodeReader(MeshReader):
         machine_width = settings.getProperty("machine_width", "value")
         machine_depth = settings.getProperty("machine_depth", "value")
 
-        scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
+        if not center_is_zero:
+            scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
         Logger.log("d", "Loaded %s" % file_name)
 
