@@ -5,10 +5,10 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Samsector",
+        "author": "Calvindog717",
         "manufacturer": "PrintrBot",
         "category": "Other",
-        "platform": "printrbot_simple_metal_platform_extend.stl",
+        "platform": "printrbot_simple_metal_upgrade.stl",
         "file_formats": "text/x-gcode"
     },
 
