@@ -10,6 +10,7 @@ from UM.Application import Application
 from UM.Resources import Resources
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Math.Vector import Vector
+from UM.Math.Matrix import Matrix
 from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
@@ -218,10 +219,16 @@ class BuildVolume(SceneNode):
 
         else:
             # Bottom and top 'ellipse' of the build volume
+            aspect = 1.0
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._height / self._width
+                scale_matrix.compose(Vector(1, 1, aspect))
             mb = MeshBuilder()
             mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - 0.2, 0), color = self.VolumeOutlineColor)
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self.VolumeOutlineColor)
-            self.setMeshData(mb.build())
+            self.setMeshData(mb.build().getTransformed(scale_matrix))
 
             # Build plate grid mesh
             mb = MeshBuilder()
@@ -233,10 +240,8 @@ class BuildVolume(SceneNode):
 
             for n in range(0, mb.getVertexCount()):
                 v = mb.getVertex(n)
-                mb.setVertexUVCoordinates(n, v[0], v[2])
-            self._grid_mesh = mb.build()
-
-        mb = MeshBuilder()
+                mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
+            self._grid_mesh = mb.build().getTransformed(scale_matrix)
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
@@ -244,6 +249,7 @@ class BuildVolume(SceneNode):
         else:
             origin = Vector(min_w, min_h, max_d)
 
+        mb = MeshBuilder()
         mb.addCube(
             width = self._origin_line_length,
             height = self._origin_line_width,
