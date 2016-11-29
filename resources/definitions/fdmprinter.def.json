@@ -4132,6 +4132,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "support_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "support_conical_angle":
