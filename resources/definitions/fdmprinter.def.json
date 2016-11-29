@@ -3770,8 +3770,8 @@
                 },
                 "multiple_mesh_overlap":
                 {
-                    "label": "Dual Extrusion Overlap",
-                    "description": "Make the models printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
+                    "label": "Merged Objects Overlap",
+                    "description": "Make models which are placed directly close to each other overlap a bit. This makes them bond together better.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.15,
