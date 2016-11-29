@@ -141,7 +141,7 @@
                 {
                     "label": "Build plate shape",
                     "description": "The shape of the build plate without taking unprintable areas into account.",
-                    "default_value": "Rectangular",
+                    "default_value": "rectangular",
                     "type": "enum",
                     "options":
                     {
