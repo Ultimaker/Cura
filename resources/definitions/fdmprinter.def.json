@@ -3850,8 +3850,8 @@
                 },
                 "multiple_mesh_overlap":
                 {
-                    "label": "Merged Objects Overlap",
-                    "description": "Make models which are placed directly close to each other overlap a bit. This makes them bond together better.",
+                    "label": "Merged Meshes Overlap",
+                    "description": "Make meshes which are placed directly close to each other overlap a bit. This makes them bond together better.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.15,
