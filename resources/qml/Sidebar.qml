@@ -166,15 +166,6 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("default_margin").height
     }
 
-    currentModeIndex:
-    {
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-        if(index)
-        {
-            return index;
-        }
-        return 0;
-    }
     onCurrentModeIndexChanged:
     {
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
@@ -268,7 +259,7 @@ Rectangle
         height: settingsModeSelection.height
         width: visible ? height : 0
 
-        visible: !monitoringPrint && modesListModel.get(base.currentModeIndex).showFilterButton
+        visible: !monitoringPrint && modesListModel.get(base.currentModeIndex) != undefined && modesListModel.get(base.currentModeIndex).showFilterButton
         opacity: visible ? 1 : 0
 
         onClicked: sidebarContents.currentItem.toggleFilterField()
@@ -284,7 +275,7 @@ Rectangle
             }
             label: UM.RecolorImage
             {
-                anchors.verticalCenter: control.verticalCenter
+                anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
 
@@ -420,6 +411,12 @@ Rectangle
         modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple, showFilterButton: false })
         modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced, showFilterButton: true })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
+
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+        if(index)
+        {
+            currentModeIndex = index;
+        }
     }
 
     UM.SettingPropertyProvider
