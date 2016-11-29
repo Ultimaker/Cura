@@ -131,11 +131,20 @@ Cura.MachineAction
 
                             ComboBox
                             {
-                                model: ["Rectangular", "Elliptic"]
-                                currentIndex: machineShapeProvider.properties.value.toLowerCase() != model[1].toLowerCase() ? 0 : 1
+                                id: shapeComboBox
+                                model: ListModel
+                                {
+                                    id: shapesModel
+                                    Component.onCompleted:
+                                    {
+                                        shapesModel.append({ text: catalog.i18nc("@option:build plate shape", "Rectangular"), value: "rectangular" });
+                                        shapesModel.append({ text: catalog.i18nc("@option:build plate shape", "Elliptic"), value: "elliptic" });
+                                        shapeComboBox.currentIndex = machineShapeProvider.properties.value != shapesModel.get(1).value ? 0 : 1
+                                    }
+                                }
                                 onActivated:
                                 {
-                                    machineShapeProvider.setPropertyValue("value", model[index]);
+                                    machineShapeProvider.setPropertyValue("value", shapesModel.get(index).value);
                                     manager.forceUpdate();
                                 }
                             }

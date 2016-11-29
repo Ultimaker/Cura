@@ -183,7 +183,7 @@ class BuildVolume(SceneNode):
         min_d = -self._depth / 2
         max_d = self._depth / 2
 
-        if self._shape.lower() != "elliptic":
+        if self._shape != "elliptic":
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
             mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
@@ -614,7 +614,8 @@ class BuildVolume(SceneNode):
                 bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
-            if self._shape.lower() != "elliptic":
+
+            if self._shape != "elliptic":
                 if border_size - left_unreachable_border > 0:
                     result[extruder_id].append(Polygon(numpy.array([
                         [-half_machine_width, -half_machine_depth],
