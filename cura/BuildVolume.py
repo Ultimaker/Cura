@@ -183,6 +183,8 @@ class BuildVolume(SceneNode):
         min_d = -self._depth / 2
         max_d = self._depth / 2
 
+        z_fight_distance = 0.2 # Distance between buildplate and disallowed area meshes to prevent z-fighting
+
         if self._shape != "elliptic":
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
@@ -206,10 +208,10 @@ class BuildVolume(SceneNode):
             # Build plate grid mesh
             mb = MeshBuilder()
             mb.addQuad(
-                Vector(min_w, min_h - 0.2, min_d),
-                Vector(max_w, min_h - 0.2, min_d),
-                Vector(max_w, min_h - 0.2, max_d),
-                Vector(min_w, min_h - 0.2, max_d)
+                Vector(min_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, max_d),
+                Vector(min_w, min_h - z_fight_distance, max_d)
             )
 
             for n in range(0, 6):
@@ -226,15 +228,15 @@ class BuildVolume(SceneNode):
                 aspect = self._height / self._width
                 scale_matrix.compose(Vector(1, 1, aspect))
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - 0.2, 0), color = self.VolumeOutlineColor)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self.VolumeOutlineColor)
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self.VolumeOutlineColor)
             self.setMeshData(mb.build().getTransformed(scale_matrix))
 
             # Build plate grid mesh
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - 0.2, 0))
+            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
             sections = mb.getVertexCount()
-            mb.addVertex(0, min_h - 0.2, 0)
+            mb.addVertex(0, min_h - z_fight_distance, 0)
             for n in range(0, sections-1):
                 mb.addIndices([sections, n + 1, n])
 
