@@ -234,11 +234,14 @@ class BuildVolume(SceneNode):
 
             # Build plate grid mesh
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
-            sections = mb.getVertexCount()
             mb.addVertex(0, min_h - z_fight_distance, 0)
-            for n in range(0, sections-1):
-                mb.addIndices([sections, n + 1, n])
+            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
+            sections = mb.getVertexCount() - 1 # Center point is not an arc section
+            indices = []
+            for n in range(0, sections - 1):
+                indices.append([0, n + 2, n + 1])
+            mb.addIndices(numpy.asarray(indices, dtype = numpy.int32))
+            mb.calculateNormals()
 
             for n in range(0, mb.getVertexCount()):
                 v = mb.getVertex(n)
