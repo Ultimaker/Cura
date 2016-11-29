@@ -255,6 +255,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self.newImage.emit()
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
+        self.writeStarted.emit(self)
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
         self.startPrint()
