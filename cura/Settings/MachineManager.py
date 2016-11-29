@@ -246,6 +246,7 @@ class MachineManager(QObject):
                 quality = self._global_container_stack.findContainer({"type": "quality"})
                 quality.nameChanged.connect(self._onQualityNameChanged)
 
+        self._updateStacksHaveErrors()
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
     def _updateStacksHaveErrors(self):
