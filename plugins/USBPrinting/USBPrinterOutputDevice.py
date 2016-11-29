@@ -432,7 +432,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
 

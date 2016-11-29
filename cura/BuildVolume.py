@@ -442,10 +442,7 @@ class BuildVolume(SceneNode):
                 if collision:
                     break
 
-
-            if not collision:
-                #Prime areas are valid. Add as normal.
-                result_areas[extruder_id].extend(prime_areas[extruder_id])
+            result_areas[extruder_id].extend(prime_areas[extruder_id])
 
             nozzle_disallowed_areas = extruder.getProperty("nozzle_disallowed_areas", "value")
             for area in nozzle_disallowed_areas:

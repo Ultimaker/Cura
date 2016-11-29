@@ -100,7 +100,7 @@ class CuraApplication(QtApplication):
 
         # For settings which are not settable_per_mesh and not settable_per_extruder:
         # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
-        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
@@ -338,6 +338,8 @@ class CuraApplication(QtApplication):
                     path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+                elif instance_type == "definition_changes":
+                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
 
                 if path:
                     instance.setPath(path)
@@ -590,7 +592,7 @@ class CuraApplication(QtApplication):
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
 
-        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box) and scene_bounding_box.isValid():
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
@@ -692,6 +694,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
@@ -731,6 +735,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -757,6 +763,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:

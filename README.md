@@ -28,6 +28,8 @@ Dependencies
   This will be needed at runtime to perform the actual slicing.
 * [PySerial](https://github.com/pyserial/pyserial)
   Only required for USB printing support.
+* [python-zeroconf](https://github.com/jstasiak/python-zeroconf)
+  Only required to detect mDNS-enabled printers
 
 Configuring Cura
 ----------------
@@ -50,7 +52,7 @@ Third party plugins
 
 Making profiles for other printers
 ----------------------------------
-There are two ways of doing it. You can either use the generator [here](http://quillford.github.io/CuraProfileMaker/) or you can use [this](https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json) as a template.
+There are two ways of doing it. You can either use the generator [here](http://quillford.github.io/CuraProfileMaker/) or you can use [this](https://github.com/Ultimaker/Cura/blob/master/resources/definitions/ultimaker_original.def.json) as a template.
 
 * Change the machine ID to something unique
 * Change the machine_name to your printer's name
@@ -62,4 +64,4 @@ There are two ways of doing it. You can either use the generator [here](http://q
 * Set the start and end gcode in machine_start_gcode and machine_end_gcode
 * If your printer has a heated bed, set visible to true under material_bed_temperature
 
-Once you are done, put the profile you have made into resources/machines, or in machines in your cura profile folder.
+Once you are done, put the profile you have made into resources/definitions, or in definitions in your cura profile folder.
