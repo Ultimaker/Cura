@@ -3616,7 +3616,6 @@
             "type": "category",
             "icon": "category_dual",
             "description": "Settings used for printing with multiple extruders.",
-            "enabled": "machine_extruder_count > 1",
             "children":
             {
                 "prime_tower_enable":
