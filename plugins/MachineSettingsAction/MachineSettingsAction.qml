@@ -137,10 +137,31 @@ Cura.MachineAction
                                     id: shapesModel
                                     Component.onCompleted:
                                     {
-                                        shapesModel.append({ text: catalog.i18nc("@option:build plate shape", "Rectangular"), value: "rectangular" });
-                                        shapesModel.append({ text: catalog.i18nc("@option:build plate shape", "Elliptic"), value: "elliptic" });
-                                        shapeComboBox.currentIndex = machineShapeProvider.properties.value != shapesModel.get(1).value ? 0 : 1
+                                        // Options come in as a string-representation of an OrderedDict
+                                        var options = machineShapeProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                                        if(options)
+                                        {
+                                            options = options[1].split("), (")
+                                            for(var i = 0; i < options.length; i++)
+                                            {
+                                                var option = options[i].substring(1, options[i].length - 1).split("', '")
+                                                shapesModel.append({text: option[1], value: option[0]});
+                                            }
+                                        }
                                     }
+                                }
+                                currentIndex:
+                                {
+                                    var currentValue = machineShapeProvider.properties.value;
+                                    var index = 0;
+                                    for(var i = 0; i < shapesModel.count; i++)
+                                    {
+                                        if(shapesModel.get(i).value == currentValue) {
+                                            index = i;
+                                            break;
+                                        }
+                                    }
+                                    return index
                                 }
                                 onActivated:
                                 {
@@ -467,7 +488,7 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_shape"
-        watchedProperties: [ "value" ]
+        watchedProperties: [ "value", "options" ]
         storeIndex: manager.containerIndex
     }
 
