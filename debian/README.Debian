@@ -1,0 +1,7 @@
+Cura Debian packaging notes
+---------------------------
+
+Part of the dependency list is based on the work of
+Thomas Karl Pietrowski (thopiekar). You can find his
+own packaging effort here:
+https://github.com/thopiekar/Cura-packaging

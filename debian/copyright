@@ -15,7 +15,6 @@ License: Apache-2.0
 Files: debian/*
 Copyright:
  2016 Gregor Riepl <onitake@gmail.com>
- 2016 Thomas Karl Pietrowski
 License: BSD-3-clause
 
 License: Apache-2.0
