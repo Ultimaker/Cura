@@ -3768,17 +3768,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "multiple_mesh_overlap":
-                {
-                    "label": "Merged Objects Overlap",
-                    "description": "Make models which are placed directly close to each other overlap a bit. This makes them bond together better.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.15,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "1.0",
-                    "settable_per_mesh": true
-                },
                 "ooze_shield_enabled":
                 {
                     "label": "Enable Ooze Shield",
@@ -3857,6 +3846,17 @@
                     "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode.",
                     "type": "bool",
                     "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "multiple_mesh_overlap":
+                {
+                    "label": "Merged Objects Overlap",
+                    "description": "Make models which are placed directly close to each other overlap a bit. This makes them bond together better.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.15,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "1.0",
                     "settable_per_mesh": true
                 },
                 "carve_multiple_volumes":
