@@ -996,7 +996,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' else (4 if infill_pattern == 'tetrahedral' else 1)))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (4 if infill_pattern == 'tetrahedral' else 1)))",
                             "settable_per_mesh": true
                         }
                     }
@@ -1012,6 +1012,7 @@
                         "lines": "Lines",
                         "triangles": "Triangles",
                         "cubic": "Cubic",
+                        "cubicsubdiv": "Cubic Subdivision",
                         "tetrahedral": "Tetrahedral",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
@@ -1020,6 +1021,32 @@
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "settable_per_mesh": true
+                },
+                "sub_div_rad_mult":
+                {
+                    "label": "Cubic Subdivision Radius",
+                    "description": "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "200",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
+                    "settable_per_mesh": true
+                },
+                "sub_div_rad_add":
+                {
+                    "label": "Cubic Subdivision Shell",
+                    "description": "An addition to the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to a thicker shell of small cubes near the boundary of the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.4,
+                    "value": "wall_line_width_x",
+                    "minimum_value_warning": "-1 * infill_line_distance",
+                    "maximum_value_warning": "5 * infill_line_distance",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "infill_overlap":
@@ -1116,7 +1143,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
                     "maximum_value": "20 - math.log(infill_line_distance) / math.log(2)",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
@@ -1129,7 +1156,7 @@
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0",
+                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "infill_before_walls":
