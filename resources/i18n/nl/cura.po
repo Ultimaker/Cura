@@ -2629,3 +2629,8 @@ msgstr "De configuratie van de printer in Cura laden"
 msgctxt "@action:button"
 msgid "Activate Configuration"
 msgstr "Configuratie Activeren"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:25
+msgctxt "@title"
+msgid "Information"
+msgstr "Informatie"

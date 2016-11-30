@@ -70,10 +70,19 @@ class GCodeProfileReader(ProfileReader):
 
         json_data = json.loads(serialized)
 
-        profile_strings = [json_data["global_quality"]]
-        profile_strings.extend(json_data.get("extruder_quality", []))
+        profiles = []
+        global_profile = readQualityProfileFromString(json_data["global_quality"])
 
-        return [readQualityProfileFromString(profile_string) for profile_string in profile_strings]
+        # This is a fix for profiles created with 2.3.0 For some reason it added the "extruder" property to the
+        # global profile.
+        # The fix is simple and safe, as a global profile should never have the extruder entry.
+        if global_profile.getMetaDataEntry("extruder", None) is not None:
+            global_profile.setMetaDataEntry("extruder", None)
+        profiles.append(global_profile)
+
+        for profile_string in json_data.get("extruder_quality", []):
+            profiles.append(readQualityProfileFromString(profile_string))
+        return profiles
 
 ##  Unescape a string which has been escaped for use in a gcode comment.
 #

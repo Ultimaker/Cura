@@ -99,4 +99,6 @@ class CuraProfileReader(ProfileReader):
             return []
 
         filenames, outputs = profile_convert_funcs[0](serialized, profile_id)
+        if filenames is None and outputs is None:
+            return []
         return list(zip(outputs, filenames))

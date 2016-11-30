@@ -25,6 +25,7 @@ class StartJobResult(IntEnum):
     SettingError = 3
     NothingToSlice = 4
     MaterialIncompatible = 5
+    BuildPlateError = 6
 
 
 ##  Formatter class that handles token expansion in start/end gcod
@@ -80,7 +81,7 @@ class StartSliceJob(Job):
             return
 
         if Application.getInstance().getBuildVolume().hasErrors():
-            self.setResult(StartJobResult.SettingError)
+            self.setResult(StartJobResult.BuildPlateError)
             return
 
         for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):

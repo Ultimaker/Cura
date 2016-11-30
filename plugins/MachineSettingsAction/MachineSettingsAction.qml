@@ -147,19 +147,40 @@ Cura.MachineAction
 
                         ComboBox
                         {
-                            model: ["RepRap (Marlin/Sprinter)", "UltiGCode", "Repetier"]
+                            model: ListModel
+                            {
+                                id: flavorModel
+                                Component.onCompleted:
+                                {
+                                    // Options come in as a string-representation of an OrderedDict
+                                    var options = machineGCodeFlavorProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                                    if(options)
+                                    {
+                                        options = options[1].split("), (")
+                                        for(var i = 0; i < options.length; i++)
+                                        {
+                                            var option = options[i].substring(1, options[i].length - 1).split("', '")
+                                            flavorModel.append({text: option[1], value: option[0]});
+                                        }
+                                    }
+                                }
+                            }
                             currentIndex:
                             {
-                                var index = model.indexOf(machineGCodeFlavorProvider.properties.value);
-                                if(index == -1)
+                                var currentValue = machineGCodeFlavorProvider.properties.value;
+                                var index = 0;
+                                for(var i = 0; i < flavorModel.count; i++)
                                 {
-                                    index = 0;
+                                    if(flavorModel.get(i).value == currentValue) {
+                                        index = i;
+                                        break;
+                                    }
                                 }
                                 return index
                             }
                             onActivated:
                             {
-                                machineGCodeFlavorProvider.setPropertyValue("value", model[index]);
+                                machineGCodeFlavorProvider.setPropertyValue("value", flavorModel.get(index).value);
                                 manager.updateHasMaterialsMetadata();
                             }
                         }
@@ -273,17 +294,20 @@ Cura.MachineAction
                         Label
                         {
                             text: catalog.i18nc("@label", "Nozzle size")
+                            visible: !Cura.MachineManager.hasVariants
                         }
                         TextField
                         {
                             id: nozzleSizeField
                             text: machineNozzleSizeProvider.properties.value
+                            visible: !Cura.MachineManager.hasVariants
                             validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
                         }
                         Label
                         {
                             text: catalog.i18nc("@label", "mm")
+                            visible: !Cura.MachineManager.hasVariants
                         }
                     }
                 }
@@ -308,6 +332,8 @@ Cura.MachineAction
                         id: machineStartGcodeField
                         width: parent.width
                         height: parent.height - y
+                        font: UM.Theme.getFont("fixed")
+                        wrapMode: TextEdit.NoWrap
                         text: machineStartGcodeProvider.properties.value
                         onActiveFocusChanged:
                         {
@@ -330,6 +356,8 @@ Cura.MachineAction
                         id: machineEndGcodeField
                         width: parent.width
                         height: parent.height - y
+                        font: UM.Theme.getFont("fixed")
+                        wrapMode: TextEdit.NoWrap
                         text: machineEndGcodeProvider.properties.value
                         onActiveFocusChanged:
                         {
@@ -377,7 +405,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_width"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -387,7 +415,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_depth"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -397,7 +425,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_height"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -407,7 +435,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_heated_bed"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -417,7 +445,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_center_is_zero"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -426,8 +454,8 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_gcode_flavor"
-        watchedProperties: [ "value" ]
-        storeIndex: 4
+        watchedProperties: [ "value", "options" ]
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -437,7 +465,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_nozzle_size"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -447,7 +475,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "gantry_height"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -457,7 +485,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_head_with_fans_polygon"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
 
@@ -468,7 +496,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_start_gcode"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
     UM.SettingPropertyProvider
@@ -478,7 +506,7 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_end_gcode"
         watchedProperties: [ "value" ]
-        storeIndex: 4
+        storeIndex: manager.containerIndex
     }
 
 }

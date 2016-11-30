@@ -329,7 +329,7 @@ Column
                 }
                 onEntered:
                 {
-                    var content = catalog.i18nc("@tooltip","Some setting values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
                     base.showTooltip(globalProfileRow, Qt.point(0, globalProfileRow.height / 2),  content)
                 }
                 onExited: base.hideTooltip()

@@ -1913,7 +1913,7 @@ msgstr "&Beenden"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:97
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
-msgstr "Cura wird konfiguriert..."
+msgstr "Cura konfigurieren..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:104
 msgctxt "@action:inmenu menubar:printer"

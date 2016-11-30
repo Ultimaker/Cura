@@ -27,19 +27,23 @@ class UMOUpgradeSelection(MachineAction):
     def setHeatedBed(self, heated_bed = True):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            variant = global_container_stack.findContainer({"type": "variant"})
-            if variant:
-                if variant.getId() == "empty_variant":
-                    variant_index = global_container_stack.getContainerIndex(variant)
-                    variant = self._createVariant(global_container_stack, variant_index)
-                variant.setProperty("machine_heated_bed", "value", heated_bed)
-                self.heatedBedChanged.emit()
+            # Make sure there is a definition_changes container to store the machine settings
+            definition_changes_container = global_container_stack.findContainer({"type": "definition_changes"})
+            if not definition_changes_container:
+                definition_changes_container = self._createDefinitionChangesContainer(global_container_stack)
 
-    def _createVariant(self, global_container_stack, variant_index):
-        # Create and switch to a variant to store the settings in
-        new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_variant")
-        new_variant.addMetaDataEntry("type", "variant")
-        new_variant.setDefinition(global_container_stack.getBottom())
-        UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
-        global_container_stack.replaceContainer(variant_index, new_variant)
-        return new_variant
+            definition_changes_container.setProperty("machine_heated_bed", "value", heated_bed)
+            self.heatedBedChanged.emit()
+
+    def _createDefinitionChangesContainer(self, global_container_stack):
+        # Create a definition_changes container to store the settings in and add it to the stack
+        definition_changes_container = UM.Settings.InstanceContainer(global_container_stack.getName() + "_settings")
+        definition = global_container_stack.getBottom()
+        definition_changes_container.setDefinition(definition)
+        definition_changes_container.addMetaDataEntry("type", "definition_changes")
+
+        UM.Settings.ContainerRegistry.getInstance().addContainer(definition_changes_container)
+        # Insert definition_changes between the definition and the variant
+        global_container_stack.insertContainer(-1, definition_changes_container)
+
+        return definition_changes_container

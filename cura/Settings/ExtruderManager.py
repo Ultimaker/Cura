@@ -152,6 +152,18 @@ class ExtruderManager(QObject):
         if changed:
             self.extrudersChanged.emit(machine_id)
 
+    def registerExtruder(self, extruder_train, machine_id):
+        changed = False
+
+        if machine_id not in self._extruder_trains:
+            self._extruder_trains[machine_id] = {}
+            changed = True
+        if extruder_train:
+            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
+            changed = True
+        if changed:
+            self.extrudersChanged.emit(machine_id)
+
     ##  Creates a container stack for an extruder train.
     #
     #   The container stack has an extruder definition at the bottom, which is
@@ -336,8 +348,8 @@ class ExtruderManager(QObject):
             if support_interface_enabled:
                 used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_interface_extruder_nr", "value"))])
 
-        #The platform adhesion extruder. Not used if using brim and brim width is 0.
-        if global_stack.getProperty("adhesion_type", "value") != "brim" or global_stack.getProperty("brim_line_count", "value") > 0:
+        #The platform adhesion extruder. Not used if using none.
+        if global_stack.getProperty("adhesion_type", "value") != "none":
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("adhesion_extruder_nr", "value"))])
 
         return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]

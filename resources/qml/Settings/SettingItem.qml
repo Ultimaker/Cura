@@ -27,7 +27,8 @@ Item {
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    property var resolve: propertyProvider.properties.resolve
+    // There is no resolve property if there is only one stack.
+    property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
@@ -117,6 +118,7 @@ Item {
             elide: Text.ElideMiddle;
 
             color: UM.Theme.getColor("setting_control_text");
+            opacity: (definition.visible) ? 1 : 0.5
             // emphasize the setting if it has a value in the user or quality profile
             font: base.doQualityUserSettingEmphasis && base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
@@ -208,14 +210,26 @@ Item {
                         // But this will cause the binding to be re-evaluated when the enabled property changes.
                         return false;
                     }
+
+                    // There are no settings with any warning.
                     if(Cura.SettingInheritanceManager.settingsWithInheritanceWarning.length == 0)
                     {
                         return false;
                     }
+
+                    // This setting has a resolve value, so an inheritance warning doesn't do anything.
+                    if(resolve != "None")
+                    {
+                        return false
+                    }
+
+                    // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
                     if(globalPropertyProvider.properties.limit_to_extruder == null || globalPropertyProvider.properties.limit_to_extruder == -1)
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0;
                     }
+
+                    // Setting does have a limit_to_extruder property, so use that one instead.
                     return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
                 }
 
@@ -226,7 +240,7 @@ Item {
                     focus = true;
 
                     // Get the most shallow function value (eg not a number) that we can find.
-                    var last_entry = propertyProvider.stackLevels[propertyProvider.stackLevels.length]
+                    var last_entry = propertyProvider.stackLevels[propertyProvider.stackLevels.length - 1]
                     for (var i = 1; i < base.stackLevels.length; i++)
                     {
                         var has_setting_function = typeof(propertyProvider.getPropertyValue("value", base.stackLevels[i])) == "object";

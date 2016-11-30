@@ -7,6 +7,7 @@ from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -130,7 +131,7 @@ class CuraApplication(QtApplication):
 
         # For settings which are not settable_per_mesh and not settable_per_extruder:
         # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
-        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
@@ -379,6 +380,8 @@ class CuraApplication(QtApplication):
                     path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+                elif instance_type == "definition_changes":
+                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
 
                 if path:
                     instance.setPath(path)
@@ -573,11 +576,19 @@ class CuraApplication(QtApplication):
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
-            if not self.getController().getActiveTool():
+            if self.getController().getActiveTool():
+                # If the tool has been disabled by the new selection
+                if not self.getController().getActiveTool().getEnabled():
+                    # Default
+                    self.getController().setActiveTool("TranslateTool")
+            else:
                 if self._previous_active_tool:
                     self.getController().setActiveTool(self._previous_active_tool)
+                    if not self.getController().getActiveTool().getEnabled():
+                        self.getController().setActiveTool("TranslateTool")
                     self._previous_active_tool = None
                 else:
+                    # Default
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
@@ -623,7 +634,7 @@ class CuraApplication(QtApplication):
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
 
-        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box) and scene_bounding_box.isValid():
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
@@ -725,6 +736,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
@@ -764,6 +777,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -771,7 +786,11 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                op.addOperation(SetTransformOperation(node, Vector(0, node.getWorldPosition().y - node.getBoundingBox().bottom, 0)))
+                if node.getBoundingBox():
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+                op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0)))
             op.push()
 
     ## Reset all transformations on nodes with mesh data.
@@ -786,6 +805,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -793,11 +814,10 @@ class CuraApplication(QtApplication):
             for node in nodes:
                 # Ensure that the object is above the build platform
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                center_y = 0
-                if node.callDecoration("isGroup"):
+                if node.getBoundingBox():
                     center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
                 else:
-                    center_y = node.getMeshData().getCenterPosition().y
+                    center_y = 0
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
 
@@ -866,8 +886,18 @@ class CuraApplication(QtApplication):
             Logger.log("d", "mergeSelected: Exception:", e)
             return
 
-        # Compute the center of the objects when their origins are aligned.
-        object_centers = [node.getBoundingBox().center for node in group_node.getChildren()]
+        meshes = [node.getMeshData() for node in group_node.getAllChildren() if node.getMeshData()]
+
+        # Compute the center of the objects
+        object_centers = []
+        # Forget about the translation that the original objects have
+        zero_translation = Matrix(data=numpy.zeros(3))
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
+            center = transformed_mesh.getCenterPosition()
+            object_centers.append(center)
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
@@ -875,10 +905,16 @@ class CuraApplication(QtApplication):
             offset = Vector(middle_x, middle_y, middle_z)
         else:
             offset = Vector(0, 0, 0)
+
         # Move each node to the same position.
-        for center, node in zip(object_centers, group_node.getChildren()):
-            # Align the object and also apply the offset to center it inside the group.
-            node.translate(-1 * (center - offset), SceneNode.TransformSpace.World)
+        for mesh, node in zip(meshes, group_node.getChildren()):
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
+
+            # Align the object around its zero position
+            # and also apply the offset to center it inside the group.
+            node.setPosition(-transformed_mesh.getZeroPosition() - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)

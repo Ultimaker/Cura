@@ -169,7 +169,7 @@
                 },
                 "machine_extruder_count":
                 {
-                    "label": "Number extruders",
+                    "label": "Number of Extruders",
                     "description": "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle.",
                     "default_value": 1,
                     "minimum_value": "1",
@@ -921,6 +921,17 @@
                         }
                     }
                 },
+                "fill_perimeter_gaps": {
+                    "label": "Fill Gaps Between Walls",
+                    "description": "Fills the gaps between walls where no walls fit.",
+                    "type": "enum",
+                    "options": {
+                        "nowhere": "Nowhere",
+                        "everywhere": "Everywhere"
+                    },
+                    "default_value": "everywhere",
+                    "settable_per_mesh": true
+                },
                 "xy_offset":
                 {
                     "label": "Horizontal Expansion",
@@ -1179,6 +1190,34 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_initial_print_temperature":
+                {
+                    "label": "Initial Printing Temperature",
+                    "description": "The minimal temperature while heating up to the Printing Temperature at which printing can already start.",
+                    "unit": "°C",
+                    "type": "float",
+                    "value": "max(-273.15, material_print_temperature - 10)",
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_final_print_temperature":
+                {
+                    "label": "Final Printing Temperature",
+                    "description": "The temperature to which to already start cooling down just before the end of printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "value": "max(-273.15, material_print_temperature - 15)",
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "material_standby_temperature",
+                    "maximum_value_warning": "material_print_temperature",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -1200,6 +1239,7 @@
                     "default_value": 0.5,
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
+                    "maximum_value": "machine_nozzle_heat_up_speed",
                     "enabled": "False",
                     "comments": "old enabled function: material_flow_dependent_temperature or machine_extruder_count > 1",
                     "settable_per_mesh": false,
@@ -1656,6 +1696,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
+                    "value": "speed_print * 30 / 60",
                     "minimum_value": "0.1",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
@@ -2246,7 +2287,7 @@
                 "retraction_combing":
                 {
                     "label": "Combing Mode",
-                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only.",
+                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only.",
                     "type": "enum",
                     "options":
                     {
@@ -2256,12 +2297,12 @@
                     },
                     "default_value": "all",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
                 "travel_avoid_other_parts":
                 {
-                    "label": "Avoid Printed Parts when Traveling",
+                    "label": "Avoid Printed Parts When Traveling",
                     "description": "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled.",
                     "type": "bool",
                     "default_value": true,
@@ -2286,8 +2327,8 @@
                 },
                 "start_layers_at_same_position":
                 {
-                    "label": "Start Layers Near Same Point",
-                    "description": "Start printing the objects in each layer near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
+                    "label": "Start Layers with the Same Part",
+                    "description": "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
@@ -2297,7 +2338,7 @@
                 "layer_start_x":
                 {
                     "label": "Layer Start X",
-                    "description": "The X coordinate of the position near where to start printing objects each layer.",
+                    "description": "The X coordinate of the position near where to find the part to start printing each layer.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -2310,7 +2351,7 @@
                 "layer_start_y":
                 {
                     "label": "Layer Start Y",
-                    "description": "The Y coordinate of the position near where to start printing objects each layer.",
+                    "description": "The Y coordinate of the position near where to find the part to start printing each layer.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -2321,7 +2362,7 @@
                     "settable_per_meshgroup": true
                 },
                 "retraction_hop_enabled": {
-                    "label": "Z Hop when Retracted",
+                    "label": "Z Hop When Retracted",
                     "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
                     "type": "bool",
                     "default_value": false,
@@ -2393,6 +2434,20 @@
                     "settable_per_extruder": true,
                     "children":
                     {
+                        "cool_fan_speed_0":
+                        {
+                            "label": "Initial Fan Speed",
+                            "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
+                            "unit": "%",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "value": "cool_fan_speed",
+                            "default_value": 100,
+                            "enabled": "cool_fan_enabled",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
                         "cool_fan_speed_min":
                         {
                             "label": "Regular Fan Speed",
@@ -2438,7 +2493,7 @@
                 "cool_fan_full_at_height":
                 {
                     "label": "Regular Fan Speed at Height",
-                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from zero to regular fan speed.",
+                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.5,
@@ -2871,7 +2926,7 @@
                             "type": "float",
                             "default_value": 0.4,
                             "minimum_value": "0",
-                            "minimum_value_warning": "support_interface_line_width",
+                            "minimum_value_warning": "support_interface_line_width - 0.0001",
                             "value": "0 if support_interface_density == 0 else (support_interface_line_width * 100) / support_interface_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
@@ -2997,7 +3052,8 @@
                     {
                         "skirt": "Skirt",
                         "brim": "Brim",
-                        "raft": "Raft"
+                        "raft": "Raft",
+                        "none": "None"
                     },
                     "default_value": "brim",
                     "resolve": "'raft' if 'raft' in extruderValues('adhesion_type') else ('brim' if 'brim' in extruderValues('adhesion_type') else 'skirt')",
@@ -3010,7 +3066,7 @@
                     "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "enabled": "machine_extruder_count > 1",
+                    "enabled": "machine_extruder_count > 1 and resolveOrValue('adhesion_type') != 'none'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3582,7 +3638,6 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 15,
-                    "value": "15 if resolveOrValue('prime_tower_enable') else 0",
                     "resolve": "max(extruderValues('prime_tower_size'))",
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
@@ -3590,6 +3645,38 @@
                     "maximum_value_warning": "20",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "prime_tower_min_volume":
+                {
+                    "label": "Prime Tower Minimum Volume",
+                    "description": "The minimum volume for each layer of the prime tower in order to purge enough material.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "prime_tower_wall_thickness":
+                        {
+                            "label": "Prime Tower Thickness",
+                            "description": "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 2,
+                            "value": "max(2 * min(extruderValues('prime_tower_line_width')), 0.5 * (resolveOrValue('prime_tower_size') - math.sqrt(resolveOrValue('prime_tower_size') ** 2 - max(extruderValues('prime_tower_min_volume')) / resolveOrValue('layer_height'))))",
+                            "resolve": "max(extruderValues('prime_tower_wall_thickness'))",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "2 * min(extruderValues('prime_tower_line_width'))",
+                            "maximum_value_warning": "resolveOrValue('prime_tower_size') / 2",
+                            "enabled": "resolveOrValue('prime_tower_enable')",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
                 },
                 "prime_tower_position_x":
                 {
@@ -3637,14 +3724,23 @@
                 },
                 "prime_tower_wipe_enabled":
                 {
-                    "label": "Wipe Nozzle on Prime Tower",
+                    "label": "Wipe Inactive Nozzle on Prime Tower",
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": true,
-                    "resolve": "any(extruderValues('prime_tower_wipe_enabled'))",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
+                },
+                "dual_pre_wipe":
+                {
+                    "label": "Wipe Nozzle After Switch",
+                    "description": "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "multiple_mesh_overlap":
                 {
@@ -3708,7 +3804,7 @@
                 "meshfix_union_all":
                 {
                     "label": "Union Overlapping Volumes",
-                    "description": "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavities to disappear.",
+                    "description": "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
@@ -3740,10 +3836,21 @@
                 "carve_multiple_volumes":
                 {
                     "label": "Remove Mesh Intersection",
-                    "description": "Remove areas where multiple objects are overlapping with each other. This may be used if merged dual material objects overlap with each other.",
+                    "description": "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other.",
                     "type": "bool",
                     "default_value": true,
                     "value": "machine_extruder_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
+                },
+                "alternate_carve_order":
+                {
+                    "label": "Alternate Mesh Removal",
+                    "description": "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "carve_multiple_volumes",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true
@@ -3769,6 +3876,7 @@
                         "one_at_a_time": "One at a Time"
                     },
                     "default_value": "all_at_once",
+                    "enabled": "machine_extruder_count == 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -3793,6 +3901,28 @@
                     "minimum_value_warning": "1",
                     "maximum_value_warning": "50",
                     "type": "int",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "support_mesh":
+                {
+                    "label": "Support Mesh",
+                    "description": "Use this mesh to specify support areas. This can be used to generate support structure.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "anti_overhang_mesh":
+                {
+                    "label": "Anti Overhang Mesh",
+                    "description": "Use this mesh to specify where no part of the model should be detected as overhang. This can be used to remove unwanted support structure.",
+                    "type": "bool",
+                    "default_value": false,
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false,

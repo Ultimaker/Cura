@@ -210,7 +210,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
         # If it hasn't returned by now, none of the plugins loaded the profile successfully.
-        return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type.", file_name)}
+        return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type or is corrupted.", file_name)}
 
     def _configureProfile(self, profile, id_seed, new_name):
         profile.setReadOnly(False)
