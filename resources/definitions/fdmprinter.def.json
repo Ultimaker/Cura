@@ -2526,8 +2526,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
-                    "value": "cool_fan_speed",
-                    "default_value": 100,
+                    "default_value": 0,
                     "enabled": "cool_fan_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
