@@ -144,8 +144,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Copy a number of settings from the temp preferences to the global
         global_preferences = Preferences.getInstance()
-        global_preferences.setValue("general/visible_settings", temp_preferences.getValue("general/visible_settings"))
-        global_preferences.setValue("cura/categories_expanded", temp_preferences.getValue("cura/categories_expanded"))
+
+        visible_settings = temp_preferences.getValue("general/visible_settings")
+        if visible_settings is None:
+            Logger.log("w", "Workspace did not contain visible settings. Leaving visibility unchanged")
+        else:
+            global_preferences.setValue("general/visible_settings", visible_settings)
+
+        categories_expanded = temp_preferences.getValue("cura/categories_expanded")
+        if categories_expanded is None:
+            Logger.log("w", "Workspace did not contain expanded categories. Leaving them unchanged")
+        else:
+            global_preferences.setValue("cura/categories_expanded", categories_expanded)
+
         Application.getInstance().expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         self._id_mapping = {}
