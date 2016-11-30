@@ -532,6 +532,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         Application.getInstance().showPrintMonitor.emit(True)
         self._print_finished = True
+        self.writeStarted.emit(self)
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
         print_information = Application.getInstance().getPrintInformation()
