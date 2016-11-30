@@ -2476,20 +2476,6 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "cool_fan_speed_0":
-                        {
-                            "label": "Initial Fan Speed",
-                            "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
-                            "unit": "%",
-                            "type": "float",
-                            "minimum_value": "0",
-                            "maximum_value": "100",
-                            "value": "cool_fan_speed",
-                            "default_value": 100,
-                            "enabled": "cool_fan_enabled",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        },
                         "cool_fan_speed_min":
                         {
                             "label": "Regular Fan Speed",
@@ -2529,6 +2515,20 @@
                     "default_value": 10,
                     "minimum_value": "cool_min_layer_time",
                     "maximum_value_warning": "600",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_fan_speed_0":
+                {
+                    "label": "Initial Fan Speed",
+                    "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "value": "cool_fan_speed",
+                    "default_value": 100,
+                    "enabled": "cool_fan_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
