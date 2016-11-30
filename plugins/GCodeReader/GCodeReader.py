@@ -34,6 +34,16 @@ class GCodeReader(MeshReader):
         Application.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
         self._message = None
+        self._clearValues()
+        self._scene_node = None
+
+    def _clearValues(self):
+        self._extruder = 0
+        self._layer_type = LayerPolygon.Inset0Type
+        self._layer = 0
+        self._prev_z = 0
+        self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
+        self._center_is_zero = False
 
     @staticmethod
     def _getValue(line, code):
@@ -72,8 +82,7 @@ class GCodeReader(MeshReader):
     def _getNullBoundingBox():
         return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
 
-    @staticmethod
-    def _createPolygon(layer_data, path, layer_id, extruder, thickness):
+    def _createPolygon(self, current_z, path):
         countvalid = 0
         for point in path:
             if point[3] > 0:
@@ -81,10 +90,10 @@ class GCodeReader(MeshReader):
         if countvalid < 2:
             return False
         try:
-            layer_data.addLayer(layer_id)
-            layer_data.setLayerHeight(layer_id, path[0][1])
-            layer_data.setLayerThickness(layer_id, thickness)
-            this_layer = layer_data.getLayer(layer_id)
+            self._layer_data_builder.addLayer(self._layer)
+            self._layer_data_builder.setLayerHeight(self._layer, path[0][1])
+            self._layer_data_builder.setLayerThickness(self._layer, math.fabs(current_z - self._prev_z))
+            this_layer = self._layer_data_builder.getLayer(self._layer)
         except ValueError:
             return False
         count = len(path)
@@ -102,11 +111,80 @@ class GCodeReader(MeshReader):
                 line_types[i - 1] = point[3]
             i += 1
 
-        this_poly = LayerPolygon(layer_data, extruder, line_types, points, line_widths)
+        this_poly = LayerPolygon(self._layer_data_builder, self._extruder, line_types, points, line_widths)
         this_poly.buildCache()
 
         this_layer.polygons.append(this_poly)
         return True
+
+    def _gCode0(self, position, params, path):
+        x, y, z, e = position
+        xp, yp, zp, ep = params
+        x, y = xp if xp is not None else x, yp if yp is not None else y
+        z_changed = False
+        if zp is not None:
+            if z != zp:
+                z_changed = True
+                self._prev_z = z
+            z = zp
+        if ep is not None:
+            if ep > e:
+                path.append([x, y, z, self._layer_type])  # extrusion
+            else:
+                path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
+            e = ep
+        else:
+            path.append([x, y, z, LayerPolygon.MoveCombingType])
+        if z_changed:
+            if len(path) > 1 and z > 0:
+                if self._createPolygon(z, path):
+                    self._layer += 1
+                path.clear()
+            else:
+                path.clear()
+        return x, y, z, e
+
+    def _gCode28(self, position, params, path):
+        x, y, z, e = position
+        xp, yp, zp, ep = params
+        return xp if xp is not None else x,\
+            yp if yp is not None else y,\
+            0,\
+            e
+
+    def _gCode92(self, position, params, path):
+        x, y, z, e = position
+        xp, yp, zp, ep = params
+        return xp if xp is not None else x,\
+            yp if yp is not None else y,\
+            zp if zp is not None else z,\
+            ep if ep is not None else e
+
+    _g_code_map = {0: _gCode0, 1: _gCode0, 28: _gCode28, 92: _gCode92}
+
+    def _processGCode(self, G, line, position, path):
+        func = self._g_code_map.get(G, None)
+        x = self._getFloat(line, "X")
+        y = self._getFloat(line, "Y")
+        z = self._getFloat(line, "Z")
+        e = self._getFloat(line, "E")
+        if x is not None and x < 0:
+            self._center_is_zero = True
+        if y is not None and y < 0:
+            self._center_is_zero = True
+        if func is not None:
+            params = (x, y, z, e)
+            return func(self, position, params, path)
+        return position
+
+    def _processTCode(self, T, line, position, path):
+        self._extruder = T
+        if len(path) > 1 and position[2] > 0:
+            if self._createPolygon(position[2], path):
+                self._layer += 1
+            path.clear()
+        else:
+            path.clear()
 
     def read(self, file_name):
         Logger.log("d", "Preparing to load %s" % file_name)
@@ -120,8 +198,6 @@ class GCodeReader(MeshReader):
 
         Logger.log("d", "Opening file %s" % file_name)
 
-        layer_data_builder = LayerDataBuilder.LayerDataBuilder()
-
         with open(file_name, "r") as file:
             file_lines = 0
             current_line = 0
@@ -131,22 +207,16 @@ class GCodeReader(MeshReader):
 
             file_step = max(math.floor(file_lines / 100), 1)
 
-            current_extruder = 0
-            current_path = []
-            current_x = 0
-            current_y = 0
-            current_z = 0
-            current_e = 0
-            current_block = LayerPolygon.Inset0Type
-            current_layer = 0
-            prev_z = 0
-            center_is_zero = False
+            self._clearValues()
 
             self._message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0)
             self._message.setProgress(0)
             self._message.show()
 
             Logger.log("d", "Parsing %s" % file_name)
+
+            current_position = (0, 0, 0, 0)  # x, y, z, e
+            current_path = []
 
             for line in file:
                 if self._cancelled:
@@ -160,89 +230,33 @@ class GCodeReader(MeshReader):
                 if line.find(";TYPE:") == 0:
                     type = line[6:].strip()
                     if type == "WALL-INNER":
-                        current_block = LayerPolygon.InsetXType
+                        self._layer_type = LayerPolygon.InsetXType
                     elif type == "WALL-OUTER":
-                        current_block = LayerPolygon.Inset0Type
+                        self._layer_type = LayerPolygon.Inset0Type
                     elif type == "SKIN":
-                        current_block = LayerPolygon.SkinType
+                        self._layer_type = LayerPolygon.SkinType
                     elif type == "SKIRT":
-                        current_block = LayerPolygon.SkirtType
+                        self._layer_type = LayerPolygon.SkirtType
                     elif type == "SUPPORT":
-                        current_block = LayerPolygon.SupportType
+                        self._layer_type = LayerPolygon.SupportType
                     elif type == "FILL":
-                        current_block = LayerPolygon.InfillType
+                        self._layer_type = LayerPolygon.InfillType
                 if line[0] == ";":
                     continue
+
                 G = self._getInt(line, "G")
-                x = self._getFloat(line, "X")
-                y = self._getFloat(line, "Y")
-                z = self._getFloat(line, "Z")
-                if x is not None and x < 0:
-                    center_is_zero = True
-                if y is not None and y < 0:
-                    center_is_zero = True
                 if G is not None:
-                    if G == 0 or G == 1:
-                        e = self._getFloat(line, "E")
-                        z_changed = False
-                        if x is not None:
-                            current_x = x
-                        if y is not None:
-                            current_y = y
-                        if z is not None:
-                            if not current_z == z:
-                                z_changed = True
-                                prev_z = current_z
-                            current_z = z
-                        if e is not None:
-                            if e > current_e:
-                                current_path.append([current_x, current_y, current_z, current_block])  # extrusion
-                            else:
-                                current_path.append([current_x, current_y, current_z, LayerPolygon.MoveRetractionType])  # retraction
-                            current_e = e
-                        else:
-                            current_path.append([current_x, current_y, current_z, LayerPolygon.MoveCombingType])
-                        if z_changed:
-                            if len(current_path) > 1 and current_z > 0:
-                                if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder, math.fabs(current_z - prev_z)):
-                                    current_layer += 1
-                                current_path.clear()
-                            else:
-                                current_path.clear()
-
-                    elif G == 28:
-                        if x is not None:
-                            current_x = x
-                        if y is not None:
-                            current_y = y
-                        current_z = 0
-                    elif G == 92:
-                        e = self._getFloat(line, "E")
-                        if x is not None:
-                            current_x = x
-                        if y is not None:
-                            current_y = y
-                        if z is not None:
-                            current_z = z
-                        if e is not None:
-                            current_e = e
-
+                    current_position = self._processGCode(G, line, current_position, current_path)
                 T = self._getInt(line, "T")
                 if T is not None:
-                    current_extruder = T
-                    if len(current_path) > 1 and current_z > 0:
-                        if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder, math.fabs(current_z - prev_z)):
-                            current_layer += 1
-                        current_path.clear()
-                    else:
-                        current_path.clear()
+                    self._processTCode(T, line, current_position, current_path)
 
-            if len(current_path) > 1 and current_z > 0:
-                if self._createPolygon(layer_data_builder, current_path, current_layer, current_extruder, math.fabs(current_z - prev_z)):
-                    current_layer += 1
+            if len(current_path) > 1 and current_position[2] > 0:
+                if self._createPolygon(current_position[2], current_path):
+                    self._layer += 1
                 current_path.clear()
 
-        layer_mesh = layer_data_builder.build()
+        layer_mesh = self._layer_data_builder.build()
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
         scene_node.addDecorator(decorator)
@@ -255,14 +269,14 @@ class GCodeReader(MeshReader):
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
 
-        if current_layer == 0:
+        if self._layer == 0:
             Logger.log("w", "File %s doesn't contain any valid layers" % file_name)
 
         settings = Application.getInstance().getGlobalContainerStack()
         machine_width = settings.getProperty("machine_width", "value")
         machine_depth = settings.getProperty("machine_depth", "value")
 
-        if not center_is_zero:
+        if not self._center_is_zero:
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
         Logger.log("d", "Loaded %s" % file_name)
