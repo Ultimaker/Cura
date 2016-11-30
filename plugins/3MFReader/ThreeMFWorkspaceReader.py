@@ -128,11 +128,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return WorkspaceReader.PreReadResult.accepted
 
     def read(self, file_name):
-        # Load all the nodes / meshdata of the workspace
-        nodes = self._3mf_mesh_reader.read(file_name)
-        if nodes is None:
-            nodes = []
-
         archive = zipfile.ZipFile(file_name, "r")
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -399,6 +394,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
+
+        # Load all the nodes / meshdata of the workspace
+        nodes = self._3mf_mesh_reader.read(file_name)
+        if nodes is None:
+            nodes = []
         return nodes
 
     def _stripFileToId(self, file):
