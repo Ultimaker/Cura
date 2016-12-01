@@ -339,7 +339,7 @@ Item
             enabled: base.settingsEnabled
             property alias _hovered: supportExtruderMouseArea.containsMouse
 
-            currentIndex: parseFloat(supportExtruderNr.properties.value)q
+            currentIndex: parseFloat(supportExtruderNr.properties.value)
             onActivated:
             {
                 // Send the extruder nr as a string.
