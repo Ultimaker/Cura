@@ -290,6 +290,12 @@ Item
             id: supportExtruderCombobox
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
             model: extruderModel
+            property string color:
+            {
+                var model_color = extruderModel.get(currentIndex).color;
+                return (model_color) ? model_color : "";
+            }
+
             textRole: 'text'  // this solves that the combobox isn't populated in the first time Cura is started
 
             anchors.top: enableSupportCheckBox.bottom
@@ -320,7 +326,7 @@ Item
                 }
             }
 
-            style: UM.Theme.styles.combobox
+            style: UM.Theme.styles.combobox_color
             enabled: base.settingsEnabled
             property alias _hovered: supportExtruderMouseArea.containsMouse
 
@@ -347,6 +353,9 @@ Item
                     base.hideTooltip();
                 }
             }
+
+            // color rectangle
+
         }
 
         Label
