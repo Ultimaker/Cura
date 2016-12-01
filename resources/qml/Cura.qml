@@ -110,7 +110,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Save Workspace")
+                    text: catalog.i18nc("@title:menu menubar:file","Export project")
                     onTriggered: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" });
                 }
 

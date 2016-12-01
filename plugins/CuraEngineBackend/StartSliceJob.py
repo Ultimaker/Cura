@@ -163,22 +163,17 @@ class StartSliceJob(Job):
                     obj.id = id(object)
                     verts = mesh_data.getVertices()
                     indices = mesh_data.getIndices()
+
                     if indices is not None:
-                        #TODO: This is a very slow way of doing it! It also locks up the GUI.
-                        flat_vert_list = []
-                        for face in indices:
-                            for vert_index in face:
-                                flat_vert_list.append(verts[vert_index])
-                                Job.yieldThread()
-                        verts = numpy.array(flat_vert_list)
+                        flat_verts = numpy.take(verts, indices.flatten(), axis=0)
                     else:
-                        verts = numpy.array(verts)
+                        flat_verts = numpy.array(verts)
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
-                    verts[:, [1, 2]] = verts[:, [2, 1]]
-                    verts[:, 1] *= -1
+                    flat_verts[:, [1, 2]] = flat_verts[:, [2, 1]]
+                    flat_verts[:, 1] *= -1
 
-                    obj.vertices = verts
+                    obj.vertices = flat_verts
 
                     self._handlePerObjectSettings(object, obj)
 

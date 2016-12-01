@@ -137,6 +137,21 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_shape":
+                {
+                    "label": "Build plate shape",
+                    "description": "The shape of the build plate without taking unprintable areas into account.",
+                    "default_value": "rectangular",
+                    "type": "enum",
+                    "options":
+                    {
+                        "rectangular": "Rectangular",
+                        "elliptic": "Elliptic"
+                    },
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_height":
                 {
                     "label": "Machine height",
@@ -946,15 +961,37 @@
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
-                    "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
+                    "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
                     "type": "enum",
                     "options":
                     {
-                        "back": "Back",
+                        "back": "User Specified",
                         "shortest": "Shortest",
                         "random": "Random"
                     },
                     "default_value": "shortest",
+                    "settable_per_mesh": true
+                },
+                "z_seam_x":
+                {
+                    "label": "Z Seam X",
+                    "description": "The X coordinate of the position near where to start printing each part in a layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "value": "machine_width / 2",
+                    "enabled": "z_seam_type == 'back'",
+                    "settable_per_mesh": true
+                },
+                "z_seam_y":
+                {
+                    "label": "Z Seam Y",
+                    "description": "The Y coordinate of the position near where to start printing each part in a layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "value": "machine_depth / 2",
+                    "enabled": "z_seam_type == 'back'",
                     "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
@@ -996,7 +1033,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' else (4 if infill_pattern == 'tetrahedral' else 1)))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (4 if infill_pattern == 'tetrahedral' else 1)))",
                             "settable_per_mesh": true
                         }
                     }
@@ -1012,6 +1049,7 @@
                         "lines": "Lines",
                         "triangles": "Triangles",
                         "cubic": "Cubic",
+                        "cubicsubdiv": "Cubic Subdivision",
                         "tetrahedral": "Tetrahedral",
                         "concentric": "Concentric",
                         "concentric_3d": "Concentric 3D",
@@ -1020,6 +1058,32 @@
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "settable_per_mesh": true
+                },
+                "sub_div_rad_mult":
+                {
+                    "label": "Cubic Subdivision Radius",
+                    "description": "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "200",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
+                    "settable_per_mesh": true
+                },
+                "sub_div_rad_add":
+                {
+                    "label": "Cubic Subdivision Shell",
+                    "description": "An addition to the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to a thicker shell of small cubes near the boundary of the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.4,
+                    "value": "wall_line_width_x",
+                    "minimum_value_warning": "-1 * infill_line_distance",
+                    "maximum_value_warning": "5 * infill_line_distance",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "infill_overlap":
@@ -1116,7 +1180,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
                     "maximum_value": "20 - math.log(infill_line_distance) / math.log(2)",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
@@ -1129,7 +1193,7 @@
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0",
+                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
                 "infill_before_walls":
@@ -2434,20 +2498,6 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "cool_fan_speed_0":
-                        {
-                            "label": "Initial Fan Speed",
-                            "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
-                            "unit": "%",
-                            "type": "float",
-                            "minimum_value": "0",
-                            "maximum_value": "100",
-                            "value": "cool_fan_speed",
-                            "default_value": 100,
-                            "enabled": "cool_fan_enabled",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        },
                         "cool_fan_speed_min":
                         {
                             "label": "Regular Fan Speed",
@@ -2487,6 +2537,19 @@
                     "default_value": 10,
                     "minimum_value": "cool_min_layer_time",
                     "maximum_value_warning": "600",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_fan_speed_0":
+                {
+                    "label": "Initial Fan Speed",
+                    "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 0,
+                    "enabled": "cool_fan_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3616,7 +3679,6 @@
             "type": "category",
             "icon": "category_dual",
             "description": "Settings used for printing with multiple extruders.",
-            "enabled": "machine_extruder_count > 1",
             "children":
             {
                 "prime_tower_enable":
@@ -3742,17 +3804,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "multiple_mesh_overlap":
-                {
-                    "label": "Dual Extrusion Overlap",
-                    "description": "Make the models printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.15,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "1.0",
-                    "settable_per_mesh": true
-                },
                 "ooze_shield_enabled":
                 {
                     "label": "Enable Ooze Shield",
@@ -3831,6 +3882,17 @@
                     "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode.",
                     "type": "bool",
                     "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "multiple_mesh_overlap":
+                {
+                    "label": "Merged Meshes Overlap",
+                    "description": "Make meshes which are touching each other overlap a bit. This makes them bond together better.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.15,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "1.0",
                     "settable_per_mesh": true
                 },
                 "carve_multiple_volumes":
@@ -4106,6 +4168,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "support_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "support_conical_angle":

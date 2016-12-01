@@ -290,7 +290,7 @@ Item
     Action
     {
         id: loadWorkspaceAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open Workspace...");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Import project...");
     }
 
     Action

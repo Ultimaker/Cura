@@ -128,11 +128,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return WorkspaceReader.PreReadResult.accepted
 
     def read(self, file_name):
-        # Load all the nodes / meshdata of the workspace
-        nodes = self._3mf_mesh_reader.read(file_name)
-        if nodes is None:
-            nodes = []
-
         archive = zipfile.ZipFile(file_name, "r")
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -144,8 +139,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Copy a number of settings from the temp preferences to the global
         global_preferences = Preferences.getInstance()
-        global_preferences.setValue("general/visible_settings", temp_preferences.getValue("general/visible_settings"))
-        global_preferences.setValue("cura/categories_expanded", temp_preferences.getValue("cura/categories_expanded"))
+
+        visible_settings = temp_preferences.getValue("general/visible_settings")
+        if visible_settings is None:
+            Logger.log("w", "Workspace did not contain visible settings. Leaving visibility unchanged")
+        else:
+            global_preferences.setValue("general/visible_settings", visible_settings)
+
+        categories_expanded = temp_preferences.getValue("cura/categories_expanded")
+        if categories_expanded is None:
+            Logger.log("w", "Workspace did not contain expanded categories. Leaving them unchanged")
+        else:
+            global_preferences.setValue("cura/categories_expanded", categories_expanded)
+
         Application.getInstance().expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         self._id_mapping = {}
@@ -388,6 +394,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
+
+        # Load all the nodes / meshdata of the workspace
+        nodes = self._3mf_mesh_reader.read(file_name)
+        if nodes is None:
+            nodes = []
         return nodes
 
     def _stripFileToId(self, file):

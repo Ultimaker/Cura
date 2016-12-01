@@ -5,7 +5,7 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
-from UM.Settings.SettingRelation import RelationType
+from UM.Application import Application
 
 try:
     import xml.etree.cElementTree as ET
@@ -78,6 +78,12 @@ class ThreeMFWriter(MeshWriter):
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             model = ET.Element("model", unit = "millimeter", xmlns = self._namespaces["3mf"])
+
+            # Add the version of Cura this was created with. As "CuraVersion" is not a recognised metadata name
+            #  by 3mf itself, we place it in our own namespace.
+            version_metadata = ET.SubElement(model, "metadata", xmlns = self._namespaces["cura"], name = "CuraVersion")
+            version_metadata.text = Application.getInstance().getVersion()
+
             resources = ET.SubElement(model, "resources")
             build = ET.SubElement(model, "build")
 
