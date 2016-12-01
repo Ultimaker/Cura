@@ -446,7 +446,7 @@ QtObject {
                     anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: control.color
+                    color: if (control.color_override != "") {return control.color_override} else {return control.color;}
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
                 }

@@ -290,9 +290,18 @@ Item
             id: supportExtruderCombobox
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
             model: extruderModel
-            property string color:
+
+            property string color_override: ""  // for manually setting values
+            property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
             {
-                var model_color = extruderModel.get(currentIndex).color;
+                CuraApplication.log(" normal color evaluation");
+
+                var current_extruder = extruderModel.get(currentIndex);
+                color_override = "";
+                if (current_extruder === undefined) {
+                    return "";
+                }
+                var model_color = current_extruder.color;
                 return (model_color) ? model_color : "";
             }
 
@@ -330,7 +339,7 @@ Item
             enabled: base.settingsEnabled
             property alias _hovered: supportExtruderMouseArea.containsMouse
 
-            currentIndex: parseFloat(supportExtruderNr.properties.value)
+            currentIndex: parseFloat(supportExtruderNr.properties.value)q
             onActivated:
             {
                 // Send the extruder nr as a string.
@@ -354,7 +363,13 @@ Item
                 }
             }
 
-            // color rectangle
+            function updateCurrentColor()
+            {
+                var current_extruder = extruderModel.get(currentIndex);
+                if (current_extruder !== undefined) {
+                    supportExtruderCombobox.color_override = current_extruder.color;
+                }
+            }
 
         }
 
@@ -444,6 +459,7 @@ Item
                 color: extruders.getItem(extruderNumber).color
             })
         }
+        supportExtruderCombobox.updateCurrentColor();
     }
 
     Rectangle
