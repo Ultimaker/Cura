@@ -81,7 +81,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Printer settings")
                 font.bold: true
             }
-            
+
             Row
             {
                 width: parent.width

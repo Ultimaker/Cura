@@ -4,6 +4,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 import os
 import threading
@@ -92,8 +93,7 @@ class WorkspaceDialog(QObject):
 
     @pyqtProperty(int, constant = True)
     def totalNumberOfSettings(self):
-        # TODO: actually calculate this.
-        return 200
+        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
 
     @pyqtProperty(int, notify = numVisibleSettingsChanged)
     def numVisibleSettings(self):
