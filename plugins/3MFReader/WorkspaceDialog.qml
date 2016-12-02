@@ -20,7 +20,7 @@ UM.Dialog
     minimumHeight: 350 * Screen.devicePixelRatio;
     maximumHeight: 350 * Screen.devicePixelRatio;
     property int comboboxHeight: 20
-
+    property int spacerHeight: 10
     onClosing: manager.notifyClosed()
     onVisibleChanged:
     {
@@ -73,7 +73,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: 5
+                height: spacerHeight
                 width: height
             }
 
@@ -117,6 +117,11 @@ UM.Dialog
                         }
                     }
                 }
+            }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
             }
 
             Label
@@ -176,13 +181,17 @@ UM.Dialog
                 }
                 visible: manager.numSettingsOverridenByQualityChanges != 0
             }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
 
             Label
             {
                 text: catalog.i18nc("@action:label", "Material settings")
                 font.bold: true
             }
-
             Row
             {
                 width: parent.width
@@ -217,6 +226,11 @@ UM.Dialog
                         }
                     }
                 }
+            }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
             }
 
             Label
