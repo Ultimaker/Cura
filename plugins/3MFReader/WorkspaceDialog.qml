@@ -217,6 +217,7 @@ UM.Dialog
             {
                 width: parent.width
                 height: childrenRect.height
+                visible: manager.materialConflict
                 Item
                 {
                     width: parent.width / 3 * 2
@@ -228,7 +229,7 @@ UM.Dialog
                     id: materialResolveTooltip
                     width: parent.width / 3
                     height: visible ? comboboxHeight : 0
-                    visible: manager.materialConflict
+
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
                     ComboBox
                     {
