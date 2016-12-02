@@ -35,6 +35,7 @@ class WorkspaceDialog(QObject):
         self._quality_name = ""
         self._num_settings_overriden_by_quality_changes = 0
         self._quality_type = ""
+        self._machine_name = ""
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -44,6 +45,15 @@ class WorkspaceDialog(QObject):
     qualityNameChanged = pyqtSignal()
     numSettingsOverridenByQualityChangesChanged = pyqtSignal()
     qualityTypeChanged = pyqtSignal()
+    machineNameChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = machineNameChanged)
+    def machineName(self):
+        return self._machine_name
+
+    def setMachineName(self, machine_name):
+        self._machine_name = machine_name
+        self.machineNameChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self):

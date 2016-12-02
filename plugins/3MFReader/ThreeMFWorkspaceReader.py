@@ -52,7 +52,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         else:
             Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
-
+        machine_name = ""
         # Check if there are any conflicts, so we can ask the user.
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -62,14 +62,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_changes_conflict = False
         for container_stack_file in container_stack_files:
             container_id = self._stripFileToId(container_stack_file)
+            serialized = archive.open(container_stack_file).read().decode("utf-8")
+            if machine_name == "":
+                machine_name = self._getMachineNameFromSerializedStack(serialized)
             stacks = self._container_registry.findContainerStacks(id=container_id)
             if stacks:
                 # Check if there are any changes at all in any of the container stacks.
-                id_list = self._getContainerIdListFromSerialized(archive.open(container_stack_file).read().decode("utf-8"))
+                id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):
                     if stacks[0].getContainer(index).getId() != container_id:
                         machine_conflict = True
-                        break
             Job.yieldThread()
 
         material_conflict = False
@@ -138,6 +140,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setQualityType(quality_type)
         self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
         self._dialog.setActiveMode(active_mode)
+        self._dialog.setMachineName(machine_name)
         self._dialog.show()
 
         # Block until the dialog is closed.
@@ -437,3 +440,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         container_string = parser["general"].get("containers", "")
         container_list = container_string.split(",")
         return [container_id for container_id in container_list if container_id != ""]
+
+    def _getMachineNameFromSerializedStack(self, serialized):
+        parser = configparser.ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser.read_string(serialized)
+        return parser["general"].get("name", "")
