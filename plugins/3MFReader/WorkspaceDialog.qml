@@ -130,12 +130,12 @@ UM.Dialog
                 height: childrenRect.height
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Type")
+                    text: catalog.i18nc("@action:label", "Name")
                     width: parent.width / 3
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "TOCHANGE")
+                    text: manager.qualityName
                     width: parent.width / 3
                 }
 
@@ -158,6 +158,22 @@ UM.Dialog
                         }
                     }
                 }
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Derivative from")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "%1, %2 overrides" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                    width: parent.width / 3
+                }
+                visible: manager.numSettingsOverridenByQualityChanges != 0
             }
 
             Label

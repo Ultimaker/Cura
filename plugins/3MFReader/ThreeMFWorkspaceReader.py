@@ -87,6 +87,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
+        quality_name = ""
+        quality_type = ""
+        num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
             instance_container = InstanceContainer(container_id)
@@ -95,15 +98,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
             container_type = instance_container.getMetaDataEntry("type")
             if container_type == "quality_changes":
+                quality_name = instance_container.getName()
+                num_settings_overriden_by_quality_changes += len(instance_container._instances)
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if quality_changes:
                     # Check if there really is a conflict by comparing the values
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
-                        break
+            elif container_type == "quality":
+                # If the quality name is not set (either by quality or changes, set it now)
+                # Quality changes should always override this (as they are "on top")
+                if quality_name == "":
+                    quality_name = instance_container.getName()
+                quality_type = instance_container.getName()
             Job.yieldThread()
-
         num_visible_settings = 0
         try:
             temp_preferences = Preferences()
@@ -125,6 +134,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setQualityChangesConflict(quality_changes_conflict)
         self._dialog.setMaterialConflict(material_conflict)
         self._dialog.setNumVisibleSettings(num_visible_settings)
+        self._dialog.setQualityName(quality_name)
+        self._dialog.setQualityType(quality_type)
+        self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
         self._dialog.setActiveMode(active_mode)
         self._dialog.show()
 

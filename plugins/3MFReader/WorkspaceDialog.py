@@ -32,12 +32,42 @@ class WorkspaceDialog(QObject):
         self._has_material_conflict = False
         self._num_visible_settings = 0
         self._active_mode = ""
+        self._quality_name = ""
+        self._num_settings_overriden_by_quality_changes = 0
+        self._quality_type = ""
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
     materialConflictChanged = pyqtSignal()
     numVisibleSettingsChanged = pyqtSignal()
     activeModeChanged = pyqtSignal()
+    qualityNameChanged = pyqtSignal()
+    numSettingsOverridenByQualityChangesChanged = pyqtSignal()
+    qualityTypeChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify=qualityTypeChanged)
+    def qualityType(self):
+        return self._quality_type
+
+    def setQualityType(self, quality_type):
+        self._quality_type = quality_type
+        self.qualityTypeChanged.emit()
+
+    @pyqtProperty(int, notify=numSettingsOverridenByQualityChangesChanged)
+    def numSettingsOverridenByQualityChanges(self):
+        return self._num_settings_overriden_by_quality_changes
+
+    def setNumSettingsOverridenByQualityChanges(self, num_settings_overriden_by_quality_changes):
+        self._num_settings_overriden_by_quality_changes = num_settings_overriden_by_quality_changes
+        self.numSettingsOverridenByQualityChangesChanged.emit()
+
+    @pyqtProperty(str, notify=qualityNameChanged)
+    def qualityName(self):
+        return self._quality_name
+
+    def setQualityName(self, quality_name):
+        self._quality_name = quality_name
+        self.qualityNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
     def activeMode(self):
