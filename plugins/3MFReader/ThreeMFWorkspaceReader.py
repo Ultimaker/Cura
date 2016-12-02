@@ -103,8 +103,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         quality_changes_conflict = True
                         break
             Job.yieldThread()
+
+        num_visible_settings = 0
         try:
-            archive.open("Cura/preferences.cfg")
+            temp_preferences = Preferences()
+            temp_preferences.readFromFile(io.TextIOWrapper(archive.open("Cura/preferences.cfg")))  # We need to wrap it, else the archive parser breaks.
+
+            visible_settings_string = temp_preferences.getValue("general/visible_settings")
+            if visible_settings_string is not None:
+                num_visible_settings = len(visible_settings_string.split(";"))
+            active_mode = temp_preferences.getValue("cura/active_mode")
+            if not active_mode:
+                active_mode = Preferences.getInstance().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
@@ -114,6 +124,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setQualityChangesConflict(quality_changes_conflict)
         self._dialog.setMaterialConflict(material_conflict)
+        self._dialog.setNumVisibleSettings(num_visible_settings)
+        self._dialog.setActiveMode(active_mode)
         self._dialog.show()
 
         # Block until the dialog is closed.

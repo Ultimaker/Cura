@@ -3,10 +3,12 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.i18n import i18nCatalog
 
 import os
 import threading
 import time
+i18n_catalog = i18nCatalog("cura")
 
 class WorkspaceDialog(QObject):
     showDialogSignal = pyqtSignal()
@@ -28,10 +30,38 @@ class WorkspaceDialog(QObject):
         self._has_quality_changes_conflict = False
         self._has_machine_conflict = False
         self._has_material_conflict = False
+        self._num_visible_settings = 0
+        self._active_mode = ""
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
     materialConflictChanged = pyqtSignal()
+    numVisibleSettingsChanged = pyqtSignal()
+    activeModeChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify=activeModeChanged)
+    def activeMode(self):
+        return self._active_mode
+
+    def setActiveMode(self, active_mode):
+        if active_mode == 0:
+            self._active_mode = i18n_catalog.i18nc("@title:tab", "Recommended")
+        else:
+            self._active_mode = i18n_catalog.i18nc("@title:tab", "Custom")
+        self.activeModeChanged.emit()
+
+    @pyqtProperty(int, constant = True)
+    def totalNumberOfSettings(self):
+        # TODO: actually calculate this.
+        return 200
+
+    @pyqtProperty(int, notify = numVisibleSettingsChanged)
+    def numVisibleSettings(self):
+        return self._num_visible_settings
+
+    def setNumVisibleSettings(self, num_visible_settings):
+        self._num_visible_settings = num_visible_settings
+        self.numVisibleSettingsChanged.emit()
 
     @pyqtProperty(bool, notify = machineConflictChanged)
     def machineConflict(self):

@@ -12,13 +12,13 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Import workspace conflict")
 
-    width: 350 * Screen.devicePixelRatio;
-    minimumWidth: 350 * Screen.devicePixelRatio;
-    maximumWidth: 350 * Screen.devicePixelRatio;
+    width: 500 * Screen.devicePixelRatio;
+    minimumWidth: 500 * Screen.devicePixelRatio;
+    maximumWidth: 500 * Screen.devicePixelRatio;
 
-    height: 250 * Screen.devicePixelRatio;
-    minimumHeight: 250 * Screen.devicePixelRatio;
-    maximumHeight: 250 * Screen.devicePixelRatio;
+    height: 350 * Screen.devicePixelRatio;
+    minimumHeight: 350 * Screen.devicePixelRatio;
+    maximumHeight: 350 * Screen.devicePixelRatio;
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -96,6 +96,26 @@ UM.Dialog
                     text: catalog.i18nc("@action:label", "TOCHANGE")
                     width: parent.width / 3
                 }
+
+                UM.TooltipArea
+                {
+                    id: machineResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? 25 : 0
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
+                    ComboBox
+                    {
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        id: machineResolveComboBox
+                        width: parent.width
+                        enabled: manager.machineConflict
+                        onActivated:
+                        {
+                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
+                        }
+                    }
+                }
             }
 
             Label
@@ -118,60 +138,20 @@ UM.Dialog
                     text: catalog.i18nc("@action:label", "TOCHANGE")
                     width: parent.width / 3
                 }
-            }
 
-            UM.TooltipArea
-            {
-                id: machineResolveTooltip
-                width: parent.width
-                height: visible ? 25 : 0
-                text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-                visible: manager.machineConflict
-                Row
+                UM.TooltipArea
                 {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label","Machine")
-                        width: 150
-                    }
-
-                    ComboBox
-                    {
-                        model: resolveStrategiesModel
-                        textRole: "label"
-                        id: machineResolveComboBox
-                        width: 150
-                        onActivated:
-                        {
-                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
-                        }
-                    }
-                }
-            }
-            UM.TooltipArea
-            {
-                id: qualityChangesResolveTooltip
-                width: parent.width
-                height: visible ? 25 : 0
-                text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
-                visible: manager.qualityChangesConflict
-                Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label","Profile")
-                        width: 150
-                    }
-
+                    id: qualityChangesResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? 25 : 0
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: qualityChangesResolveComboBox
+                        enabled: manager.qualityChangesConflict
+                        width: parent.width
                         onActivated:
                         {
                             manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
@@ -179,33 +159,82 @@ UM.Dialog
                     }
                 }
             }
-            UM.TooltipArea
-            {
-                id: materialResolveTooltip
-                width: parent.width
-                height: visible ? 25 : 0
-                text: catalog.i18nc("@info:tooltip", "How should the conflict in the material(s) be resolved?")
-                visible: manager.materialConflict
-                Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label","Material")
-                        width: 150
-                    }
 
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Material settings")
+                font.bold: true
+            }
+
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Type")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "TOCHANGE")
+                    width: parent.width / 3
+                }
+
+                UM.TooltipArea
+                {
+                    id: materialResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? 25 : 0
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: materialResolveComboBox
+                        enabled: manager.materialConflict
+                        width: parent.width
                         onActivated:
                         {
                             manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
                         }
                     }
+                }
+            }
+
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Setting visibility")
+                font.bold: true
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Mode")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.activeMode
+                    width: parent.width / 3
+                }
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Visible settings:")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                    width: parent.width / 3
                 }
             }
         }
