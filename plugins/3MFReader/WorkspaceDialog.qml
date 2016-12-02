@@ -48,7 +48,7 @@ UM.Dialog
             // See http://stackoverflow.com/questions/7659442/listelement-fields-as-properties
             Component.onCompleted:
             {
-                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Override existing")});
+                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing")});
                 append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new")});
             }
         }
@@ -56,14 +56,70 @@ UM.Dialog
         Column
         {
             anchors.fill: parent
+            spacing: 2
             Label
             {
-                id: infoLabel
-                width: parent.width
-                text: catalog.i18nc("@action:label", "Cura detected a number of conflicts while importing the workspace. How would you like to resolve these?")
-                wrapMode: Text.Wrap
-                height: 50
+                id: titleLabel
+                text: catalog.i18nc("@action:title", "Summary - Cura Project")
+                font.pixelSize: 22
             }
+            Rectangle
+            {
+                id: separator
+                color: "black"
+                width: parent.width
+                height: 1
+            }
+            Item // Spacer
+            {
+                height: 5
+                width: height
+            }
+
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Printer settings")
+                font.bold: true
+            }
+
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Type")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "TOCHANGE")
+                    width: parent.width / 3
+                }
+            }
+
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Profile settings")
+                font.bold: true
+            }
+
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Type")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "TOCHANGE")
+                    width: parent.width / 3
+                }
+            }
+
             UM.TooltipArea
             {
                 id: machineResolveTooltip
@@ -86,6 +142,7 @@ UM.Dialog
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: machineResolveComboBox
+                        width: 150
                         onActivated:
                         {
                             manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)

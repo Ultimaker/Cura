@@ -110,20 +110,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "File %s is not a valid workspace.", file_name)
             return WorkspaceReader.PreReadResult.failed
 
-        if machine_conflict or quality_changes_conflict or material_conflict:
-            # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
-            self._dialog.setMachineConflict(machine_conflict)
-            self._dialog.setQualityChangesConflict(quality_changes_conflict)
-            self._dialog.setMaterialConflict(material_conflict)
-            self._dialog.show()
+        # Show the dialog, informing the user what is about to happen.
+        self._dialog.setMachineConflict(machine_conflict)
+        self._dialog.setQualityChangesConflict(quality_changes_conflict)
+        self._dialog.setMaterialConflict(material_conflict)
+        self._dialog.show()
 
-            # Block until the dialog is closed.
-            self._dialog.waitForClose()
+        # Block until the dialog is closed.
+        self._dialog.waitForClose()
 
-            if self._dialog.getResult() == {}:
-                return WorkspaceReader.PreReadResult.cancelled
+        if self._dialog.getResult() == {}:
+            return WorkspaceReader.PreReadResult.cancelled
 
-            self._resolve_strategies = self._dialog.getResult()
+        self._resolve_strategies = self._dialog.getResult()
 
         return WorkspaceReader.PreReadResult.accepted
 
