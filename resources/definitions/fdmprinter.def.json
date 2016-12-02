@@ -235,6 +235,16 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
+                "machine_cool_zone_length":
+                {
+                    "label": "Cool Zone Length",
+                    "description": "The length of the piece that dissipates heat from the hot end to shield heat-sensitive equipment.",
+                    "default_value": 0,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
                 "machine_nozzle_heat_up_speed":
                 {
                     "label": "Heat up speed",
