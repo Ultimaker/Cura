@@ -38,6 +38,7 @@ class WorkspaceDialog(QObject):
         self._quality_type = ""
         self._machine_name = ""
         self._material_labels = []
+        self._objects_on_plate = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -49,6 +50,15 @@ class WorkspaceDialog(QObject):
     qualityTypeChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
+    objectsOnPlateChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=objectsOnPlateChanged)
+    def hasObjectsOnPlate(self):
+        return self._objects_on_plate
+
+    def setHasObjectsOnPlate(self, objects_on_plate):
+        self._objects_on_plate = objects_on_plate
+        self.objectsOnPlateChanged.emit()
 
     @pyqtProperty("QVariantList", notify = materialLabelsChanged)
     def materialLabels(self):

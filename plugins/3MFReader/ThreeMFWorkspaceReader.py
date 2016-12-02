@@ -145,6 +145,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
+        self._dialog.setHasObjectsOnPlate(Application.getInstance().getPlatformActivity)
         self._dialog.show()
 
         # Block until the dialog is closed.

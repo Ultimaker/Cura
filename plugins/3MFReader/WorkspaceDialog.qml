@@ -284,6 +284,19 @@ UM.Dialog
                     width: parent.width / 3
                 }
             }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+            Label
+            {
+                text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
+                visible: manager.hasObjectsOnPlate
+                color: "red"
+                width: parent.width
+                wrapMode: Text.Wrap
+            }
         }
     }
     rightButtons: [
