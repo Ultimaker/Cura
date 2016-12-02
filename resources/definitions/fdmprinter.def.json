@@ -1333,6 +1333,7 @@
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature_layer_0'))",
                     "default_value": 60,
+                    "value": "material_bed_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
