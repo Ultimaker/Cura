@@ -412,16 +412,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             ExtruderManager.getInstance().registerExtruder(None, global_stack.getId())
 
         Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
-        # Notify everything/one that is to notify about changes.
-        for container in global_stack.getContainers():
-            global_stack.containersChanged.emit(container)
 
-        Job.yieldThread()
+        # Notify everything/one that is to notify about changes.
+        global_stack.containersChanged.emit(global_stack.getTop())
+
         for stack in extruder_stacks:
             stack.setNextStack(global_stack)
-            for container in stack.getContainers():
-                stack.containersChanged.emit(container)
-            Job.yieldThread()
+            stack.containersChanged.emit(stack.getTop())
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
