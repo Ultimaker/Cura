@@ -192,19 +192,35 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Material settings")
                 font.bold: true
             }
+
+            Repeater
+            {
+                model: manager.materialLabels
+                delegate: Row
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Name")
+                        width: parent.width / 3
+                    }
+                    Label
+                    {
+                        text: modelData
+                        width: parent.width / 3
+                    }
+                }
+            }
+
             Row
             {
                 width: parent.width
                 height: childrenRect.height
-                Label
+                Item
                 {
-                    text: catalog.i18nc("@action:label", "Type")
-                    width: parent.width / 3
-                }
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "TOCHANGE")
-                    width: parent.width / 3
+                    width: parent.width / 3 * 2
+                    height: comboboxHeight
                 }
 
                 UM.TooltipArea
@@ -213,7 +229,7 @@ UM.Dialog
                     width: parent.width / 3
                     height: visible ? comboboxHeight : 0
                     visible: manager.materialConflict
-                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel

@@ -12,6 +12,8 @@ from UM.Job import Job
 from UM.Preferences import Preferences
 from .WorkspaceDialog import WorkspaceDialog
 
+import xml.etree.ElementTree as ET
+
 from cura.Settings.ExtruderManager import ExtruderManager
 
 import zipfile
@@ -74,6 +76,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         machine_conflict = True
             Job.yieldThread()
 
+        material_labels = []
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
         if self._material_container_suffix is None:
@@ -83,10 +86,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
                 materials = self._container_registry.findInstanceContainers(id=container_id)
+                material_labels.append(self._getMaterialLabelFromSerialized(archive.open(material_container_file).read().decode("utf-8")))
                 if materials and not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
                     material_conflict = True
                 Job.yieldThread()
-
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
@@ -141,6 +144,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
+        self._dialog.setMaterialLabels(material_labels)
         self._dialog.show()
 
         # Block until the dialog is closed.
@@ -445,3 +449,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         parser = configparser.ConfigParser(interpolation=None, empty_lines_in_values=False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
+
+    def _getMaterialLabelFromSerialized(self, serialized):
+        data = ET.fromstring(serialized)
+        metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
+        for entry in metadata:
+            return entry.text
+        pass

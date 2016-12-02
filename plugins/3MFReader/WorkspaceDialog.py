@@ -37,6 +37,7 @@ class WorkspaceDialog(QObject):
         self._num_settings_overriden_by_quality_changes = 0
         self._quality_type = ""
         self._machine_name = ""
+        self._material_labels = []
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -47,6 +48,15 @@ class WorkspaceDialog(QObject):
     numSettingsOverridenByQualityChangesChanged = pyqtSignal()
     qualityTypeChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
+    materialLabelsChanged = pyqtSignal()
+
+    @pyqtProperty("QVariantList", notify = materialLabelsChanged)
+    def materialLabels(self):
+        return self._material_labels
+
+    def setMaterialLabels(self, material_labels):
+        self._material_labels = material_labels
+        self.materialLabelsChanged.emit()
 
     @pyqtProperty(str, notify = machineNameChanged)
     def machineName(self):
