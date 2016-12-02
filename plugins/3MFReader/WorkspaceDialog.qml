@@ -19,6 +19,7 @@ UM.Dialog
     height: 350 * Screen.devicePixelRatio;
     minimumHeight: 350 * Screen.devicePixelRatio;
     maximumHeight: 350 * Screen.devicePixelRatio;
+    property int comboboxHeight: 20
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -101,7 +102,8 @@ UM.Dialog
                 {
                     id: machineResolveTooltip
                     width: parent.width / 3
-                    height: visible ? 25 : 0
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.machineConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
@@ -109,7 +111,6 @@ UM.Dialog
                         textRole: "label"
                         id: machineResolveComboBox
                         width: parent.width
-                        enabled: manager.machineConflict
                         onActivated:
                         {
                             manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
@@ -143,14 +144,14 @@ UM.Dialog
                 {
                     id: qualityChangesResolveTooltip
                     width: parent.width / 3
-                    height: visible ? 25 : 0
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.qualityChangesConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: qualityChangesResolveComboBox
-                        enabled: manager.qualityChangesConflict
                         width: parent.width
                         onActivated:
                         {
@@ -201,14 +202,14 @@ UM.Dialog
                 {
                     id: materialResolveTooltip
                     width: parent.width / 3
-                    height: visible ? 25 : 0
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.materialConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: materialResolveComboBox
-                        enabled: manager.materialConflict
                         width: parent.width
                         onActivated:
                         {
