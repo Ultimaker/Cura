@@ -71,12 +71,13 @@ UM.MainWindow
                 {
                     action: Cura.Actions.open;
                 }
+
+                RecentFilesMenu { }
+
                 MenuItem
                 {
                     action: Cura.Actions.loadWorkspace
                 }
-
-                RecentFilesMenu { }
 
                 MenuSeparator { }
 
