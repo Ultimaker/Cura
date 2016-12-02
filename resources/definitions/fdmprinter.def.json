@@ -228,7 +228,7 @@
                 "machine_heat_zone_length":
                 {
                     "label": "Heat zone length",
-                    "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
+                    "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "default_value": 16,
                     "type": "float",
                     "settable_per_mesh": false,
