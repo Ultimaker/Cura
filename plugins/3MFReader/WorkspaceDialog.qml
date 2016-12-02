@@ -10,16 +10,16 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
-    title: catalog.i18nc("@title:window", "Import workspace conflict")
+    title: catalog.i18nc("@title:window", "Import Project")
 
-    width: 500 * Screen.devicePixelRatio;
-    minimumWidth: 500 * Screen.devicePixelRatio;
-    maximumWidth: 500 * Screen.devicePixelRatio;
+    width: 550 * Screen.devicePixelRatio;
+    minimumWidth: 550 * Screen.devicePixelRatio;
+    maximumWidth: 550 * Screen.devicePixelRatio;
 
     height: 350 * Screen.devicePixelRatio;
     minimumHeight: 350 * Screen.devicePixelRatio;
     maximumHeight: 350 * Screen.devicePixelRatio;
-    property int comboboxHeight: 20
+    property int comboboxHeight: 15
     property int spacerHeight: 10
     onClosing: manager.notifyClosed()
     onVisibleChanged:
