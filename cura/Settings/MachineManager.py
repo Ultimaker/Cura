@@ -53,8 +53,6 @@ class MachineManager(QObject):
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeStackChanged)
         self.activeStackChanged.connect(self.activeStackValueChanged)
 
-
-
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
         self._global_event_keys = set()

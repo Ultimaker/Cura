@@ -175,8 +175,8 @@ class WorkspaceDialog(QObject):
     @pyqtSlot()
     ##  Used to notify the dialog so the lock can be released.
     def notifyClosed(self):
-        if self._result is None:
-            self._result = {}
+        self._result = {}
+        self._visible = False
         self._lock.release()
 
     def hide(self):
