@@ -290,7 +290,7 @@ Item
     Action
     {
         id: loadWorkspaceAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Import project...");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Save project...");
     }
 
     Action
