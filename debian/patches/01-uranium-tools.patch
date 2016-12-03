@@ -1,0 +1,18 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -5,6 +5,7 @@
+ include(GNUInstallDirs)
+ 
+ set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
++set(URANIUM_CMAKE_DIR "${URANIUM_SCRIPTS_DIR}/../cmake" CACHE DIRECTORY "The location of the cmake tools directory of the Uranium repository")
+ 
+ # Tests
+ # Note that we use exit 0 here to not mark the build as a failure on test failure
+@@ -18,6 +19,7 @@
+ configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
+ 
+ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
++    list(APPEND CMAKE_MODULE_PATH "${URANIUM_CMAKE_DIR}")
+     include(UraniumTranslationTools)
+     # Extract Strings
+     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
