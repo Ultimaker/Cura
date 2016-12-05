@@ -12,13 +12,13 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Import Project")
 
-    width: 550 * Screen.devicePixelRatio;
-    minimumWidth: 550 * Screen.devicePixelRatio;
-    maximumWidth: 550 * Screen.devicePixelRatio;
+    width: 550
+    minimumWidth: 550
+    maximumWidth: 550
 
-    height: 350 * Screen.devicePixelRatio;
-    minimumHeight: 350 * Screen.devicePixelRatio;
-    maximumHeight: 350 * Screen.devicePixelRatio;
+    height: 350
+    minimumHeight: 350
+    maximumHeight: 350
     property int comboboxHeight: 15
     property int spacerHeight: 10
     onClosing: manager.notifyClosed()
@@ -176,7 +176,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "%1, %2 overrides" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                    text: catalog.i18nc("@action:label", "%1, %2 override(s)" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                     width: parent.width / 3
                 }
                 visible: manager.numSettingsOverridenByQualityChanges != 0
