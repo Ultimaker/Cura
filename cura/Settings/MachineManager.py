@@ -873,7 +873,8 @@ class MachineManager(QObject):
         if old_container:
             old_container.nameChanged.disconnect(self._onQualityNameChanged)
         else:
-            Logger.log("w", "Could not find old "+  container.getMetaDataEntry("type") + " while changing active " + container.getMetaDataEntry("type") + ".")
+            Logger.log("e", "Could not find container of type %s in stack %s while replacing quality (changes) with container %s", container.getMetaDataEntry("type"), stack.getId(), container.getId())
+            return
 
         # Swap in the new container into the stack.
         stack.replaceContainer(stack.getContainerIndex(old_container), container, postpone_emit = postpone_emit)

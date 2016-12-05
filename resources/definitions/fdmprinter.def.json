@@ -228,8 +228,18 @@
                 "machine_heat_zone_length":
                 {
                     "label": "Heat zone length",
-                    "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
+                    "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "default_value": 16,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "machine_cool_zone_length":
+                {
+                    "label": "Cool Zone Length",
+                    "description": "The length of the piece that dissipates heat from the hot end to shield heat-sensitive equipment.",
+                    "default_value": 0,
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -990,7 +1000,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 100.0,
-                    "value": "machine_depth / 2",
+                    "value": "machine_depth * 3",
                     "enabled": "z_seam_type == 'back'",
                     "settable_per_mesh": true
                 },

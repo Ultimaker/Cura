@@ -10,7 +10,7 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
-    title: catalog.i18nc("@title:window", "Import Project")
+    title: catalog.i18nc("@title:window", "Open Project")
 
     width: 550
     minimumWidth: 550

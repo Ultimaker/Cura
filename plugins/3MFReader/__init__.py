@@ -25,7 +25,7 @@ def getMetaData():
         "workspace_reader":
         [
             {
-                "extension": "3mf",
+                "extension": "curaproject.3mf",
                 "description": catalog.i18nc("@item:inlistbox", "3MF File")
             }
         ]
