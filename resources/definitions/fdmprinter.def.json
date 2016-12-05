@@ -990,7 +990,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 100.0,
-                    "value": "machine_depth / 2",
+                    "value": "machine_depth * 3",
                     "enabled": "z_seam_type == 'back'",
                     "settable_per_mesh": true
                 },
