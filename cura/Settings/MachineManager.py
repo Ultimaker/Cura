@@ -318,6 +318,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id):
+        self.blurSettings.emit()  # Ensure no-one has focus.
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
