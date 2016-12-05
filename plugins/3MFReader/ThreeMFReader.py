@@ -185,9 +185,20 @@ class ThreeMFReader(MeshReader):
                         continue
 
                 build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
+
+                # compensate for original center position, if object(s) is/are not around its zero position
+                extents = build_item_node.getMeshData().getExtents()
+                center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                transform_matrix = Matrix()
+                transform_matrix.setByTranslation(center_vector)
+
+                # offset with transform from 3mf
                 transform = build_item.get("transform")
                 if transform is not None:
-                    build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
+                    transform_matrix.multiply(self._createMatrixFromTransformationString(transform))
+
+                build_item_node.setTransformation(transform_matrix)
+
                 global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
 
                 # Create a transformation Matrix to convert from 3mf worldspace into ours.
