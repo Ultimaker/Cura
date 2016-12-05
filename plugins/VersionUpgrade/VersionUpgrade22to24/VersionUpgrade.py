@@ -11,6 +11,11 @@ from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 class VersionUpgrade22to24(VersionUpgrade):
 
     def upgradeMachineInstance(self, serialised, filename):
+        # All of this is needed to upgrade custom variant machines from old Cura to 2.4 where
+        # `definition_changes` instance container has been introduced. Variant files which
+        # look like the the handy work of the old machine settings plugin are converted directly
+        # on disk.
+
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
         config.set("general", "version", "3")
@@ -26,32 +31,8 @@ class VersionUpgrade22to24(VersionUpgrade):
         if len(user_variant_names):
             # One of the user defined variants appears in the list of containers in the stack.
 
-            for variant_name in user_variant_names:
-                # Copy the variant to the machine_instances/*_settings.inst.cfg
-                variant_config = configparser.ConfigParser(interpolation=None)
-                variant_path = name_path_dict.get(variant_name)
-                with open(variant_path, "r") as fhandle:
-                    variant_config.read_file(fhandle)
-
-                if variant_config.has_section("general") and variant_config.has_option("general", "name"):
-                    config_name = variant_config.get("general", "name")
-                    if config_name.endswith("_variant"):
-                        config_name = config_name[:-len("_variant")] + "_settings"
-                        variant_config.set("general", "name", config_name)
-
-                if not variant_config.has_section("metadata"):
-                    variant_config.add_section("metadata")
-                variant_config.set("metadata", "type", "definition_changes")
-
-                # "_settings.inst.cfg"
-                resource_path = Resources.getDataStoragePath()
-                machine_instances_dir = os.path.join(resource_path, "machine_instances")
-
-                if variant_path.endswith("_variant.inst.cfg"):
-                    variant_path = variant_path[:-len("_variant.inst.cfg")] + "_settings.inst.cfg"
-
-                with open(os.path.join(machine_instances_dir, os.path.basename(variant_path)), "w") as fp:
-                    variant_config.write(fp)
+            for variant_name in user_variant_names: # really there should just be one variant to convert.
+                config_name = self.__convertVariant(name_path_dict.get(variant_name))
 
                 # Change the name of variant and insert empty_variant into the stack.
                 new_container_list = []
@@ -69,6 +50,33 @@ class VersionUpgrade22to24(VersionUpgrade):
         output = io.StringIO()
         config.write(output)
         return [filename], [output.getvalue()]
+
+    def __convertVariant(self, variant_path):
+        # Copy the variant to the machine_instances/*_settings.inst.cfg
+        variant_config = configparser.ConfigParser(interpolation=None)
+        with open(variant_path, "r") as fhandle:
+            variant_config.read_file(fhandle)
+
+        if variant_config.has_section("general") and variant_config.has_option("general", "name"):
+            config_name = variant_config.get("general", "name")
+            if config_name.endswith("_variant"):
+                config_name = config_name[:-len("_variant")] + "_settings"
+                variant_config.set("general", "name", config_name)
+
+        if not variant_config.has_section("metadata"):
+            variant_config.add_section("metadata")
+        variant_config.set("metadata", "type", "definition_changes")
+
+        resource_path = Resources.getDataStoragePath()
+        machine_instances_dir = os.path.join(resource_path, "machine_instances")
+
+        if variant_path.endswith("_variant.inst.cfg"):
+            variant_path = variant_path[:-len("_variant.inst.cfg")] + "_settings.inst.cfg"
+
+        with open(os.path.join(machine_instances_dir, os.path.basename(variant_path)), "w") as fp:
+            variant_config.write(fp)
+
+        return config_name
 
     def __getUserVariants(self):
         resource_path = Resources.getDataStoragePath()
