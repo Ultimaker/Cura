@@ -765,7 +765,7 @@ class BuildVolume(SceneNode):
             skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
             skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
             bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width"))
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+            if len(ExtruderManager.getInstance().getUsedExtruderStacks()) > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.

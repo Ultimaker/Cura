@@ -12,6 +12,8 @@ from UM.Job import Job
 from UM.Preferences import Preferences
 from .WorkspaceDialog import WorkspaceDialog
 
+import xml.etree.ElementTree as ET
+
 from cura.Settings.ExtruderManager import ExtruderManager
 
 import zipfile
@@ -52,7 +54,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         else:
             Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
-
+        machine_name = ""
         # Check if there are any conflicts, so we can ask the user.
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -62,16 +64,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_changes_conflict = False
         for container_stack_file in container_stack_files:
             container_id = self._stripFileToId(container_stack_file)
+            serialized = archive.open(container_stack_file).read().decode("utf-8")
+            if machine_name == "":
+                machine_name = self._getMachineNameFromSerializedStack(serialized)
             stacks = self._container_registry.findContainerStacks(id=container_id)
             if stacks:
                 # Check if there are any changes at all in any of the container stacks.
-                id_list = self._getContainerIdListFromSerialized(archive.open(container_stack_file).read().decode("utf-8"))
+                id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):
                     if stacks[0].getContainer(index).getId() != container_id:
                         machine_conflict = True
-                        break
             Job.yieldThread()
 
+        material_labels = []
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
         if self._material_container_suffix is None:
@@ -81,12 +86,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
                 materials = self._container_registry.findInstanceContainers(id=container_id)
+                material_labels.append(self._getMaterialLabelFromSerialized(archive.open(material_container_file).read().decode("utf-8")))
                 if materials and not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
                     material_conflict = True
                 Job.yieldThread()
-
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
+        quality_name = ""
+        quality_type = ""
+        num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
             instance_container = InstanceContainer(container_id)
@@ -95,35 +103,58 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
             container_type = instance_container.getMetaDataEntry("type")
             if container_type == "quality_changes":
+                quality_name = instance_container.getName()
+                num_settings_overriden_by_quality_changes += len(instance_container._instances)
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(id = container_id)
                 if quality_changes:
                     # Check if there really is a conflict by comparing the values
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
-                        break
+            elif container_type == "quality":
+                # If the quality name is not set (either by quality or changes, set it now)
+                # Quality changes should always override this (as they are "on top")
+                if quality_name == "":
+                    quality_name = instance_container.getName()
+                quality_type = instance_container.getName()
             Job.yieldThread()
+        num_visible_settings = 0
         try:
-            archive.open("Cura/preferences.cfg")
+            temp_preferences = Preferences()
+            temp_preferences.readFromFile(io.TextIOWrapper(archive.open("Cura/preferences.cfg")))  # We need to wrap it, else the archive parser breaks.
+
+            visible_settings_string = temp_preferences.getValue("general/visible_settings")
+            if visible_settings_string is not None:
+                num_visible_settings = len(visible_settings_string.split(";"))
+            active_mode = temp_preferences.getValue("cura/active_mode")
+            if not active_mode:
+                active_mode = Preferences.getInstance().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
             return WorkspaceReader.PreReadResult.failed
 
-        if machine_conflict or quality_changes_conflict or material_conflict:
-            # There is a conflict; User should choose to either update the existing data, add everything as new data or abort
-            self._dialog.setMachineConflict(machine_conflict)
-            self._dialog.setQualityChangesConflict(quality_changes_conflict)
-            self._dialog.setMaterialConflict(material_conflict)
-            self._dialog.show()
+        # Show the dialog, informing the user what is about to happen.
+        self._dialog.setMachineConflict(machine_conflict)
+        self._dialog.setQualityChangesConflict(quality_changes_conflict)
+        self._dialog.setMaterialConflict(material_conflict)
+        self._dialog.setNumVisibleSettings(num_visible_settings)
+        self._dialog.setQualityName(quality_name)
+        self._dialog.setQualityType(quality_type)
+        self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
+        self._dialog.setActiveMode(active_mode)
+        self._dialog.setMachineName(machine_name)
+        self._dialog.setMaterialLabels(material_labels)
+        self._dialog.setHasObjectsOnPlate(Application.getInstance().getPlatformActivity)
+        self._dialog.show()
 
-            # Block until the dialog is closed.
-            self._dialog.waitForClose()
+        # Block until the dialog is closed.
+        self._dialog.waitForClose()
 
-            if self._dialog.getResult() == {}:
-                return WorkspaceReader.PreReadResult.cancelled
+        if self._dialog.getResult() == {}:
+            return WorkspaceReader.PreReadResult.cancelled
 
-            self._resolve_strategies = self._dialog.getResult()
+        self._resolve_strategies = self._dialog.getResult()
 
         return WorkspaceReader.PreReadResult.accepted
 
@@ -381,16 +412,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             ExtruderManager.getInstance().registerExtruder(None, global_stack.getId())
 
         Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
-        # Notify everything/one that is to notify about changes.
-        for container in global_stack.getContainers():
-            global_stack.containersChanged.emit(container)
 
-        Job.yieldThread()
+        # Notify everything/one that is to notify about changes.
+        global_stack.containersChanged.emit(global_stack.getTop())
+
         for stack in extruder_stacks:
             stack.setNextStack(global_stack)
-            for container in stack.getContainers():
-                stack.containersChanged.emit(container)
-            Job.yieldThread()
+            stack.containersChanged.emit(stack.getTop())
 
         # Actually change the active machine.
         Application.getInstance().setGlobalContainerStack(global_stack)
@@ -414,3 +442,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         container_string = parser["general"].get("containers", "")
         container_list = container_string.split(",")
         return [container_id for container_id in container_list if container_id != ""]
+
+    def _getMachineNameFromSerializedStack(self, serialized):
+        parser = configparser.ConfigParser(interpolation=None, empty_lines_in_values=False)
+        parser.read_string(serialized)
+        return parser["general"].get("name", "")
+
+    def _getMaterialLabelFromSerialized(self, serialized):
+        data = ET.fromstring(serialized)
+        metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
+        for entry in metadata:
+            return entry.text
+        pass

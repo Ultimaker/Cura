@@ -141,7 +141,7 @@ SettingItem
         {
             for(var i = 0; i < extruders_model.rowCount(); ++i)
             {
-                if(extruders_model.getItem(i).index == propertyProvider.properties.value)
+                if(extruders_model.getItem(i).index == currentIndex)
                 {
                     control.color = extruders_model.getItem(i).color;
                     return;

@@ -10,16 +10,17 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
-    title: catalog.i18nc("@title:window", "Import workspace conflict")
+    title: catalog.i18nc("@title:window", "Import Project")
 
-    width: 350 * Screen.devicePixelRatio;
-    minimumWidth: 350 * Screen.devicePixelRatio;
-    maximumWidth: 350 * Screen.devicePixelRatio;
+    width: 550
+    minimumWidth: 550
+    maximumWidth: 550
 
-    height: 250 * Screen.devicePixelRatio;
-    minimumHeight: 250 * Screen.devicePixelRatio;
-    maximumHeight: 250 * Screen.devicePixelRatio;
-
+    height: 350
+    minimumHeight: 350
+    maximumHeight: 350
+    property int comboboxHeight: 15
+    property int spacerHeight: 10
     onClosing: manager.notifyClosed()
     onVisibleChanged:
     {
@@ -48,7 +49,7 @@ UM.Dialog
             // See http://stackoverflow.com/questions/7659442/listelement-fields-as-properties
             Component.onCompleted:
             {
-                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Override existing")});
+                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing")});
                 append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new")});
             }
         }
@@ -56,36 +57,60 @@ UM.Dialog
         Column
         {
             anchors.fill: parent
+            spacing: 2
             Label
             {
-                id: infoLabel
-                width: parent.width
-                text: catalog.i18nc("@action:label", "Cura detected a number of conflicts while importing the workspace. How would you like to resolve these?")
-                wrapMode: Text.Wrap
-                height: 50
+                id: titleLabel
+                text: catalog.i18nc("@action:title", "Summary - Cura Project")
+                font.pixelSize: 22
             }
-            UM.TooltipArea
+            Rectangle
             {
-                id: machineResolveTooltip
+                id: separator
+                color: "black"
                 width: parent.width
-                height: visible ? 25 : 0
-                text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-                visible: manager.machineConflict
-                Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label","Machine")
-                        width: 150
-                    }
+                height: 1
+            }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
 
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Printer settings")
+                font.bold: true
+            }
+
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Name")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.machineName
+                    width: parent.width / 3
+                }
+
+                UM.TooltipArea
+                {
+                    id: machineResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.machineConflict
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: machineResolveComboBox
+                        width: parent.width
                         onActivated:
                         {
                             manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
@@ -93,28 +118,46 @@ UM.Dialog
                     }
                 }
             }
-            UM.TooltipArea
+            Item // Spacer
             {
-                id: qualityChangesResolveTooltip
-                width: parent.width
-                height: visible ? 25 : 0
-                text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
-                visible: manager.qualityChangesConflict
-                Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label","Profile")
-                        width: 150
-                    }
+                height: spacerHeight
+                width: height
+            }
 
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Profile settings")
+                font.bold: true
+            }
+
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Name")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.qualityName
+                    width: parent.width / 3
+                }
+
+                UM.TooltipArea
+                {
+                    id: qualityChangesResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.qualityChangesConflict
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: qualityChangesResolveComboBox
+                        width: parent.width
                         onActivated:
                         {
                             manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
@@ -122,34 +165,138 @@ UM.Dialog
                     }
                 }
             }
-            UM.TooltipArea
+            Row
             {
-                id: materialResolveTooltip
                 width: parent.width
-                height: visible ? 25 : 0
-                text: catalog.i18nc("@info:tooltip", "How should the conflict in the material(s) be resolved?")
-                visible: manager.materialConflict
-                Row
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Derivative from")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "%1, %2 override(s)" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                    width: parent.width / 3
+                }
+                visible: manager.numSettingsOverridenByQualityChanges != 0
+            }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Material settings")
+                font.bold: true
+            }
+
+            Repeater
+            {
+                model: manager.materialLabels
+                delegate: Row
                 {
                     width: parent.width
                     height: childrenRect.height
                     Label
                     {
-                        text: catalog.i18nc("@action:label","Material")
-                        width: 150
+                        text: catalog.i18nc("@action:label", "Name")
+                        width: parent.width / 3
                     }
+                    Label
+                    {
+                        text: modelData
+                        width: parent.width / 3
+                    }
+                }
+            }
 
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                visible: manager.materialConflict
+                Item
+                {
+                    width: parent.width / 3 * 2
+                    height: comboboxHeight
+                }
+
+                UM.TooltipArea
+                {
+                    id: materialResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? comboboxHeight : 0
+
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
                     ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: materialResolveComboBox
+                        width: parent.width
                         onActivated:
                         {
                             manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
                         }
                     }
                 }
+            }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+
+            Label
+            {
+                text: catalog.i18nc("@action:label", "Setting visibility")
+                font.bold: true
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Mode")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.activeMode
+                    width: parent.width / 3
+                }
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Visible settings:")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                    width: parent.width / 3
+                }
+            }
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+            Label
+            {
+                text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
+                visible: manager.hasObjectsOnPlate
+                color: "red"
+                width: parent.width
+                wrapMode: Text.Wrap
             }
         }
     }

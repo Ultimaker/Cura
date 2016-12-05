@@ -3,10 +3,13 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.i18n import i18nCatalog
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 import os
 import threading
 import time
+i18n_catalog = i18nCatalog("cura")
 
 class WorkspaceDialog(QObject):
     showDialogSignal = pyqtSignal()
@@ -28,10 +31,97 @@ class WorkspaceDialog(QObject):
         self._has_quality_changes_conflict = False
         self._has_machine_conflict = False
         self._has_material_conflict = False
+        self._num_visible_settings = 0
+        self._active_mode = ""
+        self._quality_name = ""
+        self._num_settings_overriden_by_quality_changes = 0
+        self._quality_type = ""
+        self._machine_name = ""
+        self._material_labels = []
+        self._objects_on_plate = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
     materialConflictChanged = pyqtSignal()
+    numVisibleSettingsChanged = pyqtSignal()
+    activeModeChanged = pyqtSignal()
+    qualityNameChanged = pyqtSignal()
+    numSettingsOverridenByQualityChangesChanged = pyqtSignal()
+    qualityTypeChanged = pyqtSignal()
+    machineNameChanged = pyqtSignal()
+    materialLabelsChanged = pyqtSignal()
+    objectsOnPlateChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=objectsOnPlateChanged)
+    def hasObjectsOnPlate(self):
+        return self._objects_on_plate
+
+    def setHasObjectsOnPlate(self, objects_on_plate):
+        self._objects_on_plate = objects_on_plate
+        self.objectsOnPlateChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = materialLabelsChanged)
+    def materialLabels(self):
+        return self._material_labels
+
+    def setMaterialLabels(self, material_labels):
+        self._material_labels = material_labels
+        self.materialLabelsChanged.emit()
+
+    @pyqtProperty(str, notify = machineNameChanged)
+    def machineName(self):
+        return self._machine_name
+
+    def setMachineName(self, machine_name):
+        self._machine_name = machine_name
+        self.machineNameChanged.emit()
+
+    @pyqtProperty(str, notify=qualityTypeChanged)
+    def qualityType(self):
+        return self._quality_type
+
+    def setQualityType(self, quality_type):
+        self._quality_type = quality_type
+        self.qualityTypeChanged.emit()
+
+    @pyqtProperty(int, notify=numSettingsOverridenByQualityChangesChanged)
+    def numSettingsOverridenByQualityChanges(self):
+        return self._num_settings_overriden_by_quality_changes
+
+    def setNumSettingsOverridenByQualityChanges(self, num_settings_overriden_by_quality_changes):
+        self._num_settings_overriden_by_quality_changes = num_settings_overriden_by_quality_changes
+        self.numSettingsOverridenByQualityChangesChanged.emit()
+
+    @pyqtProperty(str, notify=qualityNameChanged)
+    def qualityName(self):
+        return self._quality_name
+
+    def setQualityName(self, quality_name):
+        self._quality_name = quality_name
+        self.qualityNameChanged.emit()
+
+    @pyqtProperty(str, notify=activeModeChanged)
+    def activeMode(self):
+        return self._active_mode
+
+    def setActiveMode(self, active_mode):
+        if active_mode == 0:
+            self._active_mode = i18n_catalog.i18nc("@title:tab", "Recommended")
+        else:
+            self._active_mode = i18n_catalog.i18nc("@title:tab", "Custom")
+        self.activeModeChanged.emit()
+
+    @pyqtProperty(int, constant = True)
+    def totalNumberOfSettings(self):
+        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+
+    @pyqtProperty(int, notify = numVisibleSettingsChanged)
+    def numVisibleSettings(self):
+        return self._num_visible_settings
+
+    def setNumVisibleSettings(self, num_visible_settings):
+        self._num_visible_settings = num_visible_settings
+        self.numVisibleSettingsChanged.emit()
 
     @pyqtProperty(bool, notify = machineConflictChanged)
     def machineConflict(self):
@@ -95,8 +185,8 @@ class WorkspaceDialog(QObject):
     @pyqtSlot()
     ##  Used to notify the dialog so the lock can be released.
     def notifyClosed(self):
-        if self._result is None:
-            self._result = {}
+        self._result = {}
+        self._visible = False
         self._lock.release()
 
     def hide(self):

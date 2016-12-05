@@ -231,6 +231,8 @@ class CuraApplication(QtApplication):
             shell
                 wall_thickness
                 top_bottom_thickness
+                z_seam_x
+                z_seam_y
             infill
                 infill_sparse_density
             material

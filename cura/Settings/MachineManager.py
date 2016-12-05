@@ -35,6 +35,10 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.activeQualityChanged)
 
         self._stacks_have_errors = None
+        self._empty_variant_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_variant")[0]
+        self._empty_material_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_material")[0]
+        self._empty_quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality")[0]
+        self._empty_quality_changes_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality_changes")[0]
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
@@ -48,11 +52,6 @@ class MachineManager(QObject):
         self.globalValueChanged.connect(self.activeStackValueChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self.activeStackChanged)
         self.activeStackChanged.connect(self.activeStackValueChanged)
-
-        self._empty_variant_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_variant")[0]
-        self._empty_material_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
-        self._empty_quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality")[0]
-        self._empty_quality_changes_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_quality_changes")[0]
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
 

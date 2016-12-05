@@ -71,12 +71,13 @@ UM.MainWindow
                 {
                     action: Cura.Actions.open;
                 }
+
+                RecentFilesMenu { }
+
                 MenuItem
                 {
                     action: Cura.Actions.loadWorkspace
                 }
-
-                RecentFilesMenu { }
 
                 MenuSeparator { }
 
@@ -110,7 +111,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveWorkspaceMenu
-                    text: catalog.i18nc("@title:menu menubar:file","Export project")
+                    text: catalog.i18nc("@title:menu menubar:file","Save project")
                     onTriggered: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" });
                 }
 

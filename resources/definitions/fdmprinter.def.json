@@ -961,15 +961,37 @@
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
-                    "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
+                    "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
                     "type": "enum",
                     "options":
                     {
-                        "back": "Back",
+                        "back": "User Specified",
                         "shortest": "Shortest",
                         "random": "Random"
                     },
                     "default_value": "shortest",
+                    "settable_per_mesh": true
+                },
+                "z_seam_x":
+                {
+                    "label": "Z Seam X",
+                    "description": "The X coordinate of the position near where to start printing each part in a layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "value": "machine_width / 2",
+                    "enabled": "z_seam_type == 'back'",
+                    "settable_per_mesh": true
+                },
+                "z_seam_y":
+                {
+                    "label": "Z Seam Y",
+                    "description": "The Y coordinate of the position near where to start printing each part in a layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "value": "machine_depth / 2",
+                    "enabled": "z_seam_type == 'back'",
                     "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
@@ -1311,6 +1333,7 @@
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature_layer_0'))",
                     "default_value": 60,
+                    "value": "material_bed_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
@@ -3865,7 +3888,7 @@
                 "multiple_mesh_overlap":
                 {
                     "label": "Merged Meshes Overlap",
-                    "description": "Make meshes which are placed directly close to each other overlap a bit. This makes them bond together better.",
+                    "description": "Make meshes which are touching each other overlap a bit. This makes them bond together better.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.15,
