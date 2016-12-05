@@ -307,7 +307,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if container_stacks:
                     stack = container_stacks[0]
                     if self._resolve_strategies["machine"] == "override":
+                        # TODO: HACK
+                        # There is a machine, check if it has authenticationd data. If so, keep that data.
+                        network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
+                        network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
                         container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                        if network_authentication_id:
+                            container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
+                        if network_authentication_key:
+                            container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
                     elif self._resolve_strategies["machine"] == "new":
                         new_id = self.getNewId(container_id)
                         stack = ContainerStack(new_id)
