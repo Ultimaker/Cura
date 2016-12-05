@@ -26,9 +26,9 @@ def getMetaData():
         },
         "workspace_writer": {
             "output": [{
-                "extension": "3mf",
-                "description": i18n_catalog.i18nc("@item:inlistbox", "3MF file"),
-                "mime_type": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                "extension": "curaproject.3mf",
+                "description": i18n_catalog.i18nc("@item:inlistbox", "Cura Project 3MF file"),
+                "mime_type": "application/x-curaproject+xml",
                 "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
             }]
         }
