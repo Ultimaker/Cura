@@ -14,6 +14,9 @@ import UM.Logger
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
 
+
+##  This action allows for certain settings that are "machine only") to be modified.
+#   It automatically detects machine definitions that it knows how to change and attaches itself to those.
 class MachineSettingsAction(MachineAction):
     def __init__(self, parent = None):
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
