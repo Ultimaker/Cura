@@ -117,12 +117,12 @@ Column
                 background: Rectangle
                 {
                     border.width: UM.Theme.getSize("default_lining").width
-                    border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
-                                        control.pressed ? UM.Theme.getColor("toggle_active_border") :
-                                        control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
-                    color: control.checked ? UM.Theme.getColor("toggle_checked") :
-                                control.pressed ? UM.Theme.getColor("toggle_active") :
-                                control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
+                    border.color: control.checked ? UM.Theme.getColor("tab_checked_border") :
+                                        control.pressed ? UM.Theme.getColor("tab_active_border") :
+                                        control.hovered ? UM.Theme.getColor("tab_hovered_border") : UM.Theme.getColor("tab_unchecked_border")
+                    color: control.checked ? UM.Theme.getColor("tab_checked") :
+                                control.pressed ? UM.Theme.getColor("tab_active") :
+                                control.hovered ? UM.Theme.getColor("tab_hovered") : UM.Theme.getColor("tab_unchecked")
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     Rectangle
@@ -137,7 +137,7 @@ Column
 
                         color: model.color
                         border.width: UM.Theme.getSize("default_lining").width
-                        border.color: UM.Theme.getColor("toggle_checked")
+                        border.color: UM.Theme.getColor("tab_checked_border")
                     }
 
                     Label
@@ -148,9 +148,9 @@ Column
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
 
-                        color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
-                                    control.pressed ? UM.Theme.getColor("toggle_active_text") :
-                                    control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                        color: control.checked ? UM.Theme.getColor("tab_checked_text") :
+                                    control.pressed ? UM.Theme.getColor("tab_active_text") :
+                                    control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
 
                         font: UM.Theme.getFont("default")
                         text: control.text
