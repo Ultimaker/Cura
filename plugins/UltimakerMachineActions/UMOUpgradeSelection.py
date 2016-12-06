@@ -7,6 +7,9 @@ catalog = i18nCatalog("cura")
 
 import UM.Settings.InstanceContainer
 
+
+##  The Ultimaker Original can have a few revisions & upgrades. This action helps with selecting them, so they are added
+#   as a variant.
 class UMOUpgradeSelection(MachineAction):
     def __init__(self):
         super().__init__("UMOUpgradeSelection", catalog.i18nc("@action", "Select upgrades"))

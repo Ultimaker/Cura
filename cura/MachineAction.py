@@ -6,13 +6,21 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 
 from UM.PluginObject import PluginObject
 from UM.PluginRegistry import PluginRegistry
-
+from UM.Logger import Logger
 from UM.Application import Application
 
 import os
 
 
+##  Machine actions are actions that are added to a specific machine type. Examples of such actions are
+#   updating the firmware, connecting with remote devices or doing bed leveling. A machine action can also have a
+#   qml, which should contain a "Cura.MachineAction" item. When activated, the item will be displayed in a dialog
+#   and this object will be added as "manager" (so all pyqtSlot() functions can be called by calling manager.func())
 class MachineAction(QObject, PluginObject):
+
+    ##  Create a new Machine action.
+    #   \param key unique key of the machine action
+    #   \param label Human readable label used to identify the machine action.
     def __init__(self, key, label = ""):
         super().__init__()
         self._key = key
@@ -63,13 +71,16 @@ class MachineAction(QObject, PluginObject):
     def finished(self):
         return self._finished
 
+    ##  Protected helper to create a view object based on provided QML.
     def _createViewFromQML(self):
-        path = QUrl.fromLocalFile(
-            os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url))
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), self._qml_url))
         self._component = QQmlComponent(Application.getInstance()._engine, path)
         self._context = QQmlContext(Application.getInstance()._engine.rootContext())
         self._context.setContextProperty("manager", self)
         self._view = self._component.create(self._context)
+        if self._view is None:
+            Logger.log("c", "QQmlComponent status %s", self._component.status())
+            Logger.log("c", "QQmlComponent error string %s", self._component.errorString())
 
     @pyqtProperty(QObject, constant = True)
     def displayItem(self):

@@ -8,6 +8,7 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
+##  Action to check up if the self-built UMO was done correctly.
 class UMOCheckupMachineAction(MachineAction):
     def __init__(self):
         super().__init__("UMOCheckup", catalog.i18nc("@action", "Checkup"))
@@ -26,7 +27,6 @@ class UMOCheckupMachineAction(MachineAction):
         self._check_started = False
 
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
-
 
     onBedTestCompleted = pyqtSignal()
     onHotendTestCompleted = pyqtSignal()

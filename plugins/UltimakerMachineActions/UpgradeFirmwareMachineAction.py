@@ -5,6 +5,7 @@ import UM.Settings.DefinitionContainer
 catalog = i18nCatalog("cura")
 
 
+##  Upgrade the firmware of a machine by USB with this action.
 class UpgradeFirmwareMachineAction(MachineAction):
     def __init__(self):
         super().__init__("UpgradeFirmware", catalog.i18nc("@action", "Upgrade Firmware"))
@@ -12,6 +13,6 @@ class UpgradeFirmwareMachineAction(MachineAction):
         cura.Settings.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     def _onContainerAdded(self, container):
-        # Add this action as a supported action to all machine definitions
+        # Add this action as a supported action to all machine definitions if they support USB connection
         if isinstance(container, UM.Settings.DefinitionContainer) and container.getMetaDataEntry("type") == "machine" and container.getMetaDataEntry("supports_usb_connection"):
             UM.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
