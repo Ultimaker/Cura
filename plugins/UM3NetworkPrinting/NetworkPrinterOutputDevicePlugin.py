@@ -124,6 +124,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
     ##  Stop looking for devices on network.
     def stop(self):
         if self._zero_conf is not None:
+            Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
 
     def getPrinters(self):
@@ -136,10 +137,12 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         for key in self._printers:
             if key == active_machine.getMetaDataEntry("um_network_key"):
+                Logger.log("d", "Connecting [%s]..." % key)
                 self._printers[key].connect()
                 self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
                 if self._printers[key].isConnected():
+                    Logger.log("d", "Closing connection [%s]..." % key)
                     self._printers[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
@@ -149,6 +152,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and printer.getKey() == global_container_stack.getMetaDataEntry("um_network_key"):
             if printer.getKey() not in self._old_printers:  # Was the printer already connected, but a re-scan forced?
+                Logger.log("d", "addPrinter, connecting [%s]..." % printer.getKey())
                 self._printers[printer.getKey()].connect()
                 printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
         self.printerListChanged.emit()
@@ -158,6 +162,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         if printer:
             if printer.isConnected():
                 printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
+                Logger.log("d", "removePrinter, disconnecting [%s]..." % name)
                 printer.disconnect()
         self.printerListChanged.emit()
 
