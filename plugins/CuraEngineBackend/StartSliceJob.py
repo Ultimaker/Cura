@@ -157,21 +157,27 @@ class StartSliceJob(Job):
                 if group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
-                    mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
+                    mesh_data = object.getMeshData()
+                    rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
+                    translate = object.getWorldTransformation().getData()[:3, 3]
+
+                    # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
+                    verts = mesh_data.getVertices()
+                    verts = verts.dot(rot_scale)
+                    verts += translate
+
+                    # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
+                    verts[:, [1, 2]] = verts[:, [2, 1]]
+                    verts[:, 1] *= -1
 
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
-                    verts = mesh_data.getVertices()
-                    indices = mesh_data.getIndices()
 
+                    indices = mesh_data.getIndices()
                     if indices is not None:
                         flat_verts = numpy.take(verts, indices.flatten(), axis=0)
                     else:
                         flat_verts = numpy.array(verts)
-
-                    # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
-                    flat_verts[:, [1, 2]] = flat_verts[:, [2, 1]]
-                    flat_verts[:, 1] *= -1
 
                     obj.vertices = flat_verts
 
