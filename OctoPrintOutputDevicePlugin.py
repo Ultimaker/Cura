@@ -60,18 +60,17 @@ class OctoPrintOutputDevicePlugin(OutputDevicePlugin):
 
         # Add manual instances from preference
         for name, properties in self._manual_instances.items():
-            additional_properties = {b"path": properties["path"].encode("utf-8"), b"manual": b"true"}
+            additional_properties = {"path": properties["path"], "manual": True}
             self.addInstance(name, properties["address"], properties["port"], additional_properties)
 
     def addManualInstance(self, name, address, port, path):
         self._manual_instances[name] = {"address": address, "port": port, "path": path}
         self._preferences.setValue("octoprint/manual_instances", json.dumps(self._manual_instances))
 
-        properties = { b"path": path.encode("utf-8"), b"manual": b"true" }
+        properties = { "path": path, "manual": True }
 
         if name in self._instances:
             self.removeInstance(name)
-
         self.addInstance(name, address, port, properties)
         self.instanceListChanged.emit()
 
