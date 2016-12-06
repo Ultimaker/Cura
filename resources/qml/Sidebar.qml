@@ -149,6 +149,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
+        property bool showExtruderTabs: modesListModel.get(base.currentModeIndex).showExtruderTabs
 
         anchors.top: sidebarHeaderBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -408,8 +409,8 @@ Rectangle
 
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple, showFilterButton: false })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced, showFilterButton: true })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple, showFilterButton: false, showExtruderTabs: false })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced, showFilterButton: true, showExtruderTabs: true })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
         var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
