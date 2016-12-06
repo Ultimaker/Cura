@@ -140,8 +140,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             for extruder in manager.getMachineExtruders(global_container_stack.getId()):
                 extruder_name = extruder.getName()
                 material = extruder.findContainer({ "type": "material" })
-                if material and not self._simple_names:
-                    extruder_name = "%s (%s)" % (material.getName(), extruder_name)
                 position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
                 try:
                     position = int(position)

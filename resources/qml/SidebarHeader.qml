@@ -65,6 +65,7 @@ Column
     {
         id: extruderSelectionRow
         height: UM.Theme.getSize("sidebar_tabs").height
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
         anchors
         {
@@ -86,7 +87,6 @@ Column
             id: extrudersList
             property var index: 0
 
-            visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
             height: UM.Theme.getSize("sidebar_header_mode_tabs").height
 
             boundsBehavior: Flickable.StopAtBounds
