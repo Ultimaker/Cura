@@ -228,7 +228,7 @@
                 "machine_heat_zone_length":
                 {
                     "label": "Heat zone length",
-                    "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
+                    "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament. When an extruder is not needed any more, its filament is moved out of the heat zone.",
                     "default_value": 16,
                     "type": "float",
                     "settable_per_mesh": false,
@@ -238,7 +238,7 @@
                 "machine_cool_zone_length":
                 {
                     "label": "Cool Zone Length",
-                    "description": "The length of the piece that dissipates heat from the hot end to shield heat-sensitive equipment.",
+                    "description": "The length of the piece that dissipates heat from the hot end to shield heat-sensitive equipment. When an extruder is not needed any more, its filament is moved out of the cool zone.",
                     "default_value": 0,
                     "type": "float",
                     "settable_per_mesh": false,
