@@ -116,7 +116,6 @@ class CuraEngineBackend(Backend):
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
-        self.backendStateChange.connect(self._onBackendStateChanged)
 
         # When a tool operation is in progress, don't slice. So we need to listen for tool operations.
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
@@ -188,22 +187,16 @@ class CuraEngineBackend(Backend):
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
 
-    _last_state = BackendState.NotStarted
 
     def pauseSlicing(self):
         self.close()
+        self._pause_slicing = True
         self.backendStateChange.emit(BackendState.SlicingDisabled)
 
     def continueSlicing(self):
-        if self._last_state == BackendState.SlicingDisabled:
-            self.backendStateChange.emit(BackendState.NotStarted)
-
-    def _onBackendStateChanged(self, state):
-        self._last_state = state
-        if state == BackendState.SlicingDisabled:
-            self._pause_slicing = True
-        else:
+        if self._pause_slicing:
             self._pause_slicing = False
+            self.backendStateChange.emit(BackendState.NotStarted)
 
     ##  Terminate the engine process.
     def _terminate(self):

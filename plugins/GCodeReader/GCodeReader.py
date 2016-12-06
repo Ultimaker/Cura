@@ -47,12 +47,13 @@ class GCodeReader(MeshReader):
 
     @staticmethod
     def _getValue(line, code):
-        n = line.find(code) + len(code)
-        if n < 1:
+        n = line.find(code)
+        if n < 0:
             return None
+        n += len(code)
         pattern = re.compile("[;\s]")
         match = pattern.search(line, n)
-        m = match.start() if math is not None else -1
+        m = match.start() if match is not None else -1
         try:
             if m < 0:
                 return line[n:]
@@ -91,7 +92,7 @@ class GCodeReader(MeshReader):
             return False
         try:
             self._layer_data_builder.addLayer(self._layer)
-            self._layer_data_builder.setLayerHeight(self._layer, path[0][1])
+            self._layer_data_builder.setLayerHeight(self._layer, path[0][2])
             self._layer_data_builder.setLayerThickness(self._layer, math.fabs(current_z - self._prev_z))
             this_layer = self._layer_data_builder.getLayer(self._layer)
         except ValueError:
@@ -120,7 +121,8 @@ class GCodeReader(MeshReader):
     def _gCode0(self, position, params, path):
         x, y, z, e = position
         xp, yp, zp, ep = params
-        x, y = xp if xp is not None else x, yp if yp is not None else y
+        x = xp if xp is not None else x
+        y = yp if yp is not None else y
         z_changed = False
         if zp is not None:
             if z != zp:
@@ -142,39 +144,37 @@ class GCodeReader(MeshReader):
                 path.clear()
             else:
                 path.clear()
-        return x, y, z, e
+        return (x, y, z, e)
 
     def _gCode28(self, position, params, path):
         x, y, z, e = position
         xp, yp, zp, ep = params
-        return xp if xp is not None else x,\
-            yp if yp is not None else y,\
-            0,\
-            e
+        return (xp if xp is not None else x,
+            yp if yp is not None else y,
+            0,
+            e)
 
     def _gCode92(self, position, params, path):
         x, y, z, e = position
         xp, yp, zp, ep = params
-        return xp if xp is not None else x,\
-            yp if yp is not None else y,\
-            zp if zp is not None else z,\
-            ep if ep is not None else e
+        return (xp if xp is not None else x,
+            yp if yp is not None else y,
+            zp if zp is not None else z,
+            ep if ep is not None else e)
 
-    _g_code_map = {0: _gCode0, 1: _gCode0, 28: _gCode28, 92: _gCode92}
+    _gCode1 = _gCode0
 
     def _processGCode(self, G, line, position, path):
-        func = self._g_code_map.get(G, None)
+        func = getattr(self, "_gCode%s" % G, None)
         x = self._getFloat(line, "X")
         y = self._getFloat(line, "Y")
         z = self._getFloat(line, "Z")
         e = self._getFloat(line, "E")
-        if x is not None and x < 0:
-            self._center_is_zero = True
-        if y is not None and y < 0:
-            self._center_is_zero = True
         if func is not None:
+            if (x is not None and x < 0) or (y is not None and y < 0):
+                self._center_is_zero = True
             params = (x, y, z, e)
-            return func(self, position, params, path)
+            return func(position, params, path)
         return position
 
     def _processTCode(self, T, line, position, path):
@@ -186,6 +186,8 @@ class GCodeReader(MeshReader):
         else:
             path.clear()
 
+    _type_keyword = ";TYPE:"
+
     def read(self, file_name):
         Logger.log("d", "Preparing to load %s" % file_name)
         self._cancelled = False
@@ -194,7 +196,7 @@ class GCodeReader(MeshReader):
         scene_node.getBoundingBox = self._getNullBoundingBox  # Manually set bounding box, because mesh doesn't have mesh data
 
         glist = []
-        Application.getInstance().getController().getScene().gcode_list = glist
+
 
         Logger.log("d", "Opening file %s" % file_name)
 
@@ -209,7 +211,7 @@ class GCodeReader(MeshReader):
 
             self._clearValues()
 
-            self._message = Message(catalog.i18nc("@info:status", "Parsing GCODE"), lifetime=0)
+            self._message = Message(catalog.i18nc("@info:status", "Parsing G-code"), lifetime=0)
             self._message.setProgress(0)
             self._message.show()
 
@@ -227,8 +229,8 @@ class GCodeReader(MeshReader):
                     self._message.setProgress(math.floor(current_line / file_lines * 100))
                 if len(line) == 0:
                     continue
-                if line.find(";TYPE:") == 0:
-                    type = line[6:].strip()
+                if line.find(self._type_keyword) == 0:
+                    type = line[len(self._type_keyword):].strip()
                     if type == "WALL-INNER":
                         self._layer_type = LayerPolygon.InsetXType
                     elif type == "WALL-OUTER":
@@ -265,6 +267,8 @@ class GCodeReader(MeshReader):
         sliceable_decorator.setBlockSlicing(True)
         sliceable_decorator.setSliceable(False)
         scene_node.addDecorator(sliceable_decorator)
+
+        Application.getInstance().getController().getScene().gcode_list = glist
 
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()

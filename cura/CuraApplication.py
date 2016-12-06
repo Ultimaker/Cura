@@ -20,6 +20,7 @@ from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.Validator import Validator
 from UM.Message import Message
+from UM.i18n import i18nCatalog
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -31,9 +32,6 @@ from cura.SetParentOperation import SetParentOperation
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
-
-from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -608,15 +606,16 @@ class CuraApplication(QtApplication):
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
-        if not should_pause:
-            self.getBackend().continueSlicing()
-            self.setHideSettings(False)
-            if self.getPrintInformation():
-                self.getPrintInformation().setPreSliced(False)
-        else:
+        print_information = self.getPrintInformation()
+        if should_pause:
             self.getBackend().pauseSlicing()
             self.setHideSettings(True)
-            self.getPrintInformation().setPreSliced(True)
+            print_information.setPreSliced(True)
+        else:
+            self.getBackend().continueSlicing()
+            self.setHideSettings(False)
+            if print_information:
+                print_information.setPreSliced(False)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
