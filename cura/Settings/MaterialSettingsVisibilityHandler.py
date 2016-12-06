@@ -8,7 +8,7 @@ class MaterialSettingsVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         super().__init__(parent = parent, *args, **kwargs)
 
         material_settings = set([
-            "material_print_temperature",
+            "default_material_print_temperature",
             "material_bed_temperature",
             "material_standby_temperature",
             "cool_fan_speed",

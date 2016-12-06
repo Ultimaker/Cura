@@ -568,7 +568,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
     # Map XML file setting names to internal names
     __material_property_setting_map = {
-        "print temperature": "material_print_temperature",
+        "print temperature": "default_material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
         "processing temperature graph": "material_flow_temp_graph",
