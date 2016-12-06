@@ -798,15 +798,16 @@ class BuildVolume(SceneNode):
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
         move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
-        avoid_enabled_per_extruder = self._getSettingFromAllExtruders(("travel_avoid_other_parts"))
-        avoid_distance_per_extruder = self._getSettingFromAllExtruders("travel_avoid_distance")
-        for index, avoid_other_parts_enabled in enumerate(avoid_enabled_per_extruder): #For each extruder (or just global).
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
+        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts","value") for stack in used_extruders]
+        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
+        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder): #For each extruder (or just global).
             if avoid_other_parts_enabled:
-                move_from_wall_radius = max(move_from_wall_radius, avoid_distance_per_extruder[index]) #Index of the same extruder.
+                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
 
-        #Now combine our different pieces of data to get the final border size.
-        #Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
-        #Support expansion is added to farthest shield distance, since the shields go around support.
+        # Now combine our different pieces of data to get the final border size.
+        # Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
+        # Support expansion is added to farthest shield distance, since the shields go around support.
         border_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
         return border_size
 
