@@ -92,6 +92,15 @@ class VersionUpgrade22to24(VersionUpgrade):
                     result.append( { "path": entry.path, "name": config.get("general", "name") } )
         return result
 
+    def upgradeExtruderTrain(self, serialised, filename):
+        config = configparser.ConfigParser(interpolation = None)
+        config.read_string(serialised) # Read the input string as config file.
+        config.set("general", "version", "3")   # Just bump the version number. That is all we need for now.
+
+        output = io.StringIO()
+        config.write(output)
+        return [filename], [output.getvalue()]
+
     def getCfgVersion(self, serialised):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)

@@ -129,6 +129,7 @@ class CuraApplication(QtApplication):
             {
                 ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("extruder_train", UM.Settings.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", UM.Settings.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
