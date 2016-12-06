@@ -1235,6 +1235,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "default_material_print_temperature":
+                {
+                    "label": "Default Printing Temperature",
+                    "description": "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 210,
+                    "enabled": false,
+                    "settable_per_extruder": true,
+                    "minimum_value": "-273.15"
+                },
                 "material_print_temperature":
                 {
                     "label": "Printing Temperature",
@@ -1242,6 +1253,7 @@
                     "unit": "°C",
                     "type": "float",
                     "default_value": 210,
+                    "value": "default_material_print_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
@@ -1794,7 +1806,7 @@
                         "speed_travel_layer_0":
                         {
                             "label": "Initial Layer Travel Speed",
-                            "description": "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate.",
+                            "description": "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed.",
                             "unit": "mm/s",
                             "type": "float",
                             "default_value": 60,
