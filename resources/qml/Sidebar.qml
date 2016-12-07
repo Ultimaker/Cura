@@ -34,6 +34,18 @@ Rectangle
     color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
 
+    Timer {
+        id: hoverTimer
+        interval: 500
+        repeat: false
+        property var item
+        property string text
+
+        onTriggered:
+        {
+            base.showTooltip(base, {x:1, y:item.y}, text);
+        }
+    }
 
     function showTooltip(item, position, text)
     {
@@ -146,6 +158,21 @@ Rectangle
                 checkable: true
                 checked: !monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
+                property string tooltipText: catalog.i18nc("@tooltip", "<b>Print Setup</b><br/><br/>Edit or review the settings for the active print job.")
+
+                onHoveredChanged: {
+                    if (hovered)
+                    {
+                        hoverTimer.item = showSettings
+                        hoverTimer.text = tooltipText
+                        hoverTimer.start();
+                    }
+                    else
+                    {
+                        hoverTimer.stop();
+                        base.hideTooltip();
+                    }
+                }
 
                 style:  UM.Theme.styles.sidebar_header_tab
             }
@@ -189,6 +216,21 @@ Rectangle
                 checkable: true
                 checked: monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
+                property string tooltipText: catalog.i18nc("@tooltip", "<b>Print Monitor</b><br/><br/>Monitor the state of the connected printer and the print job in progress.")
+
+                onHoveredChanged: {
+                    if (hovered)
+                    {
+                        hoverTimer.item = showMonitor
+                        hoverTimer.text = tooltipText
+                        hoverTimer.start();
+                    }
+                    else
+                    {
+                        hoverTimer.stop();
+                        base.hideTooltip();
+                    }
+                }
 
                 style:  UM.Theme.styles.sidebar_header_tab
             }
@@ -261,6 +303,20 @@ Rectangle
                 checkable: true;
                 checked: base.currentModeIndex == index
                 onClicked: base.currentModeIndex = index
+
+                onHoveredChanged: {
+                    if (hovered)
+                    {
+                        hoverTimer.item = settingsModeSelection
+                        hoverTimer.text = model.tooltipText
+                        hoverTimer.start();
+                    }
+                    else
+                    {
+                        hoverTimer.stop();
+                        base.hideTooltip();
+                    }
+                }
 
                 style: ButtonStyle {
                     background: Rectangle {
@@ -458,8 +514,18 @@ Rectangle
 
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Recommended"), item: sidebarSimple, showFilterButton: false })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Custom"), item: sidebarAdvanced, showFilterButton: true })
+        modesListModel.append({
+            text: catalog.i18nc("@title:tab", "Recommended"),
+            tooltipText: catalog.i18nc("@tooltip", "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."),
+            item: sidebarSimple,
+            showFilterButton: false
+        })
+        modesListModel.append({
+            text: catalog.i18nc("@title:tab", "Custom"),
+            tooltipText: catalog.i18nc("@tooltip", "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."),
+            item: sidebarAdvanced,
+            showFilterButton: true
+        })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
         var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
