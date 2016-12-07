@@ -59,7 +59,8 @@ Cura.MachineAction
                 onClicked:
                 {
                     manualPrinterDialog.showDialog(base.selectedInstance.name, base.selectedInstance.ipAddress,
-                                                   base.selectedInstance.port, base.selectedInstance.path, base.selectedInstance.useHttps);
+                                                   base.selectedInstance.port, base.selectedInstance.path,
+                                                   base.selectedInstance.getProperty("useHttps") == "true");
                 }
             }
 
