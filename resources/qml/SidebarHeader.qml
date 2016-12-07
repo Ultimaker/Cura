@@ -61,111 +61,120 @@ Column
         }
     }
 
-    /*Rectangle
+    Row
     {
-        id: extruderSeparator
-        // anchors.verticalCenter: parent.verticalCenter
-        // anchors.top: machineSelectionRow.bottom
-
+        id: extruderSelectionRow
         width: parent.width
-        height: UM.Theme.getSize("sidebar_lining").height
-        color: UM.Theme.getColor("sidebar_lining")
-    }*/
+        height: UM.Theme.getSize("sidebar_tabs").height
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
-    ListView
-    {
-        id: extrudersList
-        property var index: 0
-
-        height: UM.Theme.getSize("sidebar_header_mode_tabs").height
-
-        boundsBehavior: Flickable.StopAtBounds
-
-        anchors
+        Rectangle
         {
-            left: parent.left
-            right: parent.right
+            id: extruderSeparator
+            visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
+
+            width: parent.width
+            height: parent.height
+            color: UM.Theme.getColor("sidebar_lining")
+
+            anchors.top: extruderSelectionRow.top
         }
 
-        ExclusiveGroup { id: extruderMenuGroup; }
-
-        orientation: ListView.Horizontal
-
-        model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: false }
-
-        Connections
+        ListView
         {
-            target: Cura.MachineManager
-            onGlobalContainerChanged:
+            id: extrudersList
+            property var index: 0
+
+            height: UM.Theme.getSize("sidebar_header_mode_tabs").height
+            boundsBehavior: Flickable.StopAtBounds
+
+            anchors
             {
-                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                var extruder_index = (machineExtruderCount.properties.value == 1) ? -1 : 0
-                ExtruderManager.setActiveExtruderIndex(extruder_index);
-            }
-        }
-
-        delegate: Button
-        {
-            height: ListView.view.height
-            width: ListView.view.width / extrudersModel.rowCount()
-
-            text: model.name
-            tooltip: model.name
-            exclusiveGroup: extruderMenuGroup
-            checked: base.currentExtruderIndex == index
-
-            onClicked:
-            {
-                forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
-                ExtruderManager.setActiveExtruderIndex(index);
+                left: parent.left
+                right: parent.right
+                bottom: extruderSelectionRow.bottom
             }
 
-            style: ButtonStyle
+            ExclusiveGroup { id: extruderMenuGroup; }
+
+            orientation: ListView.Horizontal
+
+            model: Cura.ExtrudersModel { id: extrudersModel; addGlobal: false }
+
+            Connections
             {
-                background: Rectangle
+                target: Cura.MachineManager
+                onGlobalContainerChanged:
                 {
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: control.checked ? UM.Theme.getColor("tab_checked_border") :
-                                        control.pressed ? UM.Theme.getColor("tab_active_border") :
-                                        control.hovered ? UM.Theme.getColor("tab_hovered_border") : UM.Theme.getColor("tab_unchecked_border")
-                    color: control.checked ? UM.Theme.getColor("tab_checked") :
-                                control.pressed ? UM.Theme.getColor("tab_active") :
-                                control.hovered ? UM.Theme.getColor("tab_hovered") : UM.Theme.getColor("tab_unchecked")
-                    Behavior on color { ColorAnimation { duration: 50; } }
-
-                    Rectangle
-                    {
-                        id: swatch
-                        visible: index > -1
-                        height: UM.Theme.getSize("setting_control").height / 2
-                        width: height
-                        anchors.left: parent.left
-                        anchors.leftMargin: (parent.height - height) / 2
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        color: model.color
-                        border.width: UM.Theme.getSize("default_lining").width
-                        border.color: UM.Theme.getColor("setting_control_border")
-                    }
-
-                    Label
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: swatch.visible ? swatch.right : parent.left
-                        anchors.leftMargin: swatch.visible ? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("default_margin").width
-                        anchors.right: parent.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
-
-                        color: control.checked ? UM.Theme.getColor("tab_checked_text") :
-                                    control.pressed ? UM.Theme.getColor("tab_active_text") :
-                                    control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
-
-                        font: UM.Theme.getFont("default")
-                        text: control.text
-                        elide: Text.ElideRight
-                    }
+                    forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                    var extruder_index = (machineExtruderCount.properties.value == 1) ? -1 : 0
+                    ExtruderManager.setActiveExtruderIndex(extruder_index);
                 }
-                label: Item { }
+            }
+
+            delegate: Button
+            {
+                height: ListView.view.height
+                width: ListView.view.width / extrudersModel.rowCount()
+
+                text: model.name
+                tooltip: model.name
+                exclusiveGroup: extruderMenuGroup
+                checked: base.currentExtruderIndex == index
+
+                onClicked:
+                {
+                    forceActiveFocus() // Changing focus applies the currently-being-typed values so it can change the displayed setting values.
+                    ExtruderManager.setActiveExtruderIndex(index);
+                }
+
+                style: ButtonStyle
+                {
+                    background: Rectangle
+                    {
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: control.checked ? UM.Theme.getColor("tab_checked_border") :
+                                            control.pressed ? UM.Theme.getColor("tab_active_border") :
+                                            control.hovered ? UM.Theme.getColor("tab_hovered_border") : UM.Theme.getColor("tab_unchecked_border")
+                        color: control.checked ? UM.Theme.getColor("tab_checked") :
+                                    control.pressed ? UM.Theme.getColor("tab_active") :
+                                    control.hovered ? UM.Theme.getColor("tab_hovered") : UM.Theme.getColor("tab_unchecked")
+                        Behavior on color { ColorAnimation { duration: 50; } }
+
+                        Rectangle
+                        {
+                            id: swatch
+                            visible: index > -1
+                            height: UM.Theme.getSize("setting_control").height / 2
+                            width: height
+                            anchors.left: parent.left
+                            anchors.leftMargin: (parent.height - height) / 2
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            color: model.color
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: UM.Theme.getColor("setting_control_border")
+                        }
+
+                        Label
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: swatch.visible ? swatch.right : parent.left
+                            anchors.leftMargin: swatch.visible ? UM.Theme.getSize("default_margin").width / 2 : UM.Theme.getSize("default_margin").width
+                            anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+
+                            color: control.checked ? UM.Theme.getColor("tab_checked_text") :
+                                        control.pressed ? UM.Theme.getColor("tab_active_text") :
+                                        control.hovered ? UM.Theme.getColor("tab_hovered_text") : UM.Theme.getColor("tab_unchecked_text")
+
+                            font: UM.Theme.getFont("default")
+                            text: control.text
+                            elide: Text.ElideRight
+                        }
+                    }
+                    label: Item { }
+                }
             }
         }
     }
@@ -183,7 +192,6 @@ Column
             leftMargin: UM.Theme.getSize("default_margin").width
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
-            top: extrudersList.bottom
         }
 
         Label
