@@ -130,11 +130,11 @@ class GCodeReader(MeshReader):
                 self._prev_z = z
             z = zp
         if ep is not None:
-            if ep > e:
+            if ep > e[self._extruder]:
                 path.append([x, y, z, self._layer_type])  # extrusion
             else:
                 path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
-            e = ep
+            e[self._extruder] = ep
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         if z_changed:
@@ -157,10 +157,12 @@ class GCodeReader(MeshReader):
     def _gCode92(self, position, params, path):
         x, y, z, e = position
         xp, yp, zp, ep = params
+        if ep is not None:
+            e[self._extruder] = ep
         return (xp if xp is not None else x,
             yp if yp is not None else y,
             zp if zp is not None else z,
-            ep if ep is not None else e)
+            e)
 
     _gCode1 = _gCode0
 
@@ -217,7 +219,7 @@ class GCodeReader(MeshReader):
 
             Logger.log("d", "Parsing %s" % file_name)
 
-            current_position = (0, 0, 0, 0)  # x, y, z, e
+            current_position = (0, 0, 0, [0, 0])  # x, y, z, e
             current_path = []
 
             for line in file:
