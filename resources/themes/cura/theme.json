@@ -98,7 +98,7 @@
         "tab_checked_text": [24, 41, 77, 255],
         "tab_unchecked": [245, 245, 245, 255],
         "tab_unchecked_border": [245, 245, 245, 255],
-        "tab_unchecked_text": [152, 152, 152, 255],
+        "tab_unchecked_text": [127, 127, 127, 255],
         "tab_hovered": [245, 245, 245, 255],
         "tab_hovered_border": [245, 245, 245, 255],
         "tab_hovered_text": [32, 166, 219, 255],
