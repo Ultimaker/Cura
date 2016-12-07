@@ -21,7 +21,7 @@ Column
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    Row
+    Item
     {
         id: extruderSelectionRow
         width: parent.width
