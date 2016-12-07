@@ -450,6 +450,10 @@ class BuildVolume(SceneNode):
         used_extruders = extruder_manager.getUsedExtruderStacks()
         disallowed_border_size = self._getEdgeDisallowedSize()
 
+        if not used_extruders:
+            # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
+            used_extruders = [extruder_manager.getActiveExtruderStack()]
+
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrime(disallowed_border_size, used_extruders)
         prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
