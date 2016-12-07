@@ -65,7 +65,7 @@ Column
     {
         id: extruderSelectionRow
         height: UM.Theme.getSize("sidebar_tabs").height
-        visible: showExtruderTabs && machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
+        visible: machineExtruderCount.properties.value > 1 && !sidebar.monitoringPrint
 
         anchors
         {
