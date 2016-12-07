@@ -1335,7 +1335,7 @@
                     "description": "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",
                     "unit": "°C/s",
                     "type": "float",
-                    "default_value": 0.5,
+                    "default_value": 0.7,
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "maximum_value": "machine_nozzle_heat_up_speed",
