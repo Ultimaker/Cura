@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
+import "Menus"
 
 Rectangle
 {
@@ -85,12 +86,60 @@ Rectangle
         Row
         {
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("default_margin").width
+
+            ToolButton
+            {
+                id: machineSelection
+                text: Cura.MachineManager.activeMachineName
+
+                height: UM.Theme.getSize("setting_control").height
+                tooltip: Cura.MachineManager.activeMachineName
+                anchors.verticalCenter: parent.verticalCenter
+                style: ButtonStyle {
+                    background: Rectangle {
+                        color: UM.Theme.getColor("sidebar_header_bar")
+
+                        UM.RecolorImage {
+                            id: downArrow
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: parent.right
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
+                            sourceSize.width: width
+                            sourceSize.height: width
+                            color: UM.Theme.getColor("text_reversed")
+                            source: UM.Theme.getIcon("arrow_bottom")
+                        }
+                        Label {
+                            id: sidebarComboBoxLabel
+                            color: UM.Theme.getColor("text_reversed")
+                            text: control.text;
+                            elide: Text.ElideRight;
+                            anchors.left: parent.left;
+                            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                            anchors.right: downArrow.left;
+                            anchors.rightMargin: control.rightMargin;
+                            anchors.verticalCenter: parent.verticalCenter;
+                            font: UM.Theme.getFont("large")
+                        }
+                    }
+                    label: Label{}
+                }
+
+                width: parent.width - (showSettings.width + showMonitor.width + 2 * UM.Theme.getSize("default_margin").width)
+
+                menu: PrinterMenu { }
+            }
+
             Button
             {
                 id: showSettings
-                width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
+                width: height
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = false
                 iconSource: UM.Theme.getIcon("tab_settings");
@@ -100,10 +149,11 @@ Rectangle
 
                 style:  UM.Theme.styles.sidebar_header_tab
             }
+
             Button
             {
                 id: showMonitor
-                width: (parent.width - UM.Theme.getSize("default_margin").width) / 2
+                width: height
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = true
                 iconSource: {
@@ -151,7 +201,6 @@ Rectangle
         width: parent.width
 
         anchors.top: sidebarHeaderBar.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -160,10 +209,11 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        height: UM.Theme.getSize("sidebar_lining").height
+        visible: !monitoringPrint
+        height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
     }
 
     onCurrentModeIndexChanged:
