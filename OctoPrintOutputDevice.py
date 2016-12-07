@@ -25,7 +25,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._address = address
         self._port = port
-        self._path = properties["path"] if "path" in properties else "/"
+        self._path = properties[b'path'].decode("utf-8") if b'path' in properties else "/"
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
@@ -282,7 +282,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self.setConnectionState(ConnectionState.connecting)
         self._update()  # Manually trigger the first update, as we don't want to wait a few secs before it starts.
-        Logger.log("d", "Connection with instance %s with ip %s started", self._key, self._address)
+        Logger.log("d", "Connection with instance %s with url %s started", self._key, self._base_url)
         self._update_timer.start()
 
         self._last_response_time = None
@@ -291,7 +291,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
     ##  Stop requesting data from the instance
     def disconnect(self):
-        Logger.log("d", "Connection with instance %s with ip %s stopped", self._key, self._address)
+        Logger.log("d", "Connection with instance %s with url %s stopped", self._key, self._base_url)
         self.close()
 
     newImage = pyqtSignal()
