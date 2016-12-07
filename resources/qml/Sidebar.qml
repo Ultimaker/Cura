@@ -31,11 +31,11 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
-    color: UM.Theme.getColor("sidebar");
+    color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     Timer {
-        id: hoverTimer
+        id: tooltipDelayTimer
         interval: 500
         repeat: false
         property var item
@@ -86,7 +86,7 @@ Rectangle
         }
     }
 
-    // Mode selection buttons for changing between Setting & Monitor print mode
+    // Printer selection and mode selection buttons for changing between Setting & Monitor print mode
     Rectangle
     {
         id: sidebarHeaderBar
@@ -163,13 +163,13 @@ Rectangle
                 onHoveredChanged: {
                     if (hovered)
                     {
-                        hoverTimer.item = showSettings
-                        hoverTimer.text = tooltipText
-                        hoverTimer.start();
+                        tooltipDelayTimer.item = showSettings
+                        tooltipDelayTimer.text = tooltipText
+                        tooltipDelayTimer.start();
                     }
                     else
                     {
-                        hoverTimer.stop();
+                        tooltipDelayTimer.stop();
                         base.hideTooltip();
                     }
                 }
@@ -221,13 +221,13 @@ Rectangle
                 onHoveredChanged: {
                     if (hovered)
                     {
-                        hoverTimer.item = showMonitor
-                        hoverTimer.text = tooltipText
-                        hoverTimer.start();
+                        tooltipDelayTimer.item = showMonitor
+                        tooltipDelayTimer.text = tooltipText
+                        tooltipDelayTimer.start();
                     }
                     else
                     {
-                        hoverTimer.stop();
+                        tooltipDelayTimer.stop();
                         base.hideTooltip();
                     }
                 }
@@ -307,13 +307,13 @@ Rectangle
                 onHoveredChanged: {
                     if (hovered)
                     {
-                        hoverTimer.item = settingsModeSelection
-                        hoverTimer.text = model.tooltipText
-                        hoverTimer.start();
+                        tooltipDelayTimer.item = settingsModeSelection
+                        tooltipDelayTimer.text = model.tooltipText
+                        tooltipDelayTimer.start();
                     }
                     else
                     {
-                        hoverTimer.stop();
+                        tooltipDelayTimer.stop();
                         base.hideTooltip();
                     }
                 }
