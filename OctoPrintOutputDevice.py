@@ -25,7 +25,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._address = address
         self._port = port
-        self._path = properties[b'path'].decode("utf-8") if b'path' in properties else "/"
+        self._path = properties.get(b"path", b"/").decode("utf-8")
+        if self._path[-1:] != "/":
+            self._path += "/"
+        self._useHttps = properties.get(b'useHttps') == b"true"
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
@@ -41,7 +44,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._api_header = "X-Api-Key"
         self._api_key = None
 
-        self._base_url = "http://%s:%d%s" % (self._address, self._port, self._path)
+        self._base_url = "%s://%s:%d%s" % ("https" if self._useHttps else "http", self._address, self._port, self._path)
         self._api_url = self._base_url + self._api_prefix
         self._camera_url = "http://%s:8080/?action=stream" % self._address
 
@@ -145,6 +148,11 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     @pyqtProperty(str, constant=True)
     def path(self):
         return self._path
+
+    ## path of this instance
+    @pyqtProperty(bool, constant=True)
+    def useHttps(self):
+        return self._useHttps
 
     ## absolute url of this instance
     @pyqtProperty(str, constant=True)
