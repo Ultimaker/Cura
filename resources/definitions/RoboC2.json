@@ -1,0 +1,99 @@
+{
+    "id": "roboC2",
+    "name": "Robo C2",
+    "version": 1,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Robo",
+        "manufacturer": "Robo",
+        "category": "Robo",
+        "file_formats": "text/x-gcode",
+		"platform": "RoboC2.obj",
+        "platform_offset": [0, -22, -35]
+    },	
+	
+    "overrides": {
+        "machine_name": { "default_value": "Robo C2" },
+        "machine_start_gcode": {
+        },
+        "machine_end_gcode": {
+        },
+        "machine_width": {
+            "default_value": 125
+        "machine_depth": {
+            "default_value": 125
+        },
+        "machine_height": {
+            "default_value": 145
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.4,
+            "minimum_value": "0.001"
+        },		
+        "machine_heated_bed": {
+            "default_value": false
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "layer_height": {
+            "default_value": 0.15
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "wall_thickness": {
+            "default_value": 1
+        },
+        "top_bottom_thickness": {
+            "default_value": 1
+        },
+        "bottom_thickness": {
+            "default_value": 1
+        },
+        "material_print_temperature": {
+            "default_value": 190
+        },
+        "material_bed_temperature": {
+            "default_value": 0
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        },
+        "speed_print": {
+            "default_value": 50
+        },
+        "speed_infill": {
+            "default_value": 25
+        },
+        "speed_wall": {
+            "default_value": 35
+        },
+        "speed_topbottom": {
+            "default_value": 35
+        },
+        "speed_travel": {
+            "default_value": 100
+        },
+        "speed_layer_0": {
+            "default_value": 20
+        },
+		"retraction_speed": { 
+			"default": 30.0, "visible": false
+		},
+        "retraction_amount": { 
+			"default": 1.0, "visible": false 
+		},
+        "retraction_hop": { 
+			"default": 0.075, "visible": false 
+		},
+        "support_enable": { 
+			"default": false 
+		}
+    }
+}
+
