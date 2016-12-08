@@ -1,7 +1,7 @@
 {
     "id": "ultimaker3_extended_extruder_left",
     "version": 2,
-    "name": "Print core 1",
+    "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "ultimaker3_extended",
