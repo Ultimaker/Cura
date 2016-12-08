@@ -109,6 +109,10 @@ class MachineManager(QObject):
     def printerOutputDevices(self):
         return self._printer_output_devices
 
+    @pyqtProperty(int, constant=True)
+    def totalNumberOfSettings(self):
+        return len(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+
     def _onHotendIdChanged(self, index, hotend_id):
         if not self._global_container_stack:
             return
@@ -482,6 +486,15 @@ class MachineManager(QObject):
                 return material.getName()
 
         return ""
+
+    @pyqtProperty("QVariantList", notify = activeMaterialChanged)
+    def activeMaterialNames(self):
+        result = []
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            material_container = stack.findContainer(type="material")
+            if material_container and material_container != self._empty_material_container:
+                result.append(material_container.getName())
+        return result
 
     @pyqtProperty(str, notify=activeMaterialChanged)
     def activeMaterialId(self):

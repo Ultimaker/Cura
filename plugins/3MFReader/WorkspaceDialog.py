@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject, pyqtProperty, QCoreApplication
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
@@ -10,6 +13,7 @@ import os
 import threading
 import time
 i18n_catalog = i18nCatalog("cura")
+
 
 class WorkspaceDialog(QObject):
     showDialogSignal = pyqtSignal()

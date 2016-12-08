@@ -112,7 +112,17 @@ UM.MainWindow
                 {
                     id: saveWorkspaceMenu
                     text: catalog.i18nc("@title:menu menubar:file","Save project")
-                    onTriggered: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" });
+                    onTriggered:
+                    {
+                        if(UM.Preferences.getValue("cura/dialog_on_project_save"))
+                        {
+                            saveWorkspaceDialog.open()
+                        }
+                        else
+                        {
+                            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
+                        }
+                    }
                 }
 
                 MenuItem { action: Cura.Actions.reloadAll; }
@@ -500,13 +510,16 @@ UM.MainWindow
 
         onVisibleChanged:
         {
-            if(!visible)
-            {
-                // When the dialog closes, switch to the General page.
-                // This prevents us from having a heavy page like Setting Visiblity active in the background.
-                setPage(0);
-            }
+            // When the dialog closes, switch to the General page.
+            // This prevents us from having a heavy page like Setting Visiblity active in the background.
+            setPage(0);
         }
+    }
+
+    WorkspaceSummaryDialog
+    {
+        id: saveWorkspaceDialog
+        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
     }
 
     Connections
@@ -764,7 +777,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.loadWorkspace
-        onTriggered:openWorkspaceDialog.open()
+        onTriggered: openWorkspaceDialog.open()
     }
 
     EngineLog
