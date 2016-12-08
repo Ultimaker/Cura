@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import configparser #To get version numbers from config files.
+import os
 import os.path
 import io
 
@@ -19,8 +20,14 @@ class VersionUpgrade22to24(VersionUpgrade):
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
         config.set("general", "version", "3")
-        containers = config.get("general", "containers")
-        container_list = containers.split(",")
+
+        container_list = []
+        if config.has_section("containers"):
+            for index, container_id in config.items("containers"):
+                container_list.append(container_id)
+        elif config.has_option("general", "containers"):
+            containers = config.get("general", "containers")
+            container_list = containers.split(",")
 
         user_variants = self.__getUserVariants()
         name_path_dict = {}
@@ -45,7 +52,13 @@ class VersionUpgrade22to24(VersionUpgrade):
 
                 container_list = new_container_list
 
-            config.set("general", "containers", ",".join(container_list))
+            if not config.has_section("containers"):
+                config.add_section("containers")
+
+            config.remove_option("general", "containers")
+
+            for index in range(len(container_list)):
+                config.set("containers", index, container_list[index])
 
         output = io.StringIO()
         config.write(output)

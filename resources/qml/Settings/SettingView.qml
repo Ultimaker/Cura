@@ -84,7 +84,7 @@ Item
 
             onTextChanged:
             {
-                definitionsModel.filter = {"label": "*" + text};
+                definitionsModel.filter = {"i18n_label": "*" + text};
                 findingSettings = (text.length > 0);
                 if(findingSettings != lastFindingSettings)
                 {
