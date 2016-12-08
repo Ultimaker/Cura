@@ -21,47 +21,7 @@ Column
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
 
-    Row
-    {
-        id: machineSelectionRow
-        height: UM.Theme.getSize("sidebar_setup").height
-
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-
-        Label
-        {
-            id: machineSelectionLabel
-            text: catalog.i18nc("@label:listbox", "Printer:");
-            anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
-        }
-
-        ToolButton
-        {
-            id: machineSelection
-            text: Cura.MachineManager.activeMachineName;
-
-            height: UM.Theme.getSize("setting_control").height
-            tooltip: Cura.MachineManager.activeMachineName
-            anchors.verticalCenter: parent.verticalCenter
-            style: UM.Theme.styles.sidebar_header_button
-
-            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
-
-            menu: PrinterMenu { }
-        }
-    }
-
-    Row
+    Item
     {
         id: extruderSelectionRow
         width: parent.width
@@ -86,6 +46,7 @@ Column
             property var index: 0
 
             height: UM.Theme.getSize("sidebar_header_mode_tabs").height
+            width: parent.width
             boundsBehavior: Flickable.StopAtBounds
 
             anchors
@@ -143,6 +104,17 @@ Column
 
                         Rectangle
                         {
+                            id: highlight
+                            visible: control.checked
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            height: UM.Theme.getSize("sidebar_header_highlight").height
+                            color: UM.Theme.getColor("sidebar_header_bar")
+                        }
+
+                        Rectangle
+                        {
                             id: swatch
                             visible: index > -1
                             height: UM.Theme.getSize("setting_control").height / 2
@@ -177,6 +149,14 @@ Column
                 }
             }
         }
+    }
+
+    Item
+    {
+        id: variantRowSpacer
+        height: UM.Theme.getSize("default_margin").height / 4
+        width: height
+        visible: !extruderSelectionRow.visible
     }
 
     Row

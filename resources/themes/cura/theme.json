@@ -98,7 +98,7 @@
         "tab_checked_text": [24, 41, 77, 255],
         "tab_unchecked": [245, 245, 245, 255],
         "tab_unchecked_border": [245, 245, 245, 255],
-        "tab_unchecked_text": [152, 152, 152, 255],
+        "tab_unchecked_text": [127, 127, 127, 255],
         "tab_hovered": [245, 245, 245, 255],
         "tab_hovered_border": [245, 245, 245, 255],
         "tab_hovered_text": [32, 166, 219, 255],
@@ -205,7 +205,7 @@
 
         "sidebar": [35.0, 10.0],
         "sidebar_header": [0.0, 4.0],
-        "sidebar_header_highlight": [0.5, 0.5],
+        "sidebar_header_highlight": [0.25, 0.25],
         "sidebar_header_mode_toggle": [0.0, 2.0],
         "sidebar_header_mode_tabs": [0.0, 3.0],
         "sidebar_lining": [0.5, 0.5],
