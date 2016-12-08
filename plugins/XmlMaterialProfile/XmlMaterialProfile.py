@@ -39,7 +39,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         if self.isReadOnly():
             return
         if self.getMetaDataEntry(key, None) == value:
-            # Prevent loop caused by for loop.
+            # Prevent recursion caused by for loop.
             return
 
         super().setMetaDataEntry(key, value)
@@ -68,6 +68,17 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile)
         for container in containers:
             container.setName(new_name)
+
+    ##  Overridden from InstanceContainer, to set dirty to base file as well.
+    def setDirty(self, dirty):
+        super().setDirty(dirty)
+        base_file = self.getMetaDataEntry("base_file", None)
+        if base_file is not None and base_file != self._id:
+            containers = UM.Settings.ContainerRegistry.getInstance().findContainers(id=base_file)
+            if containers:
+                base_container = containers[0]
+                if not base_container.isReadOnly():
+                    base_container.setDirty(dirty)
 
     ##  Overridden from InstanceContainer
     # def setProperty(self, key, property_name, property_value, container = None):
