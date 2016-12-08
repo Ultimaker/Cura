@@ -407,7 +407,6 @@ class CuraApplication(QtApplication):
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
-        parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))

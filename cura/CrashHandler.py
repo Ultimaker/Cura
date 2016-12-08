@@ -23,8 +23,6 @@ fatal_exception_types = [
 
 def show(exception_type, value, tb):
     debug_mode = False
-    if QCoreApplication.instance():
-        debug_mode = QCoreApplication.instance().getCommandLineOption("debug-mode", False)
 
     Logger.log("c", "An uncaught exception has occurred!")
     for line in traceback.format_exception(exception_type, value, tb):
