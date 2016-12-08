@@ -24,7 +24,7 @@ class VersionUpgrade22to24(VersionUpgrade):
         if config.has_section("containers"):
             for index, container_id in config.items("containers"):
                 container_list.append(container_id)
-        elif config.has_option("general", "containers")
+        elif config.has_option("general", "containers"):
             containers = config.get("general", "containers")
             container_list = containers.split(",")
 
