@@ -22,7 +22,7 @@ fatal_exception_types = [
 ]
 
 def show(exception_type, value, tb):
-    debug_mode = False
+    debug_mode = True
 
     Logger.log("c", "An uncaught exception has occurred!")
     for line in traceback.format_exception(exception_type, value, tb):
