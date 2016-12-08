@@ -1018,9 +1018,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def materialHotendChangedMessage(self, callback):
         Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Changes on the Printer"),
             i18n_catalog.i18nc("@label",
-                "Would you like to update your current printer configuration into Cura?"),
+                "Would you like to use your current printer configuration in Cura?"),
             i18n_catalog.i18nc("@label",
-                "The PrintCores and/or materials on your printer were changed. For the best result, always slice for the PrintCores and materials that are inserted in your printer."),
+                "The print cores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."),
             buttons=QMessageBox.Yes + QMessageBox.No,
             icon=QMessageBox.Question,
             callback=callback
