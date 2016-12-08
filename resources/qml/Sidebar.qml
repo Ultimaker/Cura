@@ -98,7 +98,6 @@ Rectangle
         Row
         {
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
@@ -108,12 +107,15 @@ Rectangle
                 id: machineSelection
                 text: Cura.MachineManager.activeMachineName
 
-                height: UM.Theme.getSize("setting_control").height
+                width: parent.width - (showSettings.width + showMonitor.width + 2 * UM.Theme.getSize("default_margin").width)
+                height: UM.Theme.getSize("sidebar_header").height
                 tooltip: Cura.MachineManager.activeMachineName
+
                 anchors.verticalCenter: parent.verticalCenter
                 style: ButtonStyle {
                     background: Rectangle {
-                        color: UM.Theme.getColor("sidebar_header_bar")
+                        color: control.hovered ? UM.Theme.getColor("button_hover") :
+                               control.pressed ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("sidebar_header_bar")
 
                         UM.RecolorImage {
                             id: downArrow
@@ -133,7 +135,7 @@ Rectangle
                             text: control.text;
                             elide: Text.ElideRight;
                             anchors.left: parent.left;
-                            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
                             anchors.right: downArrow.left;
                             anchors.rightMargin: control.rightMargin;
                             anchors.verticalCenter: parent.verticalCenter;
@@ -142,8 +144,6 @@ Rectangle
                     }
                     label: Label{}
                 }
-
-                width: parent.width - (showSettings.width + showMonitor.width + 2 * UM.Theme.getSize("default_margin").width)
 
                 menu: PrinterMenu { }
             }
