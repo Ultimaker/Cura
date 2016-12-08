@@ -447,9 +447,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _getContainerIdListFromSerialized(self, serialized):
         parser = configparser.ConfigParser(interpolation=None, empty_lines_in_values=False)
         parser.read_string(serialized)
-        container_string = parser["general"].get("containers", "")
-        container_list = container_string.split(",")
-        return [container_id for container_id in container_list if container_id != ""]
+
+        container_ids = []
+        if "containers" in parser:
+            for index, container_id in parser.items("containers"):
+                container_ids.append(container_id)
+        elif parser.has_option("general", "containers"):
+            container_string = parser["general"].get("containers", "")
+            container_list = container_string.split(",")
+            container_ids = [container_id for container_id in container_list if container_id != ""]
+
+        return container_ids
 
     def _getMachineNameFromSerializedStack(self, serialized):
         parser = configparser.ConfigParser(interpolation=None, empty_lines_in_values=False)
@@ -462,3 +470,4 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for entry in metadata:
             return entry.text
         pass
+

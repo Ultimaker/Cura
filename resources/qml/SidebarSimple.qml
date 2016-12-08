@@ -30,7 +30,7 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width / 100 * 35 - UM.Theme.getSize("default_margin").width
+        width: base.width * .45 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
         Label
@@ -52,7 +52,7 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width / 100 * 65
+        width: base.width * .55
         spacing: UM.Theme.getSize("default_margin").width
 
         anchors.left: infillCellLeft.right
@@ -231,7 +231,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: enableSupportCheckBox.verticalCenter
-            width: parent.width / 100 * 45 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "Enable Support");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -279,7 +279,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-            width: parent.width / 100 * 45 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "Support Extruder");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
@@ -319,7 +319,7 @@ Item
             }
             anchors.left: supportExtruderLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            width: parent.width / 100 * 55
+            width: parent.width * .55
             height:
             {
                 if ((supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1))
@@ -332,6 +332,7 @@ Item
                     return 0;
                 }
             }
+            Behavior on height { NumberAnimation { duration: 100 } }
 
             style: UM.Theme.styles.combobox_color
             enabled: base.settingsEnabled
@@ -377,7 +378,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: adhesionCheckBox.verticalCenter
-            width: parent.width / 100 * 45 - 3 * UM.Theme.getSize("default_margin").width
+            width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "Build Plate Adhesion");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
