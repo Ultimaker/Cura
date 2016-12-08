@@ -6,8 +6,9 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
 import Cura 1.0 as Cura
+
 UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
@@ -24,6 +25,7 @@ UM.Dialog
     property bool dontShowAgain: true
 
     signal yes();
+
 
     onClosing:
     {
@@ -45,7 +47,16 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-
+        UM.SettingDefinitionsModel
+        {
+            id: definitionsModel
+            containerId: Cura.MachineManager.activeDefinitionId
+            showAll: true
+            exclude: ["command_line_settings"]
+            showAncestors: true
+            expanded: ["*"]
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+        }
         UM.I18nCatalog
         {
             id: catalog;
@@ -125,23 +136,6 @@ UM.Dialog
                 }
 
             }
-            Row
-            {
-                width: parent.width
-                height: visible ? childrenRect.height: 0
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Derivative from")
-                    width: parent.width / 3
-                }
-                Label
-                {
-                    text: "TODO" //catalog.i18nc("@action:label", "%1, %2 override(s)" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                    width: parent.width / 3
-
-                }
-                visible: Cura.MachineManager.activeQualityChangesId != "empty_quality_changes"
-            }
             Item // Spacer
             {
                 height: spacerHeight
@@ -197,7 +191,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(Cura.MachineManager.totalNumberOfSettings)
+                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(definitionsModel.visibleCount).arg(Cura.MachineManager.totalNumberOfSettings)
                     width: parent.width / 3
                 }
             }
