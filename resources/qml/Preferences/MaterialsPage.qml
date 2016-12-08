@@ -127,7 +127,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
-            enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
+            enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId && Cura.MachineManager.hasMaterials
             onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
         },
         Button
@@ -144,8 +144,10 @@ UM.ManagementPage
                 {
                     return
                 }
-
-                Cura.MachineManager.setActiveMaterial(material_id)
+                if(Cura.MachineManager.hasMaterials)
+                {
+                    Cura.MachineManager.setActiveMaterial(material_id)
+                }
             }
         },
         Button

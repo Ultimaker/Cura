@@ -187,10 +187,12 @@ class ThreeMFReader(MeshReader):
                 build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
 
                 # compensate for original center position, if object(s) is/are not around its zero position
-                extents = build_item_node.getMeshData().getExtents()
-                center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
                 transform_matrix = Matrix()
-                transform_matrix.setByTranslation(center_vector)
+                mesh_data = build_item_node.getMeshData()
+                if mesh_data is not None:
+                    extents = mesh_data.getExtents()
+                    center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                    transform_matrix.setByTranslation(center_vector)
 
                 # offset with transform from 3mf
                 transform = build_item.get("transform")
