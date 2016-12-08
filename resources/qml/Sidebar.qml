@@ -116,6 +116,7 @@ Rectangle
                     background: Rectangle {
                         color: control.hovered ? UM.Theme.getColor("button_hover") :
                                control.pressed ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("sidebar_header_bar")
+                        Behavior on color { ColorAnimation { duration: 50; } }
 
                         UM.RecolorImage {
                             id: downArrow
