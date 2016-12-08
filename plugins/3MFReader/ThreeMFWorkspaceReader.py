@@ -349,7 +349,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     global_stack = stack
                 Job.yieldThread()
         except:
-            Logger.log("w", "We failed to serialize the stack. Trying to clean up.")
+            Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added. 
             for container in containers_to_add:
                 self._container_registry.getInstance().removeContainer(container.getId())
