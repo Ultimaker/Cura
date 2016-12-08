@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import configparser #To get version numbers from config files.
+import os
 import os.path
 import io
 
