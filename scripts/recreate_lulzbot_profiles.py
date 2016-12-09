@@ -408,7 +408,7 @@ material_url = {
 	"Woodfill": "lulzbot.com/store/filament/woodfill",
 #	"Corkfill": "",
 	"PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
-#	"PP-HT-PLA": "",
+	"PP-HT-PLA": "lulzbot.com/store/filament/high-temp-pla",
 	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PP-Matte-HT-PLA": "",
 
