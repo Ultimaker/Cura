@@ -1,0 +1,2720 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <GEGSITE@GMAIL.COM>, 2016.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: v0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-27 11:28+0200\n"
+"PO-Revision-Date: 2016-12-09 18:17 GMT+1\n"
+"Last-Translator: NAGY GERGŐ <GEGSITE@GMAIL.COM>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: Hungarian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/__init__.py:12
+msgctxt "@label"
+msgid "Machine Settings action"
+msgstr "Gépbeállítások művelet"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid ""
+"Provides a way to change machine settings (such as build volume, nozzle "
+"size, etc)"
+msgstr ""
+"A gép beállításait kezeli (építési mennyiség, fúvóka mérete, stb)"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:19
+msgctxt "@action"
+msgid "Machine Settings"
+msgstr "Gépbeállítások"
+
+#: /home/ruben/Projects/Cura/plugins/XRayView/__init__.py:12
+msgctxt "@label"
+msgid "X-Ray View"
+msgstr "Röntgen Nézet"
+
+#: /home/ruben/Projects/Cura/plugins/XRayView/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides the X-Ray view."
+msgstr "A Röntgen nézetet biztosítja"
+
+#: /home/ruben/Projects/Cura/plugins/XRayView/__init__.py:19
+msgctxt "@item:inlistbox"
+msgid "X-Ray"
+msgstr "Röntgen"
+
+#: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:11
+msgctxt "@label"
+msgid "X3D Reader"
+msgstr "X3D Olvasó"
+
+#: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:14
+msgctxt "@info:whatsthis"
+msgid "Provides support for reading X3D files."
+msgstr "Támogatja az X3D fájlok olvasását"
+
+#: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:20
+msgctxt "@item:inlistbox"
+msgid "X3D File"
+msgstr "X3D Fájl"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/__init__.py:12
+msgctxt "@label"
+msgid "GCode Writer"
+msgstr "G-kód Író"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Writes GCode to a file."
+msgstr "G-kód fájlba írása"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/__init__.py:22
+msgctxt "@item:inlistbox"
+msgid "GCode File"
+msgstr "G-kód Fájl"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:13
+msgctxt "@label"
+msgid "Doodle3D"
+msgstr "Doodle3D"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:17
+msgctxt "@info:whatsthis"
+msgid "Accepts G-Code and sends them over WiFi to a Doodle3D WiFi-Box."
+msgstr "G-kódok fogad és küld WiFi-vel a Doodle3D WiFi-boxnak"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:36
+msgctxt "@item:inmenu"
+msgid "Doodle3D printing"
+msgstr "Doodle3D nyomtatás"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:37
+msgctxt "@action:button"
+msgid "Print with Doodle3D"
+msgstr "Nyomtatás Doodle3D-vel"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:38
+msgctxt "@info:tooltip"
+msgid "Print with "
+msgstr "Nyomtatás "
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:49
+msgctxt "@title:menu"
+msgid "Doodle3D"
+msgstr "Doodle3D"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:50
+msgctxt "@item:inlistbox"
+msgid "Enable Scan devices..."
+msgstr "Engedélyezi a kereső eszközöket..."
+
+#: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/__init__.py:12
+#: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
+msgctxt "@label"
+msgid "Changelog"
+msgstr "Changelog"
+
+#: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Shows changes since latest checked version."
+msgstr "Megmutatja ami az utolsó verzió óta változott"
+
+#: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.py:35
+msgctxt "@item:inmenu"
+msgid "Show Changelog"
+msgstr "Changelog Megnézése"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/__init__.py:13
+msgctxt "@label"
+msgid "USB printing"
+msgstr "USB nyomtatás"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/__init__.py:17
+msgctxt "@info:whatsthis"
+msgid ""
+"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-kódokat fogad és küld a nyomtatóhoz. Firmware-t is frissítő bővitmény."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:27
+msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "USB nyomtatás"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:28
+msgctxt "@action:button"
+msgid "Print via USB"
+msgstr "USB-n keresztül nyomtatás"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:29
+msgctxt "@info:tooltip"
+msgid "Print via USB"
+msgstr "USB-n keresztül nyomtatás"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:31
+msgctxt "@info:status"
+msgid "Connected via USB"
+msgstr "USB-n keresztül kapcsolódva"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:143
+msgctxt "@info:status"
+msgid "Unable to start a new job because the printer is busy or not connected."
+msgstr "Nem lehetséges az új munka indítása, mert a nyomtató  foglalt, vagy nincs csatlakoztatva."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDeviceManager.py:111
+msgctxt "@info"
+msgid "Unable to update firmware because there are no printers connected."
+msgstr "Nem lehetséges a firmware frissítése mert nincsen nyomtató csatlakoztatva."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDeviceManager.py:125
+#, python-format
+msgctxt "@info"
+msgid "Could not find firmware required for the printer at %s."
+msgstr "Nem található firmware a %s kért nyomtatóhoz."
+
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
+msgctxt "X3G Writer Plugin Description"
+msgid "Writes X3G to a file"
+msgstr "X3G fájl írása"
+
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:22
+msgctxt "X3G Writer File Description"
+msgid "X3G File"
+msgstr "xűX3G Fájl"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
+msgctxt "@action:button"
+msgid "Save to Removable Drive"
+msgstr "Mentés Hordozható eszközre"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:24
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "Save to Removable Drive {0}"
+msgstr "Hordozható eszközre mentés {0}"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:80
+#, python-brace-format
+msgctxt "@info:progress"
+msgid "Saving to Removable Drive <filename>{0}</filename>"
+msgstr "Hordozható eszközre mentés <filename>{0}</filename>"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:90
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:93
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Nem lehet menteni <filename>{0}</filename>: <message>{1}</message>"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:129
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Saved to Removable Drive {0} as {1}"
+msgstr "Hordozható eszközre elmentve {0} mint {1}"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:130
+msgctxt "@action:button"
+msgid "Eject"
+msgstr "Kiadás"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:130
+#, python-brace-format
+msgctxt "@action"
+msgid "Eject removable device {0}"
+msgstr "{0} Hordozható eszköz kiadása"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:135
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Could not save to removable drive {0}: {1}"
+msgstr "Nem menthető a hordozható meghajtóra {0}: {1}"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:145
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Ejected {0}. You can now safely remove the drive."
+msgstr "{0} Kiadva. Most már eltávolíthatja az eszközt."
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:147
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed to eject {0}. Another program may be using the drive."
+msgstr "{0} kiadása nem lehetséges. Egy másik program lehet hogy használja."
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/__init__.py:12
+msgctxt "@label"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Hordozható meghajtó kimeneti eszköz bővítménye"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/__init__.py:14
+msgctxt "@info:whatsthis"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Hordozható eszköz hotplug és írás támogatása"
+
+#: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:69
+msgctxt "@item:intext"
+msgid "Removable Drive"
+msgstr "Hordozható Meghajtó"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Manages network connections to Ultimaker 3 printers"
+msgstr "Hálózati kapcsolatkezelő az Ultimake 3 nyomtatókhoz"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:103
+msgctxt "@action:button"
+msgid "Print over network"
+msgstr "Nyomtatás hálózaton keresztül"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:104
+msgctxt "@properties:tooltip"
+msgid "Print over network"
+msgstr "Nyomtatás hálózaton keresztül"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:146
+msgctxt "@info:status"
+msgid ""
+"Access to the printer requested. Please approve the request on the printer"
+msgstr ""
+"Hozzáférés kérés a nyomtatóhoz. Kérem fogaja el a nyomtatón"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:147
+msgctxt "@info:status"
+msgid ""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:148
+msgctxt "@action:button"
+msgid "Retry"
+msgstr "Megint"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:148
+msgctxt "@info:tooltip"
+msgid "Re-send the access request"
+msgstr "Kérelem újraküldése"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:150
+msgctxt "@info:status"
+msgid "Access to the printer accepted"
+msgstr "Hozzáférés a nyomtatóhoz elfogadva"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:151
+msgctxt "@info:status"
+msgid "No access to print with this printer. Unable to send print job."
+msgstr "Nincs hozzáférés a nyomtatóhoz. Munka küldése nem lehetséges."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:152
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:28
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:72
+msgctxt "@action:button"
+msgid "Request Access"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:152
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:27
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:71
+msgctxt "@info:tooltip"
+msgid "Send access request to the printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:244
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Connected over the network to {0}. Please approve the access request on the "
+"printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:251
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Connected over the network to {0}."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:264
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Connected over the network to {0}. No access to control the printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:269
+msgctxt "@info:status"
+msgid "Access request was denied on the printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:272
+msgctxt "@info:status"
+msgid "Access request failed due to a timeout."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:337
+msgctxt "@info:status"
+msgid "The connection with the network was lost."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:368
+msgctxt "@info:status"
+msgid ""
+"The connection with the printer was lost. Check your printer to see if it is "
+"connected."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:489
+msgctxt "@info:status"
+msgid ""
+"Unable to start a new print job because the printer is busy. Please check "
+"the printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:494
+#, python-format
+msgctxt "@info:status"
+msgid ""
+"Unable to start a new print job, printer is busy. Current printer status is "
+"%s."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:514
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No PrinterCore loaded in slot {0}"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:521
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Unable to start a new print job. No material loaded in slot {0}"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:532
+#, python-brace-format
+msgctxt "@label"
+msgid "Not enough material for spool {0}."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:542
+#, python-brace-format
+msgctxt "@label"
+msgid "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:556
+#, python-brace-format
+msgctxt "@label"
+msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:564
+#, python-brace-format
+msgctxt "@label"
+msgid ""
+"PrintCore {0} is not properly calibrated. XY calibration needs to be "
+"performed on the printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:567
+msgctxt "@label"
+msgid "Are you sure you wish to print with the selected configuration?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:568
+msgctxt "@label"
+msgid ""
+"There is a mismatch between the configuration or calibration of the printer "
+"and Cura. For the best result, always slice for the PrintCores and materials "
+"that are inserted in your printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:574
+msgctxt "@window:title"
+msgid "Mismatched configuration"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:669
+msgctxt "@info:status"
+msgid "Sending data to printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:670
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/SettingsWindow.qml:46
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:73
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:350
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:191
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:716
+msgctxt "@info:status"
+msgid "Unable to send data to printer. Is another job still active?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:835
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:191
+msgctxt "@label:MonitorStatus"
+msgid "Aborting print..."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:841
+msgctxt "@label:MonitorStatus"
+msgid "Print aborted. Please check the printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:847
+msgctxt "@label:MonitorStatus"
+msgid "Pausing print..."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:849
+msgctxt "@label:MonitorStatus"
+msgid "Resuming print..."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:960
+msgctxt "@window:title"
+msgid "Changes on the Printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:962
+msgctxt "@label"
+msgid "Would you like to update your current printer configuration into Cura?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:964
+msgctxt "@label"
+msgid ""
+"The PrintCores and/or materials on your printer were changed. For the best "
+"result, always slice for the PrintCores and materials that are inserted in "
+"your printer."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.py:19
+msgctxt "@action"
+msgid "Connect via Network"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.py:24
+msgid "Modify G-Code"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:12
+msgctxt "@label"
+msgid "Post Processing"
+msgstr "Post Processzálás"
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/__init__.py:16
+msgctxt "Description of plugin"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/AutoSave/__init__.py:12
+msgctxt "@label"
+msgid "Auto Save"
+msgstr "AutoMentés"
+
+#: /home/ruben/Projects/Cura/plugins/AutoSave/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Automatically saves Preferences, Machines and Profiles after changes."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/__init__.py:10
+msgctxt "@label"
+msgid "Slice info"
+msgstr "Szelet info"
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:74
+msgctxt "@info"
+msgid ""
+"Cura collects anonymised slicing statistics. You can disable this in "
+"preferences"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:75
+msgctxt "@action:button"
+msgid "Dismiss"
+msgstr "Elutasít"
+
+#: /home/ruben/Projects/Cura/plugins/XmlMaterialProfile/__init__.py:13
+msgctxt "@label"
+msgid "Material Profiles"
+msgstr "Anyag Profilok"
+
+#: /home/ruben/Projects/Cura/plugins/XmlMaterialProfile/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/LegacyProfileReader/__init__.py:12
+msgctxt "@label"
+msgid "Legacy Cura Profile Reader"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/LegacyProfileReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/LegacyProfileReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "Cura 15.04 profiles"
+msgstr "Cura 15.04 profilok"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:12
+msgctxt "@label"
+msgid "GCode Profile Reader"
+msgstr "G-kód Profil Olvasó"
+
+#: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for importing profiles from g-code files."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/GCodeProfileReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "G-code File"
+msgstr "G-kód fájl"
+
+#: /home/ruben/Projects/Cura/plugins/LayerView/__init__.py:13
+msgctxt "@label"
+msgid "Layer View"
+msgstr "Réteg Nézet"
+
+#: /home/ruben/Projects/Cura/plugins/LayerView/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides the Layer view."
+msgstr "Biztosítja a réteg nézetet."
+
+#: /home/ruben/Projects/Cura/plugins/LayerView/__init__.py:20
+msgctxt "@item:inlistbox"
+msgid "Layers"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.py:70
+msgctxt "@info:status"
+msgid "Cura does not accurately display layers when Wire Printing is enabled"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade21to22/__init__.py:14
+msgctxt "@label"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "Verzió Frissíté 2.1-ről 2.2-re"
+
+#: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade21to22/__init__.py:17
+msgctxt "@info:whatsthis"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Beállítások frissítése a Cura 2.1-ről Cura 2.2-re."
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:12
+msgctxt "@label"
+msgid "Image Reader"
+msgstr "Képolvasó"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "2D-s képek geometriáját generálja"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "JPG Image"
+msgstr "JPG Kép"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:25
+msgctxt "@item:inlistbox"
+msgid "JPEG Image"
+msgstr "JPEG Kép"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:29
+msgctxt "@item:inlistbox"
+msgid "PNG Image"
+msgstr "PNG Kép"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:33
+msgctxt "@item:inlistbox"
+msgid "BMP Image"
+msgstr "BMP Kép"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/__init__.py:37
+msgctxt "@item:inlistbox"
+msgid "GIF Image"
+msgstr "GIF kép"
+
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:233
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:77
+msgctxt "@info:status"
+msgid ""
+"The selected material is incompatible with the selected machine or "
+"configuration."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:242
+msgctxt "@info:status"
+msgid ""
+"Unable to slice with the current settings. Please check your settings for "
+"errors."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:251
+msgctxt "@info:status"
+msgid ""
+"Nothing to slice because none of the models fit the build volume. Please "
+"scale or rotate models to fit."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/__init__.py:13
+msgctxt "@label"
+msgid "CuraEngine Backend"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:47
+#: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:188
+msgctxt "@info:status"
+msgid "Processing Layers"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:14
+msgctxt "@label"
+msgid "Per Model Settings Tool"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:17
+msgctxt "@info:whatsthis"
+msgid "Provides the Per Model Settings."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:21
+msgctxt "@label"
+msgid "Per Model Settings"
+msgstr "Per Modell Beállítások"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/__init__.py:22
+msgctxt "@info:tooltip"
+msgid "Configure Per Model Settings"
+msgstr "Per Modell Beállításokat kezeli"
+
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:12
+msgctxt "@label"
+msgid "3MF Reader"
+msgstr "3MF Olvasó"
+
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for reading 3MF files."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/3MFReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "3MF File"
+msgstr "3MF Fájl"
+
+#: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:12
+msgctxt "@label"
+msgid "Solid View"
+msgstr "Tömör Nézet"
+
+#: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides a normal solid mesh view."
+msgstr "Biztosítja a tömör nézetet."
+
+#: /home/ruben/Projects/Cura/plugins/SolidView/__init__.py:19
+msgctxt "@item:inmenu"
+msgid "Solid"
+msgstr "Tömör"
+
+#: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:12
+msgctxt "@label"
+msgid "Cura Profile Writer"
+msgstr "Cura Profil Író"
+
+#: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Cura profilok exportálását biztosítja."
+
+#: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:21
+#: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "Cura Profile"
+msgstr "Cura Profil"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/__init__.py:15
+msgctxt "@label"
+msgid "Ultimaker machine actions"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/__init__.py:18
+msgctxt "@info:whatsthis"
+msgid ""
+"Provides machine actions for Ultimaker machines (such as bed leveling "
+"wizard, selecting upgrades, etc)"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelection.py:12
+msgctxt "@action"
+msgid "Select upgrades"
+msgstr "Frissítés választása"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.py:10
+msgctxt "@action"
+msgid "Upgrade Firmware"
+msgstr "Firmware frissítés"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:13
+msgctxt "@action"
+msgid "Checkup"
+msgstr "Ellenőrzés"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:13
+msgctxt "@action"
+msgid "Level build plate"
+msgstr "Építőlap szintezése"
+
+#: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:12
+msgctxt "@label"
+msgid "Cura Profile Reader"
+msgstr "Cura Profil Olvasó"
+
+#: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for importing Cura profiles."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/PrinterOutputDevice.py:298
+msgctxt "@item:material"
+msgid "No material loaded"
+msgstr "Nincs anyag betöltve"
+
+#: /home/ruben/Projects/Cura/cura/PrinterOutputDevice.py:305
+msgctxt "@item:material"
+msgid "Unknown material"
+msgstr "Ismeretlen anyag"
+
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:343
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:82
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Fájl már létezik"
+
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:344
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:83
+#, python-brace-format
+msgctxt "@label"
+msgid ""
+"The file <filename>{0}</filename> already exists. Are you sure you want to "
+"overwrite it?"
+msgstr "A <filename>{0}</filename> fájl már létezik. Biztos, hogy "
+"Felülírjam?"
+
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:868
+msgctxt "@label"
+msgid "You made changes to the following setting(s):"
+msgstr "Megváltoztattad a következő beállítás(oka)t:"
+
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:883
+msgctxt "@window:title"
+msgid "Switched profiles"
+msgstr "Váltott profilok"
+
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:885
+msgctxt "@label"
+msgid "Do you want to transfer your changed settings to this profile?"
+msgstr "Szeretnéd a megváltoztatott beállításokat átrakni ebbe a profilba?"
+
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:887
+msgctxt "@label"
+msgid ""
+"If you transfer your settings they will override settings in the profile."
+msgstr ""
+"Hogyha átrakod a beállításokat, azok átírják a profilba lévőket."
+
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:977
+msgctxt "@label"
+msgid "Nozzle"
+msgstr "Fúvóka"
+
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1177
+msgctxt "@info:status"
+msgid ""
+"Unable to find a quality profile for this combination. Default settings will "
+"be used instead."
+msgstr "Nem lehetséges minőségi profilt találni ehhez a változathoz. Az alapbeállítás"
+"lesz használva."
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:113
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgstr ""
+"Nem lehetséges exportálni a profilt <filename>{0}</filename>: <message>{1}</message>"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:118
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
+"failure."
+msgstr ""
+"Nem lehetséges exportálni a profilt <filename>{0}</filename>: Író bővítmény hibát "
+"jelzett"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Exported profile to <filename>{0}</filename>"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:147
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:169
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Failed to import profile from <filename>{0}</filename>: <message>{1}</"
+"message>"
+msgstr "Nem sikerült importálni a profilt innen <filename>{0}</filename>: <message>{1}</"
+"message>"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:176
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:210
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Successfully imported profile {0}"
+msgstr "Sikeresen importált profil {0}"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:213
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Profile {0} has an unknown file type."
+msgstr "{0} Profilnak ismeretlen a fájltípusa."
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:219
+msgctxt "@label"
+msgid "Custom profile"
+msgstr "Egyéni profil"
+
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:87
+msgctxt "@info:status"
+msgid ""
+"The build volume height has been reduced due to the value of the \"Print "
+"Sequence\" setting to prevent the gantry from colliding with printed models."
+msgstr ""
+"Az építési magasság  csökkentve lett a \"Print Sequence\" érték miatt."
+"Beállítás megelőzi az állvány és a modell összeérintkezését."
+
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:42
+msgctxt "@title:window"
+msgid "Oops!"
+msgstr "Hoppá!"
+
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:48
+msgctxt "@label"
+msgid ""
+"<p>A fatal exception has occurred that we could not recover from!</"
+"p><p>Please use the information below to post a bug report at <a href="
+"\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/"
+"issues</a></p>"
+msgstr "<p>Végzetes hiba lépett fel!</"
+"p><p>Kérem használd ezeket az információkat a hibabejelentésnél <a href="
+"\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/"
+"itt</a></p>"
+
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:68
+msgctxt "@action:button"
+msgid "Open Web Page"
+msgstr "Weblap megnyitás"
+
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:212
+msgctxt "@info:progress"
+msgid "Loading machines..."
+msgstr "Gépek betöltése..."
+
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:449
+msgctxt "@info:progress"
+msgid "Setting up scene..."
+msgstr "Helyszín beállítása..."
+
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:483
+msgctxt "@info:progress"
+msgid "Loading interface..."
+msgstr "Interface betöltése..."
+
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:603
+#, python-format
+msgctxt "@info"
+msgid "%(width).1f x %(depth).1f x %(height).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:27
+msgctxt "@title"
+msgid "Machine Settings"
+msgstr "Gép Beállítások"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:38
+msgctxt "@label"
+msgid "Please enter the correct settings for your printer below:"
+msgstr "Kérem adja meg a nyomtatóhoz megfelelő beállításokat:"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:63
+msgctxt "@label"
+msgid "Printer Settings"
+msgstr "Nyomtató Beállítások"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:74
+msgctxt "@label"
+msgid "X (Width)"
+msgstr "X (Szélesség)"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:85
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:101
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:117
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:198
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:214
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:230
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:246
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:266
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:286
+msgctxt "@label"
+msgid "mm"
+msgstr "mm"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:90
+msgctxt "@label"
+msgid "Y (Depth)"
+msgstr "Y (Mélység)"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:106
+msgctxt "@label"
+msgid "Z (Height)"
+msgstr "Z (Magasság)"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:126
+msgctxt "@option:check"
+msgid "Heated Bed"
+msgstr "Melegített Ágy"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:133
+msgctxt "@option:check"
+msgid "Machine Center is Zero"
+msgstr "Gépi központ Nulla"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:145
+msgctxt "@label"
+msgid "GCode Flavor"
+msgstr "G-kód ízesítés"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:176
+msgctxt "@label"
+msgid "Printhead Settings"
+msgstr "Nyomtatófej Beállítások"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:187
+msgctxt "@label"
+msgid "X min"
+msgstr "X minimum"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:203
+msgctxt "@label"
+msgid "Y min"
+msgstr "Y minimum"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:219
+msgctxt "@label"
+msgid "X max"
+msgstr "X maximum"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:235
+msgctxt "@label"
+msgid "Y max"
+msgstr "Y maximum"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:255
+msgctxt "@label"
+msgid "Gantry height"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:275
+msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Fúvóka"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:304
+msgctxt "@label"
+msgid "Start Gcode"
+msgstr "G-kód eleje"
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:326
+msgctxt "@label"
+msgid "End Gcode"
+msgstr "G-kód vége"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/SettingsWindow.qml:20
+msgctxt "@title:window"
+msgid "Doodle3D Settings"
+msgstr "Doodle3D Beállítások"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/SettingsWindow.qml:53
+msgctxt "@action:button"
+msgid "Save"
+msgstr "Mentés"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:23
+msgctxt "@title:window"
+msgid "Print to: %1"
+msgstr "Nyomtatás: %1"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:40
+msgctxt "@label"
+msgid "Extruder Temperature: %1/%2°C"
+msgstr "Extruder Hőfok: %1/%2°C"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
+msgctxt "@label"
+msgid ""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
+msgctxt "@label"
+msgid "Bed Temperature: %1/%2°C"
+msgstr "Ágy Hőfok: %1/%2°C"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:64
+msgctxt "@label"
+msgid "%1"
+msgstr "%1"
+
+#: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:82
+msgctxt "@action:button"
+msgid "Print"
+msgstr "Nyomtat"
+
+#: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:37
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:105
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:55
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:446
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:433
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:120
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:77
+#: /home/ruben/Projects/Cura/resources/qml/EngineLog.qml:38
+msgctxt "@action:button"
+msgid "Close"
+msgstr "Bezár"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:20
+msgctxt "@title:window"
+msgid "Firmware Update"
+msgstr "Firmware Frissítés"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:40
+msgctxt "@label"
+msgid "Firmware update completed."
+msgstr "Firmware frissítés befejezve."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:45
+msgctxt "@label"
+msgid "Starting firmware update, this may take a while."
+msgstr "Firmware frissítés megkezdése, kis türelmet."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:50
+msgctxt "@label"
+msgid "Updating firmware."
+msgstr "Firmware frissítése"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:59
+msgctxt "@label"
+msgid "Firmware update failed due to an unknown error."
+msgstr "Firmware frissítése ismeretlen hiba miatt nem lehetséges."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:62
+msgctxt "@label"
+msgid "Firmware update failed due to an communication error."
+msgstr "Firmware frissítése kommunikációs hiba miatt nem lehetséges."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:65
+msgctxt "@label"
+msgid "Firmware update failed due to an input/output error."
+msgstr "Firmware frissítése input/output hiba miatt nem lehetséges."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:68
+msgctxt "@label"
+msgid "Firmware update failed due to missing firmware."
+msgstr "Firmware frissítése hiányzó firmware miatt nem lehetséges."
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:71
+msgctxt "@label"
+msgid "Unknown error code: %1"
+msgstr "Ismeretlen hibakód: %1"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:57
+msgctxt "@title:window"
+msgid "Connect to Networked Printer"
+msgstr "Hálózati nyomtatóhoz kapcsolódás"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:67
+msgctxt "@label"
+msgid ""
+"To print directly to your printer over the network, please make sure your "
+"printer is connected to the network using a network cable or by connecting "
+"your printer to your WIFI network. If you don't connect Cura with your "
+"printer, you can still use a USB drive to transfer g-code files to your "
+"printer.\n"
+"\n"
+"Select your printer from the list below:"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:77
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
+msgctxt "@action:button"
+msgid "Add"
+msgstr "Hozzáad"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:87
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:189
+msgctxt "@action:button"
+msgid "Edit"
+msgstr "Szerkeszt"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:98
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:50
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:95
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:152
+msgctxt "@action:button"
+msgid "Remove"
+msgstr "Eltávolít"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:106
+msgctxt "@action:button"
+msgid "Refresh"
+msgstr "Frissít"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:198
+msgctxt "@label"
+msgid ""
+"If your printer is not listed, read the <a href='%1'>network-printing "
+"troubleshooting guide</a>"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:225
+msgctxt "@label"
+msgid "Type"
+msgstr "Típus"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:237
+msgctxt "@label"
+msgid "Ultimaker 3"
+msgstr "Ultimaker 3"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:240
+msgctxt "@label"
+msgid "Ultimaker 3 Extended"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:243
+msgctxt "@label"
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:256
+msgctxt "@label"
+msgid "Firmware version"
+msgstr "Firmware verzió"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:268
+msgctxt "@label"
+msgid "Address"
+msgstr "Cím"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:282
+msgctxt "@label"
+msgid "The printer at this address has not yet responded."
+msgstr "Nem válaszolt nyomtató ezen a címen"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:287
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:38
+msgctxt "@action:button"
+msgid "Connect"
+msgstr "Kapcsolódás"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:301
+msgctxt "@title:window"
+msgid "Printer Address"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:331
+msgctxt "@alabel"
+msgid "Enter the IP address or hostname of your printer on the network."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:358
+msgctxt "@action:button"
+msgid "Ok"
+msgstr "Rendben"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:37
+msgctxt "@info:tooltip"
+msgid "Connect to a printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:116
+msgctxt "@info:tooltip"
+msgid "Load the configuration of the printer into Cura"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/UM3InfoComponents.qml:117
+msgctxt "@action:button"
+msgid "Activate Configuration"
+msgstr "Aktívá beállítás"
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
+msgctxt "@title:window"
+msgid "Post Processing Plugin"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
+msgctxt "@label"
+msgid "Post Processing Scripts"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:218
+msgctxt "@action"
+msgid "Add a script"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:264
+msgctxt "@label"
+msgid "Settings"
+msgstr "Beállítások"
+
+#: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:456
+msgctxt "@info:tooltip"
+msgid "Change active post-processing scripts"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:21
+msgctxt "@title:window"
+msgid "Convert Image..."
+msgstr "Kép átalakítása..."
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:35
+msgctxt "@info:tooltip"
+msgid "The maximum distance of each pixel from \"Base.\""
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:40
+msgctxt "@action:label"
+msgid "Height (mm)"
+msgstr "Magasság (mm)"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:58
+msgctxt "@info:tooltip"
+msgid "The base height from the build plate in millimeters."
+msgstr "Az alap magassága az építőlaptól milliméterben."
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:63
+msgctxt "@action:label"
+msgid "Base (mm)"
+msgstr "Alap (mm)"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:81
+msgctxt "@info:tooltip"
+msgid "The width in millimeters on the build plate."
+msgstr "Az építőlap szélessége milliméterben."
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:86
+msgctxt "@action:label"
+msgid "Width (mm)"
+msgstr "Szélesség (mm)"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:105
+msgctxt "@info:tooltip"
+msgid "The depth in millimeters on the build plate"
+msgstr "Az építőlap mélysége milliméterben"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:110
+msgctxt "@action:label"
+msgid "Depth (mm)"
+msgstr "Mélyésg (mm)"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:128
+msgctxt "@info:tooltip"
+msgid ""
+"By default, white pixels represent high points on the mesh and black pixels "
+"represent low points on the mesh. Change this option to reverse the behavior "
+"such that black pixels represent high points on the mesh and white pixels "
+"represent low points on the mesh."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:141
+msgctxt "@item:inlistbox"
+msgid "Lighter is higher"
+msgstr "Világos a magasabb"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:141
+msgctxt "@item:inlistbox"
+msgid "Darker is higher"
+msgstr "Sötét a magasabb"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:151
+msgctxt "@info:tooltip"
+msgid "The amount of smoothing to apply to the image."
+msgstr "Simítás mértéke a képre."
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:156
+msgctxt "@action:label"
+msgid "Smoothing"
+msgstr "Simítás"
+
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:184
+msgctxt "@action:button"
+msgid "OK"
+msgstr "Rendben"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:34
+msgctxt "@label Followed by extruder selection drop-down."
+msgid "Print model with"
+msgstr "Modell nyomtatása"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:284
+msgctxt "@action:button"
+msgid "Select settings"
+msgstr "Beállítások választása"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:324
+msgctxt "@title:window"
+msgid "Select Settings to Customize for this model"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:348
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:91
+msgctxt "@label:textbox"
+msgid "Filter..."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:372
+msgctxt "@label:checkbox"
+msgid "Show all"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:27
+msgctxt "@title"
+msgid "Build Plate Leveling"
+msgstr "Építőlap Szintezése"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:38
+msgctxt "@label"
+msgid ""
+"To make sure your prints will come out great, you can now adjust your "
+"buildplate. When you click 'Move to Next Position' the nozzle will move to "
+"the different positions that can be adjusted."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:47
+msgctxt "@label"
+msgid ""
+"For every position; insert a piece of paper under the nozzle and adjust the "
+"print build plate height. The print build plate height is right when the "
+"paper is slightly gripped by the tip of the nozzle."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:62
+msgctxt "@action:button"
+msgid "Start Build Plate Leveling"
+msgstr "Építőlap Szintezés Kezdése"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:74
+msgctxt "@action:button"
+msgid "Move to Next Position"
+msgstr "A következő Pozicióba"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:27
+msgctxt "@title"
+msgid "Upgrade Firmware"
+msgstr "Firmware Frissítése"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:38
+msgctxt "@label"
+msgid ""
+"Firmware is the piece of software running directly on your 3D printer. This "
+"firmware controls the step motors, regulates the temperature and ultimately "
+"makes your printer work."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:48
+msgctxt "@label"
+msgid ""
+"The firmware shipping with new printers works, but new versions tend to have "
+"more features and improvements."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:62
+msgctxt "@action:button"
+msgid "Automatically upgrade Firmware"
+msgstr "Firmware automatikus frissítése"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:72
+msgctxt "@action:button"
+msgid "Upload custom Firmware"
+msgstr "Egyedi Firmware feltöltés"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:83
+msgctxt "@title:window"
+msgid "Select custom firmware"
+msgstr "Egyedi firmware kiválasztás"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:25
+msgctxt "@title"
+msgid "Select Printer Upgrades"
+msgstr "Nyomtató frissítés kiválasztás"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:37
+msgctxt "@label"
+msgid "Please select any upgrades made to this Ultimaker Original"
+msgstr "Kérlek válassz ki egy frissítést az Ultimaker Original-hoz"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:45
+msgctxt "@label"
+msgid "Heated Build Plate (official kit or self-built)"
+msgstr "Fűtött Építőlap (hivatalos vagy egyedi építésű)"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:27
+msgctxt "@title"
+msgid "Check Printer"
+msgstr "Nyomtató Ellenzőrzése"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
+msgctxt "@label"
+msgid ""
+"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
+"this step if you know your machine is functional"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
+msgctxt "@action:button"
+msgid "Start Printer Check"
+msgstr "Nyomtató Ellenőrzés Indítás"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:80
+msgctxt "@label"
+msgid "Connection: "
+msgstr "Kapcsolat: "
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
+msgctxt "@info:status"
+msgid "Connected"
+msgstr "Kapcsolódva"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
+msgctxt "@info:status"
+msgid "Not connected"
+msgstr "Nincs kapcsolat"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
+msgctxt "@label"
+msgid "Min endstop X: "
+msgstr "Min végállás X: "
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
+msgctxt "@info:status"
+msgid "Works"
+msgstr "Működik"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:173
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
+msgctxt "@info:status"
+msgid "Not checked"
+msgstr "Nem ellenőrzött"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:120
+msgctxt "@label"
+msgid "Min endstop Y: "
+msgstr "Min végállás Y: "
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:141
+msgctxt "@label"
+msgid "Min endstop Z: "
+msgstr "Min végállás Z: "
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:163
+msgctxt "@label"
+msgid "Nozzle temperature check: "
+msgstr "Fúvóka hőmérséklet ellenőrzés: "
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
+msgctxt "@action:button"
+msgid "Stop Heating"
+msgstr "Fűtés Leállítás"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
+msgctxt "@action:button"
+msgid "Start Heating"
+msgstr "Fűtés Indítás"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:223
+msgctxt "@label"
+msgid "Build plate temperature check:"
+msgstr "Építőlap hőmérséklet ellenőrzés:"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
+msgctxt "@info:status"
+msgid "Checked"
+msgstr "Ellenőrzött"
+
+#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:284
+msgctxt "@label"
+msgid "Everything is in order! You're done with your CheckUp."
+msgstr "Minden rendben! Készen vagy az ellenzőrzésekkel."
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:90
+msgctxt "@label:MonitorStatus"
+msgid "Not connected to a printer"
+msgstr "Nyomtató nincs csatlakoztatva"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:92
+msgctxt "@label:MonitorStatus"
+msgid "Printer does not accept commands"
+msgstr "Nyomtató nem fogad parancsokat"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:98
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:189
+msgctxt "@label:MonitorStatus"
+msgid "In maintenance. Please check the printer"
+msgstr "Karbantartáshoz, kérem ellenőrizze a nyomtatót"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:103
+msgctxt "@label:MonitorStatus"
+msgid "Lost connection with the printer"
+msgstr "Megszakadt a kapcsolat a nyomtatóval"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:105
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:179
+msgctxt "@label:MonitorStatus"
+msgid "Printing..."
+msgstr "Nyomtatás..."
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:108
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:181
+msgctxt "@label:MonitorStatus"
+msgid "Paused"
+msgstr "Szünetelve"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:111
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:183
+msgctxt "@label:MonitorStatus"
+msgid "Preparing..."
+msgstr "Előkészítés..."
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:113
+msgctxt "@label:MonitorStatus"
+msgid "Please remove the print"
+msgstr "Távolítsad el a nyomtatványt"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:239
+msgctxt "@label:"
+msgid "Resume"
+msgstr "Újra"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:243
+msgctxt "@label:"
+msgid "Pause"
+msgstr "Szünet"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:272
+msgctxt "@label:"
+msgid "Abort Print"
+msgstr "Nyomtatás megszakítása"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:282
+msgctxt "@window:title"
+msgid "Abort print"
+msgstr "Nyomtatás megszakítása"
+
+#: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
+msgctxt "@label"
+msgid "Are you sure you want to abort the print?"
+msgstr "Biztosan megszakítod a nyomtatást?"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:47
+msgctxt "@label"
+msgid "Display Name"
+msgstr "Megjelenítendő Név"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:57
+msgctxt "@label"
+msgid "Brand"
+msgstr "Márka"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:67
+msgctxt "@label"
+msgid "Material Type"
+msgstr "Anyag Típusa"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:76
+msgctxt "@label"
+msgid "Color"
+msgstr "Szín"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:110
+msgctxt "@label"
+msgid "Properties"
+msgstr "Tulajdonságok"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:112
+msgctxt "@label"
+msgid "Density"
+msgstr "Sűrűség"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:125
+msgctxt "@label"
+msgid "Diameter"
+msgstr "Átmérő"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:138
+msgctxt "@label"
+msgid "Filament Cost"
+msgstr "Kitöltő Költsége"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:147
+msgctxt "@label"
+msgid "Filament weight"
+msgstr "Kitöltő súlya"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:157
+msgctxt "@label"
+msgid "Filament length"
+msgstr "Kitöltő hossza"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:166
+msgctxt "@label"
+msgid "Cost per Meter (Approx.)"
+msgstr "Méterenkénti költség (kb.)"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:171
+msgctxt "@label"
+msgid "%1/m"
+msgstr "%1/m"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:177
+msgctxt "@label"
+msgid "Description"
+msgstr "Leírás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:190
+msgctxt "@label"
+msgid "Adhesion Information"
+msgstr "Adhéziós Információ"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:208
+msgctxt "@label"
+msgid "Print settings"
+msgstr "Nyomtató beállítások"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:14
+msgctxt "@title:tab"
+msgid "Setting Visibility"
+msgstr "Megjelenítő beállítások"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:44
+msgctxt "@label:textbox"
+msgid "Check all"
+msgstr "Mindent pipál"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:53
+msgctxt "@title:column"
+msgid "Setting"
+msgstr "Beállítás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:60
+msgctxt "@title:column"
+msgid "Profile"
+msgstr "Profil"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:67
+msgctxt "@title:column"
+msgid "Current"
+msgstr "Jelenlegi"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:75
+msgctxt "@title:column"
+msgid "Unit"
+msgstr "Egység"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:14
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:440
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Általános"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:72
+msgctxt "@label"
+msgid "Interface"
+msgstr "Interfész"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:81
+msgctxt "@label"
+msgid "Language:"
+msgstr "Nyelv:"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:138
+msgctxt "@label"
+msgid ""
+"You will need to restart the application for language changes to have effect."
+msgstr ""
+"A nyelvváltás életbe lépéséhez újra kell indítani a programot."
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:153
+msgctxt "@label"
+msgid "Viewport behavior"
+msgstr "Nézet viselkedés"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:161
+msgctxt "@info:tooltip"
+msgid ""
+"Highlight unsupported areas of the model in red. Without support these areas "
+"will not print properly."
+msgstr ""
+"A modellen Piros jelölést kapnak a nem alátámasztott területek. Támasztás nélkül ezen "
+"területek nyomtatása nem lesz megfelelő."
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:170
+msgctxt "@option:check"
+msgid "Display overhang"
+msgstr "Túllűgás mutatása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:177
+msgctxt "@info:tooltip"
+msgid ""
+"Moves the camera so the model is in the center of the view when an model is "
+"selected"
+msgstr ""
+"Helyezze úgy a kamerát, hogy z középpen legyen, amikor egy modell "
+"kijelölve lesz"
+
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:182
+msgctxt "@action:button"
+msgid "Center camera when item is selected"
+msgstr "Kamera központosítása kiválasztott elemnél"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:191
+msgctxt "@info:tooltip"
+msgid ""
+"Should models on the platform be moved so that they no longer intersect?"
+msgstr ""
+"Elmozdítsam a modelleket a platformon, hogy ne érintkezzenek?"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:196
+msgctxt "@option:check"
+msgid "Ensure models are kept apart"
+msgstr "A modelleket külön rakom"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:204
+msgctxt "@info:tooltip"
+msgid "Should models on the platform be moved down to touch the build plate?"
+msgstr "Építőlapra illesszem a modelleket?"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:209
+msgctxt "@option:check"
+msgid "Automatically drop models to the build plate"
+msgstr "Modell automatikus építőlapra illesztése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:218
+msgctxt "@info:tooltip"
+msgid ""
+"Display 5 top layers in layer view or only the top-most layer. Rendering 5 "
+"layers takes longer, but may show more information."
+msgstr ""
+"A felső 5 réteg mutatása vagy csak a legfelső réteg mutatása. 5 réteget tovább "
+"tart feldolgozni, de több információt ad."
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:223
+msgctxt "@action:button"
+msgid "Display five top layers in layer view"
+msgstr "Felső öt réteg mutatása a rétegnézetben"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:241
+msgctxt "@info:tooltip"
+msgid "Should only the top layers be displayed in layerview?"
+msgstr "Csak a felső réteget mutassam a rétegnézetben?"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:246
+msgctxt "@option:check"
+msgid "Only display top layer(s) in layer view"
+msgstr "Csak a felső réteg(ek) mutatása rétegnézetben"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:262
+msgctxt "@label"
+msgid "Opening files"
+msgstr "Fájlok megnyitása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:268
+msgctxt "@info:tooltip"
+msgid "Should models be scaled to the build volume if they are too large?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:273
+msgctxt "@option:check"
+msgid "Scale large models"
+msgstr "Nagy modellek méretezése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:282
+msgctxt "@info:tooltip"
+msgid ""
+"An model may appear extremely small if its unit is for example in meters "
+"rather than millimeters. Should these models be scaled up?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:287
+msgctxt "@option:check"
+msgid "Scale extremely small models"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:296
+msgctxt "@info:tooltip"
+msgid ""
+"Should a prefix based on the printer name be added to the print job name "
+"automatically?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:301
+msgctxt "@option:check"
+msgid "Add machine prefix to job name"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:318
+msgctxt "@label"
+msgid "Privacy"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:325
+msgctxt "@info:tooltip"
+msgid "Should Cura check for updates when the program is started?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:330
+msgctxt "@option:check"
+msgid "Check for updates on start"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:340
+msgctxt "@info:tooltip"
+msgid ""
+"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"models, IP addresses or other personally identifiable information is sent or "
+"stored."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:345
+msgctxt "@option:check"
+msgid "Send (anonymous) print information"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:15
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:445
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Nytomtatók"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:37
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:51
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:127
+msgctxt "@action:button"
+msgid "Activate"
+msgstr "Aktív"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:57
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:102
+msgctxt "@action:button"
+msgid "Rename"
+msgstr "Átnevez"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:146
+msgctxt "@label"
+msgid "Printer type:"
+msgstr "Nyomtató típusa:"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:154
+msgctxt "@label"
+msgid "Connection:"
+msgstr "Kapcsolat:"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:159
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:32
+msgctxt "@info:status"
+msgid "The printer is not connected."
+msgstr "A nyomtató nincs csatlakoztatva."
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:165
+msgctxt "@label"
+msgid "State:"
+msgstr "Állapot:"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:185
+msgctxt "@label:MonitorStatus"
+msgid "Waiting for someone to clear the build plate"
+msgstr "Várakozás valakire, aki letörli az építőlapot"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:194
+msgctxt "@label:MonitorStatus"
+msgid "Waiting for a printjob"
+msgstr "Nyomtatásra várás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:15
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:449
+msgctxt "@title:tab"
+msgid "Profiles"
+msgstr "Profilok"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:29
+msgctxt "@label"
+msgid "Protected profiles"
+msgstr "Védett profilok"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:29
+msgctxt "@label"
+msgid "Custom profiles"
+msgstr "Egyedi profilok"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:64
+msgctxt "@label"
+msgid "Create"
+msgstr "Létrehoz"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:80
+msgctxt "@label"
+msgid "Duplicate"
+msgstr "Duplikálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:113
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:159
+msgctxt "@action:button"
+msgid "Import"
+msgstr "Importálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:119
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:166
+msgctxt "@action:button"
+msgid "Export"
+msgstr "Exportálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:126
+msgctxt "@label %1 is printer name"
+msgid "Printer: %1"
+msgstr "Nyomtató: %1"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:165
+msgctxt "@action:button"
+msgid "Update profile with current settings"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:173
+msgctxt "@action:button"
+msgid "Discard current settings"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:190
+msgctxt "@action:label"
+msgid ""
+"This profile uses the defaults specified by the printer, so it has no "
+"settings in the list below."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:197
+msgctxt "@action:label"
+msgid "Your current settings match the selected profile."
+msgstr "A jelenlegi beállítások egyeznek a kiválasztott profillal"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:215
+msgctxt "@title:tab"
+msgid "Global Settings"
+msgstr "Főbeállítások"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:258
+msgctxt "@title:window"
+msgid "Rename Profile"
+msgstr "Profil Átnevezés"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:271
+msgctxt "@title:window"
+msgid "Create Profile"
+msgstr "Profil Létrehozás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:285
+msgctxt "@title:window"
+msgid "Duplicate Profile"
+msgstr "Profil Duplikálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:299
+msgctxt "@window:title"
+msgid "Import Profile"
+msgstr "Profil Importálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:307
+msgctxt "@title:window"
+msgid "Import Profile"
+msgstr "Profil Importálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:335
+msgctxt "@title:window"
+msgid "Export Profile"
+msgstr "Profil Exportálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:15
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:447
+msgctxt "@title:tab"
+msgid "Materials"
+msgstr "Anyagok"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:106
+msgctxt ""
+"@action:label %1 is printer name, %2 is how this printer names variants, %3 "
+"is variant name"
+msgid "Printer: %1, %2: %3"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:110
+msgctxt "@action:label %1 is printer name"
+msgid "Printer: %1"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:134
+msgctxt "@action:button"
+msgid "Duplicate"
+msgstr "Duplikálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:264
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:272
+msgctxt "@title:window"
+msgid "Import Material"
+msgstr "Anyag Importálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:273
+msgctxt "@info:status"
+msgid ""
+"Could not import material <filename>%1</filename>: <message>%2</message>"
+msgstr ""
+"Nem lehet az anyagok importálni <filename>%1</filename>: <message>%2</message>"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:277
+msgctxt "@info:status"
+msgid "Successfully imported material <filename>%1</filename>"
+msgstr "Sikeresen anyag importálás <filename>%1</filename>"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:295
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:310
+msgctxt "@title:window"
+msgid "Export Material"
+msgstr "Anyag Exportálás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:314
+msgctxt "@info:status"
+msgid ""
+"Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgstr ""
+"Nem sikerült az anyag exportálása <filename>%1</filename>: <message>%2</message>"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialsPage.qml:320
+msgctxt "@info:status"
+msgid "Successfully exported material to <filename>%1</filename>"
+msgstr "Sikeres anyag exportálás <filename>%1</filename>"
+
+#: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:18
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:718
+msgctxt "@title:window"
+msgid "Add Printer"
+msgstr "Nyomtató Hozzáadása"
+
+#: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:183
+msgctxt "@action:button"
+msgid "Add Printer"
+msgstr "Nyomtató Hozzáadása"
+
+#: /home/ruben/Projects/Cura/resources/qml/JobSpecs.qml:176
+msgctxt "@label"
+msgid "00h 00min"
+msgstr "00h 00min"
+
+#: /home/ruben/Projects/Cura/resources/qml/JobSpecs.qml:212
+msgctxt "@label"
+msgid "%1 m / ~ %2 g"
+msgstr "%1 m / ~ %2 g"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:15
+msgctxt "@title:window"
+msgid "About Cura"
+msgstr "Cura Névjegye"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:57
+msgctxt "@label"
+msgid "End-to-end solution for fused filament 3D printing."
+msgstr "Teljes-megoldás a huzaladagolós 3D nyomtatókhoz"
+
+#: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
+msgctxt "@info:credit"
+msgid ""
+"Cura has been developed by Ultimaker B.V. in cooperation with the community."
+msgstr "Cura az Ultimaker B.V. feljesztése, Együtt a közösséggel."
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:201
+msgctxt "@action:menu"
+msgid "Copy value to all extruders"
+msgstr "Érték másolása az összes extruderre"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:215
+msgctxt "@action:menu"
+msgid "Hide this setting"
+msgstr "A beállítás elrejtése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:221
+msgctxt "@action:menu"
+msgid "Configure setting visiblity..."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:93
+msgctxt "@label"
+msgid ""
+"Some hidden settings use values different from their normal calculated "
+"value.\n"
+"\n"
+"Click to make these settings visible."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:59
+msgctxt "@label Header for list of settings."
+msgid "Affects"
+msgstr "Hatások"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:64
+msgctxt "@label Header for list of settings."
+msgid "Affected By"
+msgstr "Hatásos"
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:155
+msgctxt "@label"
+msgid ""
+"This setting is always shared between all extruders. Changing it here will "
+"change the value for all extruders"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:158
+msgctxt "@label"
+msgid "The value is resolved from per-extruder values "
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:186
+msgctxt "@label"
+msgid ""
+"This setting has a value that is different from the profile.\n"
+"\n"
+"Click to restore the value of the profile."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:268
+msgctxt "@label"
+msgid ""
+"This setting is normally calculated, but it currently has an absolute value "
+"set.\n"
+"\n"
+"Click to restore the calculated value."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:189
+msgctxt "@label:listbox"
+msgid "Print Setup"
+msgstr "Nyomtató Beállítás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:261
+msgctxt "@label"
+msgid "Printer Monitor"
+msgstr "Nyomtató Monitor"
+
+#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:382
+msgctxt "@title:tab"
+msgid "Recommended"
+msgstr "Ajánlott"
+
+#: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:383
+msgctxt "@title:tab"
+msgid "Custom"
+msgstr "Egyedi"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:26
+#: /home/ruben/Projects/Cura/resources/qml/Menus/NozzleMenu.qml:26
+msgctxt "@title:menuitem %1 is the value from the printer"
+msgid "Automatic: %1"
+msgstr "Automata: %1"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:12
+msgctxt "@title:menu menubar:toplevel"
+msgid "&View"
+msgstr "&Nézet"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/RecentFilesMenu.qml:13
+msgctxt "@title:menu menubar:file"
+msgid "Open &Recent"
+msgstr "&Legutóbbi Megnyitása"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:43
+msgctxt "@label"
+msgid "Temperatures"
+msgstr "Hőmérsékletek"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:51
+msgctxt "@label"
+msgid "Hotend"
+msgstr "Hotend"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:61
+msgctxt "@label"
+msgid "Build plate"
+msgstr "Építőlap"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:69
+msgctxt "@label"
+msgid "Active print"
+msgstr "Aktív nyomtatás"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:74
+msgctxt "@label"
+msgid "Job Name"
+msgstr "Munkanév"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:80
+msgctxt "@label"
+msgid "Printing Time"
+msgstr "Nyomtatási Idő"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:86
+msgctxt "@label"
+msgid "Estimated time left"
+msgstr "Hátralévő idő"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:62
+msgctxt "@action:inmenu"
+msgid "Toggle Fu&ll Screen"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:69
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Undo"
+msgstr "&Visszavonás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:79
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Redo"
+msgstr "Új&ra Végrehajtás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:89
+msgctxt "@action:inmenu menubar:file"
+msgid "&Quit"
+msgstr "&Kilépés"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:97
+msgctxt "@action:inmenu"
+msgid "Configure Cura..."
+msgstr "Cura Beállítása..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:104
+msgctxt "@action:inmenu menubar:printer"
+msgid "&Add Printer..."
+msgstr "&Nyomtató Hozzáadás..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:110
+msgctxt "@action:inmenu menubar:printer"
+msgid "Manage Pr&inters..."
+msgstr "Ny&omtatók Kezelése..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:117
+msgctxt "@action:inmenu"
+msgid "Manage Materials..."
+msgstr "Anyagok Kezelése..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:125
+msgctxt "@action:inmenu menubar:profile"
+msgid "&Update profile with current settings"
+msgstr "Profil &Frissítése a jelenlegi beállításokkal"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:133
+msgctxt "@action:inmenu menubar:profile"
+msgid "&Discard current settings"
+msgstr "&Jelenlegi beállítások elvetése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:141
+msgctxt "@action:inmenu menubar:profile"
+msgid "&Create profile from current settings..."
+msgstr "&Profil létrehozás a jelenlegi beállításokkal..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:147
+msgctxt "@action:inmenu menubar:profile"
+msgid "Manage Profiles..."
+msgstr "Profilok Kezelése..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:154
+msgctxt "@action:inmenu menubar:help"
+msgid "Show Online &Documentation"
+msgstr "Online &Dokumentáció Mutatása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:162
+msgctxt "@action:inmenu menubar:help"
+msgid "Report a &Bug"
+msgstr "&Hibabejelentés"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:170
+msgctxt "@action:inmenu menubar:help"
+msgid "&About..."
+msgstr "&Névjegy..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:177
+msgctxt "@action:inmenu menubar:edit"
+msgid "Delete &Selection"
+msgstr "&Kijelölés Törlése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:187
+msgctxt "@action:inmenu"
+msgid "Delete Model"
+msgstr "Modell Törlése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
+msgctxt "@action:inmenu"
+msgid "Ce&nter Model on Platform"
+msgstr "Modell központosítása (platform)"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:201
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Group Models"
+msgstr "Modell &Csoportosítása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:211
+msgctxt "@action:inmenu menubar:edit"
+msgid "Ungroup Models"
+msgstr "Szétközni a Modell csoportot"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:221
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Merge Models"
+msgstr "Összevonni a &Modelleket"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:231
+msgctxt "@action:inmenu"
+msgid "&Duplicate Model"
+msgstr "&Duplikálni a Modellt"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:238
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Select All Models"
+msgstr "&Minden Modellt kijelől"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:248
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Clear Build Plate"
+msgstr "Épí&tőlap tisztítása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:258
+msgctxt "@action:inmenu menubar:file"
+msgid "Re&load All Models"
+msgstr "Minden Mode&ll Újratöltése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:266
+msgctxt "@action:inmenu menubar:edit"
+msgid "Reset All Model Positions"
+msgstr "Minden Modell Pozíciót Visszaállítása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:273
+msgctxt "@action:inmenu menubar:edit"
+msgid "Reset All Model &Transformations"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:280
+msgctxt "@action:inmenu menubar:file"
+msgid "&Open File..."
+msgstr "&Fájl Megnyitása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:288
+msgctxt "@action:inmenu menubar:help"
+msgid "Show Engine &Log..."
+msgstr "Engine &Log Mutatása..."
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:296
+msgctxt "@action:inmenu menubar:help"
+msgid "Show Configuration Folder"
+msgstr "Beállítási Mappa Megnyitása"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:303
+msgctxt "@action:menu"
+msgid "Configure setting visibility..."
+msgstr "Megjelenítési beállítások Megnyitása..."
+
+#: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:24
+msgctxt "@label:PrintjobStatus"
+msgid "Please load a 3d model"
+msgstr "Kérlek tölts be egy 3d modellt"
+
+#: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:30
+msgctxt "@label:PrintjobStatus"
+msgid "Preparing to slice..."
+msgstr "Szeletelés előkészítése..."
+
+#: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:32
+msgctxt "@label:PrintjobStatus"
+msgid "Slicing..."
+msgstr "Szeletelés..."
+
+#: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:34
+msgctxt "@label:PrintjobStatus %1 is target operation"
+msgid "Ready to %1"
+msgstr "Kész %1"
+
+#: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:36
+msgctxt "@label:PrintjobStatus"
+msgid "Unable to Slice"
+msgstr "Nem lehet szeletelni"
+
+#: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:175
+msgctxt "@info:tooltip"
+msgid "Select the active output device"
+msgstr "Válassz egy aktív output eszközt"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:19
+msgctxt "@title:window"
+msgid "Cura"
+msgstr "Cura"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:68
+msgctxt "@title:menu menubar:toplevel"
+msgid "&File"
+msgstr "&Fájl"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:80
+msgctxt "@action:inmenu menubar:file"
+msgid "&Save Selection to File"
+msgstr "&Kijelölés fájlba mentése"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:88
+msgctxt "@title:menu menubar:file"
+msgid "Save &All"
+msgstr "Minden &Ment"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:115
+msgctxt "@title:menu menubar:toplevel"
+msgid "&Edit"
+msgstr "&Szerkesztés"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:131
+msgctxt "@title:menu"
+msgid "&View"
+msgstr "&Nézet"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:136
+msgctxt "@title:menu"
+msgid "&Settings"
+msgstr "&Beállítások"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:138
+msgctxt "@title:menu menubar:toplevel"
+msgid "&Printer"
+msgstr "&Nyomtató"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:148
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:160
+msgctxt "@title:menu"
+msgid "&Material"
+msgstr "&Anyag"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:149
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:161
+msgctxt "@title:menu"
+msgid "&Profile"
+msgstr "&Profil"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:153
+msgctxt "@action:inmenu"
+msgid "Set as Active Extruder"
+msgstr "Extruder aktívá tétele"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:171
+msgctxt "@title:menu menubar:toplevel"
+msgid "E&xtensions"
+msgstr "&Kiterjesztések"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:204
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&references"
+msgstr "&Tulajdonságok"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:212
+msgctxt "@title:menu menubar:toplevel"
+msgid "&Help"
+msgstr "&Súgó"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:290
+msgctxt "@action:button"
+msgid "Open File"
+msgstr "Fájl megnyitás"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:363
+msgctxt "@action:button"
+msgid "View Mode"
+msgstr "Nézed Mód"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:443
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Beállítások"
+
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:652
+msgctxt "@title:window"
+msgid "Open file"
+msgstr "Fájl megnyitás"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:38
+msgctxt "@label"
+msgid "Infill:"
+msgstr "Kitöltés:"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:169
+msgctxt "@label"
+msgid "Hollow"
+msgstr "Üreges"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:173
+msgctxt "@label"
+msgid "No (0%) infill will leave your model hollow at the cost of low strength"
+msgstr "Nincs kitöltés (0%), üreges lesz a modell, alacsony tartást ad"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:177
+msgctxt "@label"
+msgid "Light"
+msgstr "Könnyed"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:181
+msgctxt "@label"
+msgid "Light (20%) infill will give your model an average strength"
+msgstr "20%-os könnyed kitöltés, átlagos tartást ad"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:185
+msgctxt "@label"
+msgid "Dense"
+msgstr "Sűrű"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:189
+msgctxt "@label"
+msgid "Dense (50%) infill will give your model an above average strength"
+msgstr "50%-ban sűrű kitöltés, az átlagnál nagyobb tartást biztosít"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:193
+msgctxt "@label"
+msgid "Solid"
+msgstr "Tömör"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:197
+msgctxt "@label"
+msgid "Solid (100%) infill will make your model completely solid"
+msgstr "100%-ban tömör kitöltés, teljesen tömörré teszi"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:219
+msgctxt "@label"
+msgid "Helper Parts:"
+msgstr "Segítőelemek:"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:233
+msgctxt "@option:check"
+msgid "Print Build Plate Adhesion"
+msgstr "Építőlapra adhézió nyomtatás"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:263
+msgctxt "@label"
+msgid ""
+"Enable printing a brim or raft. This will add a flat area around or under "
+"your object which is easy to cut off afterwards."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:295
+msgctxt "@option:check"
+msgid "Print Support Structure"
+msgstr "Segítő állvány nyomtatás"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:312
+msgctxt "@label"
+msgid ""
+"Enable printing support structures. This will build up supporting structures "
+"below the model to prevent the model from sagging or printing in mid air."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:355
+msgctxt "@label"
+msgid ""
+"Select which extruder to use for support. This will build up supporting "
+"structures below the model to prevent the model from sagging or printing in "
+"mid air."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:381
+msgctxt "@label"
+msgid "Don't print support"
+msgstr "Ne nyomtasson segédet"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:386
+msgctxt "@label"
+msgid "Print support using %1"
+msgstr "Nyomtasson %1 segédet"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:407
+msgctxt "@label"
+msgid ""
+"Need help improving your prints? Read the <a href='%1'>Ultimaker "
+"Troubleshooting Guides</a>"
+msgstr "Fejleszteni szeretnéd a nyomtatásaidat? Olvasd a <a href='%1'>Ultimaker "
+"Troubleshooting Guides</a>"
+
+#: /home/ruben/Projects/Cura/resources/qml/EngineLog.qml:15
+msgctxt "@title:window"
+msgid "Engine Log"
+msgstr "Engine Napló"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:40
+msgctxt "@label:listbox"
+msgid "Printer:"
+msgstr "Nyomtató:"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:188
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:196
+msgctxt "@label"
+msgid "Material"
+msgstr "Anyag"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:279
+msgctxt "@label"
+msgid "Profile:"
+msgstr "Profil:"
+
+#: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:325
+msgctxt "@tooltip"
+msgid ""
+"Some setting values are different from the values stored in the profile.\n"
+"\n"
+"Click to open the profile manager."
+msgstr "Némely érték különbözik a profilban mentettől.\n"
+"\n"
+"Kattintson a profilkezelő megnyitásához."
