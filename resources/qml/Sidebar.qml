@@ -16,7 +16,7 @@ Rectangle
 
     property int currentModeIndex;
     property bool monitoringPrint: false
-    property bool hideSettings: Printer.hideSettings
+    property bool hideSettings: PrintInformation.preSliced
     Connections
     {
         target: Printer

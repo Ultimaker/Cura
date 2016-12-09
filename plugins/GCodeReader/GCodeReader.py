@@ -24,6 +24,7 @@ from UM.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 import numpy
 import math
 import re
+from collections import namedtuple
 
 
 # Class for loading and parsing G-code files
@@ -36,12 +37,13 @@ class GCodeReader(MeshReader):
         self._message = None
         self._clearValues()
         self._scene_node = None
+        self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
 
     def _clearValues(self):
         self._extruder = 0
         self._layer_type = LayerPolygon.Inset0Type
         self._layer = 0
-        self._prev_z = 0
+        self._previous_z = 0
         self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
         self._center_is_zero = False
 
@@ -93,7 +95,7 @@ class GCodeReader(MeshReader):
         try:
             self._layer_data_builder.addLayer(self._layer)
             self._layer_data_builder.setLayerHeight(self._layer, path[0][2])
-            self._layer_data_builder.setLayerThickness(self._layer, math.fabs(current_z - self._prev_z))
+            self._layer_data_builder.setLayerThickness(self._layer, math.fabs(current_z - self._previous_z))
             this_layer = self._layer_data_builder.getLayer(self._layer)
         except ValueError:
             return False
@@ -120,21 +122,20 @@ class GCodeReader(MeshReader):
 
     def _gCode0(self, position, params, path):
         x, y, z, e = position
-        xp, yp, zp, ep = params
-        x = xp if xp is not None else x
-        y = yp if yp is not None else y
+        x = params.x if params.x is not None else x
+        y = params.y if params.y is not None else y
         z_changed = False
-        if zp is not None:
-            if z != zp:
+        if params.z is not None:
+            if z != params.z:
                 z_changed = True
-                self._prev_z = z
-            z = zp
-        if ep is not None:
-            if ep > e[self._extruder]:
+                self._previous_z = z
+            z = params.z
+        if params.e is not None:
+            if params.e > e[self._extruder]:
                 path.append([x, y, z, self._layer_type])  # extrusion
             else:
                 path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
-            e[self._extruder] = ep
+            e[self._extruder] = params.e
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         if z_changed:
@@ -144,25 +145,23 @@ class GCodeReader(MeshReader):
                 path.clear()
             else:
                 path.clear()
-        return (x, y, z, e)
+        return self._position(x, y, z, e)
 
     def _gCode28(self, position, params, path):
-        x, y, z, e = position
-        xp, yp, zp, ep = params
-        return (xp if xp is not None else x,
-            yp if yp is not None else y,
+        return self._position(
+            params.x if params.x is not None else position.x,
+            params.y if params.y is not None else position.y,
             0,
-            e)
+            position.e)
 
     def _gCode92(self, position, params, path):
-        x, y, z, e = position
-        xp, yp, zp, ep = params
-        if ep is not None:
-            e[self._extruder] = ep
-        return (xp if xp is not None else x,
-            yp if yp is not None else y,
-            zp if zp is not None else z,
-            e)
+        if params.e is not None:
+            position.e[self._extruder] = params.e
+        return self._position(
+            params.x if params.x is not None else position.x,
+            params.y if params.y is not None else position.y,
+            params.z if params.z is not None else position.z,
+            position.e)
 
     _gCode1 = _gCode0
 
@@ -175,7 +174,7 @@ class GCodeReader(MeshReader):
         if func is not None:
             if (x is not None and x < 0) or (y is not None and y < 0):
                 self._center_is_zero = True
-            params = (x, y, z, e)
+            params = self._position(x, y, z, e)
             return func(position, params, path)
         return position
 
@@ -219,12 +218,12 @@ class GCodeReader(MeshReader):
 
             Logger.log("d", "Parsing %s" % file_name)
 
-            current_position = (0, 0, 0, [0, 0])  # x, y, z, e
+            current_position = self._position(0, 0, 0, [0, 0])
             current_path = []
 
             for line in file:
                 if self._cancelled:
-                    Logger.log("w", "Parsing %s cancelled" % file_name)
+                    Logger.log("i", "Parsing %s cancelled" % file_name)
                     return None
                 current_line += 1
                 if current_line % file_step == 0:

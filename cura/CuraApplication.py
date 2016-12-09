@@ -609,11 +609,9 @@ class CuraApplication(QtApplication):
         print_information = self.getPrintInformation()
         if should_pause:
             self.getBackend().pauseSlicing()
-            self.setHideSettings(True)
             print_information.setPreSliced(True)
         else:
             self.getBackend().continueSlicing()
-            self.setHideSettings(False)
             if print_information:
                 print_information.setPreSliced(False)
 
@@ -1032,18 +1030,5 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str)
     def log(self, msg):
         Logger.log("d", msg)
-
-    _hide_settings = False
-
-    hideSettingsChanged = pyqtSignal(bool)
-
-    @pyqtSlot(bool)
-    def setHideSettings(self, hide):
-        self._hide_settings = hide
-        self.hideSettingsChanged.emit(hide)
-
-    @pyqtProperty(bool, fset=setHideSettings, notify=hideSettingsChanged)
-    def hideSettings(self):
-        return self._hide_settings
 
 
