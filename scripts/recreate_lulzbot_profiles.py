@@ -339,7 +339,7 @@ material_names = {
 	"T-Glase": "t-glase (Taulman)",
 	"Bronzefill": "bronzeFill (colorFabb)",
 	"Copperfill": "copperFill (colorFabb)",
-	"HT": "HT (colorFabb)",
+	"HT": "colorFabb_HT",
 	"PC-MAX": "PC-Max (Polymaker)",
 	
 	# Expert
