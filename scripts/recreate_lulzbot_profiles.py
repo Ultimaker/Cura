@@ -396,7 +396,7 @@ material_url = {
 	"PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
 	"PLA_VP": "lulzbot.com/store/filament/pla-village",
 #	"PLA_PHA": "",
-#	"PLA_verbatim": "",
+	"PLA_verbatim": "lulzbot.com/store/filament/pla-verbatim",
 	"PLA_poly": "lulzbot.com/store/filament/polylite-pla",
 
 	# Intermediate
