@@ -332,7 +332,7 @@ material_names = {
 	"Bridge": "Bridge Nylon (Taulman)",
 	"Laywood": "Laywoo-D3 (CC-Products)",
 	"n-vent": "n-vent (Taulman)",
-	"XT": "XT (colorFabb)",
+	"XT": "colorFabb_XT",
 	"INOVA-1800": "INOVA-1800 (ChromaStrand)",
 	"PCTPE": "PCTPE (Taulman)",
 	"PC-ABS": "PC-ABS (Proto-pasta)",
