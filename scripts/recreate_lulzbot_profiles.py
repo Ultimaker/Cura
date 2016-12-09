@@ -448,7 +448,7 @@ material_url = {
 #	"NGEN_ninjaflex": "",
 #	"NGEN_semiflex": "",
 #	"INOVA_semiflex": "",
-#	"HT": "",
+	"HT": "lulzbot.com/store/filament/colorfabb_ht",
 #	"b-pet": "",
 #	"PC-MAX": "",
 #	"wood-bamboo": "",
