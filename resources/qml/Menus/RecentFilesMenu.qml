@@ -26,7 +26,7 @@ Menu
                 return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
             }
             onTriggered: {
-                UM.MeshFileHandler.readLocalFile(modelData);
+                Printer.readLocalFile(modelData);
                 var meshName = backgroundItem.getMeshName(modelData.toString())
                 backgroundItem.hasMesh(decodeURIComponent(meshName))
             }

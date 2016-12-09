@@ -191,7 +191,7 @@ class CuraEngineBackend(Backend):
     def pauseSlicing(self):
         self.close()
         self._pause_slicing = True
-        self.backendStateChange.emit(BackendState.SlicingDisabled)
+        self.backendStateChange.emit(BackendState.Disabled)
 
     def continueSlicing(self):
         if self._pause_slicing:

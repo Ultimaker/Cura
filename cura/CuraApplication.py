@@ -1031,4 +1031,68 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
+    _loading_files = []
+    _non_sliceable_extensions = [".gcode", ".g"]
+
+    @pyqtSlot(QUrl)
+    def readLocalFile(self, file):
+        if not file.isValid():
+            return
+
+        scene = self.getController().getScene()
+
+        for node in DepthFirstIterator(scene.getRoot()):
+            if node.callDecoration("shouldBlockSlicing"):
+                self.deleteAll()
+                break
+
+        f = file.toLocalFile()
+        extension = os.path.splitext(f)[1]
+        filename = os.path.basename(f)
+        if len(self._loading_files) > 0:
+            # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
+            if extension.lower() in self._non_sliceable_extensions:
+                message = Message(
+                    self._i18n_catalog.i18nc("@info:status",
+                                       "Only one G-code file can be loaded at a time. Skipped importing {0}",
+                                       filename))
+                message.show()
+                return
+            # If file being loaded is non-slicable file, then prevent loading of any other files
+            extension = os.path.splitext(self._loading_files[0])[1]
+            if extension.lower() in self._non_sliceable_extensions:
+                message = Message(
+                    self._i18n_catalog.i18nc("@info:status",
+                                       "Can't open any other file if G-code is loading. Skipped importing {0}",
+                                       filename))
+                message.show()
+                return
+
+        self._loading_files.append(f)
+        if extension in self._non_sliceable_extensions:
+            self.deleteAll()
+
+        job = ReadMeshJob(f)
+        job.finished.connect(self._readMeshFinished)
+        job.start()
+
+    def _readMeshFinished(self, job):
+        node = job.getResult()
+        filename = job.getFileName()
+        self._loading_files.remove(filename)
+
+        if node != None:
+            node.setSelectable(True)
+            node.setName(os.path.basename(filename))
+
+            extension = os.path.splitext(filename)[1]
+            if extension.lower() in self._non_sliceable_extensions:
+                self.changeLayerViewSignal.emit()
+
+            scene = self.getController().getScene()
+
+            op = AddSceneNodeOperation(node, scene.getRoot())
+            op.push()
+
+            scene.sceneChanged.emit(node)
 

@@ -223,7 +223,7 @@ class GCodeReader(MeshReader):
 
             for line in file:
                 if self._cancelled:
-                    Logger.log("i", "Parsing %s cancelled" % file_name)
+                    Logger.log("d", "Parsing %s cancelled" % file_name)
                     return None
                 current_line += 1
                 if current_line % file_step == 0:

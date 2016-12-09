@@ -275,7 +275,7 @@ UM.MainWindow
                             // There is no endsWith in this version of JS...
                             if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
                                 // Drop an object
-                                UM.MeshFileHandler.readLocalFile(drop.urls[i]);
+                                Printer.readLocalFile(drop.urls[i]);
                                 if (imported_model == -1)
                                 {
                                     imported_model = i;
@@ -737,7 +737,7 @@ UM.MainWindow
 
             for(var i in fileUrls)
             {
-                UM.MeshFileHandler.readLocalFile(fileUrls[i])
+                Printer.readLocalFile(fileUrls[i])
             }
 
             var meshName = backgroundItem.getMeshName(fileUrls[0].toString())
