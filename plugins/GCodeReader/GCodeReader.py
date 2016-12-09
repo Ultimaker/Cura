@@ -1,25 +1,22 @@
 # Copyright (c) 2016 Aleph Objects, Inc.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Mesh.MeshReader import MeshReader
-import os
-from UM.Scene.SceneNode import SceneNode
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Math.Vector import Vector
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
-from UM.Message import Message
 from UM.Logger import Logger
-from UM.Backend.Backend import BackendState
-
+from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Vector import Vector
+from UM.Mesh.MeshReader import MeshReader
+from UM.Message import Message
+from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+
 catalog = i18nCatalog("cura")
 
 
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
-from UM.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.SliceableObjectDecorator import SliceableObjectDecorator
 
 import numpy
 import math
@@ -263,12 +260,6 @@ class GCodeReader(MeshReader):
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
         scene_node.addDecorator(decorator)
-
-        sliceable_decorator = SliceableObjectDecorator()
-        sliceable_decorator.setBlockSlicing(True)
-        sliceable_decorator.setSliceable(False)
-        scene_node.addDecorator(sliceable_decorator)
-
         Application.getInstance().getController().getScene().gcode_list = glist
 
         Logger.log("d", "Finished parsing %s" % file_name)

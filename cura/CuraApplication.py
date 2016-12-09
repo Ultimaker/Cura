@@ -28,6 +28,7 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
+from cura.SliceableObjectDecorator import SliceableObjectDecorator
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -1088,6 +1089,16 @@ class CuraApplication(QtApplication):
             extension = os.path.splitext(filename)[1]
             if extension.lower() in self._non_sliceable_extensions:
                 self.changeLayerViewSignal.emit()
+                sliceable_decorator = SliceableObjectDecorator()
+                sliceable_decorator.setBlockSlicing(True)
+                sliceable_decorator.setSliceable(False)
+                node.addDecorator(sliceable_decorator)
+            else:
+                sliceable_decorator = SliceableObjectDecorator()
+                sliceable_decorator.setBlockSlicing(False)
+                sliceable_decorator.setSliceable(True)
+                node.addDecorator(sliceable_decorator)
+
 
             scene = self.getController().getScene()
 

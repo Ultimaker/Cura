@@ -1,23 +1,23 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Mesh.MeshReader import MeshReader
-from UM.Mesh.MeshBuilder import MeshBuilder
+import math
+import os.path
+import zipfile
+
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
-from UM.Scene.SceneNode import SceneNode
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
 import UM.Application
-from UM.Job import Job
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
-from UM.Scene.SliceableObjectDecorator import SliceableObjectDecorator
-
-import os.path
-import zipfile
+from UM.Scene.SceneNode import SceneNode
 
 try:
     import xml.etree.cElementTree as ET
@@ -235,8 +235,6 @@ class ThreeMFReader(MeshReader):
         except Exception as e:
             Logger.log("e", "An exception occurred in 3mf reader: %s", e)
 
-        sliceable_decorator = SliceableObjectDecorator()
-        result.addDecorator(sliceable_decorator)
         return result
 
     ##  Create a scale vector based on a unit string.
