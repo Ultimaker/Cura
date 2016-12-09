@@ -391,15 +391,12 @@ material_names = {
 }
 
 material_url = {
-	# Beginner
 	"HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
 	"PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
 	"PLA_VP": "lulzbot.com/store/filament/pla-village",
 #	"PLA_PHA": "",
 	"PLA_verbatim": "lulzbot.com/store/filament/pla-verbatim",
 	"PLA_poly": "lulzbot.com/store/filament/polylite-pla",
-
-	# Intermediate
 	"ABS_VP": "lulzbot.com/store/filament/abs",
 	"Laybrick": "lulzbot.com/store/filament/laybrick",
 	"PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
@@ -411,8 +408,6 @@ material_url = {
 	"PP-HT-PLA": "lulzbot.com/store/filament/high-temp-pla",
 	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PP-Matte-HT-PLA": "",
-
-	# Advanced
 	"Alloy910": "lulzbot.com/store/filament/alloy-910",
 	"Bridge": "lulzbot.com/store/filament/bridge-nylon",
 	"Laywood": "lulzbot.com/store/filament/laywoo-d3-laywood",
@@ -424,20 +419,14 @@ material_url = {
 	"T-Glase": "lulzbot.com/store/filament/t-glase",
 	"Bronzefill": "lulzbot.com/store/filament/bronzefill",
 	"Copperfill": "lulzbot.com/store/filament/copperfill",
-
-	# Expert
 	"PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
 	"HIPS_VP": "lulzbot.com/store/filament/hips",
 	"PC_VP": "lulzbot.com/store/filament/polycarbonate",
 	"618-Nylon": "lulzbot.com/store/filament/nylon-618",
 	"645-Nylon": "lulzbot.com/store/filament/nylon-645",
-
-	# Flexystruder (Expert)
 	"ninjaflex": "lulzbot.com/store/filament/ninjaflex",
 #	"cheetah": "",
 	"semiflex": "lulzbot.com/store/filament/semiflex",
-	
-	# Dual extruder (Expert)
 	"ABS_ABS": "lulzbot.com/store/filament/abs",
 	"PLA_PLA": "lulzbot.com/store/filament/pla-esun",
 	"PLA_PVA": "lulzbot.com/store/filament/natural-pva",
@@ -448,8 +437,6 @@ material_url = {
 #	"NGEN-NGEN": "",
 	"INOVA-INOVA": "lulzbot.com/store/filament/inova-1800",
 #	"ABS_BRIDGE": "",
-
-	# Flexy Dually (Expert)
 	"ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
 	"ABS_semiflex": "lulzbot.com/store/filament/semiflex",
 #	"ABS_cheetah": "",
@@ -461,8 +448,6 @@ material_url = {
 #	"NGEN_ninjaflex": "",
 #	"NGEN_semiflex": "",
 #	"INOVA_semiflex": "",
-
-	# Experimental
 #	"HT": "",
 #	"b-pet": "",
 #	"PC-MAX": "",
