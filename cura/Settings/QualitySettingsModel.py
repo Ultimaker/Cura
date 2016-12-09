@@ -9,6 +9,10 @@ import UM.Application
 import UM.Logger
 import UM.Qt
 import UM.Settings
+from UM.i18n import i18nCatalog
+from UM.Settings.ContainerRegistry import ContainerRegistry
+
+import os
 
 
 class QualitySettingsModel(UM.Qt.ListModel.ListModel):
@@ -29,6 +33,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self._extruder_definition_id = None
         self._quality_id = None
         self._material_id = None
+        self._i18n_catalog = None
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
@@ -118,6 +123,18 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
         definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+        definition = quality_container.getDefinition()
+
+        # Check if the definition container has a translation file.
+        definition_suffix = ContainerRegistry.getMimeTypeForContainer(type(definition)).preferredSuffix
+        catalog = i18nCatalog(os.path.basename(definition_id + "." + definition_suffix))
+        if catalog.hasTranslationLoaded():
+            self._i18n_catalog = catalog
+
+        for file_name in quality_container.getDefinition().getInheritedFiles():
+            catalog = i18nCatalog(os.path.basename(file_name))
+            if catalog.hasTranslationLoaded():
+                self._i18n_catalog = catalog
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
@@ -205,9 +222,14 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
 
+
+            label = definition.label
+            if self._i18n_catalog:
+                label = self._i18n_catalog.i18nc(definition.key + " label", label)
+
             items.append({
                 "key": definition.key,
-                "label": definition.label,
+                "label": label,
                 "unit": definition.unit,
                 "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
                 "profile_value_source": profile_value_source,
