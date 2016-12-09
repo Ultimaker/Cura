@@ -340,7 +340,7 @@ material_names = {
 	"Bronzefill": "bronzeFill (colorFabb)",
 	"Copperfill": "copperFill (colorFabb)",
 	"HT": "HT (colorFabb)",
-	"PC-MAX": "PC-MAX (Polymaker)",
+	"PC-MAX": "PC-Max (Polymaker)",
 	
 	# Expert
 	"PP-Conductive": "Conductive (Proto-pasta)",
