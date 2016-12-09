@@ -456,7 +456,7 @@ material_url = {
 #	"armadillo": "",
 #	"brassfill": "",
 #	"silk": "",
-#	"linen": "",
+	"linen": "lulzbot.com/store/filament/biofila-linen",
 #	"ABS_scaffold": "",
 #	"HIPS_scaffold": ""
 }
