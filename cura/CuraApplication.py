@@ -1033,7 +1033,7 @@ class CuraApplication(QtApplication):
         Logger.log("d", msg)
 
     _loading_files = []
-    _non_sliceable_extensions = [".gcode", ".g"]
+    non_sliceable_extensions = []
 
     @pyqtSlot(QUrl)
     def readLocalFile(self, file):
@@ -1052,7 +1052,7 @@ class CuraApplication(QtApplication):
         filename = os.path.basename(f)
         if len(self._loading_files) > 0:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
-            if extension.lower() in self._non_sliceable_extensions:
+            if extension.lower() in self.non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
@@ -1061,7 +1061,7 @@ class CuraApplication(QtApplication):
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
             extension = os.path.splitext(self._loading_files[0])[1]
-            if extension.lower() in self._non_sliceable_extensions:
+            if extension.lower() in self.non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
@@ -1070,7 +1070,7 @@ class CuraApplication(QtApplication):
                 return
 
         self._loading_files.append(f)
-        if extension in self._non_sliceable_extensions:
+        if extension in self.non_sliceable_extensions:
             self.deleteAll()
 
         job = ReadMeshJob(f)
@@ -1087,7 +1087,7 @@ class CuraApplication(QtApplication):
             node.setName(os.path.basename(filename))
 
             extension = os.path.splitext(filename)[1]
-            if extension.lower() in self._non_sliceable_extensions:
+            if extension.lower() in self.non_sliceable_extensions:
                 self.changeLayerViewSignal.emit()
                 sliceable_decorator = SliceableObjectDecorator()
                 sliceable_decorator.setBlockSlicing(True)
@@ -1098,7 +1098,6 @@ class CuraApplication(QtApplication):
                 sliceable_decorator.setBlockSlicing(False)
                 sliceable_decorator.setSliceable(True)
                 node.addDecorator(sliceable_decorator)
-
 
             scene = self.getController().getScene()
 
