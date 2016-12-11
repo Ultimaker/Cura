@@ -1020,7 +1020,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             i18n_catalog.i18nc("@label",
                 "Would you like to use your current printer configuration in Cura?"),
             i18n_catalog.i18nc("@label",
-                "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."),
+                "The print cores and/or materials on your printer differ from those within your current project. For the best result, always slice for the print cores and materials that are inserted in your printer."),
             buttons=QMessageBox.Yes + QMessageBox.No,
             icon=QMessageBox.Question,
             callback=callback
