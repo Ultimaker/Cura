@@ -47,7 +47,7 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "Add");
                 onClicked:
                 {
-                    manualPrinterDialog.showDialog("", "", "80", "/");
+                    manualPrinterDialog.showDialog("", "", "80", "/", false);
                 }
             }
 
@@ -59,7 +59,8 @@ Cura.MachineAction
                 onClicked:
                 {
                     manualPrinterDialog.showDialog(base.selectedInstance.name, base.selectedInstance.ipAddress,
-                                                   base.selectedInstance.port, base.selectedInstance.path);
+                                                   base.selectedInstance.port, base.selectedInstance.path,
+                                                   base.selectedInstance.getProperty("useHttps") == "true");
                 }
             }
 
@@ -310,7 +311,7 @@ Cura.MachineAction
         width: minimumWidth
         height: minimumHeight
 
-        signal showDialog(string name, string address, string port, string path_)
+        signal showDialog(string name, string address, string port, string path_, bool useHttps)
         onShowDialog:
         {
             oldName = name;
@@ -321,6 +322,7 @@ Cura.MachineAction
             addressText = address;
             portText = port;
             pathText = path_;
+            httpsCheckbox.checked = useHttps;
 
             manualPrinterDialog.show();
         }
@@ -339,7 +341,7 @@ Cura.MachineAction
             {
                 pathText = "/" + pathText // ensure absolute path
             }
-            manager.setManualInstance(nameText, addressText, parseInt(portText), pathText)
+            manager.setManualInstance(nameText, addressText, parseInt(portText), pathText, httpsCheckbox.checked)
         }
 
         Column {
@@ -419,6 +421,17 @@ Cura.MachineAction
                     {
                         regExp: /[a-zA-Z0-9\.\-\_\/]*/
                     }
+                }
+
+                Label
+                {
+                    text: catalog.i18nc("@label","Use HTTPS")
+                    width: parent.width * 0.4
+                }
+
+                CheckBox
+                {
+                    id: httpsCheckbox
                 }
             }
         }

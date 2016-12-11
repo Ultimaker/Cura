@@ -25,7 +25,9 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._address = address
         self._port = port
-        self._path = properties[b'path'].decode("utf-8") if b'path' in properties else "/"
+        self._path = properties.get(b"path", b"/").decode("utf-8")
+        if self._path[-1:] != "/":
+            self._path += "/"
         self._key = key
         self._properties = properties  # Properties dict as provided by zero conf
 
@@ -41,9 +43,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._api_header = "X-Api-Key"
         self._api_key = None
 
-        self._base_url = "http://%s:%d%s" % (self._address, self._port, self._path)
+        protocol = "https" if properties.get(b'useHttps') == b"true" else "http"
+        self._base_url = "%s://%s:%d%s" % (protocol, self._address, self._port, self._path)
         self._api_url = self._base_url + self._api_prefix
-        self._camera_url = "http://%s:8080/?action=stream" % self._address
+        self._camera_url = "%s://%s:8080/?action=stream" % (protocol, self._address)
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
