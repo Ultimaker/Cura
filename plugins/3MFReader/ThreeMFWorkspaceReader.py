@@ -291,6 +291,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Add all the containers right before we try to add / serialize the stack
         for container in containers_to_add:
             self._container_registry.addContainer(container)
+            container.setDirty(True)
 
         # Get the stack(s) saved in the workspace.
         Logger.log("d", "Workspace loading is checking stacks containers...")
