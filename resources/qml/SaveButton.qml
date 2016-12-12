@@ -106,7 +106,7 @@ Rectangle {
             id: saveToButton
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
-            enabled: base.backendState == 3 && base.activity == true
+            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             anchors.top: parent.top
@@ -181,7 +181,7 @@ Rectangle {
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
-            enabled: base.backendState == 3 && base.activity == true
+            enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
             visible: devicesModel.deviceCount > 1
 
 

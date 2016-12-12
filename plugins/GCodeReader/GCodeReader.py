@@ -16,7 +16,7 @@ catalog = i18nCatalog("cura")
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
-from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.GCodeListDecorator import GCodeListDecorator
 
 import numpy
 import math
@@ -203,6 +203,7 @@ class GCodeReader(MeshReader):
             current_line = 0
             for line in file:
                 file_lines += 1
+                glist.append(line)
             file.seek(0)
 
             file_step = max(math.floor(file_lines / 100), 1)
@@ -260,7 +261,10 @@ class GCodeReader(MeshReader):
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
         scene_node.addDecorator(decorator)
-        Application.getInstance().getController().getScene().gcode_list = glist
+
+        gcode_list_decorator = GCodeListDecorator()
+        gcode_list_decorator.setGCodeList(glist)
+        scene_node.addDecorator(gcode_list_decorator)
 
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()

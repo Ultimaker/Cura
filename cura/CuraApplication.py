@@ -598,6 +598,9 @@ class CuraApplication(QtApplication):
                 continue
             if node.callDecoration("shouldBlockSlicing"):
                 should_pause = True
+            gcode_list = node.callDecoration("gCodeList")
+            if gcode_list is not None:
+                self.getController().getScene().gcode_list = gcode_list
 
             count += 1
             if not scene_bounding_box:
