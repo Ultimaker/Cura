@@ -594,9 +594,9 @@ class CuraApplication(QtApplication):
         scene_bounding_box = None
         should_pause = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("shouldBlockSlicing")):
+            if type(node) is not SceneNode or (not node.getMeshData() and node.callDecoration("isSliceable") is None):
                 continue
-            if node.callDecoration("shouldBlockSlicing"):
+            if node.callDecoration("isSliceable") is False:
                 should_pause = True
             gcode_list = node.callDecoration("gCodeList")
             if gcode_list is not None:
@@ -613,7 +613,8 @@ class CuraApplication(QtApplication):
         print_information = self.getPrintInformation()
         if should_pause:
             self.getBackend().pauseSlicing()
-            print_information.setPreSliced(True)
+            if print_information:
+                print_information.setPreSliced(True)
         else:
             self.getBackend().continueSlicing()
             if print_information:
@@ -739,7 +740,7 @@ class CuraApplication(QtApplication):
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
                 continue
-            if (not node.getMeshData() and node.callDecoration("isSliceable")) and not node.callDecoration("isGroup"):
+            if (not node.getMeshData() and node.callDecoration("isSliceable") is None) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
@@ -1046,7 +1047,7 @@ class CuraApplication(QtApplication):
         scene = self.getController().getScene()
 
         for node in DepthFirstIterator(scene.getRoot()):
-            if node.callDecoration("shouldBlockSlicing"):
+            if node.callDecoration("isSliceable") is False:
                 self.deleteAll()
                 break
 
@@ -1093,13 +1094,10 @@ class CuraApplication(QtApplication):
             if extension.lower() in self.non_sliceable_extensions:
                 self.changeLayerViewSignal.emit()
                 sliceable_decorator = SliceableObjectDecorator()
-                sliceable_decorator.setBlockSlicing(True)
                 sliceable_decorator.setSliceable(False)
                 node.addDecorator(sliceable_decorator)
             else:
                 sliceable_decorator = SliceableObjectDecorator()
-                sliceable_decorator.setBlockSlicing(False)
-                sliceable_decorator.setSliceable(True)
                 node.addDecorator(sliceable_decorator)
 
             scene = self.getController().getScene()
