@@ -54,7 +54,7 @@ import sys
 import os.path
 import numpy
 import copy
-import urllib
+import urllib.parse
 import os
 
 
