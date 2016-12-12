@@ -28,7 +28,7 @@ class XmlMaterialProfile(InstanceContainer):
         super().setReadOnly(read_only)
 
         basefile = self.getMetaDataEntry("base_file", self._id)  # if basefile is self.id, this is a basefile.
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container._read_only = read_only  # prevent loop instead of calling setReadOnly
 
     ##  Overridden from InstanceContainer
@@ -44,7 +44,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
         # Update all containers that share GUID and basefile
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+        for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
             container.setMetaDataEntry(key, value)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.

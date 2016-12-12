@@ -1,11 +1,11 @@
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
 from cura.MachineAction import MachineAction
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 catalog = i18nCatalog("cura")
-
-import UM.Settings.InstanceContainer
 
 class UMOUpgradeSelection(MachineAction):
     def __init__(self):
@@ -37,9 +37,9 @@ class UMOUpgradeSelection(MachineAction):
 
     def _createVariant(self, global_container_stack, variant_index):
         # Create and switch to a variant to store the settings in
-        new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_variant")
+        new_variant = InstanceContainer(global_container_stack.getName() + "_variant")
         new_variant.addMetaDataEntry("type", "variant")
         new_variant.setDefinition(global_container_stack.getBottom())
-        UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
+        ContainerRegistry.getInstance().addContainer(new_variant)
         global_container_stack.replaceContainer(variant_index, new_variant)
         return new_variant

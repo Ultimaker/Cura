@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -22,9 +23,6 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import copy
-
-import UM.Settings.ContainerRegistry
-
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -663,7 +661,7 @@ class BuildVolume(SceneNode):
             return self._global_container_stack.getProperty(setting_key, property)
 
         extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+        stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
         return stack.getProperty(setting_key, property)
 
     ##  Convenience function to calculate the disallowed radius around the edge.

@@ -2,11 +2,11 @@ from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtWidgets import QMessageBox
-import UM.Settings.ContainerRegistry
+
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from enum import IntEnum  # For the connection state tracking.
 from UM.Logger import Logger
-from UM.Application import Application
 from UM.Signal import signalemitter
 
 i18n_catalog = i18nCatalog("cura")
@@ -25,7 +25,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def __init__(self, device_id, parent = None):
         super().__init__(device_id = device_id, parent = parent)
 
-        self._container_registry = UM.Settings.ContainerRegistry.getInstance()
+        self._container_registry = ContainerRegistry.getInstance()
         self._target_bed_temperature = 0
         self._bed_temperature = 0
         self._num_extruders = 1

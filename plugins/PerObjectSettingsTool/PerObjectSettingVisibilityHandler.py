@@ -4,6 +4,7 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 from UM.Application import Application
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
 import UM.Settings.Models.SettingVisibilityHandler
@@ -72,7 +73,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
                     # Use the found stack number to get the right stack to copy the value from.
                     if stack_nr in ExtruderManager.getInstance().extruderIds:
-                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                        stack = ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
 
                     # Use the raw property to set the value (so the inheritance doesn't break)
                     if stack is not None:

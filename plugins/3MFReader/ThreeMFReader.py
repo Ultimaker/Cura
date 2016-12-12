@@ -8,7 +8,6 @@ from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
-import UM.Application
 from UM.Job import Job
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
@@ -188,7 +187,7 @@ class ThreeMFReader(MeshReader):
                 transform = build_item.get("transform")
                 if transform is not None:
                     build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
-                global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
 
                 # Create a transformation Matrix to convert from 3mf worldspace into ours.
                 # First step: flip the y and z axis.

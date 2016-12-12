@@ -88,7 +88,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         items = []
 
         settings = collections.OrderedDict()
-        definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
+        definition_container = Application.getInstance().getGlobalContainerStack().getBottom()
 
         containers = self._container_registry.findInstanceContainers(id = self._quality_id)
         if not containers:
@@ -116,7 +116,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+        definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 

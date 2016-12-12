@@ -4,12 +4,14 @@
 from PyQt5.QtCore import pyqtSlot
 
 from cura.MachineAction import MachineAction
-import cura.Settings.CuraContainerRegistry
 
-import UM.Application
-import UM.Settings.InstanceContainer
-import UM.Settings.DefinitionContainer
+from UM.Application import Application
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Logger import Logger
+
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
@@ -19,10 +21,10 @@ class MachineSettingsAction(MachineAction):
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
 
-        cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+        CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
     def _reset(self):
-        global_container_stack = UM.Application.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             variant = global_container_stack.findContainer({"type": "variant"})
             if variant and variant.getId() == "empty_variant":
@@ -31,10 +33,10 @@ class MachineSettingsAction(MachineAction):
 
     def _createVariant(self, global_container_stack, variant_index):
         # Create and switch to a variant to store the settings in
-        new_variant = UM.Settings.InstanceContainer(global_container_stack.getName() + "_variant")
+        new_variant = InstanceContainer(global_container_stack.getName() + "_variant")
         new_variant.addMetaDataEntry("type", "variant")
         new_variant.setDefinition(global_container_stack.getBottom())
-        UM.Settings.ContainerRegistry.getInstance().addContainer(new_variant)
+        ContainerRegistry.getInstance().addContainer(new_variant)
         global_container_stack.replaceContainer(variant_index, new_variant)
 
     def _onContainerAdded(self, container):
@@ -49,13 +51,13 @@ class MachineSettingsAction(MachineAction):
                 Logger.log("d", "Not attaching MachineSettingsAction to %s; Machines that use variants are not supported", container.getId())
                 return
 
-            UM.Application.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+            Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     @pyqtSlot()
     def forceUpdate(self):
         # Force rebuilding the build volume by reloading the global container stack.
         # This is a bit of a hack, but it seems quick enough.
-        UM.Application.Application.getInstance().globalContainerStackChanged.emit()
+        Application.getInstance().globalContainerStackChanged.emit()
 
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
@@ -78,7 +80,7 @@ class MachineSettingsAction(MachineAction):
                     # Set the material container to a sane default
                     if material_container.getId() == "empty_material":
                         search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*" }
-                        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+                        containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
                         if containers:
                             global_container_stack.replaceContainer(material_index, containers[0])
                 else:
@@ -87,7 +89,7 @@ class MachineSettingsAction(MachineAction):
                     if "has_materials" in global_container_stack.getMetaData():
                         global_container_stack.removeMetaDataEntry("has_materials")
 
-                    empty_material = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
+                    empty_material = ContainerRegistry.getInstance().findInstanceContainers(id = "empty_material")[0]
                     global_container_stack.replaceContainer(material_index, empty_material)
 
-                UM.Application.getInstance().globalContainerStackChanged.emit()
+                Application.getInstance().globalContainerStackChanged.emit()
