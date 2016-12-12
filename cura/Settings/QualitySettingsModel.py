@@ -185,6 +185,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
                 current_category = definition.label
+                if self._i18n_catalog:
+                    current_category = self._i18n_catalog.i18nc(definition.key + " label", definition.label)
                 continue
 
             profile_value = None
