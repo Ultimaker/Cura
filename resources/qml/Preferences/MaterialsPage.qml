@@ -219,6 +219,7 @@ UM.ManagementPage
         {
             id: materialProperties
 
+            property string guid: "00000000-0000-0000-0000-000000000000"
             property string name: "Unknown";
             property string profile_type: "Unknown";
             property string supplier: "Unknown";
@@ -344,6 +345,7 @@ UM.ManagementPage
             return
         }
         materialProperties.name = currentItem.name;
+        materialProperties.guid = Cura.ContainerManager.getContainerMetaDataEntry(base.currentItem.id, "GUID");
 
         if(currentItem.metadata != undefined && currentItem.metadata != null)
         {

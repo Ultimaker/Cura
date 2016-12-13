@@ -15,10 +15,11 @@ TabView
     property QtObject properties;
 
     property bool editingEnabled: false;
-    property string currency: UM.Preferences.getValue("general/currency") ? UM.Preferences.getValue("general/currency") : "€"
+    property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
     property real firstColumnWidth: width * 0.45
     property real secondColumnWidth: width * 0.45
     property string containerId: ""
+    property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
     Tab
     {
@@ -112,12 +113,12 @@ TabView
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
                 ReadOnlySpinBox
                 {
-                    width: base.secondColumnWidth;
-                    value: properties.density;
+                    width: base.secondColumnWidth
+                    value: properties.density
                     decimals: 2
-                    suffix: "g/cm³"
+                    suffix: " g/cm³"
                     stepSize: 0.01
-                    readOnly: !base.editingEnabled;
+                    readOnly: !base.editingEnabled
 
                     onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
                 }
@@ -125,12 +126,12 @@ TabView
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
                 ReadOnlySpinBox
                 {
-                    width: base.secondColumnWidth;
-                    value: properties.diameter;
+                    width: base.secondColumnWidth
+                    value: properties.diameter
                     decimals: 2
-                    suffix: "mm"
+                    suffix: " mm"
                     stepSize: 0.01
-                    readOnly: !base.editingEnabled;
+                    readOnly: !base.editingEnabled
 
                     onEditingFinished: base.setMetaDataEntry("properties/diameter", properties.diameter, value)
                 }
@@ -138,38 +139,42 @@ TabView
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
                 SpinBox
                 {
-                    width: base.secondColumnWidth;
-                    value: properties.spool_cost;
-                    prefix: base.currency
-                    enabled: false
+                    width: base.secondColumnWidth
+                    value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
+                    prefix: base.currency + " "
+                    decimals: 2
+                    maximumValue: 1000
+                    onEditingFinished: base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
                 SpinBox
                 {
-                    width: base.secondColumnWidth;
-                    value: properties.spool_weight;
-                    suffix: "g";
-                    stepSize: 10
-                    enabled: false
+                    width: base.secondColumnWidth
+                    value: base.getMaterialPreferenceValue(properties.guid, "spool_weight")
+                    suffix: " g"
+                    stepSize: 100
+                    decimals: 0
+                    maximumValue: 10000
+                    onEditingFinished: base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
-                SpinBox
+                Label
                 {
-                    width: base.secondColumnWidth;
-                    value: parseFloat(properties.spool_length);
-                    suffix: "m";
-                    enabled: false
+                    width: base.secondColumnWidth
+                    text: "%1 m".arg(properties.spool_length)
+                    verticalAlignment: Qt.AlignVCenter
+                    height: parent.rowHeight
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter (Approx.)") }
-                SpinBox
+                Label
                 {
-                    width: base.secondColumnWidth;
-                    value: parseFloat(properties.cost_per_meter);
-                    suffix: catalog.i18nc("@label", "%1/m".arg(base.currency));
-                    enabled: false
+                    width: base.secondColumnWidth
+                    text: "%1 %2/m".arg(parseFloat(properties.cost_per_meter).toFixed(2)).arg(base.currency)
+                    verticalAlignment: Qt.AlignVCenter
+                    height: parent.rowHeight
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
@@ -266,6 +271,32 @@ TabView
         {
             Cura.ContainerManager.setContainerMetaDataEntry(base.containerId, entry_name, new_value);
         }
+    }
+
+    function setMaterialPreferenceValue(material_guid, entry_name, new_value)
+    {
+        if(!(material_guid in materialPreferenceValues))
+        {
+            materialPreferenceValues[material_guid] = {};
+        }
+        if(entry_name in materialPreferenceValues[material_guid] && materialPreferenceValues[material_guid][entry_name] == new_value)
+        {
+            // value has not changed
+            return
+        }
+        materialPreferenceValues[material_guid][entry_name] = new_value;
+
+        // store preference
+        UM.Preferences.setValue("cura/material_settings", JSON.stringify(materialPreferenceValues));
+    }
+
+    function getMaterialPreferenceValue(material_guid, entry_name)
+    {
+        if(material_guid in materialPreferenceValues && entry_name in materialPreferenceValues[material_guid])
+        {
+            return materialPreferenceValues[material_guid][entry_name];
+        }
+        return 0;
     }
 
     function setName(old_value, new_value)
