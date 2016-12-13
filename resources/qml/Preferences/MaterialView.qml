@@ -21,6 +21,28 @@ TabView
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
+    property double spoolLength:
+    {
+        if (properties.diameter == 0 || properties.density == 0 || getMaterialPreferenceValue(properties.guid, "spool_weight") == 0)
+        {
+            return 0;
+        }
+        print(properties.diameter / 2);
+        var area = Math.PI * Math.pow(properties.diameter / 2, 2); // in mm2
+        var volume = (getMaterialPreferenceValue(properties.guid, "spool_weight") / properties.density); // in cm3
+        return volume / area; // in m
+    }
+
+    property real costPerMeter:
+    {
+        if (spoolLength == 0)
+        {
+            return 0;
+        }
+        return getMaterialPreferenceValue(properties.guid, "spool_cost") / spoolLength;
+    }
+
+
     Tab
     {
         title: catalog.i18nc("@title","Information")
@@ -163,7 +185,7 @@ TabView
                 Label
                 {
                     width: base.secondColumnWidth
-                    text: "%1 m".arg(properties.spool_length)
+                    text: "%1 m".arg(Math.round(base.spoolLength))
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
                 }
@@ -172,7 +194,7 @@ TabView
                 Label
                 {
                     width: base.secondColumnWidth
-                    text: "%1 %2/m".arg(parseFloat(properties.cost_per_meter).toFixed(2)).arg(base.currency)
+                    text: "%1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
                 }
