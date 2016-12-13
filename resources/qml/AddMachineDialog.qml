@@ -46,7 +46,7 @@ UM.Dialog
             left: parent.left;
             top: parent.top;
             right: parent.right;
-            bottom: machineName.top;
+            bottom: machineNameRow.top;
             bottomMargin: UM.Theme.getSize("default_margin").height
         }
 
@@ -171,21 +171,33 @@ UM.Dialog
         }
     }
 
-    TextField
+    Row
     {
-        id: machineName;
-        text: getMachineName()
-        implicitWidth: UM.Theme.getSize("standard_list_input").width
-        maximumLength: 40
-        //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
-        validator: RegExpValidator
-        {
-            regExp: {
-                machineName.machine_name_validator.machineNameRegex
-            }
-        }
-        property var machine_name_validator: Cura.MachineNameValidator { }
+        id: machineNameRow
         anchors.bottom:parent.bottom
+        spacing: UM.Theme.getSize("default_margin").width
+
+        Label
+        {
+            text: catalog.i18nc("@label", "Printer Name:")
+            anchors.verticalCenter: machineName.verticalCenter
+        }
+
+        TextField
+        {
+            id: machineName
+            text: getMachineName()
+            implicitWidth: UM.Theme.getSize("standard_list_input").width
+            maximumLength: 40
+            //validator: Cura.MachineNameValidator { } //TODO: Gives a segfault in PyQt5.6. For now, we must use a signal on text changed.
+            validator: RegExpValidator
+            {
+                regExp: {
+                    machineName.machine_name_validator.machineNameRegex
+                }
+            }
+            property var machine_name_validator: Cura.MachineNameValidator { }
+        }
     }
 
     Button
