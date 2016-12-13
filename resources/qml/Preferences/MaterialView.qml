@@ -185,7 +185,7 @@ TabView
                 Label
                 {
                     width: base.secondColumnWidth
-                    text: "%1 m".arg(Math.round(base.spoolLength))
+                    text: "~ %1 m".arg(Math.round(base.spoolLength))
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
                 }
@@ -194,7 +194,7 @@ TabView
                 Label
                 {
                     width: base.secondColumnWidth
-                    text: "%1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
+                    text: "~ %1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
                 }
