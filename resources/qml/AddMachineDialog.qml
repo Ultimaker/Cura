@@ -66,6 +66,7 @@ UM.Dialog
             section.delegate: Button
             {
                 text: section
+                width: machineList.width
                 style: ButtonStyle
                 {
                     background: Rectangle
