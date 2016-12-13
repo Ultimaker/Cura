@@ -69,8 +69,7 @@ def show(exception_type, value, tb):
     layout.addWidget(label)
 
     #label.setScaledContents(True)
-    label.setText(catalog.i18nc("@label", """
-        <p>A fatal exception has occurred that we could not recover from!</p>
+    label.setText(catalog.i18nc("@label", """<p>A fatal exception has occurred that we could not recover from!</p>
         <p>We hope this picture of a kitten helps you recover from the shock.</p>
         <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>
     """))

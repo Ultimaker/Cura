@@ -1196,8 +1196,9 @@ class MachineManager(QObject):
             else:
                 material_search_criteria["definition"] = "fdmprinter"
             material_containers = container_registry.findInstanceContainers(**material_search_criteria)
-            if material_containers:
-                search_criteria["material"] = material_containers[0].getId()
+            # Try all materials to see if there is a quality profile available.
+            for material_container in material_containers:
+                search_criteria["material"] = material_container.getId()
 
                 containers = container_registry.findInstanceContainers(**search_criteria)
                 if containers:

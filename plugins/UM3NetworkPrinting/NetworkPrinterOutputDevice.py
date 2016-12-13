@@ -537,7 +537,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         print_information = Application.getInstance().getPrintInformation()
 
-        # Check if PrintCores / materials are loaded at all. Any failure in these results in an Error.
+        # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
         for index in range(0, self._num_extruders):
             if print_information.materialLengths[index] != 0:
                 if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
@@ -571,7 +571,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 if variant:
                     if variant.getName() != core_name:
                         Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
-                        warnings.append(i18n_catalog.i18nc("@label", "Different PrintCore (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
+                        warnings.append(i18n_catalog.i18nc("@label", "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
 
                 material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
                 if material:
@@ -593,7 +593,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     is_offset_calibrated = True
 
                 if not is_offset_calibrated:
-                    warnings.append(i18n_catalog.i18nc("@label", "PrintCore {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+                    warnings.append(i18n_catalog.i18nc("@label", "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
