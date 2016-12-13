@@ -128,6 +128,19 @@ UM.PreferencesPage
                     currentIndex -= 1;
                 }
             }
+
+            Label
+            {
+                id: currencyLabel
+                text: catalog.i18nc("@label","Currency:")
+                anchors.verticalCenter: languageComboBox.verticalCenter
+            }
+            TextField
+            {
+                id: currencyField
+                text: UM.Preferences.getValue("cura/currency")
+                onTextChanged: UM.Preferences.setValue("cura/currency", text)
+            }
         }
 
         Label
