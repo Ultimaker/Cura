@@ -104,8 +104,8 @@ UM.Dialog
                     base.activeCategory = section;
                     if (machineList.model.getItem(machineList.currentIndex).section != section) {
                         // Find the first machine from this section
-                        for(var i = 0; i < sortedMachineDefinitionsModel.count; i++) {
-                            var item = sortedMachineDefinitionsModel.getItem(i);
+                        for(var i = 0; i < machineList.model.rowCount(); i++) {
+                            var item = machineList.model.getItem(i);
                             if (item.section == section) {
                                 machineList.currentIndex = i;
                                 break;
