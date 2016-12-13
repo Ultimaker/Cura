@@ -27,7 +27,6 @@ TabView
         {
             return 0;
         }
-        print(properties.diameter / 2);
         var area = Math.PI * Math.pow(properties.diameter / 2, 2); // in mm2
         var volume = (getMaterialPreferenceValue(properties.guid, "spool_weight") / properties.density); // in cm3
         return volume / area; // in m
