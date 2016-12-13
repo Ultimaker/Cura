@@ -225,7 +225,7 @@ class BuildVolume(SceneNode):
             scale_matrix = Matrix()
             if self._width != 0:
                 # Scale circular meshes by aspect ratio if width != height
-                aspect = self._height / self._width
+                aspect = self._depth / self._width
                 scale_matrix.compose(scale = Vector(1, 1, aspect))
             mb = MeshBuilder()
             mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self.VolumeOutlineColor)
