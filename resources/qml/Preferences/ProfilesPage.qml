@@ -162,7 +162,7 @@ UM.ManagementPage
             Button
             {
                 text: {
-                    return catalog.i18nc("@action:button", "Update profile with current settings");
+                    return catalog.i18nc("@action:button", "Update profile with current settings/overrides");
                 }
                 enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
                 onClicked: Cura.ContainerManager.updateQualityChanges()
@@ -187,7 +187,7 @@ UM.ManagementPage
             Label {
                 id: defaultsMessage
                 visible: false
-                text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings in the list below.")
+                text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
                 wrapMode: Text.WordWrap
                 width: parent.width
             }

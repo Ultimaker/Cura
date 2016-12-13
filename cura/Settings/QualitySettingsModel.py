@@ -9,6 +9,10 @@ import UM.Logger
 import UM.Qt
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
+import os
+
+from UM.i18n import i18nCatalog
+
 
 class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     KeyRole = Qt.UserRole + 1
@@ -28,6 +32,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         self._extruder_definition_id = None
         self._quality_id = None
         self._material_id = None
+        self._i18n_catalog = None
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
@@ -117,6 +122,18 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
         definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+        definition = quality_container.getDefinition()
+
+        # Check if the definition container has a translation file.
+        definition_suffix = ContainerRegistry.getMimeTypeForContainer(type(definition)).preferredSuffix
+        catalog = i18nCatalog(os.path.basename(definition_id + "." + definition_suffix))
+        if catalog.hasTranslationLoaded():
+            self._i18n_catalog = catalog
+
+        for file_name in quality_container.getDefinition().getInheritedFiles():
+            catalog = i18nCatalog(os.path.basename(file_name))
+            if catalog.hasTranslationLoaded():
+                self._i18n_catalog = catalog
 
         criteria = {"type": "quality", "quality_type": quality_type, "definition": definition_id}
 
@@ -167,6 +184,8 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
                 current_category = definition.label
+                if self._i18n_catalog:
+                    current_category = self._i18n_catalog.i18nc(definition.key + " label", definition.label)
                 continue
 
             profile_value = None
@@ -176,6 +195,12 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if new_value is not None:
                     profile_value_source = container.getMetaDataEntry("type")
                     profile_value = new_value
+
+                # Global tab should use resolve (if there is one)
+                if not self._extruder_id:
+                    resolve_value = global_container_stack.getProperty(definition.key, "resolve")
+                    if resolve_value is not None and profile_value is not None:
+                        profile_value = resolve_value
 
             user_value = None
             if not self._extruder_id:
@@ -198,9 +223,14 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 if self._extruder_id == "" and settable_per_extruder:
                     continue
 
+
+            label = definition.label
+            if self._i18n_catalog:
+                label = self._i18n_catalog.i18nc(definition.key + " label", label)
+
             items.append({
                 "key": definition.key,
-                "label": definition.label,
+                "label": label,
                 "unit": definition.unit,
                 "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
                 "profile_value_source": profile_value_source,

@@ -83,20 +83,20 @@ class ThreeMFReader(MeshReader):
                 definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
                 node.callDecoration("getStack").getTop().setDefinition(definition)
 
-        setting_container = node.callDecoration("getStack").getTop()
-        for setting in xml_settings:
-            setting_key = setting.get("key")
-            setting_value = setting.text
+            setting_container = node.callDecoration("getStack").getTop()
+            for setting in xml_settings:
+                setting_key = setting.get("key")
+                setting_value = setting.text
 
-            # Extruder_nr is a special case.
-            if setting_key == "extruder_nr":
-                extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
-                if extruder_stack:
-                    node.callDecoration("setActiveExtruder", extruder_stack.getId())
-                else:
-                    Logger.log("w", "Unable to find extruder in position %s", setting_value)
-                continue
-            setting_container.setProperty(setting_key,"value", setting_value)
+                # Extruder_nr is a special case.
+                if setting_key == "extruder_nr":
+                    extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
+                    if extruder_stack:
+                        node.callDecoration("setActiveExtruder", extruder_stack.getId())
+                    else:
+                        Logger.log("w", "Unable to find extruder in position %s", setting_value)
+                    continue
+                setting_container.setProperty(setting_key,"value", setting_value)
 
         if len(node.getChildren()) > 0:
             group_decorator = GroupDecorator()
@@ -184,9 +184,22 @@ class ThreeMFReader(MeshReader):
                         continue
 
                 build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
+
+                # compensate for original center position, if object(s) is/are not around its zero position
+                transform_matrix = Matrix()
+                mesh_data = build_item_node.getMeshData()
+                if mesh_data is not None:
+                    extents = mesh_data.getExtents()
+                    center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                    transform_matrix.setByTranslation(center_vector)
+
+                # offset with transform from 3mf
                 transform = build_item.get("transform")
                 if transform is not None:
-                    build_item_node.setTransformation(self._createMatrixFromTransformationString(transform))
+                    transform_matrix.multiply(self._createMatrixFromTransformationString(transform))
+
+                build_item_node.setTransformation(transform_matrix)
+
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
 
                 # Create a transformation Matrix to convert from 3mf worldspace into ours.

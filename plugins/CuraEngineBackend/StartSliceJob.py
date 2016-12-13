@@ -156,28 +156,29 @@ class StartSliceJob(Job):
                 if group[0].getParent().callDecoration("isGroup"):
                     self._handlePerObjectSettings(group[0].getParent(), group_message)
                 for object in group:
-                    mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
+                    mesh_data = object.getMeshData()
+                    rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
+                    translate = object.getWorldTransformation().getData()[:3, 3]
 
-                    obj = group_message.addRepeatedMessage("objects")
-                    obj.id = id(object)
+                    # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                     verts = mesh_data.getVertices()
-                    indices = mesh_data.getIndices()
-                    if indices is not None:
-                        #TODO: This is a very slow way of doing it! It also locks up the GUI.
-                        flat_vert_list = []
-                        for face in indices:
-                            for vert_index in face:
-                                flat_vert_list.append(verts[vert_index])
-                                Job.yieldThread()
-                        verts = numpy.array(flat_vert_list)
-                    else:
-                        verts = numpy.array(verts)
+                    verts = verts.dot(rot_scale)
+                    verts += translate
 
                     # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                     verts[:, [1, 2]] = verts[:, [2, 1]]
                     verts[:, 1] *= -1
 
-                    obj.vertices = verts
+                    obj = group_message.addRepeatedMessage("objects")
+                    obj.id = id(object)
+
+                    indices = mesh_data.getIndices()
+                    if indices is not None:
+                        flat_verts = numpy.take(verts, indices.flatten(), axis=0)
+                    else:
+                        flat_verts = numpy.array(verts)
+
+                    obj.vertices = flat_verts
 
                     self._handlePerObjectSettings(object, obj)
 

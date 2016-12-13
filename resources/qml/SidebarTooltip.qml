@@ -29,6 +29,11 @@ UM.PointingRectangle {
         } else {
             x = position.x - base.width;
             y = position.y - UM.Theme.getSize("tooltip_arrow_margins").height;
+            if(y < 0)
+            {
+                position.y += -y;
+                y = 0;
+            }
         }
         base.opacity = 1;
         target = Qt.point(40 , position.y + UM.Theme.getSize("tooltip_arrow_margins").height / 2)

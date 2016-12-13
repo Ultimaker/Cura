@@ -351,7 +351,7 @@ Item {
             {
                 if(text != "")
                 {
-                    listview.model.filter = {"settable_per_mesh": true, "label": "*" + text}
+                    listview.model.filter = {"settable_per_mesh": true, "i18n_label": "*" + text}
                 }
                 else
                 {

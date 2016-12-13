@@ -7,6 +7,7 @@ from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -61,43 +62,12 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-from contextlib import contextmanager
-
 import sys
 import os.path
 import numpy
 import copy
-import urllib
+import urllib.parse
 import os
-import time
-
-CONFIG_LOCK_FILENAME = "cura.lock"
-
-##  Contextmanager to create a lock file and remove it afterwards.
-@contextmanager
-def lockFile(filename):
-    try:
-        with open(filename, 'w') as lock_file:
-            lock_file.write("Lock file - Cura is currently writing")
-    except:
-        Logger.log("e", "Could not create lock file [%s]" % filename)
-    yield
-    try:
-        if os.path.exists(filename):
-            os.remove(filename)
-    except:
-        Logger.log("e", "Could not delete lock file [%s]" % filename)
-
-
-##  Wait for a lock file to disappear
-#   the maximum allowable age is settable; if the file is too old, it will be ignored too
-def waitFileDisappear(filename, max_age_seconds=10, msg=""):
-    now = time.time()
-    while os.path.exists(filename) and now < os.path.getmtime(filename) + max_age_seconds and now > os.path.getmtime(filename):
-        if msg:
-            Logger.log("d", msg)
-        time.sleep(1)
-        now = time.time()
 
 
 numpy.seterr(all="ignore")
@@ -145,7 +115,7 @@ class CuraApplication(QtApplication):
 
         # For settings which are not settable_per_mesh and not settable_per_extruder:
         # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
-        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None)
+        SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
@@ -175,6 +145,7 @@ class CuraApplication(QtApplication):
             {
                 ("quality", UM.Settings.InstanceContainer.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("extruder_train", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", UM.Settings.InstanceContainer.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
@@ -250,10 +221,8 @@ class CuraApplication(QtApplication):
         empty_quality_changes_container.addMetaDataEntry("type", "quality_changes")
         ContainerRegistry.getInstance().addContainer(empty_quality_changes_container)
 
-        # Set the filename to create if cura is writing in the config dir.
-        self._config_lock_filename = os.path.join(Resources.getConfigStoragePath(), CONFIG_LOCK_FILENAME)
-        self.waitConfigLockFile()
-        ContainerRegistry.getInstance().load()
+        with ContainerRegistry.getInstance().lockFile():
+            ContainerRegistry.getInstance().load()
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
@@ -262,7 +231,8 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
-
+        Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
+        Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
@@ -279,6 +249,8 @@ class CuraApplication(QtApplication):
             shell
                 wall_thickness
                 top_bottom_thickness
+                z_seam_x
+                z_seam_y
             infill
                 infill_sparse_density
             material
@@ -333,14 +305,6 @@ class CuraApplication(QtApplication):
 
             self._recent_files.append(QUrl.fromLocalFile(f))
 
-    def getContainerRegistry(self):
-        return CuraContainerRegistry.getInstance()
-    ## Lock file check: if (another) Cura is writing in the Config dir.
-    #  one may not be able to read a valid set of files while writing. Not entirely fool-proof,
-    #  but works when you start Cura shortly after shutting down.
-    def waitConfigLockFile(self):
-        waitFileDisappear(self._config_lock_filename, max_age_seconds=10, msg="Waiting for Cura to finish writing in the config dir...")
-
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
 
@@ -368,11 +332,8 @@ class CuraApplication(QtApplication):
         if not self._started: # Do not do saving during application start
             return
 
-        self.waitConfigLockFile()
-
-        # When starting Cura, we check for the lockFile which is created and deleted here
-        with lockFile(self._config_lock_filename):
-
+        # Lock file for "more" atomically loading and saving to/from config dir.
+        with ContainerRegistry.getInstance().lockFile():
             for instance in ContainerRegistry.getInstance().findInstanceContainers():
                 if not instance.isDirty():
                     continue
@@ -397,6 +358,8 @@ class CuraApplication(QtApplication):
                     path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+                elif instance_type == "definition_changes":
+                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
 
                 if path:
                     instance.setPath(path)
@@ -461,7 +424,6 @@ class CuraApplication(QtApplication):
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
-        parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
@@ -651,7 +613,7 @@ class CuraApplication(QtApplication):
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
 
-        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box) and scene_bounding_box.isValid():
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
@@ -753,6 +715,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             Selection.add(node)
 
     ##  Delete all nodes containing mesh data in the scene.
@@ -792,6 +756,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -818,6 +784,8 @@ class CuraApplication(QtApplication):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
             nodes.append(node)
 
         if nodes:
@@ -901,10 +869,13 @@ class CuraApplication(QtApplication):
 
         # Compute the center of the objects
         object_centers = []
+        # Forget about the translation that the original objects have
+        zero_translation = Matrix(data=numpy.zeros(3))
         for mesh, node in zip(meshes, group_node.getChildren()):
-            orientation = node.getOrientation().toMatrix()
-            rotated_mesh = mesh.getTransformed(orientation)
-            center = rotated_mesh.getCenterPosition().scale(node.getScale())
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
+            center = transformed_mesh.getCenterPosition()
             object_centers.append(center)
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
@@ -916,12 +887,13 @@ class CuraApplication(QtApplication):
 
         # Move each node to the same position.
         for mesh, node in zip(meshes, group_node.getChildren()):
-            orientation = node.getOrientation().toMatrix()
-            rotated_mesh = mesh.getTransformed(orientation)
+            transformation = node.getLocalTransformation()
+            transformation.setTranslation(zero_translation)
+            transformed_mesh = mesh.getTransformed(transformation)
 
             # Align the object around its zero position
             # and also apply the offset to center it inside the group.
-            node.setPosition(-rotated_mesh.getZeroPosition().scale(node.getScale()) - offset)
+            node.setPosition(-transformed_mesh.getZeroPosition() - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
@@ -1007,7 +979,7 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        mesh_data = job.getResult().getMeshData()
+        mesh_data = job.getResult()[0].getMeshData()
         if mesh_data:
             job._node.setMeshData(mesh_data)
         else:

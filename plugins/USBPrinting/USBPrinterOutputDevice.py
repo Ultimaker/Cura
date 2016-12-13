@@ -432,7 +432,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False):
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+        container_stack = Application.getInstance().getGlobalContainerStack()
+        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode" or not container_stack.getMetaDataEntry("supports_usb_connection"):
+            self._error_message = Message(catalog.i18nc("@info:status",
+                                                        "Unable to start a new job because the printer does not support usb printing."))
+            self._error_message.show()
+            return
+
         Application.getInstance().showPrintMonitor.emit(True)
         self.startPrint()
 

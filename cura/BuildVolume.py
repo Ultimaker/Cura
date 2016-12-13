@@ -11,6 +11,7 @@ from UM.Application import Application
 from UM.Resources import Resources
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Math.Vector import Vector
+from UM.Math.Matrix import Matrix
 from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
@@ -23,6 +24,7 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import copy
+import math
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -43,6 +45,7 @@ class BuildVolume(SceneNode):
         self._width = 0
         self._height = 0
         self._depth = 0
+        self._shape = ""
 
         self._shader = None
 
@@ -137,6 +140,9 @@ class BuildVolume(SceneNode):
     def setDepth(self, depth):
         if depth: self._depth = depth
 
+    def setShape(self, shape):
+        if shape: self._shape = shape
+
     def getDisallowedAreas(self):
         return self._disallowed_areas
 
@@ -175,27 +181,70 @@ class BuildVolume(SceneNode):
         min_d = -self._depth / 2
         max_d = self._depth / 2
 
-        mb = MeshBuilder()
+        z_fight_distance = 0.2 # Distance between buildplate and disallowed area meshes to prevent z-fighting
 
-        # Outline 'cube' of the build volume
-        mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+        if self._shape != "elliptic":
+            # Outline 'cube' of the build volume
+            mb = MeshBuilder()
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
 
-        mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        self.setMeshData(mb.build())
+            self.setMeshData(mb.build())
 
-        mb = MeshBuilder()
+            # Build plate grid mesh
+            mb = MeshBuilder()
+            mb.addQuad(
+                Vector(min_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, max_d),
+                Vector(min_w, min_h - z_fight_distance, max_d)
+            )
+
+            for n in range(0, 6):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+            self._grid_mesh = mb.build()
+
+        else:
+            # Bottom and top 'ellipse' of the build volume
+            aspect = 1.0
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._height / self._width
+                scale_matrix.compose(scale = Vector(1, 1, aspect))
+            mb = MeshBuilder()
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self.VolumeOutlineColor)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self.VolumeOutlineColor)
+            self.setMeshData(mb.build().getTransformed(scale_matrix))
+
+            # Build plate grid mesh
+            mb = MeshBuilder()
+            mb.addVertex(0, min_h - z_fight_distance, 0)
+            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
+            sections = mb.getVertexCount() - 1 # Center point is not an arc section
+            indices = []
+            for n in range(0, sections - 1):
+                indices.append([0, n + 2, n + 1])
+            mb.addIndices(numpy.asarray(indices, dtype = numpy.int32))
+            mb.calculateNormals()
+
+            for n in range(0, mb.getVertexCount()):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
+            self._grid_mesh = mb.build().getTransformed(scale_matrix)
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
@@ -203,6 +252,7 @@ class BuildVolume(SceneNode):
         else:
             origin = Vector(min_w, min_h, max_d)
 
+        mb = MeshBuilder()
         mb.addCube(
             width = self._origin_line_length,
             height = self._origin_line_width,
@@ -225,19 +275,6 @@ class BuildVolume(SceneNode):
             color = self.ZAxisColor
         )
         self._origin_mesh = mb.build()
-
-        mb = MeshBuilder()
-        mb.addQuad(
-            Vector(min_w, min_h - 0.2, min_d),
-            Vector(max_w, min_h - 0.2, min_d),
-            Vector(max_w, min_h - 0.2, max_d),
-            Vector(min_w, min_h - 0.2, max_d)
-        )
-
-        for n in range(0, 6):
-            v = mb.getVertex(n)
-            mb.setVertexUVCoordinates(n, v[0], v[2])
-        self._grid_mesh = mb.build()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -351,6 +388,7 @@ class BuildVolume(SceneNode):
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
             self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+            self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
@@ -410,6 +448,13 @@ class BuildVolume(SceneNode):
         used_extruders = extruder_manager.getUsedExtruderStacks()
         disallowed_border_size = self._getEdgeDisallowedSize()
 
+        if not used_extruders:
+            # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
+            if extruder_manager.getActiveExtruderStack():
+                used_extruders = [extruder_manager.getActiveExtruderStack()]
+            else:
+                used_extruders = [self._global_container_stack]
+
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrime(disallowed_border_size, used_extruders)
         prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
@@ -440,10 +485,7 @@ class BuildVolume(SceneNode):
                 if collision:
                     break
 
-
-            if not collision:
-                #Prime areas are valid. Add as normal.
-                result_areas[extruder_id].extend(prime_areas[extruder_id])
+            result_areas[extruder_id].extend(prime_areas[extruder_id])
 
             nozzle_disallowed_areas = extruder.getProperty("nozzle_disallowed_areas", "value")
             for area in nozzle_disallowed_areas:
@@ -582,34 +624,79 @@ class BuildVolume(SceneNode):
                 bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
-            if border_size - left_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width, half_machine_depth],
-                    [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
-                    [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
-                ], numpy.float32)))
-            if border_size + right_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [half_machine_width, half_machine_depth],
-                    [half_machine_width, -half_machine_depth],
-                    [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
-                    [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
-                ], numpy.float32)))
-            if border_size + bottom_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [-half_machine_width, half_machine_depth],
-                    [half_machine_width, half_machine_depth],
-                    [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
-                    [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
-                ], numpy.float32)))
-            if border_size - top_unreachable_border > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [half_machine_width, -half_machine_depth],
-                    [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
-                    [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
-                ], numpy.float32)))
+
+            if self._shape != "elliptic":
+                if border_size - left_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width, half_machine_depth],
+                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
+                    ], numpy.float32)))
+                if border_size + right_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [half_machine_width, half_machine_depth],
+                        [half_machine_width, -half_machine_depth],
+                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
+                    ], numpy.float32)))
+                if border_size + bottom_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, half_machine_depth],
+                        [half_machine_width, half_machine_depth],
+                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
+                    ], numpy.float32)))
+                if border_size - top_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [half_machine_width, -half_machine_depth],
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
+                    ], numpy.float32)))
+            else:
+                sections = 32
+                arc_vertex = [0, half_machine_depth - border_size]
+                for i in range(0, sections):
+                    quadrant = math.floor(4 * i / sections)
+                    vertices = []
+                    if quadrant == 0:
+                        vertices.append([-half_machine_width, half_machine_depth])
+                    elif quadrant == 1:
+                        vertices.append([-half_machine_width, -half_machine_depth])
+                    elif quadrant == 2:
+                        vertices.append([half_machine_width, -half_machine_depth])
+                    elif quadrant == 3:
+                        vertices.append([half_machine_width, half_machine_depth])
+                    vertices.append(arc_vertex)
+
+                    angle = 2 * math.pi * (i + 1) / sections
+                    arc_vertex = [-(half_machine_width - border_size) * math.sin(angle), (half_machine_depth - border_size) * math.cos(angle)]
+                    vertices.append(arc_vertex)
+
+                    result[extruder_id].append(Polygon(numpy.array(vertices, numpy.float32)))
+
+                if border_size > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width, half_machine_depth],
+                        [-half_machine_width + border_size, 0]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, half_machine_depth],
+                        [ half_machine_width, half_machine_depth],
+                        [ 0, half_machine_depth - border_size]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [ half_machine_width, half_machine_depth],
+                        [ half_machine_width, -half_machine_depth],
+                        [ half_machine_width - border_size, 0]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [ half_machine_width,-half_machine_depth],
+                        [-half_machine_width,-half_machine_depth],
+                        [ 0, -half_machine_depth + border_size]
+                    ], numpy.float32)))
 
         return result
 
@@ -683,7 +770,7 @@ class BuildVolume(SceneNode):
             skirt_distance = self._getSettingFromAdhesionExtruder("skirt_gap")
             skirt_line_count = self._getSettingFromAdhesionExtruder("skirt_line_count")
             bed_adhesion_size = skirt_distance + (skirt_line_count * self._getSettingFromAdhesionExtruder("skirt_brim_line_width"))
-            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+            if len(ExtruderManager.getInstance().getUsedExtruderStacks()) > 1:
                 adhesion_extruder_nr = int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value"))
                 extruder_values = ExtruderManager.getInstance().getAllExtruderValues("skirt_brim_line_width")
                 del extruder_values[adhesion_extruder_nr]  # Remove the value of the adhesion extruder nr.
@@ -716,15 +803,16 @@ class BuildVolume(SceneNode):
 
         move_from_wall_radius = 0  # Moves that start from outer wall.
         move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
-        avoid_enabled_per_extruder = self._getSettingFromAllExtruders(("travel_avoid_other_parts"))
-        avoid_distance_per_extruder = self._getSettingFromAllExtruders("travel_avoid_distance")
-        for index, avoid_other_parts_enabled in enumerate(avoid_enabled_per_extruder): #For each extruder (or just global).
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
+        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts","value") for stack in used_extruders]
+        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
+        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder): #For each extruder (or just global).
             if avoid_other_parts_enabled:
-                move_from_wall_radius = max(move_from_wall_radius, avoid_distance_per_extruder[index]) #Index of the same extruder.
+                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
 
-        #Now combine our different pieces of data to get the final border size.
-        #Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
-        #Support expansion is added to farthest shield distance, since the shields go around support.
+        # Now combine our different pieces of data to get the final border size.
+        # Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
+        # Support expansion is added to farthest shield distance, since the shields go around support.
         border_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
         return border_size
 

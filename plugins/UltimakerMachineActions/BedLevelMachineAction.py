@@ -8,6 +8,8 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
+##  A simple action to handle manual bed leveling procedure for printers that don't have it on the firmware.
+#   This is currently only used by the Ultimaker Original+
 class BedLevelMachineAction(MachineAction):
     def __init__(self):
         super().__init__("BedLevel", catalog.i18nc("@action", "Level build plate"))

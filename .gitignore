@@ -31,5 +31,5 @@ debian*
 plugins/Doodle3D-cura-plugin
 plugins/GodMode
 plugins/PostProcessingPlugin
-plugins/UM3NetworkPrinting
 plugins/X3GWriter
+

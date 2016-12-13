@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
-import UM 1.2 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 import "Menus"
@@ -67,11 +67,17 @@ UM.MainWindow
                 id: fileMenu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
 
-                MenuItem {
+                MenuItem
+                {
                     action: Cura.Actions.open;
                 }
 
                 RecentFilesMenu { }
+
+                MenuItem
+                {
+                    action: Cura.Actions.loadWorkspace
+                }
 
                 MenuSeparator { }
 
@@ -100,6 +106,22 @@ UM.MainWindow
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
+                    }
+                }
+                MenuItem
+                {
+                    id: saveWorkspaceMenu
+                    text: catalog.i18nc("@title:menu menubar:file","Save project")
+                    onTriggered:
+                    {
+                        if(UM.Preferences.getValue("cura/dialog_on_project_save"))
+                        {
+                            saveWorkspaceDialog.open()
+                        }
+                        else
+                        {
+                            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
+                        }
                     }
                 }
 
@@ -488,13 +510,16 @@ UM.MainWindow
 
         onVisibleChanged:
         {
-            if(!visible)
-            {
-                // When the dialog closes, switch to the General page.
-                // This prevents us from having a heavy page like Setting Visiblity active in the background.
-                setPage(0);
-            }
+            // When the dialog closes, switch to the General page.
+            // This prevents us from having a heavy page like Setting Visiblity active in the background.
+            setPage(0);
         }
+    }
+
+    WorkspaceSummaryDialog
+    {
+        id: saveWorkspaceDialog
+        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "file_type": "workspace" })
     }
 
     Connections
@@ -721,6 +746,38 @@ UM.MainWindow
     {
         target: Cura.Actions.open
         onTriggered: openDialog.open()
+    }
+
+    FileDialog
+    {
+        id: openWorkspaceDialog;
+
+        //: File open dialog title
+        title: catalog.i18nc("@title:window","Open workspace")
+        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
+        selectMultiple: false
+        nameFilters: UM.WorkspaceFileHandler.supportedReadFileTypes;
+        folder: CuraApplication.getDefaultPath("dialog_load_path")
+        onAccepted:
+        {
+            //Because several implementations of the file dialog only update the folder
+            //when it is explicitly set.
+            var f = folder;
+            folder = f;
+
+            CuraApplication.setDefaultPath("dialog_load_path", folder);
+
+            for(var i in fileUrls)
+            {
+                UM.WorkspaceFileHandler.readLocalFile(fileUrls[i])
+            }
+        }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.loadWorkspace
+        onTriggered: openWorkspaceDialog.open()
     }
 
     EngineLog
