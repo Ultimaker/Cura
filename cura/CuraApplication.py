@@ -585,16 +585,10 @@ class CuraApplication(QtApplication):
     def updatePlatformActivity(self, node = None):
         count = 0
         scene_bounding_box = None
-        should_pause = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("isBlockSlicing")):
                 continue
-            if node.callDecoration("isBlockSlicing"):
-                should_pause = True
-            gcode_list = node.callDecoration("getGCodeList")
-            if gcode_list is not None:
-                self.getController().getScene().gcode_list = gcode_list
-
+            
             count += 1
             if not scene_bounding_box:
                 scene_bounding_box = node.getBoundingBox()
@@ -602,16 +596,6 @@ class CuraApplication(QtApplication):
                 other_bb = node.getBoundingBox()
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
-
-        print_information = self.getPrintInformation()
-        if should_pause:
-            self.getBackend().pauseSlicing()
-            if print_information:
-                print_information.setPreSliced(True)
-        else:
-            self.getBackend().continueSlicing()
-            if print_information:
-                print_information.setPreSliced(False)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
