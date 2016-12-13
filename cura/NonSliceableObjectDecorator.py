@@ -1,9 +1,9 @@
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 
 
-class SliceableObjectDecorator(SceneNodeDecorator):
+class NonSliceableObjectDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
         
-    def isSliceable(self):
+    def isNonSliceable(self):
         return True

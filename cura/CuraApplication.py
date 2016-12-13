@@ -29,6 +29,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -135,6 +136,9 @@ class CuraApplication(QtApplication):
                 ("user", UM.Settings.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
+
+        self._currently_loading_files = []
+        self._non_sliceable_extensions = []
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
@@ -289,8 +293,6 @@ class CuraApplication(QtApplication):
                 continue
 
             self._recent_files.append(QUrl.fromLocalFile(f))
-
-        self.changeLayerViewSignal.connect(self.changeToLayerView)
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -538,15 +540,6 @@ class CuraApplication(QtApplication):
 
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
-    changeLayerViewSignal = pyqtSignal()
-
-    def changeToLayerView(self):
-        self.getController().setActiveView("LayerView")
-        view = self.getController().getActiveView()
-        view.resetLayerData()
-        view.setLayer(999999)
-        view.calculateMaxLayers()
-
     def onSelectionChanged(self):
         if Selection.hasSelection():
             if self.getController().getActiveTool():
@@ -594,11 +587,11 @@ class CuraApplication(QtApplication):
         scene_bounding_box = None
         should_pause = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or (not node.getMeshData() and node.callDecoration("isSliceable") is None):
+            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("isBlockSlicing")):
                 continue
-            if node.callDecoration("isSliceable") is False:
+            if node.callDecoration("isBlockSlicing"):
                 should_pause = True
-            gcode_list = node.callDecoration("gCodeList")
+            gcode_list = node.callDecoration("getGCodeList")
             if gcode_list is not None:
                 self.getController().getScene().gcode_list = gcode_list
 
@@ -740,7 +733,7 @@ class CuraApplication(QtApplication):
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
                 continue
-            if (not node.getMeshData() and node.callDecoration("isSliceable") is None) and not node.callDecoration("isGroup"):
+            if (not node.getMeshData() and not node.callDecoration("isBlockSlicing")) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
@@ -1036,9 +1029,6 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    _loading_files = []
-    non_sliceable_extensions = []
-
     @pyqtSlot(QUrl)
     def readLocalFile(self, file):
         if not file.isValid():
@@ -1047,16 +1037,16 @@ class CuraApplication(QtApplication):
         scene = self.getController().getScene()
 
         for node in DepthFirstIterator(scene.getRoot()):
-            if node.callDecoration("isSliceable") is False:
+            if node.callDecoration("isBlockSlicing"):
                 self.deleteAll()
                 break
 
         f = file.toLocalFile()
         extension = os.path.splitext(f)[1]
         filename = os.path.basename(f)
-        if len(self._loading_files) > 0:
+        if len(self._currently_loading_files) > 0:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
-            if extension.lower() in self.non_sliceable_extensions:
+            if extension.lower() in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Only one G-code file can be loaded at a time. Skipped importing {0}",
@@ -1064,8 +1054,8 @@ class CuraApplication(QtApplication):
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
-            extension = os.path.splitext(self._loading_files[0])[1]
-            if extension.lower() in self.non_sliceable_extensions:
+            extension = os.path.splitext(self._currently_loading_files[0])[1]
+            if extension.lower() in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
                                        "Can't open any other file if G-code is loading. Skipped importing {0}",
@@ -1073,8 +1063,8 @@ class CuraApplication(QtApplication):
                 message.show()
                 return
 
-        self._loading_files.append(f)
-        if extension in self.non_sliceable_extensions:
+        self._currently_loading_files.append(f)
+        if extension in self._non_sliceable_extensions:
             self.deleteAll()
 
         job = ReadMeshJob(f)
@@ -1084,18 +1074,22 @@ class CuraApplication(QtApplication):
     def _readMeshFinished(self, job):
         node = job.getResult()
         filename = job.getFileName()
-        self._loading_files.remove(filename)
+        self._currently_loading_files.remove(filename)
 
         if node != None:
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
 
             extension = os.path.splitext(filename)[1]
-            if extension.lower() in self.non_sliceable_extensions:
-                self.changeLayerViewSignal.emit()
-                sliceable_decorator = SliceableObjectDecorator()
-                sliceable_decorator.setSliceable(False)
-                node.addDecorator(sliceable_decorator)
+            if extension.lower() in self._non_sliceable_extensions:
+                self.getController().setActiveView("LayerView")
+                view = self.getController().getActiveView()
+                view.resetLayerData()
+                view.setLayer(9999999)
+                view.calculateMaxLayers()
+
+                block_slicing_decorator = BlockSlicingDecorator()
+                node.addDecorator(block_slicing_decorator)
             else:
                 sliceable_decorator = SliceableObjectDecorator()
                 node.addDecorator(sliceable_decorator)
@@ -1107,3 +1101,5 @@ class CuraApplication(QtApplication):
 
             scene.sceneChanged.emit(node)
 
+    def addNonSliceableExtension(self, extension):
+        self._non_sliceable_extensions.append(extension)

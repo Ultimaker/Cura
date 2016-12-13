@@ -6,7 +6,7 @@ class GCodeListDecorator(SceneNodeDecorator):
         super().__init__()
         self._gcode_list = []
         
-    def gCodeList(self):
+    def getGCodeList(self):
         return self._gcode_list
 
     def setGCodeList(self, list):
