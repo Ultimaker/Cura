@@ -46,7 +46,8 @@ UM.Dialog
             left: parent.left;
             top: parent.top;
             right: parent.right;
-            bottom: parent.bottom;
+            bottom: machineName.top;
+            bottomMargin: UM.Theme.getSize("default_margin").height
         }
 
         ListView
