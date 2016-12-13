@@ -12,6 +12,7 @@ import cura.Settings.ExtruderManager
 import math
 import os.path
 import unicodedata
+import json
 
 ##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
@@ -48,6 +49,7 @@ class PrintInformation(QObject):
 
         self._material_lengths = []
         self._material_weights = []
+        self._material_costs = []
 
         self._backend = Application.getInstance().getBackend()
         if self._backend:
@@ -77,6 +79,12 @@ class PrintInformation(QObject):
     def materialWeights(self):
         return self._material_weights
 
+    materialCostsChanged = pyqtSignal()
+
+    @pyqtProperty("QVariantList", notify = materialCostsChanged)
+    def materialCosts(self):
+        return self._material_costs
+
     def _onPrintDurationMessage(self, total_time, material_amounts):
         self._current_print_time.setDuration(total_time)
         self.currentPrintTimeChanged.emit()
@@ -85,20 +93,40 @@ class PrintInformation(QObject):
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths = []
         self._material_weights = []
+        self._material_costs = []
+
+        material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
+
         extruder_stacks = list(cura.Settings.ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
         for index, amount in enumerate(material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
+            material = None
             if extruder_stacks:  # Multi extrusion machine
                 extruder_stack = [extruder for extruder in extruder_stacks if extruder.getMetaDataEntry("position") == str(index)][0]
                 density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
+                material = extruder_stack.findContainer({"type": "material"})
             else:  # Machine with no extruder stacks
                 density = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("properties", {}).get("density", 0)
+                material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
 
-            self._material_weights.append(float(amount) * float(density) / 1000)
+            weight = float(amount) * float(density) / 1000
+            cost = 0
+            if material:
+                material_guid = material.getMetaDataEntry("GUID")
+                if material_guid in material_preference_values:
+                    weight_per_spool = float(material_preference_values[material_guid]["spool_weight"])
+                    cost_per_spool = float(material_preference_values[material_guid]["spool_cost"])
+
+                    cost = cost_per_spool * weight / weight_per_spool
+
+            self._material_weights.append(weight)
             self._material_lengths.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
+            self._material_costs.append(cost)
+
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
+        self.materialCostsChanged.emit()
 
     @pyqtSlot(str)
     def setJobName(self, name):
