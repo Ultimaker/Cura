@@ -62,7 +62,7 @@ class VersionUpgrade22to24(VersionUpgrade):
             config.remove_option("general", "containers")
 
             for index in range(len(container_list)):
-                config.set("containers", index, container_list[index])
+                config.set("containers", str(index), container_list[index])
 
         output = io.StringIO()
         config.write(output)
