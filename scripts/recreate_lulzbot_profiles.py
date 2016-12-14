@@ -132,7 +132,8 @@ material_map = {
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
 	"ABS_scaffold": "ABS-scaffold-support",
-	"HIPS_scaffold": "HIPS-scaffold-support"
+	"HIPS_scaffold": "HIPS-scaffold-support",
+	"ic3d-ABS": "ic3d-ABS"
 }
 
 material_order = {
@@ -219,7 +220,8 @@ material_order = {
 	"armadillo":         5007,
 	"brassfill":         5008,
 	"ABS_scaffold":      5009,
-	"HIPS_scaffold":     5010
+	"HIPS_scaffold":     5010,
+	"ic3d-ABS":          5011
 }
 
 material_types = {
@@ -387,7 +389,8 @@ material_names = {
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
 	"ABS_scaffold": "ABS & Scaffold Support",
-	"HIPS_scaffold": "HIPS & Scaffold Support"
+	"HIPS_scaffold": "HIPS & Scaffold Support",
+	"ic3d-ABS": "ABS (IC3D)"
 }
 
 material_url = {
@@ -458,7 +461,8 @@ material_url = {
 	"silk": "lulzbot.com/store/filament/biofila-silk",
 	"linen": "lulzbot.com/store/filament/biofila-linen",
 #	"ABS_scaffold": "",
-#	"HIPS_scaffold": ""
+#	"HIPS_scaffold": "",
+#	"ic3d-ABS": ""
 }
 
 bed_prep_materials = {
