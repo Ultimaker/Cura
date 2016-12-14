@@ -28,7 +28,7 @@ UM.Dialog
         {
             machineResolveComboBox.currentIndex = 0
             qualityChangesResolveComboBox.currentIndex = 0
-            materialConflictComboBox.currentIndex = 0
+            materialResolveComboBox.currentIndex = 0
         }
     }
     Item
