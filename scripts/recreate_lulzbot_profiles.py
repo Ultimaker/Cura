@@ -568,7 +568,7 @@ def create_machine_type(machine_type, path, dir):
 				if material_types.has_key(material):
 					types = material_types[material]
 					if 'moarstruder' in machine_type.lower():
-						if material == "PLA_poly":
+						if material == "T-Glase":
 							types = types + "|First Run"
 							order = 0
 							f.write("default = 1\n")
