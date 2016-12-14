@@ -15,33 +15,60 @@ Both MacOS and Linux require some extra instructions for development, as you nee
 
 There are two options to run cura on your system. Package (Build/install/run) or run directly from the source code.
 
-== Running from Source ==
-Recommended for alpha testers and software developers contributing patches or pull requests.
+= Running from Source =
 
-## Get the source code
-  git clone https://code.alephobjects.com/diffusion/CURA/cura.git
+Recommended for alpha testers and software developers contributing patches or pull requests. Requires having `git` installed.
 
-##Install dependencies for your platform
-Run the `sudo apt-get install ...` or `sudo yum install ...` line from the below platform dependant sections.
+== Get the source code ==
 
-##Build CuraEngine
-Easily done by running package.sh once
 ```
-cd cura
-package.sh <platform name here>
+git clone https://code.alephobjects.com/diffusion/CURA/cura.git
+cd cura #Enter the Cura source code directory
 ```
 
-##Link CuraEngine
-For *nix OSes you can create a symbolic link. This can be placed in the directory above where you cloned cura.
+== Install dependencies ==
+
+Run the `sudo apt-get install ...` or `sudo yum install ...` line from the packaging section below, this is specific to your platform.
+
+== Setup CuraEngine ==
+
+On some platforms the build script can be used to do this automatically like so:
 ```
-cd ..
-ln -s ./cura/CuraEngine/build/CuraEngine CuraEngine
+./package.sh <platform name here>
 ```
 
-##Run
-``` ./dev-cura ```
+Here is the manual process for platforms not mentioned in the build script:
+```
+git clone https://code.alephobjects.com/diffusion/CE/curaengine.git #get a copy of the source code
+cd CuraEngine #Enter the newly created directory
+make #Compile CuraEngine
+```
 
-== Packaging ==
+== Link CuraEngine ==
+
+For *nix OSes you can create a symbolic link. Put this file one directory above where you cloned cura.
+```
+cd .. #Move up a directory
+ln -s ./cura/CuraEngine/build/CuraEngine CuraEngine #Actually create the link
+```
+
+== Add group access ==
+
+For some *nix OSes you will need to add one or more of these groups to connect to your printer via USB.
+```
+sudo usermod -a -G tty $USER
+sudo usermod -a -G dialout $USER
+sudo usermod -a -G serial $USER
+```
+
+== Run ==
+
+```
+./dev-cura #Launch the GUI application
+```
+
+= Packaging =
+
 Recommended for organizations that are building their own version of Cura.
 
 Cura development comes with a script "package.sh", this script has been designed to run under *nix OSes (Linux, MacOS, FreeBSD). For Windows the package.sh script can be run from bash using git. The "package.sh" script generates a final release package. You should not need it during development, unless you are changing the release process. If you want to distribute your own version of Cura, then the package.sh script will allow you to do that.
