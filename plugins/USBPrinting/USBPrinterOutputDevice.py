@@ -468,7 +468,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 break  # None is only returned when something went wrong. Stop listening
 
             if time.time() > temperature_request_timeout:
-                if self._num_extruders > 0:
+                if self._num_extruders > 1:
                     self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
                     self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))
                 else:
@@ -524,7 +524,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
             if line == b"":
-                if self._num_extruders > 0:
+                if self._num_extruders > 1:
                     self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
                     self.sendCommand("M105 T%d" % self._temperature_requested_extruder_index)
                 else:
