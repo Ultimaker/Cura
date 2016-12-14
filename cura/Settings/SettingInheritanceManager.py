@@ -32,6 +32,7 @@ class SettingInheritanceManager(QObject):
     def getChildrenKeysWithOverride(self, key):
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
         if not definitions:
+            Logger.log("w", "Could not find definition for key [%s]", key)
             return []
         result = []
         for key in definitions[0].getAllKeys():
@@ -51,6 +52,7 @@ class SettingInheritanceManager(QObject):
 
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
         if not definitions:
+            Logger.log("w", "Could not find definition for key [%s] (2)", key)
             return []
         result = []
         for key in definitions[0].getAllKeys():

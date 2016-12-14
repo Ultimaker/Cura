@@ -305,7 +305,7 @@ UM.Dialog
         {
             id: ok_button
             text: catalog.i18nc("@action:button","OK");
-            onClicked: { manager.onOkButtonClicked() }
+            onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
             enabled: true
         },
         Button

@@ -144,6 +144,11 @@ class WorkspaceDialog(QObject):
         if key in self._result:
             self._result[key] = strategy
 
+    ##  Close the backend: otherwise one could end up with "Slicing..."
+    @pyqtSlot()
+    def closeBackend(self):
+        Application.getInstance().getBackend().close()
+
     def setMaterialConflict(self, material_conflict):
         self._has_material_conflict = material_conflict
         self.materialConflictChanged.emit()
