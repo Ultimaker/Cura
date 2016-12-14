@@ -8,6 +8,7 @@ import io
 
 from UM import Resources
 from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
+import UM.VersionUpgrade
 
 class VersionUpgrade22to24(VersionUpgrade):
 
@@ -115,6 +116,26 @@ class VersionUpgrade22to24(VersionUpgrade):
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
         config.set("general", "version", "3")   # Just bump the version number. That is all we need for now.
+
+        output = io.StringIO()
+        config.write(output)
+        return [filename], [output.getvalue()]
+
+    def upgradePreferences(self, serialised, filename):
+        config = configparser.ConfigParser(interpolation = None)
+        config.read_string(serialised)
+
+        if not config.has_section("general"):
+            raise UM.VersionUpgrade.FormatException("No \"general\" section.")
+
+        # Make z_seam_x and z_seam_y options visible. In a clean 2.4 they are visible by default.
+        if config.has_option("general", "visible_settings"):
+            visible_settings = config.get("general", "visible_settings")
+            visible_set = set(visible_settings.split(";"))
+            visible_set.add("z_seam_x")
+            visible_set.add("z_seam_y")
+            config.set("general", "visible_settings", ";".join(visible_set))
+        config.set("general", "version", value="4")
 
         output = io.StringIO()
         config.write(output)
