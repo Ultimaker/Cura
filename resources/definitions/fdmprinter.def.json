@@ -1190,7 +1190,7 @@
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
-                    "maximum_value": "(20 - math.log(infill_line_distance) / math.log(2)) if infill_line_distance > 1 else 1",
+                    "maximum_value": "(20 - math.log(infill_line_distance) / math.log(2)) if infill_line_distance > 0 else 0",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
                     "settable_per_mesh": true
                 },
