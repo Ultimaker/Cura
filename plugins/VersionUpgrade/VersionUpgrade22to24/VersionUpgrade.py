@@ -19,6 +19,10 @@ class VersionUpgrade22to24(VersionUpgrade):
 
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
+        if config.get("metadata", "type") == "definition_changes":
+            # This is not a container stack, don't upgrade it here
+            return
+
         config.set("general", "version", "3")
 
         container_list = []
