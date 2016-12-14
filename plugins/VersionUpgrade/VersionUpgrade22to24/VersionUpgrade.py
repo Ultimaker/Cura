@@ -48,6 +48,8 @@ class VersionUpgrade22to24(VersionUpgrade):
                 # Change the name of variant and insert empty_variant into the stack.
                 new_container_list = []
                 for item in container_list:
+                    if not item: # the last item may be an empty string
+                        continue
                     if item == variant_name:
                         new_container_list.append(config_name)
                         new_container_list.append("empty_variant")
