@@ -32,7 +32,7 @@ class SettingInheritanceManager(QObject):
     def getChildrenKeysWithOverride(self, key):
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
         if not definitions:
-            return
+            return []
         result = []
         for key in definitions[0].getAllKeys():
             if key in self._settings_with_inheritance_warning:
@@ -51,7 +51,7 @@ class SettingInheritanceManager(QObject):
 
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
         if not definitions:
-            return
+            return []
         result = []
         for key in definitions[0].getAllKeys():
             if self._settingIsOverwritingInheritance(key, extruder):

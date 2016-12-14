@@ -263,7 +263,7 @@ Item
                 onEntered:
                 {
                     base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
-                        catalog.i18nc("@label", supportEnabled.properties.description));
+                        catalog.i18nc("@label", "Enable support structures. These structures support parts of the model with severe overhangs."));
                 }
                 onExited:
                 {
