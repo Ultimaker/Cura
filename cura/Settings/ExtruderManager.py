@@ -351,8 +351,11 @@ class ExtruderManager(QObject):
         #The platform adhesion extruder. Not used if using none.
         if global_stack.getProperty("adhesion_type", "value") != "none":
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("adhesion_extruder_nr", "value"))])
-
-        return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
+        try:
+            return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
+        except IndexError:  # One or more of the extruders was not found.
+            UM.Logger.log("e", "Unable to find one or more of the extruders in %s", used_extruder_stack_ids)
+            return []
 
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #
