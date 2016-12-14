@@ -594,6 +594,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
     # Map XML file product names to internal ids
     # TODO: Move this to definition's metadata
     __product_id_map = {
+        "Ultimaker 3": "ultimaker3",
+        "Ultimaker 3 Extended": "ultimaker3_extended",
         "Ultimaker 2": "ultimaker2",
         "Ultimaker 2+": "ultimaker2_plus",
         "Ultimaker 2 Go": "ultimaker2_go",

@@ -20,8 +20,10 @@ def getMetaData():
         "version_upgrade": {
             # From                     To                 Upgrade function
             ("machine_instance", 2): ("machine_stack", 3, upgrade.upgradeMachineInstance),
-            ("extruder_train", 2): ("extruder_train", 3, upgrade.upgradeExtruderTrain)
-        },
+            ("extruder_train", 2): ("extruder_train", 3, upgrade.upgradeExtruderTrain),
+            ("preferences", 3):      ("preferences", 4, upgrade.upgradePreferences)
+
+    },
         "sources": {
             "machine_stack": {
                 "get_version": upgrade.getCfgVersion,
