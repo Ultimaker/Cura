@@ -1016,7 +1016,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Let the user decide if the hotends and/or material should be synced with the printer
     def materialHotendChangedMessage(self, callback):
-        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Changes on the Printer"),
+        Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Sync with your printer"),
             i18n_catalog.i18nc("@label",
                 "Would you like to use your current printer configuration in Cura?"),
             i18n_catalog.i18nc("@label",
