@@ -193,6 +193,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             profile_value_source = ""
             for container in containers:
                 new_value = container.getProperty(definition.key, "value")
+
                 if new_value is not None:
                     profile_value_source = container.getMetaDataEntry("type")
                     profile_value = new_value
@@ -200,7 +201,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
                 # Global tab should use resolve (if there is one)
                 if not self._extruder_id:
                     resolve_value = global_container_stack.getProperty(definition.key, "resolve")
-                    if resolve_value is not None and profile_value is not None:
+                    if resolve_value is not None and profile_value is not None and profile_value_source != "quality_changes":
                         profile_value = resolve_value
 
             user_value = None
