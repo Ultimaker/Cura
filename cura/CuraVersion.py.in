@@ -3,3 +3,4 @@
 
 CuraVersion = "@CURA_VERSION@"
 CuraBuildType = "@CURA_BUILDTYPE@"
+CuraDebugMode = True if "@CURA_DEBUGMODE@" == "ON" else False

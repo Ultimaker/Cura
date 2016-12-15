@@ -12,6 +12,11 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+try:
+    from cura.CuraVersion import CuraDebugMode
+except ImportError:
+    CuraDebugMode = False  # [CodeStyle: Reflecting imported value]
+
 # List of exceptions that should be considered "fatal" and abort the program.
 # These are primarily some exception types that we simply cannot really recover from
 # (MemoryError and SystemError) and exceptions that indicate grave errors in the
@@ -24,20 +29,17 @@ fatal_exception_types = [
 ]
 
 def show(exception_type, value, tb):
-    debug_mode = True
-
     Logger.log("c", "An uncaught exception has occurred!")
     for line in traceback.format_exception(exception_type, value, tb):
         for part in line.rstrip("\n").split("\n"):
             Logger.log("c", part)
 
-    if not debug_mode and exception_type not in fatal_exception_types:
+    if not CuraDebugMode and exception_type not in fatal_exception_types:
         return
 
     application = QCoreApplication.instance()
     if not application:
         sys.exit(1)
-
 
     dialog = QDialog()
     dialog.setMinimumWidth(640)
