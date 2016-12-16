@@ -102,7 +102,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: manager.activeDefinitionName
+                    text: Cura.MachineManager.activeDefinitionName
                     width: parent.width / 3
                 }
             }
@@ -120,8 +120,37 @@ UM.Dialog
                     text: Cura.MachineManager.activeMachineName
                     width: parent.width / 3
                 }
-
             }
+
+            Repeater
+            {
+                model: Cura.MachineManager.activeMaterialNames
+                delegate: Column
+                {
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
+                    }
+                    height: childrenRect.height
+                    width: parent.width
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
+                            width: parent.width / 3
+                        }
+                        Label
+                        {
+                            text: Cura.MachineManager.activeVariantNames[index] + ", " + modelData
+                            width: parent.width / 3
+                        }
+                    }
+                }
+            }
+
             Item // Spacer
             {
                 height: spacerHeight

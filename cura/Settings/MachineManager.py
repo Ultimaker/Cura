@@ -498,6 +498,17 @@ class MachineManager(QObject):
 
         return ""
 
+    @pyqtProperty("QVariantList", notify=activeVariantChanged)
+    def activeVariantNames(self):
+        result = []
+        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
+            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+                variant_container = stack.findContainer({"type": "variant"})
+                if variant_container and variant_container != self._empty_variant_container:
+                    result.append(variant_container.getName())
+
+        return result
+
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self):
         result = []
@@ -987,7 +998,7 @@ class MachineManager(QObject):
         if self._global_container_stack:
             definition = self._global_container_stack.getBottom()
             if definition:
-                return definition.getMetaDataEntry("name", "")
+                return definition.getName()
 
         return ""
 
