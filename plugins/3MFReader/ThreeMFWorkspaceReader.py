@@ -54,6 +54,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         else:
             Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
+
         machine_name = ""
         # Check if there are any conflicts, so we can ask the user.
         archive = zipfile.ZipFile(file_name, "r")
@@ -95,6 +96,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_name = ""
         quality_type = ""
         num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
+        num_user_settings = 0
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
             instance_container = InstanceContainer(container_id)
@@ -117,6 +119,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if quality_name == "":
                     quality_name = instance_container.getName()
                 quality_type = instance_container.getName()
+            elif container_type == "user":
+                num_user_settings += len(instance_container._instances)
             Job.yieldThread()
         num_visible_settings = 0
         try:
@@ -142,6 +146,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
         self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
+        self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)

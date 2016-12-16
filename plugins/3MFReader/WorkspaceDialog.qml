@@ -168,7 +168,23 @@ UM.Dialog
             Row
             {
                 width: parent.width
-                height: childrenRect.height
+                height: manager.numUserSettings != 0 ? childrenRect.height : 0
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Not in profile")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "%1 override(s)").arg(manager.numUserSettings)
+                    width: parent.width / 3
+                }
+                visible: manager.numUserSettings != 0
+            }
+            Row
+            {
+                width: parent.width
+                height: manager.numSettingsOverridenByQualityChanges != 0 ? childrenRect.height : 0
                 Label
                 {
                     text: catalog.i18nc("@action:label", "Derivative from")
