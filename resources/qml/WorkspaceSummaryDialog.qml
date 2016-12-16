@@ -186,7 +186,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "%1 override(s)").arg(Cura.MachineManager.numUserSettings)
+                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
                     width: parent.width / 3
                 }
                 visible: Cura.MachineManager.numUserSettings
