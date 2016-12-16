@@ -42,6 +42,7 @@ class WorkspaceDialog(QObject):
         self._num_settings_overriden_by_quality_changes = 0
         self._quality_type = ""
         self._machine_name = ""
+        self._machine_type = ""
         self._material_labels = []
         self._objects_on_plate = False
 
@@ -57,6 +58,15 @@ class WorkspaceDialog(QObject):
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
+    machineTypeChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify=machineTypeChanged)
+    def machineType(self):
+        return self._machine_type
+
+    def setMachineType(self, machine_type):
+        self._machine_type = machine_type
+        self.machineTypeChanged.emit()
 
     def setNumUserSettings(self, num_user_settings):
         self._num_user_settings = num_user_settings

@@ -82,6 +82,21 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Printer settings")
                 font.bold: true
             }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Type")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.machineType
+                    width: parent.width / 3
+                }
+            }
 
             Row
             {
