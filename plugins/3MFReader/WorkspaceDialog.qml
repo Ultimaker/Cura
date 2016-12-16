@@ -200,7 +200,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "%1 override(s)").arg(manager.numUserSettings)
+                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
                     width: parent.width / 3
                 }
                 visible: manager.numUserSettings != 0
@@ -216,6 +216,7 @@ UM.Dialog
                 }
                 Label
                 {
+                    text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                     text: catalog.i18nc("@action:label", "%1, %2 override(s)" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                     width: parent.width / 3
                 }
