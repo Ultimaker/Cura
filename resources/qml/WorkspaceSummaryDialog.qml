@@ -119,7 +119,21 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Profile settings")
                 font.bold: true
             }
-
+            Row
+            {
+                width: parent.width
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Not in profile")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "%1 override(s)").arg(Cura.MachineManager.numUserSettings)
+                    width: parent.width / 3
+                }
+                visible: Cura.MachineManager.numUserSettings
+            }
             Row
             {
                 width: parent.width

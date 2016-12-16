@@ -412,6 +412,17 @@ class MachineManager(QObject):
 
         return False
 
+    @pyqtProperty(int, notify = activeStackValueChanged)
+    def numUserSettings(self):
+        if not self._global_container_stack:
+            return 0
+        num_user_settings = 0
+        num_user_settings += len(self._global_container_stack.getTop().findInstances())
+        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        for stack in stacks:
+            num_user_settings += len(stack.getTop().findInstances())
+        return num_user_settings
+
     ##  Delete a user setting from the global stack and all extruder stacks.
     #   \param key \type{str} the name of the key to delete
     @pyqtSlot(str)
