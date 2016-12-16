@@ -23,7 +23,7 @@ Menu
             if(printerConnected && Cura.MachineManager.printerOutputDevices[0].materialNames.length > extruderIndex)
             {
                 var materialName = Cura.MachineManager.printerOutputDevices[0].materialNames[extruderIndex];
-                return catalog.i18nc("@title:menuitem %1 is the value from the printer", "Automatic: %1").arg(materialName);
+                return catalog.i18nc("@title:menuitem %1 is the automatically selected material", "Automatic: %1").arg(materialName);
             }
             return "";
         }
