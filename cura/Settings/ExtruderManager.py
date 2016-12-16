@@ -395,7 +395,12 @@ class ExtruderManager(QObject):
     #   \return \type{List[ContainerStack]} a list of
     def getActiveExtruderStacks(self):
         global_stack = UM.Application.getInstance().getGlobalContainerStack()
-        return list(self._extruder_trains[global_stack.getId()].values()) if global_stack else []
+
+        result = []
+        if global_stack:
+            for extruder in sorted(self._extruder_trains[global_stack.getId()]):
+                result.append(self._extruder_trains[global_stack.getId()][extruder])
+        return result
 
     def __globalContainerStackChanged(self):
         self._addCurrentMachineExtruders()
