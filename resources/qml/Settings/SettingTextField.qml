@@ -113,7 +113,8 @@ SettingItem
                     // 2: quality
                     // 3: material  -> user changed material in materialspage
                     // 4: variant
-                    // 5: machine
+                    // 5: machine_changes
+                    // 6: machine
                     if ((base.resolve != "None" && base.resolve) && (stackLevel != 0) && (stackLevel != 1)) {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
