@@ -127,6 +127,11 @@ UM.Dialog
                 model: Cura.MachineManager.activeMaterialNames
                 delegate: Column
                 {
+                    Item // Spacer
+                    {
+                        height: spacerHeight
+                        width: height
+                    }
                     Label
                     {
                         text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
@@ -193,7 +198,7 @@ UM.Dialog
                 }
 
             }
-            Item // Spacer
+            /*Item // Spacer
             {
                 height: spacerHeight
                 width: height
@@ -223,8 +228,7 @@ UM.Dialog
                         width: parent.width / 3
                     }
                 }
-            }
-
+            }*/
 
             Item // Spacer
             {
