@@ -1056,11 +1056,11 @@ class CuraApplication(QtApplication):
         job.start()
 
     def _readMeshFinished(self, job):
-        node = job.getResult()
+        nodes = job.getResult()
         filename = job.getFileName()
         self._currently_loading_files.remove(filename)
 
-        if node != None:
+        for node in nodes:
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
 
