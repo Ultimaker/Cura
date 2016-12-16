@@ -982,6 +982,15 @@ class MachineManager(QObject):
 
         return ""
 
+    @pyqtProperty(str, notify=globalContainerChanged)
+    def activeDefinitionName(self):
+        if self._global_container_stack:
+            definition = self._global_container_stack.getBottom()
+            if definition:
+                return definition.getMetaDataEntry("name", "")
+
+        return ""
+
     ##  Get the Definition ID to use to select quality profiles for the currently active machine
     #   \returns DefinitionID (string) if found, empty string otherwise
     #   \sa getQualityDefinitionId
