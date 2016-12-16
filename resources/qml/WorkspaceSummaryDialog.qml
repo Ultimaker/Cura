@@ -46,7 +46,16 @@ UM.Dialog
 
     Item
     {
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        anchors.topMargin: 20
+        anchors.bottomMargin: 20
+        anchors.leftMargin:20
+        anchors.rightMargin: 20
+
         UM.SettingDefinitionsModel
         {
             id: definitionsModel
@@ -263,22 +272,34 @@ UM.Dialog
                 checked: dontShowAgain
             }
         }
-    }
-    rightButtons: [
-        Button
-        {
-            id: cancel_button
-            text: catalog.i18nc("@action:button","Cancel");
-            enabled: true
-            onClicked: close()
-        },
+
+
         Button
         {
             id: ok_button
             text: catalog.i18nc("@action:button","Save");
             enabled: true
             onClicked: {
-                close(); yes() }
+                close()
+                yes()
+            }
+            anchors.bottomMargin: - 0.5 * height
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
         }
-    ]
+
+        Button
+        {
+            id: cancel_button
+            text: catalog.i18nc("@action:button","Cancel");
+            enabled: true
+            onClicked: close()
+
+            anchors.bottom: parent.bottom
+            anchors.right: ok_button.left
+            anchors.bottomMargin: - 0.5 * height
+            anchors.rightMargin:2
+
+        }
+    }
 }

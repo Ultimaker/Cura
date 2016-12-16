@@ -16,9 +16,9 @@ UM.Dialog
     minimumWidth: 550
     maximumWidth: 550
 
-    height: 350
-    minimumHeight: 350
-    maximumHeight: 350
+    height: 400
+    minimumHeight: 400
+    maximumHeight: 400
     property int comboboxHeight: 15
     property int spacerHeight: 10
     onClosing: manager.notifyClosed()
@@ -33,7 +33,15 @@ UM.Dialog
     }
     Item
     {
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        anchors.topMargin: 20
+        anchors.bottomMargin: 20
+        anchors.leftMargin:20
+        anchors.rightMargin: 20
 
         UM.I18nCatalog
         {
@@ -134,29 +142,6 @@ UM.Dialog
                 }
             }
 
-            /*Repeater
-            {
-                model: manager.extruders
-                delegate: Column
-                {
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
-                    }
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "%1 & material").arg(manager.variantType)
-                        width: parent.width / 3
-                    }
-                    Label
-                    {
-                        text: modelData
-                        width: parent.width / 3
-                    }
-                }
-            }*/
             Item // Spacer
             {
                 height: spacerHeight
@@ -345,31 +330,47 @@ UM.Dialog
                 height: spacerHeight
                 width: height
             }
-            Label
+            Row
             {
-                text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
-                visible: manager.hasObjectsOnPlate
-                color: "red"
                 width: parent.width
-                wrapMode: Text.Wrap
+                height: childrenRect.height
+                visible: manager.hasObjectsOnPlate
+                UM.RecolorImage
+                {
+                    width: warningLabel.height
+                    height: width
+
+                    source: UM.Theme.getIcon("notice")
+                    color: "black"
+
+                }
+                Label
+                {
+                    id: warningLabel
+                    text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
+                    wrapMode: Text.Wrap
+                }
             }
         }
-    }
-    rightButtons: [
-
         Button
         {
             id: cancel_button
             text: catalog.i18nc("@action:button","Cancel");
             onClicked: { manager.onCancelButtonClicked() }
             enabled: true
-        },
+            anchors.bottom: parent.bottom
+            anchors.right: ok_button.left
+            anchors.bottomMargin: - 0.5 * height
+            anchors.rightMargin:2
+        }
          Button
         {
             id: ok_button
             text: catalog.i18nc("@action:button","Open");
             onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
-            enabled: true
+            anchors.bottomMargin: - 0.5 * height
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
         }
-    ]
+    }
 }
