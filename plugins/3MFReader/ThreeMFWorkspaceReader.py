@@ -55,9 +55,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
 
-
         machine_name = ""
         machine_type = ""
+        variant_type_name = i18n_catalog.i18nc("@label", "Nozzle")
+
+        num_extruders = 0
         # Check if there are any conflicts, so we can ask the user.
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -87,12 +89,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
                 definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
-                if definition_container.getMetaDataEntry("type") != "extruder":
-                    machine_type = definition_container.getName()
+
             else:
-                if definitions[0].getMetaDataEntry("type") != "extruder":
-                    machine_type = definitions[0].getName()
+                definition_container = definitions[0]
+
+            if definition_container.getMetaDataEntry("type") != "extruder":
+                machine_type = definition_container.getName()
+                variant_type_name = definition_container.getMetaDataEntry("variants_name", variant_type_name)
+            else:
+                num_extruders += 1
             Job.yieldThread()
+
+        if num_extruders == 0:
+            num_extruders = 1 # No extruder stacks found, which means there is one extruder
+
+        extruders = num_extruders * [""]
 
         material_labels = []
         material_conflict = False
@@ -138,6 +149,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_type = instance_container.getName()
             elif container_type == "user":
                 num_user_settings += len(instance_container._instances)
+
             Job.yieldThread()
         num_visible_settings = 0
         try:
@@ -168,6 +180,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
+        self._dialog.setExtruders(extruders)
+        self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().getPlatformActivity)
         self._dialog.show()
 

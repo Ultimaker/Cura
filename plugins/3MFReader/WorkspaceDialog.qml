@@ -133,6 +133,30 @@ UM.Dialog
                     }
                 }
             }
+
+            /*Repeater
+            {
+                model: manager.extruders
+                delegate: Column
+                {
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
+                    }
+                    width: parent.width
+                    height: childrenRect.height
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "%1 & material").arg(manager.variantType)
+                        width: parent.width / 3
+                    }
+                    Label
+                    {
+                        text: modelData
+                        width: parent.width / 3
+                    }
+                }
+            }*/
             Item // Spacer
             {
                 height: spacerHeight
@@ -332,18 +356,19 @@ UM.Dialog
         }
     }
     rightButtons: [
-        Button
-        {
-            id: ok_button
-            text: catalog.i18nc("@action:button","OK");
-            onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
-            enabled: true
-        },
+
         Button
         {
             id: cancel_button
             text: catalog.i18nc("@action:button","Cancel");
             onClicked: { manager.onCancelButtonClicked() }
+            enabled: true
+        },
+         Button
+        {
+            id: ok_button
+            text: catalog.i18nc("@action:button","Open");
+            onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
             enabled: true
         }
     ]

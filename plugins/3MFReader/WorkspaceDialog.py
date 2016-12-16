@@ -43,7 +43,9 @@ class WorkspaceDialog(QObject):
         self._quality_type = ""
         self._machine_name = ""
         self._machine_type = ""
+        self._variant_type = ""
         self._material_labels = []
+        self._extruders = []
         self._objects_on_plate = False
 
     machineConflictChanged = pyqtSignal()
@@ -59,6 +61,16 @@ class WorkspaceDialog(QObject):
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
     machineTypeChanged = pyqtSignal()
+    variantTypeChanged = pyqtSignal()
+    extrudersChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify=variantTypeChanged)
+    def variantType(self):
+        return self._variant_type
+
+    def setVariantType(self, variant_type):
+        self._variant_type = variant_type
+        self.variantTypeChanged.emit()
 
     @pyqtProperty(str, notify=machineTypeChanged)
     def machineType(self):
@@ -91,6 +103,14 @@ class WorkspaceDialog(QObject):
     def setMaterialLabels(self, material_labels):
         self._material_labels = material_labels
         self.materialLabelsChanged.emit()
+
+    @pyqtProperty("QVariantList", notify=extrudersChanged)
+    def extruders(self):
+        return self._extruders
+
+    def setExtruders(self, extruders):
+        self._extruders = extruders
+        self.extrudersChanged.emit()
 
     @pyqtProperty(str, notify = machineNameChanged)
     def machineName(self):
