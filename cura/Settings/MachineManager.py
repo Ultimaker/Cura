@@ -815,6 +815,8 @@ class MachineManager(QObject):
         for stack in stacks:
             material = stack.findContainer(type="material")
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+            if not quality: #No quality profile is found for this quality type.
+                quality = self._empty_quality_container
             result.append({"stack": stack, "quality": quality, "quality_changes": empty_quality_changes})
 
         if extruder_stacks:
@@ -868,6 +870,8 @@ class MachineManager(QObject):
 
             material = stack.findContainer(type="material")
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+            if not quality: #No quality profile found for this quality type.
+                quality = self._empty_quality_container
 
             result.append({"stack": stack, "quality": quality, "quality_changes": quality_changes})
 

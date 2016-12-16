@@ -285,6 +285,9 @@ class BuildVolume(SceneNode):
             color = Color(0.0, 0.0, 0.0, 0.15)
             for polygon in self._disallowed_areas:
                 points = polygon.getPoints()
+                if len(points) == 0:
+                    continue
+
                 first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
                 previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
                 for point in points:
