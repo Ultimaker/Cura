@@ -721,7 +721,12 @@ class BuildVolume(SceneNode):
     #
     #   \return A sequence of setting values, one for each extruder.
     def _getSettingFromAllExtruders(self, setting_key, property = "value"):
-        return ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+        all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
+        for i in range(len(all_values)):
+            if not all_values[i] and (all_types[i] == "int" or all_types[i] == "float"):
+                all_values[i] = 0
+        return all_values
 
     ##  Private convenience function to get a setting from the support infill
     #   extruder.
@@ -745,16 +750,21 @@ class BuildVolume(SceneNode):
         multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         if not multi_extrusion:
-            return self._global_container_stack.getProperty(setting_key, property)
+            stack = self._global_container_stack
+        else:
+            extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
 
-        extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
+            if extruder_index == "-1":  # If extruder index is -1 use global instead
+                stack = self._global_container_stack
+            else:
+                extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+                stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
 
-        if extruder_index == "-1":  # If extruder index is -1 use global instead
-            return self._global_container_stack.getProperty(setting_key, property)
-
-        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-        return stack.getProperty(setting_key, property)
+        value = stack.getProperty(setting_key, property)
+        setting_type = stack.getProperty(setting_key, "type")
+        if not value and (setting_type == "int" or setting_type == "float"):
+            return 0
+        return value
 
     ##  Convenience function to calculate the disallowed radius around the edge.
     #
