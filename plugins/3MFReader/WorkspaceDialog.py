@@ -36,11 +36,13 @@ class WorkspaceDialog(QObject):
         self._has_machine_conflict = False
         self._has_material_conflict = False
         self._num_visible_settings = 0
+        self._num_user_settings = 0
         self._active_mode = ""
         self._quality_name = ""
         self._num_settings_overriden_by_quality_changes = 0
         self._quality_type = ""
         self._machine_name = ""
+        self._machine_type = ""
         self._material_labels = []
         self._objects_on_plate = False
 
@@ -55,6 +57,24 @@ class WorkspaceDialog(QObject):
     machineNameChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
+    numUserSettingsChanged = pyqtSignal()
+    machineTypeChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify=machineTypeChanged)
+    def machineType(self):
+        return self._machine_type
+
+    def setMachineType(self, machine_type):
+        self._machine_type = machine_type
+        self.machineTypeChanged.emit()
+
+    def setNumUserSettings(self, num_user_settings):
+        self._num_user_settings = num_user_settings
+        self.numVisibleSettingsChanged.emit()
+
+    @pyqtProperty(int, notify=numUserSettingsChanged)
+    def numUserSettings(self):
+        return self._num_user_settings
 
     @pyqtProperty(bool, notify=objectsOnPlateChanged)
     def hasObjectsOnPlate(self):

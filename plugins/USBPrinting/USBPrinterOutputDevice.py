@@ -313,6 +313,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
+                    time.sleep(10)
                 except serial.SerialException:
                     Logger.log("d", "Could not open port %s" % self._serial_port)
                     continue
