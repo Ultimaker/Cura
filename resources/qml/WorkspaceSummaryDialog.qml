@@ -182,7 +182,7 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "%1 override(s)").arg(Cura.MachineManager.numUserSettings)
+                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
                     width: parent.width / 3
                 }
                 visible: Cura.MachineManager.numUserSettings
@@ -203,37 +203,6 @@ UM.Dialog
                 }
 
             }
-            /*Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Material settings")
-                font.bold: true
-            }
-
-            Repeater
-            {
-                model: Cura.MachineManager.activeMaterialNames
-                delegate: Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Name")
-                        width: parent.width / 3
-                    }
-                    Label
-                    {
-                        text: modelData
-                        width: parent.width / 3
-                    }
-                }
-            }*/
 
             Item // Spacer
             {
