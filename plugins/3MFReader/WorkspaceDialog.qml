@@ -85,10 +85,41 @@ UM.Dialog
                 width: height
             }
 
-            Label
+            Row
             {
-                text: catalog.i18nc("@action:label", "Printer settings")
-                font.bold: true
+                height: childrenRect.height
+                width: parent.width
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Printer settings")
+                    font.bold: true
+                    width: parent.width /3
+                }
+                Item
+                {
+                    // spacer
+                    height: spacerHeight
+                    width: parent.width / 3
+                }
+                UM.TooltipArea
+                {
+                    id: machineResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.machineConflict
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
+                    ComboBox
+                    {
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        id: machineResolveComboBox
+                        width: parent.width
+                        onActivated:
+                        {
+                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
+                        }
+                    }
+                }
             }
             Row
             {
@@ -120,26 +151,6 @@ UM.Dialog
                     text: manager.machineName
                     width: parent.width / 3
                 }
-
-                UM.TooltipArea
-                {
-                    id: machineResolveTooltip
-                    width: parent.width / 3
-                    height: visible ? comboboxHeight : 0
-                    visible: manager.machineConflict
-                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-                    ComboBox
-                    {
-                        model: resolveStrategiesModel
-                        textRole: "label"
-                        id: machineResolveComboBox
-                        width: parent.width
-                        onActivated:
-                        {
-                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
-                        }
-                    }
-                }
             }
 
             Item // Spacer
@@ -147,28 +158,22 @@ UM.Dialog
                 height: spacerHeight
                 width: height
             }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Profile settings")
-                font.bold: true
-            }
-
             Row
             {
-                width: parent.width
                 height: childrenRect.height
+                width: parent.width
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Name")
+                    text: catalog.i18nc("@action:label", "Profile settings")
+                    font.bold: true
                     width: parent.width / 3
                 }
-                Label
+                Item
                 {
-                    text: manager.qualityName
+                    // spacer
+                    height: spacerHeight
                     width: parent.width / 3
                 }
-
                 UM.TooltipArea
                 {
                     id: qualityChangesResolveTooltip
@@ -187,6 +192,21 @@ UM.Dialog
                             manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
                         }
                     }
+                }
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Name")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.qualityName
+                    width: parent.width / 3
                 }
             }
             Row
@@ -226,11 +246,41 @@ UM.Dialog
                 height: spacerHeight
                 width: height
             }
-
-            Label
+            Row
             {
-                text: catalog.i18nc("@action:label", "Material settings")
-                font.bold: true
+                height: childrenRect.height
+                width: parent.width
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Material settings")
+                    font.bold: true
+                    width: parent.width / 3
+                }
+                Item
+                {
+                    // spacer
+                    height: spacerHeight
+                    width: parent.width / 3
+                }
+                UM.TooltipArea
+                {
+                    id: materialResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.materialConflict
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
+                    ComboBox
+                    {
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        id: materialResolveComboBox
+                        width: parent.width
+                        onActivated:
+                        {
+                            manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
+                        }
+                    }
+                }
             }
 
             Repeater
@@ -253,37 +303,6 @@ UM.Dialog
                 }
             }
 
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                visible: manager.materialConflict
-                Item
-                {
-                    width: parent.width / 3 * 2
-                    height: comboboxHeight
-                }
-
-                UM.TooltipArea
-                {
-                    id: materialResolveTooltip
-                    width: parent.width / 3
-                    height: visible ? comboboxHeight : 0
-
-                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
-                    ComboBox
-                    {
-                        model: resolveStrategiesModel
-                        textRole: "label"
-                        id: materialResolveComboBox
-                        width: parent.width
-                        onActivated:
-                        {
-                            manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
-                        }
-                    }
-                }
-            }
             Item // Spacer
             {
                 height: spacerHeight
