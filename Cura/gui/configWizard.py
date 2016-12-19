@@ -1723,7 +1723,7 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 	def __init__(self, parent):
 		super(LulzbotFirmwareUpdatePage, self).__init__(parent, _("LulzBot Firmware Update"))
 
-		self.AddText(_("Your LulzBot printer\'s firmware will now be updated.\n" +
+		self.AddText(_("Your LulzBot 3D printer firmware will now be updated.\n" +
 		"Note: this will overwrite your existing firmware."))
 		self.AddSeperator()
 		self.AddText(_("Follow these steps to prevent writing firmware to the wrong device:\n" +
