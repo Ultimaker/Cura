@@ -585,10 +585,13 @@ class CuraApplication(QtApplication):
     def updatePlatformActivity(self, node = None):
         count = 0
         scene_bounding_box = None
+        is_block_slicing_node = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("isBlockSlicing")):
+            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("getLayerData")):
                 continue
-            
+            if node.callDecoration("isBlockSlicing"):
+                is_block_slicing_node = True
+
             count += 1
             if not scene_bounding_box:
                 scene_bounding_box = node.getBoundingBox()
@@ -596,6 +599,10 @@ class CuraApplication(QtApplication):
                 other_bb = node.getBoundingBox()
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
+
+        print_information = self.getPrintInformation()
+        if print_information:
+            print_information.setPreSliced(is_block_slicing_node)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
@@ -717,7 +724,7 @@ class CuraApplication(QtApplication):
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
                 continue
-            if (not node.getMeshData() and not node.callDecoration("isBlockSlicing")) and not node.callDecoration("isGroup"):
+            if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
