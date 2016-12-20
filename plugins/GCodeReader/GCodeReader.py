@@ -177,12 +177,15 @@ class GCodeReader(MeshReader):
 
     def _processTCode(self, T, line, position, path):
         self._extruder = T
+        if self._extruder + 1 > len(position.e):
+            position.e.extend([0] * (self._extruder - len(position.e) + 1))
         if len(path) > 1 and position[2] > 0:
             if self._createPolygon(position[2], path):
                 self._layer += 1
             path.clear()
         else:
             path.clear()
+        return position
 
     _type_keyword = ";TYPE:"
 
@@ -216,7 +219,7 @@ class GCodeReader(MeshReader):
 
             Logger.log("d", "Parsing %s" % file_name)
 
-            current_position = self._position(0, 0, 0, [0, 0])
+            current_position = self._position(0, 0, 0, [0])
             current_path = []
 
             for line in file:
@@ -250,7 +253,7 @@ class GCodeReader(MeshReader):
                     current_position = self._processGCode(G, line, current_position, current_path)
                 T = self._getInt(line, "T")
                 if T is not None:
-                    self._processTCode(T, line, current_position, current_path)
+                    current_position = self._processTCode(T, line, current_position, current_path)
 
             if len(current_path) > 1 and current_position[2] > 0:
                 if self._createPolygon(current_position[2], current_path):
