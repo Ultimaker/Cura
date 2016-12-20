@@ -85,6 +85,7 @@ class ProcessSlicedLayersJob(Job):
                 min_layer_number = layer.id
 
         current_layer = 0
+        all_normals = []
 
         for layer in self._layers:
             abs_layer_number = layer.id + abs(min_layer_number)
@@ -126,6 +127,9 @@ class ProcessSlicedLayersJob(Job):
 
                 this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
                 this_poly.buildCache()
+
+                normals = this_poly.getNormals()
+                all_normals.append(normals)
                 
                 this_layer.polygons.append(this_poly)
 
@@ -143,7 +147,9 @@ class ProcessSlicedLayersJob(Job):
             if self._progress:
                 self._progress.setProgress(progress)
 
+        # layer_data.calculateNormals()
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
+        layer_data._normals = numpy.concatenate(all_normals)
         layer_mesh = layer_data.build()
 
         if self._abort_requested:

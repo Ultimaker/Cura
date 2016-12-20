@@ -415,6 +415,8 @@ class CuraApplication(QtApplication):
         controller = self.getController()
 
         controller.setActiveView("SolidView")
+        # controller.setActiveView("LayerView")
+
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
@@ -454,6 +456,8 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
+
+        # self.callLater(controller.setActiveView, "LayerView")
 
         if self._engine.rootObjects:
             self.closeSplash()

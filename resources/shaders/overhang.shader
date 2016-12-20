@@ -20,6 +20,40 @@ vertex =
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
     }
 
+geometry =
+    #version 410
+
+    layout(triangles) in;
+    layout(triangle_strip, max_vertices = 6) out;
+
+    in vec3 v_normal[];
+    in vec3 v_vertex[];
+
+    out vec3 f_normal;
+    out vec3 f_vertex;
+
+    void main()
+    {
+        int i;
+        for(i = 0; i < 3; i++)
+        {
+            f_normal = v_normal[i];
+            f_vertex = v_vertex[i];
+            gl_Position = gl_in[i].gl_Position + vec4(-50, 0.0, 0.0, 0.0);
+            EmitVertex();
+        }
+        EndPrimitive();
+
+        for(i = 0; i < 3; i++)
+        {
+            f_normal = v_normal[i];
+            f_vertex = v_vertex[i];
+            gl_Position = gl_in[i].gl_Position + vec4(50, 0.0, 0.0, 0.0);
+            EmitVertex();
+        }
+        EndPrimitive();
+    }
+
 fragment =
     uniform mediump vec4 u_ambientColor;
     uniform mediump vec4 u_diffuseColor;
@@ -31,27 +65,28 @@ fragment =
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
 
-    varying highp vec3 v_vertex;
-    varying highp vec3 v_normal;
+    varying highp vec3 f_vertex;
+    varying highp vec3 f_normal;
 
     void main()
     {
+
         mediump vec4 finalColor = vec4(0.0);
 
-        /* Ambient Component */
+        // Ambient Component
         finalColor += u_ambientColor;
 
-        highp vec3 normal = normalize(v_normal);
-        highp vec3 lightDir = normalize(u_lightPosition - v_vertex);
+        highp vec3 normal = normalize(f_normal);
+        highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
 
-        /* Diffuse Component */
+        // Diffuse Component
         highp float NdotL = clamp(abs(dot(normal, lightDir)), 0.0, 1.0);
         finalColor += (NdotL * u_diffuseColor);
 
-        /* Specular Component */
-        /* TODO: We should not do specularity for fragments facing away from the light.*/
+        // Specular Component
+        // TODO: We should not do specularity for fragments facing away from the light.
         highp vec3 reflectedLight = reflect(-lightDir, normal);
-        highp vec3 viewVector = normalize(u_viewPosition - v_vertex);
+        highp vec3 viewVector = normalize(u_viewPosition - f_vertex);
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
