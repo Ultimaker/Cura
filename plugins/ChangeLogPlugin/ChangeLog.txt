@@ -3,7 +3,7 @@
 You can now save your build plate configuration - with all your active machine’s meshes and settings. When you reopen the project file, you’ll find that the build plate configuration and all settings will be exactly as you last left them when you saved the project.
 
 *Setting search
-You can now search the custom settings directly from the side panel, which means you can easily locate the setting you need to tweak. Thanks to community member Aldo Hoeben for this feature.
+You can now search the custom settings directly from the side panel, which means you can easily locate the setting you need to tweak. Thanks to community member Aldo Hoeben & victor9999 for this feature.
 
 *Editing start g-code and end g-code
 Aldo Hoeben also added this feature, enabling you to alter both start and end code g-code settings for single extrusion machines.
