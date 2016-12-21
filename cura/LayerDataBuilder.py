@@ -56,18 +56,20 @@ class LayerDataBuilder(MeshBuilder):
             index_count += data.lineMeshElementCount()
 
         vertices = numpy.empty((vertex_count, 3), numpy.float32)
+        normals = numpy.empty((vertex_count, 3), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
 
         vertex_offset = 0
         index_offset = 0
         for layer, data in self._layers.items():
-            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, indices)
+            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, indices, normals)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)
         self.addColors(colors)
         self.addIndices(indices.flatten())
+        self._normals = normals
 
         return LayerData(vertices=self.getVertices(), normals=self.getNormals(), indices=self.getIndices(),
                         colors=self.getColors(), uvs=self.getUVCoordinates(), file_name=self.getFileName(),

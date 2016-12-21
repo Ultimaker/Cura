@@ -1,8 +1,8 @@
 [shaders]
 vertex =
     uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewProjectionMatrix;
-    uniform highp mat4 u_modelViewProjectionMatrix;
+    //uniform highp mat4 u_viewProjectionMatrix;
+    //uniform highp mat4 u_modelViewProjectionMatrix;
     uniform lowp float u_active_extruder;
     uniform lowp float u_shade_factor;
     uniform highp mat4 u_normalMatrix;
@@ -16,12 +16,17 @@ vertex =
     varying highp vec3 v_vertex;
     varying highp vec3 v_normal;
 
-    varying highp vec3 v_orig_vertex;
+    varying highp vec4 v_orig_vertex;
+
+    varying lowp vec4 f_color;
+    varying highp vec3 f_vertex;
+    varying highp vec3 f_normal;
 
     void main()
     {
         vec4 world_space_vert = u_modelMatrix * a_vertex;
-        gl_Position = u_viewProjectionMatrix * world_space_vert;
+        // gl_Position = u_viewProjectionMatrix * world_space_vert;
+        gl_Position = world_space_vert;
         // gl_Position = u_modelViewProjectionMatrix * a_vertex;
         // shade the color depending on the extruder index stored in the alpha component of the color
         v_color = (a_color.a == u_active_extruder) ? a_color : a_color * u_shade_factor;
@@ -30,14 +35,26 @@ vertex =
         v_vertex = world_space_vert.xyz;
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
 
-        v_orig_vertex = a_vertex.xyz;
+        v_orig_vertex = a_vertex;
+
+        // for testing without geometry shader
+        f_color = v_color;
+        f_vertex = v_vertex;
+        f_normal = v_normal;
     }
 
 geometry =
     #version 410
 
+    //uniform highp mat4 u_modelMatrix;
+    uniform highp mat4 u_viewProjectionMatrix;
+    //uniform highp mat4 u_modelViewProjectionMatrix;
+
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 6) out;
+    layout(triangle_strip, max_vertices = 4) out;
+    /*layout(std140) uniform Matrices {
+        mat4 u_modelViewProjectionMatrix;
+    };*/
 
     in vec4 v_color[];
     in vec3 v_vertex[];
@@ -50,90 +67,150 @@ geometry =
 
     void main()
     {
+        //int i;
+        //vec3 g_normal;
+        //vec3 g_offset;
+
+        //vec4 g_vertex_delta;
+        vec3 g_vertex_normal_horz;  // horizontal and vertical in respect to layers
+        vec3 g_vertex_normal_vert;
+        vec3 g_vertex_offset_horz;
+        vec3 g_vertex_offset_vert;
+
+        float size = 0.5;
+
+        //g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+        g_vertex_normal_horz = normalize(v_normal[0]);  //vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x);
+        g_vertex_offset_horz = vec3(0.5, 0.0, 0.0); //size * g_vertex_normal_horz; //size * g_vertex_normal_horz;
+        g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
+        g_vertex_offset_vert = vec3(0.0, 0.5, 0.0);  //size * g_vertex_normal_vert;
+
+        f_vertex = v_vertex[0];
+        f_normal = g_vertex_normal_horz;
+        f_color = vec4(g_vertex_normal_horz, 1.0); //v_color[0];
+        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
+        EmitVertex();
+
+        f_vertex = v_vertex[1];
+        //f_color = v_color[1];
+        f_normal = g_vertex_normal_horz;
+        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
+        EmitVertex();
+
+        f_vertex = v_vertex[0];
+        //f_color = v_color[0];
+        f_normal = g_vertex_normal_vert;
+        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
+        EmitVertex();
+
+        f_vertex = v_vertex[1];
+        //f_color = v_color[1];
+        f_normal = g_vertex_normal_vert;
+        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
+        EmitVertex();
+
+        EndPrimitive();
+    }
+
+
+poep =
+    #version 410
+
+    uniform highp mat4 u_modelMatrix;
+    uniform highp mat4 u_viewProjectionMatrix;
+    uniform highp mat4 u_modelViewProjectionMatrix;
+
+    layout(lines) in;
+    layout(triangle_strip, max_vertices = 3) out;
+
+    in vec4 v_color[];
+    in vec3 v_vertex[];
+    in vec3 v_normal[];
+    in vec4 v_orig_vertex[];
+
+    out vec4 f_color;
+    out vec3 f_normal;
+    out vec3 f_vertex;
+
+    void main()
+    {
         int i;
         vec4 delta;
         vec3 g_normal;
         vec3 g_offset;
 
-        vec3 g_vertex_delta;
-        vec3 g_vertex_normal;
+        vec4 g_vertex_delta;
+        vec4 g_vertex_normal_horz;  // horizontal and vertical in respect to layers
+        vec3 g_vertex_normal_vert;
+        vec3 g_vertex_offset_horz;
+        vec3 g_vertex_offset_vert;
 
         float size = 3;
 
-        /*
-        delta = vec4(gl_in[1].gl_Position.xy, 0.0, 0.0) - vec4(gl_in[0].gl_Position.xy, 0.0, 0.0);
-
-        if (length(delta) > 0.1) {
-            g_normal = normalize(vec3(delta.y, -delta.x, delta.z));
-            g_offset = vec3(g_normal.xy, 0); //5.0 * g_normal;  // vec3(3.5, 3.5, 0.0);
-        } else {
-            g_normal = vec3(delta.y, -delta.x, delta.z);
-            g_offset = vec3(0.0, 0.0, 0.0);
-        }
-        g_offset = vec3(3.5, 3.5, 0.0); //5.0 * g_normal;  // vec3(3.5, 3.5, 0.0);
-        */
-        //g_normal = normalize(vec3(delta.y, -delta.x, delta.z));
-
         g_vertex_delta = v_orig_vertex[1] - v_orig_vertex[0];
-        g_vertex_normal = vec3(g_vertex_delta.z, 0.0, -g_vertex_delta.x);
-        if (length(g_vertex_normal) < 0.1) {
-            g_vertex_normal = vec3(1.0, 0.0, 0.0);
+        g_vertex_normal_horz = vec4(g_vertex_delta.z, 0.0, -g_vertex_delta.x, g_vertex_delta.w);
+        if (length(g_vertex_normal_horz) < 0.1) {
+            g_vertex_normal_horz = vec4(1.0, 0.0, 0.0, 0.0);
+            g_vertex_offset_horz = vec3(0.0, 0.0, 0.0);
+            g_vertex_offset_vert = vec3(0.0, 0.0, 0.0);
         } else {
-            g_vertex_normal = normalize(g_vertex_normal);
+            g_vertex_normal_horz = normalize(g_vertex_normal_horz);
+            g_vertex_offset_horz = (u_viewProjectionMatrix * u_modelMatrix * size * g_vertex_normal_horz).xyz;
+            g_vertex_normal_vert = vec3(0.0, 0.0, 1.0);
+            g_vertex_offset_vert = (u_viewProjectionMatrix * u_modelMatrix * size * g_vertex_normal_vert).xyz;
         }
 
         f_vertex = v_vertex[0];
         f_color = v_color[0];
-
-        f_normal = g_vertex_normal + vec3(0.0, 0.0, 0.5);
-        gl_Position = gl_in[0].gl_Position + vec4(0.0, size, 0.0, 0.0);
+        f_normal = g_vertex_normal_horz;
+        gl_Position = gl_in[0].gl_Position + g_vertex_offset_horz;
         EmitVertex();
 
-        f_normal = g_vertex_normal + vec3(0.0, 0.0, 0.5);
-        gl_Position = gl_in[1].gl_Position + vec4(0.0, size, 0.0, 0.0);
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = g_vertex_normal_horz;
+        gl_Position = gl_in[1].gl_Position + g_vertex_offset_horz;
         EmitVertex();
 
-        f_normal = vec3(0.0, 0.0, 0.5);
-        gl_Position = gl_in[0].gl_Position + vec4(-size, 0.0, 0.0, 0.0);
+        f_vertex = v_vertex[0];
+        f_color = v_color[0];
+        f_normal = g_vertex_offset_vert;
+        gl_Position = gl_in[0].gl_Position + g_vertex_offset_vert;
         EmitVertex();
 
-        //f_vertex = v_vertex[1];
-        //f_color = v_color[1];
-
-
-        f_normal = vec3(0.0, 0.0, 0.5);
-        gl_Position = gl_in[1].gl_Position + vec4(size, 0.0, 0.0, 0.0);
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = g_vertex_offset_vert;
+        gl_Position = gl_in[1].gl_Position + g_vertex_offset_vert;
         EmitVertex();
 
-        f_normal = -g_vertex_normal + vec3(0.0, 0.0, 0.5);
-        gl_Position = gl_in[0].gl_Position + vec4(0, -size, 0.0, 0.0);
+        f_vertex = v_vertex[0];
+        f_color = v_color[0];
+        f_normal = -g_vertex_normal_horz;
+        gl_Position = gl_in[0].gl_Position - g_vertex_offset_horz;
         EmitVertex();
 
-        f_normal = -g_vertex_normal + vec3(0.0, 0.0, 0.5);
-        gl_Position = gl_in[1].gl_Position + vec4(0.0, -size, 0.0, 0.0);
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = -g_vertex_normal_horz;
+        gl_Position = gl_in[1].gl_Position - g_vertex_offset_horz;
         EmitVertex();
+
+        f_vertex = v_vertex[0];
+        f_color = v_color[0];
+        f_normal = -g_vertex_offset_vert;
+        gl_Position = gl_in[0].gl_Position - g_vertex_offset_vert;
+        EmitVertex();
+
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = -g_vertex_offset_vert;
+        gl_Position = gl_in[1].gl_Position - g_vertex_offset_vert;
+        EmitVertex();
+
 
         EndPrimitive();
 
-        /*
-        f_vertex = v_vertex[0];
-        f_normal = -g_vertex_normal;
-        f_color = v_color[0];
-        gl_Position = gl_in[0].gl_Position - g_offset;
-        EmitVertex();
-
-        f_vertex = v_vertex[1];
-        f_normal = g_vertex_normal;
-        f_color = v_color[1];
-        gl_Position = gl_in[1].gl_Position + g_offset;
-        EmitVertex();
-
-        f_vertex = v_vertex[1];
-        f_normal = -g_vertex_normal;
-        f_color = v_color[1];
-        gl_Position = gl_in[1].gl_Position - g_offset;
-        EmitVertex();
-        */
 
 
     }
@@ -166,7 +243,8 @@ fragment =
 
         mediump vec4 finalColor = vec4(0.0);
 
-        finalColor += u_ambientColor;
+        //finalColor += u_ambientColor;
+        finalColor = f_color;
 
         highp vec3 normal = normalize(f_normal);
         //highp vec3 normal = normalize(cameraNormal);
@@ -174,7 +252,7 @@ fragment =
 
         // Diffuse Component
         highp float NdotL = clamp(dot(normal, lightDir), 0.0, 1.0);
-        finalColor += (NdotL * f_color);
+        //finalColor += (NdotL * f_color);
 
         finalColor.a = 1.0;
         gl_FragColor = finalColor;

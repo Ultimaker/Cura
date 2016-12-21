@@ -129,9 +129,10 @@ class ProcessSlicedLayersJob(Job):
                 this_poly.buildCache()
 
                 normals = this_poly.getNormals()
-                all_normals.append(normals)
+                # normals = this_poly.getNormals()[numpy.where(numpy.logical_not(this_poly.jumpMask))]
+                # all_normals.append(normals)
                 # insert last element twice - fake converting line normals to vertex normals
-                #all_normals.append(normals[-1:])
+                # all_normals.append(normals[-1:])
                 
                 this_layer.polygons.append(this_poly)
 
@@ -155,7 +156,7 @@ class ProcessSlicedLayersJob(Job):
         layer_mesh = layer_data.build()
         # normals = []
         # # quick and dirty normals calculation for 2d lines
-        # for line_idx in range(len(layer_mesh._indices) // 2 - 1):
+        # for line_idx in range(len(layer_mesh._indices) // 2):
         #     idx0 = layer_mesh._indices[line_idx]
         #     idx1 = layer_mesh._indices[line_idx + 1]
         #     x0 = layer_mesh._vertices[idx0][0]
