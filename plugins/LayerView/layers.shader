@@ -51,7 +51,7 @@ geometry =
     //uniform highp mat4 u_modelViewProjectionMatrix;
 
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 4) out;
+    layout(triangle_strip, max_vertices = 8) out;
     /*layout(std140) uniform Matrices {
         mat4 u_modelViewProjectionMatrix;
     };*/
@@ -73,40 +73,65 @@ geometry =
 
         //vec4 g_vertex_delta;
         vec3 g_vertex_normal_horz;  // horizontal and vertical in respect to layers
+        vec4 g_vertex_offset_horz;  // vec4 to match gl_in[x].gl_Position
         vec3 g_vertex_normal_vert;
-        vec3 g_vertex_offset_horz;
-        vec3 g_vertex_offset_vert;
+        vec4 g_vertex_offset_vert;
 
-        float size = 0.5;
+        const float size = 0.5;
 
         //g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         g_vertex_normal_horz = normalize(v_normal[0]);  //vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x);
-        g_vertex_offset_horz = vec3(0.5, 0.0, 0.0); //size * g_vertex_normal_horz; //size * g_vertex_normal_horz;
+        g_vertex_offset_horz = vec4(g_vertex_normal_horz * size, 0.0); //size * g_vertex_normal_horz;
         g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
-        g_vertex_offset_vert = vec3(0.0, 0.5, 0.0);  //size * g_vertex_normal_vert;
+        //g_vertex_offset_vert = vec3(g_vertex_normal_vert.x * 0.5f, g_vertex_normal_vert.y * 0.5f, g_vertex_normal_vert.z * 0.5f);  //size * g_vertex_normal_vert;
+        g_vertex_offset_vert = vec4(g_vertex_normal_vert * size, 0.0);
 
         f_vertex = v_vertex[0];
         f_normal = g_vertex_normal_horz;
-        f_color = vec4(g_vertex_normal_horz, 1.0); //v_color[0];
+        f_color = v_color[0];
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[1];
-        //f_color = v_color[1];
+        f_color = v_color[1];
         f_normal = g_vertex_normal_horz;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[0];
-        //f_color = v_color[0];
+        f_color = v_color[0];
         f_normal = g_vertex_normal_vert;
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
         EmitVertex();
 
         f_vertex = v_vertex[1];
-        //f_color = v_color[1];
+        f_color = v_color[1];
         f_normal = g_vertex_normal_vert;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
+        EmitVertex();
+
+        f_vertex = v_vertex[0];
+        f_normal = -g_vertex_normal_horz;
+        f_color = v_color[0];
+        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
+        EmitVertex();
+
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = -g_vertex_normal_horz;
+        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
+        EmitVertex();
+
+        f_vertex = v_vertex[0];
+        f_color = v_color[0];
+        f_normal = -g_vertex_normal_vert;
+        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
+        EmitVertex();
+
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = -g_vertex_normal_vert;
+        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
         EmitVertex();
 
         EndPrimitive();
@@ -222,6 +247,9 @@ fragment =
 
     uniform mediump vec4 u_ambientColor;
     uniform mediump vec4 u_diffuseColor;
+    //uniform mediump vec4 u_specularColor;
+    //uniform mediump float u_shininess;
+
     uniform highp vec3 u_lightPosition;
 
     void Impostor(in float sphereRadius, in vec3 cameraSpherePos, in vec2 mapping, out vec3 cameraPos, out vec3 cameraNormal)
@@ -241,18 +269,26 @@ fragment =
 
         //Impostor(0.2, vec3(0.0, 0.0, 0.0), vec2(0.1, 0.1), cameraPos, cameraNormal);
 
+        //gl_FrontFacing = ..
+
         mediump vec4 finalColor = vec4(0.0);
 
-        //finalColor += u_ambientColor;
-        finalColor = f_color;
+        finalColor += u_ambientColor;
+        //finalColor = f_color;
 
         highp vec3 normal = normalize(f_normal);
-        //highp vec3 normal = normalize(cameraNormal);
         highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
         highp float NdotL = clamp(dot(normal, lightDir), 0.0, 1.0);
-        //finalColor += (NdotL * f_color);
+        finalColor += (NdotL * f_color);
+
+        // Specular Component
+        // TODO: We should not do specularity for fragments facing away from the light.
+        /*highp vec3 reflectedLight = reflect(-lightDir, normal);
+        highp vec3 viewVector = normalize(u_viewPosition - f_vertex);
+        highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
+        finalColor += pow(NdotR, u_shininess) * u_specularColor;*/
 
         finalColor.a = 1.0;
         gl_FragColor = finalColor;
@@ -264,8 +300,10 @@ fragment =
 [defaults]
 u_active_extruder = 0.0
 u_shade_factor = 0.60
+u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.3]
 u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
+u_shininess = 20.0
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix
