@@ -85,15 +85,15 @@ geometry =
         f_vertex = v_vertex[0];
         f_color = v_color[0];
 
-        f_normal = g_vertex_normal;
+        f_normal = g_vertex_normal + vec3(0.0, 0.0, 0.5);
         gl_Position = gl_in[0].gl_Position + vec4(0.0, size, 0.0, 0.0);
         EmitVertex();
 
-        f_normal = g_vertex_normal;
+        f_normal = g_vertex_normal + vec3(0.0, 0.0, 0.5);
         gl_Position = gl_in[1].gl_Position + vec4(0.0, size, 0.0, 0.0);
         EmitVertex();
 
-        f_normal = vec3(0.0);
+        f_normal = vec3(0.0, 0.0, 0.5);
         gl_Position = gl_in[0].gl_Position + vec4(-size, 0.0, 0.0, 0.0);
         EmitVertex();
 
@@ -101,15 +101,15 @@ geometry =
         //f_color = v_color[1];
 
 
-        f_normal = vec3(0.0);
+        f_normal = vec3(0.0, 0.0, 0.5);
         gl_Position = gl_in[1].gl_Position + vec4(size, 0.0, 0.0, 0.0);
         EmitVertex();
 
-        f_normal = -g_vertex_normal;
+        f_normal = -g_vertex_normal + vec3(0.0, 0.0, 0.5);
         gl_Position = gl_in[0].gl_Position + vec4(0, -size, 0.0, 0.0);
         EmitVertex();
 
-        f_normal = -g_vertex_normal;
+        f_normal = -g_vertex_normal + vec3(0.0, 0.0, 0.5);
         gl_Position = gl_in[1].gl_Position + vec4(0.0, -size, 0.0, 0.0);
         EmitVertex();
 
@@ -162,14 +162,14 @@ fragment =
         vec3 cameraPos;
         vec3 cameraNormal;
 
-        Impostor(0.2, vec3(0.0, 0.0, 0.0), vec2(0.1, 0.0), cameraPos, cameraNormal);
+        //Impostor(0.2, vec3(0.0, 0.0, 0.0), vec2(0.1, 0.1), cameraPos, cameraNormal);
 
         mediump vec4 finalColor = vec4(0.0);
 
         finalColor += u_ambientColor;
 
-        //highp vec3 normal = normalize(f_normal);
-        highp vec3 normal = normalize(cameraNormal);
+        highp vec3 normal = normalize(f_normal);
+        //highp vec3 normal = normalize(cameraNormal);
         highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
