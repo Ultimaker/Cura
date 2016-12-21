@@ -114,9 +114,27 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 style: ButtonStyle {
                     background: Rectangle {
-                        color: control.hovered ? UM.Theme.getColor("button_hover") :
-                               control.pressed ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("sidebar_header_bar")
+                        color: {
+                            if(control.pressed) {
+                                return UM.Theme.getColor("sidebar_header_active");
+                            } else if(control.hovered) {
+                                return UM.Theme.getColor("sidebar_header_hover");
+                            } else {
+                                return UM.Theme.getColor("sidebar_header_bar");
+                            }
+                        }
                         Behavior on color { ColorAnimation { duration: 50; } }
+
+                        Rectangle {
+                            id: underline;
+
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            height: UM.Theme.getSize("sidebar_header_highlight").height
+                            color: UM.Theme.getColor("sidebar_header_highlight_hover")
+                            visible: control.hovered || control.pressed
+                        }
 
                         UM.RecolorImage {
                             id: downArrow
