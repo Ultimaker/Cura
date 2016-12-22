@@ -251,7 +251,6 @@ material_types = {
 	# Advanced
 	"Alloy910": "Advanced",
 	"Bridge": "Advanced",
-	"Laywood": "Advanced",
 	"n-vent": "Advanced",
 	"XT": "Advanced",
 	"INOVA-1800": "Advanced",
