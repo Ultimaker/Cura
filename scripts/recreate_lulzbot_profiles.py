@@ -235,7 +235,6 @@ material_types = {
 	
 	# Intermediate
 	"ABS_VP": "Intermediate",
-	"Laybrick": "Intermediate",
 	"PP-Iron": "Intermediate",
 	"PP-Steel": "Intermediate",
 	"Bamboofill": "Intermediate",
