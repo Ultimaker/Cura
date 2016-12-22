@@ -145,6 +145,16 @@ class ProcessSlicedLayersJob(Job):
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layer_mesh = layer_data.build()
+        # Hack for adding line widths and heights: misuse u, v coordinates.
+        uvs = numpy.zeros([layer_mesh.getVertexCount(), 2], dtype=numpy.float32)
+        uvs[:, 0] = 0.175
+        uvs[:, 1] = 0.125
+
+        from UM.Math import NumPyUtil
+        layer_mesh._uvs = NumPyUtil.immutableNDArray(uvs)
+        # mesh._uvs = numpy.zeros([layer_mesh.getVertexCount(), 2])
+        # mesh._uvs[:, 0] = 1.0  # width
+        # mesh._uvs[:, 1] = 0.1  # height
 
         if self._abort_requested:
             if self._progress:
