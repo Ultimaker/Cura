@@ -266,7 +266,6 @@ material_types = {
 	"PP-Conductive": "Expert",
 	"HIPS_VP": "Expert",
 	"PC_VP": "Expert",
-	"618-Nylon": "Expert",
 	"645-Nylon": "Expert",
 	
 	# Flexystruder (Expert)
