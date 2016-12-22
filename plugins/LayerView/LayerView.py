@@ -236,9 +236,9 @@ class LayerView(View):
 
         self.setBusy(True)
 
-        #self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
-        #self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
-        #self._top_layers_job.start()
+        self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
+        self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
+        self._top_layers_job.start()
 
     def _updateCurrentLayerMesh(self, job):
         self.setBusy(False)

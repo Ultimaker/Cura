@@ -85,7 +85,6 @@ class ProcessSlicedLayersJob(Job):
                 min_layer_number = layer.id
 
         current_layer = 0
-        all_normals = []
 
         for layer in self._layers:
             abs_layer_number = layer.id + abs(min_layer_number)
@@ -128,12 +127,6 @@ class ProcessSlicedLayersJob(Job):
                 this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
                 this_poly.buildCache()
 
-                normals = this_poly.getNormals()
-                # normals = this_poly.getNormals()[numpy.where(numpy.logical_not(this_poly.jumpMask))]
-                # all_normals.append(normals)
-                # insert last element twice - fake converting line normals to vertex normals
-                # all_normals.append(normals[-1:])
-                
                 this_layer.polygons.append(this_poly)
 
                 Job.yieldThread()
@@ -150,26 +143,8 @@ class ProcessSlicedLayersJob(Job):
             if self._progress:
                 self._progress.setProgress(progress)
 
-        # layer_data.calculateNormals()
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
-        # layer_data._normals = numpy.concatenate(all_normals)
         layer_mesh = layer_data.build()
-        # normals = []
-        # # quick and dirty normals calculation for 2d lines
-        # for line_idx in range(len(layer_mesh._indices) // 2):
-        #     idx0 = layer_mesh._indices[line_idx]
-        #     idx1 = layer_mesh._indices[line_idx + 1]
-        #     x0 = layer_mesh._vertices[idx0][0]
-        #     y0 = layer_mesh._vertices[idx0][2]
-        #     x1 = layer_mesh._vertices[idx1][0]
-        #     y1 = layer_mesh._vertices[idx1][2]
-        #     dx = x1 - x0;
-        #     dy = y1 - y0;
-        #     normals.append([dy, 0, -dx])
-        #     normals.append([dy, 0, -dx])
-        # layer_mesh._normals = numpy.array(normals)
-        #from UM.Mesh.MeshData import calculateNormalsFromIndexedVertices
-        #layer_mesh._normals = calculateNormalsFromIndexedVertices(layer_mesh._vertices, layer_mesh._indices, layer_mesh._face_count)
 
         if self._abort_requested:
             if self._progress:

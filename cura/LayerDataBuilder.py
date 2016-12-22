@@ -57,6 +57,7 @@ class LayerDataBuilder(MeshBuilder):
 
         vertices = numpy.empty((vertex_count, 3), numpy.float32)
         normals = numpy.empty((vertex_count, 3), numpy.float32)
+        # line_widths = numpy.empty((vertex_count, 3), numpy.float32)  # strictly taken you need 1 less
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
 
