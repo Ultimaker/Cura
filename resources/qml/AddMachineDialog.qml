@@ -20,6 +20,11 @@ UM.Dialog
     property string preferredCategory: "Ultimaker"
     property string activeCategory: preferredCategory
 
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+    width: minimumWidth
+    height: minimumHeight
+
     onVisibilityChanged:
     {
         // Reset selection and machine name
