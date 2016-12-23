@@ -131,6 +131,7 @@ Rectangle
                             anchors.left: parent.left
                             anchors.right: parent.right
                             anchors.bottom: parent.bottom
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
                             height: UM.Theme.getSize("sidebar_header_highlight").height
                             color: UM.Theme.getColor("sidebar_header_highlight_hover")
                             visible: control.hovered || control.pressed
