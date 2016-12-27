@@ -322,7 +322,7 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-        width: screenScaleFactor * 360;
+        width: Screen.devicePixelRatio * 360;
 
         property string labelFilter: ""
 
