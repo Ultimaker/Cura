@@ -64,8 +64,9 @@ class LayerPolygon:
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
         
-
-    def build(self, vertex_offset, index_offset, vertices, colors, indices):
+    ##  build
+    #   line_thicknesses: array with type as index and thickness as value
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, indices, thickness):
         if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
             self.buildCache()
             
@@ -84,8 +85,12 @@ class LayerPolygon:
         # Points are picked based on the index list to get the vertices needed. 
         vertices[self._vertex_begin:self._vertex_end, :] = self._data[index_list, :]
         # Create an array with colors for each vertex and remove the color data for the points that has been thrown away. 
-        colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()] 
+        colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()]
         colors[self._vertex_begin:self._vertex_end, :] *= numpy.array([[0.5, 0.5, 0.5, 1.0]], numpy.float32)
+
+        # Create an array with line widths for each vertex.
+        line_dimensions[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()]
+        line_dimensions[self._vertex_begin:self._vertex_end, 1] = thickness
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._index_begin += index_offset

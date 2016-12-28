@@ -57,19 +57,20 @@ class LayerDataBuilder(MeshBuilder):
 
         vertices = numpy.empty((vertex_count, 3), numpy.float32)
         # normals = numpy.empty((vertex_count, 3), numpy.float32)
-        # line_widths = numpy.empty((vertex_count, 3), numpy.float32)  # strictly taken you need 1 less
+        line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
 
         vertex_offset = 0
         index_offset = 0
         for layer, data in self._layers.items():
-            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, indices)
+            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, indices)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)
         self.addColors(colors)
         self.addIndices(indices.flatten())
+        self._uvs = line_dimensions
         #self._normals = normals
 
         return LayerData(vertices=self.getVertices(), normals=self.getNormals(), indices=self.getIndices(),

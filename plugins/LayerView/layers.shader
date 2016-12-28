@@ -24,7 +24,9 @@ vertex =
 
     void main()
     {
-        vec4 world_space_vert = u_modelMatrix * a_vertex;
+        vec4 v1_vertex = a_vertex;
+        v1_vertex.y -= a_uvs.y / 2;  // half layer down
+        vec4 world_space_vert = u_modelMatrix * v1_vertex;
         // gl_Position = u_viewProjectionMatrix * world_space_vert;
         gl_Position = world_space_vert;
         // gl_Position = u_modelViewProjectionMatrix * a_vertex;
@@ -75,8 +77,8 @@ geometry =
         vec3 g_vertex_normal_horz_head;
         vec4 g_vertex_offset_horz_head;
 
-        float size_x = v_uvs[0].x;
-        float size_y = v_uvs[0].y;
+        float size_x = v_uvs[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
+        float size_y = v_uvs[0].y / 2 + 0.01;
 
         //g_vertex_normal_horz = normalize(v_normal[0]);  //vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x);
         g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
