@@ -53,11 +53,8 @@ class Layer:
         result_vertex_offset = vertex_offset
         result_index_offset = index_offset
         self._element_count = 0
-        thickness = self._thickness / 1000  # micrometer to millimeter
         for polygon in self._polygons:
-            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, indices, thickness)
-            #polygon_normals = polygon.getNormals()  # [numpy.where(numpy.logical_not(polygon.jumpMask))]
-            #normals[result_vertex_offset:result_vertex_offset+polygon.lineMeshVertexCount()] = polygon_normals[:polygon.lineMeshVertexCount()]
+            polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, indices)
             result_vertex_offset += polygon.lineMeshVertexCount()
             result_index_offset += polygon.lineMeshElementCount()
             self._element_count += polygon.elementCount

@@ -56,7 +56,6 @@ class LayerDataBuilder(MeshBuilder):
             index_count += data.lineMeshElementCount()
 
         vertices = numpy.empty((vertex_count, 3), numpy.float32)
-        # normals = numpy.empty((vertex_count, 3), numpy.float32)
         line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
@@ -70,10 +69,15 @@ class LayerDataBuilder(MeshBuilder):
         self.addVertices(vertices)
         self.addColors(colors)
         self.addIndices(indices.flatten())
-        self._uvs = line_dimensions
-        #self._normals = normals
+        # self._uvs = line_dimensions
+        attributes = {
+            "line_dimensions": {
+                "value": line_dimensions,
+                "opengl_name": "a_line_dim",
+                "opengl_type": "vector2f"}
+                }
 
         return LayerData(vertices=self.getVertices(), normals=self.getNormals(), indices=self.getIndices(),
                         colors=self.getColors(), uvs=self.getUVCoordinates(), file_name=self.getFileName(),
                         center_position=self.getCenterPosition(), layers=self._layers,
-                        element_counts=self._element_counts)
+                        element_counts=self._element_counts, attributes=attributes)
