@@ -18,13 +18,14 @@ class LayerPolygon:
     
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
     
-    def __init__(self, mesh, extruder, line_types, data, line_widths):
+    def __init__(self, mesh, extruder, line_types, data, line_widths, line_thicknesses):
         self._mesh = mesh
         self._extruder = extruder
         self._types = line_types
         self._data = data
         self._line_widths = line_widths
-        
+        self._line_thicknesses = line_thicknesses
+
         self._vertex_begin = 0
         self._vertex_end = 0
         self._index_begin = 0
@@ -89,8 +90,8 @@ class LayerPolygon:
         colors[self._vertex_begin:self._vertex_end, :] *= numpy.array([[0.5, 0.5, 0.5, 1.0]], numpy.float32)
 
         # Create an array with line widths for each vertex.
-        line_dimensions[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()]
-        line_dimensions[self._vertex_begin:self._vertex_end, 1] = thickness
+        line_dimensions[self._vertex_begin:self._vertex_end, 0] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
+        line_dimensions[self._vertex_begin:self._vertex_end, 1] = numpy.tile(self._line_thicknesses, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._index_begin += index_offset

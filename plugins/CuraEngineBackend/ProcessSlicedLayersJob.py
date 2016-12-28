@@ -92,7 +92,6 @@ class ProcessSlicedLayersJob(Job):
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)
             layer_data.setLayerHeight(abs_layer_number, layer.height)
-            layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
             for p in range(layer.repeatedMessageCount("path_segment")):
                 polygon = layer.getRepeatedMessage("path_segment", p)
@@ -110,7 +109,12 @@ class ProcessSlicedLayersJob(Job):
 
                 line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
-                
+
+                # In the future, line_thicknesses should be given by CuraEngine as well.
+                # Currently the infill layer thickness also translates to line width
+                line_thicknesses = numpy.zeros(line_widths.shape, dtype="f4")
+                line_thicknesses[:] = layer.thickness / 1000  # from micrometer to millimeter
+
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
@@ -124,7 +128,7 @@ class ProcessSlicedLayersJob(Job):
                     new_points[:, 1] = points[:, 2]
                     new_points[:, 2] = -points[:, 1]
 
-                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
+                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths, line_thicknesses)
                 this_poly.buildCache()
 
                 this_layer.polygons.append(this_poly)
