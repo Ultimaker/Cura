@@ -95,6 +95,7 @@ Item
     }
 
     Rectangle {
+        id: slider_background
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         z: slider.z - 1
@@ -112,5 +113,76 @@ Item
                 slider.value = wheel.angleDelta.y < 0 ? slider.value - sliderMouseArea.manualStepSize : slider.value + sliderMouseArea.manualStepSize
             }
         }
+    }
+
+    Rectangle {
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.top: slider_background.bottom
+        width: UM.Theme.getSize("slider_layerview_background").width * 3
+        height: slider.height + UM.Theme.getSize("default_margin").height * 2
+        color: UM.Theme.getColor("tool_panel_background");
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
+
+        ListModel
+        {
+            id: layerViewTypes
+            ListElement {
+                text: "Line type"
+                type_id: 0  // these ids match the switching in the shader
+            }
+            ListElement {
+                text: "Material color"
+                type_id: 1
+            }
+            ListElement {
+                text: "Printing speed"
+                type_id: 2
+            }
+        }
+
+        ComboBox
+        {
+            id: layer_type_combobox
+            anchors.top: slider_background.bottom
+            model: layerViewTypes
+            onActivated: {
+                CuraApplication.log("Combobox" + String(index));
+                CuraApplication.log(layerViewTypes.get(index).type_id);
+            }
+        }
+
+        ColumnLayout {
+            anchors.top: layer_type_combobox.bottom
+            CheckBox {
+                checked: true
+                onClicked: {
+                    CuraApplication.log("First");
+                }
+                text: "Extruder 1"
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    CuraApplication.log("First");
+                }
+                text: "Extruder 2"
+            }
+            CheckBox {
+                onClicked: {
+                    CuraApplication.log("First");
+                }
+                text: "Travel moves"
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    CuraApplication.log("First");
+                }
+                text: "Only color active extruder"
+            }
+        }
+
     }
 }

@@ -48,7 +48,8 @@ class LayerDataBuilder(MeshBuilder):
 
         self._layers[layer].setThickness(thickness)
 
-    def build(self):
+    #   material color map: [r, g, b, a] for each extruder row.
+    def build(self, material_color_map):
         vertex_count = 0
         index_count = 0
         for layer, data in self._layers.items():
@@ -59,23 +60,39 @@ class LayerDataBuilder(MeshBuilder):
         line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
+        extruders = numpy.empty((vertex_count), numpy.float32)
 
         vertex_offset = 0
         index_offset = 0
         for layer, data in self._layers.items():
-            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, indices)
+            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, indices)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)
         self.addColors(colors)
         self.addIndices(indices.flatten())
-        # self._uvs = line_dimensions
+
+        material_colors = numpy.zeros((line_dimensions.shape[0], 4), dtype=numpy.float32)
+        for extruder_nr in range(material_color_map.shape[0]):
+            material_colors[extruders == extruder_nr] = material_color_map[extruder_nr]
+
         attributes = {
             "line_dimensions": {
                 "value": line_dimensions,
                 "opengl_name": "a_line_dim",
-                "opengl_type": "vector2f"}
-                }
+                "opengl_type": "vector2f"
+                },
+            "extruders": {
+                "value": extruders,
+                "opengl_name": "a_extruder",
+                "opengl_type": "float"
+                },
+            "colors": {
+                "value": material_colors,
+                "opengl_name": "a_material_color",
+                "opengl_type": "vector4f"
+                },
+            }
 
         return LayerData(vertices=self.getVertices(), normals=self.getNormals(), indices=self.getIndices(),
                         colors=self.getColors(), uvs=self.getUVCoordinates(), file_name=self.getFileName(),

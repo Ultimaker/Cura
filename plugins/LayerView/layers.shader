@@ -4,24 +4,33 @@ vertex =
     //uniform highp mat4 u_viewProjectionMatrix;
     //uniform highp mat4 u_modelViewProjectionMatrix;
     uniform lowp float u_active_extruder;
+    uniform lowp int u_layer_view_type;
+    uniform lowp int u_only_color_active_extruder;
+    uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
+
     uniform lowp float u_shade_factor;
     uniform highp mat4 u_normalMatrix;
 
     attribute highp vec4 a_vertex;
     attribute lowp vec4 a_color;
+    attribute lowp vec4 a_material_color;
     attribute highp vec4 a_normal;
     attribute highp vec2 a_line_dim;  // line width and thickness
+    attribute highp int a_extruder;
 
     varying lowp vec4 v_color;
+    //varying lowp vec4 v_material_color;
 
     varying highp vec3 v_vertex;
     varying highp vec3 v_normal;
     //varying lowp vec2 v_uvs;
     varying lowp vec2 v_line_dim;
+    varying highp int v_extruder;
 
     varying lowp vec4 f_color;
     varying highp vec3 f_vertex;
     varying highp vec3 f_normal;
+    varying highp int f_extruder;
 
     void main()
     {
@@ -32,17 +41,38 @@ vertex =
         gl_Position = world_space_vert;
         // gl_Position = u_modelViewProjectionMatrix * a_vertex;
         // shade the color depending on the extruder index stored in the alpha component of the color
-        v_color = (a_color.a == u_active_extruder) ? a_color : vec4(0.4, 0.4, 0.4, 1.0);  //a_color * u_shade_factor;
-        v_color.a = 1.0;
+
+        switch (u_layer_view_type) {
+            case 0:  // "Line type"
+                v_color = a_color;
+                break;
+            case 1:  // "Material color"
+                v_color = a_material_color;
+                break;
+            case 2:  // "Speed"
+                v_color = a_color;
+                break;
+        }
+        if (u_only_color_active_extruder == 1) {
+            v_color = (a_extruder == u_active_extruder) ? v_color : vec4(0.4, 0.4, 0.4, 1.0);
+        } else {
+            v_color = (a_extruder == u_active_extruder) ? v_color : v_color * u_shade_factor;
+        }
+        if (a_extruder < 4) {
+            v_color.a *= u_extruder_opacity[a_extruder];  // make it (in)visible
+        }
 
         v_vertex = world_space_vert.xyz;
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
+        v_extruder = a_extruder;
+        //v_material_color = a_material_color;
 
         // for testing without geometry shader
         f_color = v_color;
         f_vertex = v_vertex;
         f_normal = v_normal;
+        f_extruder = v_extruder;
     }
 
 geometry =
@@ -57,10 +87,14 @@ geometry =
     in vec3 v_vertex[];
     in vec3 v_normal[];
     in vec2 v_line_dim[];
+    in int v_extruder[];
+    //in vec4 v_material_color[];
 
     out vec4 f_color;
     out vec3 f_normal;
     out vec3 f_vertex;
+    out uint f_extruder;
+    //out vec4 f_material_color;
 
     void main()
     {
@@ -74,6 +108,9 @@ geometry =
 
         float size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
         float size_y = v_line_dim[0].y / 2 + 0.01;
+
+        f_extruder = v_extruder[0];
+        //f_material_color = v_material_color[0];
 
         //g_vertex_normal_horz = normalize(v_normal[0]);  //vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x);
         g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
@@ -241,41 +278,19 @@ geometry =
 
 fragment =
     varying lowp vec4 f_color;
+    //varying lowp vec4 f_material_color;
     varying lowp vec3 f_normal;
     varying lowp vec3 f_vertex;
+    //flat varying lowp uint f_extruder;
 
     uniform mediump vec4 u_ambientColor;
-    uniform mediump vec4 u_diffuseColor;
-    //uniform mediump vec4 u_specularColor;
-    //uniform mediump float u_shininess;
-
     uniform highp vec3 u_lightPosition;
-
-    void Impostor(in float sphereRadius, in vec3 cameraSpherePos, in vec2 mapping, out vec3 cameraPos, out vec3 cameraNormal)
-    {
-        float lensqr = dot(mapping, mapping);
-        if(lensqr > 1.0)
-            discard;
-
-        cameraNormal = vec3(mapping, sqrt(1.0 - lensqr));
-        cameraPos = (cameraNormal * sphereRadius) + cameraSpherePos;
-    }
 
     void main()
     {
-        vec3 cameraPos;
-        vec3 cameraNormal;
-
-        //Impostor(0.2, vec3(0.0, 0.0, 0.0), vec2(0.1, 0.1), cameraPos, cameraNormal);
-
-        //gl_FrontFacing = ..
-
-        //if ((f_normal).z < 0) {discard; }
-
         mediump vec4 finalColor = vec4(0.0);
 
         finalColor += u_ambientColor;
-        //finalColor = f_color;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
@@ -283,23 +298,19 @@ fragment =
         // Diffuse Component
         highp float NdotL = clamp(dot(normal, lightDir), 0.0, 1.0);
         finalColor += (NdotL * f_color);
+        //finalColor += (NdotL * f_material_color);
+        //finalColor.a = 1.0;
 
-        // Specular Component
-        // TODO: We should not do specularity for fragments facing away from the light.
-        /*highp vec3 reflectedLight = reflect(-lightDir, normal);
-        highp vec3 viewVector = normalize(u_viewPosition - f_vertex);
-        highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
-        finalColor += pow(NdotR, u_shininess) * u_specularColor;*/
-
-        finalColor.a = 1.0;
         gl_FragColor = finalColor;
-
-        //gl_FragColor = f_color;
-        //gl_FragColor = vec4(f_normal, 1.0);
     }
+
 
 [defaults]
 u_active_extruder = 0.0
+u_layer_view_type = 0
+u_only_color_active_extruder = 1
+u_extruder_opacity = [1.0, 1.0]
+
 u_shade_factor = 0.60
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.3]
@@ -318,3 +329,5 @@ a_vertex = vertex
 a_color = color
 a_normal = normal
 a_line_dim = line_dim
+a_extruder = extruders
+a_material_color = material_color

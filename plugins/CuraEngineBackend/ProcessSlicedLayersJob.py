@@ -24,6 +24,14 @@ from time import time
 catalog = i18nCatalog("cura")
 
 
+def colorCodeToRGBA(color_code):
+    return [
+        int(color_code[1:3], 16) / 255,
+        int(color_code[3:5], 16) / 255,
+        int(color_code[5:7], 16) / 255,
+        1.0]
+
+
 class ProcessSlicedLayersJob(Job):
     def __init__(self, layers):
         super().__init__()
@@ -148,7 +156,31 @@ class ProcessSlicedLayersJob(Job):
                 self._progress.setProgress(progress)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
-        layer_mesh = layer_data.build()
+
+        # Find out colors per extruder
+        # TODO: move to a better place. Code is similar to code in ExtrudersModel
+        from cura.Settings.ExtruderManager import ExtruderManager
+        import UM
+        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        manager = ExtruderManager.getInstance()
+        extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
+        if extruders:
+            material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
+            for extruder in extruders:
+                material = extruder.findContainer({"type": "material"})
+                position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
+                color_code = material.getMetaDataEntry("color_code")
+                color = colorCodeToRGBA(color_code)
+                material_color_map[position, :] = color
+        else:
+            # Single extruder via global stack.
+            material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
+            material = global_container_stack.findContainer({"type": "material"})
+            color_code = material.getMetaDataEntry("color_code")
+            color = colorCodeToRGBA(color_code)
+            material_color_map[0, :] = color
+
+        layer_mesh = layer_data.build(material_color_map)
 
         if self._abort_requested:
             if self._progress:

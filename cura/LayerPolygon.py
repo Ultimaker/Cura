@@ -38,7 +38,7 @@ class LayerPolygon:
 
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.
-        self._color_map = self.__color_map * [1, 1, 1, self._extruder] # The alpha component is used to store the extruder nr
+        self._color_map = self.__color_map # * [1, 1, 1, self._extruder] # The alpha component is used to store the extruder nr
         self._colors = self._color_map[self._types]
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
@@ -67,7 +67,7 @@ class LayerPolygon:
         
     ##  build
     #   line_thicknesses: array with type as index and thickness as value
-    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, indices):
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, indices):
         if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
             self.buildCache()
             
@@ -93,6 +93,8 @@ class LayerPolygon:
         # Create an array with line widths for each vertex.
         line_dimensions[self._vertex_begin:self._vertex_end, 0] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
         line_dimensions[self._vertex_begin:self._vertex_end, 1] = numpy.tile(self._line_thicknesses, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
+
+        extruders[self._vertex_begin:self._vertex_end] = float(self._extruder)
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._index_begin += index_offset
