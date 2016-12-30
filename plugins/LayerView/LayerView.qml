@@ -136,20 +136,15 @@ Item
                 text: "Line type"
                 type_id: 1  // these ids match the switching in the shader
             }
-            ListElement {
-                text: "Printing speed"
-                type_id: 2
-            }
         }
 
         ComboBox
         {
             id: layer_type_combobox
             anchors.top: slider_background.bottom
+            anchors.left: parent.left
             model: layerViewTypes
             onActivated: {
-                CuraApplication.log("Combobox" + String(index));
-                CuraApplication.log(layerViewTypes.get(index).type_id);
                 UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
             }
         }
@@ -174,12 +169,39 @@ Item
                 onClicked: {
                     UM.LayerView.setShowTravelMoves(checked ? 1 : 0);
                 }
-                text: "Travel moves"
+                text: "Show travel moves"
             }
             CheckBox {
                 checked: true
                 onClicked: {
-                    CuraApplication.log("First" + checked);
+                    UM.LayerView.setShowSupport(checked ? 1 : 0);
+                }
+                text: "Show support"
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    UM.LayerView.setShowAdhesion(checked ? 1 : 0);
+                }
+                text: "Show adhesion"
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    UM.LayerView.setShowSkin(checked ? 1 : 0);
+                }
+                text: "Show skin"
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    UM.LayerView.setShowInfill(checked ? 1 : 0);
+                }
+                text: "Show infill"
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
                     UM.LayerView.setOnlyColorActiveExtruder(checked);
                 }
                 text: "Only color active extruder"

@@ -76,8 +76,8 @@ class LayerDataBuilder(MeshBuilder):
         material_colors = numpy.zeros((line_dimensions.shape[0], 4), dtype=numpy.float32)
         for extruder_nr in range(material_color_map.shape[0]):
             material_colors[extruders == extruder_nr] = material_color_map[extruder_nr]
-        material_colors[line_types == LayerPolygon.MoveCombingType] = [0.0, 0.0, 0.8, 1.0]
-        material_colors[line_types == LayerPolygon.MoveRetractionType] = [0.0, 0.0, 0.8, 1.0]
+        material_colors[line_types == LayerPolygon.MoveCombingType] = colors[line_types == LayerPolygon.MoveCombingType]
+        material_colors[line_types == LayerPolygon.MoveRetractionType] = colors[line_types == LayerPolygon.MoveRetractionType]
 
         attributes = {
             "line_dimensions": {

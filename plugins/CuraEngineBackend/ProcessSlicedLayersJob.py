@@ -105,6 +105,7 @@ class ProcessSlicedLayersJob(Job):
                 polygon = layer.getRepeatedMessage("path_segment", p)
 
                 extruder = polygon.extruder
+                x = dir(polygon)
 
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
                 line_types = line_types.reshape((-1,1))

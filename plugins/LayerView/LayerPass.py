@@ -42,12 +42,20 @@ class LayerPass(RenderPass):
             self._layer_shader.setUniformValue("u_only_color_active_extruder", (1 if self._layer_view.getOnlyColorActiveExtruder() else 0))
             self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
             self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+            self._layer_shader.setUniformValue("u_show_support", self._layer_view.getShowSupport())
+            self._layer_shader.setUniformValue("u_show_adhesion", self._layer_view.getShowAdhesion())
+            self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
+            self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_layer_view_type", 1)
             self._layer_shader.setUniformValue("u_only_color_active_extruder", 1)
             self._layer_shader.setUniformValue("u_extruder_opacity", [1, 1, 1, 1])
             self._layer_shader.setUniformValue("u_show_travel_moves", 0)
+            self._layer_shader.setUniformValue("u_show_support", 1)
+            self._layer_shader.setUniformValue("u_show_adhesion", 1)
+            self._layer_shader.setUniformValue("u_show_skin", 1)
+            self._layer_shader.setUniformValue("u_show_infill", 1)
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))

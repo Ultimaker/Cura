@@ -69,11 +69,35 @@ class LayerViewProxy(QObject):
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.setExtruderOpacity(extruder_nr, opacity)
 
-    @pyqtSlot(bool)
+    @pyqtSlot(int)
     def setShowTravelMoves(self, show):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.setShowTravelMoves(show)
+
+    @pyqtSlot(int)
+    def setShowSupport(self, show):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            active_view.setShowSupport(show)
+
+    @pyqtSlot(int)
+    def setShowAdhesion(self, show):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            active_view.setShowAdhesion(show)
+
+    @pyqtSlot(int)
+    def setShowSkin(self, show):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            active_view.setShowSkin(show)
+
+    @pyqtSlot(int)
+    def setShowInfill(self, show):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            active_view.setShowInfill(show)
 
     def _layerActivityChanged(self):
         self.activityChanged.emit()

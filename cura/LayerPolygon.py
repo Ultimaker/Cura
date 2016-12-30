@@ -88,7 +88,6 @@ class LayerPolygon:
 
         # Create an array with colors for each vertex and remove the color data for the points that has been thrown away. 
         colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()]
-        colors[self._vertex_begin:self._vertex_end, :] *= numpy.array([[0.5, 0.5, 0.5, 1.0]], numpy.float32)
 
         # Create an array with line widths for each vertex.
         line_dimensions[self._vertex_begin:self._vertex_end, 0] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]

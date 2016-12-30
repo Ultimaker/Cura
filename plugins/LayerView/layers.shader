@@ -8,7 +8,6 @@ vertex =
     uniform lowp int u_only_color_active_extruder;
     uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
 
-    uniform lowp float u_shade_factor;
     uniform highp mat4 u_normalMatrix;
 
     attribute highp vec4 a_vertex;
@@ -45,20 +44,15 @@ vertex =
         // shade the color depending on the extruder index stored in the alpha component of the color
 
         switch (u_layer_view_type) {
-            case 0:  // "Line type"
+            case 0:  // "Material color"
                 v_color = a_material_color;
                 break;
-            case 1:  // "Material color"
-                v_color = a_color;
-                break;
-            case 2:  // "Speed"
+            case 1:  // "Line type"
                 v_color = a_color;
                 break;
         }
         if (u_only_color_active_extruder == 1) {
             v_color = (a_extruder == u_active_extruder) ? v_color : vec4(0.4, 0.4, 0.4, v_color.a);
-        } else {
-            v_color = (a_extruder == u_active_extruder) ? v_color : vec4((v_color * u_shade_factor).rgb, v_color.a);
         }
         if (a_extruder < 4) {
             v_color.a *= u_extruder_opacity[a_extruder];  // make it (in)visible
@@ -82,6 +76,10 @@ geometry =
 
     uniform highp mat4 u_viewProjectionMatrix;
     uniform int u_show_travel_moves;
+    uniform int u_show_support;
+    uniform int u_show_adhesion;
+    uniform int u_show_skin;
+    uniform int u_show_infill;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 26) out;
@@ -113,9 +111,22 @@ geometry =
         float size_y;
 
         // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
-        if (((v_line_type[0] == 8) || (v_line_type[0] == 9)) && (u_show_travel_moves == 0)) {
+        if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9))) {
             return;
         }
+        if ((u_show_support == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
+            return;
+        }
+        if ((u_show_adhesion == 0) && (v_line_type[0] == 5)) {
+            return;
+        }
+        if ((u_show_skin == 0) && ((v_line_type[0] == 1) || (v_line_type[0] == 2) || (v_line_type[0] == 3))) {
+            return;
+        }
+        if ((u_show_infill == 0) && (v_line_type[0] == 6)) {
+            return;
+        }
+
         if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
             // fixed size for movements
             size_x = 0.1;
@@ -315,13 +326,16 @@ u_layer_view_type = 0
 u_only_color_active_extruder = 1
 u_extruder_opacity = [1.0, 1.0]
 
-u_shade_factor = 0.60
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.0]
 u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_shininess = 20.0
 
 u_show_travel_moves = 0
+u_show_support = 1
+u_show_adhesion = 1
+u_show_skin = 1
+u_show_infill = 1
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix

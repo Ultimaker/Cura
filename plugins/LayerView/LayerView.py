@@ -64,6 +64,10 @@ class LayerView(View):
         self._only_color_active_extruder = True
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0
+        self._show_support = 1
+        self._show_adhesion = 1
+        self._show_skin = 1
+        self._show_infill = 1
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
@@ -167,6 +171,34 @@ class LayerView(View):
 
     def getShowTravelMoves(self):
         return self._show_travel_moves
+
+    def setShowSupport(self, show):
+        self._show_support = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowSupport(self):
+        return self._show_support
+
+    def setShowAdhesion(self, show):
+        self._show_adhesion = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowAdhesion(self):
+        return self._show_adhesion
+
+    def setShowSkin(self, show):
+        self._show_skin = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowSkin(self):
+        return self._show_skin
+
+    def setShowInfill(self, show):
+        self._show_infill = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowInfill(self):
+        return self._show_infill
 
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
