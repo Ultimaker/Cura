@@ -26,6 +26,7 @@ vertex =
     //varying lowp vec2 v_uvs;
     varying lowp vec2 v_line_dim;
     varying highp int v_extruder;
+    varying highp vec4 v_extruder_opacity;
     varying int v_line_type;
 
     varying lowp vec4 f_color;
@@ -51,18 +52,19 @@ vertex =
                 v_color = a_color;
                 break;
         }
-        if (u_only_color_active_extruder == 1) {
+        if ((u_only_color_active_extruder == 1) && (a_line_type != 8) && (a_line_type != 9)) {
             v_color = (a_extruder == u_active_extruder) ? v_color : vec4(0.4, 0.4, 0.4, v_color.a);
         }
-        if (a_extruder < 4) {
+        /*if (a_extruder < 4) {
             v_color.a *= u_extruder_opacity[a_extruder];  // make it (in)visible
-        }
+        }*/
 
         v_vertex = world_space_vert.xyz;
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
         v_extruder = a_extruder;
         v_line_type = a_line_type;
+        v_extruder_opacity = u_extruder_opacity;
 
         // for testing without geometry shader
         /*f_color = v_color;
@@ -89,6 +91,7 @@ geometry =
     in vec3 v_normal[];
     in vec2 v_line_dim[];
     in int v_extruder[];
+    in vec4 v_extruder_opacity[];
     in int v_line_type[];
 
     out vec4 f_color;
@@ -110,6 +113,9 @@ geometry =
         float size_x;
         float size_y;
 
+        if ((v_extruder_opacity[0][v_extruder[0]] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
+            return;
+        }
         // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
         if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9))) {
             return;
