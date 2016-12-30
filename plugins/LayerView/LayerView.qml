@@ -129,12 +129,12 @@ Item
         {
             id: layerViewTypes
             ListElement {
-                text: "Line type"
-                type_id: 0  // these ids match the switching in the shader
+                text: "Material color"
+                type_id: 0
             }
             ListElement {
-                text: "Material color"
-                type_id: 1
+                text: "Line type"
+                type_id: 1  // these ids match the switching in the shader
             }
             ListElement {
                 text: "Printing speed"
@@ -150,6 +150,7 @@ Item
             onActivated: {
                 CuraApplication.log("Combobox" + String(index));
                 CuraApplication.log(layerViewTypes.get(index).type_id);
+                UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
             }
         }
 
@@ -158,27 +159,28 @@ Item
             CheckBox {
                 checked: true
                 onClicked: {
-                    CuraApplication.log("First");
+                    UM.LayerView.setExtruderOpacity(0, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 1"
             }
             CheckBox {
                 checked: true
                 onClicked: {
-                    CuraApplication.log("First");
+                    UM.LayerView.setExtruderOpacity(1, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 2"
             }
             CheckBox {
                 onClicked: {
-                    CuraApplication.log("First");
+                    UM.LayerView.setShowTravelMoves(checked ? 1 : 0);
                 }
                 text: "Travel moves"
             }
             CheckBox {
                 checked: true
                 onClicked: {
-                    CuraApplication.log("First");
+                    CuraApplication.log("First" + checked);
+                    UM.LayerView.setOnlyColorActiveExtruder(checked);
                 }
                 text: "Only color active extruder"
             }

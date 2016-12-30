@@ -60,8 +60,14 @@ class LayerView(View):
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._only_color_active_extruder = True
+        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._show_travel_moves = 0
+
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
+
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
@@ -133,6 +139,34 @@ class LayerView(View):
             self._startUpdateTopLayers()
 
             self.currentLayerNumChanged.emit()
+
+    def setLayerViewType(self, layer_view_type):
+        self._layer_view_type = layer_view_type
+        self.currentLayerNumChanged.emit()
+
+    def getLayerViewType(self):
+        return self._layer_view_type
+
+    def setOnlyColorActiveExtruder(self, only_color_active_extruder):
+        self._only_color_active_extruder = only_color_active_extruder
+        self.currentLayerNumChanged.emit()
+
+    def getOnlyColorActiveExtruder(self):
+        return self._only_color_active_extruder
+
+    def setExtruderOpacity(self, extruder_nr, opacity):
+        self._extruder_opacity[extruder_nr] = opacity
+        self.currentLayerNumChanged.emit()
+
+    def getExtruderOpacities(self):
+        return self._extruder_opacity
+
+    def setShowTravelMoves(self, show):
+        self._show_travel_moves = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowTravelMoves(self):
+        return self._show_travel_moves
 
     def calculateMaxLayers(self):
         scene = self.getController().getScene()

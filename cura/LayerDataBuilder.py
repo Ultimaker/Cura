@@ -60,12 +60,13 @@ class LayerDataBuilder(MeshBuilder):
         line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
-        extruders = numpy.empty((vertex_count), numpy.float32)
+        extruders = numpy.empty((vertex_count), numpy.int32)
+        line_types = numpy.empty((vertex_count), numpy.int32)
 
         vertex_offset = 0
         index_offset = 0
         for layer, data in self._layers.items():
-            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, indices)
+            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)
@@ -75,6 +76,8 @@ class LayerDataBuilder(MeshBuilder):
         material_colors = numpy.zeros((line_dimensions.shape[0], 4), dtype=numpy.float32)
         for extruder_nr in range(material_color_map.shape[0]):
             material_colors[extruders == extruder_nr] = material_color_map[extruder_nr]
+        material_colors[line_types == LayerPolygon.MoveCombingType] = [0.0, 0.0, 0.8, 1.0]
+        material_colors[line_types == LayerPolygon.MoveRetractionType] = [0.0, 0.0, 0.8, 1.0]
 
         attributes = {
             "line_dimensions": {
@@ -92,6 +95,11 @@ class LayerDataBuilder(MeshBuilder):
                 "opengl_name": "a_material_color",
                 "opengl_type": "vector4f"
                 },
+            "line_types": {
+                "value": line_types,
+                "opengl_name": "a_line_type",
+                "opengl_type": "float"
+                }
             }
 
         return LayerData(vertices=self.getVertices(), normals=self.getNormals(), indices=self.getIndices(),

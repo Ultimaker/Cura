@@ -8,50 +8,16 @@ vertex =
     attribute highp vec4 a_normal;
     attribute highp vec2 a_uvs;
 
-    varying highp vec3 v_vertex;
-    varying highp vec3 v_normal;
+    varying highp vec3 f_vertex;
+    varying highp vec3 f_normal;
 
     void main()
     {
         vec4 world_space_vert = u_modelMatrix * a_vertex;
         gl_Position = u_viewProjectionMatrix * world_space_vert;
 
-        v_vertex = world_space_vert.xyz;
-        v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
-    }
-
-geometry =
-    #version 410
-
-    layout(triangles) in;
-    layout(triangle_strip, max_vertices = 6) out;
-
-    in vec3 v_normal[];
-    in vec3 v_vertex[];
-
-    out vec3 f_normal;
-    out vec3 f_vertex;
-
-    void main()
-    {
-        int i;
-        for(i = 0; i < 3; i++)
-        {
-            f_normal = v_normal[i];
-            f_vertex = v_vertex[i];
-            gl_Position = gl_in[i].gl_Position + vec4(-50, 0.0, 0.0, 0.0);
-            EmitVertex();
-        }
-        EndPrimitive();
-
-        for(i = 0; i < 3; i++)
-        {
-            f_normal = v_normal[i];
-            f_vertex = v_vertex[i];
-            gl_Position = gl_in[i].gl_Position + vec4(50, 0.0, 0.0, 0.0);
-            EmitVertex();
-        }
-        EndPrimitive();
+        f_vertex = world_space_vert.xyz;
+        f_normal = (u_normalMatrix * normalize(a_normal)).xyz;
     }
 
 fragment =

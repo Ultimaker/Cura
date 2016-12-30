@@ -17,6 +17,7 @@ vertex =
     attribute highp vec4 a_normal;
     attribute highp vec2 a_line_dim;  // line width and thickness
     attribute highp int a_extruder;
+    attribute highp int a_line_type;
 
     varying lowp vec4 v_color;
     //varying lowp vec4 v_material_color;
@@ -26,6 +27,7 @@ vertex =
     //varying lowp vec2 v_uvs;
     varying lowp vec2 v_line_dim;
     varying highp int v_extruder;
+    varying int v_line_type;
 
     varying lowp vec4 f_color;
     varying highp vec3 f_vertex;
@@ -44,19 +46,19 @@ vertex =
 
         switch (u_layer_view_type) {
             case 0:  // "Line type"
-                v_color = a_color;
+                v_color = a_material_color;
                 break;
             case 1:  // "Material color"
-                v_color = a_material_color;
+                v_color = a_color;
                 break;
             case 2:  // "Speed"
                 v_color = a_color;
                 break;
         }
         if (u_only_color_active_extruder == 1) {
-            v_color = (a_extruder == u_active_extruder) ? v_color : vec4(0.4, 0.4, 0.4, 1.0);
+            v_color = (a_extruder == u_active_extruder) ? v_color : vec4(0.4, 0.4, 0.4, v_color.a);
         } else {
-            v_color = (a_extruder == u_active_extruder) ? v_color : v_color * u_shade_factor;
+            v_color = (a_extruder == u_active_extruder) ? v_color : vec4((v_color * u_shade_factor).rgb, v_color.a);
         }
         if (a_extruder < 4) {
             v_color.a *= u_extruder_opacity[a_extruder];  // make it (in)visible
@@ -66,19 +68,20 @@ vertex =
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
         v_extruder = a_extruder;
-        //v_material_color = a_material_color;
+        v_line_type = a_line_type;
 
         // for testing without geometry shader
-        f_color = v_color;
+        /*f_color = v_color;
         f_vertex = v_vertex;
         f_normal = v_normal;
-        f_extruder = v_extruder;
+        f_extruder = v_extruder; */
     }
 
 geometry =
     #version 410
 
     uniform highp mat4 u_viewProjectionMatrix;
+    uniform int u_show_travel_moves;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 26) out;
@@ -88,7 +91,7 @@ geometry =
     in vec3 v_normal[];
     in vec2 v_line_dim[];
     in int v_extruder[];
-    //in vec4 v_material_color[];
+    in int v_line_type[];
 
     out vec4 f_color;
     out vec3 f_normal;
@@ -106,13 +109,24 @@ geometry =
         vec3 g_vertex_normal_horz_head;
         vec4 g_vertex_offset_horz_head;
 
-        float size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
-        float size_y = v_line_dim[0].y / 2 + 0.01;
+        float size_x;
+        float size_y;
+
+        // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
+        if (((v_line_type[0] == 8) || (v_line_type[0] == 9)) && (u_show_travel_moves == 0)) {
+            return;
+        }
+        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
+            // fixed size for movements
+            size_x = 0.1;
+            size_y = 0.1;
+        } else {
+            size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
+            size_y = v_line_dim[0].y / 2 + 0.01;
+        }
 
         f_extruder = v_extruder[0];
-        //f_material_color = v_material_color[0];
 
-        //g_vertex_normal_horz = normalize(v_normal[0]);  //vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x);
         g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z));
         g_vertex_offset_horz_head = vec4(g_vertex_normal_horz_head * size_x, 0.0);
@@ -125,28 +139,24 @@ geometry =
 
         f_vertex = v_vertex[0];
         f_color = v_color[0];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = g_vertex_normal_horz;
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[1];
         f_color = v_color[1];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = g_vertex_normal_horz;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[0];
         f_color = v_color[0];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = g_vertex_normal_vert;
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
         EmitVertex();
 
         f_vertex = v_vertex[1];
         f_color = v_color[1];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = g_vertex_normal_vert;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
         EmitVertex();
@@ -154,27 +164,23 @@ geometry =
         f_vertex = v_vertex[0];
         f_normal = -g_vertex_normal_horz;
         f_color = v_color[0];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[1];
         f_color = v_color[1];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = -g_vertex_normal_horz;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[0];
         f_color = v_color[0];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = -g_vertex_normal_vert;
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
         EmitVertex();
 
         f_vertex = v_vertex[1];
         f_color = v_color[1];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = -g_vertex_normal_vert;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
         EmitVertex();
@@ -182,13 +188,11 @@ geometry =
         f_vertex = v_vertex[0];
         f_normal = g_vertex_normal_horz;
         f_color = v_color[0];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
         EmitVertex();
 
         f_vertex = v_vertex[1];
         f_color = v_color[1];
-        //f_color = vec4(v_uvs[0], 0.0, 1.0);
         f_normal = g_vertex_normal_horz;
         gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
         EmitVertex();
@@ -289,8 +293,9 @@ fragment =
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
+        float alpha = f_color.a;
 
-        finalColor += u_ambientColor;
+        finalColor.rgb += f_color.rgb * 0.3;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
@@ -298,8 +303,7 @@ fragment =
         // Diffuse Component
         highp float NdotL = clamp(dot(normal, lightDir), 0.0, 1.0);
         finalColor += (NdotL * f_color);
-        //finalColor += (NdotL * f_material_color);
-        //finalColor.a = 1.0;
+        finalColor.a = alpha;  // Do not change alpha in any way
 
         gl_FragColor = finalColor;
     }
@@ -313,9 +317,11 @@ u_extruder_opacity = [1.0, 1.0]
 
 u_shade_factor = 0.60
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
-u_ambientColor = [0.3, 0.3, 0.3, 0.3]
+u_ambientColor = [0.3, 0.3, 0.3, 0.0]
 u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_shininess = 20.0
+
+u_show_travel_moves = 0
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix
@@ -331,3 +337,4 @@ a_normal = normal
 a_line_dim = line_dim
 a_extruder = extruders
 a_material_color = material_color
+a_line_type = line_type

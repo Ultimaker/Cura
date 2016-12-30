@@ -51,7 +51,7 @@ class LayerPolygon:
     def buildCache(self):
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
         # self._build_cache_line_mesh_mask = numpy.logical_not(numpy.logical_or(self._jump_mask, self._types == LayerPolygon.InfillType ))
-        self._build_cache_line_mesh_mask = numpy.logical_not(self._jump_mask)
+        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype=bool)  # numpy.logical_not(self._jump_mask)
         mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
         self._index_end = mesh_line_count
@@ -60,14 +60,14 @@ class LayerPolygon:
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
-        numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points )
+        numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask )
 
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
         
     ##  build
     #   line_thicknesses: array with type as index and thickness as value
-    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, indices):
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices):
         if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
             self.buildCache()
             
@@ -94,7 +94,10 @@ class LayerPolygon:
         line_dimensions[self._vertex_begin:self._vertex_end, 0] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
         line_dimensions[self._vertex_begin:self._vertex_end, 1] = numpy.tile(self._line_thicknesses, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
 
-        extruders[self._vertex_begin:self._vertex_end] = float(self._extruder)
+        extruders[self._vertex_begin:self._vertex_end] = self._extruder
+
+        # Convert type per vertex to type per line
+        line_types[self._vertex_begin:self._vertex_end] = numpy.tile(self._types, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._index_begin += index_offset
