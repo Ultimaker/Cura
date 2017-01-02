@@ -8,6 +8,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
+from UM.Preferences import Preferences
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -105,7 +106,6 @@ class ProcessSlicedLayersJob(Job):
                 polygon = layer.getRepeatedMessage("path_segment", p)
 
                 extruder = polygon.extruder
-                x = dir(polygon)
 
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
                 line_types = line_types.reshape((-1,1))
@@ -162,6 +162,7 @@ class ProcessSlicedLayersJob(Job):
         # TODO: move to a better place. Code is similar to code in ExtrudersModel
         from cura.Settings.ExtruderManager import ExtruderManager
         import UM
+
         global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         manager = ExtruderManager.getInstance()
         extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
@@ -181,7 +182,11 @@ class ProcessSlicedLayersJob(Job):
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 
-        layer_mesh = layer_data.build(material_color_map)
+        if bool(Preferences.getInstance().getValue("view/compatibility_mode")):
+            line_type_brightness = 0.5
+        else:
+            line_type_brightness = 1.0
+        layer_mesh = layer_data.build(material_color_map, line_type_brightness)
 
         if self._abort_requested:
             if self._progress:

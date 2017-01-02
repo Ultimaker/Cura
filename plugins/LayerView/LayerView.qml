@@ -146,7 +146,6 @@ Item
         color: UM.Theme.getColor("tool_panel_background");
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
-        visible: !UM.LayerView.compatibilityMode
 
         ListModel
         {
@@ -167,9 +166,18 @@ Item
             anchors.top: slider_background.bottom
             anchors.left: parent.left
             model: layerViewTypes
+            visible: !UM.LayerView.compatibilityMode
             onActivated: {
                 UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
             }
+        }
+
+        Label
+        {
+            anchors.top: slider_background.bottom
+            anchors.left: parent.left
+            text: catalog.i18nc("@label","Compatibility mode")
+            visible: UM.LayerView.compatibilityMode
         }
 
         ColumnLayout {
@@ -182,6 +190,7 @@ Item
                     UM.LayerView.setExtruderOpacity(0, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 1"
+                visible: !UM.LayerView.compatibilityMode
             }
             CheckBox {
                 checked: true
@@ -189,6 +198,7 @@ Item
                     UM.LayerView.setExtruderOpacity(1, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 2"
+                visible: !UM.LayerView.compatibilityMode
             }
             CheckBox {
                 onClicked: {

@@ -94,7 +94,6 @@ geometry =
     out vec3 f_normal;
     out vec3 f_vertex;
     out uint f_extruder;
-    //out vec4 f_material_color;
 
     void main()
     {
@@ -325,7 +324,7 @@ fragment =
 u_active_extruder = 0.0
 u_layer_view_type = 0
 u_only_color_active_extruder = 1
-u_extruder_opacity = [1.0, 1.0]
+u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.0]

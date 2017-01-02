@@ -49,7 +49,8 @@ class LayerDataBuilder(MeshBuilder):
         self._layers[layer].setThickness(thickness)
 
     #   material color map: [r, g, b, a] for each extruder row.
-    def build(self, material_color_map):
+    #   line_type_brightness: compatibility layer view uses line type brightness of 0.5
+    def build(self, material_color_map, line_type_brightness = 1.0):
         vertex_count = 0
         index_count = 0
         for layer, data in self._layers.items():
@@ -70,6 +71,7 @@ class LayerDataBuilder(MeshBuilder):
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)
+        colors[:, 0:3] *= line_type_brightness
         self.addColors(colors)
         self.addIndices(indices.flatten())
 
