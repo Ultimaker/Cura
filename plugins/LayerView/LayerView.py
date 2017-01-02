@@ -41,6 +41,7 @@ class LayerView(View):
 
         self._max_layers = 0
         self._current_layer_num = 0
+        self._minimum_layer_num = 0
         self._current_layer_mesh = None
         self._current_layer_jumps = None
         self._top_layers_job = None
@@ -94,6 +95,9 @@ class LayerView(View):
     def getCurrentLayer(self):
         return self._current_layer_num
 
+    def getMinimumLayer(self):
+        return self._minimum_layer_num
+
     def _onSceneChanged(self, node):
         self.calculateMaxLayers()
 
@@ -139,6 +143,18 @@ class LayerView(View):
                 self._current_layer_num = 0
             if self._current_layer_num > self._max_layers:
                 self._current_layer_num = self._max_layers
+
+            self._startUpdateTopLayers()
+
+            self.currentLayerNumChanged.emit()
+
+    def setMinimumLayer(self, value):
+        if self._minimum_layer_num != value:
+            self._minimum_layer_num = value
+            if self._minimum_layer_num < 0:
+                self._minimum_layer_num = 0
+            if self._minimum_layer_num > self._current_layer_num:
+                self._minimum_layer_num = self._current_layer_num
 
             self._startUpdateTopLayers()
 

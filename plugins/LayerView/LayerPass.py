@@ -81,6 +81,8 @@ class LayerPass(RenderPass):
                     for layer, counts in element_counts.items():
                         if layer > self._layer_view._current_layer_num:
                             break
+                        if self._layer_view._minimum_layer_num > layer:
+                            start += counts
                         end += counts
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.

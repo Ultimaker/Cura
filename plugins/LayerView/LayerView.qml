@@ -15,11 +15,31 @@ Item
 
     Slider
     {
+        id: slider2
+        width: UM.Theme.getSize("slider_layerview_size").width
+        height: UM.Theme.getSize("slider_layerview_size").height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.2
+        orientation: Qt.Vertical
+        minimumValue: 0;
+        maximumValue: UM.LayerView.numLayers;
+        stepSize: 1
+
+        property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
+
+        value: UM.LayerView.minimumLayer
+        onValueChanged: UM.LayerView.setMinimumLayer(value)
+
+        style: UM.Theme.styles.slider;
+    }
+
+    Slider
+    {
         id: slider
         width: UM.Theme.getSize("slider_layerview_size").width
         height: UM.Theme.getSize("slider_layerview_size").height
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width/2
+        anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.8
         orientation: Qt.Vertical
         minimumValue: 0;
         maximumValue: UM.LayerView.numLayers;

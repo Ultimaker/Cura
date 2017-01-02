@@ -35,6 +35,12 @@ class LayerViewProxy(QObject):
         if type(active_view) == LayerView.LayerView.LayerView:
             return active_view.getCurrentLayer()
 
+    @pyqtProperty(int, notify = currentLayerChanged)
+    def minimumLayer(self):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            return active_view.getMinimumLayer()
+
     busyChanged = pyqtSignal()
     @pyqtProperty(bool, notify = busyChanged)
     def busy(self):
@@ -49,6 +55,12 @@ class LayerViewProxy(QObject):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.setLayer(layer_num)
+
+    @pyqtSlot(int)
+    def setMinimumLayer(self, layer_num):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            active_view.setMinimumLayer(layer_num)
 
     @pyqtSlot(int)
     def setLayerViewType(self, layer_view_type):
