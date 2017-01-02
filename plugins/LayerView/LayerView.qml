@@ -139,11 +139,14 @@ Item
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         anchors.top: slider_background.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        //anchors.leftMargin: UM.Theme.getSize("default_margin").width
         width: UM.Theme.getSize("slider_layerview_background").width * 3
         height: slider.height + UM.Theme.getSize("default_margin").height * 2
         color: UM.Theme.getColor("tool_panel_background");
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
+        visible: !UM.LayerView.compatibilityMode
 
         ListModel
         {
@@ -171,6 +174,8 @@ Item
 
         ColumnLayout {
             anchors.top: layer_type_combobox.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
             CheckBox {
                 checked: true
                 onClicked: {

@@ -72,11 +72,13 @@ class LayerView(View):
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
+        Preferences.getInstance().addPreference("view/compatibility_mode", True)  # Default True for now, needs testing of different computers
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._compatibility_mode = bool(Preferences.getInstance().getValue("view/compatibility_mode"))
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
@@ -216,6 +218,9 @@ class LayerView(View):
     def getShowInfill(self):
         return self._show_infill
 
+    def getCompatibilityMode(self):
+        return self._compatibility_mode
+
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
         self._activity = True
@@ -312,6 +317,9 @@ class LayerView(View):
                 self._wireprint_warning_message.hide()
 
     def _startUpdateTopLayers(self):
+        if not self._compatibility_mode:
+            return
+
         if self._top_layers_job:
             self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
             self._top_layers_job.cancel()
@@ -335,11 +343,12 @@ class LayerView(View):
         self._top_layers_job = None
 
     def _onPreferencesChanged(self, preference):
-        if preference != "view/top_layer_count" and preference != "view/only_show_top_layers":
+        if preference not in {"view/top_layer_count", "view/only_show_top_layers", "view/compatibility_mode"}:
             return
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._compatibility_mode = bool(Preferences.getInstance().getValue("view/compatibility_mode"))
 
         self._startUpdateTopLayers()
 

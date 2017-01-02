@@ -28,13 +28,19 @@ class LayerPass(RenderPass):
         self._extruder_manager = ExtruderManager.getInstance()
 
         self._layer_view = None
+        self._compatibility_mode = None
 
     def setLayerView(self, layerview):
         self._layer_view = layerview
+        self._compatibility_mode = layerview.getCompatibilityMode()
 
     def render(self):
         if not self._layer_shader:
-            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layers.shader"))
+            if self._compatibility_mode:
+                shader_filename = "layers.shader"
+            else:
+                shader_filename = "layers3d.shader"
+            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), shader_filename))
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
         if self._layer_view:

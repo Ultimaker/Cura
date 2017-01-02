@@ -49,7 +49,15 @@ class LayerViewProxy(QObject):
             return active_view.isBusy()
 
         return False
-    
+
+    @pyqtProperty(bool)
+    def compatibilityMode(self):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            return active_view.getCompatibilityMode()
+
+        return False
+
     @pyqtSlot(int)
     def setCurrentLayer(self, layer_num):
         active_view = self._controller.getActiveView()
