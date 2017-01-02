@@ -29,7 +29,6 @@ UM.Dialog
 
     onClosing:
     {
-        UM.Preferences.setValue("cura/asked_dialog_on_project_save", true)
         UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
     }
 
@@ -37,10 +36,7 @@ UM.Dialog
     {
         if(visible)
         {
-            if (UM.Preferences.getValue("cura/asked_dialog_on_project_save"))
-            {
-                dontShowAgain = true
-            } else { dontShowAgain = UM.Preferences.setValue("cura/dialog_on_project_save")}
+            dontShowAgain = !UM.Preferences.getValue("cura/dialog_on_project_save")
         }
     }
 
