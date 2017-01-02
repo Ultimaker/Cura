@@ -3804,6 +3804,7 @@
                     "unit": "%",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 100,
+                    "value": "material_flow",
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
