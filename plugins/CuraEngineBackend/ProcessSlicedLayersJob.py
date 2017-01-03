@@ -16,6 +16,7 @@ from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
+from cura.Settings.ExtruderManager import ExtruderManager
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura import LayerPolygon
@@ -159,11 +160,7 @@ class ProcessSlicedLayersJob(Job):
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
 
         # Find out colors per extruder
-        # TODO: move to a better place. Code is similar to code in ExtrudersModel
-        from cura.Settings.ExtruderManager import ExtruderManager
-        import UM
-
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         manager = ExtruderManager.getInstance()
         extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
         if extruders:
@@ -182,6 +179,7 @@ class ProcessSlicedLayersJob(Job):
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 
+        # We have to scale the colors for compatibility mode
         if bool(Preferences.getInstance().getValue("view/compatibility_mode")):
             line_type_brightness = 0.5
         else:

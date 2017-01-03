@@ -181,8 +181,10 @@ Item
         }
 
         ColumnLayout {
+            id: view_settings
             anchors.top: layer_type_combobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
+            x: UM.Theme.getSize("default_margin").width
 
             CheckBox {
                 checked: true
@@ -243,5 +245,60 @@ Item
             }
         }
 
+        // legend
+        ListView {
+
+            visible: (UM.LayerView.getLayerViewType() == 1)  // line type
+            anchors.top: view_settings.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            //width: parent.width
+            //height: childrenRect.height
+
+            delegate: Row
+            {
+                Rectangle
+                {
+                    id: rect
+
+                    x: UM.Theme.getSize("default_margin").width
+                    y: index * UM.Theme.getSize("section_icon").height
+
+                    //width: UM.Theme.getSize("section_icon").width
+                    //height: 0.5 * UM.Theme.getSize("section_icon").height
+                    width: UM.Theme.getSize("setting_control").height / 2
+                    height: UM.Theme.getSize("setting_control").height / 2
+                    //Behavior on height { NumberAnimation { duration: 50; } }
+
+                    border.width: UM.Theme.getSize("default_lining").width;
+                    border.color: UM.Theme.getColor("slider_groove_border");
+
+                    color: model.color;
+                }
+
+                Label
+                {
+                    anchors.left: rect.right
+                    anchors.verticalCenter: rect.verticalCenter
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    text: model.label
+                }
+            }
+            model: ListModel
+            {
+                id: legendModel
+            }
+            Component.onCompleted:
+            {
+                // see LayerPolygon
+                legendModel.append({ label:catalog.i18nc("@label", "Inset0"), color: "#ff0000" });
+                legendModel.append({ label:catalog.i18nc("@label", "InsetX"), color: "#00ff00" });
+                legendModel.append({ label:catalog.i18nc("@label", "Skin"), color: "#ffff00" });
+                legendModel.append({ label:catalog.i18nc("@label", "Support, Skirt, SupportInfill"), color: "#00ffff" });
+                legendModel.append({ label:catalog.i18nc("@label", "Infill"), color: "#ffbf00" });
+                legendModel.append({ label:catalog.i18nc("@label", "MoveCombing"), color: "#0000ff" });
+                legendModel.append({ label:catalog.i18nc("@label", "MoveRetraction"), color: "#8080ff" });
+                legendModel.append({ label:catalog.i18nc("@label", "SupportInterface"), color: "#3fbfff" });
+            }
+        }
     }
 }
