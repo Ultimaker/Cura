@@ -80,7 +80,7 @@ class LayerPass(RenderPass):
                     continue
 
                 # Render all layers below a certain number as line mesh instead of vertices.
-                if self._layer_view._current_layer_num > -1 and not self._layer_view._only_show_top_layers:
+                if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
                     element_counts = layer_data.getElementCounts()

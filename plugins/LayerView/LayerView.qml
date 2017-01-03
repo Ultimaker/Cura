@@ -22,13 +22,18 @@ Item
         anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.2
         orientation: Qt.Vertical
         minimumValue: 0;
-        maximumValue: UM.LayerView.numLayers;
+        maximumValue: UM.LayerView.numLayers-1;
         stepSize: 1
 
         property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
 
         value: UM.LayerView.minimumLayer
-        onValueChanged: UM.LayerView.setMinimumLayer(value)
+        onValueChanged: {
+            UM.LayerView.setMinimumLayer(value)
+            if (value > UM.LayerView.currentLayer) {
+                UM.LayerView.setCurrentLayer(value);
+            }
+        }
 
         style: UM.Theme.styles.slider;
     }
@@ -48,7 +53,12 @@ Item
         property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
 
         value: UM.LayerView.currentLayer
-        onValueChanged: UM.LayerView.setCurrentLayer(value)
+        onValueChanged: {
+                UM.LayerView.setCurrentLayer(value);
+                if (value < UM.LayerView.minimumLayer) {
+                    UM.LayerView.setMinimumLayer(value);
+                }
+            }
 
         style: UM.Theme.styles.slider;
 

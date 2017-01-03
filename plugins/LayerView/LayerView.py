@@ -155,8 +155,6 @@ class LayerView(View):
             self._minimum_layer_num = value
             if self._minimum_layer_num < 0:
                 self._minimum_layer_num = 0
-            if self._minimum_layer_num > self._current_layer_num:
-                self._minimum_layer_num = self._current_layer_num
 
             self._startUpdateTopLayers()
 
