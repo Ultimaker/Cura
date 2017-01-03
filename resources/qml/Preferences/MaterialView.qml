@@ -189,7 +189,7 @@ TabView
                     height: parent.rowHeight
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter (Approx.)") }
+                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter") }
                 Label
                 {
                     width: base.secondColumnWidth
