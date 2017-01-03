@@ -60,7 +60,7 @@ class LayerPolygon:
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
-        numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask )
+        numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points )
 
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
