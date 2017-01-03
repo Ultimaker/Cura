@@ -185,17 +185,6 @@ UM.ManagementPage
             height: childrenRect.height
 
             Label { text: materialProperties.name; font: UM.Theme.getFont("large"); }
-            Button
-            {
-                id: editButton
-                anchors.right: parent.right;
-                text: catalog.i18nc("@action:button", "Edit");
-                iconName: "document-edit";
-
-                enabled: base.currentItem != null && !base.currentItem.readOnly
-
-                checkable: enabled
-            }
         }
 
         MaterialView
@@ -209,7 +198,7 @@ UM.ManagementPage
                 bottom: parent.bottom
             }
 
-            editingEnabled: editButton.checkable && editButton.checked;
+            editingEnabled: base.currentItem != null && !base.currentItem.readOnly
 
             properties: materialProperties
             containerId: base.currentItem != null ? base.currentItem.id : ""
