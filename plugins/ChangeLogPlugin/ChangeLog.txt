@@ -3,7 +3,7 @@
 You can now save your build plate configuration - with all your active machine’s meshes and settings. When you reopen the project file, you’ll find that the build plate configuration and all settings will be exactly as you last left them when you saved the project.
 
 *Setting search
-You can now search the custom settings directly from the side panel, which means you can easily locate the setting you need to tweak. Thanks to community member Aldo Hoeben for this feature.
+You can now search the custom settings directly from the side panel, which means you can easily locate the setting you need to tweak. Thanks to community member Aldo Hoeben & LulzBot for this feature.
 
 *Editing start g-code and end g-code
 Aldo Hoeben also added this feature, enabling you to alter both start and end code g-code settings for single extrusion machines.
@@ -17,13 +17,13 @@ Dual extrusion printers now allow for single extrusion prints in a larger printa
 *Streaming printer monitor view
 Ultimaker 3’s camera views no longer only show snapshots. They now show a live stream.
 
-*Impossible settings in error message
+*Explain why slicing is disabled
 When slicing is blocked by settings with error values, a message now appears, clearly indicating which settings need to be changed.
 
 *Ultimaker 3 print profiles
 The initial and final printing temperatures reduce the amount of oozing during PLA-PLA, PLA-PVA and Nylon-PVA prints. This means printing a prime tower is now optional (except for CPE and ABS at the moment). The new Ultimaker 3 printing profiles ensure increased reliability and shorter print time.
 
-*Initial and final printing temperature
+*Initial Layer Printing Temperature
 Initial and final printing temperature settings have been tuned for higher quality results.
 
 *Printing temperature of the materials
@@ -45,7 +45,7 @@ In the polycarbonate profiles, the raft settings for the 0.25 mm and 0.4 mm nozz
 Print the prime tower hollow to minimize material use while maintaining stability. Wiping the oozed material on the prime tower is now done from the inside, which means the excess material is contained within the prime tower.
 
 *Precooling and prewarming
-Printing now starts at a lower temperature, before increasing swiftly to the normal printing temperature. Cooling also starts earlier than the last extrusion (with that print core). This minimizes the material’s heat absorption, which decreases the amount of degradation of the PVA material. This means the reduced risk of clogging nozzles.
+Printing now starts at a lower temperature, before increasing swiftly to the normal printing temperature. Cooling also starts earlier than the last extrusion (with that print core). This minimizes the material’s heat absorption, which decreases the amount of degradation of the PVA material. This reduces the risk of clogging your nozzles.
 
 *Remove Mesh Intersection
 You are now able to turn off resolving of overlapping meshes. Models can now overlap, so you can perform build plate color mixing, by placing meshes over one another and lowering their flow.
@@ -94,6 +94,9 @@ Select not to print any build plate adhesion helper parts.
 
 *Anti-overhang and support meshes
 Use a mesh to specify a volume within which to classify nothing as overhang for support or specify a volume within which to print support.
+
+*Delta printer support
+This release adds support for printers with elliptic buildplates. This feature has not been extensively tested so please let us know if it works or get involved in improving it.
 
 *bugfixes
 The user is now notified when a new version of Cura is available.

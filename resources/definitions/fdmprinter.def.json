@@ -890,6 +890,20 @@
                     "default_value": "lines",
                     "settable_per_mesh": true
                 },
+                "top_bottom_pattern_0":
+                {
+                    "label": "Bottom Pattern Initial Layer",
+                    "description": "The pattern on the bottom of the print on the first layer.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "settable_per_mesh": true
+                },
                 "wall_0_inset":
                 {
                     "label": "Outer Wall Inset",
@@ -3820,6 +3834,7 @@
                     "unit": "%",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 100,
+                    "value": "material_flow",
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
