@@ -132,7 +132,8 @@ material_map = {
 	"armadillo": "armadillo",
 	"brassfill": "colorfabb-metal-filled",
 	"ABS_scaffold": "ABS-scaffold-support",
-	"HIPS_scaffold": "HIPS-scaffold-support"
+	"HIPS_scaffold": "HIPS-scaffold-support",
+	"ic3d-ABS": "ic3d-ABS"
 }
 
 material_order = {
@@ -219,7 +220,8 @@ material_order = {
 	"armadillo":         5007,
 	"brassfill":         5008,
 	"ABS_scaffold":      5009,
-	"HIPS_scaffold":     5010
+	"HIPS_scaffold":     5010,
+	"ic3d-ABS":          5011
 }
 
 material_types = {
@@ -233,7 +235,6 @@ material_types = {
 	
 	# Intermediate
 	"ABS_VP": "Intermediate",
-	"Laybrick": "Intermediate",
 	"PP-Iron": "Intermediate",
 	"PP-Steel": "Intermediate",
 	"Bamboofill": "Intermediate",
@@ -249,7 +250,6 @@ material_types = {
 	# Advanced
 	"Alloy910": "Advanced",
 	"Bridge": "Advanced",
-	"Laywood": "Advanced",
 	"n-vent": "Advanced",
 	"XT": "Advanced",
 	"INOVA-1800": "Advanced",
@@ -265,7 +265,6 @@ material_types = {
 	"PP-Conductive": "Expert",
 	"HIPS_VP": "Expert",
 	"PC_VP": "Expert",
-	"618-Nylon": "Expert",
 	"645-Nylon": "Expert",
 	
 	# Flexystruder (Expert)
@@ -310,7 +309,7 @@ material_names = {
 	"PLA_VP": "PLA (Village Plastics)",
 	"PLA_PHA": "PLA/PHA (colorFabb)",
 	"PLA_verbatim": "PLA (Verbatim)",
-	"PLA_poly": "PLA PolyLite (Polymaker)",
+	"PLA_poly": "PolyLite PLA (Polymaker)",
 	
 	# Intermediate
 	"ABS_VP": "ABS (Village Plastics)",
@@ -332,15 +331,15 @@ material_names = {
 	"Bridge": "Bridge Nylon (Taulman)",
 	"Laywood": "Laywoo-D3 (CC-Products)",
 	"n-vent": "n-vent (Taulman)",
-	"XT": "XT (colorFabb)",
+	"XT": "colorFabb_XT",
 	"INOVA-1800": "INOVA-1800 (ChromaStrand)",
 	"PCTPE": "PCTPE (Taulman)",
 	"PC-ABS": "PC-ABS (Proto-pasta)",
 	"T-Glase": "t-glase (Taulman)",
 	"Bronzefill": "bronzeFill (colorFabb)",
 	"Copperfill": "copperFill (colorFabb)",
-	"HT": "HT (colorFabb)",
-	"PC-MAX": "PC-MAX (Polymaker)",
+	"HT": "colorFabb_HT",
+	"PC-MAX": "PC-Max (Polymaker)",
 	
 	# Expert
 	"PP-Conductive": "Conductive (Proto-pasta)",
@@ -387,19 +386,17 @@ material_names = {
 	"armadillo": "Armadillo (NinjaTek)",
 	"brassfill": "brassFill (colorFabb)",
 	"ABS_scaffold": "ABS & Scaffold Support",
-	"HIPS_scaffold": "HIPS & Scaffold Support"
+	"HIPS_scaffold": "HIPS & Scaffold Support",
+	"ic3d-ABS": "ABS (IC3D)"
 }
 
 material_url = {
-	# Beginner
 	"HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
 	"PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
 	"PLA_VP": "lulzbot.com/store/filament/pla-village",
 #	"PLA_PHA": "",
-#	"PLA_verbatim": "",
-#	"PLA_poly": "",
-
-	# Intermediate
+	"PLA_verbatim": "lulzbot.com/store/filament/pla-verbatim",
+	"PLA_poly": "lulzbot.com/store/filament/polylite-pla",
 	"ABS_VP": "lulzbot.com/store/filament/abs",
 	"Laybrick": "lulzbot.com/store/filament/laybrick",
 	"PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
@@ -408,11 +405,9 @@ material_url = {
 	"Woodfill": "lulzbot.com/store/filament/woodfill",
 #	"Corkfill": "",
 	"PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
-#	"PP-HT-PLA": "",
+	"PP-HT-PLA": "lulzbot.com/store/filament/high-temp-pla",
 	"nGen": "lulzbot.com/store/filament/ngen",
 #	"PP-Matte-HT-PLA": "",
-
-	# Advanced
 	"Alloy910": "lulzbot.com/store/filament/alloy-910",
 	"Bridge": "lulzbot.com/store/filament/bridge-nylon",
 	"Laywood": "lulzbot.com/store/filament/laywoo-d3-laywood",
@@ -424,20 +419,14 @@ material_url = {
 	"T-Glase": "lulzbot.com/store/filament/t-glase",
 	"Bronzefill": "lulzbot.com/store/filament/bronzefill",
 	"Copperfill": "lulzbot.com/store/filament/copperfill",
-
-	# Expert
 	"PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
 	"HIPS_VP": "lulzbot.com/store/filament/hips",
 	"PC_VP": "lulzbot.com/store/filament/polycarbonate",
 	"618-Nylon": "lulzbot.com/store/filament/nylon-618",
 	"645-Nylon": "lulzbot.com/store/filament/nylon-645",
-
-	# Flexystruder (Expert)
 	"ninjaflex": "lulzbot.com/store/filament/ninjaflex",
 #	"cheetah": "",
 	"semiflex": "lulzbot.com/store/filament/semiflex",
-	
-	# Dual extruder (Expert)
 	"ABS_ABS": "lulzbot.com/store/filament/abs",
 	"PLA_PLA": "lulzbot.com/store/filament/pla-esun",
 	"PLA_PVA": "lulzbot.com/store/filament/natural-pva",
@@ -448,8 +437,6 @@ material_url = {
 #	"NGEN-NGEN": "",
 	"INOVA-INOVA": "lulzbot.com/store/filament/inova-1800",
 #	"ABS_BRIDGE": "",
-
-	# Flexy Dually (Expert)
 	"ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
 	"ABS_semiflex": "lulzbot.com/store/filament/semiflex",
 #	"ABS_cheetah": "",
@@ -461,19 +448,18 @@ material_url = {
 #	"NGEN_ninjaflex": "",
 #	"NGEN_semiflex": "",
 #	"INOVA_semiflex": "",
-
-	# Experimental
-#	"HT": "",
+	"HT": "lulzbot.com/store/filament/colorfabb_ht",
 #	"b-pet": "",
 #	"PC-MAX": "",
 #	"wood-bamboo": "",
 #	"polyflex": "",
 #	"armadillo": "",
 #	"brassfill": "",
-#	"silk": "",
-#	"linen": "",
+	"silk": "lulzbot.com/store/filament/biofila-silk",
+	"linen": "lulzbot.com/store/filament/biofila-linen",
 #	"ABS_scaffold": "",
-#	"HIPS_scaffold": ""
+#	"HIPS_scaffold": "",
+#	"ic3d-ABS": ""
 }
 
 bed_prep_materials = {
@@ -579,7 +565,7 @@ def create_machine_type(machine_type, path, dir):
 				if material_types.has_key(material):
 					types = material_types[material]
 					if 'moarstruder' in machine_type.lower():
-						if material == "PLA_poly":
+						if material == "T-Glase":
 							types = types + "|First Run"
 							order = 0
 							f.write("default = 1\n")
