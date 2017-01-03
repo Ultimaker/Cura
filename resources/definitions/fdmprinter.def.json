@@ -902,6 +902,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
+                    "value": "top_bottom_pattern",
                     "settable_per_mesh": true
                 },
                 "wall_0_inset":
