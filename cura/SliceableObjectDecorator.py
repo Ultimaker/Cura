@@ -7,3 +7,6 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         
     def isSliceable(self):
         return True
+
+    def __deepcopy__(self, memo):
+        return type(self)()

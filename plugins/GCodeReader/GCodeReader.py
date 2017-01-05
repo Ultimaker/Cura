@@ -100,7 +100,7 @@ class GCodeReader(MeshReader):
         line_types = numpy.empty((count - 1, 1), numpy.int32)
         line_widths = numpy.empty((count - 1, 1), numpy.float32)
         # TODO: need to calculate actual line width based on E values
-        line_widths[:, 0] = 0.5
+        line_widths[:, 0] = 0.4
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
         for point in path:
@@ -109,6 +109,8 @@ class GCodeReader(MeshReader):
             points[i, 2] = -point[1]
             if i > 0:
                 line_types[i - 1] = point[3]
+                if point[3] in [LayerPolygon.MoveCombingType, LayerPolygon.MoveRetractionType]:
+                    line_widths[i - 1] = 0.2
             i += 1
 
         this_poly = LayerPolygon(self._layer_data_builder, self._extruder, line_types, points, line_widths)
@@ -136,12 +138,13 @@ class GCodeReader(MeshReader):
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         if z_changed:
-            if len(path) > 1 and z > 0:
-                if self._createPolygon(z, path):
-                    self._layer += 1
-                path.clear()
-            else:
-                path.clear()
+            if not self._is_layers_in_file:
+                if not self._is_layers_in_file and len(path) > 1 and z > 0:
+                    if self._createPolygon(z, path):
+                        self._layer += 1
+                    path.clear()
+                else:
+                    path.clear()
         return self._position(x, y, z, e)
 
     def _gCode28(self, position, params, path):
@@ -179,15 +182,17 @@ class GCodeReader(MeshReader):
         self._extruder = T
         if self._extruder + 1 > len(position.e):
             position.e.extend([0] * (self._extruder - len(position.e) + 1))
-        if len(path) > 1 and position[2] > 0:
-            if self._createPolygon(position[2], path):
-                self._layer += 1
-            path.clear()
-        else:
-            path.clear()
+        if not self._is_layers_in_file:
+            if len(path) > 1 and position[2] > 0:
+                if self._createPolygon(position[2], path):
+                    self._layer += 1
+                path.clear()
+            else:
+                path.clear()
         return position
 
     _type_keyword = ";TYPE:"
+    _layer_keyword = ";LAYER:"
 
     def read(self, file_name):
         Logger.log("d", "Preparing to load %s" % file_name)
@@ -197,6 +202,7 @@ class GCodeReader(MeshReader):
         scene_node.getBoundingBox = self._getNullBoundingBox  # Manually set bounding box, because mesh doesn't have mesh data
 
         glist = []
+        self._is_layers_in_file = False
 
 
         Logger.log("d", "Opening file %s" % file_name)
@@ -207,6 +213,8 @@ class GCodeReader(MeshReader):
             for line in file:
                 file_lines += 1
                 glist.append(line)
+                if not self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
+                    self._is_layers_in_file = True
             file.seek(0)
 
             file_step = max(math.floor(file_lines / 100), 1)
@@ -245,6 +253,14 @@ class GCodeReader(MeshReader):
                         self._layer_type = LayerPolygon.SupportType
                     elif type == "FILL":
                         self._layer_type = LayerPolygon.InfillType
+                if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
+                    try:
+                        layer_number = int(line[len(self._layer_keyword):])
+                        self._createPolygon(current_position[2], current_path)
+                        current_path.clear()
+                        self._layer = layer_number
+                    except:
+                        pass
                 if line[0] == ";":
                     continue
 
@@ -255,7 +271,7 @@ class GCodeReader(MeshReader):
                 if T is not None:
                     current_position = self._processTCode(T, line, current_position, current_path)
 
-            if len(current_path) > 1 and current_position[2] > 0:
+            if not self._is_layers_in_file and len(current_path) > 1 and current_position[2] > 0:
                 if self._createPolygon(current_position[2], current_path):
                     self._layer += 1
                 current_path.clear()
