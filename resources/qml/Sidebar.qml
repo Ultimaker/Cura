@@ -385,7 +385,7 @@ Rectangle
         height: settingsModeSelection.height
         width: visible ? height : 0
 
-        visible: !monitoringPrint && modesListModel.get(base.currentModeIndex) != undefined && modesListModel.get(base.currentModeIndex).showFilterButton
+        visible: !monitoringPrint && !hideSettings && modesListModel.get(base.currentModeIndex) != undefined && modesListModel.get(base.currentModeIndex).showFilterButton
         opacity: visible ? 1 : 0
 
         onClicked: sidebarContents.currentItem.toggleFilterField()
