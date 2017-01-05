@@ -139,7 +139,7 @@ class GCodeReader(MeshReader):
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         if z_changed:
             if not self._is_layers_in_file:
-                if not self._is_layers_in_file and len(path) > 1 and z > 0:
+                if len(path) > 1 and z > 0:
                     if self._createPolygon(z, path):
                         self._layer += 1
                     path.clear()
