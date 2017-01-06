@@ -2815,7 +2815,7 @@
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
-                    "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded down to a multiple of the layer height.",
+                    "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
