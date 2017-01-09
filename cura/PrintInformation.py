@@ -6,6 +6,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 from UM.Application import Application
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
+from UM.Settings import ContainerRegistry
 
 import cura.Settings.ExtruderManager
 
@@ -61,6 +62,12 @@ class PrintInformation(QObject):
         Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
         Application.getInstance().fileLoaded.connect(self.setJobName)
 
+        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+
+        self._active_material_container = None
+        Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._onActiveMaterialChanged)
+        self._onActiveMaterialChanged()
+
     currentPrintTimeChanged = pyqtSignal()
 
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
@@ -89,6 +96,10 @@ class PrintInformation(QObject):
         self._current_print_time.setDuration(total_time)
         self.currentPrintTimeChanged.emit()
 
+        self._material_amounts = material_amounts
+        self._calculateInformation()
+
+    def _calculateInformation(self):
         # Material amount is sent as an amount of mm^3, so calculate length from that
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths = []
@@ -98,7 +109,7 @@ class PrintInformation(QObject):
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
         extruder_stacks = list(cura.Settings.ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
-        for index, amount in enumerate(material_amounts):
+        for index, amount in enumerate(self._material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
             material = None
@@ -115,10 +126,15 @@ class PrintInformation(QObject):
             if material:
                 material_guid = material.getMetaDataEntry("GUID")
                 if material_guid in material_preference_values:
-                    weight_per_spool = float(material_preference_values[material_guid]["spool_weight"])
-                    cost_per_spool = float(material_preference_values[material_guid]["spool_cost"])
+                    material_values = material_preference_values[material_guid]
 
-                    cost = cost_per_spool * weight / weight_per_spool
+                    weight_per_spool = float(material_values["spool_weight"] if material_values and "spool_weight" in material_values else 0)
+                    cost_per_spool = float(material_values["spool_cost"] if material_values and "spool_cost" in material_values else 0)
+
+                    if weight_per_spool != 0:
+                        cost = cost_per_spool * weight / weight_per_spool
+                    else:
+                        cost = 0
 
             self._material_weights.append(weight)
             self._material_lengths.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
@@ -127,6 +143,25 @@ class PrintInformation(QObject):
         self.materialLengthsChanged.emit()
         self.materialWeightsChanged.emit()
         self.materialCostsChanged.emit()
+
+    def _onPreferencesChanged(self, preference):
+        if preference != "cura/material_settings":
+            return
+
+        self._calculateInformation()
+
+    def _onActiveMaterialChanged(self):
+        if self._active_material_container:
+            self._active_material_container.metaDataChanged.disconnect(self._onMaterialMetaDataChanged)
+
+        active_material_id = Application.getInstance().getMachineManager().activeMaterialId
+        self._active_material_container = ContainerRegistry.getInstance().findInstanceContainers(id=active_material_id)[0]
+
+        if self._active_material_container:
+            self._active_material_container.metaDataChanged.connect(self._onMaterialMetaDataChanged)
+
+    def _onMaterialMetaDataChanged(self):
+        self._calculateInformation()
 
     @pyqtSlot(str)
     def setJobName(self, name):
