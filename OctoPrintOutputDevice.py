@@ -34,7 +34,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._gcode = None
         self._auto_print = True
 
-        ##  Todo: Hardcoded value now; we should probably read this from the machine definition and octoprint.
+        ##  We start with a single extruder, but update this when we get data from octoprint
         self._num_extruders_set = False
         self._num_extruders = 1
 
@@ -485,10 +485,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
                     # Check for hotend temperatures
                     for index in range(0, self._num_extruders):
-                        temperature = json_data["temperature"]["tool%d" % index]["actual"]
+                        temperature = json_data["temperature"]["tool%d" % index]["actual"] if ("tool%d" % index) in json_data["temperature"] else 0
                         self._setHotendTemperature(index, temperature)
 
-                    bed_temperature = json_data["temperature"]["bed"]["actual"]
+                    bed_temperature = json_data["temperature"]["bed"]["actual"] if "bed" in json_data["temperature"] else 0
                     self._setBedTemperature(bed_temperature)
 
                     job_state = "offline"
