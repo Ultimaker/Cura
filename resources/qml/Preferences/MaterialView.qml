@@ -21,30 +21,13 @@ TabView
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
 
-    property double spoolLength:
-    {
-        if (properties.diameter == 0 || properties.density == 0 || getMaterialPreferenceValue(properties.guid, "spool_weight") == 0)
-        {
-            return 0;
-        }
-        var area = Math.PI * Math.pow(properties.diameter / 2, 2); // in mm2
-        var volume = (getMaterialPreferenceValue(properties.guid, "spool_weight") / properties.density); // in cm3
-        return volume / area; // in m
-    }
-
-    property real costPerMeter:
-    {
-        if (spoolLength == 0)
-        {
-            return 0;
-        }
-        return getMaterialPreferenceValue(properties.guid, "spool_cost") / spoolLength;
-    }
-
+    property double spoolLength: calculateSpoolLength()
+    property real costPerMeter: calculateCostPerMeter()
 
     Tab
     {
         title: catalog.i18nc("@title","Information")
+
         anchors
         {
             leftMargin: UM.Theme.getSize("default_margin").width
@@ -134,6 +117,7 @@ TabView
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
                 ReadOnlySpinBox
                 {
+                    id: densitySpinBox
                     width: base.secondColumnWidth
                     value: properties.density
                     decimals: 2
@@ -142,11 +126,13 @@ TabView
                     readOnly: !base.editingEnabled
 
                     onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
+                    onValueChanged: updateCostPerMeter()
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
                 ReadOnlySpinBox
                 {
+                    id: diameterSpinBox
                     width: base.secondColumnWidth
                     value: properties.diameter
                     decimals: 2
@@ -155,29 +141,36 @@ TabView
                     readOnly: !base.editingEnabled
 
                     onEditingFinished: base.setMetaDataEntry("properties/diameter", properties.diameter, value)
+                    onValueChanged: updateCostPerMeter()
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
                 SpinBox
                 {
+                    id: spoolCostSpinBox
                     width: base.secondColumnWidth
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
                     prefix: base.currency + " "
                     decimals: 2
                     maximumValue: 1000
+
                     onEditingFinished: base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
+                    onValueChanged: updateCostPerMeter()
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
                 SpinBox
                 {
+                    id: spoolWeightSpinBox
                     width: base.secondColumnWidth
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_weight")
                     suffix: " g"
                     stepSize: 100
                     decimals: 0
                     maximumValue: 10000
+
                     onEditingFinished: base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
+                    onValueChanged: updateCostPerMeter()
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
@@ -226,6 +219,12 @@ TabView
                     onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
                 }
             }
+            function updateCostPerMeter()
+            {
+                base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
+                base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
+            }
+
         }
     }
 
@@ -283,6 +282,44 @@ TabView
                 }
             }
         }
+    }
+
+    function calculateSpoolLength(diameter, density, spoolWeight)
+    {
+        if(!diameter)
+        {
+            diameter = properties.diameter;
+        }
+        if(!density)
+        {
+            density = properties.density;
+        }
+        if(!spoolWeight)
+        {
+            spoolWeight = base.getMaterialPreferenceValue(properties.guid, "spool_weight");
+        }
+
+        if (diameter == 0 || density == 0 || spoolWeight == 0)
+        {
+            return 0;
+        }
+        var area = Math.PI * Math.pow(diameter / 2, 2); // in mm2
+        var volume = (spoolWeight / density); // in cm3
+        return volume / area; // in m
+    }
+
+    function calculateCostPerMeter(spoolCost)
+    {
+        if(!spoolCost)
+        {
+            spoolCost = base.getMaterialPreferenceValue(properties.guid, "spool_cost");
+        }
+
+        if (spoolLength == 0)
+        {
+            return 0;
+        }
+        return spoolCost / spoolLength;
     }
 
     // Tiny convenience function to check if a value really changed before trying to set it.
