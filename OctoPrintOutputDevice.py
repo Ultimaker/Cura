@@ -504,8 +504,15 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                 elif http_status_code == 401:
                     self.setAcceptsCommands(False)
                     self.setConnectionText(i18n_catalog.i18nc("@info:status", "OctoPrint on {0} does not allow access to print").format(self._key))
+                elif http_status_code == 409:
+                    if self._connection_state == ConnectionState.connecting:
+                        self.setConnectionState(ConnectionState.connected)
+
+                    self.setAcceptsCommands(False)
+                    self.setConnectionText(i18n_catalog.i18nc("@info:status", "The printer connected to OctoPrint on {0} is not operational").format(self._key))
                 else:
-                    pass  # TODO: Handle errors
+                    self.setAcceptsCommands(False)
+                    Logger.log("w", "Received an unexpected returncode: %d", http_status_code)
 
             elif "job" in reply.url().toString():  # Status update from /job:
                 if http_status_code == 200:
