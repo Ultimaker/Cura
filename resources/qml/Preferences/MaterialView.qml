@@ -40,6 +40,7 @@ TabView
         {
             anchors.fill: parent
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            flickableItem.flickableDirection: Flickable.VerticalFlick
 
             Flow
             {
@@ -219,12 +220,12 @@ TabView
                     onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
                 }
             }
+
             function updateCostPerMeter()
             {
                 base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
                 base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
             }
-
         }
     }
 
