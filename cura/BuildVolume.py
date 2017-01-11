@@ -538,8 +538,11 @@ class BuildVolume(SceneNode):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
+            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value")
+            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value")
+            if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
+                prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+                prime_tower_y = prime_tower_y + machine_depth / 2
 
             prime_tower_area = Polygon([
                 [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
@@ -570,8 +573,17 @@ class BuildVolume(SceneNode):
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         for extruder in used_extruders:
-            prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-            prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
+            prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
+            prime_y = - extruder.getProperty("extruder_prime_pos_y", "value")
+
+            #Ignore extruder prime position if it is not set
+            if prime_x == 0 and prime_y == 0:
+                result[extruder.getId()] = []
+                continue
+
+            if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
+                prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+                prime_y = prime_x + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
             prime_polygon = prime_polygon.translate(prime_x, prime_y)
