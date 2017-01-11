@@ -1,15 +1,17 @@
 # Contributed by Seva Alekseyev <sevaa@nih.gov> with National Institutes of Health, 2016
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Mesh.MeshReader import MeshReader
-from UM.Mesh.MeshBuilder import MeshBuilder
+from math import pi, sin, cos, sqrt
+
+import numpy
+
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.SceneNode import SceneNode
-from UM.Job import Job
-from math import pi, sin, cos, sqrt
-import numpy
 
 try:
     import xml.etree.cElementTree as ET
