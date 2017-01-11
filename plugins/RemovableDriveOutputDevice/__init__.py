@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the AGPLv3 or higher.
 
-import platform
+from UM.Platform import Platform
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -18,15 +18,15 @@ def getMetaData():
     }
 
 def register(app):
-    if platform.system() == "Windows":
+    if Platform.isWindows():
         from . import WindowsRemovableDrivePlugin
         return { "output_device": WindowsRemovableDrivePlugin.WindowsRemovableDrivePlugin() }
-    elif platform.system() == "Darwin":
+    elif Platform.isOSX():
         from . import OSXRemovableDrivePlugin
         return { "output_device": OSXRemovableDrivePlugin.OSXRemovableDrivePlugin() }
-    elif platform.system() == "Linux":
+    elif Platform.isLinux():
         from . import LinuxRemovableDrivePlugin
         return { "output_device": LinuxRemovableDrivePlugin.LinuxRemovableDrivePlugin() }
     else:
-        Logger.log("e", "Unsupported system %s, no removable device hotplugging support available.", platform.system())
+        Logger.log("e", "Unsupported system, thus no removable device hotplugging support available.")
         return { }
