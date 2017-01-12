@@ -164,7 +164,7 @@ Column
         id: variantRow
 
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint
+        visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
@@ -261,7 +261,7 @@ Column
     {
         id: globalProfileRow
         height: UM.Theme.getSize("sidebar_setup").height
-        visible: !sidebar.monitoringPrint
+        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
 
         anchors
         {
