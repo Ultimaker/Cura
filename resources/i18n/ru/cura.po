@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-01-05 21:35+0300\n"
-"PO-Revision-Date: 2017-01-06 23:45+0300\n"
+"PO-Revision-Date: 2017-01-08 04:39+0300\n"
 "Last-Translator: Ruslan Popov <ruslan.popov@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -96,7 +96,7 @@ msgstr "Принимает G-Code и отправляет его через WiFi
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:36
 msgctxt "@item:inmenu"
 msgid "Doodle3D printing"
-msgstr " Печать Doodle3D"
+msgstr "Печать Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:37
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -106,7 +106,7 @@ msgstr "Печать через Doodle3D"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:38
 msgctxt "@info:tooltip"
 msgid "Print with "
-msgstr "Печать через"
+msgstr "Печать через "
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:49
 msgctxt "@title:menu"
@@ -179,7 +179,7 @@ msgctxt "@info:status"
 msgid ""
 "Unable to start a new job because the printer does not support usb printing."
 msgstr ""
-"Невозможно запустить новую задачу так как принтер не поддерживает печать "
+"Невозможно запустить новую задачу, так как принтер не поддерживает печать "
 "через USB."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDeviceManager.py:111
@@ -281,7 +281,7 @@ msgstr "Внешний носитель"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/__init__.py:13
 msgctxt "@info:whatsthis"
 msgid "Manages network connections to Ultimaker 3 printers"
-msgstr "Управляет сетевыми соединениями на принтерах Ultimaker"
+msgstr "Управляет сетевыми соединениями с принтерами Ultimaker 3"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:103
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -297,7 +297,7 @@ msgstr "Печать через сеть"
 msgctxt "@info:status"
 msgid ""
 "Access to the printer requested. Please approve the request on the printer"
-msgstr "Запрошен доступ к принтеру. Пожалуйста, подтвердите запрос к принтеру."
+msgstr "Запрошен доступ к принтеру. Пожалуйста, подтвердите запрос к принтеру"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:154
 msgctxt "@info:status"
@@ -392,7 +392,7 @@ msgid ""
 "Unable to start a new print job because the printer is busy. Please check "
 "the printer."
 msgstr ""
-"Невозможно запустить новую задачу на печать так как принтер занят. "
+"Невозможно запустить новую задачу на печать, так как принтер занят. "
 "Пожалуйста, проверьте принтер."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:525
@@ -431,8 +431,7 @@ msgstr "Недостаточно материала в катушке {0}."
 msgctxt "@label"
 msgid ""
 "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr ""
-"Разные ядра печати (Cura: {0}, Принтер: {1}) выбраны для экструдера {2}"
+msgstr "Разные PrintCore (Cura: {0}, Принтер: {1}) выбраны для экструдера {2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:588
 #, python-brace-format
@@ -447,7 +446,7 @@ msgid ""
 "Print core {0} is not properly calibrated. XY calibration needs to be "
 "performed on the printer."
 msgstr ""
-"Ядро печати {0} не откалибровано. Необходимо выполнить XY калибровку для "
+"PrintCore {0} не откалибровано. Необходимо выполнить XY калибровку для "
 "принтера."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:599
@@ -464,7 +463,7 @@ msgid ""
 "that are inserted in your printer."
 msgstr ""
 "Есть несовпадение между конфигурацией или калибровкой принтера и Cura. Для "
-"лучшего результата, всегда производите слайсинг для ядер и материала, "
+"лучшего результата, всегда производите слайсинг для PrintCore и материала, "
 "которые установлены в вашем принтере."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:606
@@ -1428,7 +1427,7 @@ msgstr "Активировать конфигурацию"
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:18
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
-msgstr "Плагин пост обработки"
+msgstr "Плагин пост-обработки"
 
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:49
 msgctxt "@label"
@@ -1749,7 +1748,7 @@ msgid ""
 "The firmware shipping with new printers works, but new versions tend to have "
 "more features and improvements."
 msgstr ""
-"Прошивка, поставляемая с новыми Ultimaker, работает, но обновления "
+"Поставляемая с новыми принтерами прошивка работоспособна, но обновления "
 "предоставляют больше возможностей и усовершенствований."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UpgradeFirmwareMachineAction.qml:62
@@ -1775,8 +1774,7 @@ msgstr "Выбор обновлённых частей"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:37
 msgctxt "@label"
 msgid "Please select any upgrades made to this Ultimaker Original"
-msgstr ""
-"Пожалуйста, укажите любые изменений, внесённый в оригинальный Ultimaker"
+msgstr "Пожалуйста, укажите любые изменения, внесённые в Ultimaker Original"
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:45
 msgctxt "@label"
@@ -1937,12 +1935,12 @@ msgstr "Пауза"
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:272
 msgctxt "@label:"
 msgid "Abort Print"
-msgstr "О печати"
+msgstr "Прервать печать"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:282
 msgctxt "@window:title"
 msgid "Abort print"
-msgstr "О печати"
+msgstr "Прекращение печати"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:284
 msgctxt "@label"
@@ -2187,7 +2185,7 @@ msgid ""
 "rather than millimeters. Should these models be scaled up?"
 msgstr ""
 "Модель может показаться очень маленькой, если её размерность задана в "
-"метрах, а не миллиметрах. Следует ли мастштабировать такие модели?"
+"метрах, а не миллиметрах. Следует ли масштабировать такие модели?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:287
 msgctxt "@option:check"
@@ -2216,7 +2214,7 @@ msgstr "Показывать сводку при сохранении файла
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:314
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
-msgstr "Показывать сводки при сохранении проекта"
+msgstr "Показывать сводку при сохранении проекта"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:332
 msgctxt "@label"
@@ -2271,7 +2269,7 @@ msgstr "Переименовать"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:146
 msgctxt "@label"
 msgid "Printer type:"
-msgstr "Имя принтера:"
+msgstr "Тип принтера:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:154
 msgctxt "@label"
@@ -2485,7 +2483,7 @@ msgstr "00ч 00мин"
 #: /home/ruben/Projects/Cura/resources/qml/JobSpecs.qml:212
 msgctxt "@label"
 msgid "%1 m / ~ %2 g"
-msgstr "%1 м / ~ %1 г"
+msgstr "%1 м / ~ %2 г"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:15
 msgctxt "@title:window"
@@ -2495,7 +2493,7 @@ msgstr "О Cura"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:56
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
-msgstr "Полное решение для 3D печати филаментом."
+msgstr "Полное решение для 3D печати методом наплавления материала."
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
 msgctxt "@info:credit"
@@ -2554,17 +2552,17 @@ msgstr "Формат обмена данными"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:124
 msgctxt "@label"
 msgid "Support library for scientific computing "
-msgstr "Поддерживает библиотеку для научных вычислений"
+msgstr "Вспомогательная библиотека для научных вычислений"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:125
 msgctxt "@label"
 msgid "Support library for faster math"
-msgstr "Поддерживает библиотеку для быстрых расчётов"
+msgstr "Вспомогательная библиотека для быстрых расчётов"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:126
 msgctxt "@label"
 msgid "Support library for handling STL files"
-msgstr "Поддерживает библиотеку для работы с STL файлами"
+msgstr "Вспомогательная библиотека для работы с STL файлами"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:127
 msgctxt "@label"
@@ -2624,7 +2622,7 @@ msgid ""
 "\n"
 "Click to make these settings visible."
 msgstr ""
-"Некоторые из скрытых параметров используют значения, отличающиеся о их "
+"Некоторые из скрытых параметров используют значения, отличающиеся от их "
 "вычисленных значений.\n"
 "\n"
 "Щёлкните. чтобы сделать эти параметры видимыми."
@@ -2921,7 +2919,7 @@ msgstr "Открыть файл..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:293
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open Project..."
-msgstr "Открыть проекта..."
+msgstr "Открыть проект..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:299
 msgctxt "@action:inmenu menubar:help"
