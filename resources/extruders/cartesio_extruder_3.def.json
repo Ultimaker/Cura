@@ -1,0 +1,25 @@
+{
+    "id": "cartesio_extruder_3",
+    "version": 2,
+    "name": "Extruder 3",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "cartesio",
+        "position": "3"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 3,
+            "maximum_value": "3"
+        },
+        "machine_nozzle_offset_x": { "default_value": 24.0 },
+        "machine_nozzle_offset_y": { "default_value": 60.0 },
+        "machine_extruder_start_code": {
+           "default_value": "\n;start extruder_3\nG1 X70 Y20 F9000\n"
+        },
+        "machine_extruder_end_code": {
+           "default_value": "\nM104 T0 S120\n;end extruder_3\n"
+        }
+    }
+}
