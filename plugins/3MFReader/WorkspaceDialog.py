@@ -1,7 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject, pyqtProperty, QCoreApplication
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
+from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application

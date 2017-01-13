@@ -1,7 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject, QVariant #For communicating data and events to Qt.
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant #For communicating data and events to Qt.
+from UM.FlameProfiler import pyqtSlot
 
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger

@@ -1,7 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.Qt.Duration import Duration

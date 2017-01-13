@@ -3144,8 +3144,8 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "machine_width",
+                    "minimum_value_warning": "machine_width / -2 if machine_center_is_zero else 0",
+                    "maximum_value_warning": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "enabled": false
@@ -3157,8 +3157,8 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "machine_depth",
+                    "minimum_value_warning": "machine_depth / -2 if machine_center_is_zero else 0",
+                    "maximum_value_warning": "machine_depth / 2 if machine_center_is_zero else machine_depth",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "enabled": false
@@ -3807,8 +3807,8 @@
                     "default_value": 200,
                     "minimum_value_warning": "-1000",
                     "maximum_value_warning": "1000",
-                    "maximum_value": "machine_width",
-                    "minimum_value": "resolveOrValue('prime_tower_size')",
+                    "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
+                    "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3824,6 +3824,8 @@
                     "maximum_value_warning": "1000",
                     "maximum_value": "machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "0",
+                    "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
+                    "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
