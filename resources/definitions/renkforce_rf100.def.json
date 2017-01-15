@@ -88,12 +88,6 @@
         "machine_width": {
             "default_value": 100
         },
-        "magic_mesh_surface_mode": {
-            "default_value": "surface"
-        },
-        "magic_spiralize": {
-            "default_value": true
-        },
         "material_bed_temperature": {
             "default_value": 70.0
         },
