@@ -98,9 +98,9 @@ SettingItem
 
             selectByMouse: true;
 
-            maximumLength: 10;
+            maximumLength: (definition.type == "str") ? 20 : 10;
 
-            validator: RegExpValidator { regExp: (definition.type == "int") ? /^-?[0-9]{0,10}$/ : /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } // definition.type property from parent loader used to disallow fractional number entry
+            validator: RegExpValidator { regExp: (definition.type == "str") ? /^.{0,20}$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } // definition.type property from parent loader used to disallow fractional number entry
 
             Binding
             {
