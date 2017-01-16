@@ -72,7 +72,7 @@ class XmlMaterialProfile(InstanceContainer):
         super().setDirty(dirty)
         base_file = self.getMetaDataEntry("base_file", None)
         if base_file is not None and base_file != self._id:
-            containers = UM.Settings.ContainerRegistry.getInstance().findContainers(id=base_file)
+            containers = ContainerRegistry.getInstance().findContainers(id=base_file)
             if containers:
                 base_container = containers[0]
                 if not base_container.isReadOnly():
@@ -479,7 +479,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material_id = self.id + "_" + machine_id
 
                     # It could be that we are overwriting, so check if the ID already exists.
-                    materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=new_material_id)
+                    materials = ContainerRegistry.getInstance().findInstanceContainers(id=new_material_id)
                     if materials:
                         new_material = materials[0]
                         new_material.clearData()
@@ -533,7 +533,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                     # It could be that we are overwriting, so check if the ID already exists.
                     new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
-                    materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=new_hotend_id)
+                    materials = ContainerRegistry.getInstance().findInstanceContainers(id=new_hotend_id)
                     if materials:
                         new_hotend_material = materials[0]
                         new_hotend_material.clearData()

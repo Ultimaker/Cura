@@ -6,7 +6,7 @@ import os
 import os.path
 import io
 
-from UM import Resources
+from UM.Resources import Resources
 from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 
 class VersionUpgrade22to24(VersionUpgrade):
