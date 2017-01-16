@@ -1089,15 +1089,8 @@
                 "infill_angles":
                 {
                     "label": "Infill Line Directions",
-                    "description": "The line directions to use when the infill pattern is lines or zig zag. Orthogonal directions are 45 and 135 degrees, Uniform directions are 45, 90, 135 and 180, Stronger X directions are 45, 90, 135 and 90 again and Stronger Y directions are 45, 0, 135 and 0 again.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "45,135": "Orthogonal",
-                        "45,90,135,180": "Uniform",
-                        "45,90,135,90": "Stronger X",
-                        "45,0,135,0": "Stronger Y"
-                    },
+                    "description": "A comma separated list of line directions to use when the infill pattern is lines or zig zag. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. Default directions are 45 and 135 degrees.",
+                    "type": "str",
                     "default_value": "45,135",
                     "enabled": "infill_pattern == 'lines' or infill_pattern == 'zigzag'",
                     "settable_per_mesh": true
