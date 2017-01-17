@@ -1,3 +1,128 @@
+[2.4.0]
+*Project saving & opening
+You can now save your build plate configuration - with all your active machine’s meshes and settings. When you reopen the project file, you’ll find that the build plate configuration and all settings will be exactly as you last left them when you saved the project.
+
+*Setting search
+You can now search the custom settings directly from the side panel, which means you can easily locate the setting you need to tweak. Thanks to community member Aldo Hoeben & LulzBot for this feature.
+
+*Editing start g-code and end g-code
+Aldo Hoeben also added this feature, enabling you to alter both start and end code g-code settings for single extrusion machines.
+
+*Multiply object function
+By right-clicking on an object, you can multiply it by a variable amount, rather than duplicating multiple times. Thanks again to Aldo Hoeben for this feature.
+
+*Ultimaker 3 single extrusion prints
+Dual extrusion printers now allow for single extrusion prints in a larger printable area.
+
+*Streaming printer monitor view
+Ultimaker 3’s camera views no longer only show snapshots. They now show a live stream.
+
+*Explain why slicing is disabled
+When slicing is blocked by settings with error values, a message now appears, clearly indicating which settings need to be changed.
+
+*Ultimaker 3 print profiles
+The initial and final printing temperatures reduce the amount of oozing during PLA-PLA, PLA-PVA and Nylon-PVA prints. This means printing a prime tower is now optional (except for CPE and ABS at the moment). The new Ultimaker 3 printing profiles ensure increased reliability and shorter print time.
+
+*Initial Layer Printing Temperature
+Initial and final printing temperature settings have been tuned for higher quality results.
+
+*Printing temperature of the materials
+The printing temperature of the materials in the material profiles is now the same as the printing temperature for the Normal Quality profile.
+
+*Improved PLA-PVA layer adhesion
+The PVA jerk and acceleration have been optimized to improve the layer adhesion between PVA and PLA.
+
+*Default build plate adhesion type for Nylon
+The default build plate adhesion type for Nylon prints has been changed from raft to brim.
+
+*Support Interface Thickness
+The Support Roof Thickness is now 0.8 mm and PVA support infill has been slightly decreased to lower the printing time.
+
+*Ultimaker 2+ PC prints
+In the polycarbonate profiles, the raft settings for the 0.25 mm and 0.4 mm nozzles are tweaked for less warping.
+
+*Hollow prime tower
+Print the prime tower hollow to minimize material use while maintaining stability. Wiping the oozed material on the prime tower is now done from the inside, which means the excess material is contained within the prime tower.
+
+*Precooling and prewarming
+Printing now starts at a lower temperature, before increasing swiftly to the normal printing temperature. Cooling also starts earlier than the last extrusion (with that print core). This minimizes the material’s heat absorption, which decreases the amount of degradation of the PVA material. This reduces the risk of clogging your nozzles.
+
+*Remove Mesh Intersection
+You are now able to turn off resolving of overlapping meshes. Models can now overlap, so you can perform build plate color mixing, by placing meshes over one another and lowering their flow.
+
+*Alternate Mesh Removal
+For areas where two models overlap, let each layer of the overlapping volume alternate (depending on which object the overlapping area of that layer belongs to). This improves the bonding between dual color models and allows for more controlled build plate color mixing.
+
+*Hollow Object
+Remove the infill from a mesh and treat internal cavities as overhangs, so as to create support in the model’s interior. This experimental setting greatly reduces the amount of material needed on the inside of the print.
+
+*Fill Gaps Between Walls
+Fill up small gaps between consecutive walls, making thin pieces in your model dense, rather than hollow. This feature makes the thin pieces stronger.
+
+*Cubic subdivision infill
+This experimental new infill pattern is similar to cubic infill, but generates bigger cubes farther inside the mesh. This greatly reduces print times and material use, while maintaining structural integrity. Thanks to community members Martin Boerwinckle and Nicholas Seward for this feature.
+
+*Concentric 3D infill
+This new infill pattern is similar to concentric infill, but touches the shell every X layers, creating better support for the top layers.
+
+* Printing Temperature Initial Layer
+Nozzle temperature to be used during the first layer.
+
+*Build Plate Temperature Initial Layer
+Bed temperature to be used during the first layer.
+
+*Initial Fan Speed
+Fan speed to be used during the first layer.
+
+*Retract at Layer Change
+Retract each time the printer progresses to the next layer.
+
+*Outer Wall Wipe Distance
+Wipe the nozzle after printing the outer wall.
+
+*Set X-Y coordinate of z-seam
+Select where to place the Z seam.
+
+*Start Layers with the Same Part
+Start each layer with the part closest to a given location.
+
+*Turn off nozzle after last use
+Turn off the nozzle after its last use, while other nozzles are still in use.
+
+*Option for no build plate adhesion
+Select not to print any build plate adhesion helper parts.
+
+*Anti-overhang and support meshes
+Use a mesh to specify a volume within which to classify nothing as overhang for support or specify a volume within which to print support.
+
+*Delta printer support
+This release adds support for printers with elliptic buildplates. This feature has not been extensively tested so please let us know if it works or get involved in improving it.
+
+*bugfixes
+The user is now notified when a new version of Cura is available.
+When searching in the setting visibility preferences, the category for each setting is always displayed.
+3MF files are now saved and loaded correctly.
+Dragging a profile onto Cura now loads it automatically.
+You can now view which print cores and materials are currently in your Ultimaker 3, via the machine manager.
+You can now add the heated bed upgrade etc. from the machine manager.
+Print core and material is now arranged under extruder tabs.
+Cura now remembers all printers and profiles when you open just after closing it.
+You can now duplicate the standard profiles.
+Layer view now doesn’t use as much RAM.
+It’s now quicker to change the value of the Support Enable setting.
+Changing a setting updates all dependent settings more quickly.
+Having errors in your setting values now always blocks slicing.
+Selecting a model with any active tool no longer causes a reslice.
+The prime poop now introduces a separate area where you cannot print.
+Support Extruder setting is now near the support settings.
+Build Plate Adhesion Extruder setting is now near the build plate adhesion settings.
+Z hop settings have been moved to the Travel category.
+Inactive nozzle wiping on the prime tower is re-enabled.
+There are no more unnecessary retractions in support.
+Each layer now has less extruder switches than the machine has extruders.
+Concentric infill doesn’t generate the first infill perimeter next to the walls.
+Extruder priming now always happens on the first layer.
+
 [2.3.1]
 *Layer Height in Profile Selection
 Added the layer height to the profile selection menu.

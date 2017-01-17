@@ -230,6 +230,10 @@ Item {
                     }
 
                     // Setting does have a limit_to_extruder property, so use that one instead.
+                    if (definition.key === undefined) {
+                        // Observed when loading workspace, probably when SettingItems are removed.
+                        return false;
+                    }
                     return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, globalPropertyProvider.properties.limit_to_extruder).indexOf(definition.key) >= 0;
                 }
 

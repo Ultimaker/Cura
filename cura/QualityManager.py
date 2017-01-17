@@ -224,6 +224,9 @@ class QualityManager:
             material_ids = set()
             for material_instance in material_containers:
                 if material_instance is not None:
+                    # Add the parent material too.
+                    for basic_material in self._getBasicMaterials(material_instance):
+                        material_ids.add(basic_material.getId())
                     material_ids.add(material_instance.getId())
 
         containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)

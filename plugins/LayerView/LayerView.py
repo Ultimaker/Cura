@@ -119,7 +119,7 @@ class LayerView(View):
                 continue
 
             if not node.render(renderer):
-                if node.getMeshData() and node.isVisible():
+                if (node.getMeshData()) and node.isVisible():
                     renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
     def setLayer(self, value):

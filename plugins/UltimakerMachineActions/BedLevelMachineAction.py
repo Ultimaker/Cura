@@ -1,7 +1,7 @@
 from cura.MachineAction import MachineAction
 from cura.PrinterOutputDevice import PrinterOutputDevice
 
-from PyQt5.QtCore import pyqtSlot
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.i18n import i18nCatalog

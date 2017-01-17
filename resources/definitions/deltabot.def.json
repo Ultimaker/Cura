@@ -30,6 +30,7 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_depth": { "default_value": 150 },
         "machine_width": { "default_value": 150 },
-        "machine_name": { "default_value": "DeltaBot style" }
+        "machine_name": { "default_value": "DeltaBot style" },
+        "machine_shape": { "default_value": "elliptic"}
     }
 }

@@ -16,6 +16,7 @@ Rectangle
 
     property int currentModeIndex;
     property bool monitoringPrint: false
+    property bool hideSettings: PrintInformation.preSliced
     Connections
     {
         target: Printer
@@ -114,9 +115,27 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 style: ButtonStyle {
                     background: Rectangle {
-                        color: control.hovered ? UM.Theme.getColor("button_hover") :
-                               control.pressed ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("sidebar_header_bar")
+                        color: {
+                            if(control.pressed) {
+                                return UM.Theme.getColor("sidebar_header_active");
+                            } else if(control.hovered) {
+                                return UM.Theme.getColor("sidebar_header_hover");
+                            } else {
+                                return UM.Theme.getColor("sidebar_header_bar");
+                            }
+                        }
                         Behavior on color { ColorAnimation { duration: 50; } }
+
+                        Rectangle {
+                            id: underline;
+
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            height: UM.Theme.getSize("sidebar_header_highlight").height
+                            color: UM.Theme.getColor("sidebar_header_highlight_hover")
+                            visible: control.hovered || control.pressed
+                        }
 
                         UM.RecolorImage {
                             id: downArrow
@@ -252,7 +271,7 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        visible: !monitoringPrint
+        visible: !monitoringPrint && !hideSettings
         height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
@@ -270,7 +289,7 @@ Rectangle
 
     Label {
         id: settingsModeLabel
-        text: catalog.i18nc("@label:listbox", "Print Setup");
+        text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
@@ -290,7 +309,7 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        visible: !monitoringPrint
+        visible: !monitoringPrint && !hideSettings
         Component{
             id: wizardDelegate
             Button {
@@ -366,7 +385,7 @@ Rectangle
         height: settingsModeSelection.height
         width: visible ? height : 0
 
-        visible: !monitoringPrint && modesListModel.get(base.currentModeIndex) != undefined && modesListModel.get(base.currentModeIndex).showFilterButton
+        visible: !monitoringPrint && !hideSettings && modesListModel.get(base.currentModeIndex) != undefined && modesListModel.get(base.currentModeIndex).showFilterButton
         opacity: visible ? 1 : 0
 
         onClicked: sidebarContents.currentItem.toggleFilterField()
@@ -414,7 +433,7 @@ Rectangle
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right
-        visible: !monitoringPrint
+        visible: !monitoringPrint && !hideSettings
 
         delegate: StackViewDelegate
         {

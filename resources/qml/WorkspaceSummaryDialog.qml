@@ -29,7 +29,6 @@ UM.Dialog
 
     onClosing:
     {
-        UM.Preferences.setValue("cura/asked_dialog_on_project_save", true)
         UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
     }
 
@@ -37,16 +36,22 @@ UM.Dialog
     {
         if(visible)
         {
-            if (UM.Preferences.getValue("cura/asked_dialog_on_project_save"))
-            {
-                dontShowAgain = true
-            } else { dontShowAgain = UM.Preferences.setValue("cura/dialog_on_project_save")}
+            dontShowAgain = !UM.Preferences.getValue("cura/dialog_on_project_save")
         }
     }
 
     Item
     {
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        anchors.topMargin: 20
+        anchors.bottomMargin: 20
+        anchors.leftMargin:20
+        anchors.rightMargin: 20
+
         UM.SettingDefinitionsModel
         {
             id: definitionsModel
@@ -91,7 +96,21 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Printer settings")
                 font.bold: true
             }
-
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Type")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: Cura.MachineManager.activeDefinitionName
+                    width: parent.width / 3
+                }
+            }
             Row
             {
                 width: parent.width
@@ -106,8 +125,42 @@ UM.Dialog
                     text: Cura.MachineManager.activeMachineName
                     width: parent.width / 3
                 }
-
             }
+
+            Repeater
+            {
+                model: Cura.MachineManager.activeMaterialNames
+                delegate: Column
+                {
+                    Item // Spacer
+                    {
+                        height: spacerHeight
+                        width: height
+                    }
+                    Label
+                    {
+                        text: catalog.i18nc("@action:label", "Extruder %1").arg(index+1)
+                    }
+                    height: childrenRect.height
+                    width: parent.width
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
+                            width: parent.width / 3
+                        }
+                        Label
+                        {
+                            text: Cura.MachineManager.activeVariantNames[index] + ", " + modelData
+                            width: parent.width / 3
+                        }
+                    }
+                }
+            }
+
             Item // Spacer
             {
                 height: spacerHeight
@@ -119,7 +172,21 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Profile settings")
                 font.bold: true
             }
-
+            Row
+            {
+                width: parent.width
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Not in profile")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
+                    width: parent.width / 3
+                }
+                visible: Cura.MachineManager.numUserSettings
+            }
             Row
             {
                 width: parent.width
@@ -136,38 +203,6 @@ UM.Dialog
                 }
 
             }
-            Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Material settings")
-                font.bold: true
-            }
-
-            Repeater
-            {
-                model: Cura.MachineManager.activeMaterialNames
-                delegate: Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Name")
-                        width: parent.width / 3
-                    }
-                    Label
-                    {
-                        text: modelData
-                        width: parent.width / 3
-                    }
-                }
-            }
-
 
             Item // Spacer
             {
@@ -202,22 +237,34 @@ UM.Dialog
                 checked: dontShowAgain
             }
         }
-    }
-    rightButtons: [
-        Button
-        {
-            id: cancel_button
-            text: catalog.i18nc("@action:button","Cancel");
-            enabled: true
-            onClicked: close()
-        },
+
+
         Button
         {
             id: ok_button
             text: catalog.i18nc("@action:button","Save");
             enabled: true
             onClicked: {
-                close(); yes() }
+                close()
+                yes()
+            }
+            anchors.bottomMargin: - 0.5 * height
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
         }
-    ]
+
+        Button
+        {
+            id: cancel_button
+            text: catalog.i18nc("@action:button","Cancel");
+            enabled: true
+            onClicked: close()
+
+            anchors.bottom: parent.bottom
+            anchors.right: ok_button.left
+            anchors.bottomMargin: - 0.5 * height
+            anchors.rightMargin:2
+
+        }
+    }
 }

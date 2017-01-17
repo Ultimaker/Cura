@@ -253,7 +253,7 @@ class StartSliceJob(Job):
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
             setting_message.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
+            if key == "machine_start_gcode" or key == "machine_end_gcode" or key == "machine_extruder_start_code" or key == "machine_extruder_end_code": #If it's a g-code message, use special formatting.
                 setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
                 setting_message.value = str(value).encode("utf-8")

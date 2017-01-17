@@ -1,7 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject, QVariant #For communicating data and events to Qt.
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant #For communicating data and events to Qt.
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application #To get the global container stack to find the current machine.
 from UM.Logger import Logger
@@ -355,8 +356,11 @@ class ExtruderManager(QObject):
         #The platform adhesion extruder. Not used if using none.
         if global_stack.getProperty("adhesion_type", "value") != "none":
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("adhesion_extruder_nr", "value"))])
-
-        return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
+        try:
+            return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
+        except IndexError:  # One or more of the extruders was not found.
+            Logger.log("e", "Unable to find one or more of the extruders in %s", used_extruder_stack_ids)
+            return []
 
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #
@@ -395,7 +399,12 @@ class ExtruderManager(QObject):
     #   \return \type{List[ContainerStack]} a list of
     def getActiveExtruderStacks(self):
         global_stack = Application.getInstance().getGlobalContainerStack()
-        return list(self._extruder_trains[global_stack.getId()].values()) if global_stack else []
+
+        result = []
+        if global_stack:
+            for extruder in sorted(self._extruder_trains[global_stack.getId()]):
+                result.append(self._extruder_trains[global_stack.getId()][extruder])
+        return result
 
     def __globalContainerStackChanged(self) -> None:
         self._addCurrentMachineExtruders()

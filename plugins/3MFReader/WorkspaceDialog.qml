@@ -16,9 +16,9 @@ UM.Dialog
     minimumWidth: 550
     maximumWidth: 550
 
-    height: 350
-    minimumHeight: 350
-    maximumHeight: 350
+    height: 400
+    minimumHeight: 400
+    maximumHeight: 400
     property int comboboxHeight: 15
     property int spacerHeight: 10
     onClosing: manager.notifyClosed()
@@ -28,12 +28,20 @@ UM.Dialog
         {
             machineResolveComboBox.currentIndex = 0
             qualityChangesResolveComboBox.currentIndex = 0
-            materialConflictComboBox.currentIndex = 0
+            materialResolveComboBox.currentIndex = 0
         }
     }
     Item
     {
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        anchors.topMargin: 20
+        anchors.bottomMargin: 20
+        anchors.leftMargin:20
+        anchors.rightMargin: 20
 
         UM.I18nCatalog
         {
@@ -77,27 +85,22 @@ UM.Dialog
                 width: height
             }
 
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Printer settings")
-                font.bold: true
-            }
-
             Row
             {
-                width: parent.width
                 height: childrenRect.height
+                width: parent.width
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Name")
-                    width: parent.width / 3
+                    text: catalog.i18nc("@action:label", "Printer settings")
+                    font.bold: true
+                    width: parent.width /3
                 }
-                Label
+                Item
                 {
-                    text: manager.machineName
+                    // spacer
+                    height: spacerHeight
                     width: parent.width / 3
                 }
-
                 UM.TooltipArea
                 {
                     id: machineResolveTooltip
@@ -118,16 +121,20 @@ UM.Dialog
                     }
                 }
             }
-            Item // Spacer
+            Row
             {
-                height: spacerHeight
-                width: height
-            }
-
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Profile settings")
-                font.bold: true
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Type")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.machineType
+                    width: parent.width / 3
+                }
             }
 
             Row
@@ -141,10 +148,32 @@ UM.Dialog
                 }
                 Label
                 {
-                    text: manager.qualityName
+                    text: manager.machineName
                     width: parent.width / 3
                 }
+            }
 
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+            Row
+            {
+                height: childrenRect.height
+                width: parent.width
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Profile settings")
+                    font.bold: true
+                    width: parent.width / 3
+                }
+                Item
+                {
+                    // spacer
+                    height: spacerHeight
+                    width: parent.width / 3
+                }
                 UM.TooltipArea
                 {
                     id: qualityChangesResolveTooltip
@@ -171,12 +200,43 @@ UM.Dialog
                 height: childrenRect.height
                 Label
                 {
+                    text: catalog.i18nc("@action:label", "Name")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: manager.qualityName
+                    width: parent.width / 3
+                }
+            }
+            Row
+            {
+                width: parent.width
+                height: manager.numUserSettings != 0 ? childrenRect.height : 0
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Not in profile")
+                    width: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
+                    width: parent.width / 3
+                }
+                visible: manager.numUserSettings != 0
+            }
+            Row
+            {
+                width: parent.width
+                height: manager.numSettingsOverridenByQualityChanges != 0 ? childrenRect.height : 0
+                Label
+                {
                     text: catalog.i18nc("@action:label", "Derivative from")
                     width: parent.width / 3
                 }
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "%1, %2 override(s)" ).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                    text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                     width: parent.width / 3
                 }
                 visible: manager.numSettingsOverridenByQualityChanges != 0
@@ -186,11 +246,41 @@ UM.Dialog
                 height: spacerHeight
                 width: height
             }
-
-            Label
+            Row
             {
-                text: catalog.i18nc("@action:label", "Material settings")
-                font.bold: true
+                height: childrenRect.height
+                width: parent.width
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Material settings")
+                    font.bold: true
+                    width: parent.width / 3
+                }
+                Item
+                {
+                    // spacer
+                    height: spacerHeight
+                    width: parent.width / 3
+                }
+                UM.TooltipArea
+                {
+                    id: materialResolveTooltip
+                    width: parent.width / 3
+                    height: visible ? comboboxHeight : 0
+                    visible: manager.materialConflict
+                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
+                    ComboBox
+                    {
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        id: materialResolveComboBox
+                        width: parent.width
+                        onActivated:
+                        {
+                            manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
+                        }
+                    }
+                }
             }
 
             Repeater
@@ -213,37 +303,6 @@ UM.Dialog
                 }
             }
 
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                visible: manager.materialConflict
-                Item
-                {
-                    width: parent.width / 3 * 2
-                    height: comboboxHeight
-                }
-
-                UM.TooltipArea
-                {
-                    id: materialResolveTooltip
-                    width: parent.width / 3
-                    height: visible ? comboboxHeight : 0
-
-                    text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
-                    ComboBox
-                    {
-                        model: resolveStrategiesModel
-                        textRole: "label"
-                        id: materialResolveComboBox
-                        width: parent.width
-                        onActivated:
-                        {
-                            manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
-                        }
-                    }
-                }
-            }
             Item // Spacer
             {
                 height: spacerHeight
@@ -290,30 +349,47 @@ UM.Dialog
                 height: spacerHeight
                 width: height
             }
-            Label
+            Row
             {
-                text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
-                visible: manager.hasObjectsOnPlate
-                color: "red"
                 width: parent.width
-                wrapMode: Text.Wrap
+                height: childrenRect.height
+                visible: manager.hasObjectsOnPlate
+                UM.RecolorImage
+                {
+                    width: warningLabel.height
+                    height: width
+
+                    source: UM.Theme.getIcon("notice")
+                    color: "black"
+
+                }
+                Label
+                {
+                    id: warningLabel
+                    text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the buildplate")
+                    wrapMode: Text.Wrap
+                }
             }
         }
-    }
-    rightButtons: [
-        Button
-        {
-            id: ok_button
-            text: catalog.i18nc("@action:button","OK");
-            onClicked: { manager.onOkButtonClicked() }
-            enabled: true
-        },
         Button
         {
             id: cancel_button
             text: catalog.i18nc("@action:button","Cancel");
             onClicked: { manager.onCancelButtonClicked() }
             enabled: true
+            anchors.bottom: parent.bottom
+            anchors.right: ok_button.left
+            anchors.bottomMargin: - 0.5 * height
+            anchors.rightMargin:2
         }
-    ]
+         Button
+        {
+            id: ok_button
+            text: catalog.i18nc("@action:button","Open");
+            onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
+            anchors.bottomMargin: - 0.5 * height
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+        }
+    }
 }

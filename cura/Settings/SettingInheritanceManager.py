@@ -1,7 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Logger import Logger
 
@@ -36,7 +37,8 @@ class SettingInheritanceManager(QObject):
     def getChildrenKeysWithOverride(self, key):
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
         if not definitions:
-            return
+            Logger.log("w", "Could not find definition for key [%s]", key)
+            return []
         result = []
         for key in definitions[0].getAllKeys():
             if key in self._settings_with_inheritance_warning:
@@ -55,7 +57,8 @@ class SettingInheritanceManager(QObject):
 
         definitions = self._global_container_stack.getBottom().findDefinitions(key=key)
         if not definitions:
-            return
+            Logger.log("w", "Could not find definition for key [%s] (2)", key)
+            return []
         result = []
         for key in definitions[0].getAllKeys():
             if self._settingIsOverwritingInheritance(key, extruder):

@@ -1,7 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
 from UM.Qt.Duration import Duration
@@ -12,6 +13,9 @@ from cura.Settings.ExtruderManager import ExtruderManager
 import math
 import os.path
 import unicodedata
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 ##  A class for processing and calculating minimum, current and maximum print time as well as managing the job name
 #
@@ -49,6 +53,8 @@ class PrintInformation(QObject):
         self._material_lengths = []
         self._material_weights = []
 
+        self._pre_sliced = False
+
         self._backend = Application.getInstance().getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
@@ -60,6 +66,16 @@ class PrintInformation(QObject):
         Application.getInstance().fileLoaded.connect(self.setJobName)
 
     currentPrintTimeChanged = pyqtSignal()
+
+    preSlicedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=preSlicedChanged)
+    def preSliced(self):
+        return self._pre_sliced
+
+    def setPreSliced(self, pre_sliced):
+        self._pre_sliced = pre_sliced
+        self.preSlicedChanged.emit()
 
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
@@ -122,7 +138,9 @@ class PrintInformation(QObject):
     def createJobName(self, base_name):
         base_name = self._stripAccents(base_name)
         self._setAbbreviatedMachineName()
-        if Preferences.getInstance().getValue("cura/jobname_prefix"):
+        if self._pre_sliced:
+            return catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
+        elif Preferences.getInstance().getValue("cura/jobname_prefix"):
             return self._abbr_machine + "_" + base_name
         else:
             return base_name

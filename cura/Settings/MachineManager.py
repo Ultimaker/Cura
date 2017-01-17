@@ -2,7 +2,8 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 from typing import Union
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 from UM import Util
 
@@ -419,6 +420,17 @@ class MachineManager(QObject):
 
         return False
 
+    @pyqtProperty(int, notify = activeStackValueChanged)
+    def numUserSettings(self):
+        if not self._global_container_stack:
+            return 0
+        num_user_settings = 0
+        num_user_settings += len(self._global_container_stack.getTop().findInstances())
+        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+        for stack in stacks:
+            num_user_settings += len(stack.getTop().findInstances())
+        return num_user_settings
+
     ##  Delete a user setting from the global stack and all extruder stacks.
     #   \param key \type{str} the name of the key to delete
     @pyqtSlot(str)
@@ -493,6 +505,17 @@ class MachineManager(QObject):
                 return material.getName()
 
         return ""
+
+    @pyqtProperty("QVariantList", notify=activeVariantChanged)
+    def activeVariantNames(self):
+        result = []
+        if ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks() is not None:
+            for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+                variant_container = stack.findContainer({"type": "variant"})
+                if variant_container and variant_container != self._empty_variant_container:
+                    result.append(variant_container.getName())
+
+        return result
 
     @pyqtProperty("QVariantList", notify = activeMaterialChanged)
     def activeMaterialNames(self):
@@ -823,6 +846,8 @@ class MachineManager(QObject):
         for stack in stacks:
             material = stack.findContainer(type="material")
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+            if not quality: #No quality profile is found for this quality type.
+                quality = self._empty_quality_container
             result.append({"stack": stack, "quality": quality, "quality_changes": empty_quality_changes})
 
         if extruder_stacks:
@@ -876,6 +901,8 @@ class MachineManager(QObject):
 
             material = stack.findContainer(type="material")
             quality = quality_manager.findQualityByQualityType(quality_type, global_machine_definition, [material])
+            if not quality: #No quality profile found for this quality type.
+                quality = self._empty_quality_container
 
             result.append({"stack": stack, "quality": quality, "quality_changes": quality_changes})
 
@@ -972,6 +999,15 @@ class MachineManager(QObject):
             definition = self._global_container_stack.getBottom()
             if definition:
                 return definition.id
+
+        return ""
+
+    @pyqtProperty(str, notify=globalContainerChanged)
+    def activeDefinitionName(self):
+        if self._global_container_stack:
+            definition = self._global_container_stack.getBottom()
+            if definition:
+                return definition.getName()
 
         return ""
 

@@ -12,6 +12,8 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
@@ -64,6 +66,8 @@ class CuraEngineBackend(Backend):
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
+
+        self._pause_slicing = False
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
@@ -145,6 +149,9 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        Logger.log("d", "Starting slice job...")
+        if self._pause_slicing:
+            return
         self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack:  # We shouldn't be slicing.
             # try again in a short time
@@ -177,6 +184,17 @@ class CuraEngineBackend(Backend):
         self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
+
+
+    def pauseSlicing(self):
+        self.close()
+        self._pause_slicing = True
+        self.backendStateChange.emit(BackendState.Disabled)
+
+    def continueSlicing(self):
+        if self._pause_slicing:
+            self._pause_slicing = False
+            self.backendStateChange.emit(BackendState.NotStarted)
 
     ##  Terminate the engine process.
     def _terminate(self):
@@ -292,6 +310,19 @@ class CuraEngineBackend(Backend):
 
         if source is self._scene.getRoot():
             return
+
+        should_pause = False
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if node.callDecoration("isBlockSlicing"):
+                should_pause = True
+            gcode_list = node.callDecoration("getGCodeList")
+            if gcode_list is not None:
+                self._scene.gcode_list = gcode_list
+
+        if should_pause:
+            self.pauseSlicing()
+        else:
+            self.continueSlicing()
 
         if source.getMeshData() is None:
             return

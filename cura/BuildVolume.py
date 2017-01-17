@@ -223,7 +223,7 @@ class BuildVolume(SceneNode):
             scale_matrix = Matrix()
             if self._width != 0:
                 # Scale circular meshes by aspect ratio if width != height
-                aspect = self._height / self._width
+                aspect = self._depth / self._width
                 scale_matrix.compose(scale = Vector(1, 1, aspect))
             mb = MeshBuilder()
             mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self.VolumeOutlineColor)
@@ -283,6 +283,9 @@ class BuildVolume(SceneNode):
             color = Color(0.0, 0.0, 0.0, 0.15)
             for polygon in self._disallowed_areas:
                 points = polygon.getPoints()
+                if len(points) == 0:
+                    continue
+
                 first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
                 previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
                 for point in points:
@@ -533,8 +536,11 @@ class BuildVolume(SceneNode):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
-            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value") - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value") + machine_depth / 2
+            prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value")
+            prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value")
+            if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
+                prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+                prime_tower_y = prime_tower_y + machine_depth / 2
 
             prime_tower_area = Polygon([
                 [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
@@ -565,8 +571,17 @@ class BuildVolume(SceneNode):
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         for extruder in used_extruders:
-            prime_x = extruder.getProperty("extruder_prime_pos_x", "value") - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-            prime_y = machine_depth / 2 - extruder.getProperty("extruder_prime_pos_y", "value")
+            prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
+            prime_y = - extruder.getProperty("extruder_prime_pos_y", "value")
+
+            #Ignore extruder prime position if it is not set
+            if prime_x == 0 and prime_y == 0:
+                result[extruder.getId()] = []
+                continue
+
+            if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
+                prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+                prime_y = prime_x + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
             prime_polygon = prime_polygon.translate(prime_x, prime_y)
@@ -716,7 +731,12 @@ class BuildVolume(SceneNode):
     #
     #   \return A sequence of setting values, one for each extruder.
     def _getSettingFromAllExtruders(self, setting_key, property = "value"):
-        return ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+        all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, property)
+        all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
+        for i in range(len(all_values)):
+            if not all_values[i] and (all_types[i] == "int" or all_types[i] == "float"):
+                all_values[i] = 0
+        return all_values
 
     ##  Private convenience function to get a setting from the support infill
     #   extruder.
@@ -740,16 +760,21 @@ class BuildVolume(SceneNode):
         multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         if not multi_extrusion:
-            return self._global_container_stack.getProperty(setting_key, property)
+            stack = self._global_container_stack
+        else:
+            extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
 
-        extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
+            if extruder_index == "-1":  # If extruder index is -1 use global instead
+                stack = self._global_container_stack
+            else:
+                extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
+                stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
 
-        if extruder_index == "-1":  # If extruder index is -1 use global instead
-            return self._global_container_stack.getProperty(setting_key, property)
-
-        extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-        stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
-        return stack.getProperty(setting_key, property)
+        value = stack.getProperty(setting_key, property)
+        setting_type = stack.getProperty(setting_key, "type")
+        if not value and (setting_type == "int" or setting_type == "float"):
+            return 0
+        return value
 
     ##  Convenience function to calculate the disallowed radius around the edge.
     #

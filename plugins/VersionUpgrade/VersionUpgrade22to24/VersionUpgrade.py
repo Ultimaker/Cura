@@ -8,6 +8,7 @@ import io
 
 from UM.Resources import Resources
 from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
+import UM.VersionUpgrade
 
 class VersionUpgrade22to24(VersionUpgrade):
 
@@ -19,6 +20,10 @@ class VersionUpgrade22to24(VersionUpgrade):
 
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
+        if config.get("metadata", "type") == "definition_changes":
+            # This is not a container stack, don't upgrade it here
+            return
+
         config.set("general", "version", "3")
 
         container_list = []
@@ -44,9 +49,11 @@ class VersionUpgrade22to24(VersionUpgrade):
                 # Change the name of variant and insert empty_variant into the stack.
                 new_container_list = []
                 for item in container_list:
+                    if not item: # the last item may be an empty string
+                        continue
                     if item == variant_name:
-                        new_container_list.append(config_name)
                         new_container_list.append("empty_variant")
+                        new_container_list.append(config_name)
                     else:
                         new_container_list.append(item)
 
@@ -58,7 +65,7 @@ class VersionUpgrade22to24(VersionUpgrade):
             config.remove_option("general", "containers")
 
             for index in range(len(container_list)):
-                config.set("containers", index, container_list[index])
+                config.set("containers", str(index), container_list[index])
 
         output = io.StringIO()
         config.write(output)
@@ -109,6 +116,26 @@ class VersionUpgrade22to24(VersionUpgrade):
         config = configparser.ConfigParser(interpolation = None)
         config.read_string(serialised) # Read the input string as config file.
         config.set("general", "version", "3")   # Just bump the version number. That is all we need for now.
+
+        output = io.StringIO()
+        config.write(output)
+        return [filename], [output.getvalue()]
+
+    def upgradePreferences(self, serialised, filename):
+        config = configparser.ConfigParser(interpolation = None)
+        config.read_string(serialised)
+
+        if not config.has_section("general"):
+            raise UM.VersionUpgrade.FormatException("No \"general\" section.")
+
+        # Make z_seam_x and z_seam_y options visible. In a clean 2.4 they are visible by default.
+        if config.has_option("general", "visible_settings"):
+            visible_settings = config.get("general", "visible_settings")
+            visible_set = set(visible_settings.split(";"))
+            visible_set.add("z_seam_x")
+            visible_set.add("z_seam_y")
+            config.set("general", "visible_settings", ";".join(visible_set))
+        config.set("general", "version", value="4")
 
         output = io.StringIO()
         config.write(output)
