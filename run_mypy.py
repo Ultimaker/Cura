@@ -2,7 +2,7 @@
 import os
 import subprocess
 
-os.putenv("MYPYPATH", r".;.\plugins;..\Uranium_hint\;..\Uranium_hint\stubs\\" )
+os.putenv("MYPYPATH", r".;.\plugins;.\plugins\VersionUpgrade;..\Uranium_hint\;..\Uranium_hint\stubs\\" )
 
 def findModules(path):
     result = []
@@ -14,7 +14,7 @@ def findModules(path):
 plugins = findModules("plugins")
 plugins.sort()
 
-mods = ["cura"] + plugins
+mods = ["cura"] + plugins + findModules("plugins/VersionUpgrade")
 
 for mod in mods:
     print("------------- Checking module {mod}".format(**locals()))
