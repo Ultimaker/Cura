@@ -89,7 +89,7 @@ class ExtruderManager(QObject):
     #
     #   \return The extruder manager.
     @classmethod
-    def getInstance(cls) -> 'ExtruderManager':
+    def getInstance(cls) -> "ExtruderManager":
         if not cls.__instance:
             cls.__instance = ExtruderManager()
         return cls.__instance

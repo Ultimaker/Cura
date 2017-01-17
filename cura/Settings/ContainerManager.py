@@ -697,7 +697,7 @@ class ContainerManager(QObject):
             ContainerManager.__instance = cls()
         return ContainerManager.__instance
 
-    __instance = None   # type: 'ContainerManager'
+    __instance = None   # type: "ContainerManager"
 
     # Factory function, used by QML
     @staticmethod
