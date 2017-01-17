@@ -22,6 +22,8 @@ To open the profiler go to the Extensions menu and select "Start BFG" from the "
 
 The time scale is at the top of the window. The blocks should be read as meaning the blocks at the bottom call the blocks which are stacked on top of them. Hover the mouse to get more detailed information about a block such as the name of the code involved and its duration. Use the zoom buttons or mouse wheel to zoom in. The display can be panned by dragging with the left mouse button.
 
+Note: The profiler front-end itself is quite "heavy" (ok, not optimised). It runs much better in Google Chrome or Chromium than Firefox. It is also a good idea to keep recording sessions short for the same reason.
+
 
 What the Profiler Sees
 ----------------------
