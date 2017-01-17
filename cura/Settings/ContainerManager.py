@@ -4,7 +4,8 @@
 import os.path
 import urllib
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QUrl, QVariant
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QUrl, QVariant
+from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 
 import UM.PluginRegistry

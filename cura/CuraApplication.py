@@ -19,6 +19,8 @@ from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.Validator import Validator
+from UM.Message import Message
+from UM.i18n import i18nCatalog
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -26,12 +28,12 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
+from cura.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
-
-from UM.i18n import i18nCatalog
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -45,7 +47,8 @@ from . import MachineActionManager
 
 import cura.Settings
 
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
+from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
+from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
@@ -135,6 +138,9 @@ class CuraApplication(QtApplication):
             }
         )
 
+        self._currently_loading_files = []
+        self._non_sliceable_extensions = []
+
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
         self._setting_inheritance_manager = None
@@ -212,7 +218,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("cura/jobname_prefix", True)
-        Preferences.getInstance().addPreference("view/center_on_select", True)
+        Preferences.getInstance().addPreference("view/center_on_select", False)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
@@ -581,9 +587,12 @@ class CuraApplication(QtApplication):
     def updatePlatformActivity(self, node = None):
         count = 0
         scene_bounding_box = None
+        is_block_slicing_node = False
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode or (not node.getMeshData() and not node.callDecoration("getLayerData")):
                 continue
+            if node.callDecoration("isBlockSlicing"):
+                is_block_slicing_node = True
 
             count += 1
             if not scene_bounding_box:
@@ -592,6 +601,10 @@ class CuraApplication(QtApplication):
                 other_bb = node.getBoundingBox()
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
+
+        print_information = self.getPrintInformation()
+        if print_information:
+            print_information.setPreSliced(is_block_slicing_node)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
@@ -713,7 +726,7 @@ class CuraApplication(QtApplication):
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
                 continue
-            if not node.getMeshData() and not node.callDecoration("isGroup"):
+            if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
@@ -1008,3 +1021,78 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str)
     def log(self, msg):
         Logger.log("d", msg)
+
+    @pyqtSlot(QUrl)
+    def readLocalFile(self, file):
+        if not file.isValid():
+            return
+
+        scene = self.getController().getScene()
+
+        for node in DepthFirstIterator(scene.getRoot()):
+            if node.callDecoration("isBlockSlicing"):
+                self.deleteAll()
+                break
+
+        f = file.toLocalFile()
+        extension = os.path.splitext(f)[1]
+        filename = os.path.basename(f)
+        if len(self._currently_loading_files) > 0:
+            # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
+            if extension.lower() in self._non_sliceable_extensions:
+                message = Message(
+                    self._i18n_catalog.i18nc("@info:status",
+                                       "Only one G-code file can be loaded at a time. Skipped importing {0}",
+                                       filename))
+                message.show()
+                return
+            # If file being loaded is non-slicable file, then prevent loading of any other files
+            extension = os.path.splitext(self._currently_loading_files[0])[1]
+            if extension.lower() in self._non_sliceable_extensions:
+                message = Message(
+                    self._i18n_catalog.i18nc("@info:status",
+                                       "Can't open any other file if G-code is loading. Skipped importing {0}",
+                                       filename))
+                message.show()
+                return
+
+        self._currently_loading_files.append(f)
+        if extension in self._non_sliceable_extensions:
+            self.deleteAll()
+
+        job = ReadMeshJob(f)
+        job.finished.connect(self._readMeshFinished)
+        job.start()
+
+    def _readMeshFinished(self, job):
+        nodes = job.getResult()
+        filename = job.getFileName()
+        self._currently_loading_files.remove(filename)
+
+        for node in nodes:
+            node.setSelectable(True)
+            node.setName(os.path.basename(filename))
+
+            extension = os.path.splitext(filename)[1]
+            if extension.lower() in self._non_sliceable_extensions:
+                self.getController().setActiveView("LayerView")
+                view = self.getController().getActiveView()
+                view.resetLayerData()
+                view.setLayer(9999999)
+                view.calculateMaxLayers()
+
+                block_slicing_decorator = BlockSlicingDecorator()
+                node.addDecorator(block_slicing_decorator)
+            else:
+                sliceable_decorator = SliceableObjectDecorator()
+                node.addDecorator(sliceable_decorator)
+
+            scene = self.getController().getScene()
+
+            op = AddSceneNodeOperation(node, scene.getRoot())
+            op.push()
+
+            scene.sceneChanged.emit(node)
+
+    def addNonSliceableExtension(self, extension):
+        self._non_sliceable_extensions.append(extension)

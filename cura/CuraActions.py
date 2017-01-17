@@ -1,5 +1,6 @@
-from PyQt5.QtCore import QObject, pyqtSlot, QUrl
+from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Event import CallFunctionEvent
 from UM.Application import Application

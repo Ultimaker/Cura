@@ -4,9 +4,9 @@
 import os
 import threading
 
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal, QObject
 from PyQt5.QtQml import QQmlComponent, QQmlContext
-
+from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger

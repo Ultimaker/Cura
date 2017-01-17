@@ -1,4 +1,5 @@
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
+from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 
 import LayerView
