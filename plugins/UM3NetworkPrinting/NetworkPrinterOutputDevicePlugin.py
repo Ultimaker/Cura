@@ -1,7 +1,7 @@
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import NetworkPrinterOutputDevice
 
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo  # type: ignore
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
