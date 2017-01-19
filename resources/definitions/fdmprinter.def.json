@@ -1230,6 +1230,16 @@
                     "default_value": true,
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
+                },
+                "min_infill_area":
+                {
+                    "label": "Min Infill Area",
+                    "description": "Don't generate areas of infill smaller than this (use skin instead).",
+                    "unit": "mm²",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 0,
+                    "settable_per_mesh": true
                 }
             }
         },
