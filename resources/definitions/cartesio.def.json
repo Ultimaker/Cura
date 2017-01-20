@@ -47,6 +47,10 @@
         "machine_min_cool_heat_time_window": {"default_value": 5},
         "retraction_prime_speed": {"value": "10"},
         "switch_extruder_prime_speed": {"value": "10"},
-        "extruder_prime_pos_abs": { "default_value": true }
+        "retraction_speed": {"value": "40"},
+        "switch_extruder_retraction_speeds": {"value": "40"},
+        "retraction_min_travel": {"value": "5"},
+        "switch_extruder_retraction_amount": {"value": "2"},
+        "cool_fan_speed": {"value": "50"}
     }
 }
