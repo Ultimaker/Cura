@@ -50,7 +50,6 @@
         "retraction_speed": {"value": "40"},
         "switch_extruder_retraction_speeds": {"value": "40"},
         "retraction_min_travel": {"value": "5"},
-        "switch_extruder_retraction_amount": {"value": "2"},
-        "cool_fan_speed": {"value": "50"}
+        "switch_extruder_retraction_amount": {"value": "2"}
     }
 }
