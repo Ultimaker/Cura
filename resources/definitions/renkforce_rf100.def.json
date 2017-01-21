@@ -100,18 +100,6 @@
         "material_print_temperature": {
             "default_value": 210.0
         },
-        "meshfix_extensive_stitching": {
-            "default_value": true
-        },
-        "meshfix_keep_open_polygons": {
-            "default_value": true
-        },
-        "meshfix_union_all": {
-            "default_value": true
-        },
-        "meshfix_union_all_remove_holes": {
-            "default_value": true
-        },
         "ooze_shield_enabled": {
             "default_value": true
         },
