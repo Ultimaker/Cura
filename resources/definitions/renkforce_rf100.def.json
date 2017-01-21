@@ -115,12 +115,6 @@
         "ooze_shield_enabled": {
             "default_value": true
         },
-        "prime_tower_enable": {
-            "default_value": true
-        },
-        "prime_tower_size": {
-            "default_value": 12.24744871391589
-        },
         "raft_airgap": {
             "default_value": 0.22
         },
