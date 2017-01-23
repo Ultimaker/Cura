@@ -12,6 +12,8 @@ Rectangle {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
+    color: "transparent"
+
     property real progress: UM.Backend.progress;
     property int backendState: UM.Backend.state;
     property bool activity: Printer.getPlatformActivity;
@@ -80,6 +82,7 @@ Rectangle {
         anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
+        color: "transparent"
 
         Row {
             id: additionalComponentsRow

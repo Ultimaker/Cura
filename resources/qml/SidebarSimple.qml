@@ -32,6 +32,7 @@ Item
         anchors.left: parent.left
         width: base.width * .45 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
+        color: "transparent"
 
         Label
         {
@@ -224,6 +225,7 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
         height: childrenRect.height
+        color: "transparent"
 
         Label
         {
@@ -469,6 +471,7 @@ Item
         anchors.left: parent.left
         width: parent.width
         height: childrenRect.height
+        color: "transparent"
 
         Label
         {
