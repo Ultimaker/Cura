@@ -98,6 +98,9 @@ Use a mesh to specify a volume within which to classify nothing as overhang for 
 *Delta printer support
 This release adds support for printers with elliptic buildplates. This feature has not been extensively tested so please let us know if it works or get involved in improving it.
 
+*AppImage for Linux
+The Linux distribution is now in AppImage format, which makes Cura easier to install.
+
 *bugfixes
 The user is now notified when a new version of Cura is available.
 When searching in the setting visibility preferences, the category for each setting is always displayed.
