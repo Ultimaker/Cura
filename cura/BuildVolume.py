@@ -34,15 +34,17 @@ PRIME_CLEARANCE = 6.5
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
-    VolumeOutlineColor = Color(12, 169, 227, 255)
-    XAxisColor = Color(255, 0, 0, 255)
-    YAxisColor = Color(0, 0, 255, 255)
-    ZAxisColor = Color(0, 255, 0, 255)
-
     raftThicknessChanged = Signal()
 
     def __init__(self, parent = None):
         super().__init__(parent)
+
+        self._volume_outline_color = None
+        self._x_axis_color = None
+        self._y_axis_color = None
+        self._z_axis_color = None
+        self._disallowed_area_color = None
+        self._error_area_color = None
 
         self._width = 0
         self._height = 0
@@ -75,6 +77,9 @@ class BuildVolume(SceneNode):
         Application.getInstance().globalContainerStackChanged.connect(self._onStackChanged)
         self._onStackChanged()
 
+        self._engine_ready = False
+        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
+
         self._has_errors = False
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
@@ -98,6 +103,7 @@ class BuildVolume(SceneNode):
         # This should also ways work, and it is semantically more correct,
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
+
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
@@ -158,6 +164,9 @@ class BuildVolume(SceneNode):
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
+            theme = Application.getInstance().getTheme()
+            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_alt").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
@@ -176,6 +185,18 @@ class BuildVolume(SceneNode):
         if not self._width or not self._height or not self._depth:
             return
 
+        if not Application.getInstance()._engine:
+            return
+
+        if not self._volume_outline_color:
+            theme = Application.getInstance().getTheme()
+            self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
+            self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
+            self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
+            self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
+            self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
+            self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+
         min_w = -self._width / 2
         max_w = self._width / 2
         min_h = 0.0
@@ -188,20 +209,20 @@ class BuildVolume(SceneNode):
         if self._shape != "elliptic":
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
 
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
 
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
 
             self.setMeshData(mb.build())
 
@@ -228,8 +249,8 @@ class BuildVolume(SceneNode):
                 aspect = self._depth / self._width
                 scale_matrix.compose(scale = Vector(1, 1, aspect))
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self.VolumeOutlineColor)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self.VolumeOutlineColor)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             self.setMeshData(mb.build().getTransformed(scale_matrix))
 
             # Build plate grid mesh
@@ -260,21 +281,21 @@ class BuildVolume(SceneNode):
             height = self._origin_line_width,
             depth = self._origin_line_width,
             center = origin + Vector(self._origin_line_length / 2, 0, 0),
-            color = self.XAxisColor
+            color = self._x_axis_color
         )
         mb.addCube(
             width = self._origin_line_width,
             height = self._origin_line_length,
             depth = self._origin_line_width,
             center = origin + Vector(0, self._origin_line_length / 2, 0),
-            color = self.YAxisColor
+            color = self._y_axis_color
         )
         mb.addCube(
             width = self._origin_line_width,
             height = self._origin_line_width,
             depth = self._origin_line_length,
             center = origin - Vector(0, 0, self._origin_line_length / 2),
-            color = self.ZAxisColor
+            color = self._z_axis_color
         )
         self._origin_mesh = mb.build()
 
@@ -282,7 +303,7 @@ class BuildVolume(SceneNode):
         disallowed_area_size = 0
         if self._disallowed_areas:
             mb = MeshBuilder()
-            color = Color(0.0, 0.0, 0.0, 0.15)
+            color = self._disallowed_area_color
             for polygon in self._disallowed_areas:
                 points = polygon.getPoints()
                 if len(points) == 0:
@@ -311,7 +332,7 @@ class BuildVolume(SceneNode):
         if self._error_areas:
             mb = MeshBuilder()
             for error_area in self._error_areas:
-                color = Color(1.0, 0.0, 0.0, 0.5)
+                color = self._error_area_color
                 points = error_area.getPoints()
                 first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
                                self._clamp(points[0][1], min_d, max_d))
@@ -398,7 +419,12 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreas()
             self._updateRaftThickness()
 
-            self.rebuild()
+            if self._engine_ready:
+                self.rebuild()
+
+    def _onEngineCreated(self):
+        self._engine_ready = True
+        self.rebuild()
 
     def _onSettingPropertyChanged(self, setting_key, property_name):
         if property_name != "value":

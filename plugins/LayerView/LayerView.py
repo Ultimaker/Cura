@@ -110,7 +110,7 @@ class LayerView(View):
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
-            self._ghost_shader.setUniformValue("u_color", Color(32, 32, 32, 96))
+            self._ghost_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("layerview_ghost").getRgb()))
 
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
@@ -194,6 +194,9 @@ class LayerView(View):
 
             if not self._layerview_composite_shader:
                 self._layerview_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layerview_composite.shader"))
+                theme = Application.getInstance().getTheme()
+                self._layerview_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                self._layerview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
                 self._composite_pass = self.getRenderer().getRenderPass("composite")

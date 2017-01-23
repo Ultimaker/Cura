@@ -3,6 +3,8 @@
 
 import os.path
 
+from UM.Application import Application
+from UM.Math.Color import Color
 from UM.PluginRegistry import PluginRegistry
 from UM.Event import Event
 from UM.View.View import View
@@ -31,7 +33,7 @@ class XRayView(View):
 
         if not self._xray_shader:
             self._xray_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray.shader"))
-            self._xray_shader.setUniformValue("u_color", [0.1, 0.1, 0.2, 1.0])
+            self._xray_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
 
         for node in BreadthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
@@ -58,6 +60,10 @@ class XRayView(View):
 
             if not self._xray_composite_shader:
                 self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray_composite.shader"))
+                theme = Application.getInstance().getTheme()
+                self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_error_color", Color(*theme.getColor("xray_error").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
                 self._composite_pass = self.getRenderer().getRenderPass("composite")
