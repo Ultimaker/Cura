@@ -50,7 +50,7 @@ import cura.CuraApplication
 import cura.Settings.CuraContainerRegistry
 
 if Platform.isWindows() and hasattr(sys, "frozen"):
-    dirpath = os.path.expanduser("~/AppData/Local/cura/")
+    dirpath = os.path.expandvars("%LOCALAPPDATA%\cura")
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
