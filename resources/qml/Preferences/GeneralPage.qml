@@ -214,20 +214,6 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Compatibility mode in layerview?")
-
-            CheckBox
-            {
-                id: topLayerViewCompatibilityCheckbox
-                text: catalog.i18nc("@option:check", "Layer view compatibility mode (for OpenGL <= 4.0, restart required)")
-                checked: boolCheck(UM.Preferences.getValue("view/compatibility_mode"))
-                onCheckedChanged: UM.Preferences.setValue("view/compatibility_mode", checked)
-            }
-        }
-
-        UM.TooltipArea {
             width: childrenRect.width;
             height: childrenRect.height;
             text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
@@ -235,7 +221,7 @@ UM.PreferencesPage
             CheckBox
             {
                 id: topLayerCountCheckbox
-                text: catalog.i18nc("@action:button","Display five top layers in layer view (only for compatibility mode)");
+                text: catalog.i18nc("@action:button","Display five top layers in layer view compatibility mode");
                 checked: UM.Preferences.getValue("view/top_layer_count") == 5
                 onClicked:
                 {
@@ -259,7 +245,7 @@ UM.PreferencesPage
             CheckBox
             {
                 id: topLayersOnlyCheckbox
-                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view (only for compatibility mode)")
+                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view compatibility mode")
                 checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
                 onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
             }
