@@ -223,6 +223,10 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
+
+        Preferences.getInstance().addPreference("cura/currency", "€")
+        Preferences.getInstance().addPreference("cura/material_settings", "{}")
+
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
