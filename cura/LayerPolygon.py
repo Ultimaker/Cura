@@ -189,7 +189,7 @@ class LayerPolygon:
                 theme.getColor("layerview_skirt").getRgbF(), # SkirtType
                 theme.getColor("layerview_infill").getRgbF(), # InfillType
                 theme.getColor("layerview_support_infill").getRgbF(), # SupportInfillType
-                theme.getColor("layerview_move_combining").getRgbF(), # MoveCombingType
+                theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
                 theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
                 theme.getColor("layerview_support_interface").getRgbF()  # SupportInterfaceType
             ])
