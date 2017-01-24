@@ -13,15 +13,13 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-from UM.Scene.SceneNode import SceneNode
-from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 from UM.Message import Message
 from UM.Application import Application
 
 from cura.ConvexHullNode import ConvexHullNode
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
 from . import LayerViewProxy
@@ -78,7 +76,10 @@ class LayerView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = bool(Preferences.getInstance().getValue("view/compatibility_mode"))
+        self._compatibility_mode = True  # for safety
+        #self._compatibility_mode = bool(Preferences.getInstance().getValue("view/compatibility_mode"))
+        #self._compatibility_mode = not self.getRenderer().getSupportsGeometryShader()
+        #Logger.log("d", "OpenGL Compatibility mode: %s" % self._compatibility_mode)
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
 
@@ -90,6 +91,7 @@ class LayerView(View):
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = LayerPass.LayerPass(1, 1)
+            self._compatibility_mode = not self.getRenderer().getSupportsGeometryShader()
             self._layer_pass.setLayerView(self)
             self.getRenderer().addRenderPass(self._layer_pass)
         return self._layer_pass
@@ -346,7 +348,7 @@ class LayerView(View):
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
-        self._compatibility_mode = bool(Preferences.getInstance().getValue("view/compatibility_mode"))
+        # self._compatibility_mode = bool(Preferences.getInstance().getValue("view/compatibility_mode"))
 
         self._startUpdateTopLayers()
 
