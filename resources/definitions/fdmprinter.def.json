@@ -1089,10 +1089,9 @@
                 "infill_angles":
                 {
                     "label": "Infill Line Directions",
-                    "description": "A comma separated list of line directions to use when the infill pattern is lines or zig zag. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. Default directions are 45 and 135 degrees.",
+                    "description": "A comma separated list of line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. Default is empty which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "str",
-                    "default_value": "45,135",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'zigzag'",
+                    "default_value": "",
                     "settable_per_mesh": true
                 },
                 "sub_div_rad_mult":
