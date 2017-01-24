@@ -1233,7 +1233,7 @@
                 },
                 "min_infill_area":
                 {
-                    "label": "Min Infill Area",
+                    "label": "Minimum Infill Area",
                     "description": "Don't generate areas of infill smaller than this (use skin instead).",
                     "unit": "mm²",
                     "type": "float",
