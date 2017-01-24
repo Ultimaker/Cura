@@ -60,6 +60,8 @@ class LayerView(View):
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+        self._legend_items = None
+
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
@@ -206,6 +208,8 @@ class LayerView(View):
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
+            Application.getInstance().setViewLegendItems(self._getLegendItems())
+
         elif event.type == Event.ViewDeactivateEvent:
             self._wireprint_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
@@ -214,6 +218,8 @@ class LayerView(View):
 
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
+
+            Application.getInstance().setViewLegendItems([])
 
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
@@ -263,6 +269,24 @@ class LayerView(View):
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
 
         self._startUpdateTopLayers()
+
+    def _getLegendItems(self):
+        if self._legend_items is None:
+            theme = Application.getInstance().getTheme()
+            self._legend_items = [
+                {"color": theme.getColor("layerview_inset_0").name(), "title": catalog.i18nc("@label:layerview polygon type", "Outer Wall")}, # Inset0Type
+                {"color": theme.getColor("layerview_inset_x").name(), "title": catalog.i18nc("@label:layerview polygon type", "Inner Wall")}, # InsetXType
+                {"color": theme.getColor("layerview_skin").name(), "title": catalog.i18nc("@label:layerview polygon type", "Top / Bottom")}, # SkinType
+                {"color": theme.getColor("layerview_infill").name(), "title": catalog.i18nc("@label:layerview polygon type", "Infill")}, # InfillType
+                {"color": theme.getColor("layerview_support").name(), "title": catalog.i18nc("@label:layerview polygon type", "Support Skin")}, # SupportType
+                {"color": theme.getColor("layerview_support_infill").name(), "title": catalog.i18nc("@label:layerview polygon type", "Support Infill")}, # SupportInfillType
+                {"color": theme.getColor("layerview_support_interface").name(), "title": catalog.i18nc("@label:layerview polygon type", "Support Interface")},  # SupportInterfaceType
+                {"color": theme.getColor("layerview_skirt").name(), "title": catalog.i18nc("@label:layerview polygon type", "Build Plate Adhesion")}, # SkirtType
+                {"color": theme.getColor("layerview_move_combing").name(), "title": catalog.i18nc("@label:layerview polygon type", "Travel Move")}, # MoveCombingType
+                {"color": theme.getColor("layerview_move_retraction").name(), "title": catalog.i18nc("@label:layerview polygon type", "Retraction Move")}, # MoveRetractionType
+                #{"color": theme.getColor("layerview_none").name(), "title": catalog.i18nc("@label:layerview polygon type", "Unknown")} # NoneType
+            ]
+        return self._legend_items
 
 
 class _CreateTopLayersJob(Job):

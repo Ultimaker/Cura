@@ -315,6 +315,11 @@ class CuraApplication(QtApplication):
 
     showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
 
+    def setViewLegendItems(self, items):
+        self.viewLegendItemsChanged.emit(items)
+
+    viewLegendItemsChanged = pyqtSignal("QVariantList", arguments = ["items"])
+
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #
     #   Note that the AutoSave plugin also calls this method.
