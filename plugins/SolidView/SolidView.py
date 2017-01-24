@@ -11,7 +11,7 @@ from UM.View.Renderer import Renderer
 from UM.Settings.Validator import ValidatorState
 
 from UM.View.GL.OpenGL import OpenGL
-import UM.Qt.Bindings.Theme
+
 import cura.Settings
 from cura.Settings.ExtruderManager import ExtruderManager
 
