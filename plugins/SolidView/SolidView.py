@@ -38,8 +38,9 @@ class SolidView(View):
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            self._disabled_shader.setUniformValue("u_diffuseColor1", [0.48, 0.48, 0.48, 1.0])
-            self._disabled_shader.setUniformValue("u_diffuseColor2", [0.68, 0.68, 0.68, 1.0])
+            theme = Application.getInstance().getTheme()
+            self._disabled_shader.setUniformValue("u_diffuseColor1", theme.getColor("model_unslicable").getRgbF())
+            self._disabled_shader.setUniformValue("u_diffuseColor2", theme.getColor("model_unslicable_alt").getRgbF())
             self._disabled_shader.setUniformValue("u_width", 50.0)
 
         multi_extrusion = False
