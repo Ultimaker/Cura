@@ -25,14 +25,13 @@ Item
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    Rectangle
+    Item
     {
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
         width: base.width * .45 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
-        color: "transparent"
 
         Label
         {
@@ -217,7 +216,7 @@ Item
         }
     }
 
-    Rectangle
+    Item
     {
         id: helpersCell
         anchors.top: infillCellRight.bottom
@@ -225,7 +224,6 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
         height: childrenRect.height
-        color: "transparent"
 
         Label
         {
@@ -463,7 +461,7 @@ Item
         supportExtruderCombobox.updateCurrentColor();
     }
 
-    Rectangle
+    Item
     {
         id: tipsCell
         anchors.top: helpersCell.bottom
@@ -471,7 +469,6 @@ Item
         anchors.left: parent.left
         width: parent.width
         height: childrenRect.height
-        color: "transparent"
 
         Label
         {

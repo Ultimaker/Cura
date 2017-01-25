@@ -201,13 +201,12 @@ Column
             color: UM.Theme.getColor("text");
         }
 
-        Rectangle
+        Item
         {
             anchors.verticalCenter: parent.verticalCenter
 
             width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
-            color: "transparent"
 
             ToolButton {
                 id: variantSelection

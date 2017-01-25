@@ -10,12 +10,10 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
-
-    color: "transparent"
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
