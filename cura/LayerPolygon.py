@@ -18,6 +18,8 @@ class LayerPolygon:
     
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
     
+    ##  LayerPolygon
+    #   line_thicknesses: array with type as index and thickness as value
     def __init__(self, mesh, extruder, line_types, data, line_widths, line_thicknesses):
         self._mesh = mesh
         self._extruder = extruder
@@ -63,8 +65,6 @@ class LayerPolygon:
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
         
-    ##  build
-    #   line_thicknesses: array with type as index and thickness as value
     def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices):
         if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
             self.buildCache()

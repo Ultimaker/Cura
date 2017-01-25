@@ -180,10 +180,10 @@ class ProcessSlicedLayersJob(Job):
             material_color_map[0, :] = color
 
         # We have to scale the colors for compatibility mode
-        if bool(Preferences.getInstance().getValue("view/compatibility_mode")):
-            line_type_brightness = 0.5
-        else:
+        if Application.getInstance().getRenderer().getSupportsGeometryShader():
             line_type_brightness = 1.0
+        else:
+            line_type_brightness = 0.5  # for compatibility mode
         layer_mesh = layer_data.build(material_color_map, line_type_brightness)
 
         if self._abort_requested:
