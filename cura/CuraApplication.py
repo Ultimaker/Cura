@@ -223,6 +223,10 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
+
+        Preferences.getInstance().addPreference("cura/currency", "€")
+        Preferences.getInstance().addPreference("cura/material_settings", "{}")
+
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
@@ -314,6 +318,11 @@ class CuraApplication(QtApplication):
             self._message_box_callback_arguments = []
 
     showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
+
+    def setViewLegendItems(self, items):
+        self.viewLegendItemsChanged.emit(items)
+
+    viewLegendItemsChanged = pyqtSignal("QVariantList", arguments = ["items"])
 
     ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     #

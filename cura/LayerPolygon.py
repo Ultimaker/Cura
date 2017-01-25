@@ -1,4 +1,5 @@
 from UM.Math.Color import Color
+from UM.Application import Application
 
 import numpy
 
@@ -40,6 +41,7 @@ class LayerPolygon:
 
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.
+        self._color_map = LayerPolygon.getColorMap()
         self._colors = self._color_map[self._types]
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
@@ -182,17 +184,25 @@ class LayerPolygon:
 
         return normals
 
-    # Should be generated in better way, not hardcoded.
-    _color_map = numpy.array([
-        [1.0,  1.0,  1.0, 1.0], # NoneType
-        [1.0,  0.0,  0.0, 1.0], # Inset0Type
-        [0.0,  1.0,  0.0, 1.0], # InsetXType
-        [1.0,  1.0,  0.0, 1.0], # SkinType
-        [0.0,  1.0,  1.0, 1.0], # SupportType
-        [0.0,  1.0,  1.0, 1.0], # SkirtType
-        [1.0,  0.75, 0.0, 1.0], # InfillType
-        [0.0,  1.0,  1.0, 1.0], # SupportInfillType
-        [0.0,  0.0,  1.0, 1.0], # MoveCombingType
-        [0.5,  0.5,  1.0, 1.0], # MoveRetractionType
-        [0.25, 0.75, 1.0, 1.0]  # SupportInterfaceType
-    ])
+    __color_map = None
+
+    ##  Gets the instance of the VersionUpgradeManager, or creates one.
+    @classmethod
+    def getColorMap(cls):
+        if cls.__color_map is None:
+            theme = Application.getInstance().getTheme()
+            cls.__color_map = numpy.array([
+                theme.getColor("layerview_none").getRgbF(), # NoneType
+                theme.getColor("layerview_inset_0").getRgbF(), # Inset0Type
+                theme.getColor("layerview_inset_x").getRgbF(), # InsetXType
+                theme.getColor("layerview_skin").getRgbF(), # SkinType
+                theme.getColor("layerview_support").getRgbF(), # SupportType
+                theme.getColor("layerview_skirt").getRgbF(), # SkirtType
+                theme.getColor("layerview_infill").getRgbF(), # InfillType
+                theme.getColor("layerview_support_infill").getRgbF(), # SupportInfillType
+                theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
+                theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
+                theme.getColor("layerview_support_interface").getRgbF()  # SupportInterfaceType
+            ])
+
+        return cls.__color_map
