@@ -3864,6 +3864,7 @@
                     "description": "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
                     "type": "bool",
                     "resolve": "any(extruderValues('ooze_shield_enabled'))",
+                    "enabled": "machine_extruder_count > 1",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
