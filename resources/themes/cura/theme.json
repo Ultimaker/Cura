@@ -192,7 +192,44 @@
         "status_ready": [0, 205, 0, 255],
         "status_busy": [12, 169, 227, 255],
         "status_paused": [255, 140, 0, 255],
-        "status_stopped": [236, 82, 80, 255]
+        "status_stopped": [236, 82, 80, 255],
+
+        "disabled_axis": [127, 127, 127, 255],
+        "x_axis": [255, 0, 0, 255],
+        "y_axis": [0, 0, 255, 255],
+        "z_axis": [0, 255, 0, 255],
+        "all_axis": [255, 255, 255, 255],
+
+        "viewport_background": [245, 245, 245, 255],
+        "volume_outline": [12, 169, 227, 255],
+        "buildplate": [244, 244, 244, 255],
+        "buildplate_alt": [204, 204, 204, 255],
+
+        "convex_hull": [35, 35, 35, 127],
+        "disallowed_area": [0, 0, 0, 40],
+        "error_area": [255, 0, 0, 127],
+
+        "model_default": [255, 201, 36, 255],
+        "model_overhang": [255, 0, 0, 255],
+        "model_unslicable": [122, 122, 122, 255],
+        "model_unslicable_alt": [172, 172, 127, 255],
+        "model_selection_outline": [12, 169, 227, 255],
+
+        "xray": [26,  26,  62, 255],
+        "xray_error": [255,  0,  0, 255],
+
+        "layerview_ghost": [32, 32, 32, 96],
+        "layerview_none": [255,  255,  255, 255],
+        "layerview_inset_0": [255,  0,  0, 255],
+        "layerview_inset_x": [0,  255,  0, 255],
+        "layerview_skin": [255,  255,  0, 255],
+        "layerview_support": [0,  255,  255, 255],
+        "layerview_skirt": [0,  255,  255, 255],
+        "layerview_infill": [255,  192, 0, 255],
+        "layerview_support_infill": [0,  255,  255, 255],
+        "layerview_move_combing": [0,  0,  255, 255],
+        "layerview_move_retraction": [128,  128,  255, 255],
+        "layerview_support_interface": [64, 192, 255, 255]
     },
 
     "sizes": {
