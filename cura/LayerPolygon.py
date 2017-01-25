@@ -49,8 +49,7 @@ class LayerPolygon:
         
     def buildCache(self):
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
-        # self._build_cache_line_mesh_mask = numpy.logical_not(numpy.logical_or(self._jump_mask, self._types == LayerPolygon.InfillType ))
-        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype=bool)  # numpy.logical_not(self._jump_mask)
+        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype=bool)
         mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
         self._index_end = mesh_line_count
