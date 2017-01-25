@@ -38,7 +38,6 @@ class LayerPolygon:
 
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.
-        self._color_map = self.__color_map # * [1, 1, 1, self._extruder] # The alpha component is used to store the extruder nr
         self._colors = self._color_map[self._types]
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
@@ -185,7 +184,7 @@ class LayerPolygon:
         return normals
 
     # Should be generated in better way, not hardcoded.
-    __color_map = numpy.array([
+    _color_map = numpy.array([
         [1.0,  1.0,  1.0, 1.0], # NoneType
         [1.0,  0.0,  0.0, 1.0], # Inset0Type
         [0.0,  1.0,  0.0, 1.0], # InsetXType
