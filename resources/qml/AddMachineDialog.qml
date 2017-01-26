@@ -74,10 +74,8 @@ UM.Dialog
                 width: machineList.width
                 style: ButtonStyle
                 {
-                    background: Rectangle
+                    background: Item
                     {
-                        border.width: 0
-                        color: "transparent";
                         height: UM.Theme.getSize("standard_list_lineheight").height
                         width: machineList.width
                     }

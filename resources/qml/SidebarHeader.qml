@@ -201,7 +201,7 @@ Column
             color: UM.Theme.getColor("text");
         }
 
-        Rectangle
+        Item
         {
             anchors.verticalCenter: parent.verticalCenter
 
