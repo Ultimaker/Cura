@@ -175,6 +175,9 @@ Rectangle
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = false
                 iconSource: UM.Theme.getIcon("tab_settings");
+                property color overlayColor: "transparent"
+                property string overlayIconSource: ""
+
                 checkable: true
                 checked: !monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
@@ -203,9 +206,34 @@ Rectangle
                 width: height
                 height: UM.Theme.getSize("sidebar_header").height
                 onClicked: monitoringPrint = true
-                iconSource: {
+                iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
+                property color overlayColor:
+                {
+                    switch(Cura.MachineManager.printerOutputDevices[0].jobState)
+                    {
+                        case "printing":
+                        case "pre_print":
+                        case "wait_cleanup":
+                        case "pausing":
+                        case "resuming":
+                            return UM.Theme.getColor("status_busy");
+                        case "ready":
+                        case "":
+                            return UM.Theme.getColor("status_ready");
+                        case "paused":
+                            return UM.Theme.getColor("status_paused");
+                        case "error":
+                            return UM.Theme.getColor("status_stopped");
+                        case "offline":
+                            return UM.Theme.getColor("status_offline");
+                        default:
+                            return UM.Theme.getColor("text_reversed");
+                    }
+                }
+                property string overlayIconSource:
+                {
                     if(!printerConnected)
-                        return UM.Theme.getIcon("tab_monitor");
+                        return "";
                     else if(!printerAcceptsCommands)
                         return UM.Theme.getIcon("tab_monitor_unknown");
 
@@ -233,6 +261,7 @@ Rectangle
                             return UM.Theme.getIcon("tab_monitor")
                     }
                 }
+
                 checkable: true
                 checked: monitoringPrint
                 exclusiveGroup: sidebarHeaderBarGroup
