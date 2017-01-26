@@ -156,11 +156,10 @@ UM.Dialog
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Rectangle {
+                Item {
                     width: 180
                     height: 20
-                    Layout.fillWidth:true
-                    color: "transparent"
+                    Layout.fillWidth: true
 
                     Slider {
                         id: smoothing
