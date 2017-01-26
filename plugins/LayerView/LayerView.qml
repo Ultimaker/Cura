@@ -146,13 +146,14 @@ Item
     }
 
     Rectangle {
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.top: slider_background.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        //anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        width: UM.Theme.getSize("slider_layerview_background").width * 3
-        height: slider.height + UM.Theme.getSize("default_margin").height * 2
+        anchors.left: parent.right
+        //anchors.verticalCenter: parent.verticalCenter
+        //anchors.top: toolbar.top
+        anchors.bottom: slider_background.top
+        //anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        width: UM.Theme.getSize("slider_layerview_background").width * 4
+        height: slider.height + UM.Theme.getSize("default_margin").height * 10
         color: UM.Theme.getColor("tool_panel_background");
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -173,8 +174,10 @@ Item
         ComboBox
         {
             id: layer_type_combobox
-            anchors.top: slider_background.bottom
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             model: layerViewTypes
             visible: !UM.LayerView.compatibilityMode
             onActivated: {
