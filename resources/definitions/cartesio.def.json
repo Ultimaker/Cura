@@ -27,7 +27,6 @@
     },
 
     "overrides": {
-        "material_diameter": { "default_value": 1.75 },
         "machine_extruder_count": { "default_value": 4 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
@@ -44,12 +43,6 @@
         },
         "machine_nozzle_heat_up_speed": {"default_value": 20},
         "machine_nozzle_cool_down_speed": {"default_value": 20},
-        "machine_min_cool_heat_time_window": {"default_value": 5},
-        "retraction_prime_speed": {"value": "10"},
-        "switch_extruder_prime_speed": {"value": "10"},
-        "retraction_speed": {"value": "40"},
-        "switch_extruder_retraction_speeds": {"value": "40"},
-        "retraction_min_travel": {"value": "5"},
-        "switch_extruder_retraction_amount": {"value": "2"}
+        "machine_min_cool_heat_time_window": {"default_value": 5}
     }
 }
