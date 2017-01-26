@@ -1089,6 +1089,39 @@
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "settable_per_mesh": true
                 },
+                "spaghetti_infill_enabled":
+                {
+                    "label": "Spaghetti Infill",
+                    "description": "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is very unpredictable.",
+                    "type": "bool",
+                    "default_value": "False",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_max_infill_angle":
+                {
+                    "label": "Spaghetti Maximum Infill Angle",
+                    "description": "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards.",
+                    "unit": "°",
+                    "type": "float",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "45",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_max_height":
+                {
+                    "label": "Spaghetti Infill Maximum Height",
+                    "description": "The maximum height of inside space which can be combined and filled from the top.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.0,
+                    "minimum_value": "layer_height",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "settable_per_mesh": true
+                },
                 "sub_div_rad_mult":
                 {
                     "label": "Cubic Subdivision Radius",
