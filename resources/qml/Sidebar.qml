@@ -209,6 +209,15 @@ Rectangle
                 iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
                 property color overlayColor:
                 {
+                    if(!printerAcceptsCommands)
+                    {
+                        return UM.Theme.getColor("status_unknown");
+                    }
+
+                    if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
+                    {
+                        return UM.Theme.getColor("status_busy");
+                    }
                     switch(Cura.MachineManager.printerOutputDevices[0].jobState)
                     {
                         case "printing":
@@ -233,13 +242,17 @@ Rectangle
                 property string overlayIconSource:
                 {
                     if(!printerConnected)
+                    {
                         return "";
+                    }
                     else if(!printerAcceptsCommands)
-                        return UM.Theme.getIcon("tab_monitor_unknown");
+                    {
+                        return UM.Theme.getIcon("tab_status_unknown");
+                    }
 
                     if(Cura.MachineManager.printerOutputDevices[0].printerState == "maintenance")
                     {
-                        return UM.Theme.getIcon("tab_monitor_busy");
+                        return UM.Theme.getIcon("tab_status_busy");
                     }
 
                     switch(Cura.MachineManager.printerOutputDevices[0].jobState)
@@ -247,18 +260,20 @@ Rectangle
                         case "printing":
                         case "pre_print":
                         case "wait_cleanup":
-                            return UM.Theme.getIcon("tab_monitor_busy");
+                        case "pausing":
+                        case "resuming":
+                            return UM.Theme.getIcon("tab_status_busy");
                         case "ready":
                         case "":
-                            return UM.Theme.getIcon("tab_monitor_connected")
+                            return UM.Theme.getIcon("tab_status_connected")
                         case "paused":
-                            return UM.Theme.getIcon("tab_monitor_paused")
+                            return UM.Theme.getIcon("tab_status_paused")
                         case "error":
-                            return UM.Theme.getIcon("tab_monitor_stopped")
+                            return UM.Theme.getIcon("tab_status_stopped")
                         case "offline":
-                            return UM.Theme.getIcon("tab_monitor_offline")
+                            return UM.Theme.getIcon("tab_status_offline")
                         default:
-                            return UM.Theme.getIcon("tab_monitor")
+                            return ""
                     }
                 }
 
