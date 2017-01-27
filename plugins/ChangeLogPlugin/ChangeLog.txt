@@ -125,6 +125,8 @@ There are no more unnecessary retractions in support.
 Each layer now has less extruder switches than the machine has extruders.
 Concentric infill doesn’t generate the first infill perimeter next to the walls.
 Extruder priming now always happens on the first layer.
+Raising the build plate of the Ultimaker 2 now has the proper speed again.
+Changing material while the Ultimaker 2 is paused works again.
 
 [2.3.1]
 *Layer Height in Profile Selection
