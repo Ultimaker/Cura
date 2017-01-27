@@ -46,7 +46,7 @@ class ThreeMFWriter(MeshWriter):
         result += str(matrix._data[2,2]) + " "
         result += str(matrix._data[0,3]) + " "
         result += str(matrix._data[1,3]) + " "
-        result += str(matrix._data[2,3]) + " "
+        result += str(matrix._data[2,3])
         return result
 
     ##  Should we store the archive
@@ -80,10 +80,11 @@ class ThreeMFWriter(MeshWriter):
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             model = ET.Element("model", unit = "millimeter", xmlns = self._namespaces["3mf"])
+            model.set("xmlns:cura", self._namespaces["cura"])
 
-            # Add the version of Cura this was created with. As "CuraVersion" is not a recognised metadata name
-            #  by 3mf itself, we place it in our own namespace.
-            version_metadata = ET.SubElement(model, "metadata", xmlns = self._namespaces["cura"], name = "CuraVersion")
+            # Add the version of Cura this was created with. Since there is no "version" or similar metadata name we need
+            # to prefix it with the cura namespace, as specified by the 3MF specification.
+            version_metadata = ET.SubElement(model, "metadata", name = "cura:version")
             version_metadata.text = Application.getInstance().getVersion()
 
             resources = ET.SubElement(model, "resources")

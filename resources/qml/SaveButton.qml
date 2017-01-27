@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
-Rectangle {
+Item {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
 
@@ -53,7 +53,7 @@ Rectangle {
         text: statusText;
     }
 
-    Rectangle{
+    Rectangle {
         id: progressBar
         width: parent.width - 2 * UM.Theme.getSize("default_margin").width
         height: UM.Theme.getSize("progressbar").height
@@ -64,7 +64,7 @@ Rectangle {
         radius: UM.Theme.getSize("progressbar_radius").width
         color: UM.Theme.getColor("progressbar_background")
 
-        Rectangle{
+        Rectangle {
             width: Math.max(parent.width * base.progress)
             height: parent.height
             color: UM.Theme.getColor("progressbar_control")
@@ -73,7 +73,7 @@ Rectangle {
         }
     }
 
-    Rectangle{
+    Item {
         id: saveRow
         width: base.width
         height: saveToButton.height

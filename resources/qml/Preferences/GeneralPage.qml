@@ -97,6 +97,7 @@ UM.PreferencesPage
                         append({ text: "Français", code: "fr" })
                         append({ text: "Italiano", code: "it" })
                         append({ text: "Nederlands", code: "nl" })
+                        append({ text: "Português do Brasil", code: "ptbr" })
                         append({ text: "Русский", code: "ru" })
                         append({ text: "Türkçe", code: "tr" })
                     }
@@ -128,6 +129,19 @@ UM.PreferencesPage
                     currentIndex += 1;
                     currentIndex -= 1;
                 }
+            }
+
+            Label
+            {
+                id: currencyLabel
+                text: catalog.i18nc("@label","Currency:")
+                anchors.verticalCenter: languageComboBox.verticalCenter
+            }
+            TextField
+            {
+                id: currencyField
+                text: UM.Preferences.getValue("cura/currency")
+                onTextChanged: UM.Preferences.setValue("cura/currency", text)
             }
         }
 

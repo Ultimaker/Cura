@@ -98,6 +98,9 @@ Use a mesh to specify a volume within which to classify nothing as overhang for 
 *Delta printer support
 This release adds support for printers with elliptic buildplates. This feature has not been extensively tested so please let us know if it works or get involved in improving it.
 
+*AppImage for Linux
+The Linux distribution is now in AppImage format, which makes Cura easier to install.
+
 *bugfixes
 The user is now notified when a new version of Cura is available.
 When searching in the setting visibility preferences, the category for each setting is always displayed.
@@ -122,6 +125,8 @@ There are no more unnecessary retractions in support.
 Each layer now has less extruder switches than the machine has extruders.
 Concentric infill doesn’t generate the first infill perimeter next to the walls.
 Extruder priming now always happens on the first layer.
+Raising the build plate of the Ultimaker 2 now has the proper speed again.
+Changing material while the Ultimaker 2 is paused works again.
 
 [2.3.1]
 *Layer Height in Profile Selection
