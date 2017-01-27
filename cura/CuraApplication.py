@@ -107,6 +107,8 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
+        SettingDefinition.addSettingType("[int]", None, str, None)
+
         SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
         SettingFunction.registerOperator("resolveOrValue", cura.Settings.ExtruderManager.getResolveOrValue)
