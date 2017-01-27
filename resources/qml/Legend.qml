@@ -9,14 +9,13 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Rectangle {
+Item {
     id: base
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     width: childrenRect.width
     height: childrenRect.height
-    color: "transparent"
 
     Connections
     {
