@@ -598,12 +598,12 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_xy label"
 msgid "Default X-Y Jerk"
-msgstr "'Jerk' Default nos eixos X-Y"
+msgstr "Jerk Default nos eixos X-Y"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_xy description"
 msgid "Default jerk for movement in the horizontal plane."
-msgstr "O valor default de 'jerk' para movimentos no plano horizontal"
+msgstr "O valor default de jerk para movimentos no plano horizontal"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_z label"
@@ -613,7 +613,7 @@ msgstr "O Jerk Default em Z"
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_z description"
 msgid "Default jerk for the motor of the Z-direction."
-msgstr "O valor default de 'jerk' para movimento na direção Z."
+msgstr "O valor default de jerk para movimento na direção Z."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e label"
@@ -623,7 +623,7 @@ msgstr "Jerk Default do Filamento"
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e description"
 msgid "Default jerk for the motor of the filament."
-msgstr "O valor default de 'jerk' para movimentação do filamento."
+msgstr "O valor default de jerk para movimentação do filamento."
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
@@ -2277,14 +2277,14 @@ msgid ""
 "axis changes. Increasing the jerk can reduce printing time at the cost of "
 "print quality."
 msgstr ""
-"Permite ajustar o 'jerk' da cabeça de impressão quando a velocidade nos "
+"Permite ajustar o jerk da cabeça de impressão quando a velocidade nos "
 "eixos X ou Y muda. Aumentar o jerk pode reduzir o tempo de impressão ao "
 "custo de qualidade de impressão."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
 msgid "Print Jerk"
-msgstr "'Jerk' da Impressão"
+msgstr "Jerk da Impressão"
 
 #: fdmprinter.def.json
 msgctxt "jerk_print description"
@@ -2296,7 +2296,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_infill label"
 msgid "Infill Jerk"
-msgstr "'Jerk' do Preenchimento"
+msgstr "Jerk do Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "jerk_infill description"
@@ -2308,7 +2308,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_wall label"
 msgid "Wall Jerk"
-msgstr "'Jerk' da Parede"
+msgstr "Jerk da Parede"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall description"
@@ -2321,7 +2321,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 label"
 msgid "Outer Wall Jerk"
-msgstr "'Jerk' da Parede Exterior"
+msgstr "Jerk da Parede Exterior"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 description"
@@ -2335,7 +2335,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
-msgstr "'Jerk' das Paredes Internas"
+msgstr "Jerk das Paredes Internas"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x description"
@@ -2349,7 +2349,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom label"
 msgid "Top/Bottom Jerk"
-msgstr "'Jerk' Superior/Inferior"
+msgstr "Jerk Superior/Inferior"
 
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom description"
@@ -2363,7 +2363,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
 msgid "Support Jerk"
-msgstr "'Jerk' do Suporte"
+msgstr "Jerk do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support description"
@@ -2377,7 +2377,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_support_infill label"
 msgid "Support Infill Jerk"
-msgstr "'Jerk' de Preenchimento de Suporte"
+msgstr "Jerk de Preenchimento de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_infill description"
@@ -2391,7 +2391,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface label"
 msgid "Support Interface Jerk"
-msgstr "'Jerk' da Interface de Suporte"
+msgstr "Jerk da Interface de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface description"
@@ -2405,7 +2405,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
 msgid "Prime Tower Jerk"
-msgstr "'Jerk' da Torre de Purga"
+msgstr "Jerk da Torre de Purga"
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower description"
@@ -2419,7 +2419,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_travel label"
 msgid "Travel Jerk"
-msgstr "'Jerk' de Viagem"
+msgstr "Jerk de Viagem"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel description"
@@ -2432,7 +2432,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 label"
 msgid "Initial Layer Jerk"
-msgstr "'Jerk' da Camada Inicial"
+msgstr "Jerk da Camada Inicial"
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -2444,7 +2444,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_print_layer_0 label"
 msgid "Initial Layer Print Jerk"
-msgstr "'Jerk' de Impressão da Camada Inicial"
+msgstr "Jerk de Impressão da Camada Inicial"
 
 #: fdmprinter.def.json
 msgctxt "jerk_print_layer_0 description"
@@ -2458,7 +2458,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 label"
 msgid "Initial Layer Travel Jerk"
-msgstr "'Jerk' de Viagem da Camada Inicial"
+msgstr "Jerk de Viagem da Camada Inicial"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 description"
@@ -2470,7 +2470,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "'Jerk' de Skirt e Brim"
+msgstr "Jerk de Skirt e Brim"
 
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim description"
@@ -3857,7 +3857,7 @@ msgstr "A aceleração com que as camadas de base do raft são impressas."
 #: fdmprinter.def.json
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
-msgstr "'Jerk' de Impressão do Raft"
+msgstr "Jerk de Impressão do Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_jerk description"
@@ -3867,7 +3867,7 @@ msgstr "O jerk com o qual o raft é impresso."
 #: fdmprinter.def.json
 msgctxt "raft_surface_jerk label"
 msgid "Raft Top Print Jerk"
-msgstr "'Jerk' de Impressão do Topo do Raft"
+msgstr "Jerk de Impressão do Topo do Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_jerk description"
@@ -3877,7 +3877,7 @@ msgstr "O jerk com o qual as camadas superiores do raft são impressas."
 #: fdmprinter.def.json
 msgctxt "raft_interface_jerk label"
 msgid "Raft Middle Print Jerk"
-msgstr "'Jerk' de Impressão do Meio do Raft"
+msgstr "Jerk de Impressão do Meio do Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_jerk description"
@@ -3887,7 +3887,7 @@ msgstr "O jerk com o qual a camada intermediária do raft é impressa."
 #: fdmprinter.def.json
 msgctxt "raft_base_jerk label"
 msgid "Raft Base Print Jerk"
-msgstr "'Jerk' de Impressão da Base do Raft"
+msgstr "Jerk de Impressão da Base do Raft"
 
 #: fdmprinter.def.json
 msgctxt "raft_base_jerk description"
@@ -4317,7 +4317,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "anti_overhang_mesh label"
 msgid "Anti Overhang Mesh"
-msgstr "Malha Anti-Suporte"
+msgstr "Malha Anti-Pendente"
 
 #: fdmprinter.def.json
 msgctxt "anti_overhang_mesh description"
@@ -4326,7 +4326,7 @@ msgid ""
 "overhang. This can be used to remove unwanted support structure."
 msgstr ""
 "Use esta malha para especificar onde nenhuma parte do modelo deverá ser "
-"detectada como seção pendentes e por conseguinte não elegível a receber "
+"detectada como seção Pendente e por conseguinte não elegível a receber "
 "suporte. Com esta malha sobreposta a um modelo, você poderá marcar onde ele "
 "não deverá receber suporte."
 

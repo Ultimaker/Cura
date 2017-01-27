@@ -1720,7 +1720,7 @@ msgid ""
 "buildplate. When you click 'Move to Next Position' the nozzle will move to "
 "the different positions that can be adjusted."
 msgstr ""
-"Para garantir que suas impressão saiam ótimas, você pode agora ajustar sua "
+"Para garantir que suas impressões saiam ótimas, você deve agora ajustar sua "
 "mesa de impressão. Quando você clicar em 'Mover para a Posição Seguinte', o "
 "bico se moverá para posições diferentes que podem ser ajustadas."
 
