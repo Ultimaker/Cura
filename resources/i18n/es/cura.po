@@ -51,19 +51,19 @@ msgstr "Rayos X"
 #, fuzzy
 msgctxt "@label"
 msgid "X3D Reader"
-msgstr "Lector de 3MF"
+msgstr "Lector de X3D"
 
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:14
 #, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for reading X3D files."
-msgstr "Proporciona asistencia para leer archivos 3MF."
+msgstr "Proporciona asistencia para leer archivos X3D."
 
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:20
 #, fuzzy
 msgctxt "@item:inlistbox"
 msgid "X3D File"
-msgstr "Archivo 3MF"
+msgstr "Archivo X3D"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeWriter/__init__.py:12
 msgctxt "@label"
