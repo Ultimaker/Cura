@@ -64,6 +64,7 @@ class LayerView(View):
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
+        Preferences.getInstance().addPreference("view/reduce_line_widths", False)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))

@@ -263,7 +263,19 @@ UM.PreferencesPage
                 onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
             }
         }
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Slightly reduce width of displayed lines so that the inter-line gaps are always visible (reslice required after changing).")
 
+            CheckBox
+            {
+                id: reduceLineWidthsCheckbox
+                text: catalog.i18nc("@option:check", "Slightly reduce line widths in layer view")
+                checked: boolCheck(UM.Preferences.getValue("view/reduce_line_widths"))
+                onCheckedChanged: UM.Preferences.setValue("view/reduce_line_widths", checked)
+            }
+        }
         Item
         {
             //: Spacer

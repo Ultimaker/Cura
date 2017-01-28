@@ -4,6 +4,7 @@
 import gc
 
 from UM.Job import Job
+from UM.Preferences import Preferences
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
@@ -86,6 +87,8 @@ class ProcessSlicedLayersJob(Job):
 
         current_layer = 0
 
+        reduce_line_widths = bool(Preferences.getInstance().getValue("view/reduce_line_widths"))
+
         for layer in self._layers:
             abs_layer_number = layer.id + abs(min_layer_number)
 
@@ -110,7 +113,9 @@ class ProcessSlicedLayersJob(Job):
 
                 line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
-                
+                if reduce_line_widths:
+                    line_widths = line_widths * 0.9;
+
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
