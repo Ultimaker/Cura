@@ -1,4 +1,3 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
@@ -13,19 +12,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "machine_shape label"
 msgid "Build plate shape"
 msgstr "Vorm van het platform"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
 msgstr "Aantal extruders"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "machine_heat_zone_length description"
 msgid ""
 "The distance from the tip of the nozzle in which heat from the nozzle is "
@@ -35,13 +31,11 @@ msgstr ""
 "overgedragen aan het filament."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "machine_filament_park_distance label"
 msgid "Filament Park Distance"
 msgstr "Parkeerafstand filament"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "machine_filament_park_distance description"
 msgid ""
 "The distance from the tip of the nozzle where to park the filament when an "
@@ -51,37 +45,31 @@ msgstr ""
 "geparkeerd wanneer een extruder niet meer wordt gebruikt."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
 msgstr "Verboden gebieden voor de nozzle"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
 msgstr "Een lijst polygonen met gebieden waarin de nozzle niet mag komen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Veegafstand buitenwand"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "fill_perimeter_gaps label"
 msgid "Fill Gaps Between Walls"
 msgstr "Gaten tussen wanden vullen"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "fill_perimeter_gaps option everywhere"
 msgid "Everywhere"
 msgstr "Overal"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "z_seam_type description"
 msgid ""
 "Starting point of each path in a layer. When paths in consecutive layers "
@@ -99,7 +87,6 @@ msgstr ""
 "wordt gekozen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "z_seam_x description"
 msgid ""
 "The X coordinate of the position near where to start printing each part in a "
@@ -109,7 +96,6 @@ msgstr ""
 "een laag moet worden begonnen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "z_seam_y description"
 msgid ""
 "The Y coordinate of the position near where to start printing each part in a "
@@ -119,25 +105,21 @@ msgstr ""
 "een laag moet worden begonnen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "infill_pattern option concentric_3d"
 msgid "Concentric 3D"
 msgstr "Concentrisch 3D"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "Standaard printtemperatuur"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "material_print_temperature_layer_0 label"
 msgid "Printing Temperature Initial Layer"
 msgstr "Printtemperatuur van de eerste laag"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "material_print_temperature_layer_0 description"
 msgid ""
 "The temperature used for printing the first layer. Set at 0 to disable "
@@ -147,37 +129,31 @@ msgstr ""
 "om speciale bewerkingen voor de eerste laag uit te schakelen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Starttemperatuur voor printen"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "material_final_print_temperature label"
 msgid "Final Printing Temperature"
 msgstr "Eindtemperatuur voor printen"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
 msgstr "Platformtemperatuur voor de eerste laag"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer."
 msgstr "De temperatuur van het verwarmde platform voor de eerste laag."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "retract_at_layer_change description"
 msgid "Retract the filament when the nozzle is moving to the next layer."
 msgstr "Trek het filament in wanneer de nozzle naar de volgende laag beweegt. "
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "speed_travel_layer_0 description"
 msgid ""
 "The speed of travel moves in the initial layer. A lower value is advised to "
@@ -192,7 +168,6 @@ msgstr ""
 "bewegingssnelheid en de printsnelheid."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "retraction_combing description"
 msgid ""
 "Combing keeps the nozzle within already printed areas when traveling. This "
@@ -209,13 +184,11 @@ msgstr ""
 "te voorkomen door alleen combing te gebruiken over de vulling."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
 msgstr "Geprinte delen mijden tijdens bewegingen"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "layer_start_x description"
 msgid ""
 "The X coordinate of the position near where to find the part to start "
@@ -225,7 +198,6 @@ msgstr ""
 "laag kan worden begonnen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "layer_start_y description"
 msgid ""
 "The Y coordinate of the position near where to find the part to start "
@@ -235,19 +207,16 @@ msgstr ""
 "laag kan worden begonnen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "retraction_hop_enabled label"
 msgid "Z Hop When Retracted"
 msgstr "Z-sprong wanneer ingetrokken"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_speed_0 label"
 msgid "Initial Fan Speed"
 msgstr "Startsnelheid ventilator"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_speed_0 description"
 msgid ""
 "The speed at which the fans spin at the start of the print. In subsequent "
@@ -260,7 +229,6 @@ msgstr ""
 "normale ventilatorsnelheid op hoogte."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_full_at_height description"
 msgid ""
 "The height at which the fans spin on regular fan speed. At the layers below "
@@ -272,7 +240,6 @@ msgstr ""
 "verhoogd van de startsnelheid ventilator naar de normale ventilatorsnelheid."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_min_layer_time description"
 msgid ""
 "The minimum time spent in a layer. This forces the printer to slow down, to "
@@ -290,37 +257,31 @@ msgstr ""
 "zou worden voldaan aan de Minimumsnelheid."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_pattern option concentric_3d"
 msgid "Concentric 3D"
 msgstr "Concentrisch 3D"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_pattern option concentric_3d"
 msgid "Concentric 3D"
 msgstr "Concentrisch 3D"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Minimumvolume primepijler"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "prime_tower_wall_thickness label"
 msgid "Prime Tower Thickness"
 msgstr "Dikte primepijler"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Inactive Nozzle on Prime Tower"
 msgstr "Inactieve nozzle vegen op primepijler"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "meshfix_union_all description"
 msgid ""
 "Ignore the internal geometry arising from overlapping volumes within a mesh "
@@ -332,7 +293,6 @@ msgstr ""
 "binnenin verdwijnen."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "multiple_mesh_overlap description"
 msgid ""
 "Make meshes which are touching each other overlap a bit. This makes them "
@@ -342,19 +302,16 @@ msgstr ""
 "ze beter aan elkaar."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "alternate_carve_order label"
 msgid "Alternate Mesh Removal"
 msgstr "Verwijderen van afwisselend raster"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_mesh label"
 msgid "Support Mesh"
 msgstr "Supportstructuur raster"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_mesh description"
 msgid ""
 "Use this mesh to specify support areas. This can be used to generate support "
@@ -364,19 +321,16 @@ msgstr ""
 "gebruikt om supportstructuur te genereren."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "anti_overhang_mesh label"
 msgid "Anti Overhang Mesh"
 msgstr "Raster tegen overhang"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_position_x description"
 msgid "Offset applied to the object in the x direction."
 msgstr "De offset die in de X-richting wordt toegepast op het object."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_position_y description"
 msgid "Offset applied to the object in the y direction."
 msgstr "De offset die in de Y-richting wordt toegepast op het object."

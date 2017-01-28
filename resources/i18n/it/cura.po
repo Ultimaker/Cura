@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -18,55 +17,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:11
-#, fuzzy
 msgctxt "@label"
 msgid "X3D Reader"
 msgstr "Lettore X3D"
 
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:14
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for reading X3D files."
 msgstr "Fornisce il supporto per la lettura di file X3D."
 
 #: /home/ruben/Projects/Cura/plugins/X3DReader/__init__.py:20
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "File X3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:17
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Accepts G-Code and sends them over WiFi to a Doodle3D WiFi-Box."
 msgstr "Accetta i G-Code e li invia tramite WiFi a un Doodle3D WiFi-Box."
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:36
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Doodle3D printing"
 msgstr "Stampa Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:37
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print with Doodle3D"
 msgstr "Stampa con Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/PrinterConnection.py:38
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Print with "
 msgstr "Stampa con"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:27
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
 msgstr "Stampa tramite USB"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:440
-#, fuzzy
 msgctxt "@info:status"
 msgid ""
 "Unable to start a new job because the printer does not support usb printing."
@@ -75,31 +65,27 @@ msgstr ""
 "supporta la stampa tramite USB."
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
-#, fuzzy
 msgctxt "X3G Writer Plugin Description"
 msgid "Writes X3G to a file"
 msgstr "Scrive X3G in un file"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:22
-#, fuzzy
 msgctxt "X3G Writer File Description"
 msgid "X3G File"
 msgstr "File X3G"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Salva su unità rimovibile"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:103
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Stampa sulla rete"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:574
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@label"
 msgid ""
 "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}"
@@ -107,7 +93,6 @@ msgstr ""
 "PrintCore diverso (Cura: {0}, Stampante: {1}) selezionato per l’estrusore {2}"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:600
-#, fuzzy
 msgctxt "@label"
 msgid ""
 "There is a mismatch between the configuration or calibration of the printer "
@@ -119,13 +104,11 @@ msgstr ""
 "PrintCore e i materiali inseriti nella stampante utilizzata."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1019
-#, fuzzy
 msgctxt "@window:title"
 msgid "Sync with your printer"
 msgstr "Sincronizzazione con la stampante"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1023
-#, fuzzy
 msgctxt "@label"
 msgid ""
 "The print cores and/or materials on your printer differ from those within "
@@ -137,20 +120,17 @@ msgstr ""
 "PrintCore e i materiali inseriti nella stampante utilizzata."
 
 #: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade22to24/__init__.py:14
-#, fuzzy
 msgctxt "@label"
 msgid "Version Upgrade 2.2 to 2.4"
 msgstr "Aggiornamento della versione da 2.2 a 2.4"
 
 #: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade22to24/__init__.py:17
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
 msgstr "Aggiorna le configurazioni da Cura 2.2 a Cura 2.4."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:237
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:76
-#, fuzzy
 msgctxt "@info:status"
 msgid ""
 "The selected material is incompatible with the selected machine or "
@@ -160,7 +140,7 @@ msgstr ""
 "selezionata."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:258
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "Unable to slice with the current settings. The following settings have "
@@ -170,37 +150,32 @@ msgstr ""
 "seguenti impostazioni presentano errori: {0}"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:13
-#, fuzzy
 msgctxt "@label"
 msgid "3MF Writer"
 msgstr "Writer 3MF"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:16
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for writing 3MF files."
 msgstr "Fornisce il supporto per la scrittura di file 3MF."
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:22
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF file"
 msgstr "File 3MF"
 
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:30
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "File 3MF Progetto Cura"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:928
-#, fuzzy
 msgctxt "@label"
 msgid "You made changes to the following setting(s)/override(s):"
 msgstr "Sono state apportate modifiche alle seguenti impostazioni/esclusioni:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:948
-#, fuzzy, python-format
+#, python-format
 msgctxt "@label"
 msgid ""
 "Do you want to transfer your %d changed setting(s)/override(s) to this "
@@ -210,7 +185,6 @@ msgstr ""
 "profilo?"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:951
-#, fuzzy
 msgctxt "@label"
 msgid ""
 "If you transfer your settings they will override settings in the profile. If "
@@ -221,13 +195,12 @@ msgstr ""
 "verranno perse."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:213
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Il profilo {0} ha un tipo di file sconosciuto o corrotto."
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:74
-#, fuzzy
 msgctxt "@label"
 msgid ""
 "<p>A fatal exception has occurred that we could not recover from!</p>\n"
@@ -246,26 +219,22 @@ msgstr ""
 "issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:129
-#, fuzzy
 msgctxt "@label"
 msgid "Build Plate Shape"
 msgstr "Forma del piano di stampa"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/SettingsWindow.qml:20
-#, fuzzy
 msgctxt "@title:window"
 msgid "Doodle3D Settings"
 msgstr "Impostazioni Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/SettingsWindow.qml:53
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:245
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save"
 msgstr "Salva"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:23
-#, fuzzy
 msgctxt "@title:window"
 msgid "Print to: %1"
 msgstr "Stampa a: %1"
@@ -276,7 +245,6 @@ msgstr "Stampa a: %1"
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:45
-#, fuzzy
 msgctxt "@label"
 msgid ""
 msgstr ""
@@ -292,45 +260,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:64
-#, fuzzy
 msgctxt "@label"
 msgid "%1"
 msgstr "%1"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:82
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Stampa"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:243
-#, fuzzy
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Sconosciuto"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:13
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open Project"
 msgstr "Apri progetto"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:61
-#, fuzzy
 msgctxt "@action:ComboBox option"
 msgid "Create new"
 msgstr "Crea nuovo"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:94
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:96
-#, fuzzy
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "Impostazioni della stampante"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:130
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:105
-#, fuzzy
 msgctxt "@action:label"
 msgid "Type"
 msgstr "Tipo"
@@ -340,84 +301,71 @@ msgstr "Tipo"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:295
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:120
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:196
-#, fuzzy
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Nome"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:172
-#, fuzzy
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Impostazioni profilo"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:218
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:180
-#, fuzzy
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Non nel profilo"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:255
-#, fuzzy
 msgctxt "@action:label"
 msgid "Material settings"
 msgstr "Impostazioni materiale"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:314
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:215
-#, fuzzy
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "Impostazione visibilità"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:323
-#, fuzzy
 msgctxt "@action:label"
 msgid "Mode"
 msgstr "Modalità"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:338
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:224
-#, fuzzy
 msgctxt "@action:label"
 msgid "Visible settings:"
 msgstr "Impostazioni visibili:"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:369
-#, fuzzy
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the buildplate"
 msgstr ""
 "Il caricamento di un modello annulla tutti i modelli sul piano di stampa"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:388
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open"
 msgstr "Apri"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:25
-#, fuzzy
 msgctxt "@title"
 msgid "Information"
 msgstr "Informazioni"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:165
-#, fuzzy
 msgctxt "@action:button"
 msgid "Update profile with current settings/overrides"
 msgstr "Aggiorna il profilo con le impostazioni/esclusioni correnti"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:173
-#, fuzzy
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Elimina le modifiche correnti"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:190
-#, fuzzy
 msgctxt "@action:label"
 msgid ""
 "This profile uses the defaults specified by the printer, so it has no "
@@ -427,13 +375,11 @@ msgstr ""
 "non ci sono impostazioni/esclusioni nell’elenco riportato di seguito."
 
 #: /home/ruben/Projects/Cura/resources/qml/AddMachineDialog.qml:182
-#, fuzzy
 msgctxt "@label"
 msgid "Printer Name:"
 msgstr "Nome stampante:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:69
-#, fuzzy
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
@@ -443,85 +389,71 @@ msgstr ""
 "Cura è orgogliosa di utilizzare i seguenti progetti open source:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:116
-#, fuzzy
 msgctxt "@label"
 msgid "GCode generator"
 msgstr "GCode generator"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:373
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "Nascondi questa impostazione"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:377
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Mantieni visibile questa impostazione"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:26
-#, fuzzy
 msgctxt "@title:menuitem %1 is the automatically selected material"
 msgid "Automatic: %1"
 msgstr "Automatico: %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:126
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "&Aggiorna il profilo con le impostazioni/esclusioni correnti"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:134
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "&Elimina le modifiche correnti"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:146
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "&Crea profilo dalle impostazioni/esclusioni correnti..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:293
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open Project..."
 msgstr "&Apri progetto..."
 
 #: /home/ruben/Projects/Cura/resources/qml/MultiplyObjectOptions.qml:15
-#, fuzzy
 msgctxt "@title:window"
 msgid "Multiply Model"
 msgstr "Moltiplica modello"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:152
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 & materiale"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:40
-#, fuzzy
 msgctxt "@label"
 msgid "Infill"
 msgstr "Riempimento"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:283
-#, fuzzy
 msgctxt "@label"
 msgid "Support Extruder"
 msgstr "Estrusore del supporto"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:382
-#, fuzzy
 msgctxt "@label"
 msgid "Build Plate Adhesion"
 msgstr "Adesione piano di stampa"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarHeader.qml:329
-#, fuzzy
 msgctxt "@tooltip"
 msgid ""
 "Some setting/override values are different from the values stored in the "
