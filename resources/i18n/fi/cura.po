@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-28 10:51+0100\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
+"PO-Revision-Date: 2017-01-12 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -83,7 +83,7 @@ msgstr "GCode-tiedosto"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:13
 msgctxt "@label"
 msgid "Doodle3D"
-msgstr ""
+msgstr "Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:17
 #, fuzzy
@@ -112,12 +112,12 @@ msgstr "Tulosta malli seuraavalla:"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:49
 msgctxt "@title:menu"
 msgid "Doodle3D"
-msgstr ""
+msgstr "Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:50
 msgctxt "@item:inlistbox"
 msgid "Enable Scan devices..."
-msgstr ""
+msgstr "Ota skannauslaitteet käyttöön..."
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/__init__.py:12
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
@@ -418,7 +418,7 @@ msgstr "Eri materiaali (Cura: {0}, tulostin: {1}) valittu suulakkeelle {2}"
 #, python-brace-format
 msgctxt "@label"
 msgid "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer."
-msgstr ""
+msgstr "Print Core -tulostusydintä {0} ei ole kalibroitu oikein. Tulostimen XY-kalibrointi tulee suorittaa."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:599
 msgctxt "@label"
@@ -488,7 +488,7 @@ msgstr "Lähetetään tietoja tulostimeen"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1021
 msgctxt "@label"
 msgid "Would you like to use your current printer configuration in Cura?"
-msgstr ""
+msgstr "Haluatko käyttää nykyistä tulostimen määritystä Curassa?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1023
 #, fuzzy
@@ -678,7 +678,7 @@ msgstr "Viipalointi ei onnistu nykyisten asetuksien ollessa voimassa. Tarkista, 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:267
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
-msgstr ""
+msgstr "Viipalointi ei onnistu, koska esitäyttötorni tai esitäytön sijainti tai sijainnit eivät kelpaa."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:275
 msgctxt "@info:status"
@@ -1121,7 +1121,7 @@ msgstr "Tulostin: %1"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:40
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
-msgstr ""
+msgstr "Suulakkeen lämpötila: %1/%2 °C"
 
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -1147,7 +1147,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
 msgid "Bed Temperature: %1/%2°C"
-msgstr ""
+msgstr "Pöydän lämpötila: %1/%2 °C"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:64
 #, fuzzy
@@ -1229,10 +1229,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"Tulosta suoraan tulostimeen verkon kautta yhdistämällä tulostin verkkoon verkkokaapelilla tai yhdistämällä tulostin Wi-Fi-verkkoon. Jos Curaa ei yhdistetä tulostimeen, GCode-tiedostot voidaan silti siirtää tulostimeen USB-aseman avulla.\n"
-"\n"
-"Valitse tulostin alla olevasta luettelosta:"
+msgstr "Tulosta suoraan tulostimeen verkon kautta yhdistämällä tulostin verkkoon verkkokaapelilla tai yhdistämällä tulostin Wi-Fi-verkkoon. Jos Curaa ei yhdistetä tulostimeen, GCode-tiedostot voidaan silti siirtää tulostimeen USB-aseman avulla.\n\nValitse tulostin alla olevasta luettelosta:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:77
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1473,7 +1470,7 @@ msgstr "Avaa &viimeisin"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:60
 msgctxt "@action:ComboBox option"
 msgid "Update existing"
-msgstr ""
+msgstr "Päivitä nykyinen"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:61
 #, fuzzy
@@ -1485,7 +1482,7 @@ msgstr "Luo"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:78
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
-msgstr ""
+msgstr "Yhteenveto – Cura-projekti"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:94
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:96
@@ -1497,7 +1494,7 @@ msgstr "Tulostimen asetukset"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:110
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
-msgstr ""
+msgstr "Miten laitteen ristiriita pitäisi ratkaista?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:130
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:105
@@ -1526,7 +1523,7 @@ msgstr "Tulostusasetukset"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
-msgstr ""
+msgstr "Miten profiilin ristiriita pitäisi ratkaista?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:218
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:180
@@ -1540,20 +1537,20 @@ msgstr "Mukautettu profiili"
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 ohitus"
+msgstr[1] "%1 ohitusta"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:234
 msgctxt "@action:label"
 msgid "Derivative from"
-msgstr ""
+msgstr "Johdettu seuraavista"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:239
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1, %2 ohitus"
+msgstr[1] "%1, %2 ohitusta"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:255
 #, fuzzy
@@ -1564,7 +1561,7 @@ msgstr "Tulostusasetukset"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:271
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the material be resolved?"
-msgstr ""
+msgstr "Miten materiaalin ristiriita pitäisi ratkaista?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:314
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:215
@@ -1590,7 +1587,7 @@ msgstr "Valitse asetukset"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:229
 msgctxt "@action:label"
 msgid "%1 out of %2"
-msgstr ""
+msgstr "%1/%2"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:369
 #, fuzzy
@@ -2071,12 +2068,12 @@ msgstr "Lisää laitteen etuliite työn nimeen"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:310
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
-msgstr ""
+msgstr "Näytetäänkö yhteenveto, kun projektitiedosto tallennetaan?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:314
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
-msgstr ""
+msgstr "Näytä yhteenvetoikkuna, kun projekti tallennetaan"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:332
 msgctxt "@label"
@@ -2355,12 +2352,12 @@ msgstr "Cura-ohjelman on kehittänyt Ultimaker B.V. yhteistyössä käyttäjäyh
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:114
 msgctxt "@label"
 msgid "Graphical user interface"
-msgstr ""
+msgstr "Graafinen käyttöliittymä"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:115
 msgctxt "@label"
 msgid "Application framework"
-msgstr ""
+msgstr "Sovelluskehys"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:116
 #, fuzzy
@@ -2371,72 +2368,72 @@ msgstr "GCode-kirjoitin"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:117
 msgctxt "@label"
 msgid "Interprocess communication library"
-msgstr ""
+msgstr "Prosessien välinen tietoliikennekirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:119
 msgctxt "@label"
 msgid "Programming language"
-msgstr ""
+msgstr "Ohjelmointikieli"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:120
 msgctxt "@label"
 msgid "GUI framework"
-msgstr ""
+msgstr "GUI-kehys"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:121
 msgctxt "@label"
 msgid "GUI framework bindings"
-msgstr ""
+msgstr "GUI-kehyksen sidonnat"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:122
 msgctxt "@label"
 msgid "C/C++ Binding library"
-msgstr ""
+msgstr "C/C++ -sidontakirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:123
 msgctxt "@label"
 msgid "Data interchange format"
-msgstr ""
+msgstr "Data Interchange Format"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:124
 msgctxt "@label"
 msgid "Support library for scientific computing "
-msgstr ""
+msgstr "Tieteellisen laskennan tukikirjasto "
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:125
 msgctxt "@label"
 msgid "Support library for faster math"
-msgstr ""
+msgstr "Nopeamman laskennan tukikirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:126
 msgctxt "@label"
 msgid "Support library for handling STL files"
-msgstr ""
+msgstr "STL-tiedostojen käsittelyn tukikirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:127
 msgctxt "@label"
 msgid "Serial communication library"
-msgstr ""
+msgstr "Sarjatietoliikennekirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:128
 msgctxt "@label"
 msgid "ZeroConf discovery library"
-msgstr ""
+msgstr "ZeroConf-etsintäkirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:129
 msgctxt "@label"
 msgid "Polygon clipping library"
-msgstr ""
+msgstr "Monikulmion leikkauskirjasto"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:130
 msgctxt "@label"
 msgid "Font"
-msgstr ""
+msgstr "Fontti"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:131
 msgctxt "@label"
 msgid "SVG icons"
-msgstr ""
+msgstr "SVG-kuvakkeet"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:348
 msgctxt "@action:menu"
@@ -2471,10 +2468,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"Jotkin piilotetut asetukset käyttävät arvoja, jotka eroavat normaaleista lasketuista arvoista.\n"
-"\n"
-"Tee asetuksista näkyviä napsauttamalla."
+msgstr "Jotkin piilotetut asetukset käyttävät arvoja, jotka eroavat normaaleista lasketuista arvoista.\n\nTee asetuksista näkyviä napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:60
 msgctxt "@label Header for list of settings."
@@ -2502,10 +2496,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"Tämän asetuksen arvo eroaa profiilin arvosta.\n"
-"\n"
-"Palauta profiilin arvo napsauttamalla."
+msgstr "Tämän asetuksen arvo eroaa profiilin arvosta.\n\nPalauta profiilin arvo napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:288
 msgctxt "@label"
@@ -2513,20 +2504,17 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"Tämä asetus on normaalisti laskettu, mutta sillä on tällä hetkellä absoluuttinen arvo.\n"
-"\n"
-"Palauta laskettu arvo napsauttamalla."
+msgstr "Tämä asetus on normaalisti laskettu, mutta sillä on tällä hetkellä absoluuttinen arvo.\n\nPalauta laskettu arvo napsauttamalla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:162
 msgctxt "@tooltip"
 msgid "<b>Print Setup</b><br/><br/>Edit or review the settings for the active print job."
-msgstr ""
+msgstr "<b>Tulostuksen asennus</b><br/><br/>Muokkaa tai tarkastele aktiivisen tulostustyön asetuksia."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:220
 msgctxt "@tooltip"
 msgid "<b>Print Monitor</b><br/><br/>Monitor the state of the connected printer and the print job in progress."
-msgstr ""
+msgstr "<b>Tulostimen näyttölaite</b><br/><br/>Seuraa yhdistetyn tulostimen ja käynnissä olevan tulostustyön tilaa."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:273
 msgctxt "@label:listbox"
@@ -2541,12 +2529,12 @@ msgstr "Tulostimen näyttölaite"
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:520
 msgctxt "@tooltip"
 msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
-msgstr ""
+msgstr "<b>Suositeltu tulostuksen asennus</b><br/><br/>Tulosta valitun tulostimen, materiaalin ja laadun suositelluilla asetuksilla."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:526
 msgctxt "@tooltip"
 msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
-msgstr ""
+msgstr "<b>Mukautettu tulostuksen asennus</b><br/><br/>Tulosta hallitsemalla täysin kaikkia viipalointiprosessin vaiheita."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:26
 #, fuzzy
@@ -2715,7 +2703,7 @@ msgstr "&Yhdistä mallit"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:236
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr ""
+msgstr "&Kerro malli..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:243
 msgctxt "@action:inmenu menubar:edit"
@@ -2827,7 +2815,7 @@ msgstr "Tallenna &kaikki"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:114
 msgctxt "@title:menu menubar:file"
 msgid "Save project"
-msgstr ""
+msgstr "Tallenna projekti"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:137
 msgctxt "@title:menu menubar:toplevel"
@@ -2904,17 +2892,17 @@ msgstr "Avaa tiedosto"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:756
 msgctxt "@title:window"
 msgid "Open workspace"
-msgstr ""
+msgstr "Avaa työtila"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:14
 msgctxt "@title:window"
 msgid "Save Project"
-msgstr ""
+msgstr "Tallenna projekti"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:142
 msgctxt "@action:label"
 msgid "Extruder %1"
-msgstr ""
+msgstr "Suulake %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:152
 #, fuzzy
@@ -2925,7 +2913,7 @@ msgstr "&Materiaali"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:236
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
-msgstr ""
+msgstr "Älä näytä projektin yhteenvetoa tallennettaessa"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:40
 #, fuzzy
@@ -2976,12 +2964,12 @@ msgstr "Kiinteä (100 %) täyttö tekee mallista täysin umpinaisen"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:235
 msgctxt "@label"
 msgid "Enable Support"
-msgstr ""
+msgstr "Ota tuki käyttöön"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:266
 msgctxt "@label"
 msgid "Enable support structures. These structures support parts of the model with severe overhangs."
-msgstr ""
+msgstr "Ota tukirakenteet käyttöön. Nämä rakenteet tukevat mallin osia, joissa on merkittäviä ulokkeita."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:283
 #, fuzzy
@@ -3033,10 +3021,7 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"Jotkut asetusten arvot eroavat profiiliin tallennetuista arvoista.\n"
-"\n"
-"Avaa profiilin hallinta napsauttamalla."
+msgstr "Jotkut asetusten arvot eroavat profiiliin tallennetuista arvoista.\n\nAvaa profiilin hallinta napsauttamalla."
 
 #~ msgctxt "@window:title"
 #~ msgid "Changes on the Printer"

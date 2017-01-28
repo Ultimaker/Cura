@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2016-12-28 10:51+0000\n"
-"PO-Revision-Date: 2016-09-29 13:02+0200\n"
+"PO-Revision-Date: 2017-01-12 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
 "Language: \n"
@@ -52,9 +52,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları."
+msgstr "​\n ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -66,9 +64,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"​\n"
-" ile ayrılan, bitişte yürütülecek Gcode komutları."
+msgstr "​\n ile ayrılan, bitişte yürütülecek Gcode komutları."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -149,17 +145,17 @@ msgstr "Yapı Levhası Yapıştırması"
 #: fdmprinter.def.json
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
-msgstr ""
+msgstr "Yazdırılamayan alanların haricinde yapı levhasının şekli."
 
 #: fdmprinter.def.json
 msgctxt "machine_shape option rectangular"
 msgid "Rectangular"
-msgstr ""
+msgstr "Dikdörtgen"
 
 #: fdmprinter.def.json
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
-msgstr ""
+msgstr "Eliptik"
 
 #: fdmprinter.def.json
 msgctxt "machine_height label"
@@ -726,7 +722,7 @@ msgstr "Dolgu Sürme Mesafesi"
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
-msgstr ""
+msgstr "Z dikişini daha iyi gizlemek için dış duvardan sonra eklenen hareket mesafesi."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -872,12 +868,12 @@ msgstr "Duvarlardan Önce Dolgu"
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps description"
 msgid "Fills the gaps between walls where no walls fit."
-msgstr ""
+msgstr "Duvarların sığmadığı yerlerde duvarlar arasında kalan boşlukları doldurur."
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps option nowhere"
 msgid "Nowhere"
-msgstr ""
+msgstr "Hiçbir yerde"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -909,7 +905,7 @@ msgstr "Bir katmandaki her bir yolun başlangıç noktası. Art arda gelen katma
 #: fdmprinter.def.json
 msgctxt "z_seam_type option back"
 msgid "User Specified"
-msgstr ""
+msgstr "Kullanıcı Tarafından Belirtilen"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type option shortest"
@@ -924,7 +920,7 @@ msgstr "Gelişigüzel"
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
 msgid "Z Seam X"
-msgstr ""
+msgstr "Z Dikişi X"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -935,7 +931,7 @@ msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun X koo
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
 msgid "Z Seam Y"
-msgstr ""
+msgstr "Z Dikişi Y"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -1016,7 +1012,7 @@ msgstr "Kübik"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubicsubdiv"
 msgid "Cubic Subdivision"
-msgstr ""
+msgstr "Kübik Alt Bölüm"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -1042,22 +1038,22 @@ msgstr "Zik Zak"
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_mult label"
 msgid "Cubic Subdivision Radius"
-msgstr ""
+msgstr "Kübik Alt Bölüm Yarıçapı"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_mult description"
 msgid "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes."
-msgstr ""
+msgstr "Bu küpün bölünüp bölünmemesine karar vermek için modelin sınırını kontrol eden ve her bir küpün merkezinden alınan yarıçaptaki çarpan. Büyük değerler, daha küçük küpler gibi daha fazla alt bölüm oluşmasına neden olur."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
-msgstr ""
+msgstr "Kübik Alt Bölüm Kalkanı"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add description"
 msgid "An addition to the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to a thicker shell of small cubes near the boundary of the model."
-msgstr ""
+msgstr "Bu küpün bölünüp bölünmemesine karar vermek için modelin sınırını kontrol eden ve her bir küpün merkezinden alınan yarıçapa ekleme. Büyük değerler modelin sınırının yanında daha kalın küçük küp kalkanları oluşmasına neden olur."
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap label"
@@ -1178,7 +1174,7 @@ msgstr "Yazdırma Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr ""
+msgstr "Yazdırma için kullanılan varsayılan sıcaklık. Bu sıcaklık malzemenin “temel” sıcaklığı olmalıdır. Diğer tüm yazıcı sıcaklıkları bu değere dayanan ofsetler kullanmalıdır."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1211,7 +1207,7 @@ msgstr "Yazdırma Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "material_initial_print_temperature description"
 msgid "The minimal temperature while heating up to the Printing Temperature at which printing can already start."
-msgstr ""
+msgstr "Yazdırmanın başlayacağı Yazdırma Sıcaklığına ulaşırken görülen minimum sıcaklık"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -1222,7 +1218,7 @@ msgstr "Yazdırma Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "material_final_print_temperature description"
 msgid "The temperature to which to already start cooling down just before the end of printing."
-msgstr ""
+msgstr "Yazdırma bitmeden hemen önce soğuma işleminin başladığı sıcaklık."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_temp_graph label"
@@ -1299,7 +1295,7 @@ msgstr "Nozül yazdırılamayan alana doğru hareket ettiğinde filamanı geri �
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
 msgid "Retract at Layer Change"
-msgstr ""
+msgstr "Katman Değişimindeki Geri Çekme"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -2018,17 +2014,17 @@ msgstr "Hareket esnasında atlama yaparken nozül ve daha önce yazdırılmış 
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position label"
 msgid "Start Layers with the Same Part"
-msgstr ""
+msgstr "Katmanları Aynı Bölümle Başlatın"
 
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position description"
 msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
-msgstr ""
+msgstr "Bir önceki katmanın bitirdiği bir parçayı yeni bir katmanla tekrar yazdırmamak için, her bir katmanda nesneyi yazdırmaya aynı noktanın yakınından başlayın.  Bu şekilde daha iyi çıkıntılar ve küçük parçalar oluşturulur, ancak yazdırma süresi uzar."
 
 #: fdmprinter.def.json
 msgctxt "layer_start_x label"
 msgid "Layer Start X"
-msgstr ""
+msgstr "Katman Başlangıcı X"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -2039,7 +2035,7 @@ msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun X koo
 #: fdmprinter.def.json
 msgctxt "layer_start_y label"
 msgid "Layer Start Y"
-msgstr ""
+msgstr "Katman Başlangıcı Y"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -2682,7 +2678,7 @@ msgstr "Radye"
 #: fdmprinter.def.json
 msgctxt "adhesion_type option none"
 msgid "None"
-msgstr ""
+msgstr "Hiçbiri"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr label"
@@ -2714,9 +2710,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Etek ve baskının ilk katmanı arasındaki yatay mesafe.\n"
-"Bu minimum mesafedir ve çoklu etek hatları bu mesafeden dışa doğru genişleyecektir."
+msgstr "Etek ve baskının ilk katmanı arasındaki yatay mesafe.\nBu minimum mesafedir ve çoklu etek hatları bu mesafeden dışa doğru genişleyecektir."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3087,7 +3081,7 @@ msgstr "İlk Direk Boyutu"
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
-msgstr ""
+msgstr "Yeterince malzeme temizlemek için ilk direğin her bir katmanı için minimum hacim."
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3098,7 +3092,7 @@ msgstr "İlk Direk Boyutu"
 #: fdmprinter.def.json
 msgctxt "prime_tower_wall_thickness description"
 msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
-msgstr ""
+msgstr "Boş olan ilk direğin kalınlığı Kalınlığın Minimum İlk Direk Hacminin yarısından fazla olması ilk direğin yoğun olmasına neden olur."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
@@ -3144,12 +3138,12 @@ msgstr "Bir nozül ile ilk direği yazdırdıktan sonra, diğer nozülden ilk di
 #: fdmprinter.def.json
 msgctxt "dual_pre_wipe label"
 msgid "Wipe Nozzle After Switch"
-msgstr ""
+msgstr "Değişimden Sonra Sürme Nozülü"
 
 #: fdmprinter.def.json
 msgctxt "dual_pre_wipe description"
 msgid "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print."
-msgstr ""
+msgstr "Ekstruderi değiştirdikten sonra ilk nesne yazdırıldığında nozülden sızan malzemeyi temizleyin. Bu, sızdırılan malzemenin yazdırmanın yüzey kalitesine en az zarar verdiği yerlerde güvenli ve yavaş bir temizleme hareketi gerçekleştirir."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -3235,7 +3229,7 @@ msgstr "Normal koşullarda, Cura ağdaki küçük boşlukları diker ve büyük 
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Merged Meshes Overlap"
-msgstr ""
+msgstr "Birleştirilmiş Bileşim Çakışması"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3246,12 +3240,12 @@ msgstr "Farklı ekstruderle ile yazdırılan modelleri biraz üst üste bindirin
 #: fdmprinter.def.json
 msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
-msgstr ""
+msgstr "Bileşim Kesişimini Kaldırın"
 
 #: fdmprinter.def.json
 msgctxt "carve_multiple_volumes description"
 msgid "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other."
-msgstr ""
+msgstr "Birden fazla bileşimin çakıştığı alanları kaldırın. Bu, birleştirilmiş ikili malzemeler çakıştığında kullanılabilir."
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3262,7 +3256,7 @@ msgstr "Dış Katman Rotasyonunu Değiştir"
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
-msgstr ""
+msgstr "Çakışan bileşimlerin birbirine karışması için her bir katmanda bileşim kesişimi hacimlerine göre değişiklik yapın. Bu ayarın kapatılması, bir bileşimin diğer bileşimlerden ayrılarak çakışmadaki tüm hacmi almasına neden olur."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -3335,7 +3329,7 @@ msgstr "Bağlantı Çakışma Hacimleri"
 #: fdmprinter.def.json
 msgctxt "anti_overhang_mesh description"
 msgid "Use this mesh to specify where no part of the model should be detected as overhang. This can be used to remove unwanted support structure."
-msgstr ""
+msgstr "Bu bileşimi, modelin hiçbir parçasının çıkıntı olarak algılanmadığı durumları belirlemek için kullanın. Bu, istenmeyen destek yapısını kaldırmak için kullanılabilir."
 
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode label"
@@ -3545,12 +3539,12 @@ msgstr "Koni desteği tabanının indirildiği minimum genişlik. Küçük geni�
 #: fdmprinter.def.json
 msgctxt "infill_hollow label"
 msgid "Hollow Out Objects"
-msgstr ""
+msgstr "Nesnelerin Oyulması"
 
 #: fdmprinter.def.json
 msgctxt "infill_hollow description"
 msgid "Remove all infill and make the inside of the object eligible for support."
-msgstr ""
+msgstr "Tüm dolgu malzemesini kaldırın ve nesnenin içini destek için uygun hale getirin."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
@@ -3742,9 +3736,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-"Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+msgstr "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\nBu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -3854,27 +3846,27 @@ msgstr "Nozül ve aşağı yöndeki hatlar arasındaki mesafe. Daha büyük aç�
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
-msgstr ""
+msgstr "Komut Satırı Ayarları"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings description"
 msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
-msgstr ""
+msgstr "Sadece Cura ön ucundan CuraEngine istenmediğinde kullanılan ayarlar."
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center object"
-msgstr ""
+msgstr "Nesneyi ortalayın"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
 msgid "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved."
-msgstr ""
+msgstr "Nesnenin kaydedildiği koordinat sistemini kullanmak yerine nesnenin yapı platformunun (0,0) ortasına yerleştirilmesi."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh position x"
-msgstr ""
+msgstr "Bileşim konumu x"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3885,7 +3877,7 @@ msgstr "X yönü motoru için maksimum hız."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh position y"
-msgstr ""
+msgstr "Bileşim konumu y"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3896,22 +3888,22 @@ msgstr "X yönü motoru için maksimum hız."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh position z"
-msgstr ""
+msgstr "Bileşim konumu z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
 msgid "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'."
-msgstr ""
+msgstr "Nesneye z yönünde uygulanan ofset. Bununla birlikte “Nesne Havuzu” olarak adlandırılan malzemeyi de kullanabilirsiniz."
 
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix label"
 msgid "Mesh Rotation Matrix"
-msgstr ""
+msgstr "Bileşim Rotasyon Matrisi"
 
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
-msgstr ""
+msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi"
 
 #~ msgctxt "z_seam_type option back"
 #~ msgid "Back"

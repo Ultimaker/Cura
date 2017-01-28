@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-28 10:51+0100\n"
-"PO-Revision-Date: 2016-09-29 13:44+0200\n"
+"PO-Revision-Date: 2017-01-12 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -83,7 +83,7 @@ msgstr "G-code-bestand"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:13
 msgctxt "@label"
 msgid "Doodle3D"
-msgstr ""
+msgstr "Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/__init__.py:17
 #, fuzzy
@@ -112,12 +112,12 @@ msgstr "Model printen met"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:49
 msgctxt "@title:menu"
 msgid "Doodle3D"
-msgstr ""
+msgstr "Doodle3D"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/Doodle3D.py:50
 msgctxt "@item:inlistbox"
 msgid "Enable Scan devices..."
-msgstr ""
+msgstr "Scanners inschakelen..."
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/__init__.py:12
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
@@ -418,7 +418,7 @@ msgstr "Afwijkend materiaal (Cura: {0}, Printer: {1}) geselecteerd voor de extru
 #, python-brace-format
 msgctxt "@label"
 msgid "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer."
-msgstr ""
+msgstr "De PrintCore {0} is niet correct gekalibreerd. Op de printer moet XY-kalibratie worden uitgevoerd."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:599
 msgctxt "@label"
@@ -488,7 +488,7 @@ msgstr "De gegevens worden naar de printer verzonden"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1021
 msgctxt "@label"
 msgid "Would you like to use your current printer configuration in Cura?"
-msgstr ""
+msgstr "Wilt u uw huidige printerconfiguratie gebruiken in Cura?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:1023
 #, fuzzy
@@ -678,7 +678,7 @@ msgstr "Met de huidige instellingen is slicing niet mogelijk. Controleer uw inst
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:267
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
-msgstr ""
+msgstr "Slicen is niet mogelijk omdat de terugduwpijler of terugduwpositie(s) ongeldig zijn."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:275
 msgctxt "@info:status"
@@ -1121,7 +1121,7 @@ msgstr "Printer: %1"
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:40
 msgctxt "@label"
 msgid "Extruder Temperature: %1/%2°C"
-msgstr ""
+msgstr "Extrudertemperatuur: %1/%2°C"
 
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -1147,7 +1147,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:46
 msgctxt "@label"
 msgid "Bed Temperature: %1/%2°C"
-msgstr ""
+msgstr "Printbedtemperatuur: %1/%2°C"
 
 #: /home/ruben/Projects/Cura/plugins/Doodle3D-cura-plugin/ControlWindow.qml:64
 #, fuzzy
@@ -1229,10 +1229,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"Als u rechtstreeks via het netwerk wilt printen naar de printer, moet u ervoor zorgen dat de printer met een netwerkkabel is verbonden met het netwerk of moet u verbinding maken met de printer via het wifi-netwerk. Als u geen verbinding maakt tussen Cura en de printer, kunt u een USB-station gebruiken om g-code-bestanden naar de printer over te zetten.\n"
-"\n"
-"Selecteer uw printer in de onderstaande lijst:"
+msgstr "Als u rechtstreeks via het netwerk wilt printen naar de printer, moet u ervoor zorgen dat de printer met een netwerkkabel is verbonden met het netwerk of moet u verbinding maken met de printer via het wifi-netwerk. Als u geen verbinding maakt tussen Cura en de printer, kunt u een USB-station gebruiken om g-code-bestanden naar de printer over te zetten.\n\nSelecteer uw printer in de onderstaande lijst:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:77
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1473,7 +1470,7 @@ msgstr "&Recente bestanden openen"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:60
 msgctxt "@action:ComboBox option"
 msgid "Update existing"
-msgstr ""
+msgstr "Bestaand(e) bijwerken"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:61
 #, fuzzy
@@ -1485,7 +1482,7 @@ msgstr "Maken"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:78
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
-msgstr ""
+msgstr "Samenvatting - Cura-project"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:94
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:96
@@ -1497,7 +1494,7 @@ msgstr "Printerinstellingen"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:110
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
-msgstr ""
+msgstr "Hoe dient het conflict in de machine te worden opgelost?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:130
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:105
@@ -1526,7 +1523,7 @@ msgstr "Instellingen voor printen"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
-msgstr ""
+msgstr "Hoe dient het conflict in het profiel te worden opgelost?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:218
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:180
@@ -1540,20 +1537,20 @@ msgstr "Aangepast profiel"
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 overschrijving"
+msgstr[1] "%1 overschrijvingen"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:234
 msgctxt "@action:label"
 msgid "Derivative from"
-msgstr ""
+msgstr "Afgeleide van"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:239
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1, %2 overschrijving"
+msgstr[1] "%1, %2 overschrijvingen"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:255
 #, fuzzy
@@ -1564,7 +1561,7 @@ msgstr "Instellingen voor printen"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:271
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the material be resolved?"
-msgstr ""
+msgstr "Hoe dient het materiaalconflict te worden opgelost?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:314
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:215
@@ -1590,7 +1587,7 @@ msgstr "Instellingen selecteren"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:229
 msgctxt "@action:label"
 msgid "%1 out of %2"
-msgstr ""
+msgstr "%1 van %2"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:369
 #, fuzzy
@@ -2070,12 +2067,12 @@ msgstr "Machinevoorvoegsel toevoegen aan taaknaam"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:310
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
-msgstr ""
+msgstr "Dient er een samenvatting te worden weergegeven wanneer een projectbestand wordt opgeslagen?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:314
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
-msgstr ""
+msgstr "Dialoogvenster voor samenvatting weergeven tijdens het opslaan van een project"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:332
 msgctxt "@label"
@@ -2354,12 +2351,12 @@ msgstr "Cura is ontwikkeld door Ultimaker B.V. in samenwerking met de community.
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:114
 msgctxt "@label"
 msgid "Graphical user interface"
-msgstr ""
+msgstr "Grafische gebruikersinterface (GUI)"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:115
 msgctxt "@label"
 msgid "Application framework"
-msgstr ""
+msgstr "Toepassingskader"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:116
 #, fuzzy
@@ -2370,72 +2367,72 @@ msgstr "G-code-schrijver"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:117
 msgctxt "@label"
 msgid "Interprocess communication library"
-msgstr ""
+msgstr "InterProcess Communication-bibliotheek"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:119
 msgctxt "@label"
 msgid "Programming language"
-msgstr ""
+msgstr "Programmeertaal"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:120
 msgctxt "@label"
 msgid "GUI framework"
-msgstr ""
+msgstr "GUI-kader"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:121
 msgctxt "@label"
 msgid "GUI framework bindings"
-msgstr ""
+msgstr "Bindingen met GUI-kader"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:122
 msgctxt "@label"
 msgid "C/C++ Binding library"
-msgstr ""
+msgstr "Bindingenbibliotheek C/C++"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:123
 msgctxt "@label"
 msgid "Data interchange format"
-msgstr ""
+msgstr "Indeling voor gegevensuitwisseling"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:124
 msgctxt "@label"
 msgid "Support library for scientific computing "
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor wetenschappelijke berekeningen "
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:125
 msgctxt "@label"
 msgid "Support library for faster math"
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor snellere berekeningen"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:126
 msgctxt "@label"
 msgid "Support library for handling STL files"
-msgstr ""
+msgstr "Ondersteuningsbibliotheek voor het verwerken van STL-bestanden"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:127
 msgctxt "@label"
 msgid "Serial communication library"
-msgstr ""
+msgstr "Seriële-communicatiebibliotheek"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:128
 msgctxt "@label"
 msgid "ZeroConf discovery library"
-msgstr ""
+msgstr "ZeroConf-detectiebibliotheek"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:129
 msgctxt "@label"
 msgid "Polygon clipping library"
-msgstr ""
+msgstr "Bibliotheek met veelhoeken"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:130
 msgctxt "@label"
 msgid "Font"
-msgstr ""
+msgstr "Lettertype"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:131
 msgctxt "@label"
 msgid "SVG icons"
-msgstr ""
+msgstr "SVG-pictogrammen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:348
 msgctxt "@action:menu"
@@ -2470,10 +2467,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde.\n"
-"\n"
-"Klik om deze instellingen zichtbaar te maken."
+msgstr "Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde.\n\nKlik om deze instellingen zichtbaar te maken."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:60
 msgctxt "@label Header for list of settings."
@@ -2501,10 +2495,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"Deze instelling heeft een andere waarde dan in het profiel.\n"
-"\n"
-"Klik om de waarde van het profiel te herstellen."
+msgstr "Deze instelling heeft een andere waarde dan in het profiel.\n\nKlik om de waarde van het profiel te herstellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:288
 msgctxt "@label"
@@ -2512,20 +2503,17 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"Deze instelling wordt normaliter berekend, maar is nu ingesteld op een absolute waarde.\n"
-"\n"
-"Klik om de berekende waarde te herstellen."
+msgstr "Deze instelling wordt normaliter berekend, maar is nu ingesteld op een absolute waarde.\n\nKlik om de berekende waarde te herstellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:162
 msgctxt "@tooltip"
 msgid "<b>Print Setup</b><br/><br/>Edit or review the settings for the active print job."
-msgstr ""
+msgstr "<b>Instelling voor printen</b><br/><br/>Bewerk of controleer de instellingen voor de actieve printtaak."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:220
 msgctxt "@tooltip"
 msgid "<b>Print Monitor</b><br/><br/>Monitor the state of the connected printer and the print job in progress."
-msgstr ""
+msgstr "<b>Printbewaking</b><br/><br/>Bewaak de status van de aangesloten printer en de printtaak die wordt uitgevoerd."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:273
 msgctxt "@label:listbox"
@@ -2540,12 +2528,12 @@ msgstr "Printermonitor"
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:520
 msgctxt "@tooltip"
 msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
-msgstr ""
+msgstr "<b>Aanbevolen instellingen voor printen</b><br/><br/>Print met de aanbevolen instellingen voor de geselecteerde printer en kwaliteit, en het geselecteerde materiaal."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:526
 msgctxt "@tooltip"
 msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
-msgstr ""
+msgstr "<b>Aangepaste instellingen voor printen</b><br/><br/>Print met uiterst precieze controle over elk detail van het slice-proces."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:26
 #, fuzzy
@@ -2714,7 +2702,7 @@ msgstr "Modellen Samen&voegen"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:236
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr ""
+msgstr "&Model verveelvoudigen..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:243
 msgctxt "@action:inmenu menubar:edit"
@@ -2826,7 +2814,7 @@ msgstr "A&lles Opslaan"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:114
 msgctxt "@title:menu menubar:file"
 msgid "Save project"
-msgstr ""
+msgstr "Project opslaan"
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:137
 msgctxt "@title:menu menubar:toplevel"
@@ -2903,17 +2891,17 @@ msgstr "Bestand openen"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:756
 msgctxt "@title:window"
 msgid "Open workspace"
-msgstr ""
+msgstr "Werkruimte openen"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:14
 msgctxt "@title:window"
 msgid "Save Project"
-msgstr ""
+msgstr "Project opslaan"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:142
 msgctxt "@action:label"
 msgid "Extruder %1"
-msgstr ""
+msgstr "Extruder %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:152
 #, fuzzy
@@ -2924,7 +2912,7 @@ msgstr "&Materiaal"
 #: /home/ruben/Projects/Cura/resources/qml/WorkspaceSummaryDialog.qml:236
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
-msgstr ""
+msgstr "Bij opnieuw opslaan projectsamenvatting niet weergeven"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:40
 #, fuzzy
@@ -2975,12 +2963,12 @@ msgstr "Met solide vulling (100%) is uw model volledig massief"
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:235
 msgctxt "@label"
 msgid "Enable Support"
-msgstr ""
+msgstr "Supportstructuur inschakelen"
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:266
 msgctxt "@label"
 msgid "Enable support structures. These structures support parts of the model with severe overhangs."
-msgstr ""
+msgstr "Schakel het printen van een supportstructuur in. Een supportstructuur ondersteunt delen van het model met een zeer grote overhang."
 
 #: /home/ruben/Projects/Cura/resources/qml/SidebarSimple.qml:283
 #, fuzzy
@@ -3032,10 +3020,7 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"Sommige instellingswaarden zijn anders dan de waarden die in het profiel zijn opgeslagen.\n"
-"\n"
-"Klik om het profielbeheer te openen."
+msgstr "Sommige instellingswaarden zijn anders dan de waarden die in het profiel zijn opgeslagen.\n\nKlik om het profielbeheer te openen."
 
 #~ msgctxt "@window:title"
 #~ msgid "Changes on the Printer"

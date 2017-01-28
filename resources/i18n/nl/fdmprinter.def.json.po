@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2016-12-28 10:51+0000\n"
-"PO-Revision-Date: 2016-09-29 13:02+0200\n"
+"PO-Revision-Date: 2017-01-12 15:51+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
 "Language: \n"
@@ -145,17 +145,17 @@ msgstr "Hechting aan Platform"
 #: fdmprinter.def.json
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
-msgstr ""
+msgstr "De vorm van het platform zonder rekening te houden met niet-printbare gebieden."
 
 #: fdmprinter.def.json
 msgctxt "machine_shape option rectangular"
 msgid "Rectangular"
-msgstr ""
+msgstr "Rechthoekig"
 
 #: fdmprinter.def.json
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
-msgstr ""
+msgstr "Ovaal"
 
 #: fdmprinter.def.json
 msgctxt "machine_height label"
@@ -722,7 +722,7 @@ msgstr "Veegafstand Vulling"
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
-msgstr ""
+msgstr "Afstand van een beweging die ingevoegd is na de buitenwand, om de Z-naad beter te maskeren."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -868,12 +868,12 @@ msgstr "Vulling vóór Wanden"
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps description"
 msgid "Fills the gaps between walls where no walls fit."
-msgstr ""
+msgstr "Hiermee worden de gaten tussen wanden gevuld op plekken waar geen wand past."
 
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps option nowhere"
 msgid "Nowhere"
-msgstr ""
+msgstr "Nergens"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -905,7 +905,7 @@ msgstr "Het startpunt voor elk pad in een laag. Wanneer paden in opeenvolgende l
 #: fdmprinter.def.json
 msgctxt "z_seam_type option back"
 msgid "User Specified"
-msgstr ""
+msgstr "Door de gebruiker opgegeven"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type option shortest"
@@ -920,7 +920,7 @@ msgstr "Willekeurig"
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
 msgid "Z Seam X"
-msgstr ""
+msgstr "Z-naad X"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -931,7 +931,7 @@ msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprime
 #: fdmprinter.def.json
 msgctxt "z_seam_y label"
 msgid "Z Seam Y"
-msgstr ""
+msgstr "Z-naad Y"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -1012,7 +1012,7 @@ msgstr "Kubisch"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubicsubdiv"
 msgid "Cubic Subdivision"
-msgstr ""
+msgstr "Kubische onderverdeling"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -1038,22 +1038,22 @@ msgstr "Zigzag"
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_mult label"
 msgid "Cubic Subdivision Radius"
-msgstr ""
+msgstr "Kubische onderverdeling straal"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_mult description"
 msgid "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes."
-msgstr ""
+msgstr "Een vermenigvuldiging van de straal vanuit het midden van elk blok om de rand van het model te detecteren, om te bepalen of het blok moet worden onderverdeeld. Een hogere waarde leidt tot meer onderverdelingen en dus tot kleinere blokken."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
-msgstr ""
+msgstr "Kubische onderverdeling shell"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add description"
 msgid "An addition to the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to a thicker shell of small cubes near the boundary of the model."
-msgstr ""
+msgstr "Een aanvulling op de straal vanuit het midden van elk blok om de rand van het model te detecteren, om te bepalen of het blok moet worden onderverdeeld. Een hogere waarde leidt tot een dikkere shell voor kleine blokken bij de rand van het model."
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap label"
@@ -1174,7 +1174,7 @@ msgstr "Printtemperatuur"
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr ""
+msgstr "De standaardtemperatuur waarmee wordt geprint. Dit moet overeenkomen met de basistemperatuur van een materiaal. Voor alle andere printtemperaturen moet een offset worden gebruikt die gebaseerd is op deze waarde."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1207,7 +1207,7 @@ msgstr "Printtemperatuur"
 #: fdmprinter.def.json
 msgctxt "material_initial_print_temperature description"
 msgid "The minimal temperature while heating up to the Printing Temperature at which printing can already start."
-msgstr ""
+msgstr "De minimale temperatuur tijdens het opwarmen naar de printtemperatuur waarbij met printen kan worden begonnen."
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -1218,7 +1218,7 @@ msgstr "Printtemperatuur"
 #: fdmprinter.def.json
 msgctxt "material_final_print_temperature description"
 msgid "The temperature to which to already start cooling down just before the end of printing."
-msgstr ""
+msgstr "De temperatuur waarnaar alvast kan worden afgekoeld net voordat het printen wordt beëindigd."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_temp_graph label"
@@ -1295,7 +1295,7 @@ msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-p
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
 msgid "Retract at Layer Change"
-msgstr ""
+msgstr "Intrekken bij laagwisseling"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -2014,17 +2014,17 @@ msgstr "De afstand tussen de nozzle en geprinte delen wanneer deze tijdens beweg
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position label"
 msgid "Start Layers with the Same Part"
-msgstr ""
+msgstr "Lagen beginnen met hetzelfde deel"
 
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position description"
 msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
-msgstr ""
+msgstr "Begin het printen van elke laag van het object bij hetzelfde punt, zodat we geen nieuwe laag beginnen met het printen van het deel waarmee de voorgaande laag is geëindigd. Hiermee wordt de kwaliteit van overhangende gedeelten en kleine delen verbeterd, maar duurt het printen langer."
 
 #: fdmprinter.def.json
 msgctxt "layer_start_x label"
 msgid "Layer Start X"
-msgstr ""
+msgstr "Begin laag X"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -2035,7 +2035,7 @@ msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprime
 #: fdmprinter.def.json
 msgctxt "layer_start_y label"
 msgid "Layer Start Y"
-msgstr ""
+msgstr "Begin laag Y"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -2678,7 +2678,7 @@ msgstr "Raft"
 #: fdmprinter.def.json
 msgctxt "adhesion_type option none"
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr label"
@@ -2710,9 +2710,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"De horizontale afstand tussen de skirt en de eerste laag van de print.\n"
-"Dit is de minimumafstand; als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
+msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.\nDit is de minimumafstand; als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3083,7 +3081,7 @@ msgstr "Formaat Primepijler"
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
-msgstr ""
+msgstr "Het minimale volume voor elke laag van de primepijler om voldoende materiaal te zuiveren."
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3094,7 +3092,7 @@ msgstr "Formaat Primepijler"
 #: fdmprinter.def.json
 msgctxt "prime_tower_wall_thickness description"
 msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
-msgstr ""
+msgstr "De dikte van de holle primepijler. Een dikte groter dan de helft van het minimale volume van de primepijler leidt tot een primepijler met een hoge dichtheid."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
@@ -3140,12 +3138,12 @@ msgstr "Veeg na het printen van de primepijler met één nozzle het doorgevoerde
 #: fdmprinter.def.json
 msgctxt "dual_pre_wipe label"
 msgid "Wipe Nozzle After Switch"
-msgstr ""
+msgstr "Nozzle vegen na wisselen"
 
 #: fdmprinter.def.json
 msgctxt "dual_pre_wipe description"
 msgid "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print."
-msgstr ""
+msgstr "Veeg na het wisselen van de extruder het doorgevoerde materiaal van de nozzle af aan het eerste dat wordt geprint. Hiermee wordt met een langzame beweging het doorgevoerde materiaal veilig afgeveegd op een plek waar dit het minste kwaad kan voor de oppervlaktekwaliteit van de print."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -3231,7 +3229,7 @@ msgstr "Normaal probeert Cura kleine gaten in het raster te hechten en delen van
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Merged Meshes Overlap"
-msgstr ""
+msgstr "Samengevoegde rasters overlappen"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3242,12 +3240,12 @@ msgstr "Als modellen worden geprint met verschillende extruder trains, ontstaat 
 #: fdmprinter.def.json
 msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
-msgstr ""
+msgstr "Rastersnijpunt verwijderen"
 
 #: fdmprinter.def.json
 msgctxt "carve_multiple_volumes description"
 msgid "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other."
-msgstr ""
+msgstr "Hiermee verwijdert u gebieden waar meerdere rasters elkaar overlappen. Deze functie kan worden gebruikt als samengevoegde objecten van twee materialen elkaar overlappen."
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3258,7 +3256,7 @@ msgstr "Skinrotatie Wisselen"
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
-msgstr ""
+msgstr "Schakel naar de rastersnijpuntvolumes die bij elke laag horen, zodat de overlappende rasters worden verweven. Als u deze instelling uitschakelt, krijgt een van de rasters al het volume in de overlap, terwijl dit uit de andere rasters wordt verwijderd."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -3331,7 +3329,7 @@ msgstr "Overlappende Volumes Samenvoegen"
 #: fdmprinter.def.json
 msgctxt "anti_overhang_mesh description"
 msgid "Use this mesh to specify where no part of the model should be detected as overhang. This can be used to remove unwanted support structure."
-msgstr ""
+msgstr "Gebruik dit raster om op te geven waar geen enkel deel van het model mag worden gedetecteerd als overhang. Deze functie kan worden gebruikt om ongewenste supportstructuur te verwijderen."
 
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode label"
@@ -3541,12 +3539,12 @@ msgstr "Minimale breedte waarmee het grondvlak van het kegelvormige supportgebie
 #: fdmprinter.def.json
 msgctxt "infill_hollow label"
 msgid "Hollow Out Objects"
-msgstr ""
+msgstr "Objecten uithollen"
 
 #: fdmprinter.def.json
 msgctxt "infill_hollow description"
 msgid "Remove all infill and make the inside of the object eligible for support."
-msgstr ""
+msgstr "Alle vulling verwijderen en de binnenkant van het object geschikt maken voor support."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
@@ -3738,9 +3736,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
-"Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
+msgstr "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\nHierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -3850,27 +3846,27 @@ msgstr "De afstand tussen de nozzle en horizontaal neergaande lijnen. Een groter
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
-msgstr ""
+msgstr "Instellingen opdrachtregel"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings description"
 msgid "Settings which are only used if CuraEngine isn't called from the Cura frontend."
-msgstr ""
+msgstr "Instellingen die alleen worden gebruikt als CuraEngine niet wordt aangeroepen door de Cura-frontend."
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center object"
-msgstr ""
+msgstr "Object centreren"
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
 msgid "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved."
-msgstr ""
+msgstr "Hiermee bepaalt u of het object in het midden van het platform moet worden gecentreerd (0,0) of dat het coördinatensysteem moet worden gebruikt waarin het object opgeslagen is."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
 msgid "Mesh position x"
-msgstr ""
+msgstr "Rasterpositie x"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3881,7 +3877,7 @@ msgstr "De maximale snelheid van de motor in de X-richting."
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
 msgid "Mesh position y"
-msgstr ""
+msgstr "Rasterpositie y"
 
 #: fdmprinter.def.json
 #, fuzzy
@@ -3892,22 +3888,22 @@ msgstr "De maximale snelheid van de motor in de X-richting."
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
 msgid "Mesh position z"
-msgstr ""
+msgstr "Rasterpositie z"
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
 msgid "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'."
-msgstr ""
+msgstr "De offset die wordt toegepast op het object in de z-richting. Hiermee kunt u de taak uitvoeren die voorheen 'Object Sink' werd genoemd."
 
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix label"
 msgid "Mesh Rotation Matrix"
-msgstr ""
+msgstr "Matrix rasterrotatie"
 
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
-msgstr ""
+msgstr "Omzettingsmatrix die moet worden toegepast op het model wanneer dit wordt geladen vanuit een bestand."
 
 #~ msgctxt "z_seam_type option back"
 #~ msgid "Back"
