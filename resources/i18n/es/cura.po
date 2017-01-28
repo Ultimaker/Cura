@@ -218,6 +218,7 @@ msgstr ""
 "        <p>Use la siguiente información para enviar un informe de error a <a "
 "href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/"
 "Cura/issues</a></p>\n"
+"    "
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:129
 msgctxt "@label"

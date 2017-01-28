@@ -210,6 +210,7 @@ msgstr ""
 "        <p>Bir hata raporu göndermek için aşağıdaki bilgileri kullanın: <a "
 "href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/"
 "Cura/issues</a></p>\n"
+"    "
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:129
 msgctxt "@label"
