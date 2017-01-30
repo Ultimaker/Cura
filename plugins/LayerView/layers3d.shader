@@ -3,10 +3,8 @@ vertex =
     #version 410
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
-    //uniform highp mat4 u_modelViewProjectionMatrix;
     uniform lowp float u_active_extruder;
     uniform lowp int u_layer_view_type;
-    uniform lowp int u_only_color_active_extruder;
     uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
 
     uniform highp mat4 u_normalMatrix;
@@ -20,11 +18,9 @@ vertex =
     attribute highp int a_line_type;
 
     varying lowp vec4 v_color;
-    //varying lowp vec4 v_material_color;
 
     varying highp vec3 v_vertex;
     varying highp vec3 v_normal;
-    //varying lowp vec2 v_uvs;
     varying lowp vec2 v_line_dim;
     varying highp int v_extruder;
     varying highp vec4 v_extruder_opacity;
@@ -51,9 +47,6 @@ vertex =
             case 1:  // "Line type"
                 v_color = a_color;
                 break;
-        }
-        if ((u_only_color_active_extruder == 1) && (a_line_type != 8) && (a_line_type != 9)) {
-            v_color = (a_extruder == u_active_extruder) ? v_color : vec4(0.4, 0.4, 0.4, v_color.a);
         }
 
         v_vertex = world_space_vert.xyz;
@@ -323,7 +316,6 @@ fragment =
 [defaults]
 u_active_extruder = 0.0
 u_layer_view_type = 0
-u_only_color_active_extruder = 1
 u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]

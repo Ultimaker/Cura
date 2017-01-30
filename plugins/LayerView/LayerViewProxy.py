@@ -84,12 +84,6 @@ class LayerViewProxy(QObject):
             return active_view.getLayerViewType()
         return 0
 
-    @pyqtSlot(bool)
-    def setOnlyColorActiveExtruder(self, only_color_active_extruder):
-        active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.setOnlyColorActiveExtruder(only_color_active_extruder)
-
     # Opacity 0..1
     @pyqtSlot(int, float)
     def setExtruderOpacity(self, extruder_nr, opacity):

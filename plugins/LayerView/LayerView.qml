@@ -247,13 +247,6 @@ Item
                 }
                 text: "Show infill"
             }
-            CheckBox {
-                checked: true
-                onClicked: {
-                    UM.LayerView.setOnlyColorActiveExtruder(checked);
-                }
-                text: "Only color active extruder"
-            }
         }
     }
 }

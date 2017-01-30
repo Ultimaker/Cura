@@ -45,7 +45,6 @@ class LayerPass(RenderPass):
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
         if self._layer_view:
             self._layer_shader.setUniformValue("u_layer_view_type", self._layer_view.getLayerViewType())
-            self._layer_shader.setUniformValue("u_only_color_active_extruder", (1 if self._layer_view.getOnlyColorActiveExtruder() else 0))
             self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
             self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
             self._layer_shader.setUniformValue("u_show_support", self._layer_view.getShowSupport())
@@ -55,7 +54,6 @@ class LayerPass(RenderPass):
         else:
             #defaults
             self._layer_shader.setUniformValue("u_layer_view_type", 1)
-            self._layer_shader.setUniformValue("u_only_color_active_extruder", 1)
             self._layer_shader.setUniformValue("u_extruder_opacity", [1, 1, 1, 1])
             self._layer_shader.setUniformValue("u_show_travel_moves", 0)
             self._layer_shader.setUniformValue("u_show_support", 1)
