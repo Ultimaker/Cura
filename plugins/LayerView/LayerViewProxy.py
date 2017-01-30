@@ -16,6 +16,7 @@ class LayerViewProxy(QObject):
     currentLayerChanged = pyqtSignal()
     maxLayersChanged = pyqtSignal()
     activityChanged = pyqtSignal()
+    globalStackChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def getLayerActivity(self):
@@ -121,6 +122,13 @@ class LayerViewProxy(QObject):
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.setShowInfill(show)
 
+    @pyqtProperty(int, notify = globalStackChanged)
+    def getExtruderCount(self):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            return active_view.getExtruderCount()
+        return 0
+
     def _layerActivityChanged(self):
         self.activityChanged.emit()
             
@@ -133,10 +141,14 @@ class LayerViewProxy(QObject):
 
     def _onBusyChanged(self):
         self.busyChanged.emit()
-        
+
+    def _onGlobalStackChanged(self):
+        self.globalStackChanged.emit()
+
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.currentLayerNumChanged.connect(self._onLayerChanged)
             active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
             active_view.busyChanged.connect(self._onBusyChanged)
+            active_view.globalStackChanged.connect(self._onGlobalStackChanged)
