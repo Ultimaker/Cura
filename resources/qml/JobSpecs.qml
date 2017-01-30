@@ -9,7 +9,7 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Rectangle {
+Item {
     id: base
 
     property bool activity: Printer.getPlatformActivity
@@ -29,7 +29,6 @@ Rectangle {
     property variant printMaterialCosts: PrintInformation.materialCosts
 
     height: childrenRect.height
-    color: "transparent"
 
     Connections
     {
@@ -84,9 +83,8 @@ Rectangle {
                 }
                 style: ButtonStyle
                 {
-                    background: Rectangle
+                    background: Item
                     {
-                        color: "transparent"
                         UM.RecolorImage
                         {
                             width: UM.Theme.getSize("save_button_specs_icons").width;

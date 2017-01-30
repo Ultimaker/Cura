@@ -193,6 +193,7 @@
         "status_busy": [12, 169, 227, 255],
         "status_paused": [255, 140, 0, 255],
         "status_stopped": [236, 82, 80, 255],
+        "status_unknown": [127, 127, 127, 255],
 
         "disabled_axis": [127, 127, 127, 255],
         "x_axis": [255, 0, 0, 255],

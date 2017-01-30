@@ -171,9 +171,10 @@ class PrintInformation(QObject):
             self._active_material_container.metaDataChanged.disconnect(self._onMaterialMetaDataChanged)
 
         active_material_id = Application.getInstance().getMachineManager().activeMaterialId
-        self._active_material_container = ContainerRegistry.getInstance().findInstanceContainers(id=active_material_id)[0]
+        active_material_containers = ContainerRegistry.getInstance().findInstanceContainers(id=active_material_id)
 
-        if self._active_material_container:
+        if active_material_containers:
+            self._active_material_container = active_material_containers[0]
             self._active_material_container.metaDataChanged.connect(self._onMaterialMetaDataChanged)
 
     def _onMaterialMetaDataChanged(self):

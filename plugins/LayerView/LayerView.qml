@@ -71,8 +71,9 @@ Item
             width: valueLabel.width + UM.Theme.getSize("default_margin").width
             Behavior on height { NumberAnimation { duration: 50; } }
 
-            border.width: UM.Theme.getSize("default_lining").width;
-            border.color: UM.Theme.getColor("slider_groove_border");
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("slider_groove_border")
+            color: UM.Theme.getColor("tool_panel_background")
 
             visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
 
