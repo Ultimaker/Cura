@@ -145,8 +145,6 @@ Item {
                 height: parent.height;
                 width: height;
 
-                backgroundColor: UM.Theme.getColor("setting_control");
-                hoverBackgroundColor: UM.Theme.getColor("setting_control")
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button")
 
@@ -173,8 +171,6 @@ Item {
                 height: parent.height;
                 width: height;
 
-                backgroundColor: UM.Theme.getColor("setting_control");
-                hoverBackgroundColor: UM.Theme.getColor("setting_control_highlight")
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
@@ -278,8 +274,6 @@ Item {
                     }
                 }
 
-                backgroundColor: UM.Theme.getColor("setting_control");
-                hoverBackgroundColor: UM.Theme.getColor("setting_control_highlight")
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 

@@ -118,7 +118,7 @@ class ThreeMFReader(MeshReader):
             Job.yieldThread()
 
         # TODO: We currently do not check for normals and simply recalculate them.
-        mesh_builder.calculateNormals()
+        mesh_builder.calculateNormals(fast=True)
         mesh_builder.setFileName(name)
         mesh_data = mesh_builder.build()
 
