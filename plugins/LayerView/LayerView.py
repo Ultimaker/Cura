@@ -60,7 +60,7 @@ class LayerView(View):
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
         self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
-        self._only_color_active_extruder = True
+        self._only_color_active_extruder = False
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0
         self._show_support = 1

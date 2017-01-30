@@ -148,15 +148,25 @@ Item
     Rectangle {
         anchors.left: parent.right
         //anchors.verticalCenter: parent.verticalCenter
-        //anchors.top: toolbar.top
+        //anchors.top: sidebar.top
         anchors.bottom: slider_background.top
         //anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        width: UM.Theme.getSize("slider_layerview_background").width * 4
-        height: slider.height + UM.Theme.getSize("default_margin").height * 10
+        width: UM.Theme.getSize("layerview_menu_size").width
+        height: UM.Theme.getSize("layerview_menu_size").height
         color: UM.Theme.getColor("tool_panel_background");
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
+
+        Label
+        {
+            id: layerViewTypesLabel
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label","Color scheme")
+        }
 
         ListModel
         {
@@ -173,12 +183,57 @@ Item
 
         ComboBox
         {
-            id: layer_type_combobox
-            anchors.top: parent.top
+            id: layerTypeCombobox
+            anchors.top: layerViewTypesLabel.bottom
+            anchors.topMargin: UM.Theme.getSize("margin_small").height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            model: layerViewTypes
+            visible: !UM.LayerView.compatibilityMode
+            onActivated: {
+                UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
+            }
+        }
+
+        Label
+        {
+            id: layerRangeTypeLabel
+            anchors.top: layerTypeCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            model: layerViewTypes
+            text: catalog.i18nc("@label","Layer range")
+        }
+
+        ListModel
+        {
+            id: layerRangeTypes
+            ListElement {
+                text: "All layers"
+                range_type_id: 0
+            }
+            ListElement {
+                text: "Layer range"
+                range_type_id: 1
+            }
+            ListElement {
+                text: "Single layer"
+                range_type_id: 2
+            }
+        }
+
+        ComboBox
+        {
+            id: layerRangeTypeCombobox
+            anchors.top: layerRangeTypeLabel.bottom
+            anchors.topMargin: UM.Theme.getSize("margin_small").height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            model: layerRangeTypes
             visible: !UM.LayerView.compatibilityMode
             onActivated: {
                 UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
@@ -195,7 +250,7 @@ Item
 
         ColumnLayout {
             id: view_settings
-            anchors.top: layer_type_combobox.bottom
+            anchors.top: layerRangeTypeCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             x: UM.Theme.getSize("default_margin").width
 
@@ -248,13 +303,6 @@ Item
                     UM.LayerView.setShowInfill(checked ? 1 : 0);
                 }
                 text: "Show infill"
-            }
-            CheckBox {
-                checked: true
-                onClicked: {
-                    UM.LayerView.setOnlyColorActiveExtruder(checked);
-                }
-                text: "Only color active extruder"
             }
         }
     }
