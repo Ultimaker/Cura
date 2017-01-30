@@ -203,7 +203,7 @@ Item
                     UM.LayerView.setExtruderOpacity(0, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 1"
-                visible: !UM.LayerView.compatibilityMode
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 1)
             }
             CheckBox {
                 checked: true
@@ -211,7 +211,27 @@ Item
                     UM.LayerView.setExtruderOpacity(1, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 2"
-                visible: !UM.LayerView.compatibilityMode
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 2)
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    UM.LayerView.setExtruderOpacity(2, checked ? 1.0 : 0.0);
+                }
+                text: "Extruder 3"
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 3)
+            }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    UM.LayerView.setExtruderOpacity(3, checked ? 1.0 : 0.0);
+                }
+                text: "Extruder 4"
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 4)
+            }
+            Label {
+                text: "Other extruders always visible"
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 5)
             }
             CheckBox {
                 onClicked: {

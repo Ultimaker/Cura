@@ -18,6 +18,7 @@ from UM.Message import Message
 from UM.Application import Application
 
 from cura.ConvexHullNode import ConvexHullNode
+from cura.Settings.ExtruderManager import ExtruderManager
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
@@ -59,13 +60,7 @@ class LayerView(View):
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
-        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
-        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
-        self._show_travel_moves = 0
-        self._show_support = 1
-        self._show_adhesion = 1
-        self._show_skin = 1
-        self._show_infill = 1
+        self._resetSettings()
         self._legend_items = None
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
@@ -79,6 +74,16 @@ class LayerView(View):
         self._compatibility_mode = True  # for safety
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
+
+    def _resetSettings(self):
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._extruder_count = 0
+        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._show_travel_moves = 0
+        self._show_support = 1
+        self._show_adhesion = 1
+        self._show_skin = 1
+        self._show_infill = 1
 
     def getActivity(self):
         return self._activity
@@ -211,6 +216,9 @@ class LayerView(View):
     def getCompatibilityMode(self):
         return self._compatibility_mode
 
+    def getExtruderCount(self):
+        return self._extruder_count
+
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
         self._activity = True
@@ -242,6 +250,7 @@ class LayerView(View):
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
+    globalStackChanged = Signal()
 
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
@@ -302,7 +311,9 @@ class LayerView(View):
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
             self._onPropertyChanged("wireframe_enabled", "value")
+            self.globalStackChanged.emit()
         else:
             self._wireprint_warning_message.hide()
 
