@@ -173,7 +173,7 @@ Item
 
         ComboBox
         {
-            id: layer_type_combobox
+            id: layerTypeCombobox
             anchors.top: slider_background.bottom
             anchors.left: parent.left
             model: layerViewTypes
@@ -185,6 +185,7 @@ Item
 
         Label
         {
+            id: compatibilityModeLabel
             anchors.top: slider_background.bottom
             anchors.left: parent.left
             text: catalog.i18nc("@label","Compatibility mode")
@@ -193,7 +194,7 @@ Item
 
         ColumnLayout {
             id: view_settings
-            anchors.top: layer_type_combobox.bottom
+            anchors.top: UM.LayerView.compatibilityMode ? compatibilityModeLabel.bottom : layerTypeCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             x: UM.Theme.getSize("default_margin").width
 
