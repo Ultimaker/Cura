@@ -1240,6 +1240,14 @@
                     "minimum_value": "0",
                     "default_value": 0,
                     "settable_per_mesh": true
+                },
+                "anchor_skin_in_infill":
+                {
+                    "label": "Anchor Skin In Infill",
+                    "description": "Expand skin areas so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
                 }
             }
         },
