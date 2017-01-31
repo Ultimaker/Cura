@@ -3010,7 +3010,7 @@ msgstr "Engine-&logboek Weergeven..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:307
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
-msgstr "Configuratiemap Weergeven"
+msgstr "Open Configuratiemap"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:314
 msgctxt "@action:menu"
