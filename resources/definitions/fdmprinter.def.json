@@ -1241,13 +1241,34 @@
                     "default_value": 0,
                     "settable_per_mesh": true
                 },
-                "anchor_skin_in_infill":
+                "anchor_skins_in_infill":
                 {
-                    "label": "Anchor Skin In Infill",
+                    "label": "Anchor Skins In Infill",
                     "description": "Expand skin areas so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "anchor_upper_skin_in_infill":
+                        {
+                            "label": "Anchor Upper Skin In Infill",
+                            "description": "Expand upper skin areas (areas with air above) so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
+                            "type": "bool",
+                            "default_value": false,
+                            "value": "anchor_skins_in_infill",
+                            "settable_per_mesh": true
+                        },
+                        "anchor_lower_skin_in_infill":
+                        {
+                            "label": "Anchor Lower Skin In Infill",
+                            "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
+                            "type": "bool",
+                            "default_value": false,
+                            "value": "anchor_skins_in_infill",
+                            "settable_per_mesh": true
+                        }
+                    }
                 }
             }
         },
