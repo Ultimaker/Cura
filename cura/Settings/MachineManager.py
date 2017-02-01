@@ -220,6 +220,11 @@ class MachineManager(QObject):
             quality = self._global_container_stack.findContainer({"type": "quality"})
             quality.nameChanged.disconnect(self._onQualityNameChanged)
 
+            if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
+                for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+                    extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
+                    extruder_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         self._active_container_stack = self._global_container_stack
 
@@ -243,6 +248,10 @@ class MachineManager(QObject):
                 if global_material != self._empty_material_container:
                     self._global_container_stack.replaceContainer(self._global_container_stack.getContainerIndex(global_material), self._empty_material_container)
 
+                for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks(): #Listen for changes on all extruder stacks.
+                    extruder_stack.propertyChanged.connect(self._onPropertyChanged)
+                    extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
+
             else:
                 material = self._global_container_stack.findContainer({"type": "material"})
                 material.nameChanged.connect(self._onMaterialNameChanged)
@@ -263,14 +272,8 @@ class MachineManager(QObject):
         self.blurSettings.emit()  # Ensure no-one has focus.
         old_active_container_stack = self._active_container_stack
 
-        if self._active_container_stack and self._active_container_stack != self._global_container_stack:
-            self._active_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
-            self._active_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if self._active_container_stack:
-            self._active_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
-            self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
-        else:
+        if not self._active_container_stack:
             self._active_container_stack = self._global_container_stack
 
         self._updateStacksHaveErrors()
