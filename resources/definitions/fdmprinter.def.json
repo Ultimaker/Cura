@@ -1244,7 +1244,7 @@
                 "anchor_skins_in_infill":
                 {
                     "label": "Anchor Skins In Infill",
-                    "description": "Expand skin areas so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
+                    "description": "Expand skin areas into the infill behind walls. By default, skins stop when they reach the wall lines that surround infill. This setting extends the skins beyond the wall lines so that the skins become anchored in the infill.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true,
@@ -1253,7 +1253,7 @@
                         "anchor_upper_skin_in_infill":
                         {
                             "label": "Anchor Upper Skin In Infill",
-                            "description": "Expand upper skin areas (areas with air above) so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
+                            "description": "Expand upper skin areas (areas with air above) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
                             "value": "anchor_skins_in_infill",
@@ -1262,10 +1262,21 @@
                         "anchor_lower_skin_in_infill":
                         {
                             "label": "Anchor Lower Skin In Infill",
-                            "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below. The skin areas are expanded sufficiently so that they bridge the gap between the infill lines.",
+                            "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
                             "value": "anchor_skins_in_infill",
+                            "settable_per_mesh": true
+                        },
+                        "anchor_skin_distance":
+                        {
+                            "label": "Anchor Skin Distance",
+                            "description": "The distance the skins are expanded into the infill. The default value is sufficient to bridge the gap between the infill lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1.0,
+                            "value": "infill_line_distance * 1.4",
+                            "minimum_value": "0",
                             "settable_per_mesh": true
                         }
                     }
