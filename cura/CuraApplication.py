@@ -400,7 +400,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, str)
     def setDefaultPath(self, key, default_path):
-        Preferences.getInstance().setValue("local_file/%s" % key, QUrl.toLocalFile(default_path))
+        Preferences.getInstance().setValue("local_file/%s" % key, QUrl(default_path).toLocalFile())
 
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
