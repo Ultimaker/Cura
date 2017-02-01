@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
@@ -301,9 +301,15 @@ class MachineManager(QObject):
             if not self._stacks_have_errors:
                 # fast update, we only have to look at the current changed property
                 if self._active_container_stack.getProperty(key, "settable_per_extruder"):
-                    changed_validation_state = self._active_container_stack.getProperty(key, property_name)
+                    if self._active_container_stack.hasProperty(key, "limit_to_extruder"): #We have to look this value up from a different extruder.
+                        extruder_index = self._active_container_stack.getProperty("limit_to_extruder")
+                        extruder_manager = ExtruderManager.getInstance()
+                        stack = extruder_manager.getExtruderStack(extruder_index)
+                    else:
+                        stack = self._active_container_stack
                 else:
-                    changed_validation_state = self._global_container_stack.getProperty(key, property_name)
+                    stack = self._global_container_stack
+                changed_validation_state = stack.getProperty(key, property_name)
 
                 if changed_validation_state is None:
                     # Setting is not validated. This can happen if there is only a setting definition.
