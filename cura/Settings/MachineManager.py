@@ -386,8 +386,7 @@ class MachineManager(QObject):
 
         if self._global_container_stack.hasErrors():
             return True
-        stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
-        for stack in stacks:
+        for stack in ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()):
             if stack.hasErrors():
                 return True
 
