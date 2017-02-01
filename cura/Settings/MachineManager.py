@@ -300,7 +300,7 @@ class MachineManager(QObject):
             # Notify UI items, such as the "changed" star in profile pull down menu.
             self.activeStackValueChanged.emit()
 
-        if property_name == "validationState":
+        elif property_name == "validationState":
             if not self._stacks_have_errors:
                 # fast update, we only have to look at the current changed property
                 if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1 and self._active_container_stack.getProperty(key, "settable_per_extruder"):
