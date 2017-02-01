@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -455,19 +455,6 @@ Rectangle
         }
     }
 
-    Label {
-        id: monitorLabel
-        text: catalog.i18nc("@label","Printer Monitor");
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-        anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width * 0.45
-        font: UM.Theme.getFont("large")
-        color: UM.Theme.getColor("text")
-        visible: monitoringPrint
-    }
-
     StackView
     {
         id: sidebarContents
@@ -511,7 +498,7 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: monitorLabel.bottom
+        anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width

@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -18,6 +18,17 @@ Column
     {
         id: extrudersModel
         simpleNames: true
+    }
+
+    Label {
+        id: monitorLabel
+        text: catalog.i18nc("@label","Printer Monitor");
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+        width: parent.width * 0.45
+        font: UM.Theme.getFont("large")
+        color: UM.Theme.getColor("text")
+        visible: monitoringPrint
     }
 
     Item
