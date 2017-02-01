@@ -301,10 +301,9 @@ class MachineManager(QObject):
             if not self._stacks_have_errors:
                 # fast update, we only have to look at the current changed property
                 if self._active_container_stack.getProperty(key, "settable_per_extruder"):
-                    if self._active_container_stack.hasProperty(key, "limit_to_extruder"): #We have to look this value up from a different extruder.
-                        extruder_index = self._active_container_stack.getProperty(key, "limit_to_extruder")
-                        extruder_manager = ExtruderManager.getInstance()
-                        stack = extruder_manager.getExtruderStack(extruder_index)
+                    extruder_index = int(self._active_container_stack.getProperty(key, "limit_to_extruder"))
+                    if extruder_index >= 0: #We have to look up the value from a different extruder.
+                        stack = ExtruderManager.getInstance().getExtruderStack(str(extruder_index))
                     else:
                         stack = self._active_container_stack
                 else:
