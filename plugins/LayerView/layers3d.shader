@@ -1,5 +1,5 @@
 [shaders]
-vertex =
+vertex41core =
     #version 410
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
@@ -9,27 +9,27 @@ vertex =
 
     uniform highp mat4 u_normalMatrix;
 
-    attribute highp vec4 a_vertex;
-    attribute lowp vec4 a_color;
-    attribute lowp vec4 a_material_color;
-    attribute highp vec4 a_normal;
-    attribute highp vec2 a_line_dim;  // line width and thickness
-    attribute highp int a_extruder;
-    attribute highp int a_line_type;
+    in highp vec4 a_vertex;
+    in lowp vec4 a_color;
+    in lowp vec4 a_material_color;
+    in highp vec4 a_normal;
+    in highp vec2 a_line_dim;  // line width and thickness
+    in highp int a_extruder;
+    in highp int a_line_type;
 
-    varying lowp vec4 v_color;
+    out lowp vec4 v_color;
 
-    varying highp vec3 v_vertex;
-    varying highp vec3 v_normal;
-    varying lowp vec2 v_line_dim;
-    varying highp int v_extruder;
-    varying highp vec4 v_extruder_opacity;
-    varying int v_line_type;
+    out highp vec3 v_vertex;
+    out highp vec3 v_normal;
+    out lowp vec2 v_line_dim;
+    out highp int v_extruder;
+    out highp vec4 v_extruder_opacity;
+    out int v_line_type;
 
-    varying lowp vec4 f_color;
-    varying highp vec3 f_vertex;
-    varying highp vec3 f_normal;
-    varying highp int f_extruder;
+    out lowp vec4 f_color;
+    out highp vec3 f_vertex;
+    out highp vec3 f_normal;
+    out highp int f_extruder;
 
     void main()
     {
@@ -62,7 +62,7 @@ vertex =
         f_normal = v_normal;*/
     }
 
-geometry =
+geometry41core =
     #version 410
 
     uniform highp mat4 u_viewProjectionMatrix;
@@ -285,11 +285,13 @@ geometry =
         EndPrimitive();
     }
 
-fragment =
+fragment41core =
     #version 410
-    varying lowp vec4 f_color;
-    varying lowp vec3 f_normal;
-    varying lowp vec3 f_vertex;
+    in lowp vec4 f_color;
+    in lowp vec3 f_normal;
+    in lowp vec3 f_vertex;
+
+    out vec4 frag_color;
 
     uniform mediump vec4 u_ambientColor;
     uniform highp vec3 u_lightPosition;
@@ -309,7 +311,7 @@ fragment =
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 
-        gl_FragColor = finalColor;
+        frag_color = finalColor;
     }
 
 
