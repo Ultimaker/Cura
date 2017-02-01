@@ -381,11 +381,11 @@ class MachineManager(QObject):
         return UM.Settings.ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
     def _checkStacksHaveErrors(self):
-        if self._global_container_stack is not None and self._global_container_stack.hasErrors():
-            return True
-
-        if self._global_container_stack is None:
+        if self._global_container_stack is None: #No active machine.
             return False
+
+        if self._global_container_stack.hasErrors():
+            return True
         stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
         for stack in stacks:
             if stack.hasErrors():
