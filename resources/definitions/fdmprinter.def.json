@@ -2426,7 +2426,7 @@
                     "default_value": false,
                     "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": false
                 },
                 "travel_avoid_other_parts":
                 {
