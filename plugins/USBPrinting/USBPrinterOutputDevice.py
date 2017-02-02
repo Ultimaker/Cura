@@ -124,6 +124,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _homeBed(self):
         self._sendCommand("G28 Z")
 
+    ##  A name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        return self.getName()
+
+    ##  The address of the device.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._serial_port
+
     def startPrint(self):
         self.writeStarted.emit(self)
         gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
