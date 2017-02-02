@@ -14,6 +14,7 @@ from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
+
 import os.path
 
 ## RenderPass used to display g-code paths.

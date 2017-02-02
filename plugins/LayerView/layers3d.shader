@@ -1,6 +1,8 @@
 [shaders]
 vertex41core =
     #version 410
+    uniform highp mat4 u_modelViewProjectionMatrix;
+
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
     uniform lowp float u_active_extruder;
@@ -29,7 +31,6 @@ vertex41core =
     out lowp vec4 f_color;
     out highp vec3 f_vertex;
     out highp vec3 f_normal;
-    out highp int f_extruder;
 
     void main()
     {
@@ -37,6 +38,7 @@ vertex41core =
         v1_vertex.y -= a_line_dim.y / 2;  // half layer down
 
         vec4 world_space_vert = u_modelMatrix * v1_vertex;
+        //gl_Position = u_modelViewProjectionMatrix * a_vertex;  //world_space_vert;
         gl_Position = world_space_vert;
         // shade the color depending on the extruder index stored in the alpha component of the color
 
@@ -56,10 +58,10 @@ vertex41core =
         v_line_type = a_line_type;
         v_extruder_opacity = u_extruder_opacity;
 
-        // for testing and backwards compatibility without geometry shader
-        /*f_color = v_color;
+        // for testing without geometry shader
+        f_color = v_color;
         f_vertex = v_vertex;
-        f_normal = v_normal;*/
+        f_normal = v_normal;
     }
 
 geometry41core =
@@ -86,7 +88,6 @@ geometry41core =
     out vec4 f_color;
     out vec3 f_normal;
     out vec3 f_vertex;
-    out uint f_extruder;
 
     void main()
     {
@@ -129,8 +130,6 @@ geometry41core =
             size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
             size_y = v_line_dim[0].y / 2 + 0.01;
         }
-
-        f_extruder = v_extruder[0];
 
         g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z));
