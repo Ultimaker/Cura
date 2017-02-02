@@ -1,5 +1,9 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+import json
+
+from PyQt5.QtCore import QTextStream
+from PyQt5.QtNetwork import QLocalServer
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
@@ -420,12 +424,43 @@ class CuraApplication(QtApplication):
 
         self._plugins_loaded = True
 
+    @classmethod
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+        parser.add_argument("--single-instance", action="store_true", default=False)
+
+    def _setUpSingleInstanceServer(self):
+        if self.getCommandLineOption("single_instance", False):
+            self.__single_instance_server = QLocalServer()
+            self.__single_instance_server.newConnection.connect(self._singleInstanceServerNewConnection)
+            self.__single_instance_server.listen("ultimaker-cura")
+
+    def _singleInstanceServerNewConnection(self):
+        Logger.log('d', 'Saw something on the single instance server')
+        other_cura_connection = self.__single_instance_server.nextPendingConnection()
+        if other_cura_connection is not None:
+            def readyRead():
+                while other_cura_connection.canReadLine():
+                    line = other_cura_connection.readLine()
+                    payload = json.loads(str(line, encoding="ASCII").strip())
+                    command = payload["command"]
+                    if command == "clear-all":
+                        self.deleteAll()
+
+                    elif command == "open":
+                        self.deleteAll()
+                        self._openFile(payload["filePath"])
+
+                    elif command == "focus":
+                        self.focusWindow()
+
+            other_cura_connection.readyRead.connect(readyRead)
 
     def run(self):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
+
+        self._setUpSingleInstanceServer()
 
         controller = self.getController()
 
