@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
@@ -100,7 +100,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
-        self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
+        self.setShortDescription(i18n_catalog.i18nc("@action:button Preceded by 'Ready to'.", "print over network"))
         self.setDescription(i18n_catalog.i18nc("@properties:tooltip", "Print over network"))
         self.setIconName("print")
 
@@ -219,6 +219,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     @pyqtSlot(result = str)
     def getKey(self):
         return self._key
+
+    ##  The IP address of the printer.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._properties.get(b"address", b"0.0.0.0").decode("utf-8")
 
     ##  Name of the printer (as returned from the zeroConf properties)
     @pyqtProperty(str, constant = True)
