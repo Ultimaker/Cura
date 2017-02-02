@@ -20,6 +20,42 @@ Column
         simpleNames: true
     }
 
+    Rectangle
+    {
+        id: connectedPrinterHeader
+        width: parent.width
+        height: UM.Theme.getSize("sidebar_header").height
+        color: UM.Theme.getColor("setting_category")
+
+		Label
+		{
+			id: connectedPrinterNameLabel
+			text: printerConnected ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
+			font: UM.Theme.getFont("large")
+			color: UM.Theme.getColor("text")
+			anchors.left: parent.left
+			anchors.leftMargin: UM.Theme.getSize("default_margin").width
+			anchors.top: parent.top
+			anchors.topMargin: UM.Theme.getSize("default_margin").height
+			anchors.right: parent.right
+			anchors.rightMargin: UM.Theme.getSize("default_margin").width
+		}
+		Label
+		{
+			id: connectedPrinterAddressLabel
+			text: printerConnected ? connectedPrinter.address : ""
+			font: UM.Theme.getFont("small")
+			color: UM.Theme.getColor("text_inactive")
+			anchors.left: parent.left
+			anchors.leftMargin: UM.Theme.getSize("default_margin").width
+			anchors.top: parent.top
+			anchors.topMargin: UM.Theme.getSize("default_margin").height
+			anchors.right: parent.right
+			anchors.rightMargin: UM.Theme.getSize("default_margin").width
+			horizontalAlignment: Text.AlignRight
+		}
+    }
+
     Label {
         id: monitorLabel
         text: catalog.i18nc("@label","Printer Monitor");
