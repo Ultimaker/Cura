@@ -2418,6 +2418,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "combing_retract_before_outer_wall":
+                {
+                    "label": "Retract Before Outer Wall",
+                    "description": "When combing is enabled, always retract when moving to start an outer wall.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "travel_avoid_other_parts":
                 {
                     "label": "Avoid Printed Parts When Traveling",
