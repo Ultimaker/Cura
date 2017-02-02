@@ -68,34 +68,6 @@ Column
         }
     }
 
-    Label {
-        id: monitorLabel
-        text: catalog.i18nc("@label","Printer Monitor");
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-        width: parent.width * 0.45
-        font: UM.Theme.getFont("large")
-        color: UM.Theme.getColor("text")
-        visible: monitoringPrint
-    }
-
-    Item
-    {
-        width: base.width - 2 * UM.Theme.getSize("default_margin").width
-        height: childrenRect.height + UM.Theme.getSize("default_margin").height
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-        Label
-        {
-            text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
-            color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-            font: UM.Theme.getFont("default")
-            wrapMode: Text.WordWrap
-            width: parent.width
-        }
-    }
-
     Loader
     {
         sourceComponent: monitorSection
