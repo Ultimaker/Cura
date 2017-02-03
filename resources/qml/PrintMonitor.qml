@@ -149,21 +149,6 @@ Column
         }
     }
 
-    Loader
-    {
-        sourceComponent: monitorSection
-        property string label: catalog.i18nc("@label", "Temperatures")
-    }
-    Repeater
-    {
-        model: machineExtruderCount.properties.value
-        delegate: Loader
-        {
-            sourceComponent: monitorItem
-            property string label: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
-            property string value: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
-        }
-    }
     Repeater
     {
         model: machineHeatedBed.properties.value == "True" ? 1 : 0
