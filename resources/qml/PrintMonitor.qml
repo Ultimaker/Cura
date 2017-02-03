@@ -187,6 +187,81 @@ Column
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
         }
+        Rectangle //Input field for pre-heat temperature.
+        {
+            id: preheatTemperatureControl
+            color: UM.Theme.getColor("setting_validation_ok")
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("setting_control").width
+            height: UM.Theme.getSize("setting_control").height
+
+            Rectangle //Highlight of input field.
+            {
+                anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_lining").width
+                color: UM.Theme.getColor("setting_control_highlight")
+                opacity: preheatTemperatureControl.hovered ? 1.0 : 0
+            }
+            Label //Maximum temperature indication.
+            {
+                text: "MAXTEMP" //TODO: Placeholder!
+                color: UM.Theme.getColor("setting_unit")
+                font: UM.Theme.getFont("default")
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            MouseArea //Change cursor on hovering.
+            {
+                id: mouseArea
+                anchors.fill: parent
+                cursorShape: Qt.IBeamCursor
+            }
+            TextInput
+            {
+                id: preheatTemperatureInput
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("setting_control_text")
+                selectByMouse: true
+                maximumLength: 10
+                validator: RegExpValidator { regExp: /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } //Floating point regex.
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                text: "60" //TODO: Bind this to the default.
+                /*Binding
+                {
+                    target: preheatTemperatureInput
+                    property: "text"
+                    value:  {
+                        // Stacklevels
+                        // 0: user  -> unsaved change
+                        // 1: quality changes  -> saved change
+                        // 2: quality
+                        // 3: material  -> user changed material in materialspage
+                        // 4: variant
+                        // 5: machine_changes
+                        // 6: machine
+                        if ((base.resolve != "None" && base.resolve) && (stackLevel != 0) && (stackLevel != 1)) {
+                            // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                            // we have to choose between the resolved value (default) and the global value
+                            // (if user has explicitly set this).
+                            return base.resolve;
+                        } else {
+                            return propertyProvider.properties.value;
+                        }
+                    }
+                    when: !preheatTemperatureInput.activeFocus
+                }*/
+            }
+        }
     }
 
     Loader
