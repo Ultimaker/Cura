@@ -134,6 +134,16 @@ Column
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
                     }
+                    Text //Variant name.
+                    {
+                        text: printerConnected ? connectedPrinter.hotendIds[index] : ""
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                    }
                 }
             }
         }
