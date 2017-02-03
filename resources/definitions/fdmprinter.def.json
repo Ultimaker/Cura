@@ -222,8 +222,8 @@
                     "unit": "°",
                     "type": "int",
                     "default_value": 45,
-                    "maximum_value": 89,
-                    "minimum_value": 1,
+                    "maximum_value": "89",
+                    "minimum_value": "1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
