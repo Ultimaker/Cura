@@ -58,13 +58,53 @@ Column
         {
             text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
             color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("very_small")
             wrapMode: Text.WordWrap
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.top: connectedPrinterNameLabel.bottom
+        }
+    }
+
+    GridLayout
+    {
+        id: extrudersGrid
+        columns: 2
+        columnSpacing: UM.Theme.getSize("sidebar_lining_thin").width
+        rowSpacing: UM.Theme.getSize("sidebar_lining_thin").height
+        width: parent.width
+
+        Repeater
+        {
+            model: machineExtruderCount.properties.value
+            delegate: Rectangle
+            {
+                id: extruderRectangle
+                color: UM.Theme.getColor("sidebar")
+                width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
+                height: UM.Theme.getSize("sidebar_extruder_box").height
+
+                Text //Extruder name.
+                {
+                    text: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
+                    color: UM.Theme.getColor("text")
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.top: parent.top
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                }
+                Text //Temperature indication.
+                {
+                    text: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
+                    font: UM.Theme.getFont("large")
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    anchors.top: parent.top
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                }
+            }
         }
     }
 
