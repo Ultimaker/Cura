@@ -115,7 +115,7 @@ Column
                         id: materialColor
                         width: materialName.height * 0.75
                         height: materialName.height * 0.75
-                        color: printerConnected ? connectedPrinter.materialColors[index] : [0, 0, 0, 0] //Need to check for printerConnected or materialColors[index] gives an error.
+                        color: printerConnected ? connectedPrinter.materialColors[index] : "#00000000" //Need to check for printerConnected or materialColors[index] gives an error.
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
                         visible: printerConnected
