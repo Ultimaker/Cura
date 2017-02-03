@@ -130,7 +130,7 @@ Column
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.left: materialColor.right
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
                     }
