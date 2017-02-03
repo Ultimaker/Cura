@@ -68,41 +68,48 @@ Column
         }
     }
 
-    GridLayout
+    Rectangle
     {
-        id: extrudersGrid
-        columns: 2
-        columnSpacing: UM.Theme.getSize("sidebar_lining_thin").width
-        rowSpacing: UM.Theme.getSize("sidebar_lining_thin").height
+        color: UM.Theme.getColor("sidebar_lining")
         width: parent.width
+        height: childrenRect.height
 
-        Repeater
+        GridLayout
         {
-            model: machineExtruderCount.properties.value
-            delegate: Rectangle
-            {
-                id: extruderRectangle
-                color: UM.Theme.getColor("sidebar")
-                width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
-                height: UM.Theme.getSize("sidebar_extruder_box").height
+            id: extrudersGrid
+            columns: 2
+            columnSpacing: UM.Theme.getSize("sidebar_lining_thin").width
+            rowSpacing: UM.Theme.getSize("sidebar_lining_thin").height
+            width: parent.width
 
-                Text //Extruder name.
+            Repeater
+            {
+                model: machineExtruderCount.properties.value
+                delegate: Rectangle
                 {
-                    text: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
-                    color: UM.Theme.getColor("text")
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
-                }
-                Text //Temperature indication.
-                {
-                    text: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
-                    font: UM.Theme.getFont("large")
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    anchors.top: parent.top
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    id: extruderRectangle
+                    color: UM.Theme.getColor("sidebar")
+                    width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
+                    height: UM.Theme.getSize("sidebar_extruder_box").height
+
+                    Text //Extruder name.
+                    {
+                        text: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
+                        color: UM.Theme.getColor("text")
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.top: parent.top
+                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    }
+                    Text //Temperature indication.
+                    {
+                        text: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
+                        font: UM.Theme.getFont("large")
+                        anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.top: parent.top
+                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    }
                 }
             }
         }
