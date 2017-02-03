@@ -110,6 +110,30 @@ Column
                         anchors.top: parent.top
                         anchors.topMargin: UM.Theme.getSize("default_margin").height
                     }
+                    Rectangle //Material colour indication.
+                    {
+                        id: materialColor
+                        width: materialName.height * 0.75
+                        height: materialName.height * 0.75
+                        color: printerConnected ? connectedPrinter.materialColors[index] : [0, 0, 0, 0] //Need to check for printerConnected or materialColors[index] gives an error.
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: printerConnected
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: materialName.verticalCenter
+                    }
+                    Text //Material name.
+                    {
+                        id: materialName
+                        text: printerConnected ? connectedPrinter.materialNames[index] : ""
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                        anchors.left: materialColor.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                    }
                 }
             }
         }

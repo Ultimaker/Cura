@@ -323,6 +323,28 @@ class PrinterOutputDevice(QObject, OutputDevice):
                 result.append(i18n_catalog.i18nc("@item:material", "Unknown material"))
         return result
 
+    ##  List of the colours of the currently loaded materials.
+    #
+    #   The list is in order of extruders. If there is no material in an
+    #   extruder, the colour is shown as transparent.
+    #
+    #   The colours are returned in hex-format AARRGGBB or RRGGBB
+    #   (e.g. #800000ff for transparent blue or #00ff00 for pure green).
+    @pyqtProperty("QVariantList", notify = materialIdChanged)
+    def materialColors(self):
+        result = []
+        for material_id in self._material_ids:
+            if material_id is None:
+                result.append("#800000FF") #No material.
+                continue
+
+            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
+            if containers:
+                result.append(containers[0].getMetaDataEntry("color_code"))
+            else:
+                result.append("#800000FF") #Unknown material.
+        return result
+
     ##  Protected setter for the current material id.
     #   /param index Index of the extruder
     #   /param material_id id of the material
