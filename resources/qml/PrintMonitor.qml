@@ -149,14 +149,43 @@ Column
         }
     }
 
-    Repeater
+    Rectangle
     {
-        model: machineHeatedBed.properties.value == "True" ? 1 : 0
-        delegate: Loader
+        color: UM.Theme.getColor("sidebar")
+        width: parent.width
+        height: machineHeatedBed.properties.value == "True" ? UM.Theme.getSize("sidebar_extruder_box").height : 0
+        visible: machineHeatedBed.properties.value == "True"
+
+        Label //Build plate label.
         {
-            sourceComponent: monitorItem
-            property string label: catalog.i18nc("@label", "Build plate")
-            property string value: printerConnected ? Math.round(connectedPrinter.bedTemperature) + "°C" : ""
+            text: catalog.i18nc("@label", "Build plate")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+        }
+        Text //Target temperature.
+        {
+            id: bedTargetTemperature
+            text: printerConnected ? connectedPrinter.targetBedTemperature + "°C" : ""
+            font: UM.Theme.getFont("small")
+            color: UM.Theme.getColor("text_inactive")
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.bottom: bedCurrentTemperature.bottom
+        }
+        Text //Current temperature.
+        {
+            id: bedCurrentTemperature
+            text: printerConnected ? connectedPrinter.bedTemperature + "°C" : ""
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
+            anchors.right: bedTargetTemperature.left
+            anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
         }
     }
 
