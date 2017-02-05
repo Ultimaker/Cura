@@ -1257,6 +1257,7 @@
                             "type": "bool",
                             "default_value": false,
                             "value": "anchor_skins_in_infill",
+                            "enabled": "anchor_skins_in_infill",
                             "settable_per_mesh": true
                         },
                         "anchor_lower_skin_in_infill":
@@ -1266,6 +1267,7 @@
                             "type": "bool",
                             "default_value": false,
                             "value": "anchor_skins_in_infill",
+                            "enabled": "anchor_skins_in_infill",
                             "settable_per_mesh": true
                         },
                         "anchor_skin_distance":
@@ -1277,6 +1279,7 @@
                             "default_value": 1.0,
                             "value": "infill_line_distance * 1.4",
                             "minimum_value": "0",
+                            "enabled": "anchor_skins_in_infill",
                             "settable_per_mesh": true
                         }
                     }
