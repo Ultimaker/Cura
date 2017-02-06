@@ -236,12 +236,12 @@ Column
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
 
-                text: "60" //TODO: Bind this to the default.
-                /*Binding
+                Binding
                 {
                     target: preheatTemperatureInput
                     property: "text"
-                    value:  {
+                    value:
+                    {
                         // Stacklevels
                         // 0: user  -> unsaved change
                         // 1: quality changes  -> saved change
@@ -250,17 +250,20 @@ Column
                         // 4: variant
                         // 5: machine_changes
                         // 6: machine
-                        if ((base.resolve != "None" && base.resolve) && (stackLevel != 0) && (stackLevel != 1)) {
+                        if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
+                        {
                             // We have a resolve function. Indicates that the setting is not settable per extruder and that
                             // we have to choose between the resolved value (default) and the global value
                             // (if user has explicitly set this).
-                            return base.resolve;
-                        } else {
-                            return propertyProvider.properties.value;
+                            return bedTemperature.resolve;
+                        }
+                        else
+                        {
+                            return bedTemperature.properties.value;
                         }
                     }
                     when: !preheatTemperatureInput.activeFocus
-                }*/
+                }
             }
         }
     }
@@ -270,8 +273,10 @@ Column
         id: bedTemperature
         containerStackId: Cura.MachineManager.activeMachineId
         key: "material_bed_temperature"
-        watchedProperties: ["value", "minimum_value", "maximum_value", "minimum_value_warning", "maximum_value_warning"]
+        watchedProperties: ["value", "minimum_value", "maximum_value", "minimum_value_warning", "maximum_value_warning", "resolve"]
         storeIndex: 0
+
+        property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
     }
 
     Loader
