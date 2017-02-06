@@ -192,7 +192,7 @@ Column
             id: preheatTemperatureControl
             color: UM.Theme.getColor("setting_validation_ok")
             border.width: UM.Theme.getSize("default_lining").width
-            border.color: hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            border.color: mouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
@@ -219,6 +219,7 @@ Column
             MouseArea //Change cursor on hovering.
             {
                 id: mouseArea
+                hoverEnabled: true
                 anchors.fill: parent
                 cursorShape: Qt.IBeamCursor
             }
