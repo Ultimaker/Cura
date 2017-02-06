@@ -266,6 +266,104 @@ Column
                 }
             }
         }
+
+        Button //The pre-heat button.
+        {
+            text: catalog.i18nc("@button", "Pre-heat")
+            tooltip: catalog.i18nc("@tooltip of pre-heat", "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print.")
+            height: UM.Theme.getSize("setting_control").height
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            style: ButtonStyle {
+                background: Rectangle
+                {
+                    border.width: UM.Theme.getSize("default_lining").width
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+                    border.color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return UM.Theme.getColor("action_button_disabled_border");
+                        }
+                        else if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active_border");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered_border");
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("action_button_border");
+                        }
+                    }
+                    color:
+                    {
+                        if(!control.enabled)
+                        {
+                            return UM.Theme.getColor("action_button_disabled");
+                        }
+                        else if(control.pressed)
+                        {
+                            return UM.Theme.getColor("action_button_active");
+                        }
+                        else if(control.hovered)
+                        {
+                            return UM.Theme.getColor("action_button_hovered");
+                        }
+                        else
+                        {
+                            return UM.Theme.getColor("action_button");
+                        }
+                    }
+                    Behavior on color
+                    {
+                        ColorAnimation
+                        {
+                            duration: 50
+                        }
+                    }
+
+                    Label
+                    {
+                        id: actualLabel
+                        anchors.centerIn: parent
+                        color:
+                        {
+                            if(!control.enabled)
+                            {
+                                return UM.Theme.getColor("action_button_disabled_text");
+                            }
+                            else if(control.pressed)
+                            {
+                                return UM.Theme.getColor("action_button_active_text");
+                            }
+                            else if(control.hovered)
+                            {
+                                return UM.Theme.getColor("action_button_hovered_text");
+                            }
+                            else
+                            {
+                                return UM.Theme.getColor("action_button_text");
+                            }
+                        }
+                        font: UM.Theme.getFont("action_button")
+                        text: control.text;
+                    }
+                }
+                label: Item
+                {
+                }
+            }
+
+            onClicked:
+            {
+                print("Click!");
+            }
+        }
     }
 
     UM.SettingPropertyProvider
