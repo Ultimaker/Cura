@@ -38,7 +38,6 @@ vertex41core =
         v1_vertex.y -= a_line_dim.y / 2;  // half layer down
 
         vec4 world_space_vert = u_modelMatrix * v1_vertex;
-        //gl_Position = u_modelViewProjectionMatrix * a_vertex;  //world_space_vert;
         gl_Position = world_space_vert;
         // shade the color depending on the extruder index stored in the alpha component of the color
 
