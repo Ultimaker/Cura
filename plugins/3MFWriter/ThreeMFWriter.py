@@ -156,7 +156,7 @@ class ThreeMFWriter(MeshWriter):
                         savitar_scene.addSceneNode(savitar_node)
 
             parser = Savitar.ThreeMFParser()
-            scene_string = parser.sceneToString(savitar_scene).encode('utf-8')
+            scene_string = parser.sceneToString(savitar_scene)
 
             archive.writestr(model_file, scene_string)
             archive.writestr(content_types_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(content_types))
