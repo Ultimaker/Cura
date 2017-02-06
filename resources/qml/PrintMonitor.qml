@@ -209,7 +209,7 @@ Column
             }
             Label //Maximum temperature indication.
             {
-                text: "MAXTEMP" //TODO: Placeholder!
+                text: bedTemperature.properties.maximum_value
                 color: UM.Theme.getColor("setting_unit")
                 font: UM.Theme.getFont("default")
                 anchors.right: parent.right
@@ -262,6 +262,15 @@ Column
                 }*/
             }
         }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: bedTemperature
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "material_bed_temperature"
+        watchedProperties: ["value", "minimum_value", "maximum_value", "minimum_value_warning", "maximum_value_warning"]
+        storeIndex: 0
     }
 
     Loader
