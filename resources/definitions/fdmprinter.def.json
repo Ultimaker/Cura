@@ -1244,7 +1244,7 @@
                 "anchor_skins_in_infill":
                 {
                     "label": "Anchor Skins In Infill",
-                    "description": "Expand skin areas into the infill behind walls. By default, skins stop when they reach the wall lines that surround infill. This setting extends the skins beyond the wall lines so that the skins become anchored in the infill.",
+                    "description": "Expand skin areas into the infill behind walls. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the skins become anchored in the infill.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true,
@@ -1273,7 +1273,7 @@
                         "anchor_skin_distance":
                         {
                             "label": "Anchor Skin Distance",
-                            "description": "The distance the skins are expanded into the infill. The default value is sufficient to bridge the gap between the infill lines.",
+                            "description": "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1.0,
