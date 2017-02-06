@@ -40,97 +40,6 @@ class ThreeMFReader(MeshReader):
         self._base_name = ""
         self._unit = None
 
-    def _createNodeFromObject(self, object, name = ""):
-        node = SceneNode()
-        node.setName(name)
-        mesh_builder = MeshBuilder()
-        vertex_list = []
-
-        components = object.find(".//3mf:components", self._namespaces)
-        if components:
-            for component in components:
-                id = component.get("objectid")
-                new_object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
-                new_node = self._createNodeFromObject(new_object, self._base_name + "_" + str(id))
-                node.addChild(new_node)
-                transform = component.get("transform")
-                if transform is not None:
-                    new_node.setTransformation(self._createMatrixFromTransformationString(transform))
-
-        # for vertex in entry.mesh.vertices.vertex:
-        for vertex in object.findall(".//3mf:vertex", self._namespaces):
-            vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
-            Job.yieldThread()
-
-        xml_settings = list(object.findall(".//cura:setting", self._namespaces))
-
-        # Add the setting override decorator, so we can add settings to this node.
-        if xml_settings:
-            node.addDecorator(SettingOverrideDecorator())
-
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
-            # Ensure the correct next container for the SettingOverride decorator is set.
-            if global_container_stack:
-                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
-                # Ensure that all extruder data is reset
-                if not multi_extrusion:
-                    default_stack_id = global_container_stack.getId()
-                else:
-                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                    if default_stack:
-                        default_stack_id = default_stack.getId()
-                    else:
-                        default_stack_id = global_container_stack.getId()
-                node.callDecoration("setActiveExtruder", default_stack_id)
-
-                # Get the definition & set it
-                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                node.callDecoration("getStack").getTop().setDefinition(definition)
-
-            setting_container = node.callDecoration("getStack").getTop()
-            for setting in xml_settings:
-                setting_key = setting.get("key")
-                setting_value = setting.text
-
-                # Extruder_nr is a special case.
-                if setting_key == "extruder_nr":
-                    extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
-                    if extruder_stack:
-                        node.callDecoration("setActiveExtruder", extruder_stack.getId())
-                    else:
-                        Logger.log("w", "Unable to find extruder in position %s", setting_value)
-                    continue
-                setting_container.setProperty(setting_key,"value", setting_value)
-
-        if len(node.getChildren()) > 0:
-            group_decorator = GroupDecorator()
-            node.addDecorator(group_decorator)
-
-        triangles = object.findall(".//3mf:triangle", self._namespaces)
-        mesh_builder.reserveFaceCount(len(triangles))
-
-        for triangle in triangles:
-            v1 = int(triangle.get("v1"))
-            v2 = int(triangle.get("v2"))
-            v3 = int(triangle.get("v3"))
-
-            mesh_builder.addFaceByPoints(vertex_list[v1][0], vertex_list[v1][1], vertex_list[v1][2],
-                                         vertex_list[v2][0], vertex_list[v2][1], vertex_list[v2][2],
-                                         vertex_list[v3][0], vertex_list[v3][1], vertex_list[v3][2])
-
-            Job.yieldThread()
-
-        # TODO: We currently do not check for normals and simply recalculate them.
-        mesh_builder.calculateNormals(fast=True)
-        mesh_builder.setFileName(name)
-        mesh_data = mesh_builder.build()
-
-        if len(mesh_data.getVertices()):
-            node.setMeshData(mesh_data)
-
-        node.setSelectable(True)
-        return node
-
     def _createMatrixFromTransformationString(self, transformation):
         if transformation == "":
             return Matrix()
@@ -161,6 +70,9 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
+
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scenenode.
+    #   \returns Uranium Scenen node.
     def _convertSavitarNodeToUMNode(self, savitar_node):
         um_node = SceneNode()
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
@@ -179,6 +91,7 @@ class ThreeMFReader(MeshReader):
 
         for child in savitar_node.getChildren():
             um_node.addChild(self._convertSavitarNodeToUMNode(child))
+
         settings = savitar_node.getSettings()
 
         # Add the setting override decorator, so we can add settings to this node.
