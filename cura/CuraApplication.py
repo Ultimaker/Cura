@@ -461,8 +461,9 @@ class CuraApplication(QtApplication):
 
                         # Command: Activate the window and bring it to the top.
                         elif command == "focus":
-                            self.getMainWindow().raise_()
-                            self.focusWindow()
+                            # Operating systems these days prevent windows from moving around by themselves.
+                            # 'alert' or flashing the icon in the taskbar is the best thing we do now.
+                            self.getMainWindow().alert(0)
 
                         else:
                             Logger.log("w", "Received an unrecognized command " + str(command))
