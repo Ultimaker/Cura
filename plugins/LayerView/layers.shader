@@ -5,8 +5,8 @@ vertex =
     uniform lowp float u_shade_factor;
     uniform highp int u_layer_view_type;
 
-    attribute highp int a_extruder;
-    attribute highp int a_line_type;
+    attribute highp float a_extruder;
+    attribute highp float a_line_type;
     attribute highp vec4 a_vertex;
     attribute lowp vec4 a_color;
     attribute lowp vec4 a_material_color;
@@ -18,7 +18,7 @@ vertex =
     {
         gl_Position = u_modelViewProjectionMatrix * a_vertex;
         v_color = a_color;
-        if ((a_line_type != 8) && (a_line_type != 9)) {
+        if ((a_line_type != 8.0) && (a_line_type != 9.0)) {
             v_color = (a_extruder == u_active_extruder) ? v_color : vec4(u_shade_factor * v_color.rgb, v_color.a);
         }
 
@@ -66,7 +66,7 @@ fragment =
             discard;
         }
 
-        gl_FragColor = u_color;
+        gl_FragColor = v_color;
     }
 
 vertex41core =
