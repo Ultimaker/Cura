@@ -10,6 +10,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Signal import postponeSignals
 
 import UM.Settings
 
@@ -694,134 +695,138 @@ class MachineManager(QObject):
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
-        if not containers or not self._active_container_stack:
-            return
-        material_container = containers[0]
+        with postponeSignals(self._global_container_stack.containersChanged, self._active_container_stack.containersChanged, compress = True):
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
+            if not containers or not self._active_container_stack:
+                return
+            material_container = containers[0]
 
-        Logger.log("d", "Attempting to change the active material to %s", material_id)
+            Logger.log("d", "Attempting to change the active material to %s", material_id)
 
-        old_material = self._active_container_stack.findContainer({"type": "material"})
-        old_quality = self._active_container_stack.findContainer({"type": "quality"})
-        old_quality_changes = self._active_container_stack.findContainer({"type": "quality_changes"})
-        if not old_material:
-            Logger.log("w", "While trying to set the active material, no material was found to replace it.")
-            return
+            old_material = self._active_container_stack.findContainer({"type": "material"})
+            old_quality = self._active_container_stack.findContainer({"type": "quality"})
+            old_quality_changes = self._active_container_stack.findContainer({"type": "quality_changes"})
+            if not old_material:
+                Logger.log("w", "While trying to set the active material, no material was found to replace it.")
+                return
 
-        if old_quality_changes.getId() == "empty_quality_changes":
-            old_quality_changes = None
+            if old_quality_changes.getId() == "empty_quality_changes":
+                old_quality_changes = None
 
-        self.blurSettings.emit()
-        old_material.nameChanged.disconnect(self._onMaterialNameChanged)
+            self.blurSettings.emit()
+            old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
-        material_index = self._active_container_stack.getContainerIndex(old_material)
-        self._active_container_stack.replaceContainer(material_index, material_container)
-        Logger.log("d", "Active material changed")
+            material_index = self._active_container_stack.getContainerIndex(old_material)
+            self._active_container_stack.replaceContainer(material_index, material_container)
+            Logger.log("d", "Active material changed")
 
-        material_container.nameChanged.connect(self._onMaterialNameChanged)
+            material_container.nameChanged.connect(self._onMaterialNameChanged)
 
-        if material_container.getMetaDataEntry("compatible") == False:
-            self._material_incompatible_message.show()
-        else:
-            self._material_incompatible_message.hide()
+            if material_container.getMetaDataEntry("compatible") == False:
+                self._material_incompatible_message.show()
+            else:
+                self._material_incompatible_message.hide()
 
-        new_quality_id = old_quality.getId()
-        quality_type = old_quality.getMetaDataEntry("quality_type")
-        if old_quality_changes:
-            quality_type = old_quality_changes.getMetaDataEntry("quality_type")
-            new_quality_id = old_quality_changes.getId()
+            new_quality_id = old_quality.getId()
+            quality_type = old_quality.getMetaDataEntry("quality_type")
+            if old_quality_changes:
+                quality_type = old_quality_changes.getMetaDataEntry("quality_type")
+                new_quality_id = old_quality_changes.getId()
 
-        # See if the requested quality type is available in the new situation.
-        machine_definition = self._active_container_stack.getBottom()
-        quality_manager = QualityManager.getInstance()
-        candidate_quality = quality_manager.findQualityByQualityType(quality_type,
-                                   quality_manager.getWholeMachineDefinition(machine_definition),
-                                   [material_container])
-        if not candidate_quality or candidate_quality.getId() == "empty_quality":
-            # Fall back to a quality
-            new_quality = quality_manager.findQualityByQualityType(None,
-                                quality_manager.getWholeMachineDefinition(machine_definition),
-                                [material_container])
-            if new_quality:
-                new_quality_id = new_quality.getId()
-        else:
-            if not old_quality_changes:
-                new_quality_id = candidate_quality.getId()
+            # See if the requested quality type is available in the new situation.
+            machine_definition = self._active_container_stack.getBottom()
+            quality_manager = QualityManager.getInstance()
+            candidate_quality = quality_manager.findQualityByQualityType(quality_type,
+                                    quality_manager.getWholeMachineDefinition(machine_definition),
+                                    [material_container])
+            if not candidate_quality or candidate_quality.getId() == "empty_quality":
+                # Fall back to a quality
+                new_quality = quality_manager.findQualityByQualityType(None,
+                                    quality_manager.getWholeMachineDefinition(machine_definition),
+                                    [material_container])
+                if new_quality:
+                    new_quality_id = new_quality.getId()
+            else:
+                if not old_quality_changes:
+                    new_quality_id = candidate_quality.getId()
 
-        self.setActiveQuality(new_quality_id)
+            self.setActiveQuality(new_quality_id)
 
     @pyqtSlot(str)
+    @profile
     def setActiveVariant(self, variant_id):
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
-        if not containers or not self._active_container_stack:
-            return
-        Logger.log("d", "Attempting to change the active variant to %s", variant_id)
-        old_variant = self._active_container_stack.findContainer({"type": "variant"})
-        old_material = self._active_container_stack.findContainer({"type": "material"})
-        if old_variant:
-            self.blurSettings.emit()
-            variant_index = self._active_container_stack.getContainerIndex(old_variant)
-            self._active_container_stack.replaceContainer(variant_index, containers[0])
-            Logger.log("d", "Active variant changed")
-            preferred_material = None
-            if old_material:
-                preferred_material_name = old_material.getName()
+        with postponeSignals(self._global_container_stack.containersChanged, self._active_container_stack.containersChanged, compress = True):
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
+            if not containers or not self._active_container_stack:
+                return
+            Logger.log("d", "Attempting to change the active variant to %s", variant_id)
+            old_variant = self._active_container_stack.findContainer({"type": "variant"})
+            old_material = self._active_container_stack.findContainer({"type": "material"})
+            if old_variant:
+                self.blurSettings.emit()
+                variant_index = self._active_container_stack.getContainerIndex(old_variant)
+                self._active_container_stack.replaceContainer(variant_index, containers[0])
+                Logger.log("d", "Active variant changed")
+                preferred_material = None
+                if old_material:
+                    preferred_material_name = old_material.getName()
 
-            self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
-        else:
-            Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
+                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
+            else:
+                Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
     ##  set the active quality
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
-        self.blurSettings.emit()
+        with postponeSignals(self._global_container_stack.containersChanged, self._active_container_stack.containersChanged, compress = True):
+            self.blurSettings.emit()
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
-        if not containers or not self._global_container_stack:
-            return
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
+            if not containers or not self._global_container_stack:
+                return
 
-        Logger.log("d", "Attempting to change the active quality to %s", quality_id)
+            Logger.log("d", "Attempting to change the active quality to %s", quality_id)
 
-        # Quality profile come in two flavours: type=quality and type=quality_changes
-        # If we found a quality_changes profile then look up its parent quality profile.
-        container_type = containers[0].getMetaDataEntry("type")
-        quality_name = containers[0].getName()
-        quality_type = containers[0].getMetaDataEntry("quality_type")
+            # Quality profile come in two flavours: type=quality and type=quality_changes
+            # If we found a quality_changes profile then look up its parent quality profile.
+            container_type = containers[0].getMetaDataEntry("type")
+            quality_name = containers[0].getName()
+            quality_type = containers[0].getMetaDataEntry("quality_type")
 
-        # Get quality container and optionally the quality_changes container.
-        if container_type == "quality":
-            new_quality_settings_list = self.determineQualityAndQualityChangesForQualityType(quality_type)
-        elif container_type == "quality_changes":
-            new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
-        else:
-            Logger.log("e", "Tried to set quality to a container that is not of the right type")
-            return
+            # Get quality container and optionally the quality_changes container.
+            if container_type == "quality":
+                new_quality_settings_list = self.determineQualityAndQualityChangesForQualityType(quality_type)
+            elif container_type == "quality_changes":
+                new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
+            else:
+                Logger.log("e", "Tried to set quality to a container that is not of the right type")
+                return
 
-        name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
-        for setting_info in new_quality_settings_list:
-            stack = setting_info["stack"]
-            stack_quality = setting_info["quality"]
-            stack_quality_changes = setting_info["quality_changes"]
+            name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
+            for setting_info in new_quality_settings_list:
+                stack = setting_info["stack"]
+                stack_quality = setting_info["quality"]
+                stack_quality_changes = setting_info["quality_changes"]
 
-            name_changed_connect_stacks.append(stack_quality)
-            name_changed_connect_stacks.append(stack_quality_changes)
-            self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit = True)
-            self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit = True)
+                name_changed_connect_stacks.append(stack_quality)
+                name_changed_connect_stacks.append(stack_quality_changes)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit = True)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit = True)
 
-        # Send emits that are postponed in replaceContainer.
-        # Here the stacks are finished replacing and every value can be resolved based on the current state.
-        for setting_info in new_quality_settings_list:
-            setting_info["stack"].sendPostponedEmits()
+            # Send emits that are postponed in replaceContainer.
+            # Here the stacks are finished replacing and every value can be resolved based on the current state.
+            for setting_info in new_quality_settings_list:
+                setting_info["stack"].sendPostponedEmits()
 
-        # Connect to onQualityNameChanged
-        for stack in name_changed_connect_stacks:
-            stack.nameChanged.connect(self._onQualityNameChanged)
+            # Connect to onQualityNameChanged
+            for stack in name_changed_connect_stacks:
+                stack.nameChanged.connect(self._onQualityNameChanged)
 
-        if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
-            self._askUserToKeepOrClearCurrentSettings()
+            if self.hasUserSettings and Preferences.getInstance().getValue("cura/active_mode") == 1:
+                self._askUserToKeepOrClearCurrentSettings()
 
-        self.activeQualityChanged.emit()
+            self.activeQualityChanged.emit()
 
     ##  Determine the quality and quality changes settings for the current machine for a quality name.
     #
