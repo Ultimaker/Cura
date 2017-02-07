@@ -240,6 +240,18 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def ipAddress(self):
         return self._address
 
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    def preheatBed(self, temperature, duration):
+        url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
+        data = """{"temperature": "{temperature}", "timeout": "{timeout}"}""".format(temperature=temperature, timeout=duration)
+        put_request = QNetworkRequest(url)
+        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._manager.put(put_request, data.encode())
+
     def _stopCamera(self):
         self._camera_timer.stop()
         if self._image_reply:
