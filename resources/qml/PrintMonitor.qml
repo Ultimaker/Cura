@@ -340,11 +340,11 @@ Column
                 {
                     return true; //Can always cancel if the timer is running.
                 }
-                if (parseInt(preheatTemperatureInput.text) < parseInt(bedTemperature.properties.minimum_value))
+                if (bedTemperature.properties.minimum_value != "None" && parseInt(preheatTemperatureInput.text) < parseInt(bedTemperature.properties.minimum_value))
                 {
                     return false; //Target temperature too low.
                 }
-                if (parseInt(preheatTemperatureInput.text) > parseInt(bedTemperature.properties.maximum_value))
+                if (bedTemperature.properties.maximum_value != "None" && parseInt(preheatTemperatureInput.text) > parseInt(bedTemperature.properties.maximum_value))
                 {
                     return false; //Target temperature too high.
                 }
