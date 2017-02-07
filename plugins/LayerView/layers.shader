@@ -26,10 +26,8 @@ vertex =
     }
 
 fragment =
-    in lowp vec4 v_color;
-    in float v_line_type;
-
-    out vec4 frag_color;
+    varying lowp vec4 v_color;
+    varying float v_line_type;
 
     uniform int u_show_travel_moves;
     uniform int u_show_support;
@@ -68,7 +66,7 @@ fragment =
             discard;
         }
 
-        frag_color = v_color;
+        gl_FragColor = u_color;
     }
 
 vertex41core =
