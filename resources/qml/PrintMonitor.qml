@@ -210,6 +210,7 @@ Column
             Label //Maximum temperature indication.
             {
                 text: bedTemperature.properties.maximum_value
+                visible: bedTemperature.properties.maximum_value != "None"
                 color: UM.Theme.getColor("setting_unit")
                 font: UM.Theme.getFont("default")
                 anchors.right: parent.right
