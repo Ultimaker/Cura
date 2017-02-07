@@ -362,7 +362,7 @@ Column
 
             onClicked:
             {
-                print("Click!");
+                connectedPrinter.preheatBed(preheatTemperatureInput.text, 900)
             }
         }
     }
