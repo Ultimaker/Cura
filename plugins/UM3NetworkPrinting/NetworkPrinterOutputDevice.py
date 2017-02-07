@@ -253,6 +253,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
 
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    def cancelPreheatBed(self):
+        self.preheatBed(temperature=0)
+
     def _stopCamera(self):
         self._camera_timer.stop()
         if self._image_reply:
