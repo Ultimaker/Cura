@@ -305,6 +305,10 @@ Column
                 {
                     preheatCountdown.visible = false;
                     running = false;
+                    if (printerConnected)
+                    {
+                        connectedPrinter.cancelPreheatBed()
+                    }
                 }
             }
         }
