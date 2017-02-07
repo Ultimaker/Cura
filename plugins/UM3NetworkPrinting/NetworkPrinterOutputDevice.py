@@ -248,7 +248,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   to a quarter hour.
     def preheatBed(self, temperature, duration=900):
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
-        data = """{"temperature": "{temperature}", "timeout": "{timeout}"}""".format(temperature=temperature, timeout=duration)
+        data = """{"temperature": "{temperature}", "timeout": "{timeout}"}""".format(temperature=str(temperature), timeout=str(duration))
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
