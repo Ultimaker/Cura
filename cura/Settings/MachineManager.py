@@ -286,13 +286,10 @@ class MachineManager(QObject):
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
-        
-        if container_type == "material":
-            self.activeMaterialChanged.emit()
-        elif container_type == "variant":
-            self.activeVariantChanged.emit()
-        elif container_type == "quality":
-            self.activeQualityChanged.emit()
+
+        self.activeVariantChanged.emit()
+        self.activeMaterialChanged.emit()
+        self.activeQualityChanged.emit()
 
         self._updateStacksHaveErrors()
 
