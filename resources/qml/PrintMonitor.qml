@@ -274,7 +274,7 @@ Column
             running: false
             repeat: true
             onTriggered: update()
-            property var endTime: new Date()
+            property var endTime: new Date() //Set initial endTime to be the current date, so that the endTime has initially already passed and the timer text becomes invisible if you were to update.
             function update()
             {
                 var now = new Date();
