@@ -97,6 +97,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._material_ids = [""] * self._num_extruders
         self._hotend_ids = [""] * self._num_extruders
+        self._target_bed_temperature = 0
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
@@ -260,6 +261,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     @pyqtSlot()
     def cancelPreheatBed(self):
         self.preheatBed(temperature=0)
+
+    ##  Changes the target bed temperature and makes sure that its signal is
+    #   emitted.
+    #
+    #   /param temperature The new target temperature of the bed.
+    def _setTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature != temperature:
+            self._target_bed_temperature = temperature
+            self.targetBedTemperatureChanged.emit()
 
     def _stopCamera(self):
         self._camera_timer.stop()
@@ -492,6 +502,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
         self._setBedTemperature(bed_temperature)
+        target_bed_temperature = self._json_printer_state["bed"]["temperature"]["target"]
+        self._setTargetBedTemperature(target_bed_temperature)
 
         head_x = self._json_printer_state["heads"][0]["position"]["x"]
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
