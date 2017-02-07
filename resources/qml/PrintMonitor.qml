@@ -404,7 +404,7 @@ Column
                 connectedPrinter.preheatBed(preheatTemperatureInput.text, 900);
                 var now = new Date();
                 var end_time = new Date();
-                end_time.setTime(now.getTime() + 900 * 1000); //*1000 because time is in milliseconds here.
+                end_time.setTime(now.getTime() + connectedPrinter.preheatBedTimeout * 1000); //*1000 because time is in milliseconds here.
                 preheatCountdownTimer.endTime = end_time;
                 preheatCountdownTimer.start();
                 preheatCountdownTimer.update(); //Update once before the first timer is triggered.
