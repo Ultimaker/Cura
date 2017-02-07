@@ -692,7 +692,7 @@ class MachineManager(QObject):
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
-        with postponeSignals(self._global_container_stack.containersChanged, self._active_container_stack.containersChanged, compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
                 return
@@ -750,9 +750,8 @@ class MachineManager(QObject):
             self.setActiveQuality(new_quality_id)
 
     @pyqtSlot(str)
-    @profile
     def setActiveVariant(self, variant_id):
-        with postponeSignals(self._global_container_stack.containersChanged, self._active_container_stack.containersChanged, compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
                 return
@@ -776,7 +775,7 @@ class MachineManager(QObject):
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
-        with postponeSignals(self._global_container_stack.containersChanged, self._active_container_stack.containersChanged, compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
             self.blurSettings.emit()
 
             containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
@@ -808,8 +807,8 @@ class MachineManager(QObject):
 
                 name_changed_connect_stacks.append(stack_quality)
                 name_changed_connect_stacks.append(stack_quality_changes)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit = True)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit = True)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes)
 
             # Send emits that are postponed in replaceContainer.
             # Here the stacks are finished replacing and every value can be resolved based on the current state.
@@ -1298,3 +1297,8 @@ class MachineManager(QObject):
 
     def _onQualityNameChanged(self):
         self.activeQualityChanged.emit()
+
+    def _getContainerChangedSignals(self):
+        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        stacks.append(self._global_container_stack)
+        return [ s.containersChanged for s in stacks ]
