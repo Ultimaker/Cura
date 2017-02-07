@@ -267,8 +267,47 @@ Column
             }
         }
 
+        Timer
+        {
+            id: preheatCountdownTimer
+            interval: 100 //Update every 100ms. You want to update every 1s, but then you have one timer for the updating running out of sync with the actual date timer and you might skip seconds.
+            running: false
+            repeat: true
+            onTriggered: update()
+            property var endTime: new Date()
+            function update()
+            {
+                var now = new Date();
+                if (now.getTime() < endTime.getTime())
+                {
+                    var remaining = endTime - now; //This is in milliseconds.
+                    var minutes = Math.floor(remaining / 60 / 1000);
+                    var seconds = Math.floor((remaining / 1000) % 60);
+                    preheatCountdown.text = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                    preheatCountdown.visible = true;
+                }
+                else
+                {
+                    preheatCountdown.visible = false;
+                    running = false;
+                }
+            }
+        }
+        Text
+        {
+            id: preheatCountdown
+            text: "0:00"
+            visible: false //It only becomes visible when the timer is running.
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            anchors.right: preheatButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: preheatButton.verticalCenter
+        }
+
         Button //The pre-heat button.
         {
+            id: preheatButton
             text: catalog.i18nc("@button", "Pre-heat")
             tooltip: catalog.i18nc("@tooltip of pre-heat", "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print.")
             height: UM.Theme.getSize("setting_control").height
@@ -362,7 +401,13 @@ Column
 
             onClicked:
             {
-                connectedPrinter.preheatBed(preheatTemperatureInput.text, 900)
+                connectedPrinter.preheatBed(preheatTemperatureInput.text, 900);
+                var now = new Date();
+                var end_time = new Date();
+                end_time.setTime(now.getTime() + 900 * 1000); //*1000 because time is in milliseconds here.
+                preheatCountdownTimer.endTime = end_time;
+                preheatCountdownTimer.start();
+                preheatCountdownTimer.update(); //Update once before the first timer is triggered.
             }
         }
     }
