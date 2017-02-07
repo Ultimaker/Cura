@@ -401,7 +401,7 @@ Column
 
             onClicked:
             {
-                connectedPrinter.preheatBed(preheatTemperatureInput.text, 900);
+                connectedPrinter.preheatBed(preheatTemperatureInput.text, connectedPrinter.preheatBedTimeout);
                 var now = new Date();
                 var end_time = new Date();
                 end_time.setTime(now.getTime() + connectedPrinter.preheatBedTimeout * 1000); //*1000 because time is in milliseconds here.
