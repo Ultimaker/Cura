@@ -323,7 +323,7 @@ Column
         Button //The pre-heat button.
         {
             id: preheatButton
-            text: catalog.i18nc("@button", "Pre-heat")
+            text: preheatCountdownTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
             tooltip: catalog.i18nc("@tooltip of pre-heat", "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print.")
             height: UM.Theme.getSize("setting_control").height
             enabled: printerConnected
@@ -416,13 +416,22 @@ Column
 
             onClicked:
             {
-                connectedPrinter.preheatBed(preheatTemperatureInput.text, connectedPrinter.preheatBedTimeout);
-                var now = new Date();
-                var end_time = new Date();
-                end_time.setTime(now.getTime() + connectedPrinter.preheatBedTimeout * 1000); //*1000 because time is in milliseconds here.
-                preheatCountdownTimer.endTime = end_time;
-                preheatCountdownTimer.start();
-                preheatCountdownTimer.update(); //Update once before the first timer is triggered.
+                if (!preheatCountdownTimer.running)
+                {
+                    connectedPrinter.preheatBed(preheatTemperatureInput.text, connectedPrinter.preheatBedTimeout);
+                    var now = new Date();
+                    var end_time = new Date();
+                    end_time.setTime(now.getTime() + connectedPrinter.preheatBedTimeout * 1000); //*1000 because time is in milliseconds here.
+                    preheatCountdownTimer.endTime = end_time;
+                    preheatCountdownTimer.start();
+                    preheatCountdownTimer.update(); //Update once before the first timer is triggered.
+                }
+                else
+                {
+                    connectedPrinter.cancelPreheatBed();
+                    preheatCountdownTimer.endTime = new Date();
+                    preheatCountdownTimer.update();
+                }
             }
         }
     }
