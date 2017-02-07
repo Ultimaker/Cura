@@ -1066,10 +1066,10 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def resetMachine(self, machine_id):
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=machine_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "machine", machine = machine_id)
         if containers:
             container = containers[0]
-            c = container.findContainer({'type': 'variant'})
+            c = container.findContainer({'type': 'definition_changes'})
             if c:
                 ind = container.getContainerIndex(c)
                 variant_instance_container = self._updateVariantContainer(container.getBottom())
@@ -1078,10 +1078,10 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, result=bool)
     def isMachineChanged(self, machine_id):
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=machine_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "machine", machine = machine_id)
         if containers:
             container = containers[0]
-            c = container.findContainer({'type': 'variant'})
+            c = container.findContainer({'type': 'definition_changes'})
             if c:
                 variant_instance_container = self._updateVariantContainer(container.getBottom())
                 for ins in c.getAllKeys():
