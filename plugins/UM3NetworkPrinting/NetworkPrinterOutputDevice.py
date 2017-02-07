@@ -247,8 +247,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   Celsius.
     #   \param duration How long the bed should stay warm, in seconds. Defaults
     #   to a quarter hour.
-    @pyqtSlot(int, int)
+    @pyqtSlot(float, float)
     def preheatBed(self, temperature, duration):
+        temperature = round(temperature) #The API doesn't allow floating point.
+        duration = round(duration)
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
         if duration > 0:
             data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
