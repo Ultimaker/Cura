@@ -264,8 +264,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #
     #   \param temperature The temperature to heat the bed to, in degrees
     #   Celsius.
-    #   \param duration How long the bed should stay warm, in seconds. Defaults
-    #   to a quarter hour.
+    #   \param duration How long the bed should stay warm, in seconds.
     @pyqtSlot(float, float)
     def preheatBed(self, temperature, duration):
         Logger.log("w", "preheatBed is not implemented by this output device.")
