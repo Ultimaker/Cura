@@ -265,6 +265,20 @@ UM.PreferencesPage
             }
         }
 
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should layer be forced into compatibility mode?")
+
+            CheckBox
+            {
+                id: forceLayerViewCompatibilityModeCheckbox
+                text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
+                checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
+                onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
+            }
+        }
+
         Item
         {
             //: Spacer
