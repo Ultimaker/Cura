@@ -267,6 +267,21 @@ Column
             }
         }
 
+        UM.RecolorImage
+        {
+            id: preheatCountdownIcon
+            width: UM.Theme.getSize("save_button_specs_icons").width
+            height: UM.Theme.getSize("save_button_specs_icons").height
+            sourceSize.width: width
+            sourceSize.height: height
+            color: UM.Theme.getColor("text")
+            visible: preheatCountdown.visible
+            source: UM.Theme.getIcon("print_time")
+            anchors.right: preheatCountdown.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2
+            anchors.verticalCenter: preheatCountdown.verticalCenter
+        }
+
         Timer
         {
             id: preheatCountdownTimer
