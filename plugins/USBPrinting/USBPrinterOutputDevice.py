@@ -641,3 +641,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_firmware_thread.daemon = True
 
         self.connect()
+
+    ##  Pre-heats the heated bed of the printer, if it has one.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds. This is
+    #   ignored because there is no g-code to set this.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        self._setTargetBedTemperature(temperature)
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        self._setTargetBedTemperature(0)
