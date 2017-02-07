@@ -247,10 +247,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   Celsius.
     #   \param duration How long the bed should stay warm, in seconds. Defaults
     #   to a quarter hour.
-    @pyqtSlot(float, float)
+    @pyqtSlot(int, int)
     def preheatBed(self, temperature, duration=900):
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
-        data = """{"temperature": "%0.3f", "timeout": "%0.3f"}""" % (temperature, duration)
+        data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
