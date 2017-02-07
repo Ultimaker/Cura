@@ -244,8 +244,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #
     #   \param temperature The temperature to heat the bed to, in degrees
     #   Celsius.
-    #   \param duration How long the bed should stay warm, in seconds.
-    def preheatBed(self, temperature, duration):
+    #   \param duration How long the bed should stay warm, in seconds. Defaults
+    #   to a quarter hour.
+    def preheatBed(self, temperature, duration=900):
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
         data = """{"temperature": "{temperature}", "timeout": "{timeout}"}""".format(temperature=temperature, timeout=duration)
         put_request = QNetworkRequest(url)
