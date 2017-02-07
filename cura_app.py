@@ -2,7 +2,6 @@
 
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
-
 import os
 import sys
 import platform
@@ -57,6 +56,10 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
 
 # Force an instance of CuraContainerRegistry to be created and reused later.
 cura.Settings.CuraContainerRegistry.getInstance()
+
+# This prestart up check is needed to determine if we should start the application at all.
+if not cura.CuraApplication.CuraApplication.preStartUp():
+    sys.exit(0)
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()
