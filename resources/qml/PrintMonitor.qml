@@ -330,7 +330,26 @@ Column
             text: preheatCountdownTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
             tooltip: catalog.i18nc("@tooltip of pre-heat", "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print.")
             height: UM.Theme.getSize("setting_control").height
-            enabled: printerConnected && (preheatCountdownTimer.running || (parseInt(preheatTemperatureInput.text) >= parseInt(bedTemperature.properties.minimum_value) && parseInt(preheatTemperatureInput.text) <= parseInt(bedTemperature.properties.maximum_value)))
+            enabled:
+            {
+                if (!printerConnected)
+                {
+                    return false; //Can't preheat if not connected.
+                }
+                if (preheatCountdownTimer.running)
+                {
+                    return true; //Can always cancel if the timer is running.
+                }
+                if (parseInt(preheatTemperatureInput.text) < parseInt(bedTemperature.properties.minimum_value))
+                {
+                    return false; //Target temperature too low.
+                }
+                if (parseInt(preheatTemperatureInput.text) > parseInt(bedTemperature.properties.maximum_value))
+                {
+                    return false; //Target temperature too high.
+                }
+                return true; //Preconditions are met.
+            }
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
