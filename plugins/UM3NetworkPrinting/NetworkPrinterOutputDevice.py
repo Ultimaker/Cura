@@ -249,7 +249,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     @pyqtSlot(float, float)
     def preheatBed(self, temperature, duration=900):
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
-        data = """{"temperature": "{temperature}", "timeout": "{timeout}"}""".format(temperature=str(temperature), timeout=str(duration))
+        data = """{"temperature": "%0.3f", "timeout": "%0.3f"}""" % (temperature, duration)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
