@@ -16,6 +16,7 @@ from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.Message import Message
 from UM.Application import Application
+from UM.View.GL.OpenGLContext import OpenGLContext
 
 from cura.ConvexHullNode import ConvexHullNode
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -92,7 +93,7 @@ class LayerView(View):
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = LayerPass.LayerPass(1, 1)
-            self._compatibility_mode = not self.getRenderer().getSupportsGeometryShader() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
+            self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
             self._layer_pass.setLayerView(self)
             self.getRenderer().addRenderPass(self._layer_pass)
         return self._layer_pass
