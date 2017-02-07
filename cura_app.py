@@ -2,14 +2,10 @@
 
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
-import argparse
-import json
 import os
 import sys
 import platform
-import time
 
-from PyQt5.QtNetwork import QLocalSocket
 from UM.Platform import Platform
 
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
@@ -61,36 +57,9 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
 # Force an instance of CuraContainerRegistry to be created and reused later.
 cura.Settings.CuraContainerRegistry.getInstance()
 
-# Peek the arguments and look for the 'single-instance' flag.
-parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
-cura.CuraApplication.CuraApplication.addCommandLineOptions(parser)
-parsed_command_line = vars(parser.parse_args())
-
-if "single_instance" in parsed_command_line and parsed_command_line["single_instance"]:
-    print("Check for single instance")
-    single_instance_socket = QLocalSocket()
-    single_instance_socket.connectToServer("ultimaker-cura")
-    single_instance_socket.waitForConnected()
-    if single_instance_socket.state() == QLocalSocket.ConnectedState:
-        print("Connected to the other Cura instance.")
-        print(repr(parsed_command_line))
-
-        payload = {"command": "clear-all"}
-        single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
-
-        payload = {"command": "focus"}
-        single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
-
-        if len(parsed_command_line["file"]) != 0:
-            for filename in parsed_command_line["file"]:
-                payload = { "command": "open", "filePath": filename }
-                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
-
-        single_instance_socket.flush()
-
-
-        single_instance_socket.close()
-        sys.exit(0)
+# This prestart up check is needed to determine if we should start the application at all.
+if not cura.CuraApplication.CuraApplication.preStartUp():
+    sys.exit(0)
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()
