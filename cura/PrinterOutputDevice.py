@@ -260,6 +260,23 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _setTargetBedTemperature(self, temperature):
         Logger.log("w", "_setTargetBedTemperature is not implemented by this output device")
 
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds. Defaults
+    #   to a quarter hour.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        Logger.log("w", "preheatBed is not implemented by this output device.")
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        Logger.log("w", "cancelPreheatBed is not implemented by this output device.")
+
     ##  Protected setter for the current bed temperature.
     #   This simply sets the bed temperature, but ensures that a signal is emitted.
     #   /param temperature temperature of the bed.
