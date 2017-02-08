@@ -437,9 +437,6 @@ Column
                         text: control.text;
                     }
                 }
-                label: Item
-                {
-                }
             }
 
             onClicked:
