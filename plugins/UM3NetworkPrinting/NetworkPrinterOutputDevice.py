@@ -9,6 +9,7 @@ from UM.Signal import signalemitter
 from UM.Message import Message
 
 import UM.Settings
+import UM.Version #To compare firmware version numbers.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 import cura.Settings.ExtruderManager
@@ -250,6 +251,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def preheatBed(self, temperature, duration):
         temperature = round(temperature) #The API doesn't allow floating point.
         duration = round(duration)
+        if UM.Version(self.firmwareVersion) < UM.Version("3.5.92"): #Real bed pre-heating support is implemented from 3.5.92 and up.
+            self.setTargetBedTemperature(temperature = temperature) #No firmware-side duration support then.
+            return
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
         if duration > 0:
             data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
