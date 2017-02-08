@@ -445,7 +445,6 @@ class CuraApplication(QtApplication):
                 line = remote_cura_connection.readLine()
                 while len(line) != 0:    # There is also a .canReadLine()
                     try:
-                        Logger.log('d', "JSON command: " + str(line, encoding="ASCII"))
                         payload = json.loads(str(line, encoding="ASCII").strip())
                         command = payload["command"]
 
@@ -456,7 +455,7 @@ class CuraApplication(QtApplication):
                         # Command: Load a model file
                         elif command == "open":
                             self._openFile(payload["filePath"])
-                            # FIXME ^ this method is async and we really should wait until
+                            # WARNING ^ this method is async and we really should wait until
                             # the file load is complete before processing more commands.
 
                         # Command: Activate the window and bring it to the top.
