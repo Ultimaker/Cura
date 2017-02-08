@@ -174,7 +174,7 @@ Item
         ComboBox
         {
             id: layerTypeCombobox
-            anchors.top: slider_background.bottom
+            anchors.top: parent.top
             anchors.left: parent.left
             model: layerViewTypes
             visible: !UM.LayerView.compatibilityMode
@@ -186,7 +186,7 @@ Item
         Label
         {
             id: compatibilityModeLabel
-            anchors.top: slider_background.bottom
+            anchors.top: parent.top
             anchors.left: parent.left
             text: catalog.i18nc("@label","Compatibility mode")
             visible: UM.LayerView.compatibilityMode
