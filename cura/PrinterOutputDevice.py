@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
@@ -357,14 +360,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
         result = []
         for material_id in self._material_ids:
             if material_id is None:
-                result.append("#800000FF") #No material.
+                result.append("#00000000") #No material.
                 continue
 
             containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
             if containers:
                 result.append(containers[0].getMetaDataEntry("color_code"))
             else:
-                result.append("#800000FF") #Unknown material.
+                result.append("#00000000") #Unknown material.
         return result
 
     ##  Protected setter for the current material id.
