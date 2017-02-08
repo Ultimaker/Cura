@@ -177,6 +177,8 @@ class ProcessSlicedLayersJob(Job):
             material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
             material = global_container_stack.findContainer({"type": "material"})
             color_code = material.getMetaDataEntry("color_code")
+            if color_code is None:  # not all stacks have a material color
+                color_code = "#e0e000"
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 
