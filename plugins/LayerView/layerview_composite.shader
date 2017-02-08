@@ -33,6 +33,7 @@ fragment =
 
     void main()
     {
+        // blur kernel
         kernel[0] = 0.0; kernel[1] = 1.0; kernel[2] = 0.0;
         kernel[3] = 1.0; kernel[4] = -4.0; kernel[5] = 1.0;
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
@@ -101,6 +102,7 @@ fragment41core =
 
     void main()
     {
+        // blur kernel
         kernel[0] = 0.0; kernel[1] = 1.0; kernel[2] = 0.0;
         kernel[3] = 1.0; kernel[4] = -4.0; kernel[5] = 1.0;
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
