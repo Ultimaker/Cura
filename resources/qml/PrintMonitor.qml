@@ -337,6 +337,10 @@ Column
                 {
                     return false; //Can't preheat if not connected.
                 }
+                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                {
+                    return false; //Printer is in a state where it can't react to pre-heating.
+                }
                 if (preheatCountdownTimer.running)
                 {
                     return true; //Can always cancel if the timer is running.
