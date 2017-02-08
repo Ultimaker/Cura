@@ -19,6 +19,7 @@ vertex =
         gl_Position = u_modelViewProjectionMatrix * a_vertex;
         // shade the color depending on the extruder index
         v_color = a_color;
+        // 8 and 9 are travel moves
         if ((a_line_type != 8.0) && (a_line_type != 9.0)) {
             v_color = (a_extruder == u_active_extruder) ? v_color : vec4(u_shade_factor * v_color.rgb, v_color.a);
         }
