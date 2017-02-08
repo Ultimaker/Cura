@@ -158,7 +158,7 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-        ListModel
+        ListModel  // matches LayerView.py
         {
             id: layerViewTypes
             ListElement {
@@ -179,7 +179,14 @@ Item
             model: layerViewTypes
             visible: !UM.LayerView.compatibilityMode
             onActivated: {
-                UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
+                var type_id = layerViewTypes.get(index).type_id;
+                UM.LayerView.setLayerViewType(type_id);
+                if (type_id == 1) {
+                    // Line type
+                    UM.LayerView.enableLegend();
+                } else {
+                    UM.LayerView.disableLegend();
+                }
             }
         }
 

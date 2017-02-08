@@ -36,6 +36,10 @@ import os.path
 
 ## View used to display g-code paths.
 class LayerView(View):
+    # Must match LayerView.qml
+    LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
+    LAYER_VIEW_TYPE_LINE_TYPE = 1
+
     def __init__(self):
         super().__init__()
 
@@ -260,6 +264,12 @@ class LayerView(View):
     def endRendering(self):
         pass
 
+    def enableLegend(self):
+        Application.getInstance().setViewLegendItems(self._getLegendItems())
+
+    def disableLegend(self):
+        Application.getInstance().setViewLegendItems([])
+
     def event(self, event):
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers == Qt.ControlModifier
@@ -292,7 +302,8 @@ class LayerView(View):
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
-            Application.getInstance().setViewLegendItems(self._getLegendItems())
+            if self.getLayerViewType() == self.LAYER_VIEW_TYPE_LINE_TYPE:
+                self.enableLegend()
 
         elif event.type == Event.ViewDeactivateEvent:
             self._wireprint_warning_message.hide()
@@ -303,7 +314,7 @@ class LayerView(View):
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 
-            Application.getInstance().setViewLegendItems([])
+            self.disableLegend()
 
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
