@@ -212,10 +212,10 @@ fragment41core =
         finalColor.rgb += f_color.rgb * 0.3;
 
         highp vec3 normal = normalize(f_normal);
-        highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
+        highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
-        highp float NdotL = clamp(dot(normal, lightDir), 0.0, 1.0);
+        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 
