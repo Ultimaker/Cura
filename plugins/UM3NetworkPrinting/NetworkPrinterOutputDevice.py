@@ -266,14 +266,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def cancelPreheatBed(self):
         self.preheatBed(temperature = 0, duration = 0)
 
-    ##  Changes the target bed temperature and makes sure that its signal is
-    #   emitted.
+    ##  Changes the target bed temperature on the printer.
     #
     #   /param temperature The new target temperature of the bed.
     def _setTargetBedTemperature(self, temperature):
-        if self._target_bed_temperature != temperature:
-            self._target_bed_temperature = temperature
-            self.targetBedTemperatureChanged.emit()
+        if self._target_bed_temperature == temperature:
+            return
+        url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/temperature")
+        data = """{"target": "%i"}""" % temperature
+        put_request = QNetworkRequest(url)
+        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._manager.put(put_request, data.encode())
 
     def _stopCamera(self):
         self._camera_timer.stop()
