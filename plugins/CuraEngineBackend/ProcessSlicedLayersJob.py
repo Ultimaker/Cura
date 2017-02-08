@@ -139,7 +139,7 @@ class ProcessSlicedLayersJob(Job):
                     new_points[:, 1] = points[:, 2]
                     new_points[:, 2] = -points[:, 1]
 
-                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths, line_thicknesses)
+                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses)
                 this_poly.buildCache()
 
                 this_layer.polygons.append(this_poly)

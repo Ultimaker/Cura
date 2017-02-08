@@ -19,10 +19,13 @@ class LayerPolygon:
     
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
     
-    ##  LayerPolygon
-    #   line_thicknesses: array with type as index and thickness as value
-    def __init__(self, mesh, extruder, line_types, data, line_widths, line_thicknesses):
-        self._mesh = mesh
+    ##  LayerPolygon, used in ProcessSlicedLayersJob
+    #   \param extruder
+    #   \param line_types array with line_types
+    #   \param data new_points
+    #   \param line_widths array with line widths
+    #   \param line_thicknesses: array with type as index and thickness as value
+    def __init__(self, extruder, line_types, data, line_widths, line_thicknesses):
         self._extruder = extruder
         self._types = line_types
         self._data = data
