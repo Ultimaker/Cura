@@ -91,6 +91,7 @@ Column
                     color: UM.Theme.getColor("sidebar")
                     width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
                     height: UM.Theme.getSize("sidebar_extruder_box").height
+                    Layout.fillWidth: index == machineExtruderCount.properties.value - 1 && index % 2 == 0
 
                     Text //Extruder name.
                     {
