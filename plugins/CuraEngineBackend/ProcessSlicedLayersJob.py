@@ -27,6 +27,9 @@ from time import time
 catalog = i18nCatalog("cura")
 
 
+##  Return a 4-tuple with floats 0-1 representing the html color code
+#
+#   \param color_code html color code, i.e. "#FF0000" -> red
 def colorCodeToRGBA(color_code):
     return [
         int(color_code[1:3], 16) / 255,

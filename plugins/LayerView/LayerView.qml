@@ -15,7 +15,7 @@ Item
 
     Slider
     {
-        id: slider2
+        id: sliderMinimumLayer
         width: UM.Theme.getSize("slider_layerview_size").width
         height: UM.Theme.getSize("slider_layerview_size").height
         anchors.left: parent.left
@@ -151,7 +151,6 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         anchors.top: slider_background.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        //anchors.leftMargin: UM.Theme.getSize("default_margin").width
         width: UM.Theme.getSize("slider_layerview_background").width * 3
         height: slider.height + UM.Theme.getSize("default_margin").height * 2
         color: UM.Theme.getColor("tool_panel_background");
@@ -203,7 +202,8 @@ Item
             id: view_settings
             anchors.top: UM.LayerView.compatibilityMode ? compatibilityModeLabel.bottom : layerTypeCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            x: UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             CheckBox {
                 checked: true

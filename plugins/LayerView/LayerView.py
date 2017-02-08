@@ -168,13 +168,21 @@ class LayerView(View):
 
             self.currentLayerNumChanged.emit()
 
+    ##  Set the layer view type
+    #
+    #   \param layer_view_type integer as in LayerView.qml and this class
     def setLayerViewType(self, layer_view_type):
         self._layer_view_type = layer_view_type
         self.currentLayerNumChanged.emit()
 
+    ##  Return the layer view type, integer as in LayerView.qml and this class
     def getLayerViewType(self):
         return self._layer_view_type
 
+    ##  Set the extruder opacity
+    #
+    #   \param extruder_nr 0..3
+    #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr, opacity):
         self._extruder_opacity[extruder_nr] = opacity
         self.currentLayerNumChanged.emit()

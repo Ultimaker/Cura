@@ -69,9 +69,20 @@ class LayerPolygon:
 
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
-        
+
+    ##  Set all the arrays provided by the function caller, representing the LayerPolygon
+    #   The arrays are either by vertex or by indices.
+    #
+    #   \param vertex_offset : determines where to start and end filling the arrays
+    #   \param index_offset : determines where to start and end filling the arrays
+    #   \param vertices : vertex numpy array to be filled
+    #   \param colors : vertex numpy array to be filled
+    #   \param line_dimensions : vertex numpy array to be filled
+    #   \param extruders : vertex numpy array to be filled
+    #   \param line_types : vertex numpy array to be filled
+    #   \param indices : index numpy array to be filled
     def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices):
-        if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
+        if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:
             self.buildCache()
             
         line_mesh_mask = self._build_cache_line_mesh_mask
