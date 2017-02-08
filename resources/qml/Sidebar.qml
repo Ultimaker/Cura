@@ -499,9 +499,7 @@ Rectangle
     {
         anchors.bottom: footerSeparator.top
         anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: base.right
         source: monitoringPrint ? "PrintMonitor.qml": "SidebarContents.qml"
    }

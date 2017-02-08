@@ -533,7 +533,7 @@ Column
         Rectangle
         {
             color: UM.Theme.getColor("setting_category")
-            width: base.width - 2 * UM.Theme.getSize("default_margin").width
+            width: base.width
             height: UM.Theme.getSize("section").height
 
             Label
