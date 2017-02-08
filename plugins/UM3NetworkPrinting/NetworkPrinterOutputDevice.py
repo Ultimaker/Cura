@@ -318,14 +318,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if auth_state == AuthState.AuthenticationRequested:
             Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. Please approve the access request on the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network. Please approve the access request on the printer."))
             self._authentication_requested_message.show()
             self._authentication_request_active = True
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
             Logger.log("d", "Authentication state changed to authenticated")
             self.setAcceptsCommands(True)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network."))
             self._authentication_requested_message.hide()
             if self._authentication_request_active:
                 self._authentication_succeeded_message.show()
@@ -338,7 +338,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. No access to control the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network. No access to control the printer."))
             self._authentication_requested_message.hide()
             if self._authentication_request_active:
                 if self._authentication_timer.remainingTime() > 0:
