@@ -43,7 +43,7 @@ Column
         Label
         {
             id: connectedPrinterAddressLabel
-            text: printerConnected ? connectedPrinter.address : ""
+            text: (printerConnected && connectedPrinter.address != null) ? connectedPrinter.address : ""
             font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text_inactive")
             anchors.left: parent.left

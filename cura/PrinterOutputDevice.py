@@ -165,6 +165,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._job_name = name
             self.jobNameChanged.emit()
 
+    ##  Gives a human-readable address where the device can be found.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        Logger.log("w", "address is not implemented by this output device.")
+
     @pyqtProperty(str, notify = errorTextChanged)
     def errorText(self):
         return self._error_text
