@@ -225,7 +225,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     ##  The IP address of the printer.
     @pyqtProperty(str, constant = True)
     def address(self):
-        return self._properties.get(b"address", b"0.0.0.0").decode("utf-8")
+        return self._properties.get(b"address", b"").decode("utf-8")
 
     ##  Name of the printer (as returned from the zeroConf properties)
     @pyqtProperty(str, constant = True)
