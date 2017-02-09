@@ -72,6 +72,7 @@ class CuraEngineBackend(Backend):
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
         self._pause_slicing = False
+        self._block_slicing = False  # continueSlicing does not have effect if True
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
@@ -196,7 +197,7 @@ class CuraEngineBackend(Backend):
         self.backendStateChange.emit(BackendState.Disabled)
 
     def continueSlicing(self):
-        if self._pause_slicing:
+        if self._pause_slicing and not self._block_slicing:
             self._pause_slicing = False
             self.backendStateChange.emit(BackendState.NotStarted)
 
@@ -315,15 +316,19 @@ class CuraEngineBackend(Backend):
         if source is self._scene.getRoot():
             return
 
-        should_pause = False
+        should_pause = self._pause_slicing
+        block_slicing = False
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isBlockSlicing"):
                 should_pause = True
+                block_slicing = True
             gcode_list = node.callDecoration("getGCodeList")
             if gcode_list is not None:
                 self._scene.gcode_list = gcode_list
 
-        if should_pause:
+        self._block_slicing = block_slicing
+
+        if should_pause and self._block_slicing:
             self.pauseSlicing()
         else:
             self.continueSlicing()
