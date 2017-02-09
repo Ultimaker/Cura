@@ -1241,57 +1241,57 @@
                     "default_value": 0,
                     "settable_per_mesh": true
                 },
-                "anchor_skins_in_infill":
+                "expand_skins_into_infill":
                 {
-                    "label": "Anchor Skins In Infill",
+                    "label": "Expand Skins Into Infill",
                     "description": "Expand skin areas into the infill behind walls. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the skins become anchored in the infill.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "anchor_upper_skin_in_infill":
+                        "expand_upper_skins":
                         {
-                            "label": "Anchor Upper Skin In Infill",
+                            "label": "Expand Upper Skins",
                             "description": "Expand upper skin areas (areas with air above) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
-                            "value": "anchor_skins_in_infill",
-                            "enabled": "anchor_skins_in_infill",
+                            "value": "expand_skins_into_infill",
+                            "enabled": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         },
-                        "anchor_lower_skin_in_infill":
+                        "expand_lower_skins":
                         {
-                            "label": "Anchor Lower Skin In Infill",
+                            "label": "Expand Lower Skins",
                             "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
-                            "value": "anchor_skins_in_infill",
-                            "enabled": "anchor_skins_in_infill",
+                            "value": "expand_skins_into_infill",
+                            "enabled": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         },
-                        "anchor_skin_expand_distance":
+                        "expand_skins_expand_distance":
                         {
-                            "label": "Anchor Skin Expand Distance",
+                            "label": "Expand Distance",
                             "description": "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1.0,
                             "value": "infill_line_distance * 1.4",
                             "minimum_value": "0",
-                            "enabled": "anchor_skins_in_infill",
+                            "enabled": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         },
-                        "anchor_skin_shrink_distance":
+                        "expand_skins_shrink_distance":
                         {
-                            "label": "Anchor Skin Shrink Distance",
+                            "label": "Shrink Distance",
                             "description": "The distance the skins are shrunk before they are expanded. Shrinking the skins slightly first removes the very narrow skin areas that are created when the model surface has a slope close to the vertical.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0,
                             "value": "wall_thickness * 0.5",
                             "minimum_value": "0",
-                            "enabled": "anchor_skins_in_infill",
+                            "enabled": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         }
                     }
