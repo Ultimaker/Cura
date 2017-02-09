@@ -227,12 +227,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def address(self):
         return self._properties.get(b"address", b"").decode("utf-8")
 
-    ##  Name of the printer (as returned from the zeroConf properties)
+    ##  Name of the printer (as returned from the ZeroConf properties)
     @pyqtProperty(str, constant = True)
     def name(self):
         return self._properties.get(b"name", b"").decode("utf-8")
 
-    ##  Firmware version (as returned from the zeroConf properties)
+    ##  Firmware version (as returned from the ZeroConf properties)
     @pyqtProperty(str, constant=True)
     def firmwareVersion(self):
         return self._properties.get(b"firmware_version", b"").decode("utf-8")

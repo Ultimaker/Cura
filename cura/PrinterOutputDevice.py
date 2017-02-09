@@ -170,6 +170,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def address(self):
         Logger.log("w", "address is not implemented by this output device.")
 
+    ##  A human-readable name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        Logger.log("w", "name is not implemented by this output device.")
+        return ""
+
     @pyqtProperty(str, notify = errorTextChanged)
     def errorText(self):
         return self._error_text
