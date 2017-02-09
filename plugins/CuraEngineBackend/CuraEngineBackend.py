@@ -155,7 +155,7 @@ class CuraEngineBackend(Backend):
     ##  Perform a slice of the scene.
     def slice(self):
         Logger.log("d", "Starting slice job...")
-        if self._pause_slicing:
+        if self._pause_slicing or self._block_slicing:
             return
         self._slice_start_time = time()
         if not self._enabled or not self._global_container_stack:  # We shouldn't be slicing.

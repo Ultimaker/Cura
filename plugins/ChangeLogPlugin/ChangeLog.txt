@@ -1,3 +1,6 @@
+[2.5.0]
+*Included PauseBackendPlugin. This enables pausing the backend and manually start the backend. Thanks to community member Aldo Hoeben for this feature. 
+
 [2.4.0]
 *Project saving & opening
 You can now save your build plate configuration - with all your active machine’s meshes and settings. When you reopen the project file, you’ll find that the build plate configuration and all settings will be exactly as you last left them when you saved the project.
