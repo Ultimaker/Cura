@@ -203,7 +203,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._target_bed_temperature = temperature
             self.targetBedTemperatureChanged.emit()
 
-    ##
+    ##  The duration of the time-out to pre-heat the bed, in seconds.
+    #
+    #   \return The duration of the time-out to pre-heat the bed, in seconds.
     @pyqtProperty(int)
     def preheatBedTimeout(self):
         return self._preheat_bed_timeout
