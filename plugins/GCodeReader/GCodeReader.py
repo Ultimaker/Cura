@@ -99,8 +99,11 @@ class GCodeReader(MeshReader):
         count = len(path)
         line_types = numpy.empty((count - 1, 1), numpy.int32)
         line_widths = numpy.empty((count - 1, 1), numpy.float32)
+        line_thicknesses = numpy.empty((count - 1, 1), numpy.float32)
         # TODO: need to calculate actual line width based on E values
         line_widths[:, 0] = 0.4
+        # TODO: need to calculate actual line heights
+        line_thicknesses[:, 0] = 0.2
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
         for point in path:
@@ -113,7 +116,7 @@ class GCodeReader(MeshReader):
                     line_widths[i - 1] = 0.2
             i += 1
 
-        this_poly = LayerPolygon(self._layer_data_builder, self._extruder, line_types, points, line_widths)
+        this_poly = LayerPolygon(self._extruder, line_types, points, line_widths, line_thicknesses)
         this_poly.buildCache()
 
         this_layer.polygons.append(this_poly)
@@ -276,7 +279,10 @@ class GCodeReader(MeshReader):
                     self._layer += 1
                 current_path.clear()
 
-        layer_mesh = self._layer_data_builder.build()
+        material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
+        material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
+        material_color_map[1, :] = [0.7, 0.9, 0.0, 1.0]
+        layer_mesh = self._layer_data_builder.build(material_color_map)
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_mesh)
         scene_node.addDecorator(decorator)
