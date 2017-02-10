@@ -315,7 +315,6 @@ Column
         Button //The pre-heat button.
         {
             id: preheatButton
-            tooltip: catalog.i18nc("@tooltip of pre-heat", "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print.")
             height: UM.Theme.getSize("setting_control").height
             enabled:
             {
@@ -445,6 +444,22 @@ Column
                     connectedPrinter.cancelPreheatBed();
                     preheatCountdownTimer.endTime = new Date();
                     preheatCountdownTimer.update();
+                }
+            }
+
+            onHoveredChanged:
+            {
+                if (hovered)
+                {
+                    base.showTooltip(
+                        base,
+                        {x: 0, y: preheatButton.mapToItem(base, 0, 0).y},
+                        catalog.i18nc("@tooltip of pre-heat", "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print.")
+                    );
+                }
+                else
+                {
+                    base.hideTooltip();
                 }
             }
         }
