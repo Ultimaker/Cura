@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 Column
 {
     id: printMonitor
-    property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
     Cura.ExtrudersModel
     {
@@ -30,7 +30,7 @@ Column
         Label
         {
             id: connectedPrinterNameLabel
-            text: printerConnected ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
+            text: connectedPrinter != null ? connectedPrinter.name : catalog.i18nc("@info:status", "No printer connected")
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             anchors.left: parent.left
@@ -43,7 +43,7 @@ Column
         Label
         {
             id: connectedPrinterAddressLabel
-            text: (printerConnected && connectedPrinter.address != null) ? connectedPrinter.address : ""
+            text: (connectedPrinter != null && connectedPrinter.address != null) ? connectedPrinter.address : ""
             font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text_inactive")
             anchors.left: parent.left
@@ -56,8 +56,8 @@ Column
         }
         Label
         {
-            text: printerConnected ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
-            color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+            text: connectedPrinter != null ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
+            color: connectedPrinter != null && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
             font: UM.Theme.getFont("very_small")
             wrapMode: Text.WordWrap
             anchors.left: parent.left
@@ -104,7 +104,7 @@ Column
                     }
                     Text //Temperature indication.
                     {
-                        text: printerConnected ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
+                        text: connectedPrinter != null ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         font: UM.Theme.getFont("large")
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -116,10 +116,10 @@ Column
                         id: materialColor
                         width: materialName.height * 0.75
                         height: materialName.height * 0.75
-                        color: printerConnected ? connectedPrinter.materialColors[index] : "#00000000" //Need to check for printerConnected or materialColors[index] gives an error.
+                        color: connectedPrinter != null ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: printerConnected
+                        visible: connectedPrinter != null
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: materialName.verticalCenter
@@ -127,7 +127,7 @@ Column
                     Text //Material name.
                     {
                         id: materialName
-                        text: printerConnected ? connectedPrinter.materialNames[index] : ""
+                        text: connectedPrinter != null ? connectedPrinter.materialNames[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.left: materialColor.right
@@ -137,7 +137,7 @@ Column
                     }
                     Text //Variant name.
                     {
-                        text: printerConnected ? connectedPrinter.hotendIds[index] : ""
+                        text: connectedPrinter != null ? connectedPrinter.hotendIds[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.right: parent.right
@@ -170,7 +170,7 @@ Column
         Text //Target temperature.
         {
             id: bedTargetTemperature
-            text: printerConnected ? connectedPrinter.targetBedTemperature + "°C" : ""
+            text: connectedPrinter != null ? connectedPrinter.targetBedTemperature + "°C" : ""
             font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
@@ -180,7 +180,7 @@ Column
         Text //Current temperature.
         {
             id: bedCurrentTemperature
-            text: printerConnected ? connectedPrinter.bedTemperature + "°C" : ""
+            text: connectedPrinter != null ? connectedPrinter.bedTemperature + "°C" : ""
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             anchors.right: bedTargetTemperature.left
@@ -306,7 +306,7 @@ Column
                 {
                     preheatCountdown.visible = false;
                     running = false;
-                    if (printerConnected)
+                    if (connectedPrinter != null)
                     {
                         connectedPrinter.cancelPreheatBed()
                     }
@@ -332,7 +332,7 @@ Column
             height: UM.Theme.getSize("setting_control").height
             enabled:
             {
-                if (!printerConnected)
+                if (!connectedPrinter != null)
                 {
                     return false; //Can't preheat if not connected.
                 }
@@ -484,19 +484,19 @@ Column
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Job Name")
-        property string value: printerConnected ? connectedPrinter.jobName : ""
+        property string value: connectedPrinter != null ? connectedPrinter.jobName : ""
     }
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Printing Time")
-        property string value: printerConnected ? getPrettyTime(connectedPrinter.timeTotal) : ""
+        property string value: connectedPrinter != null ? getPrettyTime(connectedPrinter.timeTotal) : ""
     }
     Loader
     {
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Estimated time left")
-        property string value: printerConnected ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
+        property string value: connectedPrinter != null ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
     }
 
     Component
@@ -515,7 +515,7 @@ Column
                 width: parent.width * 0.4
                 anchors.verticalCenter: parent.verticalCenter
                 text: label
-                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: connectedPrinter != null && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
             }
@@ -524,7 +524,7 @@ Column
                 width: parent.width * 0.6
                 anchors.verticalCenter: parent.verticalCenter
                 text: value
-                color: printerConnected && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: connectedPrinter != null && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
             }
