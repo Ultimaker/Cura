@@ -79,10 +79,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     def stop(self):
         self._check_updates = False
-        try:
-            self._update_thread.join()
-        except RuntimeError:
-            pass
 
     def _updateThread(self):
         while self._check_updates:
