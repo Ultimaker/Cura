@@ -192,9 +192,10 @@ class CuraEngineBackend(Backend):
 
 
     def pauseSlicing(self):
-        self.close()
-        self._pause_slicing = True
-        self.backendStateChange.emit(BackendState.Disabled)
+        if not self._pause_slicing:
+            self.close()
+            self._pause_slicing = True
+            self.backendStateChange.emit(BackendState.Disabled)
 
     def continueSlicing(self):
         if self._pause_slicing and not self._block_slicing:
@@ -328,7 +329,7 @@ class CuraEngineBackend(Backend):
 
         self._block_slicing = block_slicing
 
-        if should_pause and self._block_slicing:
+        if should_pause or self._block_slicing:
             self.pauseSlicing()
         else:
             self.continueSlicing()
