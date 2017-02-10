@@ -318,7 +318,7 @@ Column
             height: UM.Theme.getSize("setting_control").height
             enabled:
             {
-                if (!connectedPrinter != null)
+                if (connectedPrinter == null)
                 {
                     return false; //Can't preheat if not connected.
                 }
