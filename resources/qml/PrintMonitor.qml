@@ -46,7 +46,6 @@ Column
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").width
-            horizontalAlignment: Text.AlignRight
         }
         Label
         {
