@@ -92,6 +92,7 @@ Column
                     {
                         text: (machineExtruderCount.properties.value > 1 && extrudersModel.getItem(index).name != null) ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
+                        font: UM.Them.getFont("default")
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
