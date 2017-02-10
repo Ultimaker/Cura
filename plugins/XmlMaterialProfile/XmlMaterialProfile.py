@@ -397,9 +397,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 label = entry.find("./um:label", self.__namespaces)
 
                 if label is not None:
-                    self.setName(label.text)
+                    self._name = label.text
                 else:
-                    self.setName(self._profile_name(material.text, color.text))
+                    self._name = self._profile_name(material.text, color.text)
                 meta_data["brand"] = brand.text
                 meta_data["material"] = material.text
                 meta_data["color_name"] = color.text
@@ -485,7 +485,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     else:
                         new_material = XmlMaterialProfile(new_material_id)
 
-                    new_material.setName(self.getName())
+                    # Update the private directly, as we want to prevent the lookup that is done when using setName
+                    new_material._name = self.getName()
                     new_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_material.setDefinition(definition)
                     # Don't use setMetadata, as that overrides it for all materials with same base file
@@ -534,7 +535,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     else:
                         new_hotend_material = XmlMaterialProfile(new_hotend_id)
 
-                    new_hotend_material.setName(self.getName())
+                    # Update the private directly, as we want to prevent the lookup that is done when using setName
+                    new_hotend_material._name = self.getName()
                     new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
                     new_hotend_material.setDefinition(definition)
                     new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
