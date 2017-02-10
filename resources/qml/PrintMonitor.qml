@@ -86,7 +86,7 @@ Column
                     height: UM.Theme.getSize("sidebar_extruder_box").height
                     Layout.fillWidth: index == machineExtruderCount.properties.value - 1 && index % 2 == 0
 
-                    Text //Extruder name.
+                    Label //Extruder name.
                     {
                         text: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
@@ -94,7 +94,7 @@ Column
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
                     }
-                    Text //Temperature indication.
+                    Label //Temperature indication.
                     {
                         text: connectedPrinter != null ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         font: UM.Theme.getFont("large")
@@ -115,7 +115,7 @@ Column
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: materialName.verticalCenter
                     }
-                    Text //Material name.
+                    Label //Material name.
                     {
                         id: materialName
                         text: connectedPrinter != null ? connectedPrinter.materialNames[index] : ""
@@ -125,7 +125,7 @@ Column
                         anchors.bottom: parent.bottom
                         anchors.margins: UM.Theme.getSize("default_margin").width
                     }
-                    Text //Variant name.
+                    Label //Variant name.
                     {
                         text: connectedPrinter != null ? connectedPrinter.hotendIds[index] : ""
                         font: UM.Theme.getFont("default")
@@ -155,7 +155,7 @@ Column
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
         }
-        Text //Target temperature.
+        Label //Target temperature.
         {
             id: bedTargetTemperature
             text: connectedPrinter != null ? connectedPrinter.targetBedTemperature + "°C" : ""
@@ -165,7 +165,7 @@ Column
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: bedCurrentTemperature.bottom
         }
-        Text //Current temperature.
+        Label //Current temperature.
         {
             id: bedCurrentTemperature
             text: connectedPrinter != null ? connectedPrinter.bedTemperature + "°C" : ""
@@ -300,7 +300,7 @@ Column
                 }
             }
         }
-        Text
+        Label
         {
             id: preheatCountdown
             text: "0:00"
