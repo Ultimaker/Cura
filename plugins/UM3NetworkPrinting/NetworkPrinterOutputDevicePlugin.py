@@ -196,12 +196,13 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                 info = zeroconf.get_service_info(service_type, name)
 
             if info:
-                type_of_device = info.properties.get(b"type", None).decode("utf-8")
-                if type_of_device == "printer":
-                    address = '.'.join(map(lambda n: str(n), info.address))
-                    self.addPrinterSignal.emit(str(name), address, info.properties)
-                else:
-                    Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." %type_of_device )
+                type_of_device = info.properties.get(b"type", None)
+                if type_of_device:
+                    if type_of_device == b"printer":
+                        address = '.'.join(map(lambda n: str(n), info.address))
+                        self.addPrinterSignal.emit(str(name), address, info.properties)
+                    else:
+                        Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device )
             else:
                 Logger.log("w", "Could not get information about %s" % name)
 
