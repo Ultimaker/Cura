@@ -88,7 +88,7 @@ Column
 
                     Label //Extruder name.
                     {
-                        text: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
+                        text: (machineExtruderCount.properties.value > 1 && extrudersModel.getItem(index).name != null) ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
                         anchors.left: parent.left
                         anchors.top: parent.top
