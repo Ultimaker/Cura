@@ -197,11 +197,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
-            Logger.log("d", "Authentication was required. Setting up authenticator.")
+            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s",self._authentication_id )
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
         else:
-            Logger.log("d", "No authentication was required. The id is: %s", self._authentication_id)
+            Logger.log("d", "No authentication was required. The ID is: %s", self._authentication_id)
 
     def getProperties(self):
         return self._properties
@@ -643,9 +643,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         ## Check if this machine was authenticated before.
         self._authentication_id = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_id", None)
         self._authentication_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_key", None)
-
+        Logger.log("d", "Loaded authentication id %s from the metadata entry", self._authentication_id)
         self._update_timer.start()
-        #self.startCamera()
 
     ##  Stop requesting data from printer
     def disconnect(self):
@@ -760,7 +759,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
-        Logger.log("d", "Checking if authentication is correct.")
+        Logger.log("d", "Checking if authentication is correct for id %", self._authentication_id)
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
@@ -907,7 +906,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 if status_code == 401:
                     if self._authentication_state != AuthState.AuthenticationRequested:
                         # Only request a new authentication when we have not already done so.
-                        Logger.log("i", "Not authenticated. Attempting to request authentication")
+                        Logger.log("i", "Not authenticated (Current auth state is %s). Attempting to request authentication",  self._authentication_state )
                         self._requestAuthentication()
                 elif status_code == 403:
                     # If we already had an auth (eg; didn't request one), we only need a single 403 to see it as denied.
@@ -917,6 +916,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 elif status_code == 200:
                     self.setAuthenticationState(AuthState.Authenticated)
                     global_container_stack = Application.getInstance().getGlobalContainerStack()
+
                     ## Save authentication details.
                     if global_container_stack:
                         if "network_authentication_key" in global_container_stack.getMetaData():
@@ -928,9 +928,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
                     Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
-                    Logger.log("i", "Authentication succeeded")
+                    Logger.log("i", "Authentication succeeded for id %s", self._authentication_id)
                 else:  # Got a response that we didn't expect, so something went wrong.
-                    Logger.log("w", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
+                    Logger.log("e", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
                     self.setAuthenticationState(AuthState.NotAuthenticated)
 
             elif "auth/check" in reply_url:  # Check if we are authenticated (user can refuse this!)
@@ -951,6 +951,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
                 if global_container_stack:  # Remove any old data.
+                    Logger.log("d", "Removing old network authentication data as a new one was requested.")
                     global_container_stack.removeMetaDataEntry("network_authentication_key")
                     global_container_stack.removeMetaDataEntry("network_authentication_id")
                     Application.getInstance().saveStack(global_container_stack)  # Force saving so we don't keep wrong auth data.
