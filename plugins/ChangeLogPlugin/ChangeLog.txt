@@ -24,7 +24,7 @@ When slicing is blocked by settings with error values, a message now appears, cl
 The initial and final printing temperatures reduce the amount of oozing during PLA-PLA, PLA-PVA and Nylon-PVA prints. This means printing a prime tower is now optional (except for CPE and ABS at the moment). The new Ultimaker 3 printing profiles ensure increased reliability and shorter print time.
 
 *Initial Layer Printing Temperature
-Initial and final printing temperature settings have been tuned for higher quality results.
+Initial and final printing temperature settings have been tuned for higher quality results. For all materials the initial print temperature is 5 degrees above the default value.
 
 *Printing temperature of the materials
 The printing temperature of the materials in the material profiles is now the same as the printing temperature for the Normal Quality profile.
