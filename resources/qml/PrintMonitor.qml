@@ -109,10 +109,10 @@ Column
                         id: materialColor
                         width: materialName.height * 0.75
                         height: materialName.height * 0.75
-                        color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null) ? connectedPrinter.materialColors[index] : "#00000000"
+                        color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: (connectedPrinter != null && connectedPrinter.materialColors[index] != null)
+                        visible: connectedPrinter != null && connectedPrinter.materialColors[index] != null && connectedPrinter.materialIds[index] != ""
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: materialName.verticalCenter
@@ -120,7 +120,7 @@ Column
                     Label //Material name.
                     {
                         id: materialName
-                        text: (connectedPrinter != null && connectedPrinter.materialNames[index] != null) ? connectedPrinter.materialNames[index] : ""
+                        text: (connectedPrinter != null && connectedPrinter.materialNames[index] != null && connectedPrinter.materialIds[index] != "") ? connectedPrinter.materialNames[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.left: materialColor.right
