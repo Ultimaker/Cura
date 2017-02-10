@@ -57,7 +57,7 @@ Column
         Label
         {
             text: connectedPrinter != null ? connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
-            color: connectedPrinter != null && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+            color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
             font: UM.Theme.getFont("very_small")
             wrapMode: Text.WordWrap
             anchors.left: parent.left
@@ -515,7 +515,7 @@ Column
                 width: parent.width * 0.4
                 anchors.verticalCenter: parent.verticalCenter
                 text: label
-                color: connectedPrinter != null && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
             }
@@ -524,7 +524,7 @@ Column
                 width: parent.width * 0.6
                 anchors.verticalCenter: parent.verticalCenter
                 text: value
-                color: connectedPrinter != null && printerAcceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+                color: connectedPrinter != null && connectedPrinter.acceptsCommands ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
                 font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
             }
