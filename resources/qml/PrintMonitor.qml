@@ -96,7 +96,7 @@ Column
                     }
                     Label //Temperature indication.
                     {
-                        text: connectedPrinter != null ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
+                        text: (connectedPrinter != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         font: UM.Theme.getFont("large")
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -107,10 +107,10 @@ Column
                         id: materialColor
                         width: materialName.height * 0.75
                         height: materialName.height * 0.75
-                        color: connectedPrinter != null ? connectedPrinter.materialColors[index] : "#00000000"
+                        color: (connectedPrinter != null && connectedPrinter.materialColors[index] != null) ? connectedPrinter.materialColors[index] : "#00000000"
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: connectedPrinter != null
+                        visible: (connectedPrinter != null && connectedPrinter.materialColors[index] != null)
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: materialName.verticalCenter
@@ -118,7 +118,7 @@ Column
                     Label //Material name.
                     {
                         id: materialName
-                        text: connectedPrinter != null ? connectedPrinter.materialNames[index] : ""
+                        text: (connectedPrinter != null && connectedPrinter.materialNames[index] != null) ? connectedPrinter.materialNames[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.left: materialColor.right
@@ -127,7 +127,7 @@ Column
                     }
                     Label //Variant name.
                     {
-                        text: connectedPrinter != null ? connectedPrinter.hotendIds[index] : ""
+                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null) ? connectedPrinter.hotendIds[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.right: parent.right
