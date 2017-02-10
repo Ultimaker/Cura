@@ -376,12 +376,10 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         # Reset previous metadata
         self.clearData() # Ensure any previous data is gone.
-
-        self.addMetaDataEntry("type", "material")
-        self.addMetaDataEntry("base_file", self.id)
-
-        # TODO: Add material verfication
-        self.addMetaDataEntry("status", "unknown")
+        meta_data = {}
+        meta_data["type"] = "material"
+        meta_data["base_file"] = self.id
+        meta_data["status"] = "unknown"  # TODO: Add material verfication
 
         inherits = data.find("./um:inherits", self.__namespaces)
         if inherits is not None:
@@ -402,20 +400,17 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     self.setName(label.text)
                 else:
                     self.setName(self._profile_name(material.text, color.text))
-
-                self.addMetaDataEntry("brand", brand.text)
-                self.addMetaDataEntry("material", material.text)
-                self.addMetaDataEntry("color_name", color.text)
-
+                meta_data["brand"] = brand.text
+                meta_data["material"] = material.text
+                meta_data["color_name"] = color.text
                 continue
+            meta_data[tag_name] = entry.text
 
-            self.addMetaDataEntry(tag_name, entry.text)
+        if not "description" in meta_data:
+            meta_data["description"] = ""
 
-        if not "description" in self.getMetaData():
-            self.addMetaDataEntry("description", "")
-
-        if not "adhesion_info" in self.getMetaData():
-            self.addMetaDataEntry("adhesion_info", "")
+        if not "adhesion_info" in meta_data:
+            meta_data["adhesion_info"] = ""
 
         property_values = {}
         properties = data.iterfind("./um:properties/*", self.__namespaces)
@@ -425,8 +420,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         diameter = float(property_values.get("diameter", 2.85)) # In mm
         density = float(property_values.get("density", 1.3)) # In g/cm3
-
-        self.addMetaDataEntry("properties", property_values)
+        meta_data["properties"] = property_values
 
         self.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
 
@@ -444,8 +438,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
 
-        self.addMetaDataEntry("compatible", global_compatibility)
-
+        meta_data["compatible"] = global_compatibility
+        self.setMetaData(meta_data)
         self._dirty = False
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
