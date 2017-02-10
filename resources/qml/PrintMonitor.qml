@@ -85,6 +85,8 @@ Column
                     width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
                     height: UM.Theme.getSize("sidebar_extruder_box").height
                     Layout.fillWidth: index == machineExtruderCount.properties.value - 1 && index % 2 == 0
+                    anchors.right: (index == machineExtruderCount.properties.value - 1 && index % 2 == 0) ? parent.right : undefined
+                    anchors.left: (index == machineExtruderCount.properties.value - 1 && index % 2 == 0) ? parent.left : undefined
 
                     Label //Extruder name.
                     {
