@@ -34,11 +34,8 @@ Column
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.margins: UM.Theme.getSize("default_margin").width
         }
         Label
         {
@@ -46,12 +43,9 @@ Column
             text: (connectedPrinter != null && connectedPrinter.address != null) ? connectedPrinter.address : ""
             font: UM.Theme.getFont("small")
             color: UM.Theme.getColor("text_inactive")
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.margins: UM.Theme.getSize("default_margin").width
             horizontalAlignment: Text.AlignRight
         }
         Label
@@ -98,18 +92,16 @@ Column
                         text: machineExtruderCount.properties.value > 1 ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
                         anchors.left: parent.left
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.top: parent.top
-                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+                        anchors.margins: UM.Theme.getSize("default_margin").width
                     }
                     Text //Temperature indication.
                     {
                         text: connectedPrinter != null ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         font: UM.Theme.getFont("large")
                         anchors.right: parent.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.top: parent.top
-                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+                        anchors.margins: UM.Theme.getSize("default_margin").width
                     }
                     Rectangle //Material colour indication.
                     {
@@ -131,9 +123,8 @@ Column
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.left: materialColor.right
-                        anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                        anchors.margins: UM.Theme.getSize("default_margin").width
                     }
                     Text //Variant name.
                     {
@@ -141,9 +132,8 @@ Column
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.right: parent.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                        anchors.margins: UM.Theme.getSize("default_margin").width
                     }
                 }
             }
@@ -163,9 +153,8 @@ Column
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.margins: UM.Theme.getSize("default_margin").width
         }
         Text //Target temperature.
         {
@@ -184,9 +173,8 @@ Column
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             anchors.right: bedTargetTemperature.left
-            anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.margins: UM.Theme.getSize("default_margin").width
         }
         Rectangle //Input field for pre-heat temperature.
         {
@@ -359,9 +347,8 @@ Column
                 return true; //Preconditions are met.
             }
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            anchors.margins: UM.Theme.getSize("default_margin").width
             style: ButtonStyle {
                 background: Rectangle
                 {
