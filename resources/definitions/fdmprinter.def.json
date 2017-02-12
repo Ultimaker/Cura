@@ -1272,7 +1272,7 @@
                         },
                         "expand_skins_expand_distance":
                         {
-                            "label": "Expand Distance",
+                            "label": "Skin Expand Distance",
                             "description": "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient.",
                             "unit": "mm",
                             "type": "float",
@@ -1284,7 +1284,7 @@
                         },
                         "expand_skins_shrink_distance":
                         {
-                            "label": "Shrink Distance",
+                            "label": "Skin Shrink Distance",
                             "description": "The distance the skins are shrunk before they are expanded. Shrinking the skins slightly first removes the very narrow skin areas that are created when the model surface has a slope close to the vertical.",
                             "unit": "mm",
                             "type": "float",
