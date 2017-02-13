@@ -78,8 +78,8 @@ vertex41core =
     uniform lowp float u_shade_factor;
     uniform highp int u_layer_view_type;
 
-    in highp int a_extruder;
-    in highp int a_line_type;
+    in highp float a_extruder;
+    in highp float a_line_type;
     in highp vec4 a_vertex;
     in lowp vec4 a_color;
     in lowp vec4 a_material_color;
