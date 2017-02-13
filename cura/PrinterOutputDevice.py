@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
@@ -45,6 +48,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._job_name = ""
         self._error_text = ""
         self._accepts_commands = True
+        self._preheat_bed_timeout = 900 #Default time-out for pre-heating the bed, in seconds.
 
         self._printer_state = ""
         self._printer_type = "unknown"
@@ -161,6 +165,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._job_name = name
             self.jobNameChanged.emit()
 
+    ##  Gives a human-readable address where the device can be found.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        Logger.log("w", "address is not implemented by this output device.")
+
+    ##  A human-readable name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        Logger.log("w", "name is not implemented by this output device.")
+        return ""
+
     @pyqtProperty(str, notify = errorTextChanged)
     def errorText(self):
         return self._error_text
@@ -198,6 +213,13 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._target_bed_temperature != temperature:
             self._target_bed_temperature = temperature
             self.targetBedTemperatureChanged.emit()
+
+    ##  The duration of the time-out to pre-heat the bed, in seconds.
+    #
+    #   \return The duration of the time-out to pre-heat the bed, in seconds.
+    @pyqtProperty(int)
+    def preheatBedTimeout(self):
+        return self._preheat_bed_timeout
 
     ## Time the print has been printing.
     #  Note that timeTotal - timeElapsed should give time remaining.
@@ -253,6 +275,22 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   /sa setTargetBedTemperature
     def _setTargetBedTemperature(self, temperature):
         Logger.log("w", "_setTargetBedTemperature is not implemented by this output device")
+
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        Logger.log("w", "preheatBed is not implemented by this output device.")
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        Logger.log("w", "cancelPreheatBed is not implemented by this output device.")
 
     ##  Protected setter for the current bed temperature.
     #   This simply sets the bed temperature, but ensures that a signal is emitted.
@@ -321,6 +359,28 @@ class PrinterOutputDevice(QObject, OutputDevice):
                 result.append(containers[0].getName())
             else:
                 result.append(i18n_catalog.i18nc("@item:material", "Unknown material"))
+        return result
+
+    ##  List of the colours of the currently loaded materials.
+    #
+    #   The list is in order of extruders. If there is no material in an
+    #   extruder, the colour is shown as transparent.
+    #
+    #   The colours are returned in hex-format AARRGGBB or RRGGBB
+    #   (e.g. #800000ff for transparent blue or #00ff00 for pure green).
+    @pyqtProperty("QVariantList", notify = materialIdChanged)
+    def materialColors(self):
+        result = []
+        for material_id in self._material_ids:
+            if material_id is None:
+                result.append("#00000000") #No material.
+                continue
+
+            containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_id)
+            if containers:
+                result.append(containers[0].getMetaDataEntry("color_code"))
+            else:
+                result.append("#00000000") #Unknown material.
         return result
 
     ##  Protected setter for the current material id.
