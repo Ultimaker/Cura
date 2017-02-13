@@ -405,6 +405,10 @@ class CuraApplication(QtApplication):
     def setDefaultPath(self, key, default_path):
         Preferences.getInstance().setValue("local_file/%s" % key, QUrl(default_path).toLocalFile())
 
+    @classmethod
+    def getStaticVersion(cls):
+        return CuraVersion
+
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
