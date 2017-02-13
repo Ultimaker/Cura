@@ -63,8 +63,8 @@ class LayerDataBuilder(MeshBuilder):
         line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
-        extruders = numpy.empty((vertex_count), numpy.int32)
-        line_types = numpy.empty((vertex_count), numpy.int32)
+        extruders = numpy.empty((vertex_count), numpy.float32)
+        line_types = numpy.empty((vertex_count), numpy.float32)
 
         vertex_offset = 0
         index_offset = 0
