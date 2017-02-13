@@ -141,6 +141,13 @@ Column
 
     Rectangle
     {
+        color: UM.Theme.getColor("sidebar_lining")
+        width: parent.width
+        height: UM.Theme.getSize("sidebar_lining_thin").width
+    }
+
+    Rectangle
+    {
         color: UM.Theme.getColor("sidebar")
         width: parent.width
         height: machineHeatedBed.properties.value == "True" ? UM.Theme.getSize("sidebar_extruder_box").height : 0
