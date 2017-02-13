@@ -67,27 +67,23 @@ Column
         width: parent.width
         height: childrenRect.height
 
-        GridLayout
+        Flow
         {
             id: extrudersGrid
-            columns: 2
-            columnSpacing: UM.Theme.getSize("sidebar_lining_thin").width
-            rowSpacing: UM.Theme.getSize("sidebar_lining_thin").height
+            spacing: UM.Theme.getSize("sidebar_lining_thin").width
             width: parent.width
 
             Repeater
             {
                 id: extrudersRepeater
                 model: machineExtruderCount.properties.value
+
                 delegate: Rectangle
                 {
                     id: extruderRectangle
                     color: UM.Theme.getColor("sidebar")
-                    width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
+                    width: index == machineExtruderCount.properties.value - 1 && index % 2 == 0 ? extrudersGrid.width : extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
                     height: UM.Theme.getSize("sidebar_extruder_box").height
-                    Layout.fillWidth: index == extrudersRepeater.count - 1 && index % 2 == 0
-                    anchors.right: (index == extrudersRepeater.count - 1 && index % 2 == 0) ? parent.right : undefined
-                    anchors.left: (index == extrudersRepeater.count - 1 && index % 2 == 0) ? parent.left : undefined
 
                     Label //Extruder name.
                     {
