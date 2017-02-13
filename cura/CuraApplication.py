@@ -435,6 +435,7 @@ class CuraApplication(QtApplication):
             self.__single_instance_server = QLocalServer()
             self.__single_instance_server.newConnection.connect(self._singleInstanceServerNewConnection)
             self.__single_instance_server.listen("ultimaker-cura")
+            Logger.log("d","Single-instance: Listening on: " + repr(self.__single_instance_server.fullServerName()))
 
     def _singleInstanceServerNewConnection(self):
         Logger.log("i", "New connection recevied on our single-instance server")
@@ -442,9 +443,11 @@ class CuraApplication(QtApplication):
 
         if remote_cura_connection is not None:
             def readCommands():
+                Logger.log("d", "Single-instance: readCommands()")
                 line = remote_cura_connection.readLine()
                 while len(line) != 0:    # There is also a .canReadLine()
                     try:
+                        Logger.log("d", "Single-instance: Read command line: " + repr(line))
                         payload = json.loads(str(line, encoding="ASCII").strip())
                         command = payload["command"]
 
@@ -464,6 +467,10 @@ class CuraApplication(QtApplication):
                             # 'alert' or flashing the icon in the taskbar is the best thing we do now.
                             self.getMainWindow().alert(0)
 
+                        # Command: Close the socket connection. We're done.
+                        elif command == "close-connection":
+                            remote_cura_connection.close()
+
                         else:
                             Logger.log("w", "Received an unrecognized command " + str(command))
                     except json.decoder.JSONDecodeError as ex:
@@ -471,7 +478,11 @@ class CuraApplication(QtApplication):
                     line = remote_cura_connection.readLine()
 
             remote_cura_connection.readyRead.connect(readCommands)
-            remote_cura_connection.disconnected.connect(readCommands)    # Get any last commands before it is destroyed.
+            def disconnected():
+                Logger.log("d", "Single-instance: Disconnected")
+                readCommands()
+                Logger.log("d", "Single-instance: Finished disconnected")
+            remote_cura_connection.disconnected.connect(disconnected)    # Get any last commands before it is destroyed.
 
     ##  Perform any checks before creating the main application.
     #
@@ -487,6 +498,7 @@ class CuraApplication(QtApplication):
         if "single_instance" in parsed_command_line and parsed_command_line["single_instance"]:
             Logger.log("i", "Checking for the presence of an ready running Cura instance.")
             single_instance_socket = QLocalSocket()
+            Logger.log("d", "preStartUp(): full server name: " + single_instance_socket.fullServerName())
             single_instance_socket.connectToServer("ultimaker-cura")
             single_instance_socket.waitForConnected()
             if single_instance_socket.state() == QLocalSocket.ConnectedState:
@@ -506,8 +518,12 @@ class CuraApplication(QtApplication):
                     for filename in parsed_command_line["file"]:
                         payload = {"command": "open", "filePath": filename}
                         single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                payload = {"command": "close-connection"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
                 single_instance_socket.flush()
-                single_instance_socket.close()
+                single_instance_socket.waitForDisconnected()
                 return False
         return True
 
