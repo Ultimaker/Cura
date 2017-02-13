@@ -474,7 +474,7 @@ Column
         id: bedTemperature
         containerStackId: Cura.MachineManager.activeMachineId
         key: "material_bed_temperature"
-        watchedProperties: ["value", "minimum_value", "maximum_value", "minimum_value_warning", "maximum_value_warning", "resolve"]
+        watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
         storeIndex: 0
 
         property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
