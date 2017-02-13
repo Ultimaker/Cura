@@ -1,5 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+from PyQt5.QtNetwork import QLocalServer
+from PyQt5.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
@@ -70,7 +72,8 @@ import numpy
 import copy
 import urllib.parse
 import os
-
+import argparse
+import json
 
 numpy.seterr(all="ignore")
 
@@ -415,7 +418,11 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, str)
     def setDefaultPath(self, key, default_path):
-        Preferences.getInstance().setValue("local_file/%s" % key, default_path)
+        Preferences.getInstance().setValue("local_file/%s" % key, QUrl(default_path).toLocalFile())
+
+    @classmethod
+    def getStaticVersion(cls):
+        return CuraVersion
 
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
@@ -435,12 +442,106 @@ class CuraApplication(QtApplication):
 
         self._plugins_loaded = True
 
+    @classmethod
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+        parser.add_argument("--single-instance", action="store_true", default=False)
+
+    # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
+    def _setUpSingleInstanceServer(self):
+        if self.getCommandLineOption("single_instance", False):
+            self.__single_instance_server = QLocalServer()
+            self.__single_instance_server.newConnection.connect(self._singleInstanceServerNewConnection)
+            self.__single_instance_server.listen("ultimaker-cura")
+
+    def _singleInstanceServerNewConnection(self):
+        Logger.log("i", "New connection recevied on our single-instance server")
+        remote_cura_connection = self.__single_instance_server.nextPendingConnection()
+
+        if remote_cura_connection is not None:
+            def readCommands():
+                line = remote_cura_connection.readLine()
+                while len(line) != 0:    # There is also a .canReadLine()
+                    try:
+                        payload = json.loads(str(line, encoding="ASCII").strip())
+                        command = payload["command"]
+
+                        # Command: Remove all models from the build plate.
+                        if command == "clear-all":
+                            self.deleteAll()
+
+                        # Command: Load a model file
+                        elif command == "open":
+                            self._openFile(payload["filePath"])
+                            # WARNING ^ this method is async and we really should wait until
+                            # the file load is complete before processing more commands.
+
+                        # Command: Activate the window and bring it to the top.
+                        elif command == "focus":
+                            # Operating systems these days prevent windows from moving around by themselves.
+                            # 'alert' or flashing the icon in the taskbar is the best thing we do now.
+                            self.getMainWindow().alert(0)
+
+                        # Command: Close the socket connection. We're done.
+                        elif command == "close-connection":
+                            remote_cura_connection.close()
+
+                        else:
+                            Logger.log("w", "Received an unrecognized command " + str(command))
+                    except json.decoder.JSONDecodeError as ex:
+                        Logger.log("w", "Unable to parse JSON command in _singleInstanceServerNewConnection(): " + repr(ex))
+                    line = remote_cura_connection.readLine()
+
+            remote_cura_connection.readyRead.connect(readCommands)
+
+    ##  Perform any checks before creating the main application.
+    #
+    #   This should be called directly before creating an instance of CuraApplication.
+    #   \returns \type{bool} True if the whole Cura app should continue running.
+    @classmethod
+    def preStartUp(cls):
+        # Peek the arguments and look for the 'single-instance' flag.
+        parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
+        CuraApplication.addCommandLineOptions(parser)
+        parsed_command_line = vars(parser.parse_args())
+
+        if "single_instance" in parsed_command_line and parsed_command_line["single_instance"]:
+            Logger.log("i", "Checking for the presence of an ready running Cura instance.")
+            single_instance_socket = QLocalSocket()
+            Logger.log("d", "preStartUp(): full server name: " + single_instance_socket.fullServerName())
+            single_instance_socket.connectToServer("ultimaker-cura")
+            single_instance_socket.waitForConnected()
+            if single_instance_socket.state() == QLocalSocket.ConnectedState:
+                Logger.log("i", "Connection has been made to the single-instance Cura socket.")
+
+                # Protocol is one line of JSON terminated with a carriage return.
+                # "command" field is required and holds the name of the command to execute.
+                # Other fields depend on the command.
+
+                payload = {"command": "clear-all"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                payload = {"command": "focus"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                if len(parsed_command_line["file"]) != 0:
+                    for filename in parsed_command_line["file"]:
+                        payload = {"command": "open", "filePath": filename}
+                        single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                payload = {"command": "close-connection"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                single_instance_socket.flush()
+                single_instance_socket.waitForDisconnected()
+                return False
+        return True
 
     def run(self):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
+
+        self._setUpSingleInstanceServer()
 
         controller = self.getController()
 

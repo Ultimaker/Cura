@@ -106,8 +106,19 @@ class ExtruderManager(QObject):
     def activeExtruderIndex(self) -> int:
         return self._active_extruder_index
 
+    ##  Gets the extruder name of an extruder of the currently active machine.
+    #
+    #   \param index The index of the extruder whose name to get.
+    @pyqtSlot(int, result = str)
+    def getExtruderName(self, index):
+        try:
+            return list(self.getActiveExtruderStacks())[index].getName()
+        except IndexError:
+            return ""
+
     def getActiveExtruderStack(self) -> ContainerStack:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
+
         if global_container_stack:
             if global_container_stack.getId() in self._extruder_trains:
                 if str(self._active_extruder_index) in self._extruder_trains[global_container_stack.getId()]:

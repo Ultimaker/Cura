@@ -24,6 +24,10 @@
             "bold": true,
             "family": "Open Sans"
         },
+        "very_small": {
+            "size": 1.0,
+            "family": "Open Sans"
+        },
         "button_tooltip": {
             "size": 1.0,
             "family": "Open Sans"
@@ -247,9 +251,11 @@
         "sidebar_header_mode_toggle": [0.0, 2.0],
         "sidebar_header_mode_tabs": [0.0, 3.0],
         "sidebar_lining": [0.5, 0.5],
+        "sidebar_lining_thin": [0.2, 0.2],
         "sidebar_setup": [0.0, 2.0],
         "sidebar_tabs": [0.0, 3.5],
         "sidebar_inputfields": [0.0, 2.0],
+        "sidebar_extruder_box": [0.0, 6.0],
         "simple_mode_infill_caption": [0.0, 5.0],
         "simple_mode_infill_height": [0.0, 8.0],
 
