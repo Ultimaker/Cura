@@ -91,7 +91,7 @@ Column
 
                     Label //Extruder name.
                     {
-                        text: (extrudersRepeater.count > 1 && extrudersModel.getItem(index).name != null) ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
+                        text: (extrudersModel.getItem(index) != null && extrudersModel.getItem(index).name != null) ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         anchors.left: parent.left
