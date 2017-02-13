@@ -480,6 +480,14 @@ Column
         property var resolve: Cura.MachineManager.activeStackId != Cura.MachineManager.activeMachineId ? properties.resolve : "None"
     }
 
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: ["value"]
+    }
+
     Loader
     {
         sourceComponent: monitorSection
