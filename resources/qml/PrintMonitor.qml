@@ -77,6 +77,7 @@ Column
 
             Repeater
             {
+                id: extrudersRepeater
                 model: machineExtruderCount.properties.value
                 delegate: Rectangle
                 {
@@ -84,13 +85,13 @@ Column
                     color: UM.Theme.getColor("sidebar")
                     width: extrudersGrid.width / 2 - UM.Theme.getSize("sidebar_lining_thin").width / 2
                     height: UM.Theme.getSize("sidebar_extruder_box").height
-                    Layout.fillWidth: index == machineExtruderCount.properties.value - 1 && index % 2 == 0
-                    anchors.right: (index == machineExtruderCount.properties.value - 1 && index % 2 == 0) ? parent.right : undefined
-                    anchors.left: (index == machineExtruderCount.properties.value - 1 && index % 2 == 0) ? parent.left : undefined
+                    Layout.fillWidth: index == extrudersRepeater.count - 1 && index % 2 == 0
+                    anchors.right: (index == extrudersRepeater.count - 1 && index % 2 == 0) ? parent.right : undefined
+                    anchors.left: (index == extrudersRepeater.count - 1 && index % 2 == 0) ? parent.left : undefined
 
                     Label //Extruder name.
                     {
-                        text: (machineExtruderCount.properties.value > 1 && extrudersModel.getItem(index).name != null) ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
+                        text: (extrudersRepeater.count > 1 && extrudersModel.getItem(index).name != null) ? extrudersModel.getItem(index).name : catalog.i18nc("@label", "Hotend")
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         anchors.left: parent.left
