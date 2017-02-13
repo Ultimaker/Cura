@@ -1022,7 +1022,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
-            if status_code == 204:
+            if status_code in [200, 201, 202, 204]:
                 pass  # Request was successful!
             else:
                 Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply_url, reply.readAll(), status_code)
