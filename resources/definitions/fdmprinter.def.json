@@ -1134,6 +1134,18 @@
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
                     "settable_per_mesh": true
                 },
+                "spaghetti_flow":
+                {
+                    "label": "Spaghetti Flow",
+                    "description": "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "settable_per_mesh": true
+                },
                 "sub_div_rad_mult":
                 {
                     "label": "Cubic Subdivision Radius",
