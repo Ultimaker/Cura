@@ -276,8 +276,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _setTargetBedTemperature(self, temperature):
         if self._target_bed_temperature == temperature:
             return
-        url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/temperature")
-        data = """{"target": "%i"}""" % temperature
+        url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/temperature/target")
+        data = str(temperature)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
