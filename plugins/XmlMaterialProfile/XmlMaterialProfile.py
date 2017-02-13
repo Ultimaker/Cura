@@ -477,13 +477,7 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 if machine_compatibility:
                     new_material_id = self.id + "_" + machine_id
 
-                    # It could be that we are overwriting, so check if the ID already exists.
-                    materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=new_material_id)
-                    if materials:
-                        new_material = materials[0]
-                        new_material.clearData()
-                    else:
-                        new_material = XmlMaterialProfile(new_material_id)
+                    new_material = XmlMaterialProfile(new_material_id)
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_material._name = self.getName()
@@ -495,8 +489,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_material.setCachedValues(cached_machine_setting_properties)
 
                     new_material._dirty = False
-                    if not materials:
-                        UM.Settings.ContainerRegistry.getInstance().addContainer(new_material)
+
+                    UM.Settings.ContainerRegistry.getInstance().addContainer(new_material)
 
                 hotends = machine.iterfind("./um:hotend", self.__namespaces)
                 for hotend in hotends:
@@ -526,14 +520,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                         else:
                             Logger.log("d", "Unsupported material setting %s", key)
 
-                    # It could be that we are overwriting, so check if the ID already exists.
                     new_hotend_id = self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_")
-                    materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=new_hotend_id)
-                    if materials:
-                        new_hotend_material = materials[0]
-                        new_hotend_material.clearData()
-                    else:
-                        new_hotend_material = XmlMaterialProfile(new_hotend_id)
+
+                    new_hotend_material = XmlMaterialProfile(new_hotend_id)
 
                     # Update the private directly, as we want to prevent the lookup that is done when using setName
                     new_hotend_material._name = self.getName()
@@ -549,8 +538,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     new_hotend_material.setCachedValues(cached_hotend_setting_properties)
 
                     new_hotend_material._dirty = False
-                    if not materials:  # It was not added yet, do so now.
-                        UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
+
+                    UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
     def _addSettingElement(self, builder, instance):
         try:
