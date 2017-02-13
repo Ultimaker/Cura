@@ -17,6 +17,7 @@ class LayerViewProxy(QObject):
     maxLayersChanged = pyqtSignal()
     activityChanged = pyqtSignal()
     globalStackChanged = pyqtSignal()
+    preferencesChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def getLayerActivity(self):
@@ -52,7 +53,7 @@ class LayerViewProxy(QObject):
 
         return False
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool, notify = preferencesChanged)
     def compatibilityMode(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
@@ -157,6 +158,9 @@ class LayerViewProxy(QObject):
     def _onGlobalStackChanged(self):
         self.globalStackChanged.emit()
 
+    def _onPreferencesChanged(self):
+        self.preferencesChanged.emit()
+
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
@@ -164,3 +168,4 @@ class LayerViewProxy(QObject):
             active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
             active_view.busyChanged.connect(self._onBusyChanged)
             active_view.globalStackChanged.connect(self._onGlobalStackChanged)
+            active_view.preferencesChanged.connect(self._onPreferencesChanged)

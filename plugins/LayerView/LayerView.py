@@ -263,6 +263,7 @@ class LayerView(View):
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
     globalStackChanged = Signal()
+    preferencesChanged = Signal()
 
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
@@ -370,13 +371,16 @@ class LayerView(View):
         self._top_layers_job = None
 
     def _onPreferencesChanged(self, preference):
-        if preference not in {"view/top_layer_count", "view/only_show_top_layers", "view/compatibility_mode"}:
+        if preference not in {"view/top_layer_count", "view/only_show_top_layers", "view/force_layer_view_compatibility_mode"}:
             return
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
+            Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
 
         self._startUpdateTopLayers()
+        self.preferencesChanged.emit()
 
     def _getLegendItems(self):
         if self._legend_items is None:
