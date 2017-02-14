@@ -97,6 +97,7 @@ Column
                     Label //Temperature indication.
                     {
                         text: (connectedPrinter != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
+                        color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("large")
                         anchors.right: parent.right
                         anchors.top: parent.top
