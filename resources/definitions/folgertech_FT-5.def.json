@@ -1,5 +1,4 @@
 {
-    "id": "FolgerTech_FT5",
     "version": 2, 
     "name": "Folger Tech FT-5",
     "inherits": "fdmprinter",
