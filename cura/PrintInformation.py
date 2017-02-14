@@ -7,7 +7,7 @@ from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
-from UM.Settings import ContainerRegistry
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
