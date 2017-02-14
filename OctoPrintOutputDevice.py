@@ -334,6 +334,8 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         if not global_container_stack:
             return
 
+        self._preheat_timer.stop()
+
         self._auto_print = parseBool(global_container_stack.getMetaDataEntry("octoprint_auto_print", True))
         if self._auto_print:
             Application.getInstance().showPrintMonitor.emit(True)
@@ -421,7 +423,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
     def preheatBed(self, temperature, duration):
         self._setTargetBedTemperature(temperature)
         if duration > 0:
-            self._preheat_timer.setInterval(duration)
+            self._preheat_timer.setInterval(duration * 1000)
             self._preheat_timer.start()
         else:
             self._preheat_timer.stop()
