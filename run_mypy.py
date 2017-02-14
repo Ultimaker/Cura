@@ -21,7 +21,10 @@ def findModules(path):
     return result
 
 def main():
-    os.putenv("MYPYPATH", r".;.\plugins;.\plugins\VersionUpgrade;..\Uranium_hint\;..\Uranium_hint\stubs\\" )
+    if sys.platform == "win32":
+        os.putenv("MYPYPATH", r".;.\plugins;.\plugins\VersionUpgrade;..\Uranium\;..\Uranium\stubs\\" )
+    else:
+        os.putenv("MYPYPATH", r".:./plugins:./plugins/VersionUpgrade:../Uranium/:../Uranium\stubs/")
 
     # Mypy really needs to be run via its Python script otherwise it can't find its data files.
     mypyExe = where("mypy.bat" if sys.platform == "win32" else "mypy")
