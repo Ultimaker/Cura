@@ -8,7 +8,7 @@ from UM.Signal import signalemitter
 
 from UM.Message import Message
 
-import UM.Settings
+import UM.Settings.ContainerRegistry
 import UM.Version #To compare firmware version numbers.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
@@ -633,7 +633,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                    remote_material_guid,
                                    material.getMetaDataEntry("GUID"))
 
-                        remote_materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                        remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
                         remote_material_name = "Unknown"
                         if remote_materials:
                             remote_material_name = remote_materials[0].getName()
@@ -824,7 +824,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
+        for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
             try:
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
