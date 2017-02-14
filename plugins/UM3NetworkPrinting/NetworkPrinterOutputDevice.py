@@ -251,7 +251,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def preheatBed(self, temperature, duration):
         temperature = round(temperature) #The API doesn't allow floating point.
         duration = round(duration)
-        if UM.Version(self.firmwareVersion) < UM.Version("3.5.92"): #Real bed pre-heating support is implemented from 3.5.92 and up.
+        if UM.Version.Version(self.firmwareVersion) < UM.Version.Version("3.5.92"): #Real bed pre-heating support is implemented from 3.5.92 and up.
             self.setTargetBedTemperature(temperature = temperature) #No firmware-side duration support then.
             return
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
