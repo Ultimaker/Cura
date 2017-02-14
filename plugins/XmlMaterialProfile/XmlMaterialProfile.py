@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import copy
@@ -86,7 +86,7 @@ class XmlMaterialProfile(InstanceContainer):
     #     super().setProperty(key, property_name, property_value)
     #
     #     basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
-    #     for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+    #     for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
     #         if not container.isReadOnly():
     #             container.setDirty(True)
 
