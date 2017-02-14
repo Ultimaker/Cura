@@ -103,6 +103,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         self._recreate_network_manager_time = 30 # If we have no connection, re-create network manager every 30 sec.
         self._recreate_network_manager_count = 1
 
+        self._preheat_timer = QTimer()
+        self._preheat_timer.setSingleShot(True)
+        self._preheat_timer.timeout.connect(self.cancelPreheatBed)
+
     def getProperties(self):
         return self._properties
 
@@ -407,6 +411,28 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
         data = "{\"command\": \"%s\"}" % command
         self._command_reply = self._manager.post(self._command_request, data.encode())
         Logger.log("d", "Sent command to OctoPrint instance: %s", data)
+
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        self._setTargetBedTemperature(temperature)
+        if duration > 0:
+            self._preheat_timer.setInterval(duration)
+            self._preheat_timer.start()
+        else:
+            self._preheat_timer.stop()
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        self._setTargetBedTemperature(0)
+        self._preheat_timer.stop()
 
     def _setTargetBedTemperature(self, temperature):
         Logger.log("d", "Setting bed temperature to %s", temperature)
