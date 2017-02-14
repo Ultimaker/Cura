@@ -403,7 +403,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
     def _sendCommand(self, command):
-        url = QUrl(self._api_url + "job")
+        url = QUrl(self._api_url + "printer/command")
         self._command_request = QNetworkRequest(url)
         self._command_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
         self._command_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
