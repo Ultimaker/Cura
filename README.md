@@ -12,6 +12,7 @@ Installation
     or in the plugins folder inside the configuration folder. The configuration folder can be
     found via Help -> Show Configuration Folder inside Cura.
     NB: The folder of the plugin itself *must* be ```OctoPrintPlugin```
+    NB: Make sure you download the branch that matches the Cura branch (ie: 2.4 for Cura 2.4 etc)
   - If you are running Cura from source, make sure you install python-zeroconf using pip: 
     ```pip3 install python3-zeroconf```.
     Released versions of Cura already meet this requirement.
