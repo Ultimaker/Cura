@@ -168,99 +168,121 @@ UM.PreferencesPage
             text: catalog.i18nc("@label","Viewport behavior")
         }
 
-        UM.TooltipArea
+        Row
         {
-            width: childrenRect.width;
-            height: childrenRect.height;
-
-            text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
-
-            CheckBox
+            Column
             {
-                id: showOverhangCheckbox
-
-                checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
-                onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
-
-                text: catalog.i18nc("@option:check","Display overhang");
-            }
-        }
-
-        UM.TooltipArea {
-            width: childrenRect.width;
-            height: childrenRect.height;
-            text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when an model is selected")
-
-            CheckBox
-            {
-                id: centerOnSelectCheckbox
-                text: catalog.i18nc("@action:button","Center camera when item is selected");
-                checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
-                onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
-            }
-        }
-
-        UM.TooltipArea {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved so that they no longer intersect?")
-
-            CheckBox
-            {
-                id: pushFreeCheckbox
-                text: catalog.i18nc("@option:check", "Ensure models are kept apart")
-                checked: boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
-                onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
-            }
-        }
-        UM.TooltipArea {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved down to touch the build plate?")
-
-            CheckBox
-            {
-                id: dropDownCheckbox
-                text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
-                checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
-                onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
-            }
-        }
-
-        UM.TooltipArea {
-            width: childrenRect.width;
-            height: childrenRect.height;
-            text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
-
-            CheckBox
-            {
-                id: topLayerCountCheckbox
-                text: catalog.i18nc("@action:button","Display five top layers in layer view");
-                checked: UM.Preferences.getValue("view/top_layer_count") == 5
-                onClicked:
+                UM.TooltipArea
                 {
-                    if(UM.Preferences.getValue("view/top_layer_count") == 5)
+                    width: childrenRect.width;
+                    height: childrenRect.height;
+
+                    text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
+
+                    CheckBox
                     {
-                        UM.Preferences.setValue("view/top_layer_count", 1)
+                        id: showOverhangCheckbox
+
+                        checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
+                        onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
+
+                        text: catalog.i18nc("@option:check","Display overhang");
                     }
-                    else
+                }
+
+                UM.TooltipArea {
+                    width: childrenRect.width;
+                    height: childrenRect.height;
+                    text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when an model is selected")
+
+                    CheckBox
                     {
-                        UM.Preferences.setValue("view/top_layer_count", 5)
+                        id: centerOnSelectCheckbox
+                        text: catalog.i18nc("@action:button","Center camera when item is selected");
+                        checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
+                        onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
+                    }
+                }
+
+                UM.TooltipArea {
+                    width: childrenRect.width
+                    height: childrenRect.height
+                    text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved so that they no longer intersect?")
+
+                    CheckBox
+                    {
+                        id: pushFreeCheckbox
+                        text: catalog.i18nc("@option:check", "Ensure models are kept apart")
+                        checked: boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
+                        onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
+                    }
+                }
+                UM.TooltipArea {
+                    width: childrenRect.width
+                    height: childrenRect.height
+                    text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved down to touch the build plate?")
+
+                    CheckBox
+                    {
+                        id: dropDownCheckbox
+                        text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
+                        checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
+                        onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
                     }
                 }
             }
-        }
-        UM.TooltipArea {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should only the top layers be displayed in layerview?")
-
-            CheckBox
+            Column
             {
-                id: topLayersOnlyCheckbox
-                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view")
-                checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
-                onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
+                UM.TooltipArea {
+                    width: childrenRect.width;
+                    height: childrenRect.height;
+                    text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
+
+                    CheckBox
+                    {
+                        id: topLayerCountCheckbox
+                        text: catalog.i18nc("@action:button","Display five top layers in layer view");
+                        checked: UM.Preferences.getValue("view/top_layer_count") == 5
+                        onClicked:
+                        {
+                            if(UM.Preferences.getValue("view/top_layer_count") == 5)
+                            {
+                                UM.Preferences.setValue("view/top_layer_count", 1)
+                            }
+                            else
+                            {
+                                UM.Preferences.setValue("view/top_layer_count", 5)
+                            }
+                        }
+                    }
+                }
+                UM.TooltipArea {
+                    width: childrenRect.width
+                    height: childrenRect.height
+                    text: catalog.i18nc("@info:tooltip", "Should only the top layers be displayed in layerview?")
+
+                    CheckBox
+                    {
+                        id: topLayersOnlyCheckbox
+                        text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view")
+                        checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
+                        onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
+                    }
+                }
+                UM.TooltipArea
+                {
+                    width: childrenRect.width
+                    height: childrenRect.height
+                    text: catalog.i18nc("@info:tooltip", "Reduce width of displayed lines by 10% so that all line edges are visible (reslice required after changing).")
+
+                    CheckBox
+                    {
+                        id: reduceLineWidthsCheckbox
+                        text: catalog.i18nc("@option:check", "Reduce line widths in layer view")
+                        checked: boolCheck(UM.Preferences.getValue("view/reduce_line_widths"))
+                        onCheckedChanged: UM.Preferences.setValue("view/reduce_line_widths", checked)
+                    }
+                }
             }
         }
 
