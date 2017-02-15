@@ -10,9 +10,9 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 import UM.Logger
 
-import cura.Settings
-
 from UM.Application import Application
+
+from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
 #   the linked node. The Stack in question will refer to the global stack (so that settings that are not defined by
@@ -29,8 +29,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
 
-        if cura.Settings.ExtruderManager.getInstance().extruderCount > 1:
-            self._extruder_stack = cura.Settings.ExtruderManager.getInstance().getExtruderStack(0).getId()
+        if ExtruderManager.getInstance().extruderCount > 1:
+            self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
         else:
             self._extruder_stack = None
 

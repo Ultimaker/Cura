@@ -1,6 +1,6 @@
 from UM.Math.Color import Color
 from UM.Application import Application
-
+from typing import Any
 import numpy
 
 
@@ -198,7 +198,7 @@ class LayerPolygon:
 
         return normals
 
-    __color_map = None
+    __color_map = None # type: numpy.ndarray[Any]
 
     ##  Gets the instance of the VersionUpgradeManager, or creates one.
     @classmethod

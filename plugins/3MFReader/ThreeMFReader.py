@@ -11,15 +11,16 @@ from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
-import UM.Application
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
 from UM.Scene.SceneNode import SceneNode
 
+MYPY = False
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
@@ -201,7 +202,7 @@ class ThreeMFReader(MeshReader):
 
                 build_item_node.setTransformation(transform_matrix)
 
-                global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+                global_container_stack = Application.getInstance().getGlobalContainerStack()
 
                 # Create a transformation Matrix to convert from 3mf worldspace into ours.
                 # First step: flip the y and z axis.

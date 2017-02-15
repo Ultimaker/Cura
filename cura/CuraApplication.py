@@ -1,5 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+from PyQt5.QtNetwork import QLocalServer
+from PyQt5.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
@@ -26,7 +28,6 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
-from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
@@ -34,6 +35,11 @@ from cura.BlockSlicingDecorator import BlockSlicingDecorator
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
+from cura.Settings.MachineNameValidator import MachineNameValidator
+from cura.Settings.ProfilesModel import ProfilesModel
+from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
+from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
+from cura.Settings.UserProfilesModel import UserProfilesModel
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -45,7 +51,14 @@ from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import MachineActionManager
 
-import cura.Settings
+from cura.Settings.MachineManager import MachineManager
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.ExtrudersModel import ExtrudersModel
+from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
+from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
+from cura.Settings.QualitySettingsModel import QualitySettingsModel
+from cura.Settings.ContainerManager import ContainerManager
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -59,15 +72,18 @@ import numpy
 import copy
 import urllib.parse
 import os
-
+import argparse
+import json
 
 numpy.seterr(all="ignore")
 
-try:
-    from cura.CuraVersion import CuraVersion, CuraBuildType
-except ImportError:
-    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-    CuraBuildType = ""
+MYPY = False
+if not MYPY:
+    try:
+        from cura.CuraVersion import CuraVersion, CuraBuildType
+    except ImportError:
+        CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+        CuraBuildType = ""
 
 class CuraApplication(QtApplication):
     class ResourceTypes:
@@ -83,6 +99,7 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
+
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
@@ -107,9 +124,9 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
-        SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
-        SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
-        SettingFunction.registerOperator("resolveOrValue", cura.Settings.ExtruderManager.getResolveOrValue)
+        SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
+        SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
+        SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -128,13 +145,14 @@ class CuraApplication(QtApplication):
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("extruder_train", UM.Settings.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
-                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", UM.Settings.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("quality", UM.Settings.InstanceContainer.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("extruder_train", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
+                ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", UM.Settings.InstanceContainer.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
@@ -401,7 +419,11 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, str)
     def setDefaultPath(self, key, default_path):
-        Preferences.getInstance().setValue("local_file/%s" % key, default_path)
+        Preferences.getInstance().setValue("local_file/%s" % key, QUrl(default_path).toLocalFile())
+
+    @classmethod
+    def getStaticVersion(cls):
+        return CuraVersion
 
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
@@ -421,12 +443,106 @@ class CuraApplication(QtApplication):
 
         self._plugins_loaded = True
 
+    @classmethod
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+        parser.add_argument("--single-instance", action="store_true", default=False)
+
+    # Set up a local socket server which listener which coordinates single instances Curas and accepts commands.
+    def _setUpSingleInstanceServer(self):
+        if self.getCommandLineOption("single_instance", False):
+            self.__single_instance_server = QLocalServer()
+            self.__single_instance_server.newConnection.connect(self._singleInstanceServerNewConnection)
+            self.__single_instance_server.listen("ultimaker-cura")
+
+    def _singleInstanceServerNewConnection(self):
+        Logger.log("i", "New connection recevied on our single-instance server")
+        remote_cura_connection = self.__single_instance_server.nextPendingConnection()
+
+        if remote_cura_connection is not None:
+            def readCommands():
+                line = remote_cura_connection.readLine()
+                while len(line) != 0:    # There is also a .canReadLine()
+                    try:
+                        payload = json.loads(str(line, encoding="ASCII").strip())
+                        command = payload["command"]
+
+                        # Command: Remove all models from the build plate.
+                        if command == "clear-all":
+                            self.deleteAll()
+
+                        # Command: Load a model file
+                        elif command == "open":
+                            self._openFile(payload["filePath"])
+                            # WARNING ^ this method is async and we really should wait until
+                            # the file load is complete before processing more commands.
+
+                        # Command: Activate the window and bring it to the top.
+                        elif command == "focus":
+                            # Operating systems these days prevent windows from moving around by themselves.
+                            # 'alert' or flashing the icon in the taskbar is the best thing we do now.
+                            self.getMainWindow().alert(0)
+
+                        # Command: Close the socket connection. We're done.
+                        elif command == "close-connection":
+                            remote_cura_connection.close()
+
+                        else:
+                            Logger.log("w", "Received an unrecognized command " + str(command))
+                    except json.decoder.JSONDecodeError as ex:
+                        Logger.log("w", "Unable to parse JSON command in _singleInstanceServerNewConnection(): " + repr(ex))
+                    line = remote_cura_connection.readLine()
+
+            remote_cura_connection.readyRead.connect(readCommands)
+
+    ##  Perform any checks before creating the main application.
+    #
+    #   This should be called directly before creating an instance of CuraApplication.
+    #   \returns \type{bool} True if the whole Cura app should continue running.
+    @classmethod
+    def preStartUp(cls):
+        # Peek the arguments and look for the 'single-instance' flag.
+        parser = argparse.ArgumentParser(prog="cura")  # pylint: disable=bad-whitespace
+        CuraApplication.addCommandLineOptions(parser)
+        parsed_command_line = vars(parser.parse_args())
+
+        if "single_instance" in parsed_command_line and parsed_command_line["single_instance"]:
+            Logger.log("i", "Checking for the presence of an ready running Cura instance.")
+            single_instance_socket = QLocalSocket()
+            Logger.log("d", "preStartUp(): full server name: " + single_instance_socket.fullServerName())
+            single_instance_socket.connectToServer("ultimaker-cura")
+            single_instance_socket.waitForConnected()
+            if single_instance_socket.state() == QLocalSocket.ConnectedState:
+                Logger.log("i", "Connection has been made to the single-instance Cura socket.")
+
+                # Protocol is one line of JSON terminated with a carriage return.
+                # "command" field is required and holds the name of the command to execute.
+                # Other fields depend on the command.
+
+                payload = {"command": "clear-all"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                payload = {"command": "focus"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                if len(parsed_command_line["file"]) != 0:
+                    for filename in parsed_command_line["file"]:
+                        payload = {"command": "open", "filePath": filename}
+                        single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                payload = {"command": "close-connection"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ASCII"))
+
+                single_instance_socket.flush()
+                single_instance_socket.waitForDisconnected()
+                return False
+        return True
 
     def run(self):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
+
+        self._setUpSingleInstanceServer()
 
         controller = self.getController()
 
@@ -464,9 +580,11 @@ class CuraApplication(QtApplication):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        cura.Settings.ExtruderManager.getInstance()
-        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
-        qmlRegisterSingletonType(cura.Settings.SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
+        ExtruderManager.getInstance()
+        qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
+                         self.getSettingInheritanceManager)
+
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
@@ -486,12 +604,12 @@ class CuraApplication(QtApplication):
 
     def getMachineManager(self, *args):
         if self._machine_manager is None:
-            self._machine_manager = cura.Settings.MachineManager.createMachineManager()
+            self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
-            self._setting_inheritance_manager = cura.Settings.SettingInheritanceManager.createSettingInheritanceManager()
+            self._setting_inheritance_manager = SettingInheritanceManager.createSettingInheritanceManager()
         return self._setting_inheritance_manager
 
     ##  Get the machine action manager
@@ -527,23 +645,23 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
-        qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+        qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
-        qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
-        qmlRegisterSingletonType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel", cura.Settings.ProfilesModel.createProfilesModel)
-        qmlRegisterType(cura.Settings.QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
-        qmlRegisterType(cura.Settings.UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
-        qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
-        qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
-        qmlRegisterType(cura.Settings.MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
+        qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
+        qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
+        qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
+        qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
 
-        qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
+        qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
         qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
 
-        engine.rootContext().setContextProperty("ExtruderManager", cura.Settings.ExtruderManager.getInstance())
+        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
