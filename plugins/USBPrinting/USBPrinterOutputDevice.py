@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
-import serial
+import serial   # type: ignore
 import threading
 import time
 import queue
@@ -123,6 +123,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _homeBed(self):
         self._sendCommand("G28 Z")
+
+    ##  A name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        return self.getName()
+
+    ##  The address of the device.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._serial_port
 
     def startPrint(self):
         self.writeStarted.emit(self)
@@ -631,3 +641,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_firmware_thread.daemon = True
 
         self.connect()
+
+    ##  Pre-heats the heated bed of the printer, if it has one.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds. This is
+    #   ignored because there is no g-code to set this.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        self._setTargetBedTemperature(temperature)
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        self._setTargetBedTemperature(0)

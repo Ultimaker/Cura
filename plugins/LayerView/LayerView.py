@@ -13,15 +13,15 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 from UM.Preferences import Preferences
 from UM.Logger import Logger
-from UM.Scene.SceneNode import SceneNode
-from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 from UM.Message import Message
 from UM.Application import Application
+from UM.View.GL.OpenGLContext import OpenGLContext
 
 from cura.ConvexHullNode import ConvexHullNode
+from cura.Settings.ExtruderManager import ExtruderManager
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
 from . import LayerViewProxy
@@ -36,11 +36,16 @@ import os.path
 
 ## View used to display g-code paths.
 class LayerView(View):
+    # Must match LayerView.qml
+    LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
+    LAYER_VIEW_TYPE_LINE_TYPE = 1
+
     def __init__(self):
         super().__init__()
 
         self._max_layers = 0
         self._current_layer_num = 0
+        self._minimum_layer_num = 0
         self._current_layer_mesh = None
         self._current_layer_jumps = None
         self._top_layers_job = None
@@ -60,16 +65,29 @@ class LayerView(View):
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+        self._resetSettings()
         self._legend_items = None
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
+
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._compatibility_mode = True  # for safety
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"))
+
+    def _resetSettings(self):
+        self._layer_view_type = 0  # 0 is material color, 1 is color by linetype, 2 is speed
+        self._extruder_count = 0
+        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._show_travel_moves = 0
+        self._show_support = 1
+        self._show_adhesion = 1
+        self._show_skin = 1
+        self._show_infill = 1
 
     def getActivity(self):
         return self._activity
@@ -79,12 +97,16 @@ class LayerView(View):
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = LayerPass.LayerPass(1, 1)
+            self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
             self._layer_pass.setLayerView(self)
             self.getRenderer().addRenderPass(self._layer_pass)
         return self._layer_pass
 
     def getCurrentLayer(self):
         return self._current_layer_num
+
+    def getMinimumLayer(self):
+        return self._minimum_layer_num
 
     def _onSceneChanged(self, node):
         self.calculateMaxLayers()
@@ -136,6 +158,79 @@ class LayerView(View):
 
             self.currentLayerNumChanged.emit()
 
+    def setMinimumLayer(self, value):
+        if self._minimum_layer_num != value:
+            self._minimum_layer_num = value
+            if self._minimum_layer_num < 0:
+                self._minimum_layer_num = 0
+
+            self._startUpdateTopLayers()
+
+            self.currentLayerNumChanged.emit()
+
+    ##  Set the layer view type
+    #
+    #   \param layer_view_type integer as in LayerView.qml and this class
+    def setLayerViewType(self, layer_view_type):
+        self._layer_view_type = layer_view_type
+        self.currentLayerNumChanged.emit()
+
+    ##  Return the layer view type, integer as in LayerView.qml and this class
+    def getLayerViewType(self):
+        return self._layer_view_type
+
+    ##  Set the extruder opacity
+    #
+    #   \param extruder_nr 0..3
+    #   \param opacity 0.0 .. 1.0
+    def setExtruderOpacity(self, extruder_nr, opacity):
+        self._extruder_opacity[extruder_nr] = opacity
+        self.currentLayerNumChanged.emit()
+
+    def getExtruderOpacities(self):
+        return self._extruder_opacity
+
+    def setShowTravelMoves(self, show):
+        self._show_travel_moves = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowTravelMoves(self):
+        return self._show_travel_moves
+
+    def setShowSupport(self, show):
+        self._show_support = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowSupport(self):
+        return self._show_support
+
+    def setShowAdhesion(self, show):
+        self._show_adhesion = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowAdhesion(self):
+        return self._show_adhesion
+
+    def setShowSkin(self, show):
+        self._show_skin = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowSkin(self):
+        return self._show_skin
+
+    def setShowInfill(self, show):
+        self._show_infill = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowInfill(self):
+        return self._show_infill
+
+    def getCompatibilityMode(self):
+        return self._compatibility_mode
+
+    def getExtruderCount(self):
+        return self._extruder_count
+
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
         self._activity = True
@@ -167,6 +262,8 @@ class LayerView(View):
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
+    globalStackChanged = Signal()
+    preferencesChanged = Signal()
 
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
@@ -175,6 +272,12 @@ class LayerView(View):
 
     def endRendering(self):
         pass
+
+    def enableLegend(self):
+        Application.getInstance().setViewLegendItems(self._getLegendItems())
+
+    def disableLegend(self):
+        Application.getInstance().setViewLegendItems([])
 
     def event(self, event):
         modifiers = QApplication.keyboardModifiers()
@@ -208,7 +311,8 @@ class LayerView(View):
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
-            Application.getInstance().setViewLegendItems(self._getLegendItems())
+            if self.getLayerViewType() == self.LAYER_VIEW_TYPE_LINE_TYPE:
+                self.enableLegend()
 
         elif event.type == Event.ViewDeactivateEvent:
             self._wireprint_warning_message.hide()
@@ -219,7 +323,7 @@ class LayerView(View):
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 
-            Application.getInstance().setViewLegendItems([])
+            self.disableLegend()
 
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
@@ -227,7 +331,9 @@ class LayerView(View):
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
             self._onPropertyChanged("wireframe_enabled", "value")
+            self.globalStackChanged.emit()
         else:
             self._wireprint_warning_message.hide()
 
@@ -239,6 +345,9 @@ class LayerView(View):
                 self._wireprint_warning_message.hide()
 
     def _startUpdateTopLayers(self):
+        if not self._compatibility_mode:
+            return
+
         if self._top_layers_job:
             self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
             self._top_layers_job.cancel()
@@ -262,13 +371,16 @@ class LayerView(View):
         self._top_layers_job = None
 
     def _onPreferencesChanged(self, preference):
-        if preference != "view/top_layer_count" and preference != "view/only_show_top_layers":
+        if preference not in {"view/top_layer_count", "view/only_show_top_layers", "view/force_layer_view_compatibility_mode"}:
             return
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
+        self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
+            Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
 
         self._startUpdateTopLayers()
+        self.preferencesChanged.emit()
 
     def _getLegendItems(self):
         if self._legend_items is None:

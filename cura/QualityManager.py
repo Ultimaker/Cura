@@ -1,12 +1,16 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import UM.Application
-import cura.Settings.ExtruderManager
-import UM.Settings.ContainerRegistry
-
 # This collects a lot of quality and quality changes related code which was split between ContainerManager
 # and the MachineManager and really needs to usable from both.
+from typing import List
+
+from UM.Application import Application
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Settings.InstanceContainer import InstanceContainer
+from cura.Settings.ExtruderManager import ExtruderManager
+
 
 class QualityManager:
 
@@ -18,7 +22,7 @@ class QualityManager:
             QualityManager.__instance = cls()
         return QualityManager.__instance
 
-    __instance = None
+    __instance = None   # type: "QualityManager"
 
     ##  Find a quality by name for a specific machine definition and materials.
     #
@@ -121,14 +125,14 @@ class QualityManager:
     #
     #   \param machine_definition \type{DefinitionContainer} the machine definition.
     #   \return \type{List[InstanceContainer]} the list of quality changes
-    def findAllQualityChangesForMachine(self, machine_definition):
+    def findAllQualityChangesForMachine(self, machine_definition: DefinitionContainer) -> List[InstanceContainer]:
         if machine_definition.getMetaDataEntry("has_machine_quality"):
             definition_id = machine_definition.getId()
         else:
             definition_id = "fdmprinter"
 
         filter_dict = { "type": "quality_changes", "extruder": None, "definition": definition_id }
-        quality_changes_list = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
+        quality_changes_list = ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
         return quality_changes_list
 
     ##  Find all usable qualities for a machine and extruders.
@@ -177,7 +181,7 @@ class QualityManager:
         if base_material:
             # There is a basic material specified
             criteria = { "type": "material", "name": base_material, "definition": definition_id }
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
             containers = [basic_material for basic_material in containers if
                                basic_material.getMetaDataEntry("variant") == material_container.getMetaDataEntry(
                                    "variant")]
@@ -191,13 +195,13 @@ class QualityManager:
     def _getFilteredContainersForStack(self, machine_definition=None, material_containers=None, **kwargs):
         # Fill in any default values.
         if machine_definition is None:
-            machine_definition = UM.Application.getInstance().getGlobalContainerStack().getBottom()
+            machine_definition = Application.getInstance().getGlobalContainerStack().getBottom()
             quality_definition_id = machine_definition.getMetaDataEntry("quality_definition")
             if quality_definition_id is not None:
-                machine_definition = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition_id)[0]
+                machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition_id)[0]
 
         if material_containers is None:
-            active_stacks = cura.Settings.ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
+            active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
             material_containers = [stack.findContainer(type="material") for stack in active_stacks]
 
         criteria = kwargs
@@ -225,7 +229,7 @@ class QualityManager:
                         material_ids.add(basic_material.getId())
                     material_ids.add(material_instance.getId())
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**criteria)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         result = []
         for container in containers:
@@ -241,8 +245,8 @@ class QualityManager:
     #               an extruder definition.
     #    \return  \type{DefinitionContainer} the parent machine definition. If the given machine
     #               definition doesn't have a parent then it is simply returned.
-    def getParentMachineDefinition(self, machine_definition):
-        container_registry = UM.Settings.ContainerRegistry.getInstance()
+    def getParentMachineDefinition(self, machine_definition: DefinitionContainer) -> DefinitionContainer:
+        container_registry = ContainerRegistry.getInstance()
 
         machine_entry = machine_definition.getMetaDataEntry("machine")
         if machine_entry is None:
@@ -277,6 +281,6 @@ class QualityManager:
             # This already is a 'global' machine definition.
             return machine_definition
         else:
-            container_registry = UM.Settings.ContainerRegistry.getInstance()
+            container_registry = ContainerRegistry.getInstance()
             whole_machine = container_registry.findDefinitionContainers(id=machine_entry)[0]
             return whole_machine

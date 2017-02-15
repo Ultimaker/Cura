@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
@@ -8,7 +8,8 @@ from UM.Signal import signalemitter
 
 from UM.Message import Message
 
-import UM.Settings
+import UM.Settings.ContainerRegistry
+import UM.Version #To compare firmware version numbers.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 import cura.Settings.ExtruderManager
@@ -97,6 +98,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._material_ids = [""] * self._num_extruders
         self._hotend_ids = [""] * self._num_extruders
+        self._target_bed_temperature = 0
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
@@ -220,12 +222,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def getKey(self):
         return self._key
 
-    ##  Name of the printer (as returned from the zeroConf properties)
+    ##  The IP address of the printer.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._properties.get(b"address", b"").decode("utf-8")
+
+    ##  Name of the printer (as returned from the ZeroConf properties)
     @pyqtProperty(str, constant = True)
     def name(self):
         return self._properties.get(b"name", b"").decode("utf-8")
 
-    ##  Firmware version (as returned from the zeroConf properties)
+    ##  Firmware version (as returned from the ZeroConf properties)
     @pyqtProperty(str, constant=True)
     def firmwareVersion(self):
         return self._properties.get(b"firmware_version", b"").decode("utf-8")
@@ -234,6 +241,49 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     @pyqtProperty(str, constant=True)
     def ipAddress(self):
         return self._address
+
+    ##  Pre-heats the heated bed of the printer.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        temperature = round(temperature) #The API doesn't allow floating point.
+        duration = round(duration)
+        if UM.Version.Version(self.firmwareVersion) < UM.Version.Version("3.5.92"): #Real bed pre-heating support is implemented from 3.5.92 and up.
+            self.setTargetBedTemperature(temperature = temperature) #No firmware-side duration support then.
+            return
+        url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
+        if duration > 0:
+            data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
+        else:
+            data = """{"temperature": "%i"}""" % temperature
+        put_request = QNetworkRequest(url)
+        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._manager.put(put_request, data.encode())
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        self.preheatBed(temperature = 0, duration = 0)
+
+    ##  Changes the target bed temperature on the printer.
+    #
+    #   /param temperature The new target temperature of the bed.
+    def _setTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature == temperature:
+            return
+        self._target_bed_temperature = temperature
+        self.targetBedTemperatureChanged.emit()
+
+        url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/temperature/target")
+        data = str(temperature)
+        put_request = QNetworkRequest(url)
+        put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._manager.put(put_request, data.encode())
 
     def _stopCamera(self):
         self._camera_timer.stop()
@@ -271,14 +321,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if auth_state == AuthState.AuthenticationRequested:
             Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. Please approve the access request on the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network. Please approve the access request on the printer."))
             self._authentication_requested_message.show()
             self._authentication_request_active = True
             self._authentication_timer.start()  # Start timer so auth will fail after a while.
         elif auth_state == AuthState.Authenticated:
             Logger.log("d", "Authentication state changed to authenticated")
             self.setAcceptsCommands(True)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network."))
             self._authentication_requested_message.hide()
             if self._authentication_request_active:
                 self._authentication_succeeded_message.show()
@@ -291,7 +341,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self.sendMaterialProfiles()
         elif auth_state == AuthState.AuthenticationDenied:
             self.setAcceptsCommands(False)
-            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network to {0}. No access to control the printer.").format(self.name))
+            self.setConnectionText(i18n_catalog.i18nc("@info:status", "Connected over the network. No access to control the printer."))
             self._authentication_requested_message.hide()
             if self._authentication_request_active:
                 if self._authentication_timer.remainingTime() > 0:
@@ -466,6 +516,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
         self._setBedTemperature(bed_temperature)
+        target_bed_temperature = self._json_printer_state["bed"]["temperature"]["target"]
+        self._setTargetBedTemperature(target_bed_temperature)
 
         head_x = self._json_printer_state["heads"][0]["position"]["x"]
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
@@ -581,7 +633,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                    remote_material_guid,
                                    material.getMetaDataEntry("GUID"))
 
-                        remote_materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                        remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
                         remote_material_name = "Unknown"
                         if remote_materials:
                             remote_material_name = remote_materials[0].getName()
@@ -772,7 +824,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
+        for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
             try:
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
@@ -974,10 +1026,20 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
-            if status_code == 204:
+            if status_code in [200, 201, 202, 204]:
                 pass  # Request was successful!
             else:
-                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply_url, reply.readAll(), status_code)
+                operation_type = "Unknown"
+                if reply.operation() == QNetworkAccessManager.GetOperation:
+                    operation_type = "Get"
+                elif reply.operation() == QNetworkAccessManager.PutOperation:
+                    operation_type = "Put"
+                elif reply.operation() == QNetworkAccessManager.PostOperation:
+                    operation_type = "Post"
+                elif reply.operation() == QNetworkAccessManager.DeleteOperation:
+                    operation_type = "Delete"
+
+                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s, operation: %s", reply_url, reply.readAll(), status_code, operation_type)
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 

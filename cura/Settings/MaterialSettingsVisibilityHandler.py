@@ -1,9 +1,9 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Uranium is released under the terms of the AGPLv3 or higher.
 
-import UM.Settings.Models
+from UM.Settings.Models.SettingVisibilityHandler import SettingVisibilityHandler
 
-class MaterialSettingsVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler):
+class MaterialSettingsVisibilityHandler(SettingVisibilityHandler):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 

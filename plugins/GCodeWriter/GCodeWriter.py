@@ -4,12 +4,9 @@
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
-import UM.Settings.ContainerRegistry
-
-from cura.CuraApplication import CuraApplication
-from cura.Settings.ExtruderManager import ExtruderManager
-
 from UM.Settings.InstanceContainer import InstanceContainer
+
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import re #For escaping characters in the settings.
 import json

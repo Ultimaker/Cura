@@ -7,9 +7,9 @@ from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
-from UM.Settings import ContainerRegistry
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
-import cura.Settings.ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import math
 import os.path
@@ -124,7 +124,7 @@ class PrintInformation(QObject):
 
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
-        extruder_stacks = list(cura.Settings.ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
+        extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
         for index, amount in enumerate(self._material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.

@@ -15,12 +15,8 @@ from UM.Platform import Platform
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 
-import cura.Settings
-
-from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
-from . import ProcessGCodeJob
 from . import StartSliceJob
 
 import os
@@ -84,7 +80,7 @@ class CuraEngineBackend(Backend):
         self._onGlobalStackChanged()
 
         self._active_extruder_stack = None
-        cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
         # Listeners for receiving messages from the back-end.
@@ -570,7 +566,7 @@ class CuraEngineBackend(Backend):
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
-        self._active_extruder_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
+        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
