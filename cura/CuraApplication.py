@@ -230,8 +230,6 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
 
-        Preferences.getInstance().addPreference("general/auto_slice", True)
-
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
@@ -1207,3 +1205,17 @@ class CuraApplication(QtApplication):
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
+
+    # Temporary test, lack of correct location
+    @pyqtSlot()
+    def slice(self):
+        Logger.log("d", "Slice...")
+        backend = self.getBackend()
+        # backend.enableSlicing()
+        backend.forceSlice()
+
+    @pyqtSlot()
+    def sliceStop(self):
+        Logger.log("d", "Slice stop...")
+        backend = self.getBackend()
+        backend.stopSlicing()

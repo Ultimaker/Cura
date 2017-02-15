@@ -27,7 +27,8 @@ Item {
         switch(base.backendState)
         {
             case 1:
-                return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
+                return "";
+                //return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
             case 2:
                 return catalog.i18nc("@label:PrintjobStatus", "Slicing...");
             case 3:
@@ -102,11 +103,96 @@ Item {
             }
         }
 
+        // Prepare button, only shows if auto_slice is off
+        Button {
+            id: prepareButton
+
+            tooltip: UM.OutputDeviceManager.activeDeviceDescription;
+            //enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
+            visible: {
+                CuraApplication.log("pref: " + UM.Preferences.getValue("general/auto_slice"));
+                CuraApplication.log("backend state: " + base.backendState);
+                CuraApplication.log("activity: " + base.activity);
+                return !UM.Preferences.getValue("general/auto_slice") && (base.backendState == 1 || base.backendState == 2) && base.activity == true
+                }
+            height: UM.Theme.getSize("save_button_save_to_button").height
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+            text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
+            onClicked:
+            {
+                if ([1, 5].indexOf(UM.Backend.state) != -1) {
+                    CuraApplication.log("Prepare....");
+                    CuraApplication.slice();
+                } else {
+                    CuraApplication.log("Cancel....");
+                    CuraApplication.sliceStop();
+                }
+            }
+
+            style: ButtonStyle {
+                background: Rectangle
+                {
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled_border");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active_border");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered_border");
+                        else
+                            return UM.Theme.getColor("action_button_border");
+                    }
+                    color:
+                    {
+                        if(!control.enabled)
+                            return UM.Theme.getColor("action_button_disabled");
+                        else if(control.pressed)
+                            return UM.Theme.getColor("action_button_active");
+                        else if(control.hovered)
+                            return UM.Theme.getColor("action_button_hovered");
+                        else
+                            return UM.Theme.getColor("action_button");
+                    }
+
+                    Behavior on color { ColorAnimation { duration: 50; } }
+
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+
+                    Label {
+                        id: actualLabel
+                        anchors.centerIn: parent
+                        color:
+                        {
+                            if(!control.enabled)
+                                return UM.Theme.getColor("action_button_disabled_text");
+                            else if(control.pressed)
+                                return UM.Theme.getColor("action_button_active_text");
+                            else if(control.hovered)
+                                return UM.Theme.getColor("action_button_hovered_text");
+                            else
+                                return UM.Theme.getColor("action_button_text");
+                        }
+                        font: UM.Theme.getFont("action_button")
+                        text: control.text;
+                    }
+                }
+                label: Item { }
+            }
+        }
+
         Button {
             id: saveToButton
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
+            visible: UM.Preferences.getValue("general/auto_slice") || ((base.backendState == 3 || base.backendState == 5) && base.activity == true)
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             anchors.top: parent.top
@@ -182,7 +268,7 @@ Item {
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
             enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: devicesModel.deviceCount > 1
+            visible: (devicesModel.deviceCount > 1) && (base.backendState == 3 || base.backendState == 5) && base.activity == true
 
 
             style: ButtonStyle {

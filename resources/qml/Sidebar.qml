@@ -15,7 +15,7 @@ Rectangle
     id: base;
 
     property int currentModeIndex;
-    property bool monitoringPrint: false
+    property bool monitoringPrint: false;  // When adding more "tabs", one want to replace this bool with a ListModel
     property bool hideSettings: PrintInformation.preSliced
     Connections
     {
@@ -31,6 +31,7 @@ Rectangle
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
+    property int backendState: UM.Backend.state;
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -529,6 +530,8 @@ Rectangle
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
     }
 
+    // SaveButton and MonitorButton are actually the bottom footer panels.
+    // "!monitoringPrint" currently means "show-settings-mode"
     SaveButton
     {
         id: saveButton
@@ -553,6 +556,7 @@ Rectangle
         id: tooltip;
     }
 
+    // Setting mode: Recommended or Custom
     ListModel
     {
         id: modesListModel;
