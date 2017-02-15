@@ -300,12 +300,6 @@ class CuraEngineBackend(Backend):
 
         Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
-    def forceSlice(self):
-        if self._use_timer:
-            self._change_timer.start()
-        else:
-            self.slice()
-
     ##  Determine enable or disable slicing.
     #   It disables when
     #   - preference auto slice is off
@@ -323,7 +317,7 @@ class CuraEngineBackend(Backend):
             if gcode_list is not None:
                 self._scene.gcode_list = gcode_list
 
-        if self._enabled == enable_timer:
+        if self._use_timer == enable_timer:
             return
         if enable_timer:
             self._enabled = True
@@ -574,6 +568,7 @@ class CuraEngineBackend(Backend):
         self._process_layers_job = None
 
     def enableTimer(self):
+        self.disableTimer()  # disable any existing timer
         self._enabled = True
         self._use_timer = True
         self._restart = True
