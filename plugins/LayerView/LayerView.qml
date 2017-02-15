@@ -187,6 +187,9 @@ Item
                     UM.LayerView.disableLegend();
                 }
             }
+            onModelChanged: {
+                currentIndex = UM.LayerView.getLayerViewType();
+            }
         }
 
         Label
