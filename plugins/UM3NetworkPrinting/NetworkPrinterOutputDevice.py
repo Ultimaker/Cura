@@ -811,7 +811,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
-        Logger.log("d", "Checking if authentication is correct for id %", self._authentication_id)
+        Logger.log("d", "Checking if authentication is correct for id %s", self._authentication_id)
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
