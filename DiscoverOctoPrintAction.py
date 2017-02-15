@@ -26,7 +26,7 @@ class DiscoverOctoPrintAction(MachineAction):
 
         self._network_plugin = None
 
-        cura.Settings.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
+        cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
 
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
