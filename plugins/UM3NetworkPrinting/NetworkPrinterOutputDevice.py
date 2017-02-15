@@ -616,7 +616,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
             # Check if the right cartridges are loaded. Any failure in these results in a warning.
-            extruder_manager = cura.Settings.ExtruderManager.getInstance()
+            extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
             if print_information.materialLengths[index] != 0:
                 variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                 core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
