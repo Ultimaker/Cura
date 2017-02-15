@@ -16,8 +16,8 @@ vertex41core =
     in lowp vec4 a_material_color;
     in highp vec4 a_normal;
     in highp vec2 a_line_dim;  // line width and thickness
-    in highp int a_extruder;
-    in highp int a_line_type;
+    in highp int a_extruder;  // Note: cannot use this in compatibility, int is only available in newer OpenGL.
+    in highp float a_line_type;
 
     out lowp vec4 v_color;
 
@@ -26,7 +26,7 @@ vertex41core =
     out lowp vec2 v_line_dim;
     out highp int v_extruder;
     out highp vec4 v_extruder_opacity;
-    out int v_line_type;
+    out float v_line_type;
 
     out lowp vec4 f_color;
     out highp vec3 f_vertex;
@@ -82,7 +82,7 @@ geometry41core =
     in vec2 v_line_dim[];
     in int v_extruder[];
     in vec4 v_extruder_opacity[];
-    in int v_line_type[];
+    in float v_line_type[];
 
     out vec4 f_color;
     out vec3 f_normal;
