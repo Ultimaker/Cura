@@ -1,13 +1,13 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
-from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Math.Polygon import Polygon
-from . import ConvexHullNode
+from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
-import UM.Settings.ContainerRegistry
+from cura.Settings.ExtruderManager import ExtruderManager
+from . import ConvexHullNode
 
 import numpy
 
@@ -308,11 +308,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
             extruder_stack_id = self._node.callDecoration("getActiveExtruder")
             if not extruder_stack_id: #Decoration doesn't exist.
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
-            extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             return extruder_stack.getProperty(setting_key, property)
         else: #Limit_to_extruder is set. Use that one.
             extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             return stack.getProperty(setting_key, property)
 
     ## Returns true if node is a descendant or the same as the root node.

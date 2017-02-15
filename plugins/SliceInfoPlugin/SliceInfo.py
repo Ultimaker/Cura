@@ -1,5 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+from typing import Any
 
 from cura.CuraApplication import CuraApplication
 
@@ -26,8 +27,8 @@ import json
 catalog = i18nCatalog("cura")
 
 class SliceInfoJob(Job):
-    data = None
-    url = None
+    data = None # type: Any
+    url = None  # type: str
 
     def __init__(self, url, data):
         super().__init__()

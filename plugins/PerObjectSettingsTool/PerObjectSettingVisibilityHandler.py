@@ -4,16 +4,17 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 from UM.Application import Application
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
-import UM.Settings.Models
+import UM.Settings.Models.SettingVisibilityHandler
 
 from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherits-stack setting values from different extruders.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 ##  The per object setting visibility handler ensures that only setting
 #   definitions that have a matching instance Container are returned as visible.
-class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler):
+class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 
@@ -72,7 +73,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
                     # Use the found stack number to get the right stack to copy the value from.
                     if stack_nr in ExtruderManager.getInstance().extruderIds:
-                        stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                        stack = ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
 
                     # Use the raw property to set the value (so the inheritance doesn't break)
                     if stack is not None:

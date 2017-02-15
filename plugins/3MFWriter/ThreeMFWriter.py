@@ -7,8 +7,10 @@ from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
 
+MYPY = False
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
