@@ -53,6 +53,7 @@ class ExtruderManager(QObject):
         except KeyError: # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
+    ##  Return extruder count according to extruder trains.
     @pyqtProperty(int, notify = extrudersChanged)
     def extruderCount(self):
         if not Application.getInstance().getGlobalContainerStack():

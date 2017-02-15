@@ -235,7 +235,7 @@ UM.PreferencesPage
             CheckBox
             {
                 id: topLayerCountCheckbox
-                text: catalog.i18nc("@action:button","Display five top layers in layer view");
+                text: catalog.i18nc("@action:button","Display five top layers in layer view compatibility mode");
                 checked: UM.Preferences.getValue("view/top_layer_count") == 5
                 onClicked:
                 {
@@ -250,6 +250,7 @@ UM.PreferencesPage
                 }
             }
         }
+
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
@@ -258,9 +259,23 @@ UM.PreferencesPage
             CheckBox
             {
                 id: topLayersOnlyCheckbox
-                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view")
+                text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view compatibility mode")
                 checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
                 onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
+            }
+        }
+
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should layer be forced into compatibility mode?")
+
+            CheckBox
+            {
+                id: forceLayerViewCompatibilityModeCheckbox
+                text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
+                checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
+                onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
             }
         }
 
