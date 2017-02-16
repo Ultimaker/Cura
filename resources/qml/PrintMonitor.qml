@@ -291,12 +291,10 @@ Column
                 preheatCountdown.text = ""
                 if (connectedPrinter != null)
                 {
-                    preheatCountdown.visible = true;
                     preheatCountdown.text = connectedPrinter.preheatBedRemainingTime;
                 }
                 if (preheatCountdown.text == "") //Either time elapsed or not connected.
                 {
-                    preheatCountdown.visible = false;
                     stop();
                 }
             }
@@ -304,8 +302,8 @@ Column
         Label
         {
             id: preheatCountdown
-            text: "0:00"
-            visible: false //It only becomes visible when the timer is running.
+            text: ""
+            visible: text != "" //Has no direct effect, but just so that we can link visibility of clock icon to visibility of the countdown text.
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             anchors.right: preheatButton.left
