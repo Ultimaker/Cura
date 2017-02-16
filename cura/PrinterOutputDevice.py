@@ -108,6 +108,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     printerTypeChanged = pyqtSignal()
 
+    # Signal to be emitted when some drastic change occurs in the remaining time (not when the time just passes on normally).
+    preheatBedRemainingTimeChanged = pyqtSignal()
+
     @pyqtProperty(str, notify=printerTypeChanged)
     def printerType(self):
         return self._printer_type
@@ -227,7 +230,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #
     #   This is formatted in M:SS format.
     #   \return The duration of the time-out to pre-heat the bed, formatted.
-    @pyqtProperty(str)
+    @pyqtProperty(str, notify = preheatBedRemainingTimeChanged)
     def preheatBedRemainingTime(self):
         period = self._preheat_bed_timer.remainingTime()
         if period <= 0:

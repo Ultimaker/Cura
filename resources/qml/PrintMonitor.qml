@@ -282,7 +282,7 @@ Column
         {
             id: preheatUpdateTimer
             interval: 100 //Update every 100ms. You want to update every 1s, but then you have one timer for the updating running out of sync with the actual date timer and you might skip seconds.
-            running: false
+            running: connectedPrinter.preheatBedRemainingTime != ""
             repeat: true
             onTriggered: update()
             property var endTime: new Date() //Set initial endTime to be the current date, so that the endTime has initially already passed and the timer text becomes invisible if you were to update.
@@ -302,7 +302,7 @@ Column
         Label
         {
             id: preheatCountdown
-            text: ""
+            text: connectedPrinter != null ? connectedPrinter.preheatBedRemainingTime : ""
             visible: text != "" //Has no direct effect, but just so that we can link visibility of clock icon to visibility of the countdown text.
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")

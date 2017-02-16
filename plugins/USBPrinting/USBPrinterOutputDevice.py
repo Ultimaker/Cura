@@ -652,6 +652,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def preheatBed(self, temperature, duration):
         Logger.log("i", "Pre-heating the bed to %i degrees.", temperature)
         self._setTargetBedTemperature(temperature)
+        self.preheatBedRemainingTimeChanged.emit()
 
     ##  Cancels pre-heating the heated bed of the printer.
     #
@@ -660,3 +661,4 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def cancelPreheatBed(self):
         Logger.log("i", "Cancelling pre-heating of the bed.")
         self._setTargetBedTemperature(0)
+        self.preheatBedRemainingTimeChanged.emit()
