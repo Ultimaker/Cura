@@ -172,6 +172,28 @@ Column
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: bedCurrentTemperature.bottom
+
+            MouseArea //For tooltip.
+            {
+                id: bedTargetTemperatureTooltipArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onHoveredChanged:
+                {
+                    if (containsMouse)
+                    {
+                        base.showTooltip(
+                            base,
+                            {x: 0, y: bedTargetTemperature.mapToItem(base, 0, 0).y},
+                            catalog.i18nc("@tooltip", "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off.")
+                        );
+                    }
+                    else
+                    {
+                        base.hideTooltip();
+                    }
+                }
+            }
         }
         Label //Current temperature.
         {
