@@ -336,6 +336,10 @@ Column
                 {
                     return false; //Target temperature too high.
                 }
+                if (parseInt(preheatTemperatureInput.text) == 0)
+                {
+                    return false; //Setting the temperature to 0 is not allowed (since that cancels the pre-heating).
+                }
                 return true; //Preconditions are met.
             }
             anchors.right: parent.right
