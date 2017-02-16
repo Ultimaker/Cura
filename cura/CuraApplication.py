@@ -671,6 +671,7 @@ class CuraApplication(QtApplication):
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
     ##  Get the backend of the application (the program that does the heavy lifting).
+    #   The backend is also a QObject, which can be used from qml.
     #   \returns Backend \type{Backend}
     @pyqtSlot(result = "QObject*")
     def getBackend(self):

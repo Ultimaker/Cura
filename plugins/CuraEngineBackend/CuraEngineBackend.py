@@ -36,6 +36,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   This registers all the signal listeners and prepares for communication
     #   with the back-end in general.
+    #   CuraEngineBackend is exposed to qml as well.
     def __init__(self):
         super().__init__()
         # Find out where the engine is located, and how it is called.
@@ -190,7 +191,6 @@ class CuraEngineBackend(QObject, Backend):
         self._stored_optimized_layer_data = []
 
         if self._process is None:
-            Logger.log("d", "Creating socket and start the engine...")
             self._createSocket()
         self.stopSlicing()
         self._engine_is_fresh = False  # Yes we're going to use the engine
@@ -203,7 +203,6 @@ class CuraEngineBackend(QObject, Backend):
         self.slicingStarted.emit()
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
-        Logger.log("d", "Really starting slice job")
         self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
@@ -569,12 +568,13 @@ class CuraEngineBackend(QObject, Backend):
     def _onProcessLayersFinished(self, job):
         self._process_layers_job = None
 
+    ##  Connect slice function to timer.
     def enableTimer(self):
         if not self._use_timer:
             self._change_timer.timeout.connect(self.slice)
             self._use_timer = True
 
-    ##  Disable timer.
+    ##  Disconnect slice function from timer.
     #   This means that slicing will not be triggered automatically
     def disableTimer(self):
         if self._use_timer:
