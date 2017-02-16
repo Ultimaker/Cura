@@ -182,6 +182,28 @@ Column
             anchors.right: bedTargetTemperature.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
+
+            MouseArea //For tooltip.
+            {
+                id: bedTemperatureTooltipArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onHoveredChanged:
+                {
+                    if (containsMouse)
+                    {
+                        base.showTooltip(
+                            base,
+                            {x: 0, y: bedCurrentTemperature.mapToItem(base, 0, 0).y},
+                            catalog.i18nc("@tooltip", "The current temperature of the heated bed.")
+                        );
+                    }
+                    else
+                    {
+                        base.hideTooltip();
+                    }
+                }
+            }
         }
         Rectangle //Input field for pre-heat temperature.
         {
