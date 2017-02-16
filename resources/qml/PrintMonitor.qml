@@ -311,7 +311,7 @@ Column
                 {
                     return false; //Not allowed to do anything.
                 }
-                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
                 {
                     return false; //Printer is in a state where it can't react to pre-heating.
                 }
