@@ -100,6 +100,7 @@ class CuraEngineBackend(QObject, Backend):
         self._always_restart = True  # Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None  # The currently active job to process layers, or None if it is not processing layers.
         self._need_slicing = False
+        self._engine_is_fresh = True  # Is the newly started engine used before or not?
 
         self._backend_log_max_lines = 20000  # Maximum number of lines to buffer
         self._error_message = None  # Pop-up message that shows errors.
@@ -116,7 +117,12 @@ class CuraEngineBackend(QObject, Backend):
         Preferences.getInstance().addPreference("general/auto_slice", True)
 
         self._use_timer = False
-        self._change_timer = None
+        # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
+        # This timer will group them up, and only slice for the last setting changed signal.
+        # TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
+        self._change_timer = QTimer()
+        self._change_timer.setSingleShot(True)
+        self._change_timer.setInterval(500)
         self.determineAutoSlicing()
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
 
@@ -171,10 +177,11 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
-        Logger.log("d", "Starting slice job...")
         self._slice_start_time = time()
         if not self._need_slicing:
-            Logger.log("w", "Do not need to slice, optimizable or programming error.")
+            self.processingProgress.emit(1.0)
+            self.backendStateChange.emit(BackendState.Done)
+            Logger.log("w", "Do not need to slice.")
             return
 
         self.printDurationMessage.emit(0, [0])
@@ -186,6 +193,7 @@ class CuraEngineBackend(QObject, Backend):
             Logger.log("d", "Creating socket and start the engine...")
             self._createSocket()
         self.stopSlicing()
+        self._engine_is_fresh = False  # Yes we're going to use the engine
 
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
@@ -372,7 +380,6 @@ class CuraEngineBackend(QObject, Backend):
             Logger.log("w", "A socket error caused the connection to be reset")
 
     ##  Remove old layer data (if any)
-    ##  TODO: now copied from ProcessSlicedLayersJob. Find my a home.
     def _clearLayerData(self):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
@@ -458,6 +465,7 @@ class CuraEngineBackend(QObject, Backend):
     ##  Creates a new socket connection.
     def _createSocket(self):
         super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
+        self._engine_is_fresh = True
 
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #
@@ -482,6 +490,10 @@ class CuraEngineBackend(QObject, Backend):
     def _onToolOperationStarted(self, tool):
         self._tool_active = True  # Do not react on scene change
         self.disableTimer()
+        # Restart engine as soon as possible, we know we want to slice afterwards
+        if not self._engine_is_fresh:
+            self._terminate()
+            self._createSocket()
 
     ##  Called when the user stops using some tool.
     #
@@ -558,23 +570,16 @@ class CuraEngineBackend(QObject, Backend):
         self._process_layers_job = None
 
     def enableTimer(self):
-        self.disableTimer()  # disable any existing timer
-        self._use_timer = True
-        # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
-        # This timer will group them up, and only slice for the last setting changed signal.
-        # TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
-        self._change_timer = QTimer()
-        self._change_timer.setInterval(500)
-        self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self.slice)
+        if not self._use_timer:
+            self._change_timer.timeout.connect(self.slice)
+            self._use_timer = True
 
     ##  Disable timer.
     #   This means that slicing will not be triggered automatically
     def disableTimer(self):
-        if self._change_timer is not None:
-            self._change_timer.timeout.disconnect()
-            self._change_timer = None
-        self._use_timer = False
+        if self._use_timer:
+            self._use_timer = False
+            self._change_timer.timeout.disconnect(self.slice)
 
     def _onPreferencesChanged(self, preference):
         if preference != "general/auto_slice":

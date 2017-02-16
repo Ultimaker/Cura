@@ -14,6 +14,7 @@ Item {
 
     property real progress: UM.Backend.progress;
     property int backendState: UM.Backend.state;
+    property var backend: CuraApplication.getBackend();
     property bool activity: Printer.getPlatformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
@@ -133,7 +134,6 @@ Item {
             text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
-                var backend = CuraApplication.getBackend()
                 if ([1, 5].indexOf(UM.Backend.state) != -1) {
                     backend.forceSlice();
                 } else {
