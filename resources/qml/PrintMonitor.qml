@@ -96,12 +96,35 @@ Column
                     }
                     Label //Temperature indication.
                     {
+                        id: extruderTemperature
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("large")
                         anchors.right: parent.right
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
+
+                        MouseArea //For tooltip.
+                        {
+                            id: extruderTemperatureTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        catalog.i18nc("@tooltip", "The current temperature of this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                     Rectangle //Material colour indication.
                     {
@@ -115,6 +138,28 @@ Column
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: materialName.verticalCenter
+
+                        MouseArea //For tooltip.
+                        {
+                            id: materialColorTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        catalog.i18nc("@tooltip", "The colour of the material in this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                     Label //Material name.
                     {
@@ -125,15 +170,60 @@ Column
                         anchors.left: materialColor.right
                         anchors.bottom: parent.bottom
                         anchors.margins: UM.Theme.getSize("default_margin").width
+
+                        MouseArea //For tooltip.
+                        {
+                            id: materialNameTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        catalog.i18nc("@tooltip", "The material in this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                     Label //Variant name.
                     {
+                        id: variantName
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null) ? connectedPrinter.hotendIds[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         anchors.margins: UM.Theme.getSize("default_margin").width
+
+                        MouseArea //For tooltip.
+                        {
+                            id: variantNameTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        catalog.i18nc("@tooltip", "The nozzle inserted in this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                 }
             }
