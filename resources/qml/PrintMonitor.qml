@@ -280,7 +280,7 @@ Column
 
         Timer
         {
-            id: preheatCountdownTimer
+            id: preheatUpdateTimer
             interval: 100 //Update every 100ms. You want to update every 1s, but then you have one timer for the updating running out of sync with the actual date timer and you might skip seconds.
             running: false
             repeat: true
@@ -331,7 +331,7 @@ Column
                 {
                     return false; //Printer is in a state where it can't react to pre-heating.
                 }
-                if (preheatCountdownTimer.running)
+                if (preheatUpdateTimer.running)
                 {
                     return true; //Can always cancel if the timer is running.
                 }
@@ -423,23 +423,23 @@ Column
                             }
                         }
                         font: UM.Theme.getFont("action_button")
-                        text: preheatCountdownTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
+                        text: preheatUpdateTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
                     }
                 }
             }
 
             onClicked:
             {
-                if (!preheatCountdownTimer.running)
+                if (!preheatUpdateTimer.running)
                 {
                     connectedPrinter.preheatBed(preheatTemperatureInput.text, connectedPrinter.preheatBedTimeout);
-                    preheatCountdownTimer.start();
-                    preheatCountdownTimer.update(); //Update once before the first timer is triggered.
+                    preheatUpdateTimer.start();
+                    preheatUpdateTimer.update(); //Update once before the first timer is triggered.
                 }
                 else
                 {
                     connectedPrinter.cancelPreheatBed();
-                    preheatCountdownTimer.update();
+                    preheatUpdateTimer.update();
                 }
             }
 
