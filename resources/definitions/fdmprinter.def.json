@@ -1278,7 +1278,7 @@
                 "material_print_temperature":
                 {
                     "label": "Printing Temperature",
-                    "description": "The temperature used for printing. Set at 0 to pre-heat the printer manually.",
+                    "description": "The temperature used for printing. If this is 0, the extruder will not heat up for this print.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 210,
@@ -1365,7 +1365,7 @@
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated build plate. Set at 0 to pre-heat the printer manually.",
+                    "description": "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print.",
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature'))",
