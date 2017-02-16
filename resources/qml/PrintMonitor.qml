@@ -204,7 +204,7 @@ Column
                 return true;
             }
             border.width: UM.Theme.getSize("default_lining").width
-            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : mouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : preheatTemperatureMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
@@ -230,10 +230,26 @@ Column
             }
             MouseArea //Change cursor on hovering.
             {
-                id: mouseArea
+                id: preheatTemperatureInputMouseArea
                 hoverEnabled: true
                 anchors.fill: parent
                 cursorShape: Qt.IBeamCursor
+
+                onHoveredChanged:
+                {
+                    if (containsMouse)
+                    {
+                        base.showTooltip(
+                            base,
+                            {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, 0).y},
+                            catalog.i18nc("@tooltip of temperature input", "The temperature to pre-heat the bed to.")
+                        );
+                    }
+                    else
+                    {
+                        base.hideTooltip();
+                    }
+                }
             }
             TextInput
             {
