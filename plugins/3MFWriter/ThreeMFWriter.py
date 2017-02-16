@@ -177,7 +177,7 @@ class ThreeMFWriter(MeshWriter):
             transformation_matrix._data[2, 1] = 1
             transformation_matrix._data[2, 2] = 0
 
-            global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
             # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
             # build volume.
             if global_container_stack:
