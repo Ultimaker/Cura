@@ -1230,16 +1230,3 @@ class CuraApplication(QtApplication):
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
-
-    # Temporary test, lack of correct location
-    @pyqtSlot()
-    def slice(self):
-        Logger.log("d", "Slice...")
-        backend = self.getBackend()
-        backend.forceSlice()
-
-    @pyqtSlot()
-    def sliceStop(self):
-        Logger.log("d", "Slice stop...")
-        backend = self.getBackend()
-        backend.stopSlicing()
