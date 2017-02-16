@@ -103,6 +103,16 @@ Item {
             }
         }
 
+        Connections {
+            target: UM.Preferences
+            onPreferenceChanged:
+            {
+                var autoSlice = UM.Preferences.getValue("general/auto_slice");
+                prepareButton.autoSlice = autoSlice;
+                saveToButton.autoSlice = autoSlice;
+            }
+        }
+
         // Prepare button, only shows if auto_slice is off
         Button {
             id: prepareButton
@@ -111,11 +121,9 @@ Item {
             //enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
             enabled: (base.backendState == 1 || base.backendState == 2) && base.activity == true
             visible: {
-                CuraApplication.log("pref: " + UM.Preferences.getValue("general/auto_slice"));
-                CuraApplication.log("backend state: " + base.backendState);
-                CuraApplication.log("activity: " + base.activity);
-                return !UM.Preferences.getValue("general/auto_slice") && (base.backendState == 1 || base.backendState == 2) && base.activity == true
+                return !autoSlice && (base.backendState == 1 || base.backendState == 2) && base.activity == true;
                 }
+            property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             anchors.top: parent.top
@@ -192,7 +200,10 @@ Item {
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: (base.backendState == 3 || base.backendState == 5) && base.activity == true
-            visible: UM.Preferences.getValue("general/auto_slice") || ((base.backendState == 3 || base.backendState == 5) && base.activity == true)
+            visible: {
+                return autoSlice || ((base.backendState == 3 || base.backendState == 5) && base.activity == true);
+            }
+            property bool autoSlice
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             anchors.top: parent.top

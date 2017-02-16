@@ -1230,7 +1230,6 @@ class CuraApplication(QtApplication):
     def slice(self):
         Logger.log("d", "Slice...")
         backend = self.getBackend()
-        # backend.enableSlicing()
         backend.forceSlice()
 
     @pyqtSlot()
