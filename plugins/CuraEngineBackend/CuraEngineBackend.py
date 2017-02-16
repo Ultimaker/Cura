@@ -13,6 +13,7 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from PyQt5.QtCore import QObject, pyqtSlot
 
 
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -30,7 +31,7 @@ import Arcus
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-class CuraEngineBackend(Backend):
+class CuraEngineBackend(QObject, Backend):
     ##  Starts the back-end plug-in.
     #
     #   This registers all the signal listeners and prepares for communication
@@ -146,6 +147,7 @@ class CuraEngineBackend(Backend):
     ##  Emitted when the slicing process is aborted forcefully.
     slicingCancelled = Signal()
 
+    @pyqtSlot()
     def stopSlicing(self):
         self.backendStateChange.emit(BackendState.NotStarted)
         if self._slicing:  # We were already slicing. Stop the old job.
@@ -158,6 +160,14 @@ class CuraEngineBackend(Backend):
 
         if self._error_message:
             self._error_message.hide()
+
+    ##  Manually triggers a reslice
+    @pyqtSlot()
+    def forceSlice(self):
+        if self._use_timer:
+            self._change_timer.start()
+        else:
+            self.slice()
 
     ##  Perform a slice of the scene.
     def slice(self):
@@ -448,13 +458,6 @@ class CuraEngineBackend(Backend):
     ##  Creates a new socket connection.
     def _createSocket(self):
         super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
-
-    ##  Manually triggers a reslice
-    def forceSlice(self):
-        if self._use_timer:
-            self._change_timer.start()
-        else:
-            self.slice()
 
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #

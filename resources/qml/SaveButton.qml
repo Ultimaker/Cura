@@ -133,12 +133,11 @@ Item {
             text: [1, 5].indexOf(UM.Backend.state) != -1 ? catalog.i18nc("@label:Printjob", "Prepare") : catalog.i18nc("@label:Printjob", "Cancel")
             onClicked:
             {
+                var backend = CuraApplication.getBackend()
                 if ([1, 5].indexOf(UM.Backend.state) != -1) {
-                    CuraApplication.log("Prepare....");
-                    CuraApplication.slice();
+                    backend.forceSlice();
                 } else {
-                    CuraApplication.log("Cancel....");
-                    CuraApplication.sliceStop();
+                    backend.stopSlicing();
                 }
             }
 
