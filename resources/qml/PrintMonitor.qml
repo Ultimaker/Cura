@@ -338,7 +338,7 @@ Column
                 return true;
             }
             border.width: UM.Theme.getSize("default_lining").width
-            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : preheatTemperatureMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : preheatTemperatureInputMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
