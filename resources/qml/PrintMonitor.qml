@@ -187,7 +187,22 @@ Column
         {
             id: preheatTemperatureControl
             color: !enabled ? UM.Theme.getColor("setting_control_disabled") : UM.Theme.getColor("setting_validation_ok")
-            enabled: preheatButton.enabled
+            enabled:
+            {
+                if (connectedPrinter == null)
+                {
+                    return false; //Can't preheat if not connected.
+                }
+                if (!connectedPrinter.acceptsCommands)
+                {
+                    return false; //Not allowed to do anything.
+                }
+                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                {
+                    return false; //Printer is in a state where it can't react to pre-heating.
+                }
+                return true;
+            }
             border.width: UM.Theme.getSize("default_lining").width
             border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : mouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             anchors.left: parent.left
@@ -305,17 +320,9 @@ Column
             height: UM.Theme.getSize("setting_control").height
             enabled:
             {
-                if (connectedPrinter == null)
+                if (!preheatTemperatureControl.enabled)
                 {
-                    return false; //Can't preheat if not connected.
-                }
-                if (!connectedPrinter.acceptsCommands)
-                {
-                    return false; //Not allowed to do anything.
-                }
-                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
-                {
-                    return false; //Printer is in a state where it can't react to pre-heating.
+                    return false; //Not connected, not authenticated or printer is busy.
                 }
                 if (preheatUpdateTimer.running)
                 {
