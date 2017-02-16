@@ -259,6 +259,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
         else:
             data = """{"temperature": "%i"}""" % temperature
+        Logger.log("i", "Pre-heating bed to %i degrees.", temperature)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
@@ -269,6 +270,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   If the bed is not pre-heated, nothing happens.
     @pyqtSlot()
     def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
         self.preheatBed(temperature = 0, duration = 0)
         self._preheat_bed_timer.stop()
         self._preheat_bed_timer.setInterval(0)

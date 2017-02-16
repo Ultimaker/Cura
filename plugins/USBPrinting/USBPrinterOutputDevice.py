@@ -650,6 +650,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   ignored because there is no g-code to set this.
     @pyqtSlot(float, float)
     def preheatBed(self, temperature, duration):
+        Logger.log("i", "Pre-heating the bed to %i degrees.", temperature)
         self._setTargetBedTemperature(temperature)
 
     ##  Cancels pre-heating the heated bed of the printer.
@@ -657,4 +658,5 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   If the bed is not pre-heated, nothing happens.
     @pyqtSlot()
     def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
         self._setTargetBedTemperature(0)
