@@ -186,9 +186,10 @@ Column
         Rectangle //Input field for pre-heat temperature.
         {
             id: preheatTemperatureControl
-            color: UM.Theme.getColor("setting_validation_ok")
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : UM.Theme.getColor("setting_validation_ok")
+            enabled: preheatButton.enabled
             border.width: UM.Theme.getSize("default_lining").width
-            border.color: mouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : mouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
@@ -223,9 +224,10 @@ Column
             {
                 id: preheatTemperatureInput
                 font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("setting_control_text")
+                color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
                 selectByMouse: true
                 maximumLength: 10
+                enabled: parent.enabled
                 validator: RegExpValidator { regExp: /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } //Floating point regex.
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
