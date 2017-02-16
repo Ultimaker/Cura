@@ -115,7 +115,7 @@ Column
                                 {
                                     base.showTooltip(
                                         base,
-                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
                                         catalog.i18nc("@tooltip", "The current temperature of this extruder.")
                                     );
                                 }
@@ -150,7 +150,7 @@ Column
                                 {
                                     base.showTooltip(
                                         base,
-                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 2).y},
                                         catalog.i18nc("@tooltip", "The colour of the material in this extruder.")
                                     );
                                 }
@@ -214,7 +214,7 @@ Column
                                 {
                                     base.showTooltip(
                                         base,
-                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
                                         catalog.i18nc("@tooltip", "The nozzle inserted in this extruder.")
                                     );
                                 }
@@ -274,7 +274,7 @@ Column
                     {
                         base.showTooltip(
                             base,
-                            {x: 0, y: bedTargetTemperature.mapToItem(base, 0, 0).y},
+                            {x: 0, y: bedTargetTemperature.mapToItem(base, 0, -parent.height / 4).y},
                             catalog.i18nc("@tooltip", "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off.")
                         );
                     }
@@ -306,7 +306,7 @@ Column
                     {
                         base.showTooltip(
                             base,
-                            {x: 0, y: bedCurrentTemperature.mapToItem(base, 0, 0).y},
+                            {x: 0, y: bedCurrentTemperature.mapToItem(base, 0, -parent.height / 4).y},
                             catalog.i18nc("@tooltip", "The current temperature of the heated bed.")
                         );
                     }
