@@ -418,10 +418,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   /param index Index of the extruder
     #   /param hotend_id id of the hotend
     def _setHotendId(self, index, hotend_id):
-        if hotend_id and hotend_id != "" and hotend_id != self._hotend_ids[index]:
+        if hotend_id and hotend_id != self._hotend_ids[index]:
             Logger.log("d", "Setting hotend id of hotend %d to %s" % (index, hotend_id))
             self._hotend_ids[index] = hotend_id
             self.hotendIdChanged.emit(index, hotend_id)
+        elif not hotend_id:
+            Logger.log("d", "Removing hotend id of hotend %d.", index)
+            self._hotend_ids[index] = None
+            self.hotendIdChanged.emit(index, None)
 
     ##  Let the user decide if the hotends and/or material should be synced with the printer
     #   NB: the UX needs to be implemented by the plugin
