@@ -288,23 +288,16 @@ Column
             property var endTime: new Date() //Set initial endTime to be the current date, so that the endTime has initially already passed and the timer text becomes invisible if you were to update.
             function update()
             {
-                var now = new Date();
-                if (now.getTime() < endTime.getTime())
+                preheatCountdown.text = ""
+                if (connectedPrinter != null)
                 {
-                    var remaining = endTime - now; //This is in milliseconds.
-                    var minutes = Math.floor(remaining / 60 / 1000);
-                    var seconds = Math.floor((remaining / 1000) % 60);
-                    preheatCountdown.text = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
                     preheatCountdown.visible = true;
+                    preheatCountdown.text = connectedPrinter.preheatBedRemainingTime;
                 }
-                else
+                if (preheatCountdown.text == "") //Either time elapsed or not connected.
                 {
                     preheatCountdown.visible = false;
-                    running = false;
-                    if (connectedPrinter != null)
-                    {
-                        connectedPrinter.cancelPreheatBed()
-                    }
+                    stop();
                 }
             }
         }
@@ -440,17 +433,12 @@ Column
                 if (!preheatCountdownTimer.running)
                 {
                     connectedPrinter.preheatBed(preheatTemperatureInput.text, connectedPrinter.preheatBedTimeout);
-                    var now = new Date();
-                    var end_time = new Date();
-                    end_time.setTime(now.getTime() + connectedPrinter.preheatBedTimeout * 1000); //*1000 because time is in milliseconds here.
-                    preheatCountdownTimer.endTime = end_time;
                     preheatCountdownTimer.start();
                     preheatCountdownTimer.update(); //Update once before the first timer is triggered.
                 }
                 else
                 {
                     connectedPrinter.cancelPreheatBed();
-                    preheatCountdownTimer.endTime = new Date();
                     preheatCountdownTimer.update();
                 }
             }

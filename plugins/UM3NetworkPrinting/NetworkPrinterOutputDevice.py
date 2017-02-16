@@ -262,6 +262,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
+        self._preheat_bed_timer.start(self._preheat_bed_timeout * 1000) #Times 1000 because it needs to be provided as milliseconds.
 
     ##  Cancels pre-heating the heated bed of the printer.
     #
@@ -269,6 +270,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     @pyqtSlot()
     def cancelPreheatBed(self):
         self.preheatBed(temperature = 0, duration = 0)
+        self._preheat_bed_timer.stop()
+        self._preheat_bed_timer.setInterval(0)
 
     ##  Changes the target bed temperature on the printer.
     #
