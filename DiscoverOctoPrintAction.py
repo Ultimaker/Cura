@@ -4,8 +4,7 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 
-import cura.Settings.CuraContainerRegistry
-import UM.Settings.ContainerRegistry
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.MachineAction import MachineAction
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QUrl, QObject
@@ -26,8 +25,7 @@ class DiscoverOctoPrintAction(MachineAction):
 
         self._network_plugin = None
 
-        cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
-
+        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerAdded)
         Application.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
     instancesChanged = pyqtSignal()
@@ -125,7 +123,7 @@ class DiscoverOctoPrintAction(MachineAction):
 
     @pyqtSlot(str, str, str)
     def setContainerMetaDataEntry(self, container_id, key, value):
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = container_id)
+        containers = ContainerRegistry.getInstance().findContainers(None, id = container_id)
         if not containers:
             UM.Logger.log("w", "Could not set metadata of container %s because it was not found.", container_id)
             return False
