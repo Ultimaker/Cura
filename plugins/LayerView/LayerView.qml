@@ -75,7 +75,7 @@ Item
             border.color: UM.Theme.getColor("slider_groove_border")
             color: UM.Theme.getColor("tool_panel_background")
 
-            visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
+            visible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
 
             TextField
             {
@@ -214,7 +214,7 @@ Item
                     UM.LayerView.setExtruderOpacity(0, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 1"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 1)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 1)
             }
             CheckBox {
                 checked: true
@@ -222,7 +222,7 @@ Item
                     UM.LayerView.setExtruderOpacity(1, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 2"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 2)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 2)
             }
             CheckBox {
                 checked: true
@@ -230,7 +230,7 @@ Item
                     UM.LayerView.setExtruderOpacity(2, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 3"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 3)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.etruderCount >= 3)
             }
             CheckBox {
                 checked: true
@@ -238,11 +238,11 @@ Item
                     UM.LayerView.setExtruderOpacity(3, checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 4"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 4)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 4)
             }
             Label {
                 text: "Other extruders always visible"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 5)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 5)
             }
             CheckBox {
                 onClicked: {
