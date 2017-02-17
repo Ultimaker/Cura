@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 Item {
     id: base
 
-    property bool activity: Printer.getPlatformActivity
+    property bool activity: Printer.platformActivity
     property string fileBaseName
     property variant activeMachineName: Cura.MachineManager.activeMachineName
 

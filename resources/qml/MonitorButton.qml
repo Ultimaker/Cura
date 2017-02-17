@@ -80,7 +80,7 @@ Item
         }
     }
 
-    property bool activity: Printer.getPlatformActivity;
+    property bool activity: Printer.platformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:

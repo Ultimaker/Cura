@@ -14,7 +14,7 @@ Item {
 
     property real progress: UM.Backend.progress;
     property int backendState: UM.Backend.state;
-    property bool activity: Printer.getPlatformActivity;
+    property bool activity: Printer.platformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:
