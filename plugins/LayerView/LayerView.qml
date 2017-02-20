@@ -161,11 +161,11 @@ Item
         {
             id: layerViewTypes
             ListElement {
-                text: catalog.i18nc("@label", "Material Color")
+                text: "Material Color"
                 type_id: 0
             }
             ListElement {
-                text: catalog.i18nc("@label", "Line Type")
+                text: "Line Type"
                 type_id: 1  // these ids match the switching in the shader
             }
         }
