@@ -249,7 +249,7 @@ Item
             Repeater {
                 model: UM.LayerView.extruderCount
                 CheckBox {
-                    checked: [undefined, ""].indexOf(view_settings.extruder_opacities[index]) >= 0 || view_settings.extruder_opacities[index] > 0.5
+                    checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
                     onClicked: {
                         view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
                         UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.toString());

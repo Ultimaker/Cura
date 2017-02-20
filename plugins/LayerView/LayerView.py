@@ -396,6 +396,7 @@ class LayerView(View):
             except ValueError:
                 opacity = 1.0
             self.setExtruderOpacity(extruder_nr, opacity)
+            extruder_nr += 1
 
         self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
         self.setShowSupport(bool(Preferences.getInstance().getValue("layerview/show_support")))
