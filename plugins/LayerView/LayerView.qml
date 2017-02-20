@@ -161,11 +161,11 @@ Item
         {
             id: layerViewTypes
             ListElement {
-                text: "Material color"
+                text: catalog.i18nc("@label", "Material Color")
                 type_id: 0
             }
             ListElement {
-                text: "Line type"
+                text: catalog.i18nc("@label", "Line Type")
                 type_id: 1  // these ids match the switching in the shader
             }
         }
@@ -205,7 +205,7 @@ Item
             id: compatibilityModeLabel
             anchors.top: parent.top
             anchors.left: parent.left
-            text: catalog.i18nc("@label","Compatibility mode")
+            text: catalog.i18nc("@label","Compatibility Mode")
             visible: UM.LayerView.compatibilityMode
         }
 
@@ -285,35 +285,35 @@ Item
                 onClicked: {
                     UM.Preferences.setValue("layerview/show_travel_moves", checked);
                 }
-                text: "Show travel moves"
+                text: catalog.i18nc("@label", "Show Travel Moves")
             }
             CheckBox {
                 checked: view_settings.show_support
                 onClicked: {
                     UM.Preferences.setValue("layerview/show_support", checked);
                 }
-                text: "Show support"
+                text: catalog.i18nc("@label", "Show Support")
             }
             CheckBox {
                 checked: view_settings.show_adhesion
                 onClicked: {
                     UM.Preferences.setValue("layerview/show_adhesion", checked);
                 }
-                text: "Show adhesion"
+                text: catalog.i18nc("@label", "Show Adhesion")
             }
             CheckBox {
                 checked: view_settings.show_skin
                 onClicked: {
                     UM.Preferences.setValue("layerview/show_skin", checked);
                 }
-                text: "Show skin"
+                text: catalog.i18nc("@label", "Show Skin")
             }
             CheckBox {
                 checked: view_settings.show_infill
                 onClicked: {
                     UM.Preferences.setValue("layerview/show_infill", checked);
                 }
-                text: "Show infill"
+                text: catalog.i18nc("@label", "Show Infill")
             }
         }
     }
