@@ -704,7 +704,7 @@ class CuraApplication(QtApplication):
     sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
-    def getPlatformActivity(self):
+    def platformActivity(self):
         return self._platform_activity
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)

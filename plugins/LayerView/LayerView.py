@@ -325,7 +325,7 @@ class LayerView(View):
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
-            if self.getLayerViewType() == self.LAYER_VIEW_TYPE_LINE_TYPE:
+            if self.getLayerViewType() == self.LAYER_VIEW_TYPE_LINE_TYPE or self._compatibility_mode:
                 self.enableLegend()
 
         elif event.type == Event.ViewDeactivateEvent:
