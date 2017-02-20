@@ -223,6 +223,8 @@ Item
                 view_settings.show_adhesion = UM.Preferences.getValue("layerview/show_adhesion");
                 view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
                 view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
+                view_settings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
+                view_settings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
             }
         }
 
@@ -238,6 +240,8 @@ Item
             property bool show_adhesion: UM.Preferences.getValue("layerview/show_adhesion")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
+            property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
+            property int top_layer_count: UM.Preferences.getValue("view/only_show_top_layers")
 
             anchors.top: UM.LayerView.compatibilityMode ? compatibilityModeLabel.bottom : layerTypeCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -314,6 +318,22 @@ Item
                     UM.Preferences.setValue("layerview/show_infill", checked);
                 }
                 text: catalog.i18nc("@label", "Show Infill")
+            }
+            CheckBox {
+                checked: view_settings.only_show_top_layers
+                onClicked: {
+                    UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
+                }
+                text: catalog.i18nc("@label", "Only Show Top Layers")
+                visible: UM.LayerView.compatibilityMode
+            }
+            CheckBox {
+                checked: view_settings.top_layer_count == 5
+                onClicked: {
+                    UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
+                }
+                text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
+                visible: UM.LayerView.compatibilityMode
             }
         }
     }
