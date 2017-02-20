@@ -219,8 +219,7 @@ Item
                 view_settings.extruder2_checked = UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5;
                 view_settings.extruder3_checked = UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5;
                 view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
-                view_settings.show_support = UM.Preferences.getValue("layerview/show_support");
-                view_settings.show_adhesion = UM.Preferences.getValue("layerview/show_adhesion");
+                view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
                 view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
                 view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
             }
@@ -234,8 +233,7 @@ Item
             property bool extruder2_checked: UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5
             property bool extruder3_checked: UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5
             property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
-            property bool show_support: UM.Preferences.getValue("layerview/show_support")
-            property bool show_adhesion: UM.Preferences.getValue("layerview/show_adhesion")
+            property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
 
@@ -288,25 +286,18 @@ Item
                 text: catalog.i18nc("@label", "Show Travel Moves")
             }
             CheckBox {
-                checked: view_settings.show_support
+                checked: view_settings.show_helpers
                 onClicked: {
-                    UM.Preferences.setValue("layerview/show_support", checked);
+                    UM.Preferences.setValue("layerview/show_helpers", checked);
                 }
-                text: catalog.i18nc("@label", "Show Support")
-            }
-            CheckBox {
-                checked: view_settings.show_adhesion
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_adhesion", checked);
-                }
-                text: catalog.i18nc("@label", "Show Adhesion")
+                text: catalog.i18nc("@label", "Show Helpers")
             }
             CheckBox {
                 checked: view_settings.show_skin
                 onClicked: {
                     UM.Preferences.setValue("layerview/show_skin", checked);
                 }
-                text: catalog.i18nc("@label", "Show Skin")
+                text: catalog.i18nc("@label", "Show Shell")
             }
             CheckBox {
                 checked: view_settings.show_infill

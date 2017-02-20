@@ -100,16 +100,10 @@ class LayerViewProxy(QObject):
             active_view.setShowTravelMoves(show)
 
     @pyqtSlot(int)
-    def setShowSupport(self, show):
+    def setShowHelpers(self, show):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.setShowSupport(show)
-
-    @pyqtSlot(int)
-    def setShowAdhesion(self, show):
-        active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.setShowAdhesion(show)
+            active_view.setShowHelpers(show)
 
     @pyqtSlot(int)
     def setShowSkin(self, show):

@@ -68,8 +68,7 @@ geometry41core =
 
     uniform highp mat4 u_viewProjectionMatrix;
     uniform int u_show_travel_moves;
-    uniform int u_show_support;
-    uniform int u_show_adhesion;
+    uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
 
@@ -117,10 +116,7 @@ geometry41core =
         if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9))) {
             return;
         }
-        if ((u_show_support == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
-            return;
-        }
-        if ((u_show_adhesion == 0) && (v_line_type[0] == 5)) {
+        if ((u_show_helpers == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 5) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
             return;
         }
         if ((u_show_skin == 0) && ((v_line_type[0] == 1) || (v_line_type[0] == 2) || (v_line_type[0] == 3))) {
@@ -234,8 +230,7 @@ u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_shininess = 20.0
 
 u_show_travel_moves = 0
-u_show_support = 1
-u_show_adhesion = 1
+u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
 

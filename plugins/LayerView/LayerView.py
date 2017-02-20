@@ -79,8 +79,7 @@ class LayerView(View):
         Preferences.getInstance().addPreference("layerview/extruder3_opacity", 1.0)
 
         Preferences.getInstance().addPreference("layerview/show_travel_moves", False)
-        Preferences.getInstance().addPreference("layerview/show_support", True)
-        Preferences.getInstance().addPreference("layerview/show_adhesion", True)
+        Preferences.getInstance().addPreference("layerview/show_helpers", True)
         Preferences.getInstance().addPreference("layerview/show_skin", True)
         Preferences.getInstance().addPreference("layerview/show_infill", True)
 
@@ -98,8 +97,7 @@ class LayerView(View):
         self._extruder_count = 0
         self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
         self._show_travel_moves = 0
-        self._show_support = 1
-        self._show_adhesion = 1
+        self._show_helpers = 1
         self._show_skin = 1
         self._show_infill = 1
 
@@ -211,19 +209,12 @@ class LayerView(View):
     def getShowTravelMoves(self):
         return self._show_travel_moves
 
-    def setShowSupport(self, show):
-        self._show_support = show
+    def setShowHelpers(self, show):
+        self._show_helpers = show
         self.currentLayerNumChanged.emit()
 
-    def getShowSupport(self):
-        return self._show_support
-
-    def setShowAdhesion(self, show):
-        self._show_adhesion = show
-        self.currentLayerNumChanged.emit()
-
-    def getShowAdhesion(self):
-        return self._show_adhesion
+    def getShowHelpers(self):
+        return self._show_helpers
 
     def setShowSkin(self, show):
         self._show_skin = show
@@ -398,8 +389,7 @@ class LayerView(View):
         self.setExtruderOpacity(3, float(Preferences.getInstance().getValue("layerview/extruder3_opacity")))
 
         self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
-        self.setShowSupport(bool(Preferences.getInstance().getValue("layerview/show_support")))
-        self.setShowAdhesion(bool(Preferences.getInstance().getValue("layerview/show_adhesion")))
+        self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Preferences.getInstance().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Preferences.getInstance().getValue("layerview/show_infill")))
 
@@ -417,8 +407,7 @@ class LayerView(View):
             "layerview/extruder2_opacity",
             "layerview/extruder3_opacity",
             "layerview/show_travel_moves",
-            "layerview/show_support",
-            "layerview/show_adhesion",
+            "layerview/show_helpers",
             "layerview/show_skin",
             "layerview/show_infill",
             }:
