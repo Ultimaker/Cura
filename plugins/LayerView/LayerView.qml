@@ -160,14 +160,18 @@ Item
         ListModel  // matches LayerView.py
         {
             id: layerViewTypes
-            ListElement {
-                text: "Material Color"
+        }
+
+        Component.onCompleted:
+        {
+            layerViewTypes.append({
+                text: catalog.i18nc("@title:layerview mode", "Material Color"),
                 type_id: 0
-            }
-            ListElement {
-                text: "Line Type"
+            })
+            layerViewTypes.append({
+                text: catalog.i18nc("@title:layerview mode", "Line Type"),
                 type_id: 1  // these ids match the switching in the shader
-            }
+            })
         }
 
         ComboBox
