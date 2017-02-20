@@ -70,8 +70,22 @@ class LayerView(View):
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
+        Preferences.getInstance().addPreference("view/force_layer_view_compatibility_mode", False)
+
+        Preferences.getInstance().addPreference("layerview/layer_view_type", 0)
+        Preferences.getInstance().addPreference("layerview/extruder0_opacity", 1.0)
+        Preferences.getInstance().addPreference("layerview/extruder1_opacity", 1.0)
+        Preferences.getInstance().addPreference("layerview/extruder2_opacity", 1.0)
+        Preferences.getInstance().addPreference("layerview/extruder3_opacity", 1.0)
+
+        Preferences.getInstance().addPreference("layerview/show_travel_moves", False)
+        Preferences.getInstance().addPreference("layerview/show_support", True)
+        Preferences.getInstance().addPreference("layerview/show_adhesion", True)
+        Preferences.getInstance().addPreference("layerview/show_skin", True)
+        Preferences.getInstance().addPreference("layerview/show_infill", True)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+        self._updateWithPreferences()
 
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
@@ -370,17 +384,47 @@ class LayerView(View):
 
         self._top_layers_job = None
 
-    def _onPreferencesChanged(self, preference):
-        if preference not in {"view/top_layer_count", "view/only_show_top_layers", "view/force_layer_view_compatibility_mode"}:
-            return
-
+    def _updateWithPreferences(self):
         self._solid_layers = int(Preferences.getInstance().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Preferences.getInstance().getValue("view/only_show_top_layers"))
         self._compatibility_mode = OpenGLContext.isLegacyOpenGL() or bool(
             Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode"))
 
+        self.setLayerViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
+
+        self.setExtruderOpacity(0, float(Preferences.getInstance().getValue("layerview/extruder0_opacity")))
+        self.setExtruderOpacity(1, float(Preferences.getInstance().getValue("layerview/extruder1_opacity")))
+        self.setExtruderOpacity(2, float(Preferences.getInstance().getValue("layerview/extruder2_opacity")))
+        self.setExtruderOpacity(3, float(Preferences.getInstance().getValue("layerview/extruder3_opacity")))
+
+        self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
+        self.setShowSupport(bool(Preferences.getInstance().getValue("layerview/show_support")))
+        self.setShowAdhesion(bool(Preferences.getInstance().getValue("layerview/show_adhesion")))
+        self.setShowSkin(bool(Preferences.getInstance().getValue("layerview/show_skin")))
+        self.setShowInfill(bool(Preferences.getInstance().getValue("layerview/show_infill")))
+
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
+
+    def _onPreferencesChanged(self, preference):
+        if preference not in {
+            "view/top_layer_count",
+            "view/only_show_top_layers",
+            "view/force_layer_view_compatibility_mode",
+            "layerview/layer_view_type",
+            "layerview/extruder0_opacity",
+            "layerview/extruder1_opacity",
+            "layerview/extruder2_opacity",
+            "layerview/extruder3_opacity",
+            "layerview/show_travel_moves",
+            "layerview/show_support",
+            "layerview/show_adhesion",
+            "layerview/show_skin",
+            "layerview/show_infill",
+            }:
+            return
+
+        self._updateWithPreferences()
 
     def _getLegendItems(self):
         if self._legend_items is None:
