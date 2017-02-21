@@ -165,11 +165,11 @@ Item
         Component.onCompleted:
         {
             layerViewTypes.append({
-                text: catalog.i18nc("@title:layerview mode", "Material Color"),
+                text: catalog.i18nc("@label:listbox", "Material Color"),
                 type_id: 0
             })
             layerViewTypes.append({
-                text: catalog.i18nc("@title:layerview mode", "Line Type"),
+                text: catalog.i18nc("@label:listbox", "Line Type"),
                 type_id: 1  // these ids match the switching in the shader
             })
         }
