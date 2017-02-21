@@ -210,11 +210,7 @@ class PrintInformation(QObject):
             # Don't add abbreviation if it already has the exact same abbreviation.
             if base_name.startswith(self._abbr_machine + "_"):
                 return base_name
-            # Only return abbreviation if no base name is given.
-            if base_name == "":
-                return self._abbr_machine
-            else:
-                return self._abbr_machine + "_" + base_name
+            return self._abbr_machine + "_" + base_name
         else:
             return base_name
 
