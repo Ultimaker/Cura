@@ -33,7 +33,7 @@ Item
         property color trackColor: UM.Theme.getColor("slider_groove")
         property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
 
-        property real to: UM.LayerView.numLayers - 1
+        property real to: UM.LayerView.numLayers
         property real from: 0
         property real minimumRange: 0
         property bool roundValues: true
