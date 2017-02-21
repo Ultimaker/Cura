@@ -205,7 +205,10 @@ class PrintInformation(QObject):
         if self._pre_sliced:
             return catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
         elif Preferences.getInstance().getValue("cura/jobname_prefix"):
-            return self._abbr_machine + "_" + base_name
+            if base_name == "":
+                return self._abbr_machine
+            else:
+                return self._abbr_machine + "_" + base_name
         else:
             return base_name
 
