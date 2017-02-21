@@ -218,7 +218,7 @@ Item
             onPreferenceChanged:
             {
                 layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
-                view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split(",");
+                view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
                 view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
                 view_settings.show_support = UM.Preferences.getValue("layerview/show_support");
                 view_settings.show_adhesion = UM.Preferences.getValue("layerview/show_adhesion");
@@ -232,7 +232,7 @@ Item
         ColumnLayout {
             id: view_settings
 
-            property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split(",")
+            property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split("|")
             property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
             property bool show_support: UM.Preferences.getValue("layerview/show_support")
             property bool show_adhesion: UM.Preferences.getValue("layerview/show_adhesion")
@@ -252,7 +252,7 @@ Item
                     checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
                     onClicked: {
                         view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
-                        UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.toString());
+                        UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
                     }
                     text: catalog.i18nc("@label", "Extruder %1").arg(index + 1)
                     visible: !UM.LayerView.compatibilityMode
