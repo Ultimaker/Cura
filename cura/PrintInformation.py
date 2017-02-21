@@ -200,6 +200,8 @@ class PrintInformation(QObject):
 
     @pyqtSlot(str, result = str)
     def createJobName(self, base_name):
+        if base_name == "":
+            return ""
         base_name = self._stripAccents(base_name)
         self._setAbbreviatedMachineName()
         if self._pre_sliced:
