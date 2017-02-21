@@ -37,8 +37,8 @@ class CuraEngineBackend(QObject, Backend):
     #   This registers all the signal listeners and prepares for communication
     #   with the back-end in general.
     #   CuraEngineBackend is exposed to qml as well.
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent = None):
+        super().__init__(parent = parent)
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
         executable_name = "CuraEngine"
@@ -182,7 +182,7 @@ class CuraEngineBackend(QObject, Backend):
         if not self._need_slicing:
             self.processingProgress.emit(1.0)
             self.backendStateChange.emit(BackendState.Done)
-            Logger.log("w", "Do not need to slice.")
+            Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
 
         self.printDurationMessage.emit(0, [0])
@@ -325,7 +325,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._scene.gcode_list = gcode_list
 
         if self._use_timer == enable_timer:
-            return
+            return self._use_timer
         if enable_timer:
             self.backendStateChange.emit(BackendState.NotStarted)
             self.enableTimer()
@@ -357,7 +357,7 @@ class CuraEngineBackend(QObject, Backend):
         if source.getMeshData().getVertices() is None:
             return
 
-        self.needSlicing()
+        self.needsSlicing()
         self.stopSlicing()
         self._onChanged()
 
@@ -386,7 +386,7 @@ class CuraEngineBackend(QObject, Backend):
                 break
 
     ##  Convenient function: set need_slicing, emit state and clear layer data
-    def needSlicing(self):
+    def needsSlicing(self):
         self._need_slicing = True
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
@@ -400,7 +400,7 @@ class CuraEngineBackend(QObject, Backend):
     #   \param property The property of the setting instance that has changed.
     def _onSettingChanged(self, instance, property):
         if property == "value": # Only reslice if the value has changed.
-            self.needSlicing()
+            self.needsSlicing()
             self._onChanged()
 
     ##  Called when a sliced layer data message is received from the engine.
@@ -470,7 +470,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   This indicates that we should probably re-slice soon.
     def _onChanged(self, *args, **kwargs):
-        self.needSlicing()
+        self.needsSlicing()
         if self._use_timer:
             self._change_timer.start()
 
