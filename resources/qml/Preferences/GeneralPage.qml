@@ -167,6 +167,31 @@ UM.PreferencesPage
                 width: UM.Theme.getSize("default_margin").width
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip","Slice automatically when changing settings.")
+
+                CheckBox
+                {
+                    id: autoSliceCheckbox
+
+                    checked: boolCheck(UM.Preferences.getValue("general/auto_slice"))
+                    onClicked: UM.Preferences.setValue("general/auto_slice", checked)
+
+                    text: catalog.i18nc("@option:check","Slice automatically");
+                }
+            }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").width
+            }
+
             Label
             {
                 font.bold: true
@@ -294,7 +319,7 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                text: catalog.i18nc("@label","Opening files")
+                text: catalog.i18nc("@label","Opening and saving files")
             }
 
             UM.TooltipArea {
