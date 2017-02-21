@@ -121,11 +121,20 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                     address = reply.url().host()
 
                     instance_name = "manual:%s" % address
+                    machine = "unknown"
+                    if "variant" in system_info:
+                        variant = system_info["variant"]
+                        if variant == "Ultimaker 3":
+                            machine = "9066"
+                        elif variant == "Ultimaker 3 Extended":
+                            machine = "9511"
+
                     properties = {
                         b"name": system_info["name"].encode("utf-8"),
                         b"address": address.encode("utf-8"),
                         b"firmware_version": system_info["firmware"].encode("utf-8"),
-                        b"manual": b"true"
+                        b"manual": b"true",
+                        b"machine": machine.encode("utf-8")
                     }
                     if instance_name in self._printers:
                         # Only replace the printer if it is still in the list of (manual) printers
