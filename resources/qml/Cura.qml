@@ -45,7 +45,7 @@ UM.MainWindow
         function getMeshName(path){
             //takes the path the complete path of the meshname and returns only the filebase
             var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
+            var fileBase = fileName.slice(0, fileName.indexOf("."))
             return fileBase
         }
 
@@ -786,6 +786,8 @@ UM.MainWindow
             {
                 UM.WorkspaceFileHandler.readLocalFile(fileUrls[i])
             }
+            var meshName = backgroundItem.getMeshName(fileUrls[0].toString())
+            backgroundItem.hasMesh(decodeURIComponent(meshName))
         }
     }
 
