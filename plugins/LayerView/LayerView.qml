@@ -55,6 +55,38 @@ Item
         property real range: upper - lower
         property var activeHandle: upperHandle
 
+        function setLower(value)
+        {
+
+        }
+
+        function setUpper(value)
+        {
+            var value = (UM.LayerView.currentLayer - to) / (from - to);
+            var new_upper_y =  Math.round(value * (height - (2 * handleSize + minimumRangeHandleSize)));
+            var new_lower = lower
+            if(UM.LayerView.currentLayer - lower < minimumRange)
+            {
+                new_lower = UM.LayerView.currentLayer - minimumRange
+            } else if(activeHandle == rangeHandle)
+            {
+                new_lower = UM.LayerView.currentLayer - (upper - lower)
+            }
+            new_lower = Math.max(from, new_lower)
+
+            if(new_upper_y != upperHandle.y)
+            {
+                upperHandle.y = new_upper_y
+            }
+            if(new_lower != lower)
+            {
+                value = (new_lower - to) / (from - to)
+                lowerHandle.y = Math.round((handleSize + minimumRangeHandleSize) + value * (height - (2 * handleSize + minimumRangeHandleSize)))
+            }
+            rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+        }
+
+
         onLowerChanged:
         {
             UM.LayerView.setMinimumLayer(lower)
@@ -62,6 +94,12 @@ Item
         onUpperChanged:
         {
             UM.LayerView.setCurrentLayer(upper);
+        }
+        Connections
+        {
+            target: UM.LayerView
+            onMinimumLayerChanged: slider.setLower(UM.LayerView.minimumLayer)
+            onCurrentLayerChanged: slider.setUpper(UM.LayerView.currentLayer)
         }
 
         /*
