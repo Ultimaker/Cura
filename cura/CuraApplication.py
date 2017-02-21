@@ -241,7 +241,6 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
-        Preferences.getInstance().addPreference("view/force_layer_view_compatibility_mode", False)
 
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
@@ -712,7 +711,7 @@ class CuraApplication(QtApplication):
     sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
-    def getPlatformActivity(self):
+    def platformActivity(self):
         return self._platform_activity
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)

@@ -3,12 +3,11 @@
 
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QTimer
 from PyQt5.QtWidgets import QMessageBox
+from enum import IntEnum  # For the connection state tracking.
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from enum import IntEnum  # For the connection state tracking.
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 
@@ -49,6 +48,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._error_text = ""
         self._accepts_commands = True
         self._preheat_bed_timeout = 900 #Default time-out for pre-heating the bed, in seconds.
+        self._preheat_bed_timer = QTimer() #Timer that tracks how long to preheat still.
+        self._preheat_bed_timer.setSingleShot(True)
+        self._preheat_bed_timer.timeout.connect(self.cancelPreheatBed)
 
         self._printer_state = ""
         self._printer_type = "unknown"
@@ -105,6 +107,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
     printerStateChanged = pyqtSignal()
 
     printerTypeChanged = pyqtSignal()
+
+    # Signal to be emitted when some drastic change occurs in the remaining time (not when the time just passes on normally).
+    preheatBedRemainingTimeChanged = pyqtSignal()
 
     @pyqtProperty(str, notify=printerTypeChanged)
     def printerType(self):
@@ -214,12 +219,25 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._target_bed_temperature = temperature
             self.targetBedTemperatureChanged.emit()
 
-    ##  The duration of the time-out to pre-heat the bed, in seconds.
+    ##  The total duration of the time-out to pre-heat the bed, in seconds.
     #
     #   \return The duration of the time-out to pre-heat the bed, in seconds.
-    @pyqtProperty(int)
+    @pyqtProperty(int, constant = True)
     def preheatBedTimeout(self):
         return self._preheat_bed_timeout
+
+    ##  The remaining duration of the pre-heating of the bed.
+    #
+    #   This is formatted in M:SS format.
+    #   \return The duration of the time-out to pre-heat the bed, formatted.
+    @pyqtProperty(str, notify = preheatBedRemainingTimeChanged)
+    def preheatBedRemainingTime(self):
+        period = self._preheat_bed_timer.remainingTime()
+        if period <= 0:
+            return ""
+        minutes, period = divmod(period, 60000) #60000 milliseconds in a minute.
+        seconds, _ = divmod(period, 1000) #1000 milliseconds in a second.
+        return "%d:%02d" % (minutes, seconds)
 
     ## Time the print has been printing.
     #  Note that timeTotal - timeElapsed should give time remaining.
@@ -400,10 +418,14 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   /param index Index of the extruder
     #   /param hotend_id id of the hotend
     def _setHotendId(self, index, hotend_id):
-        if hotend_id and hotend_id != "" and hotend_id != self._hotend_ids[index]:
+        if hotend_id and hotend_id != self._hotend_ids[index]:
             Logger.log("d", "Setting hotend id of hotend %d to %s" % (index, hotend_id))
             self._hotend_ids[index] = hotend_id
             self.hotendIdChanged.emit(index, hotend_id)
+        elif not hotend_id:
+            Logger.log("d", "Removing hotend id of hotend %d.", index)
+            self._hotend_ids[index] = None
+            self.hotendIdChanged.emit(index, None)
 
     ##  Let the user decide if the hotends and/or material should be synced with the printer
     #   NB: the UX needs to be implemented by the plugin

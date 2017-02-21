@@ -253,7 +253,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
                                             "The selected material is incompatible with the selected machine or configuration."))
                 self._error_message.show()
@@ -263,7 +263,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
                 error_keys = []
                 for extruder in extruders:
@@ -284,7 +284,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
@@ -292,7 +292,7 @@ class CuraEngineBackend(QObject, Backend):
                 self.backendStateChange.emit(BackendState.NotStarted)
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)

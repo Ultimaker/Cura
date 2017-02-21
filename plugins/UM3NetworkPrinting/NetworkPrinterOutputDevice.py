@@ -259,16 +259,23 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
         else:
             data = """{"temperature": "%i"}""" % temperature
+        Logger.log("i", "Pre-heating bed to %i degrees.", temperature)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
+        self._preheat_bed_timer.start(self._preheat_bed_timeout * 1000) #Times 1000 because it needs to be provided as milliseconds.
+        self.preheatBedRemainingTimeChanged.emit()
 
     ##  Cancels pre-heating the heated bed of the printer.
     #
     #   If the bed is not pre-heated, nothing happens.
     @pyqtSlot()
     def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
         self.preheatBed(temperature = 0, duration = 0)
+        self._preheat_bed_timer.stop()
+        self._preheat_bed_timer.setInterval(0)
+        self.preheatBedRemainingTimeChanged.emit()
 
     ##  Changes the target bed temperature on the printer.
     #
@@ -616,7 +623,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
             # Check if the right cartridges are loaded. Any failure in these results in a warning.
-            extruder_manager = cura.Settings.ExtruderManager.getInstance()
+            extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
             if print_information.materialLengths[index] != 0:
                 variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                 core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
@@ -811,7 +818,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
-        Logger.log("d", "Checking if authentication is correct for id %", self._authentication_id)
+        Logger.log("d", "Checking if authentication is correct for id %s", self._authentication_id)
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated

@@ -96,12 +96,35 @@ Column
                     }
                     Label //Temperature indication.
                     {
-                        text: (connectedPrinter != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
+                        id: extruderTemperature
+                        text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null && connectedPrinter.hotendTemperatures[index] != null) ? Math.round(connectedPrinter.hotendTemperatures[index]) + "°C" : ""
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("large")
                         anchors.right: parent.right
                         anchors.top: parent.top
                         anchors.margins: UM.Theme.getSize("default_margin").width
+
+                        MouseArea //For tooltip.
+                        {
+                            id: extruderTemperatureTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
+                                        catalog.i18nc("@tooltip", "The current temperature of this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                     Rectangle //Material colour indication.
                     {
@@ -115,6 +138,28 @@ Column
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: materialName.verticalCenter
+
+                        MouseArea //For tooltip.
+                        {
+                            id: materialColorTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 2).y},
+                                        catalog.i18nc("@tooltip", "The colour of the material in this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                     Label //Material name.
                     {
@@ -125,15 +170,60 @@ Column
                         anchors.left: materialColor.right
                         anchors.bottom: parent.bottom
                         anchors.margins: UM.Theme.getSize("default_margin").width
+
+                        MouseArea //For tooltip.
+                        {
+                            id: materialNameTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, 0).y},
+                                        catalog.i18nc("@tooltip", "The material in this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                     Label //Variant name.
                     {
+                        id: variantName
                         text: (connectedPrinter != null && connectedPrinter.hotendIds[index] != null) ? connectedPrinter.hotendIds[index] : ""
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         anchors.margins: UM.Theme.getSize("default_margin").width
+
+                        MouseArea //For tooltip.
+                        {
+                            id: variantNameTooltipArea
+                            hoverEnabled: true
+                            anchors.fill: parent
+                            onHoveredChanged:
+                            {
+                                if (containsMouse)
+                                {
+                                    base.showTooltip(
+                                        base,
+                                        {x: 0, y: parent.mapToItem(base, 0, -parent.height / 4).y},
+                                        catalog.i18nc("@tooltip", "The nozzle inserted in this extruder.")
+                                    );
+                                }
+                                else
+                                {
+                                    base.hideTooltip();
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -172,6 +262,28 @@ Column
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: bedCurrentTemperature.bottom
+
+            MouseArea //For tooltip.
+            {
+                id: bedTargetTemperatureTooltipArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onHoveredChanged:
+                {
+                    if (containsMouse)
+                    {
+                        base.showTooltip(
+                            base,
+                            {x: 0, y: bedTargetTemperature.mapToItem(base, 0, -parent.height / 4).y},
+                            catalog.i18nc("@tooltip", "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off.")
+                        );
+                    }
+                    else
+                    {
+                        base.hideTooltip();
+                    }
+                }
+            }
         }
         Label //Current temperature.
         {
@@ -182,13 +294,51 @@ Column
             anchors.right: bedTargetTemperature.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
+
+            MouseArea //For tooltip.
+            {
+                id: bedTemperatureTooltipArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onHoveredChanged:
+                {
+                    if (containsMouse)
+                    {
+                        base.showTooltip(
+                            base,
+                            {x: 0, y: bedCurrentTemperature.mapToItem(base, 0, -parent.height / 4).y},
+                            catalog.i18nc("@tooltip", "The current temperature of the heated bed.")
+                        );
+                    }
+                    else
+                    {
+                        base.hideTooltip();
+                    }
+                }
+            }
         }
         Rectangle //Input field for pre-heat temperature.
         {
             id: preheatTemperatureControl
-            color: UM.Theme.getColor("setting_validation_ok")
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : UM.Theme.getColor("setting_validation_ok")
+            enabled:
+            {
+                if (connectedPrinter == null)
+                {
+                    return false; //Can't preheat if not connected.
+                }
+                if (!connectedPrinter.acceptsCommands)
+                {
+                    return false; //Not allowed to do anything.
+                }
+                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                {
+                    return false; //Printer is in a state where it can't react to pre-heating.
+                }
+                return true;
+            }
             border.width: UM.Theme.getSize("default_lining").width
-            border.color: mouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : preheatTemperatureInputMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
@@ -214,51 +364,54 @@ Column
             }
             MouseArea //Change cursor on hovering.
             {
-                id: mouseArea
+                id: preheatTemperatureInputMouseArea
                 hoverEnabled: true
                 anchors.fill: parent
                 cursorShape: Qt.IBeamCursor
+
+                onHoveredChanged:
+                {
+                    if (containsMouse)
+                    {
+                        base.showTooltip(
+                            base,
+                            {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, 0).y},
+                            catalog.i18nc("@tooltip of temperature input", "The temperature to pre-heat the bed to.")
+                        );
+                    }
+                    else
+                    {
+                        base.hideTooltip();
+                    }
+                }
             }
             TextInput
             {
                 id: preheatTemperatureInput
                 font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("setting_control_text")
+                color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
                 selectByMouse: true
                 maximumLength: 10
+                enabled: parent.enabled
                 validator: RegExpValidator { regExp: /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } //Floating point regex.
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
 
-                Binding
+                Component.onCompleted:
                 {
-                    target: preheatTemperatureInput
-                    property: "text"
-                    value:
+                    if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
                     {
-                        // Stacklevels
-                        // 0: user  -> unsaved change
-                        // 1: quality changes  -> saved change
-                        // 2: quality
-                        // 3: material  -> user changed material in materialspage
-                        // 4: variant
-                        // 5: machine_changes
-                        // 6: machine
-                        if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
-                        {
-                            // We have a resolve function. Indicates that the setting is not settable per extruder and that
-                            // we have to choose between the resolved value (default) and the global value
-                            // (if user has explicitly set this).
-                            return bedTemperature.resolve;
-                        }
-                        else
-                        {
-                            return bedTemperature.properties.value;
-                        }
+                        // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                        // we have to choose between the resolved value (default) and the global value
+                        // (if user has explicitly set this).
+                        text = bedTemperature.resolve;
                     }
-                    when: !preheatTemperatureInput.activeFocus
+                    else
+                    {
+                        text = bedTemperature.properties.value;
+                    }
                 }
             }
         }
@@ -280,39 +433,30 @@ Column
 
         Timer
         {
-            id: preheatCountdownTimer
+            id: preheatUpdateTimer
             interval: 100 //Update every 100ms. You want to update every 1s, but then you have one timer for the updating running out of sync with the actual date timer and you might skip seconds.
-            running: false
+            running: connectedPrinter != null && connectedPrinter.preheatBedRemainingTime != ""
             repeat: true
             onTriggered: update()
             property var endTime: new Date() //Set initial endTime to be the current date, so that the endTime has initially already passed and the timer text becomes invisible if you were to update.
             function update()
             {
-                var now = new Date();
-                if (now.getTime() < endTime.getTime())
+                preheatCountdown.text = ""
+                if (connectedPrinter != null)
                 {
-                    var remaining = endTime - now; //This is in milliseconds.
-                    var minutes = Math.floor(remaining / 60 / 1000);
-                    var seconds = Math.floor((remaining / 1000) % 60);
-                    preheatCountdown.text = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                    preheatCountdown.visible = true;
+                    preheatCountdown.text = connectedPrinter.preheatBedRemainingTime;
                 }
-                else
+                if (preheatCountdown.text == "") //Either time elapsed or not connected.
                 {
-                    preheatCountdown.visible = false;
-                    running = false;
-                    if (connectedPrinter != null)
-                    {
-                        connectedPrinter.cancelPreheatBed()
-                    }
+                    stop();
                 }
             }
         }
         Label
         {
             id: preheatCountdown
-            text: "0:00"
-            visible: false //It only becomes visible when the timer is running.
+            text: connectedPrinter != null ? connectedPrinter.preheatBedRemainingTime : ""
+            visible: text != "" //Has no direct effect, but just so that we can link visibility of clock icon to visibility of the countdown text.
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             anchors.right: preheatButton.left
@@ -326,19 +470,11 @@ Column
             height: UM.Theme.getSize("setting_control").height
             enabled:
             {
-                if (connectedPrinter == null)
+                if (!preheatTemperatureControl.enabled)
                 {
-                    return false; //Can't preheat if not connected.
+                    return false; //Not connected, not authenticated or printer is busy.
                 }
-                if (!connectedPrinter.acceptsCommands)
-                {
-                    return false; //Not allowed to do anything.
-                }
-                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
-                {
-                    return false; //Printer is in a state where it can't react to pre-heating.
-                }
-                if (preheatCountdownTimer.running)
+                if (preheatUpdateTimer.running)
                 {
                     return true; //Can always cancel if the timer is running.
                 }
@@ -349,6 +485,10 @@ Column
                 if (bedTemperature.properties.maximum_value != "None" && parseInt(preheatTemperatureInput.text) > parseInt(bedTemperature.properties.maximum_value))
                 {
                     return false; //Target temperature too high.
+                }
+                if (parseInt(preheatTemperatureInput.text) == 0)
+                {
+                    return false; //Setting the temperature to 0 is not allowed (since that cancels the pre-heating).
                 }
                 return true; //Preconditions are met.
             }
@@ -430,28 +570,23 @@ Column
                             }
                         }
                         font: UM.Theme.getFont("action_button")
-                        text: preheatCountdownTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
+                        text: preheatUpdateTimer.running ? catalog.i18nc("@button Cancel pre-heating", "Cancel") : catalog.i18nc("@button", "Pre-heat")
                     }
                 }
             }
 
             onClicked:
             {
-                if (!preheatCountdownTimer.running)
+                if (!preheatUpdateTimer.running)
                 {
                     connectedPrinter.preheatBed(preheatTemperatureInput.text, connectedPrinter.preheatBedTimeout);
-                    var now = new Date();
-                    var end_time = new Date();
-                    end_time.setTime(now.getTime() + connectedPrinter.preheatBedTimeout * 1000); //*1000 because time is in milliseconds here.
-                    preheatCountdownTimer.endTime = end_time;
-                    preheatCountdownTimer.start();
-                    preheatCountdownTimer.update(); //Update once before the first timer is triggered.
+                    preheatUpdateTimer.start();
+                    preheatUpdateTimer.update(); //Update once before the first timer is triggered.
                 }
                 else
                 {
                     connectedPrinter.cancelPreheatBed();
-                    preheatCountdownTimer.endTime = new Date();
-                    preheatCountdownTimer.update();
+                    preheatUpdateTimer.update();
                 }
             }
 

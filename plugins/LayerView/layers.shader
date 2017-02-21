@@ -32,8 +32,7 @@ fragment =
     varying float v_line_type;
 
     uniform int u_show_travel_moves;
-    uniform int u_show_support;
-    uniform int u_show_adhesion;
+    uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
 
@@ -43,11 +42,12 @@ fragment =
             // discard movements
             discard;
         }
-        // support: 4, 7, 10
-        if ((u_show_support == 0) && (
+        // support: 4, 5, 7, 10
+        if ((u_show_helpers == 0) && (
             ((v_line_type >= 3.5) && (v_line_type <= 4.5)) ||
             ((v_line_type >= 6.5) && (v_line_type <= 7.5)) ||
-            ((v_line_type >= 9.5) && (v_line_type <= 10.5))
+            ((v_line_type >= 9.5) && (v_line_type <= 10.5)) ||
+            ((v_line_type >= 4.5) && (v_line_type <= 5.5))
             )) {
             discard;
         }
@@ -55,11 +55,6 @@ fragment =
         if ((u_show_skin == 0) && (
             (v_line_type >= 0.5) && (v_line_type <= 3.5)
             )) {
-            discard;
-        }
-        // adhesion:
-        if ((u_show_adhesion == 0) && (v_line_type >= 4.5) && (v_line_type <= 5.5)) {
-            // discard movements
             discard;
         }
         // infill:
@@ -105,8 +100,7 @@ fragment41core =
     out vec4 frag_color;
 
     uniform int u_show_travel_moves;
-    uniform int u_show_support;
-    uniform int u_show_adhesion;
+    uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
 
@@ -116,11 +110,12 @@ fragment41core =
             // discard movements
             discard;
         }
-        // support: 4, 7, 10
-        if ((u_show_support == 0) && (
+        // helpers: 4, 5, 7, 10
+        if ((u_show_helpers == 0) && (
             ((v_line_type >= 3.5) && (v_line_type <= 4.5)) ||
             ((v_line_type >= 6.5) && (v_line_type <= 7.5)) ||
-            ((v_line_type >= 9.5) && (v_line_type <= 10.5))
+            ((v_line_type >= 9.5) && (v_line_type <= 10.5)) ||
+            ((v_line_type >= 4.5) && (v_line_type <= 5.5))
             )) {
             discard;
         }
@@ -128,11 +123,6 @@ fragment41core =
         if ((u_show_skin == 0) && (
             (v_line_type >= 0.5) && (v_line_type <= 3.5)
             )) {
-            discard;
-        }
-        // adhesion:
-        if ((u_show_adhesion == 0) && (v_line_type >= 4.5) && (v_line_type <= 5.5)) {
-            // discard movements
             discard;
         }
         // infill:
@@ -151,8 +141,7 @@ u_layer_view_type = 0
 u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
 
 u_show_travel_moves = 0
-u_show_support = 1
-u_show_adhesion = 1
+u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
 

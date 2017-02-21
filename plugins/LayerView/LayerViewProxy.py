@@ -20,7 +20,7 @@ class LayerViewProxy(QObject):
     preferencesChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
-    def getLayerActivity(self):
+    def layerActivity(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             return active_view.getActivity()
@@ -79,7 +79,7 @@ class LayerViewProxy(QObject):
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.setLayerViewType(layer_view_type)
 
-    @pyqtProperty(bool)
+    @pyqtSlot(result = int)
     def getLayerViewType(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
@@ -100,16 +100,10 @@ class LayerViewProxy(QObject):
             active_view.setShowTravelMoves(show)
 
     @pyqtSlot(int)
-    def setShowSupport(self, show):
+    def setShowHelpers(self, show):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.setShowSupport(show)
-
-    @pyqtSlot(int)
-    def setShowAdhesion(self, show):
-        active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.setShowAdhesion(show)
+            active_view.setShowHelpers(show)
 
     @pyqtSlot(int)
     def setShowSkin(self, show):
@@ -124,7 +118,7 @@ class LayerViewProxy(QObject):
             active_view.setShowInfill(show)
 
     @pyqtProperty(int, notify = globalStackChanged)
-    def getExtruderCount(self):
+    def extruderCount(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             return active_view.getExtruderCount()
