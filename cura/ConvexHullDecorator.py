@@ -197,7 +197,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
                     hull = Polygon(vertex_data)
 
-                    if len(vertex_data) >= 4:
+                    if len(vertex_data) >= 3:
                         convex_hull = hull.getConvexHull()
                         offset_hull = self._offsetHull(convex_hull)
             else:
