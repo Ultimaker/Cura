@@ -700,7 +700,7 @@ class CuraApplication(QtApplication):
                 self.getController().setActiveTool(None)
 
     def _onToolOperationStopped(self, event):
-        if self._center_after_select:
+        if self._center_after_select and Selection.getSelectedObject(0) is not None:
             self._center_after_select = False
             self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
