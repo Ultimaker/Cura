@@ -9,9 +9,10 @@ from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.PluginRegistry import PluginRegistry
-import UM.SaveFile
-import UM.Platform
-import UM.MimeTypeDatabase
+
+from UM.Platform import Platform
+from UM.SaveFile import SaveFile
+from UM.MimeTypeDatabase import MimeTypeDatabase
 
 from UM.Logger import Logger
 from UM.Application import Application
@@ -325,7 +326,7 @@ class ContainerManager(QObject):
         mime_type = None
         if not file_type in self._container_name_filters:
             try:
-                mime_type = UM.MimeTypeDatabase.getMimeTypeForFile(file_url)
+                mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)
             except MimeTypeNotFoundError:
                 return { "status": "error", "message": "Unknown File Type" }
         else:
@@ -336,7 +337,7 @@ class ContainerManager(QObject):
             return { "status": "error", "message": "Container not found"}
         container = containers[0]
 
-        if UM.Platform.isOSX() and "." in file_url:
+        if Platform.isOSX() and "." in file_url:
             file_url = file_url[:file_url.rfind(".")]
 
         for suffix in mime_type.suffixes:
@@ -345,7 +346,7 @@ class ContainerManager(QObject):
         else:
             file_url += "." + mime_type.preferredSuffix
 
-        if not UM.Platform.isWindows():
+        if not Platform.isWindows():
             if os.path.exists(file_url):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
@@ -360,7 +361,7 @@ class ContainerManager(QObject):
         if contents is None:
             return {"status": "error", "message": "Serialization returned None. Unable to write to file"}
 
-        with UM.SaveFile(file_url, "w") as f:
+        with SaveFile(file_url, "w") as f:
             f.write(contents)
 
         return { "status": "success", "message": "Succesfully exported container", "path": file_url}
@@ -383,7 +384,7 @@ class ContainerManager(QObject):
             return { "status": "error", "message": "Invalid path" }
 
         try:
-            mime_type = UM.MimeTypeDatabase.getMimeTypeForFile(file_url)
+            mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)
         except MimeTypeNotFoundError:
             return { "status": "error", "message": "Could not determine mime type of file" }
 
@@ -742,7 +743,7 @@ class ContainerManager(QObject):
             }
 
             suffix = mime_type.preferredSuffix
-            if UM.Platform.isOSX() and "." in suffix:
+            if Platform.isOSX() and "." in suffix:
                 # OSX's File dialog is stupid and does not allow selecting files with a . in its name
                 suffix = suffix[suffix.index(".") + 1:]
 
@@ -751,7 +752,7 @@ class ContainerManager(QObject):
                 if suffix == mime_type.preferredSuffix:
                     continue
 
-                if UM.Platform.isOSX() and "." in suffix:
+                if Platform.isOSX() and "." in suffix:
                     # OSX's File dialog is stupid and does not allow selecting files with a . in its name
                     suffix = suffix[suffix.index("."):]
 
