@@ -6,6 +6,8 @@ from PyQt5.QtCore import QVariantAnimation, QEasingCurve
 from PyQt5.QtGui import QVector3D
 
 from UM.Math.Vector import Vector
+from UM.Logger import Logger
+
 
 class CameraAnimation(QVariantAnimation):
     def __init__(self, parent = None):
@@ -18,9 +20,11 @@ class CameraAnimation(QVariantAnimation):
         self._camera_tool = camera_tool
 
     def setStart(self, start):
+        Logger.log("d", "Camera start: %s %s %s" % (start.x, start.y, start.z))
         self.setStartValue(QVector3D(start.x, start.y, start.z))
 
     def setTarget(self, target):
+        Logger.log("d", "Camera end: %s %s %s" % (target.x, target.y, target.z))
         self.setEndValue(QVector3D(target.x, target.y, target.z))
 
     def updateCurrentValue(self, value):
