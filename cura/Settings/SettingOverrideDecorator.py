@@ -77,8 +77,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             return container_stack.getMetaDataEntry("position", default=None)
 
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        if property_name == "value":  # Only reslice if the value has changed.
-            Application.getInstance().getBackend().forceSlice()
+        # Trigger slice/need slicing if the value has changed.
+        if property_name == "value":
+            Application.getInstance().getBackend().needsSlicing()
+            Application.getInstance().getBackend().tickle()
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.
@@ -92,8 +94,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
                     old_extruder_stack_id = ""
 
                 self._stack.setNextStack(extruder_stack[0])
-                if self._stack.getNextStack().getId() != old_extruder_stack_id: #Only reslice if the extruder changed.
-                    Application.getInstance().getBackend().forceSlice()
+                # Trigger slice/need slicing if the extruder changed.
+                if self._stack.getNextStack().getId() != old_extruder_stack_id:
+                    Application.getInstance().getBackend().needsSlicing()
+                    Application.getInstance().getBackend().tickle()
             else:
                 UM.Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
         else:

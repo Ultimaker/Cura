@@ -587,3 +587,8 @@ class CuraEngineBackend(QObject, Backend):
         auto_slice = self.determineAutoSlicing()
         if auto_slice:
             self._change_timer.start()
+
+    ##   Tickle the backend so in case of auto slicing, it starts the timer.
+    def tickle(self):
+        if self._use_timer:
+            self._change_timer.start()
