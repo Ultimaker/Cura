@@ -21,7 +21,12 @@ class CameraAnimation(QVariantAnimation):
 
     def setStart(self, start):
         Logger.log("d", "Camera start: %s %s %s" % (start.x, start.y, start.z))
-        self.setStartValue(QVector3D(start.x, start.y, start.z))
+        vec = QVector3D()  #QVector3D(start.x, start.y, start.z)
+        vec.setX(start.x)
+        vec.setY(start.y)
+        vec.setZ(start.z)
+        Logger.log("d", "setStartValue...")
+        self.setStartValue(vec)
 
     def setTarget(self, target):
         Logger.log("d", "Camera end: %s %s %s" % (target.x, target.y, target.z))
