@@ -445,9 +445,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   is ignored.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         container_stack = Application.getInstance().getGlobalContainerStack()
-        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode" or not container_stack.getMetaDataEntry("supports_usb_connection"):
-            self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to start a new job because the printer does not support usb printing."))
+
+        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."))
+            self._error_message.show()
+            return
+        elif not container_stack.getMetaDataEntry("supports_usb_connection"):
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."))
             self._error_message.show()
             return
 
