@@ -397,8 +397,6 @@ class BuildVolume(SceneNode):
             extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
         if extra_z != self._extra_z_clearance:
             self._extra_z_clearance = extra_z
-            from UM.Logger import Logger
-            Logger.log("d", "   ###  Extra z clearance changed: %s" % extra_z)
 
     ##  Update the build volume visualization
     def _onStackChanged(self):
