@@ -7,7 +7,7 @@ import struct
 import sys
 import time
 
-from serial import Serial
+from serial import Serial   # type: ignore
 from serial import SerialException
 from serial import SerialTimeoutException
 from UM.Logger import Logger
@@ -184,7 +184,7 @@ class Stk500v2(ispBase.IspBase):
 
 def portList():
     ret = []
-    import _winreg
+    import _winreg  # type: ignore
     key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM") #@UndefinedVariable
     i=0
     while True:

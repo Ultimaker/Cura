@@ -8,7 +8,7 @@ catalog = i18nCatalog("cura")
 from . import RemovableDrivePlugin
 
 import string
-import ctypes
+import ctypes   # type: ignore
 from ctypes import wintypes # Using ctypes.wintypes in the code below does not seem to work
 
 from UM.i18n import i18nCatalog

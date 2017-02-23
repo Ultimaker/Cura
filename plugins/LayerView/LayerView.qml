@@ -15,7 +15,7 @@ Item
 
     Slider
     {
-        id: slider2
+        id: sliderMinimumLayer
         width: UM.Theme.getSize("slider_layerview_size").width
         height: UM.Theme.getSize("slider_layerview_size").height
         anchors.left: parent.left
@@ -75,7 +75,7 @@ Item
             border.color: UM.Theme.getColor("slider_groove_border")
             color: UM.Theme.getColor("tool_panel_background")
 
-            visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
+            visible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
 
             TextField
             {
@@ -148,10 +148,7 @@ Item
 
     Rectangle {
         anchors.left: parent.right
-        //anchors.verticalCenter: parent.verticalCenter
-        //anchors.top: sidebar.top
         anchors.bottom: slider_background.top
-        //anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         width: UM.Theme.getSize("layerview_menu_size").width
         height: UM.Theme.getSize("layerview_menu_size").height
@@ -169,15 +166,15 @@ Item
             text: catalog.i18nc("@label","Color scheme")
         }
 
-        ListModel
+        ListModel  // matches LayerView.py
         {
             id: layerViewTypes
             ListElement {
-                text: "Material color"
+                text: "Material Color"
                 type_id: 0
             }
             ListElement {
-                text: "Line type"
+                text: "Line Type"
                 type_id: 1  // these ids match the switching in the shader
             }
         }
@@ -185,145 +182,142 @@ Item
         ComboBox
         {
             id: layerTypeCombobox
-            anchors.top: layerViewTypesLabel.bottom
             anchors.topMargin: UM.Theme.getSize("margin_small").height
+            anchors.top: layerViewTypesLabel.bottom
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             model: layerViewTypes
             visible: !UM.LayerView.compatibilityMode
+            property int layer_view_type: UM.Preferences.getValue("layerview/layer_view_type")
+            currentIndex: layer_view_type  // index matches type_id
             onActivated: {
-                UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
+                // Combobox selection
+                var type_id = layerViewTypes.get(index).type_id;
+                UM.Preferences.setValue("layerview/layer_view_type", type_id);
+                updateLegend();
+            }
+            onModelChanged: {
+                updateLegend();
+            }
+            // Update visibility of legend.
+            function updateLegend() {
+                var type_id = layerViewTypes.get(currentIndex).type_id;
+                if (UM.LayerView.compatibilityMode || (type_id == 1)) {
+                    // Line type
+                    UM.LayerView.enableLegend();
+                } else {
+                    UM.LayerView.disableLegend();
+                }
             }
         }
 
         Label
         {
-            id: layerRangeTypeLabel
-            anchors.top: layerTypeCombobox.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            id: compatibilityModeLabel
+            anchors.top: parent.top
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label","Layer range")
-        }
-
-        ListModel
-        {
-            id: layerRangeTypes
-            ListElement {
-                text: "All layers"
-                range_type_id: 0
-            }
-            ListElement {
-                text: "Layer range"
-                range_type_id: 1
-            }
-            ListElement {
-                text: "Single layer"
-                range_type_id: 2
-            }
-        }
-
-        ComboBox
-        {
-            id: layerRangeTypeCombobox
-            anchors.top: layerRangeTypeLabel.bottom
-            anchors.topMargin: UM.Theme.getSize("margin_small").height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            model: layerRangeTypes
-            visible: !UM.LayerView.compatibilityMode
-            onActivated: {
-                UM.LayerView.setLayerViewType(layerViewTypes.get(index).type_id);
-            }
-        }
-
-        Label
-        {
-            anchors.top: slider_background.bottom
-            anchors.left: parent.left
-            text: catalog.i18nc("@label","Compatibility mode")
+            text: catalog.i18nc("@label","Compatibility Mode")
             visible: UM.LayerView.compatibilityMode
+        }
+
+        Connections {
+            target: UM.Preferences
+            onPreferenceChanged:
+            {
+                layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
+                view_settings.extruder0_checked = UM.Preferences.getValue("layerview/extruder0_opacity") > 0.5;
+                view_settings.extruder1_checked = UM.Preferences.getValue("layerview/extruder1_opacity") > 0.5;
+                view_settings.extruder2_checked = UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5;
+                view_settings.extruder3_checked = UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5;
+                view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
+                view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
+                view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
+                view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
+            }
         }
 
         ColumnLayout {
             id: view_settings
-            anchors.top: layerRangeTypeCombobox.bottom
+
+            property bool extruder0_checked: UM.Preferences.getValue("layerview/extruder0_opacity") > 0.5
+            property bool extruder1_checked: UM.Preferences.getValue("layerview/extruder1_opacity") > 0.5
+            property bool extruder2_checked: UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5
+            property bool extruder3_checked: UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5
+            property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
+            property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
+            property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
+            property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
+
+            anchors.top: UM.LayerView.compatibilityMode ? compatibilityModeLabel.bottom : layerTypeCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            x: UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             CheckBox {
-                checked: true
+                checked: view_settings.extruder0_checked
                 onClicked: {
-                    UM.LayerView.setExtruderOpacity(0, checked ? 1.0 : 0.0);
+                    UM.Preferences.setValue("layerview/extruder0_opacity", checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 1"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 1)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 1)
             }
             CheckBox {
-                checked: true
+                checked: view_settings.extruder1_checked
                 onClicked: {
-                    UM.LayerView.setExtruderOpacity(1, checked ? 1.0 : 0.0);
+                    UM.Preferences.setValue("layerview/extruder1_opacity", checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 2"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 2)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 2)
             }
             CheckBox {
-                checked: true
+                checked: view_settings.extruder2_checked
                 onClicked: {
-                    UM.LayerView.setExtruderOpacity(2, checked ? 1.0 : 0.0);
+                    UM.Preferences.setValue("layerview/extruder2_opacity", checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 3"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 3)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.etruderCount >= 3)
             }
             CheckBox {
-                checked: true
+                checked: view_settings.extruder3_checked
                 onClicked: {
-                    UM.LayerView.setExtruderOpacity(3, checked ? 1.0 : 0.0);
+                    UM.Preferences.setValue("layerview/extruder3_opacity", checked ? 1.0 : 0.0);
                 }
                 text: "Extruder 4"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 4)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 4)
             }
             Label {
                 text: "Other extruders always visible"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.getExtruderCount >= 5)
+                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 5)
             }
             CheckBox {
+                checked: view_settings.show_travel_moves
                 onClicked: {
-                    UM.LayerView.setShowTravelMoves(checked ? 1 : 0);
+                    UM.Preferences.setValue("layerview/show_travel_moves", checked);
                 }
-                text: "Show travel moves"
+                text: catalog.i18nc("@label", "Show Travel Moves")
             }
             CheckBox {
-                checked: true
+                checked: view_settings.show_helpers
                 onClicked: {
-                    UM.LayerView.setShowSupport(checked ? 1 : 0);
+                    UM.Preferences.setValue("layerview/show_helpers", checked);
                 }
-                text: "Show support"
+                text: catalog.i18nc("@label", "Show Helpers")
             }
             CheckBox {
-                checked: true
+                checked: view_settings.show_skin
                 onClicked: {
-                    UM.LayerView.setShowAdhesion(checked ? 1 : 0);
+                    UM.Preferences.setValue("layerview/show_skin", checked);
                 }
-                text: "Show adhesion"
+                text: catalog.i18nc("@label", "Show Shell")
             }
             CheckBox {
-                checked: true
+                checked: view_settings.show_infill
                 onClicked: {
-                    UM.LayerView.setShowSkin(checked ? 1 : 0);
+                    UM.Preferences.setValue("layerview/show_infill", checked);
                 }
-                text: "Show skin"
-            }
-            CheckBox {
-                checked: true
-                onClicked: {
-                    UM.LayerView.setShowInfill(checked ? 1 : 0);
-                }
-                text: "Show infill"
+                text: catalog.i18nc("@label", "Show Infill")
             }
         }
     }

@@ -5,14 +5,13 @@ import collections
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
-import UM.Application
 import UM.Logger
 import UM.Qt
-import UM.Settings
-from UM.i18n import i18nCatalog
+from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
 import os
+
+from UM.i18n import i18nCatalog
 
 
 class QualitySettingsModel(UM.Qt.ListModel.ListModel):
@@ -27,7 +26,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
     def __init__(self, parent = None):
         super().__init__(parent = parent)
 
-        self._container_registry = UM.Settings.ContainerRegistry.getInstance()
+        self._container_registry = ContainerRegistry.getInstance()
 
         self._extruder_id = None
         self._extruder_definition_id = None
@@ -94,7 +93,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
         items = []
 
         settings = collections.OrderedDict()
-        definition_container = UM.Application.getInstance().getGlobalContainerStack().getBottom()
+        definition_container = Application.getInstance().getGlobalContainerStack().getBottom()
 
         containers = self._container_registry.findInstanceContainers(id = self._quality_id)
         if not containers:
@@ -122,7 +121,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             quality_container = quality_container[0]
 
         quality_type = quality_container.getMetaDataEntry("quality_type")
-        definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
+        definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(quality_container.getDefinition())
         definition = quality_container.getDefinition()
 
         # Check if the definition container has a translation file.
@@ -169,7 +168,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if self._extruder_definition_id != "":
                 extruder_definitions = self._container_registry.findDefinitionContainers(id = self._extruder_definition_id)
                 if extruder_definitions:
-                    criteria["extruder"] = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
+                    criteria["extruder"] = Application.getInstance().getMachineManager().getQualityDefinitionId(extruder_definitions[0])
                     criteria["name"] = quality_changes_container.getName()
             else:
                 criteria["extruder"] = None
@@ -178,7 +177,7 @@ class QualitySettingsModel(UM.Qt.ListModel.ListModel):
             if changes:
                 containers.extend(changes)
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         is_multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
 
         current_category = ""

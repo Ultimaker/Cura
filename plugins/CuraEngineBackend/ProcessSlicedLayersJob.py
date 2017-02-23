@@ -9,6 +9,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
 from UM.Preferences import Preferences
+from UM.View.GL.OpenGLContext import OpenGLContext
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -26,6 +27,9 @@ from time import time
 catalog = i18nCatalog("cura")
 
 
+##  Return a 4-tuple with floats 0-1 representing the html color code
+#
+#   \param color_code html color code, i.e. "#FF0000" -> red
 def colorCodeToRGBA(color_code):
     return [
         int(color_code[1:3], 16) / 255,
@@ -138,7 +142,7 @@ class ProcessSlicedLayersJob(Job):
                     new_points[:, 1] = points[:, 2]
                     new_points[:, 2] = -points[:, 1]
 
-                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths, line_thicknesses)
+                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses)
                 this_poly.buildCache()
 
                 this_layer.polygons.append(this_poly)
@@ -176,14 +180,16 @@ class ProcessSlicedLayersJob(Job):
             material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
             material = global_container_stack.findContainer({"type": "material"})
             color_code = material.getMetaDataEntry("color_code")
+            if color_code is None:  # not all stacks have a material color
+                color_code = "#e0e000"
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 
         # We have to scale the colors for compatibility mode
-        if Application.getInstance().getRenderer().getSupportsGeometryShader():
-            line_type_brightness = 1.0
-        else:
+        if OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode")):
             line_type_brightness = 0.5  # for compatibility mode
+        else:
+            line_type_brightness = 1.0
         layer_mesh = layer_data.build(material_color_map, line_type_brightness)
 
         if self._abort_requested:

@@ -4,8 +4,9 @@
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
 import UM.Qt.ListModel
+from UM.Application import Application
 
-from . import ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  Model that holds extruders.
 #
@@ -55,7 +56,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._active_extruder_stack = None
 
         #Listen to changes.
-        UM.Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders)
+        Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders)
         manager = ExtruderManager.getInstance()
 
         self._updateExtruders()
@@ -105,8 +106,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     def _onExtruderStackContainersChanged(self, container):
         # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
-        if container.getMetaDataEntry("type") == "material":
-            self._updateExtruders()
+        self._updateExtruders()
 
     modelChanged = pyqtSignal()
 
@@ -121,7 +121,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         items = []
 
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             if self._add_global:
                 material = global_container_stack.findContainer({ "type": "material" })

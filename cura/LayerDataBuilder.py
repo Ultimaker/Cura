@@ -48,8 +48,10 @@ class LayerDataBuilder(MeshBuilder):
 
         self._layers[layer].setThickness(thickness)
 
-    #   material color map: [r, g, b, a] for each extruder row.
-    #   line_type_brightness: compatibility layer view uses line type brightness of 0.5
+    ##  Return the layer data as LayerData.
+    #
+    #   \param material_color_map: [r, g, b, a] for each extruder row.
+    #   \param line_type_brightness: compatibility layer view uses line type brightness of 0.5
     def build(self, material_color_map, line_type_brightness = 1.0):
         vertex_count = 0
         index_count = 0
@@ -61,8 +63,8 @@ class LayerDataBuilder(MeshBuilder):
         line_dimensions = numpy.empty((vertex_count, 2), numpy.float32)
         colors = numpy.empty((vertex_count, 4), numpy.float32)
         indices = numpy.empty((index_count, 2), numpy.int32)
-        extruders = numpy.empty((vertex_count), numpy.int32)
-        line_types = numpy.empty((vertex_count), numpy.int32)
+        extruders = numpy.empty((vertex_count), numpy.int32)  # Only usable for newer OpenGL versions
+        line_types = numpy.empty((vertex_count), numpy.float32)
 
         vertex_offset = 0
         index_offset = 0
@@ -75,9 +77,12 @@ class LayerDataBuilder(MeshBuilder):
         self.addColors(colors)
         self.addIndices(indices.flatten())
 
+        # Note: we're using numpy indexing here.
+        # See also: https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html
         material_colors = numpy.zeros((line_dimensions.shape[0], 4), dtype=numpy.float32)
         for extruder_nr in range(material_color_map.shape[0]):
             material_colors[extruders == extruder_nr] = material_color_map[extruder_nr]
+        # Set material_colors with indices where line_types (also numpy array) == MoveCombingType
         material_colors[line_types == LayerPolygon.MoveCombingType] = colors[line_types == LayerPolygon.MoveCombingType]
         material_colors[line_types == LayerPolygon.MoveRetractionType] = colors[line_types == LayerPolygon.MoveRetractionType]
 
@@ -90,7 +95,7 @@ class LayerDataBuilder(MeshBuilder):
             "extruders": {
                 "value": extruders,
                 "opengl_name": "a_extruder",
-                "opengl_type": "float"
+                "opengl_type": "float"  # Strangely enough, the type has to be float while it is actually an int.
                 },
             "colors": {
                 "value": material_colors,

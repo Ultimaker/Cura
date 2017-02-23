@@ -398,7 +398,7 @@ Item
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
 
-            checked: platformAdhesionType.properties.value != "skirt"
+            checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
 
             MouseArea
             {

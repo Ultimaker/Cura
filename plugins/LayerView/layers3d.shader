@@ -1,6 +1,8 @@
 [shaders]
-vertex =
+vertex41core =
     #version 410
+    uniform highp mat4 u_modelViewProjectionMatrix;
+
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
     uniform lowp float u_active_extruder;
@@ -9,27 +11,26 @@ vertex =
 
     uniform highp mat4 u_normalMatrix;
 
-    attribute highp vec4 a_vertex;
-    attribute lowp vec4 a_color;
-    attribute lowp vec4 a_material_color;
-    attribute highp vec4 a_normal;
-    attribute highp vec2 a_line_dim;  // line width and thickness
-    attribute highp int a_extruder;
-    attribute highp int a_line_type;
+    in highp vec4 a_vertex;
+    in lowp vec4 a_color;
+    in lowp vec4 a_material_color;
+    in highp vec4 a_normal;
+    in highp vec2 a_line_dim;  // line width and thickness
+    in highp int a_extruder;  // Note: cannot use this in compatibility, int is only available in newer OpenGL.
+    in highp float a_line_type;
 
-    varying lowp vec4 v_color;
+    out lowp vec4 v_color;
 
-    varying highp vec3 v_vertex;
-    varying highp vec3 v_normal;
-    varying lowp vec2 v_line_dim;
-    varying highp int v_extruder;
-    varying highp vec4 v_extruder_opacity;
-    varying int v_line_type;
+    out highp vec3 v_vertex;
+    out highp vec3 v_normal;
+    out lowp vec2 v_line_dim;
+    out highp int v_extruder;
+    out highp vec4 v_extruder_opacity;
+    out float v_line_type;
 
-    varying lowp vec4 f_color;
-    varying highp vec3 f_vertex;
-    varying highp vec3 f_normal;
-    varying highp int f_extruder;
+    out lowp vec4 f_color;
+    out highp vec3 f_vertex;
+    out highp vec3 f_normal;
 
     void main()
     {
@@ -56,19 +57,18 @@ vertex =
         v_line_type = a_line_type;
         v_extruder_opacity = u_extruder_opacity;
 
-        // for testing and backwards compatibility without geometry shader
-        /*f_color = v_color;
+        // for testing without geometry shader
+        f_color = v_color;
         f_vertex = v_vertex;
-        f_normal = v_normal;*/
+        f_normal = v_normal;
     }
 
-geometry =
+geometry41core =
     #version 410
 
     uniform highp mat4 u_viewProjectionMatrix;
     uniform int u_show_travel_moves;
-    uniform int u_show_support;
-    uniform int u_show_adhesion;
+    uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
 
@@ -81,12 +81,20 @@ geometry =
     in vec2 v_line_dim[];
     in int v_extruder[];
     in vec4 v_extruder_opacity[];
-    in int v_line_type[];
+    in float v_line_type[];
 
     out vec4 f_color;
     out vec3 f_normal;
     out vec3 f_vertex;
-    out uint f_extruder;
+
+    // Set the set of variables and EmitVertex
+    void myEmitVertex(vec3 vertex, vec4 color, vec3 normal, vec4 pos) {
+        f_vertex = vertex;
+        f_color = color;
+        f_normal = normal;
+        gl_Position = pos;
+        EmitVertex();
+    }
 
     void main()
     {
@@ -108,10 +116,7 @@ geometry =
         if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9))) {
             return;
         }
-        if ((u_show_support == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
-            return;
-        }
-        if ((u_show_adhesion == 0) && (v_line_type[0] == 5)) {
+        if ((u_show_helpers == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 5) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
             return;
         }
         if ((u_show_skin == 0) && ((v_line_type[0] == 1) || (v_line_type[0] == 2) || (v_line_type[0] == 3))) {
@@ -123,14 +128,11 @@ geometry =
 
         if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
             // fixed size for movements
-            size_x = 0.1;
-            size_y = 0.1;
+            size_x = 0.2;
         } else {
             size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
-            size_y = v_line_dim[0].y / 2 + 0.01;
         }
-
-        f_extruder = v_extruder[0];
+        size_y = v_line_dim[0].y / 2 + 0.01;
 
         g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z));
@@ -142,154 +144,71 @@ geometry =
         g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
         g_vertex_offset_vert = vec4(g_vertex_normal_vert * size_y, 0.0);
 
-        f_vertex = v_vertex[0];
-        f_color = v_color[0];
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
+        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
+            // Travels: flat plane with pointy ends
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head + g_vertex_offset_vert));
 
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
+            EndPrimitive();
+        } else {
+            // All normal lines are rendered as 3d tubes.
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
 
-        f_vertex = v_vertex[0];
-        f_color = v_color[0];
-        f_normal = g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
-        EmitVertex();
+            EndPrimitive();
 
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
-        EmitVertex();
+            // left side
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
 
-        f_vertex = v_vertex[0];
-        f_normal = -g_vertex_normal_horz;
-        f_color = v_color[0];
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
-        EmitVertex();
+            EndPrimitive();
 
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = -g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
-        EmitVertex();
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
 
-        f_vertex = v_vertex[0];
-        f_color = v_color[0];
-        f_normal = -g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
-        EmitVertex();
+            EndPrimitive();
 
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = -g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
-        EmitVertex();
+            // right side
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
 
-        f_vertex = v_vertex[0];
-        f_normal = g_vertex_normal_horz;
-        f_color = v_color[0];
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
+            EndPrimitive();
 
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
 
-        EndPrimitive();
-
-        // left side
-        f_vertex = v_vertex[0];
-        f_color = v_color[0];
-
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
-
-        f_normal = g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
-        EmitVertex();
-
-        f_normal = g_vertex_normal_horz_head;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head);
-        EmitVertex();
-
-        f_normal = -g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
-        EmitVertex();
-
-        EndPrimitive();
-
-        f_normal = -g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
-        EmitVertex();
-
-        f_normal = -g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
-        EmitVertex();
-
-        f_normal = g_vertex_normal_horz_head;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head);
-        EmitVertex();
-
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
-
-        EndPrimitive();
-
-        // right side
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
-
-        f_normal = g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
-        EmitVertex();
-
-        f_normal = -g_vertex_normal_horz_head;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head);
-        EmitVertex();
-
-        f_normal = -g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
-        EmitVertex();
-
-        EndPrimitive();
-
-        f_normal = -g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
-        EmitVertex();
-
-        f_normal = -g_vertex_normal_vert;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
-        EmitVertex();
-
-        f_normal = -g_vertex_normal_horz_head;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head);
-        EmitVertex();
-
-        f_normal = g_vertex_normal_horz;
-        gl_Position = u_viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
-        EmitVertex();
-
-        EndPrimitive();
+            EndPrimitive();
+        }
     }
 
-fragment =
+fragment41core =
     #version 410
-    varying lowp vec4 f_color;
-    varying lowp vec3 f_normal;
-    varying lowp vec3 f_vertex;
+    in lowp vec4 f_color;
+    in lowp vec3 f_normal;
+    in lowp vec3 f_vertex;
+
+    out vec4 frag_color;
 
     uniform mediump vec4 u_ambientColor;
     uniform highp vec3 u_lightPosition;
@@ -302,14 +221,14 @@ fragment =
         finalColor.rgb += f_color.rgb * 0.3;
 
         highp vec3 normal = normalize(f_normal);
-        highp vec3 lightDir = normalize(u_lightPosition - f_vertex);
+        highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
-        highp float NdotL = clamp(dot(normal, lightDir), 0.0, 1.0);
+        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 
-        gl_FragColor = finalColor;
+        frag_color = finalColor;
     }
 
 
@@ -324,8 +243,7 @@ u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_shininess = 20.0
 
 u_show_travel_moves = 0
-u_show_support = 1
-u_show_adhesion = 1
+u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
 

@@ -7,8 +7,8 @@ import os #For statvfs.
 import urllib #To escape machine names for how they're saved to file.
 
 import UM.Resources
-import UM.Settings.ContainerRegistry
-import UM.Settings.InstanceContainer
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
 
 ##  Are machine names valid?
 #
@@ -22,7 +22,7 @@ class MachineNameValidator(QObject):
             filename_max_length = os.statvfs(UM.Resources.getDataStoragePath()).f_namemax
         except AttributeError: #Doesn't support statvfs. Probably because it's not a Unix system.
             filename_max_length = 255 #Assume it's Windows on NTFS.
-        machine_name_max_length = filename_max_length - len("_current_settings.") - len(UM.Settings.ContainerRegistry.getMimeTypeForContainer(UM.Settings.InstanceContainer).preferredSuffix)
+        machine_name_max_length = filename_max_length - len("_current_settings.") - len(ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix)
         # Characters that urllib.parse.quote_plus escapes count for 12! So now
         # we must devise a regex that allows only 12 normal characters or 1
         # special character, and that up to [machine_name_max_length / 12] times.
@@ -45,7 +45,7 @@ class MachineNameValidator(QObject):
         except AttributeError: #Doesn't support statvfs. Probably because it's not a Unix system.
             filename_max_length = 255 #Assume it's Windows on NTFS.
         escaped_name = urllib.parse.quote_plus(name)
-        current_settings_filename = escaped_name + "_current_settings." + UM.Settings.ContainerRegistry.getMimeTypeForContainer(UM.Settings.InstanceContainer).preferredSuffix
+        current_settings_filename = escaped_name + "_current_settings." + ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix
         if len(current_settings_filename) > filename_max_length:
             return QValidator.Invalid
 
