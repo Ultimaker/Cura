@@ -15,6 +15,7 @@ class CameraAnimation(QVariantAnimation):
         self._camera_tool = None
         self.setDuration(500)
         self.setEasingCurve(QEasingCurve.InOutQuad)
+        self.valueChanged.connect(self._onValueChanged)
 
     def setCameraTool(self, camera_tool):
         self._camera_tool = camera_tool
@@ -25,5 +26,10 @@ class CameraAnimation(QVariantAnimation):
     def setTarget(self, target):
         self.setEndValue(QVector3D(target.x, target.y, target.z))
 
-    def updateCurrentValue(self, value):
+    # def updateCurrentValue(self, value):
+    #     Logger.log("d", "  ### value: %s" % str(value))
+    #     self._camera_tool.setOrigin(Vector(value.x(), value.y(), value.z()))
+
+    def _onValueChanged(self, value):
+        Logger.log("d", "  _onValueChanged value: %s" % str(value))
         self._camera_tool.setOrigin(Vector(value.x(), value.y(), value.z()))
