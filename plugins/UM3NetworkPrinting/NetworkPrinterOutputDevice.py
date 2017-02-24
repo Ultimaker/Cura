@@ -533,16 +533,27 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updatePrinterState(self._json_printer_state["status"])
 
         try:
-            remaining_preheat_time = self._json_printer_state["bed"]["pre_heat"]["remaining"]
+            is_preheating = self._json_printer_state["bed"]["pre_heat"]["active"]
         except KeyError: #Old firmware doesn't support that.
-            pass #Don't update the time.
+            pass #Don't update the pre-heat remaining time.
         else:
-            #Only update if time estimate is significantly off (>5000ms).
-            #Otherwise we get issues with latency causing the timer to count inconsistently.
-            if abs(self._preheat_bed_timer.remainingTime() - remaining_preheat_time * 1000) > 5000:
-                self._preheat_bed_timer.setInterval(remaining_preheat_time * 1000)
-                self._preheat_bed_timer.start()
-                self.preheatBedRemainingTimeChanged.emit()
+            if is_preheating:
+                try:
+                    remaining_preheat_time = self._json_printer_state["bed"]["pre_heat"]["remaining"]
+                except KeyError: #Error in firmware. If "active" is supported, "remaining" should also be supported.
+                    pass #Anyway, don't update.
+                else:
+                    #Only update if time estimate is significantly off (>5000ms).
+                    #Otherwise we get issues with latency causing the timer to count inconsistently.
+                    if abs(self._preheat_bed_timer.remainingTime() - remaining_preheat_time * 1000) > 5000:
+                        self._preheat_bed_timer.setInterval(remaining_preheat_time * 1000)
+                        self._preheat_bed_timer.start()
+                        self.preheatBedRemainingTimeChanged.emit()
+            else: #Not pre-heating. Must've cancelled.
+                if self._preheat_bed_timer.isActive():
+                    self._preheat_bed_timer.setInterval(0)
+                    self._preheat_bed_timer.stop()
+                    self.preheatBedRemainingTimeChanged.emit()
 
 
     def close(self):
