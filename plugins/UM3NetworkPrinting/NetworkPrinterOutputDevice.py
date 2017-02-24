@@ -99,6 +99,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._material_ids = [""] * self._num_extruders
         self._hotend_ids = [""] * self._num_extruders
         self._target_bed_temperature = 0
+        self._processing_preheat_requests = True
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
@@ -262,6 +263,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("i", "Pre-heating bed to %i degrees.", temperature)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._processing_preheat_requests = False
         self._manager.put(put_request, data.encode())
         self._preheat_bed_timer.start(self._preheat_bed_timeout * 1000) #Times 1000 because it needs to be provided as milliseconds.
         self.preheatBedRemainingTimeChanged.emit()
@@ -532,28 +534,29 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
         self._updatePrinterState(self._json_printer_state["status"])
 
-        try:
-            is_preheating = self._json_printer_state["bed"]["pre_heat"]["active"]
-        except KeyError: #Old firmware doesn't support that.
-            pass #Don't update the pre-heat remaining time.
-        else:
-            if is_preheating:
-                try:
-                    remaining_preheat_time = self._json_printer_state["bed"]["pre_heat"]["remaining"]
-                except KeyError: #Error in firmware. If "active" is supported, "remaining" should also be supported.
-                    pass #Anyway, don't update.
-                else:
-                    #Only update if time estimate is significantly off (>5000ms).
-                    #Otherwise we get issues with latency causing the timer to count inconsistently.
-                    if abs(self._preheat_bed_timer.remainingTime() - remaining_preheat_time * 1000) > 5000:
-                        self._preheat_bed_timer.setInterval(remaining_preheat_time * 1000)
-                        self._preheat_bed_timer.start()
+        if self._processing_preheat_requests:
+            try:
+                is_preheating = self._json_printer_state["bed"]["pre_heat"]["active"]
+            except KeyError: #Old firmware doesn't support that.
+                pass #Don't update the pre-heat remaining time.
+            else:
+                if is_preheating:
+                    try:
+                        remaining_preheat_time = self._json_printer_state["bed"]["pre_heat"]["remaining"]
+                    except KeyError: #Error in firmware. If "active" is supported, "remaining" should also be supported.
+                        pass #Anyway, don't update.
+                    else:
+                        #Only update if time estimate is significantly off (>5000ms).
+                        #Otherwise we get issues with latency causing the timer to count inconsistently.
+                        if abs(self._preheat_bed_timer.remainingTime() - remaining_preheat_time * 1000) > 5000:
+                            self._preheat_bed_timer.setInterval(remaining_preheat_time * 1000)
+                            self._preheat_bed_timer.start()
+                            self.preheatBedRemainingTimeChanged.emit()
+                else: #Not pre-heating. Must've cancelled.
+                    if self._preheat_bed_timer.isActive():
+                        self._preheat_bed_timer.setInterval(0)
+                        self._preheat_bed_timer.stop()
                         self.preheatBedRemainingTimeChanged.emit()
-            else: #Not pre-heating. Must've cancelled.
-                if self._preheat_bed_timer.isActive():
-                    self._preheat_bed_timer.setInterval(0)
-                    self._preheat_bed_timer.stop()
-                    self.preheatBedRemainingTimeChanged.emit()
 
 
     def close(self):
@@ -1056,6 +1059,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
+            if "printer/bed/pre_heat" in reply_url: #Pre-heat command has completed. Re-enable syncing pre-heating.
+                self._processing_preheat_requests = True
             if status_code in [200, 201, 202, 204]:
                 pass  # Request was successful!
             else:
