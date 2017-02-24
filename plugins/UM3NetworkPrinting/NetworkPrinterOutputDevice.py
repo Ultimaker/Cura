@@ -532,6 +532,18 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
         self._updatePrinterState(self._json_printer_state["status"])
 
+        try:
+            remaining_preheat_time = self._json_printer_state["bed"]["pre_heat"]["remaining"]
+        except KeyError: #Old firmware doesn't support that.
+            pass #Don't update the time.
+        else:
+            #Only update if time estimate is significantly off (>5000ms).
+            #Otherwise we get issues with latency causing the timer to count inconsistently.
+            if abs(self._preheat_bed_timer.remainingTime() - remaining_preheat_time * 1000) > 5000:
+                self._preheat_bed_timer.setInterval(remaining_preheat_time * 1000)
+                self._preheat_bed_timer.start()
+                self.preheatBedRemainingTimeChanged.emit()
+
 
     def close(self):
         Logger.log("d", "Closing connection of printer %s with ip %s", self._key, self._address)
