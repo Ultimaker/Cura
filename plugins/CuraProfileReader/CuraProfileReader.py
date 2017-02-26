@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 import configparser
 
-from UM import PluginRegistry
+from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ProfileReader import ProfileReader

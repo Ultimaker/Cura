@@ -20,6 +20,8 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -148,11 +150,11 @@ class CuraApplication(QtApplication):
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality", UM.Settings.InstanceContainer.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("extruder_train", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
+                ("quality", InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", UM.Settings.InstanceContainer.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("user", InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
