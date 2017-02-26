@@ -3,15 +3,15 @@
 
 import os.path
 import urllib
+from typing import Dict, Union
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QUrl, QVariant
+from PyQt5.QtCore import QObject, QUrl, QVariant
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.PluginRegistry import PluginRegistry
-
-from UM.Platform import Platform
 from UM.SaveFile import SaveFile
+from UM.Platform import Platform
 from UM.MimeTypeDatabase import MimeTypeDatabase
 
 from UM.Logger import Logger
@@ -307,18 +307,20 @@ class ContainerManager(QObject):
     #
     #   \param container_id The ID of the container to export
     #   \param file_type The type of file to save as. Should be in the form of "description (*.extension, *.ext)"
-    #   \param file_url The URL where to save the file.
+    #   \param file_url_or_string The URL where to save the file.
     #
     #   \return A dictionary containing a key "status" with a status code and a key "message" with a message
     #           explaining the status.
     #           The status code can be one of "error", "cancelled", "success"
     @pyqtSlot(str, str, QUrl, result = "QVariantMap")
-    def exportContainer(self, container_id, file_type, file_url):
-        if not container_id or not file_type or not file_url:
+    def exportContainer(self, container_id: str, file_type: str, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
+        if not container_id or not file_type or not file_url_or_string:
             return { "status": "error", "message": "Invalid arguments"}
 
-        if isinstance(file_url, QUrl):
-            file_url = file_url.toLocalFile()
+        if isinstance(file_url_or_string, QUrl):
+            file_url = file_url_or_string.toLocalFile()
+        else:
+            file_url = file_url_or_string
 
         if not file_url:
             return { "status": "error", "message": "Invalid path"}
@@ -373,12 +375,14 @@ class ContainerManager(QObject):
     #   \return \type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
     #       containing a message for the user
     @pyqtSlot(QUrl, result = "QVariantMap")
-    def importContainer(self, file_url):
-        if not file_url:
+    def importContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
+        if not file_url_or_string:
             return { "status": "error", "message": "Invalid path"}
 
-        if isinstance(file_url, QUrl):
-            file_url = file_url.toLocalFile()
+        if isinstance(file_url_or_string, QUrl):
+            file_url = file_url_or_string.toLocalFile()
+        else:
+            file_url = file_url_or_string
 
         if not file_url or not os.path.exists(file_url):
             return { "status": "error", "message": "Invalid path" }
@@ -438,7 +442,7 @@ class ContainerManager(QObject):
 
     ##  Clear the top-most (user) containers of the active stacks.
     @pyqtSlot()
-    def clearUserContainers(self):
+    def clearUserContainers(self) -> None:
         self._machine_manager.blurSettings.emit()
 
         send_emits_containers = []
@@ -668,7 +672,7 @@ class ContainerManager(QObject):
         return new_change_instances
 
     @pyqtSlot(str, result = str)
-    def duplicateMaterial(self, material_id):
+    def duplicateMaterial(self, material_id: str) -> str:
         containers = self._container_registry.findInstanceContainers(id=material_id)
         if not containers:
             Logger.log("d", "Unable to duplicate the material with id %s, because it doesn't exist.", material_id)
@@ -692,7 +696,7 @@ class ContainerManager(QObject):
 
     ##  Get the singleton instance for this class.
     @classmethod
-    def getInstance(cls):
+    def getInstance(cls) -> "ContainerManager":
         # Note: Explicit use of class name to prevent issues with inheritance.
         if ContainerManager.__instance is None:
             ContainerManager.__instance = cls()
@@ -717,7 +721,7 @@ class ContainerManager(QObject):
         if clear_settings:
             merge.clear()
 
-    def _updateContainerNameFilters(self):
+    def _updateContainerNameFilters(self) -> None:
         self._container_name_filters = {}
         for plugin_id, container_type in self._container_registry.getContainerTypes():
             # Ignore default container types since those are not plugins
