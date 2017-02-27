@@ -8,7 +8,7 @@ from UM.Signal import signalemitter
 
 from UM.Message import Message
 
-import UM.Settings
+import UM.Settings.ContainerRegistry
 import UM.Version #To compare firmware version numbers.
 
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
@@ -99,6 +99,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._material_ids = [""] * self._num_extruders
         self._hotend_ids = [""] * self._num_extruders
         self._target_bed_temperature = 0
+        self._processing_preheat_requests = True
 
         self.setPriority(2) # Make sure the output device gets selected above local file output
         self.setName(key)
@@ -251,7 +252,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def preheatBed(self, temperature, duration):
         temperature = round(temperature) #The API doesn't allow floating point.
         duration = round(duration)
-        if UM.Version(self.firmwareVersion) < UM.Version("3.5.92"): #Real bed pre-heating support is implemented from 3.5.92 and up.
+        if UM.Version.Version(self.firmwareVersion) < UM.Version.Version("3.5.92"): #Real bed pre-heating support is implemented from 3.5.92 and up.
             self.setTargetBedTemperature(temperature = temperature) #No firmware-side duration support then.
             return
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/pre_heat")
@@ -259,16 +260,24 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             data = """{"temperature": "%i", "timeout": "%i"}""" % (temperature, duration)
         else:
             data = """{"temperature": "%i"}""" % temperature
+        Logger.log("i", "Pre-heating bed to %i degrees.", temperature)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._processing_preheat_requests = False
         self._manager.put(put_request, data.encode())
+        self._preheat_bed_timer.start(self._preheat_bed_timeout * 1000) #Times 1000 because it needs to be provided as milliseconds.
+        self.preheatBedRemainingTimeChanged.emit()
 
     ##  Cancels pre-heating the heated bed of the printer.
     #
     #   If the bed is not pre-heated, nothing happens.
     @pyqtSlot()
     def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
         self.preheatBed(temperature = 0, duration = 0)
+        self._preheat_bed_timer.stop()
+        self._preheat_bed_timer.setInterval(0)
+        self.preheatBedRemainingTimeChanged.emit()
 
     ##  Changes the target bed temperature on the printer.
     #
@@ -525,6 +534,30 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._updateHeadPosition(head_x, head_y, head_z)
         self._updatePrinterState(self._json_printer_state["status"])
 
+        if self._processing_preheat_requests:
+            try:
+                is_preheating = self._json_printer_state["bed"]["pre_heat"]["active"]
+            except KeyError: #Old firmware doesn't support that.
+                pass #Don't update the pre-heat remaining time.
+            else:
+                if is_preheating:
+                    try:
+                        remaining_preheat_time = self._json_printer_state["bed"]["pre_heat"]["remaining"]
+                    except KeyError: #Error in firmware. If "active" is supported, "remaining" should also be supported.
+                        pass #Anyway, don't update.
+                    else:
+                        #Only update if time estimate is significantly off (>5000ms).
+                        #Otherwise we get issues with latency causing the timer to count inconsistently.
+                        if abs(self._preheat_bed_timer.remainingTime() - remaining_preheat_time * 1000) > 5000:
+                            self._preheat_bed_timer.setInterval(remaining_preheat_time * 1000)
+                            self._preheat_bed_timer.start()
+                            self.preheatBedRemainingTimeChanged.emit()
+                else: #Not pre-heating. Must've cancelled.
+                    if self._preheat_bed_timer.isActive():
+                        self._preheat_bed_timer.setInterval(0)
+                        self._preheat_bed_timer.stop()
+                        self.preheatBedRemainingTimeChanged.emit()
+
 
     def close(self):
         Logger.log("d", "Closing connection of printer %s with ip %s", self._key, self._address)
@@ -616,7 +649,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
             # Check if the right cartridges are loaded. Any failure in these results in a warning.
-            extruder_manager = cura.Settings.ExtruderManager.getInstance()
+            extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
             if print_information.materialLengths[index] != 0:
                 variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                 core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
@@ -633,7 +666,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                                    remote_material_guid,
                                    material.getMetaDataEntry("GUID"))
 
-                        remote_materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                        remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
                         remote_material_name = "Unknown"
                         if remote_materials:
                             remote_material_name = remote_materials[0].getName()
@@ -811,7 +844,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
-        Logger.log("d", "Checking if authentication is correct for id %", self._authentication_id)
+        Logger.log("d", "Checking if authentication is correct for id %s", self._authentication_id)
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
@@ -824,7 +857,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
-        for container in UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
+        for container in UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material"):
             try:
                 xml_data = container.serialize()
                 if xml_data == "" or xml_data is None:
@@ -1026,6 +1059,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 self._progress_message.hide()
 
         elif reply.operation() == QNetworkAccessManager.PutOperation:
+            if "printer/bed/pre_heat" in reply_url: #Pre-heat command has completed. Re-enable syncing pre-heating.
+                self._processing_preheat_requests = True
             if status_code in [200, 201, 202, 204]:
                 pass  # Request was successful!
             else:

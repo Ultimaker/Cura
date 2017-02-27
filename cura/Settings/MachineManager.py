@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+from typing import Union
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -10,13 +11,18 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Signal import postponeSignals
 
-import UM.Settings
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingDefinition import SettingDefinition
+from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.Validator import ValidatorState
+from UM.Signal import postponeSignals
 
 from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
-from . import ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -27,8 +33,8 @@ class MachineManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._active_container_stack = None
-        self._global_container_stack = None
+        self._active_container_stack = None     # type: ContainerStack
+        self._global_container_stack = None     # type: ContainerStack
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ##  When the global container is changed, active material probably needs to be updated.
@@ -37,10 +43,10 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.activeQualityChanged)
 
         self._stacks_have_errors = None
-        self._empty_variant_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_variant")[0]
-        self._empty_material_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_material")[0]
-        self._empty_quality_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality")[0]
-        self._empty_quality_changes_container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality_changes")[0]
+        self._empty_variant_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_variant")[0]
+        self._empty_material_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_material")[0]
+        self._empty_quality_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality")[0]
+        self._empty_quality_changes_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality_changes")[0]
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
@@ -92,7 +98,7 @@ class MachineManager(QObject):
 
     outputDevicesChanged = pyqtSignal()
 
-    def _onOutputDevicesChanged(self):
+    def _onOutputDevicesChanged(self) -> None:
         for printer_output_device in self._printer_output_devices:
             printer_output_device.hotendIdChanged.disconnect(self._onHotendIdChanged)
             printer_output_device.materialIdChanged.disconnect(self._onMaterialIdChanged)
@@ -113,16 +119,17 @@ class MachineManager(QObject):
 
     @pyqtProperty(int, constant=True)
     def totalNumberOfSettings(self):
-        return len(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
 
-    def _onHotendIdChanged(self, index, hotend_id):
+    def _onHotendIdChanged(self, index: Union[str, int], hotend_id: str) -> None:
         if not self._global_container_stack:
             return
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type="variant", definition=self._global_container_stack.getBottom().getId(), name=hotend_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(type="variant", definition=self._global_container_stack.getBottom().getId(), name=hotend_id)
         if containers:  # New material ID is known
             extruder_manager = ExtruderManager.getInstance()
-            extruders = list(extruder_manager.getMachineExtruders(self.activeMachineId))
+            machine_id = self.activeMachineId
+            extruders = extruder_manager.getMachineExtruders(machine_id)
             matching_extruder = None
             for extruder in extruders:
                 if str(index) == extruder.getMetaDataEntry("position"):
@@ -143,7 +150,7 @@ class MachineManager(QObject):
         if self._global_container_stack.getMetaDataEntry("has_machine_materials", False):
             definition_id = self.activeQualityDefinitionId
         extruder_manager = ExtruderManager.getInstance()
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition_id, GUID = material_id)
         if containers:  # New material ID is known
             extruders = list(extruder_manager.getMachineExtruders(self.activeMachineId))
             matching_extruder = None
@@ -316,11 +323,11 @@ class MachineManager(QObject):
                     # We do need to validate it, because a setting defintions value can be set by a function, which could
                     # be an invalid setting.
                     definition = self._active_container_stack.getSettingDefinition(key)
-                    validator_type = UM.Settings.SettingDefinition.getValidatorForType(definition.type)
+                    validator_type = SettingDefinition.getValidatorForType(definition.type)
                     if validator_type:
                         validator = validator_type(key)
                         changed_validation_state = validator(self._active_container_stack)
-                if changed_validation_state in (UM.Settings.ValidatorState.Exception, UM.Settings.ValidatorState.MaximumError, UM.Settings.ValidatorState.MinimumError):
+                if changed_validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
                     self._stacks_have_errors = True
                     self.stacksValidationChanged.emit()
             else:
@@ -328,20 +335,20 @@ class MachineManager(QObject):
                 self._updateStacksHaveErrors()
 
     @pyqtSlot(str)
-    def setActiveMachine(self, stack_id):
+    def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
+        containers = ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
     @pyqtSlot(str, str)
-    def addMachine(self, name, definition_id):
-        container_registry = UM.Settings.ContainerRegistry.getInstance()
+    def addMachine(self, name: str, definition_id: str) -> None:
+        container_registry = ContainerRegistry.getInstance()
         definitions = container_registry.findDefinitionContainers(id = definition_id)
         if definitions:
             definition = definitions[0]
             name = self._createUniqueName("machine", "", name, definition.getName())
-            new_global_stack = UM.Settings.ContainerStack(name)
+            new_global_stack = ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
             container_registry.addContainer(new_global_stack)
 
@@ -349,7 +356,7 @@ class MachineManager(QObject):
             material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
             quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
 
-            current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
+            current_settings_instance_container = InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
             current_settings_instance_container.addMetaDataEntry("type", "user")
             current_settings_instance_container.setDefinition(definitions[0])
@@ -377,8 +384,8 @@ class MachineManager(QObject):
     #   \param new_name \type{string} Base name, which may not be unique
     #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
     #   \return \type{string} Name that is unique for the specified type and name/id
-    def _createUniqueName(self, container_type, current_name, new_name, fallback_name):
-        return UM.Settings.ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
+    def _createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
+        return ContainerRegistry.getInstance().createUniqueName(container_type, current_name, new_name, fallback_name)
 
     def _checkStacksHaveErrors(self):
         if self._global_container_stack is None: #No active machine.
@@ -468,35 +475,35 @@ class MachineManager(QObject):
         return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = activeStackChanged)
-    def activeUserProfileId(self):
+    def activeUserProfileId(self) -> str:
         if self._active_container_stack:
             return self._active_container_stack.getTop().getId()
 
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
-    def activeMachineName(self):
+    def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getName()
 
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
-    def activeMachineId(self):
+    def activeMachineId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getId()
 
         return ""
 
     @pyqtProperty(str, notify = activeStackChanged)
-    def activeStackId(self):
+    def activeStackId(self) -> str:
         if self._active_container_stack:
             return self._active_container_stack.getId()
 
         return ""
 
     @pyqtProperty(str, notify = activeMaterialChanged)
-    def activeMaterialName(self):
+    def activeMaterialName(self) -> str:
         if self._active_container_stack:
             material = self._active_container_stack.findContainer({"type":"material"})
             if material:
@@ -526,7 +533,7 @@ class MachineManager(QObject):
         return result
 
     @pyqtProperty(str, notify=activeMaterialChanged)
-    def activeMaterialId(self):
+    def activeMaterialId(self) -> str:
         if self._active_container_stack:
             material = self._active_container_stack.findContainer({"type": "material"})
             if material:
@@ -564,13 +571,13 @@ class MachineManager(QObject):
         quality_changes = self._global_container_stack.findContainer({"type": "quality_changes"})
         if quality_changes:
             value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality_changes.getId())
-            if isinstance(value, UM.Settings.SettingFunction):
+            if isinstance(value, SettingFunction):
                 value = value(self._global_container_stack)
             return value
         quality = self._global_container_stack.findContainer({"type": "quality"})
         if quality:
             value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = quality.getId())
-            if isinstance(value, UM.Settings.SettingFunction):
+            if isinstance(value, SettingFunction):
                 value = value(self._global_container_stack)
             return value
 
@@ -579,7 +586,7 @@ class MachineManager(QObject):
     ##  Get the Material ID associated with the currently active material
     #   \returns MaterialID (string) if found, empty string otherwise
     @pyqtProperty(str, notify=activeQualityChanged)
-    def activeQualityMaterialId(self):
+    def activeQualityMaterialId(self) -> str:
         if self._active_container_stack:
             quality = self._active_container_stack.findContainer({"type": "quality"})
             if quality:
@@ -669,8 +676,8 @@ class MachineManager(QObject):
 
     ## Check if a container is read_only
     @pyqtSlot(str, result = bool)
-    def isReadOnly(self, container_id):
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
+    def isReadOnly(self, container_id) -> bool:
+        containers = ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
         if not containers or not self._active_container_stack:
             return True
         return containers[0].isReadOnly()
@@ -693,7 +700,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
         with postponeSignals(*self._getContainerChangedSignals(), compress = True):
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
                 return
             material_container = containers[0]
@@ -752,7 +759,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
         with postponeSignals(*self._getContainerChangedSignals(), compress = True):
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
                 return
             Logger.log("d", "Attempting to change the active variant to %s", variant_id)
@@ -778,7 +785,7 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = True):
             self.blurSettings.emit()
 
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
             if not containers or not self._global_container_stack:
                 return
 
@@ -1065,7 +1072,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
+        containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             new_name = self._createUniqueName("machine", containers[0].getName(), new_name, containers[0].getBottom().getName())
             containers[0].setName(new_name)
@@ -1078,13 +1085,13 @@ class MachineManager(QObject):
 
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
         for container in containers:
-            UM.Settings.ContainerRegistry.getInstance().removeContainer(container.getId())
-        UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
+            ContainerRegistry.getInstance().removeContainer(container.getId())
+        ContainerRegistry.getInstance().removeContainer(machine_id)
 
         if activate_new_machine:
-            stacks = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+            stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
             if stacks:
                 Application.getInstance().setGlobalContainerStack(stacks[0])
 
@@ -1125,7 +1132,7 @@ class MachineManager(QObject):
     #   \returns DefinitionID (string) if found, None otherwise
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id):
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id=machine_id)
+        containers = ContainerRegistry.getInstance().findContainerStacks(id=machine_id)
         if containers:
             return containers[0].getBottom().getId()
 
@@ -1136,13 +1143,13 @@ class MachineManager(QObject):
     def _updateVariantContainer(self, definition):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
-        machine_definition_id = UM.Application.getInstance().getMachineManager().getQualityDefinitionId(definition)
+        machine_definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(definition)
         containers = []
         preferred_variant = definition.getMetaDataEntry("preferred_variant")
         if preferred_variant:
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = machine_definition_id, id = preferred_variant)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = machine_definition_id, id = preferred_variant)
         if not containers:
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = machine_definition_id)
+            containers = ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = machine_definition_id)
 
         if containers:
             return containers[0]
@@ -1170,23 +1177,23 @@ class MachineManager(QObject):
             if preferred_material:
                 search_criteria["id"] = preferred_material
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if containers:
             return containers[0]
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
         if "variant" in search_criteria or "id" in search_criteria:
             # If a material by this name can not be found, try a wider set of search criteria
             search_criteria.pop("variant", None)
             search_criteria.pop("id", None)
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+
+            containers = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
             if containers:
                 return containers[0]
         Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
         return self._empty_material_container
 
     def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
-        container_registry = UM.Settings.ContainerRegistry.getInstance()
+        container_registry = ContainerRegistry.getInstance()
         search_criteria = { "type": "quality" }
 
         if definition.getMetaDataEntry("has_machine_quality"):
@@ -1269,7 +1276,7 @@ class MachineManager(QObject):
     #   \param preferred_quality_changes_name The name of the quality-changes to
     #   pick, if any such quality-changes profile is available.
     def _updateQualityChangesContainer(self, quality_type, preferred_quality_changes_name = None):
-        container_registry = UM.Settings.ContainerRegistry.getInstance() # Cache.
+        container_registry = ContainerRegistry.getInstance() # Cache.
         search_criteria = { "type": "quality_changes" }
 
         search_criteria["quality"] = quality_type

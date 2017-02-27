@@ -20,6 +20,8 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -28,7 +30,6 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
-from UM.Operations.TranslateOperation import TranslateOperation
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
@@ -36,6 +37,11 @@ from cura.BlockSlicingDecorator import BlockSlicingDecorator
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
+from cura.Settings.MachineNameValidator import MachineNameValidator
+from cura.Settings.ProfilesModel import ProfilesModel
+from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
+from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
+from cura.Settings.UserProfilesModel import UserProfilesModel
 
 from . import PlatformPhysics
 from . import BuildVolume
@@ -47,7 +53,14 @@ from . import CuraSplashScreen
 from . import CameraImageProvider
 from . import MachineActionManager
 
-import cura.Settings
+from cura.Settings.MachineManager import MachineManager
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.ExtrudersModel import ExtrudersModel
+from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
+from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
+from cura.Settings.QualitySettingsModel import QualitySettingsModel
+from cura.Settings.ContainerManager import ContainerManager
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -66,11 +79,13 @@ import json
 
 numpy.seterr(all="ignore")
 
-try:
-    from cura.CuraVersion import CuraVersion, CuraBuildType
-except ImportError:
-    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-    CuraBuildType = ""
+MYPY = False
+if not MYPY:
+    try:
+        from cura.CuraVersion import CuraVersion, CuraBuildType
+    except ImportError:
+        CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+        CuraBuildType = ""
 
 class CuraApplication(QtApplication):
     class ResourceTypes:
@@ -86,6 +101,7 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
+
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
@@ -110,9 +126,9 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
-        SettingFunction.registerOperator("extruderValues", cura.Settings.ExtruderManager.getExtruderValues)
-        SettingFunction.registerOperator("extruderValue", cura.Settings.ExtruderManager.getExtruderValue)
-        SettingFunction.registerOperator("resolveOrValue", cura.Settings.ExtruderManager.getResolveOrValue)
+        SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
+        SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
+        SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
@@ -131,13 +147,14 @@ class CuraApplication(QtApplication):
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
+
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality", UM.Settings.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", UM.Settings.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("extruder_train", UM.Settings.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
-                ("preferences", UM.Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", UM.Settings.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("quality", InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
+                ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
@@ -531,6 +548,7 @@ class CuraApplication(QtApplication):
         controller = self.getController()
 
         controller.setActiveView("SolidView")
+
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
@@ -563,9 +581,11 @@ class CuraApplication(QtApplication):
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
-        cura.Settings.ExtruderManager.getInstance()
-        qmlRegisterSingletonType(cura.Settings.MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
-        qmlRegisterSingletonType(cura.Settings.SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
+        ExtruderManager.getInstance()
+        qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
+                         self.getSettingInheritanceManager)
+
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
@@ -585,12 +605,12 @@ class CuraApplication(QtApplication):
 
     def getMachineManager(self, *args):
         if self._machine_manager is None:
-            self._machine_manager = cura.Settings.MachineManager.createMachineManager()
+            self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
-            self._setting_inheritance_manager = cura.Settings.SettingInheritanceManager.createSettingInheritanceManager()
+            self._setting_inheritance_manager = SettingInheritanceManager.createSettingInheritanceManager()
         return self._setting_inheritance_manager
 
     ##  Get the machine action manager
@@ -626,23 +646,23 @@ class CuraApplication(QtApplication):
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
-        qmlRegisterType(cura.Settings.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
+        qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
-        qmlRegisterType(cura.Settings.ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
-        qmlRegisterSingletonType(cura.Settings.ProfilesModel, "Cura", 1, 0, "ProfilesModel", cura.Settings.ProfilesModel.createProfilesModel)
-        qmlRegisterType(cura.Settings.QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
-        qmlRegisterType(cura.Settings.UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
-        qmlRegisterType(cura.Settings.MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
-        qmlRegisterType(cura.Settings.QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
-        qmlRegisterType(cura.Settings.MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
+        qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
+        qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
+        qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
+        qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
+        qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
+        qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
 
-        qmlRegisterSingletonType(cura.Settings.ContainerManager, "Cura", 1, 0, "ContainerManager", cura.Settings.ContainerManager.createContainerManager)
+        qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
         qmlRegisterSingletonType(actions_url, "Cura", 1, 0, "Actions")
 
-        engine.rootContext().setContextProperty("ExtruderManager", cura.Settings.ExtruderManager.getInstance())
+        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]
@@ -650,6 +670,13 @@ class CuraApplication(QtApplication):
                 continue
 
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
+
+    ##  Get the backend of the application (the program that does the heavy lifting).
+    #   The backend is also a QObject, which can be used from qml.
+    #   \returns Backend \type{Backend}
+    @pyqtSlot(result = "QObject*")
+    def getBackend(self):
+        return self._backend
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
@@ -675,7 +702,7 @@ class CuraApplication(QtApplication):
                 self.getController().setActiveTool(None)
 
     def _onToolOperationStopped(self, event):
-        if self._center_after_select:
+        if self._center_after_select and Selection.getSelectedObject(0) is not None:
             self._center_after_select = False
             self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
@@ -686,7 +713,7 @@ class CuraApplication(QtApplication):
     sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
-    def getPlatformActivity(self):
+    def platformActivity(self):
         return self._platform_activity
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
@@ -1205,3 +1232,15 @@ class CuraApplication(QtApplication):
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
+
+
+    @pyqtSlot("QVector3D")
+    def testQVector3D(self, vect):
+        Logger.log("d", "got QVector3D: %s : %s %s %s" % (vect, vect.x(), vect.y(), vect.z()))
+
+    @pyqtProperty("QVector3D")
+    def getQVector3D(self):
+        from PyQt5.QtGui import QVector3D
+        vect = QVector3D(1.0, 2.0, 3.0)
+        Logger.log("d", "get QVector3D: %s" % vect)
+        return vect

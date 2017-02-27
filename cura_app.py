@@ -55,7 +55,7 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
 # Force an instance of CuraContainerRegistry to be created and reused later.
-cura.Settings.CuraContainerRegistry.getInstance()
+cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
 
 # This prestart up check is needed to determine if we should start the application at all.
 if not cura.CuraApplication.CuraApplication.preStartUp():

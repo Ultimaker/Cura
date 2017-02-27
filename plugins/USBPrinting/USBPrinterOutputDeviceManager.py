@@ -254,7 +254,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     def getSerialPortList(self, only_list_usb = False):
         base_list = []
         if platform.system() == "Windows":
-            import winreg #@UnresolvedImport
+            import winreg # type: ignore @UnresolvedImport
             try:
                 key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
                 i = 0
@@ -273,4 +273,4 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/tty.wchusb*") + glob.glob("/dev/cu.wchusb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
         return list(base_list)
 
-    _instance = None
+    _instance = None    # type: "USBPrinterOutputDeviceManager"

@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
-import serial
+import serial   # type: ignore
 import threading
 import time
 import queue
@@ -445,9 +445,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   is ignored.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
         container_stack = Application.getInstance().getGlobalContainerStack()
-        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode" or not container_stack.getMetaDataEntry("supports_usb_connection"):
-            self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to start a new job because the printer does not support usb printing."))
+
+        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."))
+            self._error_message.show()
+            return
+        elif not container_stack.getMetaDataEntry("supports_usb_connection"):
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."))
             self._error_message.show()
             return
 
@@ -650,11 +654,15 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   ignored because there is no g-code to set this.
     @pyqtSlot(float, float)
     def preheatBed(self, temperature, duration):
+        Logger.log("i", "Pre-heating the bed to %i degrees.", temperature)
         self._setTargetBedTemperature(temperature)
+        self.preheatBedRemainingTimeChanged.emit()
 
     ##  Cancels pre-heating the heated bed of the printer.
     #
     #   If the bed is not pre-heated, nothing happens.
     @pyqtSlot()
     def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
         self._setTargetBedTemperature(0)
+        self.preheatBedRemainingTimeChanged.emit()

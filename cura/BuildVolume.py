@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -24,9 +25,6 @@ catalog = i18nCatalog("cura")
 import numpy
 import copy
 import math
-
-import UM.Settings.ContainerRegistry
-
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -70,6 +68,7 @@ class BuildVolume(SceneNode):
         self._volume_aabb = None
 
         self._raft_thickness = 0.0
+        self._extra_z_clearance = 0.0
         self._adhesion_type = None
         self._platform = Platform(self)
 
@@ -349,7 +348,7 @@ class BuildVolume(SceneNode):
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
+            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
 
         bed_adhesion_size = self._getEdgeDisallowedSize()
 
@@ -358,7 +357,7 @@ class BuildVolume(SceneNode):
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + bed_adhesion_size - 1)
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
@@ -385,6 +384,19 @@ class BuildVolume(SceneNode):
         if old_raft_thickness != self._raft_thickness:
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
+
+    def _updateExtraZClearance(self):
+        extra_z = None
+        extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        for extruder in extruders:
+            retraction_hop = extruder.getProperty("retraction_hop", "value")
+            if extra_z is None or retraction_hop > extra_z:
+                extra_z = retraction_hop
+        if extra_z is None:
+            # If no extruders, take global value.
+            extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
+        if extra_z != self._extra_z_clearance:
+            self._extra_z_clearance = extra_z
 
     ##  Update the build volume visualization
     def _onStackChanged(self):
@@ -450,6 +462,10 @@ class BuildVolume(SceneNode):
 
         if setting_key in self._raft_settings:
             self._updateRaftThickness()
+            rebuild_me = True
+
+        if setting_key in self._extra_z_settings:
+            self._updateExtraZClearance()
             rebuild_me = True
 
         if rebuild_me:
@@ -796,7 +812,7 @@ class BuildVolume(SceneNode):
                 stack = self._global_container_stack
             else:
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-                stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+                stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
 
         value = stack.getProperty(setting_key, property)
         setting_type = stack.getProperty(setting_key, "type")
@@ -874,6 +890,7 @@ class BuildVolume(SceneNode):
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
+    _extra_z_settings = ["retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]

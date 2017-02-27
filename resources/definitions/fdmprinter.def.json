@@ -1335,14 +1335,14 @@
                 "material_print_temperature":
                 {
                     "label": "Printing Temperature",
-                    "description": "The temperature used for printing. Set at 0 to pre-heat the printer manually.",
+                    "description": "The temperature used for printing. If this is 0, the extruder will not heat up for this print.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 210,
                     "value": "default_material_print_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
-                    "maximum_value_warning": "260",
+                    "maximum_value_warning": "270",
                     "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -1422,7 +1422,7 @@
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated build plate. Set at 0 to pre-heat the printer manually.",
+                    "description": "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print.",
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature'))",

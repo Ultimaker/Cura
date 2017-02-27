@@ -7,9 +7,9 @@ from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
-from UM.Settings import ContainerRegistry
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
-import cura.Settings.ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import math
 import os.path
@@ -124,7 +124,7 @@ class PrintInformation(QObject):
 
         material_preference_values = json.loads(Preferences.getInstance().getValue("cura/material_settings"))
 
-        extruder_stacks = list(cura.Settings.ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
+        extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(Application.getInstance().getGlobalContainerStack().getId()))
         for index, amount in enumerate(self._material_amounts):
             ## Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
             #  list comprehension filtering to solve this for us.
@@ -200,11 +200,16 @@ class PrintInformation(QObject):
 
     @pyqtSlot(str, result = str)
     def createJobName(self, base_name):
+        if base_name == "":
+            return ""
         base_name = self._stripAccents(base_name)
         self._setAbbreviatedMachineName()
         if self._pre_sliced:
             return catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
         elif Preferences.getInstance().getValue("cura/jobname_prefix"):
+            # Don't add abbreviation if it already has the exact same abbreviation.
+            if base_name.startswith(self._abbr_machine + "_"):
+                return base_name
             return self._abbr_machine + "_" + base_name
         else:
             return base_name

@@ -1,3 +1,8 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Uranium is released under the terms of the AGPLv3 or higher.
+
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
 from cura.MachineAction import MachineAction
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
@@ -45,7 +50,7 @@ class UMOUpgradeSelection(MachineAction):
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
 
-        UM.Settings.ContainerRegistry.getInstance().addContainer(definition_changes_container)
+        UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().addContainer(definition_changes_container)
         # Insert definition_changes between the definition and the variant
         global_container_stack.insertContainer(-1, definition_changes_container)
 
