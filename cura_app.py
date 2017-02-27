@@ -17,6 +17,12 @@ if Platform.isLinux(): # Needed for platform.linux_distribution, which is not av
         libGL = find_library("GL")
         ctypes.CDLL(libGL, ctypes.RTLD_GLOBAL)
 
+# When frozen, i.e. installer version, don't let PYTHONPATH mess up the search path for DLLs.
+if Platform.isWindows() and hasattr(sys, "frozen"):
+    try:
+        del os.environ["PYTHONPATH"]
+    except KeyError: pass
+
 #WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
 # the default /usr/lib which causes the default site-packages
