@@ -295,7 +295,7 @@
         "slider_layerview_background": [4.0, 0.0],
         "slider_layerview_margin": [3.0, 3.0],
 
-        "layerview_menu_size": [13.0, 25.0],
+        "layerview_menu_size": [11.0, 25.0],
 
         "checkbox": [2.0, 2.0],
 
