@@ -25,8 +25,19 @@ Item
 
         Label
         {
-            id: layerViewTypesLabel
+            id: layersLabel
             anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label","View Mode: Layers")
+            font.bold: true
+        }
+
+        Label
+        {
+            id: layerViewTypesLabel
+            anchors.top: layersLabel.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
