@@ -306,6 +306,16 @@ Item
                 }
                 text: catalog.i18nc("@label", "Show Infill")
             }
+            CheckBox {
+                checked: true
+                onClicked: {
+                    CuraApplication.log("getting QVector3D");
+                    var v = CuraApplication.getQVector3D;
+                    CuraApplication.log("getting QVector3D");
+                    CuraApplication.testQVector3D(v);
+                }
+                text: catalog.i18nc("@label", "test")
+            }
         }
     }
 }

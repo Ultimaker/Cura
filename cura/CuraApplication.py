@@ -1230,3 +1230,15 @@ class CuraApplication(QtApplication):
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
+
+
+    @pyqtSlot("QVector3D")
+    def testQVector3D(self, vect):
+        Logger.log("d", "got QVector3D: %s : %s %s %s" % (vect, vect.x(), vect.y(), vect.z()))
+
+    @pyqtProperty("QVector3D")
+    def getQVector3D(self):
+        from PyQt5.QtGui import QVector3D
+        vect = QVector3D(1.0, 2.0, 3.0)
+        Logger.log("d", "get QVector3D: %s" % vect)
+        return vect
