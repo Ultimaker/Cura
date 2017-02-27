@@ -6,7 +6,7 @@ from PyQt5.QtGui import QValidator
 import os #For statvfs.
 import urllib #To escape machine names for how they're saved to file.
 
-import UM.Resources
+from UM.Resources import Resources
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 
@@ -19,7 +19,7 @@ class MachineNameValidator(QObject):
 
         #Compute the validation regex for printer names. This is limited by the maximum file name length.
         try:
-            filename_max_length = os.statvfs(UM.Resources.getDataStoragePath()).f_namemax
+            filename_max_length = os.statvfs(Resources.getDataStoragePath()).f_namemax
         except AttributeError: #Doesn't support statvfs. Probably because it's not a Unix system.
             filename_max_length = 255 #Assume it's Windows on NTFS.
         machine_name_max_length = filename_max_length - len("_current_settings.") - len(ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix)
@@ -41,7 +41,7 @@ class MachineNameValidator(QObject):
     def validate(self, name, position):
         #Check for file name length of the current settings container (which is the longest file we're saving with the name).
         try:
-            filename_max_length = os.statvfs(UM.Resources.getDataStoragePath()).f_namemax
+            filename_max_length = os.statvfs(Resources.getDataStoragePath()).f_namemax
         except AttributeError: #Doesn't support statvfs. Probably because it's not a Unix system.
             filename_max_length = 255 #Assume it's Windows on NTFS.
         escaped_name = urllib.parse.quote_plus(name)
