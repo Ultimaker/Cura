@@ -27,25 +27,36 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
+        spacing: UM.Theme.getSize("default_margin").width
 
         UM.I18nCatalog
         {
             id: catalog;
             name:"cura"
         }
-        Label
+
+        Row
         {
-            text: "You have customized some default profile settings. Would you like to keep or discard those settings?"
+            height: childrenRect.height
             anchors.margins: UM.Theme.getSize("default_margin").width
             anchors.left: parent.left
             anchors.right: parent.right
-            font: UM.Theme.getFont("default_bold")
-            wrapMode: Text.WordWrap
-        }
-        Item // Spacer
-        {
-            height: UM.Theme.getSize("default_margin").height
-            width: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("default_margin").width
+            UM.RecolorImage
+            {
+                source: UM.Theme.getIcon("star")
+                width : 30
+                height: width
+                color: UM.Theme.getColor("setting_control_button")
+            }
+
+            Label
+            {
+                text: "You have customized some default profile settings.\nWould you like to keep or discard those settings?"
+                anchors.margins: UM.Theme.getSize("default_margin").width
+                font: UM.Theme.getFont("default_bold")
+                wrapMode: Text.WordWrap
+            }
         }
 
         TableView
@@ -118,15 +129,11 @@ UM.Dialog
             model: base.changesModel
         }
 
-        Item // Spacer
-        {
-            height: UM.Theme.getSize("default_margin").height
-            width: UM.Theme.getSize("default_margin").width
-        }
         Row
         {
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("default_margin").width
             Button
             {
                 text: catalog.i18nc("@action:button", "Keep");
