@@ -957,7 +957,8 @@ class MachineManager(QObject):
         details = "\n    ".join([details_text, ] + details_list)
 
         num_changed_settings = len(details_list)
-        Application.getInstance().messageBox(
+        Application.getInstance().discardOrKeepProfileChanges()
+        '''Application.getInstance().messageBox(
             catalog.i18nc("@window:title", "Switched profiles"),
             catalog.i18nc(
                 "@label",
@@ -968,7 +969,7 @@ class MachineManager(QObject):
             details,
             buttons=QMessageBox.Yes + QMessageBox.No,
             icon=QMessageBox.Question,
-            callback=self._keepUserSettingsDialogCallback)
+            callback=self._keepUserSettingsDialogCallback)'''
 
     def _keepUserSettingsDialogCallback(self, button):
         if button == QMessageBox.Yes:
