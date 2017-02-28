@@ -67,6 +67,7 @@ class LayerView(View):
 
         self._resetSettings()
         self._legend_items = None
+        self._show_travel_moves = False
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
@@ -319,6 +320,12 @@ class LayerView(View):
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 
+    def getCurrentLayerMesh(self):
+        return self._current_layer_mesh
+
+    def getCurrentLayerJumps(self):
+        return self._current_layer_jumps
+
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -359,7 +366,8 @@ class LayerView(View):
             return
         self.resetLayerData()  # Reset the layer data only when job is done. Doing it now prevents "blinking" data.
         self._current_layer_mesh = job.getResult().get("layers")
-        self._current_layer_jumps = job.getResult().get("jumps")
+        if self._show_travel_moves:
+            self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
 
         self._top_layers_job = None
@@ -377,7 +385,8 @@ class LayerView(View):
         self.setExtruderOpacity(2, float(Preferences.getInstance().getValue("layerview/extruder2_opacity")))
         self.setExtruderOpacity(3, float(Preferences.getInstance().getValue("layerview/extruder3_opacity")))
 
-        self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
+        self._show_travel_moves = bool(Preferences.getInstance().getValue("layerview/show_travel_moves"))
+        self.setShowTravelMoves(self._show_travel_moves)
         self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Preferences.getInstance().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Preferences.getInstance().getValue("layerview/show_infill")))

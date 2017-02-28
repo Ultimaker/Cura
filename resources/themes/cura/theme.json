@@ -295,7 +295,7 @@
         "slider_layerview_background": [4.0, 0.0],
         "slider_layerview_margin": [3.0, 1.0],
 
-        "layerview_menu_size": [17.0, 20.0],
+        "layerview_menu_size": [16.5, 20.0],
         "layerview_legend_size": [1.0, 1.0],
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],
