@@ -60,10 +60,6 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
-if Platform.isWindows():
-    print("sys.path: " + repr(sys.path))
-    print("has sys.frozen: " + str(hasattr(sys, "frozen")))
-
 # Force an instance of CuraContainerRegistry to be created and reused later.
 cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
 
