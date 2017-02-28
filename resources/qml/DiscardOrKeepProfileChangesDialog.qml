@@ -116,10 +116,20 @@ UM.Dialog
             Button
             {
                 text: catalog.i18nc("@action:button", "Keep");
+                onClicked:
+                {
+                    Printer.discardOrKeepProfileChangesClosed("keep")
+                    base.hide()
+                }
             }
             Button
             {
                 text: catalog.i18nc("@action:button", "Discard");
+                onClicked:
+                {
+                    Printer.discardOrKeepProfileChangesClosed("discard")
+                    base.hide()
+                }
             }
         }
     }

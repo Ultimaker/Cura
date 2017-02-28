@@ -331,14 +331,17 @@ class CuraApplication(QtApplication):
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
-    def discardOrKeepProfileChanges(self, callback = None, callback_arguments = []):
-        self._discard_or_keep_changes_callback = callback
-        self._discard_or_keep_changes_callback_arguments = callback_arguments
+    def discardOrKeepProfileChanges(self):
         self.showDiscardOrKeepProfileChanges.emit()
 
-    @pyqtSlot(int)
-    def discardOrKeepProfileChangesClosed(self, button):
-        pass
+    @pyqtSlot(str)
+    def discardOrKeepProfileChangesClosed(self, option):
+        if option == "discard":
+            global_stack = self.getGlobalContainerStack()
+            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                extruder.getTop().clear()
+
+            global_stack.getTop().clear()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
