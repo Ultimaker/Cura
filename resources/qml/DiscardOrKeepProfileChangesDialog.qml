@@ -14,7 +14,7 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
     width: 500
-    height: 500
+    height: 300
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -39,6 +39,13 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").width
             anchors.left: parent.left
             anchors.right: parent.right
+            font: UM.Theme.getFont("default_bold")
+            wrapMode: Text.WordWrap
+        }
+        Item // Spacer
+        {
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").width
         }
 
         TableView
@@ -111,8 +118,15 @@ UM.Dialog
             model: base.changesModel
         }
 
+        Item // Spacer
+        {
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").width
+        }
         Row
         {
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             Button
             {
                 text: catalog.i18nc("@action:button", "Keep");
