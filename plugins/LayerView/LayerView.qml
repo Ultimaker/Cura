@@ -26,7 +26,7 @@ Item
         width: parent.width
         height: parent.height
         z: slider.z - 1
-        color: UM.Theme.getColor("tool_panel_background");
+        color: UM.Theme.getColor("tool_panel_background")
 
         ColumnLayout {
             id: view_settings
@@ -39,12 +39,13 @@ Item
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
+            property bool show_legend: false
 
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getValue("layerview_row_spacing").height
+            spacing: UM.Theme.getSize("layerview_row_spacing").height
 
             Label
             {
@@ -89,7 +90,7 @@ Item
                 id: layerTypeCombobox
                 anchors.left: parent.left
                 Layout.fillWidth: true
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 model: layerViewTypes
                 visible: !UM.LayerView.compatibilityMode
 
@@ -110,9 +111,9 @@ Item
                     var type_id = layerViewTypes.get(currentIndex).type_id;
                     if (UM.LayerView.compatibilityMode || (type_id == 1)) {
                         // Line type
-                        UM.LayerView.enableLegend();
+                        view_settings.show_legend = true;
                     } else {
-                        UM.LayerView.disableLegend();
+                        view_settings.show_legend = false;
                     }
                 }
             }
@@ -126,7 +127,7 @@ Item
                 visible: UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
 
             Label
@@ -163,7 +164,7 @@ Item
                 visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 1)
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
 
             CheckBox {
@@ -175,7 +176,7 @@ Item
                 visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 2)
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             CheckBox {
                 checked: view_settings.extruder2_checked
@@ -185,7 +186,7 @@ Item
                 text: "Extruder 3"
                 visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 3)
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             CheckBox {
                 checked: view_settings.extruder3_checked
@@ -195,13 +196,13 @@ Item
                 text: "Extruder 4"
                 visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 4)
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             Label {
                 text: "Other extr. always visible"
                 visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 5)
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             CheckBox {
                 checked: view_settings.show_travel_moves
@@ -215,13 +216,14 @@ Item
                     anchors.right: parent.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    color: "#00f"
+                    color: UM.Theme.getColor("layerview_move_combing")
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
+                    visible: view_settings.show_legend
                 }
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             CheckBox {
                 checked: view_settings.show_helpers
@@ -235,13 +237,14 @@ Item
                     anchors.right: parent.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    color: "#0ff"
+                    color: UM.Theme.getColor("layerview_support")
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
+                    visible: view_settings.show_legend
                 }
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             CheckBox {
                 checked: view_settings.show_skin
@@ -255,13 +258,14 @@ Item
                     anchors.right: parent.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    color: "#f00"
+                    color: UM.Theme.getColor("layerview_inset_0")
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
+                    visible: view_settings.show_legend
                 }
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
             CheckBox {
                 checked: view_settings.show_infill
@@ -275,13 +279,14 @@ Item
                     anchors.right: parent.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    color: "#f80"
+                    color: UM.Theme.getColor("layerview_infill")
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
+                    visible: view_settings.show_legend
                 }
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
 
             Label
@@ -295,13 +300,14 @@ Item
                     anchors.right: parent.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    color: "#ff0"
+                    color: UM.Theme.getColor("layerview_skin")
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
                 }
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                visible: view_settings.show_legend
             }
 
             Label
@@ -315,13 +321,15 @@ Item
                     anchors.right: parent.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    color: "#0f0"
+                    color: UM.Theme.getColor("layerview_inset_x")
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
+                    visible: view_settings.show_legend
                 }
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getValue("layerview_row").width
+                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                visible: view_settings.show_legend
             }
 
         }
@@ -330,7 +338,7 @@ Item
         {
             id: sliderMinimumLayer
             width: UM.Theme.getSize("slider_layerview_size").width
-            height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height // UM.Theme.getSize("slider_layerview_size").height
+            height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
             anchors.right: layerViewMenu.right

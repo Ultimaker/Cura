@@ -278,12 +278,6 @@ class LayerView(View):
     def endRendering(self):
         pass
 
-    def enableLegend(self):
-        Application.getInstance().setViewLegendItems(self._getLegendItems())
-
-    def disableLegend(self):
-        Application.getInstance().setViewLegendItems([])
-
     def event(self, event):
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers == Qt.ControlModifier
@@ -316,9 +310,6 @@ class LayerView(View):
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
-            if self.getLayerViewType() == self.LAYER_VIEW_TYPE_LINE_TYPE or self._compatibility_mode:
-                self.enableLegend()
-
         elif event.type == Event.ViewDeactivateEvent:
             self._wireprint_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
@@ -327,8 +318,6 @@ class LayerView(View):
 
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
-
-            self.disableLegend()
 
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
