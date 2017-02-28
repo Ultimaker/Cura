@@ -1297,7 +1297,7 @@
                     "unit": "°C",
                     "type": "float",
                     "default_value": 215,
-                    "value": "material_print_temperature + 5",
+                    "value": "material_print_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
