@@ -101,7 +101,7 @@ class UserChangesModel(ListModel):
                 item_to_add = {"key": setting_key,
                                "label": label,
                                "user_value": user_changes.getProperty(setting_key, "value"),
-                               "original_value": original_value,
+                               "original_value": str(original_value),
                                "extruder": "",
                                "category": category_label}
 
