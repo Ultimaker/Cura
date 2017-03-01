@@ -105,6 +105,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._backend_log_max_lines = 20000  # Maximum number of lines to buffer
         self._error_message = None  # Pop-up message that shows errors.
+        self._last_num_objects = 0  # Count number of objects to see if there is something changed
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
@@ -346,16 +347,28 @@ class CuraEngineBackend(QObject, Backend):
         if type(source) is not SceneNode:
             return
 
-        if source is self._scene.getRoot():
-            return
+        root_scene_nodes_changed = False
+        if source == self._scene.getRoot():
+            num_objects = 0
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                # For now this seems to be a reliable method to check for nodes that impact slicing
+                # From: SliceInfo, _onWriteStarted
+                if type(node) is not SceneNode or not node.getMeshData():
+                    continue
+                num_objects += 1
+            if num_objects != self._last_num_objects:
+                self._last_num_objects = num_objects
+                root_scene_nodes_changed = True
+            else:
+                return
 
         self.determineAutoSlicing()
 
-        if source.getMeshData() is None:
-            return
-
-        if source.getMeshData().getVertices() is None:
-            return
+        if not source.callDecoration("isGroup") and not root_scene_nodes_changed:
+            if source.getMeshData() is None:
+                return
+            if source.getMeshData().getVertices() is None:
+                return
 
         self.needsSlicing()
         self.stopSlicing()
