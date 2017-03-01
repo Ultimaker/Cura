@@ -45,7 +45,7 @@ class UMOUpgradeSelection(MachineAction):
 
     def _createDefinitionChangesContainer(self, global_container_stack):
         # Create a definition_changes container to store the settings in and add it to the stack
-        definition_changes_container = UM.Settings.InstanceContainer(global_container_stack.getName() + "_settings")
+        definition_changes_container = UM.Settings.InstanceContainer.InstanceContainer(global_container_stack.getName() + "_settings")
         definition = global_container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
