@@ -55,7 +55,7 @@ from . import MachineActionManager
 
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
@@ -325,10 +325,25 @@ class CuraApplication(QtApplication):
     ## A reusable dialogbox
     #
     showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
+
     def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None, callback_arguments = []):
         self._message_box_callback = callback
         self._message_box_callback_arguments = callback_arguments
         self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
+
+    showDiscardOrKeepProfileChanges = pyqtSignal()
+
+    def discardOrKeepProfileChanges(self):
+        self.showDiscardOrKeepProfileChanges.emit()
+
+    @pyqtSlot(str)
+    def discardOrKeepProfileChangesClosed(self, option):
+        if option == "discard":
+            global_stack = self.getGlobalContainerStack()
+            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                extruder.getTop().clear()
+
+            global_stack.getTop().clear()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
@@ -655,6 +670,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
+        qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
 
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
