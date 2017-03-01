@@ -73,10 +73,7 @@ class LayerView(View):
         Preferences.getInstance().addPreference("view/force_layer_view_compatibility_mode", False)
 
         Preferences.getInstance().addPreference("layerview/layer_view_type", 0)
-        Preferences.getInstance().addPreference("layerview/extruder0_opacity", 1.0)
-        Preferences.getInstance().addPreference("layerview/extruder1_opacity", 1.0)
-        Preferences.getInstance().addPreference("layerview/extruder2_opacity", 1.0)
-        Preferences.getInstance().addPreference("layerview/extruder3_opacity", 1.0)
+        Preferences.getInstance().addPreference("layerview/extruder_opacities", "")
 
         Preferences.getInstance().addPreference("layerview/show_travel_moves", False)
         Preferences.getInstance().addPreference("layerview/show_helpers", True)
@@ -383,10 +380,14 @@ class LayerView(View):
 
         self.setLayerViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
 
-        self.setExtruderOpacity(0, float(Preferences.getInstance().getValue("layerview/extruder0_opacity")))
-        self.setExtruderOpacity(1, float(Preferences.getInstance().getValue("layerview/extruder1_opacity")))
-        self.setExtruderOpacity(2, float(Preferences.getInstance().getValue("layerview/extruder2_opacity")))
-        self.setExtruderOpacity(3, float(Preferences.getInstance().getValue("layerview/extruder3_opacity")))
+        extruder_nr = 0
+        for extruder_opacity in Preferences.getInstance().getValue("layerview/extruder_opacities").split(","):
+            try:
+                opacity = float(extruder_opacity)
+            except ValueError:
+                opacity = 1.0
+            self.setExtruderOpacity(extruder_nr, opacity)
+            extruder_nr += 1
 
         self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
         self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
