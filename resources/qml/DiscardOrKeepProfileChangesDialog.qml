@@ -52,7 +52,7 @@ UM.Dialog
 
             Label
             {
-                text: "You have customized some default profile settings.\nWould you like to keep or discard those settings?"
+                text: "You have customized some profile settings.\nWould you like to keep or discard those settings?"
                 anchors.margins: UM.Theme.getSize("default_margin").width
                 font: UM.Theme.getFont("default_bold")
                 wrapMode: Text.WordWrap
@@ -101,7 +101,7 @@ UM.Dialog
             TableViewColumn
             {
                 role: "label"
-                title: catalog.i18nc("@title:column", "Profile settings")
+                title: catalog.i18nc("@title:column", "Settings")
                 delegate: labelDelegate
                 width: tableView.width * 0.5
             }
@@ -109,7 +109,7 @@ UM.Dialog
             TableViewColumn
             {
                 role: "original_value"
-                title: "default"
+                title: "Profile"
                 width: tableView.width * 0.25
                 delegate: defaultDelegate
             }
