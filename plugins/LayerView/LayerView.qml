@@ -35,11 +35,26 @@ Item
             property bool extruder1_checked: UM.Preferences.getValue("layerview/extruder1_opacity") > 0.5
             property bool extruder2_checked: UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5
             property bool extruder3_checked: UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5
+            property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split("|")
             property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
             property bool show_legend: false
+            property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
+            property int top_layer_count: UM.Preferences.getValue("view/only_show_top_layers")
+
+            /*
+                layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
+                view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
+                view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
+                view_settings.show_support = UM.Preferences.getValue("layerview/show_support");
+                view_settings.show_adhesion = UM.Preferences.getValue("layerview/show_adhesion");
+                view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
+                view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
+                view_settings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
+                view_settings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
+            */
 
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -75,14 +90,18 @@ Item
             ListModel  // matches LayerView.py
             {
                 id: layerViewTypes
-                ListElement {
-                    text: "Material Color"
+            }
+
+            Component.onCompleted:
+            {
+                layerViewTypes.append({
+                    text: catalog.i18nc("@label:listbox", "Material Color"),
                     type_id: 0
-                }
-                ListElement {
-                    text: "Line Type"
+                })
+                layerViewTypes.append({
+                    text: catalog.i18nc("@label:listbox", "Line Type"),
                     type_id: 1  // these ids match the switching in the shader
-                }
+                })
             }
 
             ComboBox
@@ -98,7 +117,7 @@ Item
                 currentIndex: layer_view_type  // index matches type_id
                 onActivated: {
                     // Combobox selection
-                    var type_id = layerViewTypes.get(index).type_id;
+                    var type_id = index;  // layerViewTypes.get(index).type_id;
                     UM.Preferences.setValue("layerview/layer_view_type", type_id);
                     updateLegend();
                 }
@@ -108,7 +127,7 @@ Item
 
                 // Update visibility of legend.
                 function updateLegend() {
-                    var type_id = layerViewTypes.get(currentIndex).type_id;
+                    var type_id = model.get(currentIndex).type_id;
                     if (UM.LayerView.compatibilityMode || (type_id == 1)) {
                         // Line type
                         view_settings.show_legend = true;
@@ -121,7 +140,6 @@ Item
             Label
             {
                 id: compatibilityModeLabel
-                //anchors.top: layersLabel.bottom
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","Compatibility Mode")
                 visible: UM.LayerView.compatibilityMode
@@ -143,67 +161,33 @@ Item
                 onPreferenceChanged:
                 {
                     layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
-                    view_settings.extruder0_checked = UM.Preferences.getValue("layerview/extruder0_opacity") > 0.5;
-                    view_settings.extruder1_checked = UM.Preferences.getValue("layerview/extruder1_opacity") > 0.5;
-                    view_settings.extruder2_checked = UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5;
-                    view_settings.extruder3_checked = UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5;
+                    view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
                     view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
                     view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
                     view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
                     view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
+                    view_settings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
+                    view_settings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
                 }
             }
 
-            CheckBox {
-                id: extruder0CheckBox
-                checked: view_settings.extruder0_checked
-                onClicked: {
-                    UM.Preferences.setValue("layerview/extruder0_opacity", checked ? 1.0 : 0.0);
+            Repeater {
+                model: UM.LayerView.extruderCount
+                CheckBox {
+                    checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
+                    onClicked: {
+                        view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
+                        UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
+                    }
+                    text: catalog.i18nc("@label", "Extruder %1").arg(index + 1)
+                    visible: !UM.LayerView.compatibilityMode
+                    enabled: index + 1 <= 4
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
+                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 }
-                text: "Extruder 1"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 1)
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
 
-            CheckBox {
-                checked: view_settings.extruder1_checked
-                onClicked: {
-                    UM.Preferences.setValue("layerview/extruder1_opacity", checked ? 1.0 : 0.0);
-                }
-                text: "Extruder 2"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 2)
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
-            CheckBox {
-                checked: view_settings.extruder2_checked
-                onClicked: {
-                    UM.Preferences.setValue("layerview/extruder2_opacity", checked ? 1.0 : 0.0);
-                }
-                text: "Extruder 3"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 3)
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
-            CheckBox {
-                checked: view_settings.extruder3_checked
-                onClicked: {
-                    UM.Preferences.setValue("layerview/extruder3_opacity", checked ? 1.0 : 0.0);
-                }
-                text: "Extruder 4"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 4)
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
-            Label {
-                text: "Other extr. always visible"
-                visible: !UM.LayerView.compatibilityMode && (UM.LayerView.extruderCount >= 5)
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-            }
             CheckBox {
                 checked: view_settings.show_travel_moves
                 onClicked: {
@@ -447,6 +431,22 @@ Item
                     running: UM.LayerView.busy;
                     visible: UM.LayerView.busy;
                 }
+            }
+            CheckBox {
+                checked: view_settings.only_show_top_layers
+                onClicked: {
+                    UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
+                }
+                text: catalog.i18nc("@label", "Only Show Top Layers")
+                visible: UM.LayerView.compatibilityMode
+            }
+            CheckBox {
+                checked: view_settings.top_layer_count == 5
+                onClicked: {
+                    UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
+                }
+                text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
+                visible: UM.LayerView.compatibilityMode
             }
         }
     }
