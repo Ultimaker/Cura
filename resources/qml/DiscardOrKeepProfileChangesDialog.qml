@@ -129,28 +129,45 @@ UM.Dialog
             model: base.changesModel
         }
 
-        Row
+        Item
         {
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.margins: UM.Theme.getSize("default_margin").width
+            height:childrenRect.height
+
             Button
             {
+                id: discardButton
+                text: catalog.i18nc("@action:button", "Discard");
+                anchors.right: parent.right
+                onClicked:
+                {
+                    Printer.discardOrKeepProfileChangesClosed("discard")
+                    base.hide()
+                }
+            }
+
+            Button
+            {
+                id: keepButton
                 text: catalog.i18nc("@action:button", "Keep");
+                anchors.right: discardButton.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 onClicked:
                 {
                     Printer.discardOrKeepProfileChangesClosed("keep")
                     base.hide()
                 }
             }
+
             Button
             {
-                text: catalog.i18nc("@action:button", "Discard");
-                onClicked:
-                {
-                    Printer.discardOrKeepProfileChangesClosed("discard")
-                    base.hide()
-                }
+                id: createNewProfileButton
+                text: catalog.i18nc("@action:button", "Create new profile");
+                anchors.left: parent.left
+                action: Cura.Actions.addProfile
+                onClicked: base.hide()
             }
         }
     }
