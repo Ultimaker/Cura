@@ -44,18 +44,6 @@ Item
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
             property int top_layer_count: UM.Preferences.getValue("view/only_show_top_layers")
 
-            /*
-                layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
-                view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
-                view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
-                view_settings.show_support = UM.Preferences.getValue("layerview/show_support");
-                view_settings.show_adhesion = UM.Preferences.getValue("layerview/show_adhesion");
-                view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
-                view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
-                view_settings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
-                view_settings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
-            */
-
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
