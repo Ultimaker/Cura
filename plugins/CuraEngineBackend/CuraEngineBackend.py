@@ -106,6 +106,7 @@ class CuraEngineBackend(QObject, Backend):
         self._backend_log_max_lines = 20000  # Maximum number of lines to buffer
         self._error_message = None  # Pop-up message that shows errors.
         self._last_num_objects = 0  # Count number of objects to see if there is something changed
+        self._postponed_scene_change_sources = []  # scene change is postponed (by a tool)
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
@@ -342,6 +343,8 @@ class CuraEngineBackend(QObject, Backend):
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
         if self._tool_active:
+            # do it later
+            self._postponed_scene_change_sources.append(source)
             return
 
         if type(source) is not SceneNode:
@@ -515,6 +518,10 @@ class CuraEngineBackend(QObject, Backend):
     def _onToolOperationStopped(self, tool):
         self._tool_active = False  # React on scene change again
         self.determineAutoSlicing()
+        # Process all the postponed scene changes
+        while self._postponed_scene_change_sources:
+            source = self._postponed_scene_change_sources.pop(0)
+            self._onSceneChanged(source)
 
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
