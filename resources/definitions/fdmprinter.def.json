@@ -1300,7 +1300,7 @@
                     "value": "material_print_temperature",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
-                    "maximum_value_warning": "260",
+                    "maximum_value_warning": "270",
                     "enabled": "machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
