@@ -1285,10 +1285,10 @@
                             "enabled": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         },
-                        "expand_skins_shrink_distance":
+                        "min_skin_width_for_expansion":
                         {
-                            "label": "Skin Shrink Distance",
-                            "description": "The distance the skins are shrunk before they are expanded. Shrinking the skins slightly first removes the very narrow skin areas that are created when the model surface has a slope close to the vertical.",
+                            "label": "Minimum Skin Width For Expansion",
+                            "description": "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0,
