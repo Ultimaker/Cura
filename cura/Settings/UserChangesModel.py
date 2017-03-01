@@ -26,7 +26,6 @@ class UserChangesModel(ListModel):
         self.addRoleName(self.UserValueRole, "user_value")
         self.addRoleName(self.CategoryRole, "category")
 
-        Application.getInstance().globalContainerStackChanged.connect(self._update)
         self._i18n_catalog = None
 
         self._update()
