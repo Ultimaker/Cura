@@ -5,6 +5,7 @@ from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
+from UM.Settings.SettingFunction import SettingFunction
 
 import os
 
@@ -98,9 +99,13 @@ class UserChangesModel(ListModel):
                     if original_value is not None:
                         break
 
+                    # If a value is a function, ensure it's called with the stack it's in.
+                    if isinstance(original_value, SettingFunction):
+                        original_value = original_value(stack)
+
                 item_to_add = {"key": setting_key,
                                "label": label,
-                               "user_value": user_changes.getProperty(setting_key, "value"),
+                               "user_value": str(user_changes.getProperty(setting_key, "value")),
                                "original_value": str(original_value),
                                "extruder": "",
                                "category": category_label}
