@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -15,7 +15,7 @@ Rectangle
     id: base;
 
     property int currentModeIndex;
-    property bool monitoringPrint: false
+    property bool monitoringPrint: false;  // When adding more "tabs", one want to replace this bool with a ListModel
     property bool hideSettings: PrintInformation.preSliced
     Connections
     {
@@ -31,6 +31,7 @@ Rectangle
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
+    property int backendState: UM.Backend.state;
 
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -455,19 +456,6 @@ Rectangle
         }
     }
 
-    Label {
-        id: monitorLabel
-        text: catalog.i18nc("@label","Printer Monitor");
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-        anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width * 0.45
-        font: UM.Theme.getFont("large")
-        color: UM.Theme.getColor("text")
-        visible: monitoringPrint
-    }
-
     StackView
     {
         id: sidebarContents
@@ -511,10 +499,8 @@ Rectangle
     Loader
     {
         anchors.bottom: footerSeparator.top
-        anchors.top: monitorLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.top: headerSeparator.bottom
         anchors.left: base.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.right: base.right
         source: monitoringPrint ? "PrintMonitor.qml": "SidebarContents.qml"
    }
@@ -529,6 +515,8 @@ Rectangle
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
     }
 
+    // SaveButton and MonitorButton are actually the bottom footer panels.
+    // "!monitoringPrint" currently means "show-settings-mode"
     SaveButton
     {
         id: saveButton
@@ -553,6 +541,7 @@ Rectangle
         id: tooltip;
     }
 
+    // Setting mode: Recommended or Custom
     ListModel
     {
         id: modesListModel;

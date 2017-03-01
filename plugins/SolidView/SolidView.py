@@ -12,12 +12,13 @@ from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
 
-import cura.Settings
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
 
 ## Standard view for mesh models.
+
 class SolidView(View):
     def __init__(self):
         super().__init__()
@@ -27,7 +28,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
 
-        self._extruders_model = cura.Settings.ExtrudersModel()
+        self._extruders_model = ExtrudersModel()
 
     def beginRendering(self):
         scene = self.getController().getScene()

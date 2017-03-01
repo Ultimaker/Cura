@@ -1425,7 +1425,7 @@ msgstr "X min"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:278
 msgctxt "@label"
 msgid "Y min"
-msgstr "X min"
+msgstr "Y min"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:294
 msgctxt "@label"

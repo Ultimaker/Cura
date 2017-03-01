@@ -13,8 +13,10 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.SceneNode import SceneNode
 
+MYPY = False
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
     import xml.etree.ElementTree as ET
     

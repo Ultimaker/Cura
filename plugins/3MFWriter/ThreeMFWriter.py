@@ -7,8 +7,10 @@ from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
 
+MYPY = False
 try:
-    import xml.etree.cElementTree as ET
+    if not MYPY:
+        import xml.etree.cElementTree as ET
 except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
     import xml.etree.ElementTree as ET
@@ -175,7 +177,7 @@ class ThreeMFWriter(MeshWriter):
             transformation_matrix._data[2, 1] = 1
             transformation_matrix._data[2, 2] = 0
 
-            global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
             # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
             # build volume.
             if global_container_stack:
