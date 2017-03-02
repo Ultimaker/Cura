@@ -517,7 +517,6 @@ class CuraEngineBackend(QObject, Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._tool_active = False  # React on scene change again
-        self.determineAutoSlicing()
         # Process all the postponed scene changes
         while self._postponed_scene_change_sources:
             source = self._postponed_scene_change_sources.pop(0)

@@ -16,7 +16,7 @@ vertex41core =
     in lowp vec4 a_material_color;
     in highp vec4 a_normal;
     in highp vec2 a_line_dim;  // line width and thickness
-    in highp int a_extruder;  // Note: cannot use this in compatibility, int is only available in newer OpenGL.
+    in highp float a_extruder;
     in highp float a_line_type;
 
     out lowp vec4 v_color;
@@ -53,7 +53,7 @@ vertex41core =
         v_vertex = world_space_vert.xyz;
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
-        v_extruder = a_extruder;
+        v_extruder = int(a_extruder);
         v_line_type = a_line_type;
         v_extruder_opacity = u_extruder_opacity;
 
