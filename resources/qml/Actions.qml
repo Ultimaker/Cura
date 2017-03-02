@@ -262,6 +262,7 @@ Item
         id: reloadAllAction;
         text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
         iconName: "document-revert";
+        shortcut: "F5"
         onTriggered: Printer.reloadAll();
     }
 
