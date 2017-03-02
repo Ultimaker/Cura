@@ -90,9 +90,8 @@ class SliceInfo(Extension):
             # Listing all files placed on the buildplate
             modelhashes = []
             for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
-                if type(node) is not SceneNode or not node.getMeshData():
-                    continue
-                modelhashes.append(node.getMeshData().getHash())
+                if node.callDecoration("isSliceable"):
+                    modelhashes.append(node.getMeshData().getHash())
 
             # Creating md5sums and formatting them as discussed on JIRA
             modelhash_formatted = ",".join(modelhashes)

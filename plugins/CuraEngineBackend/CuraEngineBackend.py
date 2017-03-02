@@ -342,11 +342,6 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
-        if self._tool_active:
-            # do it later
-            self._postponed_scene_change_sources.append(source)
-            return
-
         if type(source) is not SceneNode:
             return
 
@@ -354,24 +349,26 @@ class CuraEngineBackend(QObject, Backend):
         if source == self._scene.getRoot():
             num_objects = 0
             for node in DepthFirstIterator(self._scene.getRoot()):
-                # For now this seems to be a reliable method to check for nodes that impact slicing
-                # From: SliceInfo, _onWriteStarted
-                if type(node) is not SceneNode or not node.getMeshData():
-                    continue
-                num_objects += 1
+                # Only count sliceable objects
+                if node.callDecoration("isSliceable"):
+                    num_objects += 1
             if num_objects != self._last_num_objects:
                 self._last_num_objects = num_objects
                 root_scene_nodes_changed = True
             else:
                 return
 
-        self.determineAutoSlicing()
-
         if not source.callDecoration("isGroup") and not root_scene_nodes_changed:
             if source.getMeshData() is None:
                 return
             if source.getMeshData().getVertices() is None:
                 return
+
+        if self._tool_active:
+            # do it later, each source only has to be done once
+            if source not in self._postponed_scene_change_sources:
+                self._postponed_scene_change_sources.append(source)
+            return
 
         self.needsSlicing()
         self.stopSlicing()
@@ -517,6 +514,7 @@ class CuraEngineBackend(QObject, Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._tool_active = False  # React on scene change again
+        self.determineAutoSlicing()  # Switch timer on if appropriate
         # Process all the postponed scene changes
         while self._postponed_scene_change_sources:
             source = self._postponed_scene_change_sources.pop(0)

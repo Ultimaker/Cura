@@ -1094,18 +1094,6 @@ class CuraApplication(QtApplication):
 
     fileLoaded = pyqtSignal(str)
 
-    def _onFileLoaded(self, job):
-        nodes = job.getResult()
-        for node in nodes:
-            if node is not None:
-                self.fileLoaded.emit(job.getFileName())
-                node.setSelectable(True)
-                node.setName(os.path.basename(job.getFileName()))
-                op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
-                op.push()
-
-                self.getController().getScene().sceneChanged.emit(node) #Force scene change.
-
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
             return
@@ -1133,10 +1121,8 @@ class CuraApplication(QtApplication):
         else:
             Logger.log("w", "Could not find a mesh in reloaded node.")
 
-    def _openFile(self, file):
-        job = ReadMeshJob(os.path.abspath(file))
-        job.finished.connect(self._onFileLoaded)
-        job.start()
+    def _openFile(self, filename):
+        self.readLocalFile(QUrl.fromLocalFile(filename))
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
