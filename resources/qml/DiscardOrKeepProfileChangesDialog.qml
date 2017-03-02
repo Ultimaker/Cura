@@ -164,7 +164,7 @@ UM.Dialog
             Button
             {
                 id: createNewProfileButton
-                text: catalog.i18nc("@action:button", "Create new profile");
+                text: catalog.i18nc("@action:button", "Create New Profile");
                 anchors.left: parent.left
                 action: Cura.Actions.addProfile
                 onClicked: base.hide()
