@@ -136,6 +136,27 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").width
             height:childrenRect.height
 
+            ComboBox
+            {
+                id: discardOrKeepProfileChangesDropDownButton
+                model: [
+                    catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
+                    catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
+                    catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
+                ]
+                width: 300
+                currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
+                onCurrentIndexChanged: UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+            }
+        }
+
+        Item
+        {
+            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.margins: UM.Theme.getSize("default_margin").width
+            height:childrenRect.height
+
             Button
             {
                 id: discardButton
