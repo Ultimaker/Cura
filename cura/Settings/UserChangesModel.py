@@ -37,6 +37,8 @@ class UserChangesModel(ListModel):
     def _update(self):
         items = []
         global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
         stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
 
         # Check if the definition container has a translation file and ensure it's loaded.
