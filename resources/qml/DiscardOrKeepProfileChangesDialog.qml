@@ -146,6 +146,7 @@ UM.Dialog
                     Printer.discardOrKeepProfileChangesClosed("discard")
                     base.hide()
                 }
+                isDefault: true
             }
 
             Button
