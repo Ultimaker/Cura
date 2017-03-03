@@ -101,7 +101,7 @@ UM.Dialog
             TableViewColumn
             {
                 role: "label"
-                title: catalog.i18nc("@title:column", "Settings")
+                title: catalog.i18nc("@title:column", "Profile settings")
                 delegate: labelDelegate
                 width: tableView.width * 0.5
             }
@@ -109,7 +109,7 @@ UM.Dialog
             TableViewColumn
             {
                 role: "original_value"
-                title: "Profile"
+                title: "Default"
                 width: tableView.width * 0.25
                 delegate: defaultDelegate
             }
