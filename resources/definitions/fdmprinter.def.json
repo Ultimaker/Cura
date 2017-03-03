@@ -1283,7 +1283,7 @@
                     "default_value": 1.0,
                     "value": "infill_line_distance * 1.4",
                     "minimum_value": "0",
-                    "enabled": "expand_skins_into_infill",
+                    "enabled": "expand_upper_skins or expand_lower_skins",
                     "settable_per_mesh": true
                 },
                 "min_skin_width_for_expansion":
@@ -1295,7 +1295,7 @@
                     "default_value": 0,
                     "value": "wall_thickness * 0.5",
                     "minimum_value": "0",
-                    "enabled": "expand_skins_into_infill",
+                    "enabled": "expand_upper_skins or expand_lower_skins",
                     "settable_per_mesh": true
                 }
             }
