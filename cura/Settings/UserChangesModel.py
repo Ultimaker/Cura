@@ -93,12 +93,13 @@ class UserChangesModel(ListModel):
                             break
 
                     original_value = container.getProperty(setting_key, "value")
-                    if original_value is not None:
-                        break
 
                     # If a value is a function, ensure it's called with the stack it's in.
                     if isinstance(original_value, SettingFunction):
                         original_value = original_value(stack)
+
+                    if original_value is not None:
+                        break
 
                 item_to_add = {"key": setting_key,
                                "label": label,
