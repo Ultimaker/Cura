@@ -101,7 +101,7 @@ UM.Dialog
             TableViewColumn
             {
                 role: "label"
-                title: catalog.i18nc("@title:column", "Settings")
+                title: catalog.i18nc("@title:column", "Profile settings")
                 delegate: labelDelegate
                 width: tableView.width * 0.5
             }
@@ -109,7 +109,7 @@ UM.Dialog
             TableViewColumn
             {
                 role: "original_value"
-                title: "Profile"
+                title: "Default"
                 width: tableView.width * 0.25
                 delegate: defaultDelegate
             }
@@ -136,6 +136,27 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").width
             height:childrenRect.height
 
+            ComboBox
+            {
+                id: discardOrKeepProfileChangesDropDownButton
+                model: [
+                    catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
+                    catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
+                    catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
+                ]
+                width: 300
+                currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
+                onCurrentIndexChanged: UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+            }
+        }
+
+        Item
+        {
+            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.margins: UM.Theme.getSize("default_margin").width
+            height:childrenRect.height
+
             Button
             {
                 id: discardButton
@@ -146,6 +167,7 @@ UM.Dialog
                     Printer.discardOrKeepProfileChangesClosed("discard")
                     base.hide()
                 }
+                isDefault: true
             }
 
             Button

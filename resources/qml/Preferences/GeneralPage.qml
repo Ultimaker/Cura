@@ -47,6 +47,8 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
+        UM.Preferences.resetPreference("cura/choice_on_profile_override")
+        choiceOnProfileOverrideDropDownButton.currentIndex = UM.Preferences.getValue("cura/choice_on_profile_override")
 
         if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
@@ -377,6 +379,40 @@ UM.PreferencesPage
                 }
             }
 
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").width
+            }
+
+            Label
+            {
+                font.bold: true
+                text: catalog.i18nc("@label", "Override Profile")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip", "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again.")
+
+                ComboBox
+                {
+                    id: choiceOnProfileOverrideDropDownButton
+
+                    model: [
+                        catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
+                        catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
+                        catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
+                    ]
+                    width: 300
+                    currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
+                    onCurrentIndexChanged: UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+                }
+            }
 
             Item
             {
