@@ -89,15 +89,20 @@ UM.ManagementPage
                 id: machineActionRepeater
                 model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
 
-                Button
+                Item
                 {
-                    text: machineActionRepeater.model[index].label
-                    onClicked:
+                    width: childrenRect.width + 2
+                    height: childrenRect.height
+                    Button
                     {
-                        actionDialog.content = machineActionRepeater.model[index].displayItem;
-                        machineActionRepeater.model[index].displayItem.reset();
-                        actionDialog.title = machineActionRepeater.model[index].label;
-                        actionDialog.show();
+                        text: machineActionRepeater.model[index].label
+                        onClicked:
+                        {
+                            actionDialog.content = machineActionRepeater.model[index].displayItem;
+                            machineActionRepeater.model[index].displayItem.reset();
+                            actionDialog.title = machineActionRepeater.model[index].label;
+                            actionDialog.show();
+                        }
                     }
                 }
             }
