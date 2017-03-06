@@ -47,8 +47,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self._job_name = ""
         self._error_text = ""
         self._accepts_commands = True
-        self._preheat_bed_timeout = 900 #Default time-out for pre-heating the bed, in seconds.
-        self._preheat_bed_timer = QTimer() #Timer that tracks how long to preheat still.
+        self._preheat_bed_timeout = 900  # Default time-out for pre-heating the bed, in seconds.
+        self._preheat_bed_timer = QTimer()  # Timer that tracks how long to preheat still.
         self._preheat_bed_timer.setSingleShot(True)
         self._preheat_bed_timer.timeout.connect(self.cancelPreheatBed)
 
@@ -232,11 +232,15 @@ class PrinterOutputDevice(QObject, OutputDevice):
     #   \return The duration of the time-out to pre-heat the bed, formatted.
     @pyqtProperty(str, notify = preheatBedRemainingTimeChanged)
     def preheatBedRemainingTime(self):
+        if not self._preheat_bed_timer.isActive():
+            return ""
         period = self._preheat_bed_timer.remainingTime()
         if period <= 0:
             return ""
         minutes, period = divmod(period, 60000) #60000 milliseconds in a minute.
         seconds, _ = divmod(period, 1000) #1000 milliseconds in a second.
+        if minutes <= 0 and seconds <= 0:
+            return ""
         return "%d:%02d" % (minutes, seconds)
 
     ## Time the print has been printing.
