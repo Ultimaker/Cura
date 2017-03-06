@@ -570,6 +570,9 @@ Item
                         font: UM.Theme.getFont("default");
                         background: Item { }
                     }
+
+                    Keys.onUpPressed: slider.activeHandle.setValue(slider.activeHandle.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+                    Keys.onDownPressed: slider.activeHandle.setValue(slider.activeHandle.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
                 }
 
                 BusyIndicator
