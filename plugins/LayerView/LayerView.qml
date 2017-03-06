@@ -10,10 +10,16 @@ import UM 1.0 as UM
 
 Item
 {
-    width: UM.Theme.getSize("layerview_menu_size").width
+    width: {
+        if (UM.LayerView.compatibilityMode) {
+            return UM.Theme.getSize("layerview_menu_size_compatibility").width;
+        } else {
+            return UM.Theme.getSize("layerview_menu_size").width;
+        }
+    }
     height: {
         if (UM.LayerView.compatibilityMode) {
-            return UM.Theme.getSize("layerview_menu_size").height
+            return UM.Theme.getSize("layerview_menu_size_compatibility").height;
         } else {
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
@@ -31,10 +37,6 @@ Item
         ColumnLayout {
             id: view_settings
 
-            property bool extruder0_checked: UM.Preferences.getValue("layerview/extruder0_opacity") > 0.5
-            property bool extruder1_checked: UM.Preferences.getValue("layerview/extruder1_opacity") > 0.5
-            property bool extruder2_checked: UM.Preferences.getValue("layerview/extruder2_opacity") > 0.5
-            property bool extruder3_checked: UM.Preferences.getValue("layerview/extruder3_opacity") > 0.5
             property var extruder_opacities: UM.Preferences.getValue("layerview/extruder_opacities").split("|")
             property bool show_travel_moves: UM.Preferences.getValue("layerview/show_travel_moves")
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
@@ -42,7 +44,7 @@ Item
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
             property bool show_legend: UM.LayerView.compatibilityMode || UM.Preferences.getValue("layerview/layer_view_type") == 1
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
-            property int top_layer_count: UM.Preferences.getValue("view/only_show_top_layers")
+            property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -260,6 +262,22 @@ Item
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
             }
+            CheckBox {
+                checked: view_settings.only_show_top_layers
+                onClicked: {
+                    UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
+                }
+                text: catalog.i18nc("@label", "Only Show Top Layers")
+                visible: UM.LayerView.compatibilityMode
+            }
+            CheckBox {
+                checked: view_settings.top_layer_count == 5
+                onClicked: {
+                    UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
+                }
+                text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
+                visible: UM.LayerView.compatibilityMode
+            }
 
             Label
             {
@@ -419,22 +437,6 @@ Item
                     running: UM.LayerView.busy;
                     visible: UM.LayerView.busy;
                 }
-            }
-            CheckBox {
-                checked: view_settings.only_show_top_layers
-                onClicked: {
-                    UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0);
-                }
-                text: catalog.i18nc("@label", "Only Show Top Layers")
-                visible: UM.LayerView.compatibilityMode
-            }
-            CheckBox {
-                checked: view_settings.top_layer_count == 5
-                onClicked: {
-                    UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1);
-                }
-                text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
-                visible: UM.LayerView.compatibilityMode
             }
         }
     }

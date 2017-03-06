@@ -129,7 +129,7 @@ class LayerViewProxy(QObject):
     def _onLayerChanged(self):
         self.currentLayerChanged.emit()
         self._layerActivityChanged()
-        
+
     def _onMaxLayersChanged(self):
         self.maxLayersChanged.emit()
 
