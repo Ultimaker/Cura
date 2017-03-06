@@ -558,7 +558,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         self._preheat_bed_timer.stop()
                         self.preheatBedRemainingTimeChanged.emit()
 
-
     def close(self):
         Logger.log("d", "Closing connection of printer %s with ip %s", self._key, self._address)
         self._updateJobState("")

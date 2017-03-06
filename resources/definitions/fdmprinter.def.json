@@ -93,6 +93,7 @@
                     "description": "Whether to wait until the nozzle temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -103,6 +104,7 @@
                     "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -249,6 +251,17 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
+                "machine_nozzle_temp_enabled":
+                {
+                    "label": "Enable Nozzle Temperature Control",
+                    "description": "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura.",
+                    "default_value": true,
+                    "value": "machine_gcode_flavor != \"UltiGCode\"",
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
                 "machine_nozzle_heat_up_speed":
                 {
                     "label": "Heat up speed",
@@ -256,6 +269,7 @@
                     "default_value": 2.0,
                     "unit": "°C/s",
                     "type": "float",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -266,6 +280,7 @@
                     "default_value": 2.0,
                     "unit": "°C/s",
                     "type": "float",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -276,6 +291,7 @@
                     "default_value": 50.0,
                     "unit": "s",
                     "type": "float",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -908,6 +924,15 @@
                     "value": "top_bottom_pattern",
                     "settable_per_mesh": true
                 },
+                "skin_angles":
+                {
+                    "label": "Top/Bottom Line Directions",
+                    "description": "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
+                    "type": "[int]",
+                    "default_value": "[ ]",
+                    "enabled": "top_bottom_pattern != 'concentric'",
+                    "settable_per_mesh": true
+                },
                 "wall_0_inset":
                 {
                     "label": "Outer Wall Inset",
@@ -1089,6 +1114,15 @@
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "settable_per_mesh": true
                 },
+                "infill_angles":
+                {
+                    "label": "Infill Line Directions",
+                    "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
+                    "type": "[int]",
+                    "default_value": "[ ]",
+                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'concentric_3d' and infill_pattern != 'cubicsubdiv'",
+                    "settable_per_mesh": true
+                },
                 "sub_div_rad_mult":
                 {
                     "label": "Cubic Subdivision Radius",
@@ -1243,6 +1277,74 @@
                     "minimum_value": "0",
                     "default_value": 0,
                     "settable_per_mesh": true
+                },
+                "expand_skins_into_infill":
+                {
+                    "label": "Expand Skins Into Infill",
+                    "description": "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "expand_upper_skins":
+                        {
+                            "label": "Expand Upper Skins",
+                            "description": "Expand upper skin areas (areas with air above) so that they support infill above.",
+                            "type": "bool",
+                            "default_value": false,
+                            "value": "expand_skins_into_infill",
+                            "settable_per_mesh": true
+                        },
+                        "expand_lower_skins":
+                        {
+                            "label": "Expand Lower Skins",
+                            "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
+                            "type": "bool",
+                            "default_value": false,
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "expand_skins_expand_distance":
+                {
+                    "label": "Skin Expand Distance",
+                    "description": "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.8,
+                    "value": "infill_line_distance * 1.4",
+                    "minimum_value": "0",
+                    "enabled": "expand_upper_skins or expand_lower_skins",
+                    "settable_per_mesh": true
+                },
+                "min_skin_angle_for_expansion":
+                {
+                    "label": "Minimum Skin Angle for Expansion",
+                    "description": "Top and or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "45",
+                    "default_value": 20,
+                    "enabled": "expand_upper_skins or expand_lower_skins",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "min_skin_width_for_expansion":
+                        {
+                            "label": "Minimum Skin Width for Expansion",
+                            "description": "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 2.24,
+                            "value": "top_layers * layer_height / math.tan(math.radians(min_skin_angle_for_expansion))",
+                            "minimum_value": "0",
+                            "enabled": "expand_upper_skins or expand_lower_skins",
+                            "settable_per_mesh": true
+                        }
+                    }
                 }
             }
         },
@@ -1260,7 +1362,7 @@
                     "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "False",
+                    "enabled": "machine_nozzle_temp_enabled and False",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1273,14 +1375,14 @@
                     "default_value": 210,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
-                    "enabled": false,
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_extruder": true,
                     "minimum_value": "-273.15"
                 },
                 "material_print_temperature":
                 {
                     "label": "Printing Temperature",
-                    "description": "The temperature used for printing. If this is 0, the extruder will not heat up for this print.",
+                    "description": "The temperature used for printing.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 210,
@@ -1288,7 +1390,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
-                    "enabled": "not (material_flow_dependent_temperature) and machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "machine_nozzle_temp_enabled and not (material_flow_dependent_temperature)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1303,7 +1405,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1318,7 +1420,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1333,7 +1435,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1344,8 +1446,7 @@
                     "unit": "[[mm³,°C]]",
                     "type": "str",
                     "default_value": "[[3.5,200],[7.0,240]]",
-                    "enabled": "False",
-                    "comments": "old enabled function: material_flow_dependent_temperature",
+                    "enabled": "False and machine_nozzle_temp_enabled and material_flow_dependent_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1359,8 +1460,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "maximum_value": "machine_nozzle_heat_up_speed",
-                    "enabled": "False",
-                    "comments": "old enabled function: material_flow_dependent_temperature or machine_extruder_count > 1",
+                    "enabled": "material_flow_dependent_temperature or (machine_extruder_count > 1 and material_final_print_temperature != material_print_temperature)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -1567,7 +1667,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
-                    "enabled": "machine_extruder_count > 1 and machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "machine_extruder_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },

@@ -217,6 +217,8 @@ Item
                     {
                         case "int":
                             return "SettingTextField.qml"
+                        case "[int]":
+                            return "SettingTextField.qml"
                         case "float":
                             return "SettingTextField.qml"
                         case "enum":
