@@ -163,6 +163,8 @@ class LayerView(View):
                 self._current_layer_num = 0
             if self._current_layer_num > self._max_layers:
                 self._current_layer_num = self._max_layers
+            if self._current_layer_num < self._minimum_layer_num:
+                self._minimum_layer_num = self._current_layer_num
 
             self._startUpdateTopLayers()
 
@@ -173,6 +175,10 @@ class LayerView(View):
             self._minimum_layer_num = value
             if self._minimum_layer_num < 0:
                 self._minimum_layer_num = 0
+            if self._minimum_layer_num > self._max_layers:
+                self._minimum_layer_num = self._max_layers
+            if self._minimum_layer_num > self._current_layer_num:
+                self._current_layer_num = self._minimum_layer_num
 
             self._startUpdateTopLayers()
 

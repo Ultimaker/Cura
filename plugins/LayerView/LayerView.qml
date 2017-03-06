@@ -366,40 +366,30 @@ Item
             }
             property var activeHandle: upperHandle
 
-            function setLowerValue(value)
-            {
-
-            }
-
             function setUpperValue(value)
             {
-                print("!!!!!!", value)
-
                 var value = (value - maximumValue) / (minimumValue - maximumValue);
-                print("a ", value)
                 var new_upper_y =  Math.round(value * (height - (2 * handleSize + minimumRangeHandleSize)));
-                print("b ", new_upper_y, upperHandle.y)
-                var new_lower = lowerHandle.value
-                if(UM.LayerView.currentLayer - lowerHandle.value < minimumRange)
-                {
-                    new_lower = UM.LayerView.currentLayer - minimumRange
-                } else if(activeHandle == rangeHandle)
-                {
-                    new_lower = UM.LayerView.currentLayer - (upperHandle.value - lowerHandle.value)
-                }
-                new_lower = Math.max(minimumValue, new_lower)
 
                 if(new_upper_y != upperHandle.y)
                 {
-                    upperHandle.y = new_upper_y
-                }
-                if(new_lower != lowerHandle.value)
-                {
-                    value = (new_lower - maximumValue) / (minimumValue - maximumValue)
-                    lowerHandle.y = Math.round((handleSize + minimumRangeHandleSize) + value * (height - (2 * handleSize + minimumRangeHandleSize)))
+                    upperHandle.y = new_upper_y;
                 }
                 rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
             }
+
+            function setLowerValue(value)
+            {
+                var value = (value - maximumValue) / (minimumValue - maximumValue);
+                var new_lower_y =  Math.round((handleSize + minimumRangeHandleSize) + value * (height - (2 * handleSize + minimumRangeHandleSize)));
+
+                if(new_lower_y != lowerHandle.y)
+                {
+                    lowerHandle.y = new_lower_y;
+                }
+                rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+            }
+
 
             Connections
             {
@@ -447,8 +437,10 @@ Item
                         upperHandle.y = parent.y - upperHandle.height
                         lowerHandle.y = parent.y + parent.height
 
-                        UM.LayerView.setCurrentLayer(slider.getUpperValueFromHandle());
-                        UM.LayerView.setMinimumLayer(slider.getLowerValueFromHandle());
+                        var upper_value = slider.getUpperValueFromHandle();
+                        var lower_value = upper_value - (upperHandle.value - lowerHandle.value);
+                        UM.LayerView.setCurrentLayer(upper_value);
+                        UM.LayerView.setMinimumLayer(lower_value);
                     }
                 }
             }
