@@ -18,8 +18,8 @@
         "bottom_thickness": {
             "value": "0.5"
         },
-        "brim_line_count": {
-            "value": "20.0"
+        "brim_width": {
+            "value": "2.0"
         },
         "cool_fan_enabled": {
             "value": "True"
@@ -80,6 +80,9 @@
         },
         "material_diameter": {
             "value": "1.75"
+        },
+        "material_flow": {
+            "value": "110"
         },
         "material_print_temperature": {
             "value": "210.0"
@@ -151,13 +154,13 @@
             "value": "3.0"
         },
         "skirt_line_count": {
-            "value": "1.0"
+            "value": "3"
         },
         "speed_infill": {
             "value": "50.0"
         },
         "speed_layer_0": {
-            "value": "30.0"
+            "value": "15.0"
         },
         "speed_print": {
             "value": "50.0"
