@@ -350,6 +350,9 @@ Item
             property real minimumRange: 0
             property bool roundValues: true
 
+            property var activeHandle: upperHandle
+            property bool layersVisible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
+
             function getUpperValueFromHandle()
             {
                 var result = upperHandle.y / (height - (2 * handleSize + minimumRangeHandleSize));
@@ -357,6 +360,7 @@ Item
                 result = roundValues ? Math.round(result) | 0 : result;
                 return result;
             }
+
             function getLowerValueFromHandle()
             {
                 var result = (lowerHandle.y - (handleSize + minimumRangeHandleSize)) / (height - (2 * handleSize + minimumRangeHandleSize));
@@ -364,7 +368,6 @@ Item
                 result = roundValues ? Math.round(result) : result;
                 return result;
             }
-            property var activeHandle: upperHandle
 
             function setUpperValue(value)
             {
@@ -390,7 +393,6 @@ Item
                 rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
             }
 
-
             Connections
             {
                 target: UM.LayerView
@@ -414,7 +416,18 @@ Item
                 width: parent.handleSize
                 height: parent.minimumRangeHandleSize
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                visible: slider.layersVisible
+
                 property real value: UM.LayerView.currentLayer
+                function setValue(value)
+                {
+                    var range = upperHandle.value - lowerHandle.value;
+                    value = Math.min(value, slider.maximumValue);
+                    value = Math.max(value, slider.minimumValue + range);
+                    UM.LayerView.setCurrentLayer(value);
+                    UM.LayerView.setMinimumLayer(value - range);
+                }
 
                 Rectangle {
                     anchors.centerIn: parent
@@ -443,14 +456,6 @@ Item
                         UM.LayerView.setMinimumLayer(lower_value);
                     }
                 }
-                function setValue(value)
-                {
-                    var range = upperHandle.value - lowerHandle.value;
-                    value = Math.min(value, slider.maximumValue);
-                    value = Math.max(value, slider.minimumValue + range);
-                    UM.LayerView.setCurrentLayer(value);
-                    UM.LayerView.setMinimumLayer(value - range);
-                }
             }
 
             Rectangle {
@@ -461,7 +466,14 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.upperHandleColor
+
+                visible: slider.layersVisible
+
                 property real value: UM.LayerView.currentLayer
+                function setValue(value)
+                {
+                    UM.LayerView.setCurrentLayer(value);
+                }
 
                 MouseArea {
                     anchors.fill: parent
@@ -483,10 +495,6 @@ Item
                         UM.LayerView.setCurrentLayer(slider.getUpperValueFromHandle());
                     }
                 }
-                function setValue(value)
-                {
-                    UM.LayerView.setCurrentLayer(value);
-                }
             }
 
             Rectangle {
@@ -497,7 +505,14 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.lowerHandleColor
+
+                visible: slider.layersVisible
+
                 property real value: UM.LayerView.minimumLayer
+                function setValue(value)
+                {
+                    UM.LayerView.setMinimumLayer(value);
+                }
 
                 MouseArea {
                     anchors.fill: parent
@@ -519,10 +534,6 @@ Item
                         UM.LayerView.setMinimumLayer(slider.getLowerValueFromHandle());
                     }
                 }
-                function setValue(value)
-                {
-                    UM.LayerView.setMinimumLayer(value);
-                }
             }
 
             Rectangle
@@ -538,7 +549,7 @@ Item
                 border.color: UM.Theme.getColor("slider_groove_border")
                 color: UM.Theme.getColor("tool_panel_background")
 
-                visible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
+                visible: slider.layersVisible
 
                 TextField
                 {
