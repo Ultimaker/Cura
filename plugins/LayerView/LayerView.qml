@@ -443,6 +443,14 @@ Item
                         UM.LayerView.setMinimumLayer(lower_value);
                     }
                 }
+                function setValue(value)
+                {
+                    var range = upperHandle.value - lowerHandle.value;
+                    value = Math.min(value, slider.maximumValue);
+                    value = Math.max(value, slider.minimumValue + range);
+                    UM.LayerView.setCurrentLayer(value);
+                    UM.LayerView.setMinimumLayer(value - range);
+                }
             }
 
             Rectangle {
