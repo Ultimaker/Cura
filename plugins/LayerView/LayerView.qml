@@ -107,17 +107,16 @@ Item
                 currentIndex: layer_view_type  // index matches type_id
                 onActivated: {
                     // Combobox selection
-                    var type_id = index;  // layerViewTypes.get(index).type_id;
+                    var type_id = index;
                     UM.Preferences.setValue("layerview/layer_view_type", type_id);
-                    updateLegend();
+                    updateLegend(type_id);
                 }
                 onModelChanged: {
-                    updateLegend();
+                    updateLegend(UM.Preferences.getValue("layerview/layer_view_type"));
                 }
 
                 // Update visibility of legend.
-                function updateLegend() {
-                    var type_id = model.get(currentIndex).type_id;
+                function updateLegend(type_id) {
                     if (UM.LayerView.compatibilityMode || (type_id == 1)) {
                         // Line type
                         view_settings.show_legend = true;
