@@ -10,6 +10,7 @@ import UM 1.0 as UM
 
 Item
 {
+    id: base
     width: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
@@ -326,18 +327,21 @@ Item
         Slider
         {
             id: sliderMinimumLayer
+
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                right: layerViewMenu.right
+                margins: UM.Theme.getSize("slider_layerview_margin").height
+                rightMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.8
+            }
             width: UM.Theme.getSize("slider_layerview_size").width
-            height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
-            anchors.right: layerViewMenu.right
-            anchors.rightMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.8
             orientation: Qt.Vertical
             minimumValue: 0;
-            maximumValue: UM.LayerView.numLayers-1;
+            maximumValue: UM.LayerView.numLayers - 1;
             stepSize: 1
 
-            property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
+            property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize
 
             value: UM.LayerView.minimumLayer
             onValueChanged: {
@@ -353,12 +357,16 @@ Item
         Slider
         {
             id: slider
+
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                right: layerViewMenu.right
+                margins: UM.Theme.getSize("slider_layerview_margin").height
+                rightMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.2
+            }
             width: UM.Theme.getSize("slider_layerview_size").width
-            height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height  //UM.Theme.getSize("slider_layerview_size").height
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
-            anchors.right: layerViewMenu.right
-            anchors.rightMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.2
+
             orientation: Qt.Vertical
             minimumValue: 0;
             maximumValue: UM.LayerView.numLayers;
