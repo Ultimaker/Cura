@@ -481,7 +481,7 @@ Item
             Rectangle
             {
                 x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
-                y: parent.height - (parent.value * parent.pixelsPerStep) - UM.Theme.getSize("slider_handle").height * 1.25;
+                y: slider.activeHandle.y + slider.activeHandle.height / 2 - valueLabel.height / 2;
 
                 height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
@@ -497,7 +497,7 @@ Item
                 {
                     id: valueLabel
                     property string maxValue: slider.maximumValue + 1
-                    text: slider.value + 1
+                    text: slider.activeHandle.value + 1
                     horizontalAlignment: TextInput.AlignRight;
                     onEditingFinished:
                     {
