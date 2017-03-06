@@ -285,13 +285,15 @@ class LayerView(View):
 
     def event(self, event):
         modifiers = QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers == Qt.ControlModifier
+        ctrl_is_active = modifiers & Qt.ControlModifier
+        shift_is_active = modifiers & Qt.ShiftModifier
         if event.type == Event.KeyPressEvent and ctrl_is_active:
+            amount = 10 if shift_is_active else 1
             if event.key == KeyEvent.UpKey:
-                self.setLayer(self._current_layer_num + 1)
+                self.setLayer(self._current_layer_num + amount)
                 return True
             if event.key == KeyEvent.DownKey:
-                self.setLayer(self._current_layer_num - 1)
+                self.setLayer(self._current_layer_num - amount)
                 return True
 
         if event.type == Event.ViewActivateEvent:
