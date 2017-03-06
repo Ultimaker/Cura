@@ -536,20 +536,35 @@ Item
                 }
             }
 
-            Rectangle
+            UM.PointingRectangle
             {
                 x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
-                y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - valueLabel.height / 2);
+                y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - height / 2);
 
-                height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
+                target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
+                arrowSize: UM.Theme.getSize("default_arrow").width
+
+                height: (Math.floor(UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height) / 2) * 2 // Make sure height has an integer middle so drawing a pointy border is easier
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
                 Behavior on height { NumberAnimation { duration: 50; } }
 
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("slider_groove_border")
-                color: UM.Theme.getColor("tool_panel_background")
+                color: UM.Theme.getColor("lining");
 
                 visible: slider.layersVisible
+
+                UM.PointingRectangle
+                {
+                    color: UM.Theme.getColor("tool_panel_background")
+                    target: Qt.point(0, height / 2 + UM.Theme.getSize("default_lining").width)
+                    arrowSize: UM.Theme.getSize("default_arrow").width
+                    anchors.fill: parent
+                    anchors.margins: UM.Theme.getSize("default_lining").width
+
+                    MouseArea //Catch all mouse events (so scene doesnt handle them)
+                    {
+                        anchors.fill: parent
+                    }
+                }
 
                 TextField
                 {
