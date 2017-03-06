@@ -146,7 +146,25 @@ UM.Dialog
                 ]
                 width: 300
                 currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
-                onCurrentIndexChanged: UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+                onCurrentIndexChanged:
+                {
+                    UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+                    if (currentIndex == 1) {
+                        // 1 == "Discard and never ask again", so only enable the "Discard" button
+                        discardButton.enabled = true
+                        keepButton.enabled = false
+                    }
+                    else if (currentIndex == 2) {
+                        // 2 == "Keep and never ask again", so only enable the "Keep" button
+                        keepButton.enabled = true
+                        discardButton.enabled = false
+                    }
+                    else {
+                        // 0 == "Always ask me this", so show both
+                        keepButton.enabled = true
+                        discardButton.enabled = true
+                    }
+                }
             }
         }
 
