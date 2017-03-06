@@ -345,35 +345,67 @@ Item
             property color trackColor: UM.Theme.getColor("slider_groove")
             property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
 
-            property real to: UM.LayerView.numLayers
-            property real from: 0
+            property real maximumValue: UM.LayerView.numLayers
+            property real minimumValue: 0
             property real minimumRange: 0
             property bool roundValues: true
 
-            property real upper:
+            function getUpperValueFromHandle()
             {
                 var result = upperHandle.y / (height - (2 * handleSize + minimumRangeHandleSize));
-                result = to + result * (from - (to - minimumRange));
+                result = maximumValue + result * (minimumValue - (maximumValue - minimumRange));
                 result = roundValues ? Math.round(result) | 0 : result;
                 return result;
             }
-            property real lower:
+            function getLowerValueFromHandle()
             {
                 var result = (lowerHandle.y - (handleSize + minimumRangeHandleSize)) / (height - (2 * handleSize + minimumRangeHandleSize));
-                result = to - minimumRange + result * (from - (to - minimumRange));
+                result = maximumValue - minimumRange + result * (minimumValue - (maximumValue - minimumRange));
                 result = roundValues ? Math.round(result) : result;
                 return result;
             }
-            property real range: upper - lower
             property var activeHandle: upperHandle
 
-            onLowerChanged:
+            function setLowerValue(value)
             {
-                UM.LayerView.setMinimumLayer(lower)
+
             }
-            onUpperChanged:
+
+            function setUpperValue(value)
             {
-                UM.LayerView.setCurrentLayer(upper);
+                print("!!!!!!", value)
+
+                var value = (value - maximumValue) / (minimumValue - maximumValue);
+                print("a ", value)
+                var new_upper_y =  Math.round(value * (height - (2 * handleSize + minimumRangeHandleSize)));
+                print("b ", new_upper_y, upperHandle.y)
+                var new_lower = lowerHandle.value
+                if(UM.LayerView.currentLayer - lowerHandle.value < minimumRange)
+                {
+                    new_lower = UM.LayerView.currentLayer - minimumRange
+                } else if(activeHandle == rangeHandle)
+                {
+                    new_lower = UM.LayerView.currentLayer - (upperHandle.value - lowerHandle.value)
+                }
+                new_lower = Math.max(minimumValue, new_lower)
+
+                if(new_upper_y != upperHandle.y)
+                {
+                    upperHandle.y = new_upper_y
+                }
+                if(new_lower != lowerHandle.value)
+                {
+                    value = (new_lower - maximumValue) / (minimumValue - maximumValue)
+                    lowerHandle.y = Math.round((handleSize + minimumRangeHandleSize) + value * (height - (2 * handleSize + minimumRangeHandleSize)))
+                }
+                rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+            }
+
+            Connections
+            {
+                target: UM.LayerView
+                onMinimumLayerChanged: slider.setLowerValue(UM.LayerView.minimumLayer)
+                onCurrentLayerChanged: slider.setUpperValue(UM.LayerView.currentLayer)
             }
 
             Rectangle {
@@ -392,7 +424,7 @@ Item
                 width: parent.handleSize
                 height: parent.minimumRangeHandleSize
                 anchors.horizontalCenter: parent.horizontalCenter
-                property real value: parent.upper
+                property real value: UM.LayerView.currentLayer
 
                 Rectangle {
                     anchors.centerIn: parent
@@ -414,6 +446,9 @@ Item
                     {
                         upperHandle.y = parent.y - upperHandle.height
                         lowerHandle.y = parent.y + parent.height
+
+                        UM.LayerView.setCurrentLayer(slider.getUpperValueFromHandle());
+                        UM.LayerView.setMinimumLayer(slider.getLowerValueFromHandle());
                     }
                 }
             }
@@ -426,7 +461,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.upperHandleColor
-                property real value: parent.upper
+                property real value: UM.LayerView.currentLayer
 
                 MouseArea {
                     anchors.fill: parent
@@ -444,7 +479,13 @@ Item
                             lowerHandle.y = upperHandle.y + upperHandle.height + parent.parent.minimumRangeHandleSize;
                         }
                         rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+
+                        UM.LayerView.setCurrentLayer(slider.getUpperValueFromHandle());
                     }
+                }
+                function setValue(value)
+                {
+                    UM.LayerView.setCurrentLayer(value);
                 }
             }
 
@@ -456,7 +497,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: parent.handleRadius
                 color: parent.lowerHandleColor
-                property real value: parent.lower
+                property real value: UM.LayerView.minimumLayer
 
                 MouseArea {
                     anchors.fill: parent
@@ -474,14 +515,20 @@ Item
                             upperHandle.y = lowerHandle.y - (upperHandle.height + parent.parent.minimumRangeHandleSize);
                         }
                         rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height)
+
+                        UM.LayerView.setMinimumLayer(slider.getLowerValueFromHandle());
                     }
+                }
+                function setValue(value)
+                {
+                    UM.LayerView.setMinimumLayer(value);
                 }
             }
 
             Rectangle
             {
                 x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
-                y: slider.activeHandle.y + slider.activeHandle.height / 2 - valueLabel.height / 2;
+                y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - valueLabel.height / 2);
 
                 height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
@@ -507,7 +554,7 @@ Item
                         cursorPosition = 0;
                         if(valueLabel.text != '')
                         {
-                            slider.value = valueLabel.text - 1;
+                            slider.activeHandle.setValue(valueLabel.text - 1);
                         }
                     }
                     validator: IntValidator { bottom: 1; top: slider.maximumValue + 1; }
