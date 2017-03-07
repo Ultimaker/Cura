@@ -67,7 +67,7 @@ UM.Dialog
                     property var extruder_name: userChangesModel.getItem(styleData.row).extruder
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    font: UM.Theme.getFont("default")
+                    font: UM.Theme.getFont("system")
                     text:
                     {
                         var result = styleData.value
@@ -86,7 +86,7 @@ UM.Dialog
                 Label
                 {
                     text: styleData.value
-                    font: UM.Theme.getFont("default")
+                    font: UM.Theme.getFont("system")
                     color: UM.Theme.getColor("setting_control_disabled_text")
                 }
             }
