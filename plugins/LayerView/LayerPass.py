@@ -97,11 +97,11 @@ class LayerPass(RenderPass):
                 # Create a new batch that is not range-limited
                 batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid)
 
-                if self._layer_view._current_layer_mesh:
-                    batch.addItem(node.getWorldTransformation(), self._layer_view._current_layer_mesh)
+                if self._layer_view.getCurrentLayerMesh():
+                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerMesh())
 
-                if self._layer_view._current_layer_jumps:
-                    batch.addItem(node.getWorldTransformation(), self._layer_view._current_layer_jumps)
+                if self._layer_view.getCurrentLayerJumps():
+                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerJumps())
 
                 if len(batch.items) > 0:
                     batch.render(self._scene.getActiveCamera())

@@ -260,44 +260,6 @@ UM.PreferencesPage
             }
 
             UM.TooltipArea {
-                width: childrenRect.width;
-                height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
-
-                CheckBox
-                {
-                    id: topLayerCountCheckbox
-                    text: catalog.i18nc("@action:button","Display five top layers in layer view compatibility mode");
-                    checked: UM.Preferences.getValue("view/top_layer_count") == 5
-                    onClicked:
-                    {
-                        if(UM.Preferences.getValue("view/top_layer_count") == 5)
-                        {
-                            UM.Preferences.setValue("view/top_layer_count", 1)
-                        }
-                        else
-                        {
-                            UM.Preferences.setValue("view/top_layer_count", 5)
-                        }
-                    }
-                }
-            }
-
-            UM.TooltipArea {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should only the top layers be displayed in layerview?")
-
-                CheckBox
-                {
-                    id: topLayersOnlyCheckbox
-                    text: catalog.i18nc("@option:check", "Only display top layer(s) in layer view compatibility mode")
-                    checked: boolCheck(UM.Preferences.getValue("view/only_show_top_layers"))
-                    onCheckedChanged: UM.Preferences.setValue("view/only_show_top_layers", checked)
-                }
-            }
-
-            UM.TooltipArea {
                 width: childrenRect.width
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should layer be forced into compatibility mode?")
