@@ -128,7 +128,7 @@ geometry41core =
 
         if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
             // fixed size for movements
-            size_x = 0.2;
+            size_x = 0.05;
         } else {
             size_x = v_line_dim[0].x / 2 + 0.01;  // radius, and make it nicely overlapping
         }
