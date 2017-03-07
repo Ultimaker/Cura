@@ -13,59 +13,209 @@ Item
     width: UM.Theme.getSize("button").width
     height: UM.Theme.getSize("slider_layerview_size").height
 
-    Slider
-    {
-        id: sliderMinimumLayer
-        width: UM.Theme.getSize("slider_layerview_size").width
+    Item {
+        id: slider
+
+        width: handleSize
         height: UM.Theme.getSize("slider_layerview_size").height
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.2
-        orientation: Qt.Vertical
-        minimumValue: 0;
-        maximumValue: UM.LayerView.numLayers-1;
-        stepSize: 1
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
+        property real handleSize: UM.Theme.getSize("slider_handle").width
+        property real handleRadius: handleSize / 2
+        property real minimumRangeHandleSize: UM.Theme.getSize("slider_handle").width / 2
+        property real trackThickness: UM.Theme.getSize("slider_groove").width
+        property real trackRadius: trackThickness / 2
+        property real trackBorderWidth: UM.Theme.getSize("default_lining").width
+        property color upperHandleColor: UM.Theme.getColor("slider_handle")
+        property color lowerHandleColor: UM.Theme.getColor("slider_handle")
+        property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+        property color trackColor: UM.Theme.getColor("slider_groove")
+        property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
 
-        value: UM.LayerView.minimumLayer
-        onValueChanged: {
-            UM.LayerView.setMinimumLayer(value)
-            if (value > UM.LayerView.currentLayer) {
-                UM.LayerView.setCurrentLayer(value);
+        property real to: UM.LayerView.numLayers
+        property real from: 0
+        property real minimumRange: 0
+        property bool roundValues: true
+
+        property real upper:
+        {
+            var result = upperHandle.y / (height - (2 * handleSize + minimumRangeHandleSize));
+            result = to + result * (from - (to - minimumRange));
+            result = roundValues ? Math.round(result) | 0 : result;
+            return result;
+        }
+        property real lower:
+        {
+            var result = (lowerHandle.y - (handleSize + minimumRangeHandleSize)) / (height - (2 * handleSize + minimumRangeHandleSize));
+            result = to - minimumRange + result * (from - (to - minimumRange));
+            result = roundValues ? Math.round(result) : result;
+            return result;
+        }
+        property real range: upper - lower
+        property var activeHandle: upperHandle
+
+        function setLower(value)
+        {
+
+        }
+
+        function setUpper(value)
+        {
+            var value = (UM.LayerView.currentLayer - to) / (from - to);
+            var new_upper_y =  Math.round(value * (height - (2 * handleSize + minimumRangeHandleSize)));
+            var new_lower = lower
+            if(UM.LayerView.currentLayer - lower < minimumRange)
+            {
+                new_lower = UM.LayerView.currentLayer - minimumRange
+            } else if(activeHandle == rangeHandle)
+            {
+                new_lower = UM.LayerView.currentLayer - (upper - lower)
+            }
+            new_lower = Math.max(from, new_lower)
+
+            if(new_upper_y != upperHandle.y)
+            {
+                upperHandle.y = new_upper_y
+            }
+            if(new_lower != lower)
+            {
+                value = (new_lower - to) / (from - to)
+                lowerHandle.y = Math.round((handleSize + minimumRangeHandleSize) + value * (height - (2 * handleSize + minimumRangeHandleSize)))
+            }
+            rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+        }
+
+
+        onLowerChanged:
+        {
+            UM.LayerView.setMinimumLayer(lower)
+        }
+        onUpperChanged:
+        {
+            UM.LayerView.setCurrentLayer(upper);
+        }
+        Connections
+        {
+            target: UM.LayerView
+            onMinimumLayerChanged: slider.setLower(UM.LayerView.minimumLayer)
+            onCurrentLayerChanged: slider.setUpper(UM.LayerView.currentLayer)
+        }
+
+        /*
+        Component.onCompleted:
+        {
+            setLower(UM.LayerView.minimumLayer);
+            setUpper(UM.LayerView.currentLayer);
+        }
+        */
+
+        Rectangle {
+            width: parent.trackThickness
+            height: parent.height - parent.handleSize
+            radius: parent.trackRadius
+            anchors.centerIn: parent
+            color: parent.trackColor
+            border.width: parent.trackBorderWidth;
+            border.color: parent.trackBorderColor;
+        }
+
+        Item {
+            id: rangeHandle
+            y: upperHandle.y + upperHandle.height
+            width: parent.handleSize
+            height: parent.minimumRangeHandleSize
+            anchors.horizontalCenter: parent.horizontalCenter
+            property real value: parent.upper
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: parent.parent.trackThickness - 2 * parent.parent.trackBorderWidth
+                height: parent.height + parent.parent.handleSize
+                color: parent.parent.rangeHandleColor
+            }
+
+            MouseArea {
+                anchors.fill: parent
+
+                drag.target: parent
+                drag.axis: Drag.YAxis
+                drag.minimumY: upperHandle.height
+                drag.maximumY: parent.parent.height - (parent.height + lowerHandle.height)
+
+                onPressed: parent.parent.activeHandle = rangeHandle
+                onPositionChanged:
+                {
+                    upperHandle.y = parent.y - upperHandle.height
+                    lowerHandle.y = parent.y + parent.height
+                }
             }
         }
 
-        style: UM.Theme.styles.slider;
-    }
+        Rectangle {
+            id: upperHandle
+            y: parent.height - (parent.minimumRangeHandleSize + 2 * parent.handleSize)
+            width: parent.handleSize
+            height: parent.handleSize
+            anchors.horizontalCenter: parent.horizontalCenter
+            radius: parent.handleRadius
+            color: parent.upperHandleColor
+            property real value: parent.upper
 
-    Slider
-    {
-        id: slider
-        width: UM.Theme.getSize("slider_layerview_size").width
-        height: UM.Theme.getSize("slider_layerview_size").height
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.8
-        orientation: Qt.Vertical
-        minimumValue: 0;
-        maximumValue: UM.LayerView.numLayers;
-        stepSize: 1
+            MouseArea {
+                anchors.fill: parent
 
-        property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
+                drag.target: parent
+                drag.axis: Drag.YAxis
+                drag.minimumY: 0
+                drag.maximumY: parent.parent.height - (2 * parent.parent.handleSize + parent.parent.minimumRangeHandleSize)
 
-        value: UM.LayerView.currentLayer
-        onValueChanged: {
-                UM.LayerView.setCurrentLayer(value);
-                if (value < UM.LayerView.minimumLayer) {
-                    UM.LayerView.setMinimumLayer(value);
+                onPressed: parent.parent.activeHandle = upperHandle
+                onPositionChanged:
+                {
+                    if(lowerHandle.y - (upperHandle.y + upperHandle.height) < parent.parent.minimumRangeHandleSize)
+                    {
+                        lowerHandle.y = upperHandle.y + upperHandle.height + parent.parent.minimumRangeHandleSize;
+                    }
+                    rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
                 }
             }
+        }
 
-        style: UM.Theme.styles.slider;
+        Rectangle {
+            id: lowerHandle
+            y: parent.height - parent.handleSize
+            width: parent.handleSize
+            height: parent.handleSize
+            anchors.horizontalCenter: parent.horizontalCenter
+            radius: parent.handleRadius
+            color: parent.lowerHandleColor
+            property real value: parent.lower
+
+            MouseArea {
+                anchors.fill: parent
+
+                drag.target: parent
+                drag.axis: Drag.YAxis
+                drag.minimumY: upperHandle.height + parent.parent.minimumRangeHandleSize
+                drag.maximumY: parent.parent.height - parent.height
+
+                onPressed: parent.parent.activeHandle = lowerHandle
+                onPositionChanged:
+                {
+                    if(lowerHandle.y - (upperHandle.y + upperHandle.height) < parent.parent.minimumRangeHandleSize)
+                    {
+                        upperHandle.y = lowerHandle.y - (upperHandle.height + parent.parent.minimumRangeHandleSize);
+                    }
+                    rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height)
+                }
+            }
+        }
 
         Rectangle
         {
             x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
-            y: parent.height - (parent.value * parent.pixelsPerStep) - UM.Theme.getSize("slider_handle").height * 1.25;
+            y: slider.activeHandle.y + slider.activeHandle.height / 2 - valueLabel.height / 2;
 
             height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
             width: valueLabel.width + UM.Theme.getSize("default_margin").width
@@ -81,7 +231,7 @@ Item
             {
                 id: valueLabel
                 property string maxValue: slider.maximumValue + 1
-                text: slider.value + 1
+                text: slider.activeHandle.value + 1
                 horizontalAlignment: TextInput.AlignRight;
                 onEditingFinished:
                 {
