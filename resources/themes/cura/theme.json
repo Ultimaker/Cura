@@ -292,7 +292,7 @@
         "slider_handle": [1.5, 1.5],
         "slider_layerview_size": [1.0, 22.0],
         "slider_layerview_background": [4.0, 0.0],
-        "slider_layerview_margin": [3.0, 1.0],
+        "slider_layerview_margin": [1.0, 1.0],
 
         "layerview_menu_size": [16.5, 21.0],
         "layerview_menu_size_compatibility": [22, 23.0],

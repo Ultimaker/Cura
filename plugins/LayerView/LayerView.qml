@@ -10,7 +10,6 @@ import UM 1.0 as UM
 
 Item
 {
-    id: base
     width: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
@@ -324,86 +323,254 @@ Item
 
         }
 
-        Slider
-        {
-            id: sliderMinimumLayer
-
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-                right: layerViewMenu.right
-                margins: UM.Theme.getSize("slider_layerview_margin").height
-                rightMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.8
-            }
-            width: UM.Theme.getSize("slider_layerview_size").width
-            orientation: Qt.Vertical
-            minimumValue: 0;
-            maximumValue: UM.LayerView.numLayers - 1;
-            stepSize: 1
-
-            property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize
-
-            value: UM.LayerView.minimumLayer
-            onValueChanged: {
-                UM.LayerView.setMinimumLayer(value)
-                if (value > UM.LayerView.currentLayer) {
-                    UM.LayerView.setCurrentLayer(value);
-                }
-            }
-
-            style: UM.Theme.styles.slider;
-        }
-
-        Slider
+        Item
         {
             id: slider
+            width: handleSize
+            height: parent.height - 2*UM.Theme.getSize("slider_layerview_margin").height
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("slider_layerview_margin").height
+            anchors.right: layerViewMenu.right
+            anchors.rightMargin: UM.Theme.getSize("slider_layerview_margin").width
 
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-                right: layerViewMenu.right
-                margins: UM.Theme.getSize("slider_layerview_margin").height
-                rightMargin: UM.Theme.getSize("slider_layerview_margin").width * 0.2
+            property real handleSize: UM.Theme.getSize("slider_handle").width
+            property real handleRadius: handleSize / 2
+            property real minimumRangeHandleSize: UM.Theme.getSize("slider_handle").width / 2
+            property real trackThickness: UM.Theme.getSize("slider_groove").width
+            property real trackRadius: trackThickness / 2
+            property real trackBorderWidth: UM.Theme.getSize("default_lining").width
+            property color upperHandleColor: UM.Theme.getColor("slider_handle")
+            property color lowerHandleColor: UM.Theme.getColor("slider_handle")
+            property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+            property color trackColor: UM.Theme.getColor("slider_groove")
+            property color trackBorderColor: UM.Theme.getColor("slider_groove_border")
+
+            property real maximumValue: UM.LayerView.numLayers
+            property real minimumValue: 0
+            property real minimumRange: 0
+            property bool roundValues: true
+
+            property var activeHandle: upperHandle
+            property bool layersVisible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
+
+            function getUpperValueFromHandle()
+            {
+                var result = upperHandle.y / (height - (2 * handleSize + minimumRangeHandleSize));
+                result = maximumValue + result * (minimumValue - (maximumValue - minimumRange));
+                result = roundValues ? Math.round(result) | 0 : result;
+                return result;
             }
-            width: UM.Theme.getSize("slider_layerview_size").width
 
-            orientation: Qt.Vertical
-            minimumValue: 0;
-            maximumValue: UM.LayerView.numLayers;
-            stepSize: 1
+            function getLowerValueFromHandle()
+            {
+                var result = (lowerHandle.y - (handleSize + minimumRangeHandleSize)) / (height - (2 * handleSize + minimumRangeHandleSize));
+                result = maximumValue - minimumRange + result * (minimumValue - (maximumValue - minimumRange));
+                result = roundValues ? Math.round(result) : result;
+                return result;
+            }
 
-            property real pixelsPerStep: ((height - UM.Theme.getSize("slider_handle").height) / (maximumValue - minimumValue)) * stepSize;
+            function setUpperValue(value)
+            {
+                var value = (value - maximumValue) / (minimumValue - maximumValue);
+                var new_upper_y =  Math.round(value * (height - (2 * handleSize + minimumRangeHandleSize)));
 
-            value: UM.LayerView.currentLayer
-            onValueChanged: {
+                if(new_upper_y != upperHandle.y)
+                {
+                    upperHandle.y = new_upper_y;
+                }
+                rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+            }
+
+            function setLowerValue(value)
+            {
+                var value = (value - maximumValue) / (minimumValue - maximumValue);
+                var new_lower_y =  Math.round((handleSize + minimumRangeHandleSize) + value * (height - (2 * handleSize + minimumRangeHandleSize)));
+
+                if(new_lower_y != lowerHandle.y)
+                {
+                    lowerHandle.y = new_lower_y;
+                }
+                rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+            }
+
+            Connections
+            {
+                target: UM.LayerView
+                onMinimumLayerChanged: slider.setLowerValue(UM.LayerView.minimumLayer)
+                onCurrentLayerChanged: slider.setUpperValue(UM.LayerView.currentLayer)
+            }
+
+            Rectangle {
+                width: parent.trackThickness
+                height: parent.height - parent.handleSize
+                radius: parent.trackRadius
+                anchors.centerIn: parent
+                color: parent.trackColor
+                border.width: parent.trackBorderWidth;
+                border.color: parent.trackBorderColor;
+            }
+
+            Item {
+                id: rangeHandle
+                y: upperHandle.y + upperHandle.height
+                width: parent.handleSize
+                height: parent.minimumRangeHandleSize
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                visible: slider.layersVisible
+
+                property real value: UM.LayerView.currentLayer
+                function setValue(value)
+                {
+                    var range = upperHandle.value - lowerHandle.value;
+                    value = Math.min(value, slider.maximumValue);
+                    value = Math.max(value, slider.minimumValue + range);
                     UM.LayerView.setCurrentLayer(value);
-                    if (value < UM.LayerView.minimumLayer) {
-                        UM.LayerView.setMinimumLayer(value);
-                    }
+                    UM.LayerView.setMinimumLayer(value - range);
                 }
 
-            style: UM.Theme.styles.slider;
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: parent.parent.trackThickness - 2 * parent.parent.trackBorderWidth
+                    height: parent.height + parent.parent.handleSize
+                    color: parent.parent.rangeHandleColor
+                }
 
-            Rectangle
+                MouseArea {
+                    anchors.fill: parent
+
+                    drag.target: parent
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: upperHandle.height
+                    drag.maximumY: parent.parent.height - (parent.height + lowerHandle.height)
+
+                    onPressed: parent.parent.activeHandle = rangeHandle
+                    onPositionChanged:
+                    {
+                        upperHandle.y = parent.y - upperHandle.height
+                        lowerHandle.y = parent.y + parent.height
+
+                        var upper_value = slider.getUpperValueFromHandle();
+                        var lower_value = upper_value - (upperHandle.value - lowerHandle.value);
+                        UM.LayerView.setCurrentLayer(upper_value);
+                        UM.LayerView.setMinimumLayer(lower_value);
+                    }
+                }
+            }
+
+            Rectangle {
+                id: upperHandle
+                y: parent.height - (parent.minimumRangeHandleSize + 2 * parent.handleSize)
+                width: parent.handleSize
+                height: parent.handleSize
+                anchors.horizontalCenter: parent.horizontalCenter
+                radius: parent.handleRadius
+                color: parent.upperHandleColor
+
+                visible: slider.layersVisible
+
+                property real value: UM.LayerView.currentLayer
+                function setValue(value)
+                {
+                    UM.LayerView.setCurrentLayer(value);
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    drag.target: parent
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: 0
+                    drag.maximumY: parent.parent.height - (2 * parent.parent.handleSize + parent.parent.minimumRangeHandleSize)
+
+                    onPressed: parent.parent.activeHandle = upperHandle
+                    onPositionChanged:
+                    {
+                        if(lowerHandle.y - (upperHandle.y + upperHandle.height) < parent.parent.minimumRangeHandleSize)
+                        {
+                            lowerHandle.y = upperHandle.y + upperHandle.height + parent.parent.minimumRangeHandleSize;
+                        }
+                        rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height);
+
+                        UM.LayerView.setCurrentLayer(slider.getUpperValueFromHandle());
+                    }
+                }
+            }
+
+            Rectangle {
+                id: lowerHandle
+                y: parent.height - parent.handleSize
+                width: parent.handleSize
+                height: parent.handleSize
+                anchors.horizontalCenter: parent.horizontalCenter
+                radius: parent.handleRadius
+                color: parent.lowerHandleColor
+
+                visible: slider.layersVisible
+
+                property real value: UM.LayerView.minimumLayer
+                function setValue(value)
+                {
+                    UM.LayerView.setMinimumLayer(value);
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    drag.target: parent
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: upperHandle.height + parent.parent.minimumRangeHandleSize
+                    drag.maximumY: parent.parent.height - parent.height
+
+                    onPressed: parent.parent.activeHandle = lowerHandle
+                    onPositionChanged:
+                    {
+                        if(lowerHandle.y - (upperHandle.y + upperHandle.height) < parent.parent.minimumRangeHandleSize)
+                        {
+                            upperHandle.y = lowerHandle.y - (upperHandle.height + parent.parent.minimumRangeHandleSize);
+                        }
+                        rangeHandle.height = lowerHandle.y - (upperHandle.y + upperHandle.height)
+
+                        UM.LayerView.setMinimumLayer(slider.getLowerValueFromHandle());
+                    }
+                }
+            }
+
+            UM.PointingRectangle
             {
                 x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
-                y: parent.height - (parent.value * parent.pixelsPerStep) - UM.Theme.getSize("slider_handle").height * 1.25;
+                y: Math.floor(slider.activeHandle.y + slider.activeHandle.height / 2 - height / 2);
 
-                height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
+                target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
+                arrowSize: UM.Theme.getSize("default_arrow").width
+
+                height: (Math.floor(UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height) / 2) * 2 // Make sure height has an integer middle so drawing a pointy border is easier
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
                 Behavior on height { NumberAnimation { duration: 50; } }
 
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: UM.Theme.getColor("slider_groove_border")
-                color: UM.Theme.getColor("tool_panel_background")
+                color: UM.Theme.getColor("lining");
 
-                visible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
+                visible: slider.layersVisible
+
+                UM.PointingRectangle
+                {
+                    color: UM.Theme.getColor("tool_panel_background")
+                    target: Qt.point(0, height / 2 + UM.Theme.getSize("default_lining").width)
+                    arrowSize: UM.Theme.getSize("default_arrow").width
+                    anchors.fill: parent
+                    anchors.margins: UM.Theme.getSize("default_lining").width
+
+                    MouseArea //Catch all mouse events (so scene doesnt handle them)
+                    {
+                        anchors.fill: parent
+                    }
+                }
 
                 TextField
                 {
                     id: valueLabel
                     property string maxValue: slider.maximumValue + 1
-                    text: slider.value + 1
+                    text: slider.activeHandle.value + 1
                     horizontalAlignment: TextInput.AlignRight;
                     onEditingFinished:
                     {
@@ -413,7 +580,7 @@ Item
                         cursorPosition = 0;
                         if(valueLabel.text != '')
                         {
-                            slider.value = valueLabel.text - 1;
+                            slider.activeHandle.setValue(valueLabel.text - 1);
                         }
                     }
                     validator: IntValidator { bottom: 1; top: slider.maximumValue + 1; }
@@ -429,6 +596,9 @@ Item
                         font: UM.Theme.getFont("default");
                         background: Item { }
                     }
+
+                    Keys.onUpPressed: slider.activeHandle.setValue(slider.activeHandle.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+                    Keys.onDownPressed: slider.activeHandle.setValue(slider.activeHandle.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
                 }
 
                 BusyIndicator
