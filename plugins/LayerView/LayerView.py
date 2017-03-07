@@ -194,7 +194,7 @@ class LayerView(View):
     #   \param extruder_nr 0..3
     #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr, opacity):
-        if extruder_nr <= 3:
+        if 0 <= extruder_nr <= 3:
             self._extruder_opacity[extruder_nr] = opacity
             self.currentLayerNumChanged.emit()
 
@@ -385,8 +385,7 @@ class LayerView(View):
                 opacity = 1.0
             self.setExtruderOpacity(extruder_nr, opacity)
 
-        self._show_travel_moves = bool(Preferences.getInstance().getValue("layerview/show_travel_moves"))
-        self.setShowTravelMoves(self._show_travel_moves)
+        self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
         self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Preferences.getInstance().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Preferences.getInstance().getValue("layerview/show_infill")))
