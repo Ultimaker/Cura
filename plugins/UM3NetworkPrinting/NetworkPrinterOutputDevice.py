@@ -327,6 +327,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     ##  Set the authentication state.
     #   \param auth_state \type{AuthState} Enum value representing the new auth state
     def setAuthenticationState(self, auth_state):
+        if auth_state == self._authentication_state:
+            return  # Nothing to do here.
+
         if auth_state == AuthState.AuthenticationRequested:
             Logger.log("d", "Authentication state changed to authentication requested.")
             self.setAcceptsCommands(False)
@@ -367,9 +370,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._authentication_timer.stop()
             self._authentication_counter = 0
 
-        if auth_state != self._authentication_state:
-            self._authentication_state = auth_state
-            self.authenticationStateChanged.emit()
+        self._authentication_state = auth_state
+        self.authenticationStateChanged.emit()
 
     authenticationStateChanged = pyqtSignal()
 
