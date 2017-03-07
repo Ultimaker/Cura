@@ -32,7 +32,7 @@ UM.Dialog
         UM.I18nCatalog
         {
             id: catalog;
-            name:"cura"
+            name: "cura"
         }
 
         Row
@@ -71,7 +71,7 @@ UM.Dialog
                     text:
                     {
                         var result = styleData.value
-                        if (extruder_name!= "")
+                        if (extruder_name != "")
                         {
                             result += " (" + extruder_name + ")"
                         }
