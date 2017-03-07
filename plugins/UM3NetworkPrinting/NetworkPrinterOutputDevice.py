@@ -1059,17 +1059,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if status_code in [200, 201, 202, 204]:
                 pass  # Request was successful!
             else:
-                operation_type = "Unknown"
-                if reply.operation() == QNetworkAccessManager.GetOperation:
-                    operation_type = "Get"
-                elif reply.operation() == QNetworkAccessManager.PutOperation:
-                    operation_type = "Put"
-                elif reply.operation() == QNetworkAccessManager.PostOperation:
-                    operation_type = "Post"
-                elif reply.operation() == QNetworkAccessManager.DeleteOperation:
-                    operation_type = "Delete"
-
-                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s, operation: %s", reply_url, reply.readAll(), status_code, operation_type)
+                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply_url, reply.readAll(), status_code)
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 
