@@ -67,16 +67,14 @@ class LayerView(View):
 
         self._resetSettings()
         self._legend_items = None
+        self._show_travel_moves = False
 
         Preferences.getInstance().addPreference("view/top_layer_count", 5)
         Preferences.getInstance().addPreference("view/only_show_top_layers", False)
         Preferences.getInstance().addPreference("view/force_layer_view_compatibility_mode", False)
 
         Preferences.getInstance().addPreference("layerview/layer_view_type", 0)
-        Preferences.getInstance().addPreference("layerview/extruder0_opacity", 1.0)
-        Preferences.getInstance().addPreference("layerview/extruder1_opacity", 1.0)
-        Preferences.getInstance().addPreference("layerview/extruder2_opacity", 1.0)
-        Preferences.getInstance().addPreference("layerview/extruder3_opacity", 1.0)
+        Preferences.getInstance().addPreference("layerview/extruder_opacities", "")
 
         Preferences.getInstance().addPreference("layerview/show_travel_moves", False)
         Preferences.getInstance().addPreference("layerview/show_helpers", True)
@@ -196,8 +194,9 @@ class LayerView(View):
     #   \param extruder_nr 0..3
     #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr, opacity):
-        self._extruder_opacity[extruder_nr] = opacity
-        self.currentLayerNumChanged.emit()
+        if 0 <= extruder_nr <= 3:
+            self._extruder_opacity[extruder_nr] = opacity
+            self.currentLayerNumChanged.emit()
 
     def getExtruderOpacities(self):
         return self._extruder_opacity
@@ -278,12 +277,6 @@ class LayerView(View):
     def endRendering(self):
         pass
 
-    def enableLegend(self):
-        Application.getInstance().setViewLegendItems(self._getLegendItems())
-
-    def disableLegend(self):
-        Application.getInstance().setViewLegendItems([])
-
     def event(self, event):
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers == Qt.ControlModifier
@@ -316,9 +309,6 @@ class LayerView(View):
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._layerview_composite_shader)
 
-            if self.getLayerViewType() == self.LAYER_VIEW_TYPE_LINE_TYPE or self._compatibility_mode:
-                self.enableLegend()
-
         elif event.type == Event.ViewDeactivateEvent:
             self._wireprint_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
@@ -328,7 +318,11 @@ class LayerView(View):
             self._composite_pass.setLayerBindings(self._old_layer_bindings)
             self._composite_pass.setCompositeShader(self._old_composite_shader)
 
-            self.disableLegend()
+    def getCurrentLayerMesh(self):
+        return self._current_layer_mesh
+
+    def getCurrentLayerJumps(self):
+        return self._current_layer_jumps
 
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
@@ -370,7 +364,8 @@ class LayerView(View):
             return
         self.resetLayerData()  # Reset the layer data only when job is done. Doing it now prevents "blinking" data.
         self._current_layer_mesh = job.getResult().get("layers")
-        self._current_layer_jumps = job.getResult().get("jumps")
+        if self._show_travel_moves:
+            self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
 
         self._top_layers_job = None
@@ -383,10 +378,12 @@ class LayerView(View):
 
         self.setLayerViewType(int(float(Preferences.getInstance().getValue("layerview/layer_view_type"))));
 
-        self.setExtruderOpacity(0, float(Preferences.getInstance().getValue("layerview/extruder0_opacity")))
-        self.setExtruderOpacity(1, float(Preferences.getInstance().getValue("layerview/extruder1_opacity")))
-        self.setExtruderOpacity(2, float(Preferences.getInstance().getValue("layerview/extruder2_opacity")))
-        self.setExtruderOpacity(3, float(Preferences.getInstance().getValue("layerview/extruder3_opacity")))
+        for extruder_nr, extruder_opacity in enumerate(Preferences.getInstance().getValue("layerview/extruder_opacities").split("|")):
+            try:
+                opacity = float(extruder_opacity)
+            except ValueError:
+                opacity = 1.0
+            self.setExtruderOpacity(extruder_nr, opacity)
 
         self.setShowTravelMoves(bool(Preferences.getInstance().getValue("layerview/show_travel_moves")))
         self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
@@ -402,10 +399,7 @@ class LayerView(View):
             "view/only_show_top_layers",
             "view/force_layer_view_compatibility_mode",
             "layerview/layer_view_type",
-            "layerview/extruder0_opacity",
-            "layerview/extruder1_opacity",
-            "layerview/extruder2_opacity",
-            "layerview/extruder3_opacity",
+            "layerview/extruder_opacities",
             "layerview/show_travel_moves",
             "layerview/show_helpers",
             "layerview/show_skin",
@@ -414,24 +408,6 @@ class LayerView(View):
             return
 
         self._updateWithPreferences()
-
-    def _getLegendItems(self):
-        if self._legend_items is None:
-            theme = Application.getInstance().getTheme()
-            self._legend_items = [
-                {"color": theme.getColor("layerview_inset_0").name(), "title": catalog.i18nc("@label:layerview polygon type", "Outer Wall")}, # Inset0Type
-                {"color": theme.getColor("layerview_inset_x").name(), "title": catalog.i18nc("@label:layerview polygon type", "Inner Wall")}, # InsetXType
-                {"color": theme.getColor("layerview_skin").name(), "title": catalog.i18nc("@label:layerview polygon type", "Top / Bottom")}, # SkinType
-                {"color": theme.getColor("layerview_infill").name(), "title": catalog.i18nc("@label:layerview polygon type", "Infill")}, # InfillType
-                {"color": theme.getColor("layerview_support").name(), "title": catalog.i18nc("@label:layerview polygon type", "Support Skin")}, # SupportType
-                {"color": theme.getColor("layerview_support_infill").name(), "title": catalog.i18nc("@label:layerview polygon type", "Support Infill")}, # SupportInfillType
-                {"color": theme.getColor("layerview_support_interface").name(), "title": catalog.i18nc("@label:layerview polygon type", "Support Interface")},  # SupportInterfaceType
-                {"color": theme.getColor("layerview_skirt").name(), "title": catalog.i18nc("@label:layerview polygon type", "Build Plate Adhesion")}, # SkirtType
-                {"color": theme.getColor("layerview_move_combing").name(), "title": catalog.i18nc("@label:layerview polygon type", "Travel Move")}, # MoveCombingType
-                {"color": theme.getColor("layerview_move_retraction").name(), "title": catalog.i18nc("@label:layerview polygon type", "Retraction Move")}, # MoveRetractionType
-                #{"color": theme.getColor("layerview_none").name(), "title": catalog.i18nc("@label:layerview polygon type", "Unknown")} # NoneType
-            ]
-        return self._legend_items
 
 
 class _CreateTopLayersJob(Job):
