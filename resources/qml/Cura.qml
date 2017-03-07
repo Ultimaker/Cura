@@ -266,11 +266,11 @@ UM.MainWindow
                 anchors.fill: parent;
                 onDropped:
                 {
-                    if(drop.urls.length > 0)
+                    if (drop.urls.length > 0)
                     {
                         // Import models
                         var imported_model = -1;
-                        for(var i in drop.urls)
+                        for (var i in drop.urls)
                         {
                             // There is no endsWith in this version of JS...
                             if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
@@ -287,7 +287,7 @@ UM.MainWindow
                         var import_result = Cura.ContainerManager.importProfiles(drop.urls);
                         if (import_result.message !== "") {
                             messageDialog.text = import_result.message
-                            if(import_result.status == "ok")
+                            if (import_result.status == "ok")
                             {
                                 messageDialog.icon = StandardIcon.Information
                             }
