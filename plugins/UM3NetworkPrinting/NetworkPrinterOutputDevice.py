@@ -600,10 +600,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
-        if self._progress != 0:
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to start a new print job because the printer is busy. Please check the printer."))
-            self._error_message.show()
-            return
         if self._printer_state != "idle":
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
@@ -1063,17 +1059,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if status_code in [200, 201, 202, 204]:
                 pass  # Request was successful!
             else:
-                operation_type = "Unknown"
-                if reply.operation() == QNetworkAccessManager.GetOperation:
-                    operation_type = "Get"
-                elif reply.operation() == QNetworkAccessManager.PutOperation:
-                    operation_type = "Put"
-                elif reply.operation() == QNetworkAccessManager.PostOperation:
-                    operation_type = "Post"
-                elif reply.operation() == QNetworkAccessManager.DeleteOperation:
-                    operation_type = "Delete"
-
-                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s, operation: %s", reply_url, reply.readAll(), status_code, operation_type)
+                Logger.log("d", "Something went wrong when trying to update data of API (%s). Message: %s Statuscode: %s", reply_url, reply.readAll(), status_code)
         else:
             Logger.log("d", "NetworkPrinterOutputDevice got an unhandled operation %s", reply.operation())
 

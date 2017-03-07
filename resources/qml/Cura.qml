@@ -306,18 +306,6 @@ UM.MainWindow
                 }
             }
 
-            Legend
-            {
-                id: legend
-                anchors
-                {
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_margin").height
-                    right: sidebar.left
-                    rightMargin: UM.Theme.getSize("default_margin").width
-                }
-            }
-
             JobSpecs
             {
                 id: jobSpecs
