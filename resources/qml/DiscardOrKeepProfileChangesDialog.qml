@@ -42,13 +42,6 @@ UM.Dialog
             anchors.left: parent.left
             anchors.right: parent.right
             spacing: UM.Theme.getSize("default_margin").width
-            UM.RecolorImage
-            {
-                source: UM.Theme.getIcon("star")
-                width : 30
-                height: width
-                color: UM.Theme.getColor("setting_control_button")
-            }
 
             Label
             {
