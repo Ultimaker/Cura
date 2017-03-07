@@ -144,8 +144,7 @@ class ThreeMFWriter(MeshWriter):
                 translation_matrix.setByTranslation(translation_vector)
                 transformation_matrix.preMultiply(translation_matrix)
 
-
-            root_node = UM.Application.getInstance().getController().getScene().getRoot()
+            root_node = UM.Application.Application.getInstance().getController().getScene().getRoot()
             for node in nodes:
                 if node == root_node:
                     for root_child in node.getChildren():
