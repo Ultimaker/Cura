@@ -258,13 +258,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
         horizontal_expansion = self._getSettingProperty("xy_offset", "value")
-        expansion_polygon = Polygon(numpy.array([
-            [-horizontal_expansion, -horizontal_expansion],
-            [-horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, -horizontal_expansion]
-        ], numpy.float32))
-        return convex_hull.getMinkowskiHull(expansion_polygon)
+        if horizontal_expansion != 0:
+            expansion_polygon = Polygon(numpy.array([
+                [-horizontal_expansion, -horizontal_expansion],
+                [-horizontal_expansion, horizontal_expansion],
+                [horizontal_expansion, horizontal_expansion],
+                [horizontal_expansion, -horizontal_expansion]
+            ], numpy.float32))
+            return convex_hull.getMinkowskiHull(expansion_polygon)
+        else:
+            return convex_hull
 
     def _onChanged(self, *args):
         self._raft_thickness = self._build_volume.getRaftThickness()
