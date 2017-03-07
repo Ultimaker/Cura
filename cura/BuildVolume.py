@@ -385,7 +385,7 @@ class BuildVolume(SceneNode):
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
 
-    def _updateExtraZClearance(self):
+    def _updateExtraZClearance(self) -> None:
         extra_z = 0.0
         extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
         use_extruders = False
