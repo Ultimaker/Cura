@@ -3,6 +3,8 @@
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+from typing import Dict
+from typing import List
 
 import UM.VersionUpgrade
 from UM.Logger import Logger

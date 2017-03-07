@@ -20,6 +20,8 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -53,7 +55,7 @@ from . import MachineActionManager
 
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
 from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
@@ -124,6 +126,8 @@ class CuraApplication(QtApplication):
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
 
+        SettingDefinition.addSettingType("[int]", None, str, None)
+
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
         SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
@@ -148,11 +152,11 @@ class CuraApplication(QtApplication):
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality", UM.Settings.InstanceContainer.InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("extruder_train", UM.Settings.ContainerStack.ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
+                ("quality", InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
+                ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", UM.Settings.InstanceContainer.InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("user", InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
@@ -241,6 +245,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
+        Preferences.getInstance().addPreference("cura/choice_on_profile_override", 0)
 
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
@@ -323,10 +328,34 @@ class CuraApplication(QtApplication):
     ## A reusable dialogbox
     #
     showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
+
     def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None, callback_arguments = []):
         self._message_box_callback = callback
         self._message_box_callback_arguments = callback_arguments
         self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
+
+    showDiscardOrKeepProfileChanges = pyqtSignal()
+
+    def discardOrKeepProfileChanges(self):
+        choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
+        if choice == 1:
+            # don't show dialog and DISCARD the profile
+            self.discardOrKeepProfileChangesClosed("discard")
+        elif choice == 2:
+            # don't show dialog and KEEP the profile
+            self.discardOrKeepProfileChangesClosed("keep")
+        else:
+            # ALWAYS ask whether to keep or discard the profile
+            self.showDiscardOrKeepProfileChanges.emit()
+
+    @pyqtSlot(str)
+    def discardOrKeepProfileChangesClosed(self, option):
+        if option == "discard":
+            global_stack = self.getGlobalContainerStack()
+            for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
+                extruder.getTop().clear()
+
+            global_stack.getTop().clear()
 
     @pyqtSlot(int)
     def messageBoxClosed(self, button):
@@ -648,6 +677,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
+        qmlRegisterType(UserChangesModel, "Cura", 1, 1, "UserChangesModel")
 
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.createContainerManager)
 
@@ -1071,18 +1101,6 @@ class CuraApplication(QtApplication):
 
     fileLoaded = pyqtSignal(str)
 
-    def _onFileLoaded(self, job):
-        nodes = job.getResult()
-        for node in nodes:
-            if node is not None:
-                self.fileLoaded.emit(job.getFileName())
-                node.setSelectable(True)
-                node.setName(os.path.basename(job.getFileName()))
-                op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
-                op.push()
-
-                self.getController().getScene().sceneChanged.emit(node) #Force scene change.
-
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
             return
@@ -1110,10 +1128,8 @@ class CuraApplication(QtApplication):
         else:
             Logger.log("w", "Could not find a mesh in reloaded node.")
 
-    def _openFile(self, file):
-        job = ReadMeshJob(os.path.abspath(file))
-        job.finished.connect(self._onFileLoaded)
-        job.start()
+    def _openFile(self, filename):
+        self.readLocalFile(QUrl.fromLocalFile(filename))
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.

@@ -11,6 +11,9 @@ add_custom_target(tests)
 add_custom_command(TARGET tests POST_BUILD COMMAND "PYTHONPATH=${CMAKE_SOURCE_DIR}/../Uranium/:${CMAKE_SOURCE_DIR}" ${PYTHON_EXECUTABLE} -m pytest -r a --junitxml=${CMAKE_BINARY_DIR}/junit.xml ${CMAKE_SOURCE_DIR} || exit 0)
 
 option(CURA_DEBUGMODE "Enable debug dialog and other debug features" OFF)
+if(CURA_DEBUGMODE)
+    set(_cura_debugmode "ON")
+endif()
 
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")

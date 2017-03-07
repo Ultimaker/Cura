@@ -476,7 +476,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return nodes
 
     def _stripFileToId(self, file):
-        return file.replace("Cura/", "").split(".")[0]
+        mime_type = MimeTypeDatabase.getMimeTypeForFile(file)
+        file = mime_type.stripExtension(file)
+        return file.replace("Cura/", "")
 
     def _getXmlProfileClass(self):
         return self._container_registry.getContainerForMimeType(MimeTypeDatabase.getMimeType("application/x-ultimaker-material-profile"))

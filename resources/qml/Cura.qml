@@ -870,6 +870,21 @@ UM.MainWindow
         }
     }
 
+    DiscardOrKeepProfileChangesDialog
+    {
+        id: discardOrKeepProfileChangesDialog
+    }
+
+    Connections
+    {
+        target: Printer
+        onShowDiscardOrKeepProfileChanges:
+        {
+            discardOrKeepProfileChangesDialog.show()
+        }
+
+    }
+
     Connections
     {
         target: Cura.Actions.addMachine

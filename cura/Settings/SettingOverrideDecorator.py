@@ -8,7 +8,7 @@ from UM.Signal import Signal, signalemitter
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-import UM.Logger
+from UM.Logger import Logger
 
 from UM.Application import Application
 
@@ -99,7 +99,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
                     Application.getInstance().getBackend().needsSlicing()
                     Application.getInstance().getBackend().tickle()
             else:
-                UM.Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
+                Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
         else:
             self._stack.setNextStack(Application.getInstance().getGlobalContainerStack())
 
