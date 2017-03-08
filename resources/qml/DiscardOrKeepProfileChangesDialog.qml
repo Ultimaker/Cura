@@ -13,8 +13,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 500
-    height: 300
+    width: 800
+    height: 400
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -32,7 +32,7 @@ UM.Dialog
         UM.I18nCatalog
         {
             id: catalog;
-            name:"cura"
+            name: "cura"
         }
 
         Row
@@ -42,19 +42,12 @@ UM.Dialog
             anchors.left: parent.left
             anchors.right: parent.right
             spacing: UM.Theme.getSize("default_margin").width
-            UM.RecolorImage
-            {
-                source: UM.Theme.getIcon("star")
-                width : 30
-                height: width
-                color: UM.Theme.getColor("setting_control_button")
-            }
 
             Label
             {
                 text: "You have customized some profile settings.\nWould you like to keep or discard those settings?"
                 anchors.margins: UM.Theme.getSize("default_margin").width
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("default")
                 wrapMode: Text.WordWrap
             }
         }
@@ -74,11 +67,11 @@ UM.Dialog
                     property var extruder_name: userChangesModel.getItem(styleData.row).extruder
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    font: UM.Theme.getFont("default")
+                    font: UM.Theme.getFont("system")
                     text:
                     {
                         var result = styleData.value
-                        if (extruder_name!= "")
+                        if (extruder_name != "")
                         {
                             result += " (" + extruder_name + ")"
                         }
@@ -93,7 +86,7 @@ UM.Dialog
                 Label
                 {
                     text: styleData.value
-                    font: UM.Theme.getFont("default")
+                    font: UM.Theme.getFont("system")
                     color: UM.Theme.getColor("setting_control_disabled_text")
                 }
             }
@@ -103,21 +96,21 @@ UM.Dialog
                 role: "label"
                 title: catalog.i18nc("@title:column", "Profile settings")
                 delegate: labelDelegate
-                width: tableView.width * 0.5
+                width: tableView.width * 0.4
             }
 
             TableViewColumn
             {
                 role: "original_value"
                 title: "Default"
-                width: tableView.width * 0.25
+                width: tableView.width * 0.3
                 delegate: defaultDelegate
             }
             TableViewColumn
             {
                 role: "user_value"
                 title: catalog.i18nc("@title:column", "Customized")
-                width: tableView.width * 0.25 - 1
+                width: tableView.width * 0.3 - 1
             }
             section.property: "category"
             section.delegate: Label
