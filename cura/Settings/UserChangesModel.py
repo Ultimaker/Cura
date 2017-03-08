@@ -10,10 +10,11 @@ from UM.Settings.SettingFunction import SettingFunction
 from collections import OrderedDict
 import os
 
+
 class UserChangesModel(ListModel):
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
-    ExtruderRole = Qt.UserRole +3
+    ExtruderRole = Qt.UserRole + 3
     OriginalValueRole = Qt.UserRole + 4
     UserValueRole = Qt.UserRole + 6
     CategoryRole = Qt.UserRole + 7
