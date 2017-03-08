@@ -2520,7 +2520,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "combing_retract_before_outer_wall":
+                "travel_retract_before_outer_wall":
                 {
                     "label": "Retract Before Outer Wall",
                     "description": "Always retract when moving to start an outer wall.",
