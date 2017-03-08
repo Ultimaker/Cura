@@ -100,11 +100,10 @@ UM.Dialog
                 delegate: labelDelegate
                 width: tableView.width * 0.4
             }
-
             TableViewColumn
             {
                 role: "original_value"
-                title: "Default"
+                title: catalog.i18nc("@title:column", "Default")
                 width: tableView.width * 0.3
                 delegate: defaultDelegate
             }
