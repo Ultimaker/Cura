@@ -1,5 +1,9 @@
 [2.5.0]
-*Included PauseBackendPlugin. This enables pausing the backend and manually start the backend. Thanks to community member Aldo Hoeben for this feature. 
+*Layerview double slider.
+The layerview now has a nice slider with double handles where you can drag maximum layer, minimum layer and the layer range. Thansk to community member Aldo Hoeben for this feature.
+
+*Included PauseBackendPlugin.
+This enables pausing the backend and manually start the backend. Thanks to community member Aldo Hoeben for this feature.
 
 [2.4.0]
 *Project saving & opening
