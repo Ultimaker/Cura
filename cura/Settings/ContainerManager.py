@@ -823,7 +823,7 @@ class ContainerManager(QObject):
     #
     #   \param QVariant<QUrl>, essentially a list with QUrl objects.
     #   \return Dict with keys status, text
-    @pyqtSlot(QVariant, result="QVariantMap")
+    @pyqtSlot("QVariantList", result="QVariantMap")
     def importProfiles(self, file_urls):
         status = "ok"
         results = {"ok": [], "error": []}
