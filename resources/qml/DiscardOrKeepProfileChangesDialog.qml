@@ -22,6 +22,8 @@ UM.Dialog
         {
             changesModel.forceUpdate()
         }
+
+        discardOrKeepProfileChangesDropDownButton.currentIndex = UM.Preferences.getValue("cura/choice_on_profile_override")
     }
 
     Column
