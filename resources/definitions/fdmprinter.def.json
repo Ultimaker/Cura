@@ -2521,6 +2521,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "travel_retract_before_outer_wall":
+                {
+                    "label": "Retract Before Outer Wall",
+                    "description": "Always retract when moving to start an outer wall.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "travel_avoid_other_parts":
                 {
                     "label": "Avoid Printed Parts When Traveling",
