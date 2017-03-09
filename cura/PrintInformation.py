@@ -177,7 +177,7 @@ class PrintInformation(QObject):
             self._active_material_container = active_material_containers[0]
             self._active_material_container.metaDataChanged.connect(self._onMaterialMetaDataChanged)
 
-    def _onMaterialMetaDataChanged(self):
+    def _onMaterialMetaDataChanged(self, *args, **kwargs):
         self._calculateInformation()
 
     @pyqtSlot(str)
