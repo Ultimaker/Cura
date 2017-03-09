@@ -827,6 +827,48 @@ class CuraApplication(QtApplication):
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
+        ### testing
+
+        from cura.Arrange import Arrange, ShapeArray
+        arranger = Arrange(215, 215, 107, 107)
+        arranger.centerFirst()
+
+        # place all objects that are already there
+        root = self.getController().getScene().getRoot()
+        for node_ in DepthFirstIterator(root):
+            # Only count sliceable objects
+            if node_.callDecoration("isSliceable"):
+                Logger.log("d", "  # Placing [%s]" % str(node_))
+                vertices = node_.callDecoration("getConvexHull")
+                points = copy.deepcopy(vertices._points)
+                #points[:,1] = -points[:,1]
+                #points = points[::-1]  # reverse
+                shape_arr = ShapeArray.from_polygon(points)
+                transform = node_._transformation
+                x = transform._data[0][3]
+                y = transform._data[2][3]
+                arranger.place(x, y, shape_arr)
+
+        nodes = []
+        for _ in range(count):
+            new_node = copy.deepcopy(node)
+            vertices = new_node.callDecoration("getConvexHull")
+            points = copy.deepcopy(vertices._points)
+            #points[:, 1] = -points[:, 1]
+            #points = points[::-1]  # reverse
+            shape_arr = ShapeArray.from_polygon(points)
+            transformation = new_node._transformation
+            Logger.log("d", "  # Finding spot for %s" % new_node)
+            x, y, penalty_points = arranger.bestSpot(shape_arr)
+            if x is not None:  # We could find a place
+                transformation._data[0][3] = x
+                transformation._data[2][3] = y
+                arranger.place(x, y, shape_arr)  # take place before the next one
+            # new_node.setTransformation(transformation)
+            nodes.append(new_node)
+        ### testing
+
+
         if node:
             current_node = node
             # Find the topmost group
@@ -834,9 +876,11 @@ class CuraApplication(QtApplication):
                 current_node = current_node.getParent()
 
             op = GroupedOperation()
-            for _ in range(count):
-                new_node = copy.deepcopy(current_node)
+            for new_node in nodes:
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
+            # for _ in range(count):
+            #     new_node = copy.deepcopy(current_node)
+            #     op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
     ##  Center object on platform.
