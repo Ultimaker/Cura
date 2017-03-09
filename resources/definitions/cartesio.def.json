@@ -12,6 +12,9 @@
         "has_machine_materials": true,
         "has_variants": true,
         "variants_name": "Nozzle size",
+        "preferred_variant": "*0.4*",
+        "preferred_material": "*generic_empty*",
+        "preferred_quality": "*coarse*",
         "machine_extruder_trains":
         {
             "0": "cartesio_extruder_0",
