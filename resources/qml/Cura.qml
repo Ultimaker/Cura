@@ -66,6 +66,10 @@ UM.MainWindow
             {
                 id: fileMenu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
+                MenuItem
+                {
+                    action: Cura.Actions.newProject;
+                }
 
                 MenuItem
                 {
@@ -532,6 +536,15 @@ UM.MainWindow
     {
         target: Cura.Actions.preferences
         onTriggered: preferences.visible = true
+    }
+    Connections
+    {
+        target: Cura.Actions.newProject
+        onTriggered:
+        {
+            Printer.deleteAll();
+            Cura.Actions.resetProfile.trigger();
+        }
     }
 
     Connections

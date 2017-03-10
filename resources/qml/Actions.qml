@@ -10,6 +10,7 @@ import Cura 1.0 as Cura
 
 Item
 {
+    property alias newProject: newProjectAction;
     property alias open: openAction;
     property alias loadWorkspace: loadWorkspaceAction;
     property alias quit: quitAction;
@@ -286,6 +287,13 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:file","&Open File...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
+    }
+
+    Action
+    {
+        id: newProjectAction
+        text: catalog.i18nc("@action:inmenu menubar:file","&New Project...");
+        shortcut: StandardKey.New
     }
 
     Action
