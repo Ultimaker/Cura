@@ -347,6 +347,35 @@ Cura.MachineAction
 
                         Label
                         {
+                            text: catalog.i18nc("@label", "Number of Extruders")
+                        }
+
+                        ComboBox
+                        {
+                            id: extruderCountComboBox
+                            model: ListModel
+                            {
+                                id: extruderCountModel
+                                Component.onCompleted:
+                                {
+                                    for(var i = 0; i < manager.definedExtruderCount; i++)
+                                    {
+                                        extruderCountModel.append({text: String(i + 1), value: i});
+                                    }
+                                }
+                            }
+                        currentIndex: machineExtruderCountProvider.properties.value - 1
+                            onActivated:
+                            {
+                                machineExtruderCountProvider.setPropertyValue("value", index + 1);
+                                manager.forceUpdate();
+                            }
+                        }
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+
+                        Label
+                        {
                             text: catalog.i18nc("@label", "Nozzle size")
                             visible: !Cura.MachineManager.hasVariants
                         }
@@ -528,6 +557,16 @@ Cura.MachineAction
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_nozzle_size"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCountProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
     }

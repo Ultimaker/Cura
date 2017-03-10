@@ -29,6 +29,7 @@ class MachineSettingsAction(MachineAction):
 
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
 
     def _reset(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -67,12 +68,20 @@ class MachineSettingsAction(MachineAction):
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
-            if container.getProperty("machine_extruder_count", "value") > 1:
-                # Multiextruder printers are not currently supported
-                Logger.log("d", "Not attaching MachineSettingsAction to %s; Multi-extrusion printers are not supported", container.getId())
-                return
-
             Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+
+    def _onGlobalContainerChanged(self):
+        self.globalContainerChanged.emit()
+
+    globalContainerChanged = pyqtSignal()
+
+    @pyqtProperty(int, notify = globalContainerChanged)
+    def definedExtruderCount(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return 0
+
+        return len(global_container_stack.getMetaDataEntry("machine_extruder_trains"))
 
     @pyqtSlot()
     def forceUpdate(self):
