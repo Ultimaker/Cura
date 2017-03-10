@@ -537,13 +537,31 @@ UM.MainWindow
         target: Cura.Actions.preferences
         onTriggered: preferences.visible = true
     }
+
+    MessageDialog
+    {
+        id: newProjectDialog
+        modality: Qt.ApplicationModal
+        title: catalog.i18nc("@title:window", "New project")
+        text: catalog.i18nc("@info:question", "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings.")
+        standardButtons: StandardButton.Yes | StandardButton.No
+        icon: StandardIcon.Question
+        onYes:
+        {
+            Printer.deleteAll();
+            Cura.Actions.resetProfile.trigger();
+        }
+    }
+
     Connections
     {
         target: Cura.Actions.newProject
         onTriggered:
         {
-            Printer.deleteAll();
-            Cura.Actions.resetProfile.trigger();
+            if(Printer.platformActivity || Cura.MachineManager.hasUserSettings)
+            {
+                newProjectDialog.visible = true
+            }
         }
     }
 
