@@ -92,7 +92,12 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            um_node.addChild(self._convertSavitarNodeToUMNode(child))
+            child_node = self._convertSavitarNodeToUMNode(child)
+            if child_node:
+                um_node.addChild(child_node)
+
+        if um_node.getMeshData() is None and len(um_node.getChildren()) == 0:
+            return None
 
         settings = savitar_node.getSettings()
 
@@ -152,6 +157,8 @@ class ThreeMFReader(MeshReader):
             self._unit = scene_3mf.getUnit()
             for node in scene_3mf.getSceneNodes():
                 um_node = self._convertSavitarNodeToUMNode(node)
+                if um_node is None:
+                    continue
                 # compensate for original center position, if object(s) is/are not around its zero position
 
                 transform_matrix = Matrix()
