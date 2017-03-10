@@ -1340,7 +1340,7 @@
                             "unit": "mm",
                             "type": "float",
                             "default_value": 2.24,
-                            "value": "top_layers * layer_height / math.tan(math.radians(min_skin_angle_for_expansion))",
+                            "value": "top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
                             "minimum_value": "0",
                             "enabled": "expand_upper_skins or expand_lower_skins",
                             "settable_per_mesh": true
