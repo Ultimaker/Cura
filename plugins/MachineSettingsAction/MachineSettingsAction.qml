@@ -348,11 +348,13 @@ Cura.MachineAction
                         Label
                         {
                             text: catalog.i18nc("@label", "Number of Extruders")
+                            visible: extruderCountComboBox.visible
                         }
 
                         ComboBox
                         {
                             id: extruderCountComboBox
+                            visible: manager.definedExtruderCount > 1
                             model: ListModel
                             {
                                 id: extruderCountModel
@@ -364,34 +366,34 @@ Cura.MachineAction
                                     }
                                 }
                             }
-                        currentIndex: machineExtruderCountProvider.properties.value - 1
+                            currentIndex: machineExtruderCountProvider.properties.value - 1
                             onActivated:
                             {
                                 machineExtruderCountProvider.setPropertyValue("value", index + 1);
                                 manager.forceUpdate();
                             }
                         }
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height; visible: extruderCountComboBox.visible }
 
 
                         Label
                         {
                             text: catalog.i18nc("@label", "Nozzle size")
-                            visible: !Cura.MachineManager.hasVariants
+                            visible: nozzleSizeField.visible
                         }
                         TextField
                         {
                             id: nozzleSizeField
                             text: machineNozzleSizeProvider.properties.value
-                            visible: !Cura.MachineManager.hasVariants
+                            visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
                             validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                             onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
                         }
                         Label
                         {
                             text: catalog.i18nc("@label", "mm")
-                            visible: !Cura.MachineManager.hasVariants
-                        }
+                             visible: nozzleSizeField.visible
+                       }
                     }
                 }
             }
