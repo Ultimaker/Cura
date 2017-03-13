@@ -32,14 +32,18 @@ class GCodeReader(MeshReader):
         Application.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
         self._message = None
+        self._layer_number = 0
+        self._extruder_number = 0
+
         self._clearValues()
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
+        self._is_layers_in_file = False
 
     def _clearValues(self):
-        self._extruder = 0
+        self._extruder_number = 0
         self._layer_type = LayerPolygon.Inset0Type
-        self._layer = 0
+        self._layer_number = 0
         self._previous_z = 0
         self._layer_data_builder = LayerDataBuilder.LayerDataBuilder()
         self._center_is_zero = False
@@ -90,10 +94,10 @@ class GCodeReader(MeshReader):
         if countvalid < 2:
             return False
         try:
-            self._layer_data_builder.addLayer(self._layer)
-            self._layer_data_builder.setLayerHeight(self._layer, path[0][2])
-            self._layer_data_builder.setLayerThickness(self._layer, math.fabs(current_z - self._previous_z))
-            this_layer = self._layer_data_builder.getLayer(self._layer)
+            self._layer_data_builder.addLayer(self._layer_number)
+            self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
+            self._layer_data_builder.setLayerThickness(self._layer_number, math.fabs(current_z - self._previous_z))
+            this_layer = self._layer_data_builder.getLayer(self._layer_number)
         except ValueError:
             return False
         count = len(path)
@@ -116,7 +120,7 @@ class GCodeReader(MeshReader):
                     line_widths[i - 1] = 0.2
             i += 1
 
-        this_poly = LayerPolygon(self._extruder, line_types, points, line_widths, line_thicknesses)
+        this_poly = LayerPolygon(self._extruder_number, line_types, points, line_widths, line_thicknesses)
         this_poly.buildCache()
 
         this_layer.polygons.append(this_poly)
@@ -133,18 +137,18 @@ class GCodeReader(MeshReader):
                 self._previous_z = z
             z = params.z
         if params.e is not None:
-            if params.e > e[self._extruder]:
+            if params.e > e[self._extruder_number]:
                 path.append([x, y, z, self._layer_type])  # extrusion
             else:
                 path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
-            e[self._extruder] = params.e
+            e[self._extruder_number] = params.e
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         if z_changed:
             if not self._is_layers_in_file:
                 if len(path) > 1 and z > 0:
                     if self._createPolygon(z, path):
-                        self._layer += 1
+                        self._layer_number += 1
                     path.clear()
                 else:
                     path.clear()
@@ -159,7 +163,7 @@ class GCodeReader(MeshReader):
 
     def _gCode92(self, position, params, path):
         if params.e is not None:
-            position.e[self._extruder] = params.e
+            position.e[self._extruder_number] = params.e
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -182,13 +186,13 @@ class GCodeReader(MeshReader):
         return position
 
     def _processTCode(self, T, line, position, path):
-        self._extruder = T
-        if self._extruder + 1 > len(position.e):
-            position.e.extend([0] * (self._extruder - len(position.e) + 1))
+        self._extruder_number = T
+        if self._extruder_number + 1 > len(position.e):
+            position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         if not self._is_layers_in_file:
             if len(path) > 1 and position[2] > 0:
                 if self._createPolygon(position[2], path):
-                    self._layer += 1
+                    self._layer_number += 1
                 path.clear()
             else:
                 path.clear()
@@ -202,11 +206,12 @@ class GCodeReader(MeshReader):
         self._cancelled = False
 
         scene_node = SceneNode()
-        scene_node.getBoundingBox = self._getNullBoundingBox  # Manually set bounding box, because mesh doesn't have mesh data
+        # Override getBoundingBox function of the sceneNode, as this node should return a bounding box, but there is no
+        # real data to calculate it from.
+        scene_node.getBoundingBox = self._getNullBoundingBox
 
-        glist = []
+        gcode_list = []
         self._is_layers_in_file = False
-
 
         Logger.log("d", "Opening file %s" % file_name)
 
@@ -215,7 +220,7 @@ class GCodeReader(MeshReader):
             current_line = 0
             for line in file:
                 file_lines += 1
-                glist.append(line)
+                gcode_list.append(line)
                 if not self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                     self._is_layers_in_file = True
             file.seek(0)
@@ -256,12 +261,13 @@ class GCodeReader(MeshReader):
                         self._layer_type = LayerPolygon.SupportType
                     elif type == "FILL":
                         self._layer_type = LayerPolygon.InfillType
+
                 if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                     try:
                         layer_number = int(line[len(self._layer_keyword):])
                         self._createPolygon(current_position[2], current_path)
                         current_path.clear()
-                        self._layer = layer_number
+                        self._layer_number = layer_number
                     except:
                         pass
                 if line[0] == ";":
@@ -276,7 +282,7 @@ class GCodeReader(MeshReader):
 
             if not self._is_layers_in_file and len(current_path) > 1 and current_position[2] > 0:
                 if self._createPolygon(current_position[2], current_path):
-                    self._layer += 1
+                    self._layer_number += 1
                 current_path.clear()
 
         material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
@@ -288,13 +294,13 @@ class GCodeReader(MeshReader):
         scene_node.addDecorator(decorator)
 
         gcode_list_decorator = GCodeListDecorator()
-        gcode_list_decorator.setGCodeList(glist)
+        gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
 
-        if self._layer == 0:
+        if self._layer_number == 0:
             Logger.log("w", "File %s doesn't contain any valid layers" % file_name)
 
         settings = Application.getInstance().getGlobalContainerStack()
