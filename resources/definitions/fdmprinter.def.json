@@ -1094,7 +1094,8 @@
                     "label": "Spaghetti Infill",
                     "description": "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is very unpredictable.",
                     "type": "bool",
-                    "default_value": "False",
+                    "default_value": false,
+                    "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 },
                 "spaghetti_max_infill_angle":
@@ -1252,9 +1253,9 @@
                     "default_value": 0.1,
                     "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
-                    "maximum_value": "resolveOrValue('layer_height') * 8",
+                    "maximum_value": "resolveOrValue('layer_height') * (1.45 if spaghetti_infill_enabled else 8)",
                     "value": "resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_steps":
@@ -1265,8 +1266,8 @@
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
-                    "maximum_value": "(20 - math.log(infill_line_distance) / math.log(2)) if infill_line_distance > 0 else 0",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
+                    "maximum_value": "(20 - math.log(infill_line_distance) / math.log(2)) if infill_line_distance > 0 and not spaghetti_infill_enabled else 0",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv' not spaghetti_infill_enabled",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
