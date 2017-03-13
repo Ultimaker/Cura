@@ -105,6 +105,8 @@ class CuraEngineBackend(QObject, Backend):
 
         self._backend_log_max_lines = 20000  # Maximum number of lines to buffer
         self._error_message = None  # Pop-up message that shows errors.
+        self._last_num_objects = 0  # Count number of objects to see if there is something changed
+        self._postponed_scene_change_sources = []  # scene change is postponed (by a tool)
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
@@ -340,21 +342,32 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
-        if self._tool_active:
-            return
-
         if type(source) is not SceneNode:
             return
 
-        if source is self._scene.getRoot():
-            return
+        root_scene_nodes_changed = False
+        if source == self._scene.getRoot():
+            num_objects = 0
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                # Only count sliceable objects
+                if node.callDecoration("isSliceable"):
+                    num_objects += 1
+            if num_objects != self._last_num_objects:
+                self._last_num_objects = num_objects
+                root_scene_nodes_changed = True
+            else:
+                return
 
-        self.determineAutoSlicing()
+        if not source.callDecoration("isGroup") and not root_scene_nodes_changed:
+            if source.getMeshData() is None:
+                return
+            if source.getMeshData().getVertices() is None:
+                return
 
-        if source.getMeshData() is None:
-            return
-
-        if source.getMeshData().getVertices() is None:
+        if self._tool_active:
+            # do it later, each source only has to be done once
+            if source not in self._postponed_scene_change_sources:
+                self._postponed_scene_change_sources.append(source)
             return
 
         self.needsSlicing()
@@ -501,7 +514,11 @@ class CuraEngineBackend(QObject, Backend):
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._tool_active = False  # React on scene change again
-        self.determineAutoSlicing()
+        self.determineAutoSlicing()  # Switch timer on if appropriate
+        # Process all the postponed scene changes
+        while self._postponed_scene_change_sources:
+            source = self._postponed_scene_change_sources.pop(0)
+            self._onSceneChanged(source)
 
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):

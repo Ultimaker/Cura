@@ -253,21 +253,21 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##  Offset the convex hull with settings that influence the collision area.
     #
-    #   This also applies a minimum offset of 0.5mm, because of edge cases due
-    #   to the rounding we apply.
-    #
     #   \param convex_hull Polygon of the original convex hull.
     #   \return New Polygon instance that is offset with everything that
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
-        horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
-        expansion_polygon = Polygon(numpy.array([
-            [-horizontal_expansion, -horizontal_expansion],
-            [-horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, -horizontal_expansion]
-        ], numpy.float32))
-        return convex_hull.getMinkowskiHull(expansion_polygon)
+        horizontal_expansion = self._getSettingProperty("xy_offset", "value")
+        if horizontal_expansion != 0:
+            expansion_polygon = Polygon(numpy.array([
+                [-horizontal_expansion, -horizontal_expansion],
+                [-horizontal_expansion, horizontal_expansion],
+                [horizontal_expansion, horizontal_expansion],
+                [horizontal_expansion, -horizontal_expansion]
+            ], numpy.float32))
+            return convex_hull.getMinkowskiHull(expansion_polygon)
+        else:
+            return convex_hull
 
     def _onChanged(self, *args):
         self._raft_thickness = self._build_volume.getRaftThickness()

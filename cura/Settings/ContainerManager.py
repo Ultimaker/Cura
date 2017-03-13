@@ -823,7 +823,7 @@ class ContainerManager(QObject):
     #
     #   \param QVariant<QUrl>, essentially a list with QUrl objects.
     #   \return Dict with keys status, text
-    @pyqtSlot(QVariant, result="QVariantMap")
+    @pyqtSlot("QVariantList", result="QVariantMap")
     def importProfiles(self, file_urls):
         status = "ok"
         results = {"ok": [], "error": []}
@@ -856,10 +856,10 @@ class ContainerManager(QObject):
         return self._container_registry.importProfile(path)
 
     @pyqtSlot("QVariantList", QUrl, str)
-    def exportProfile(self, instance_id, file_url, file_type):
+    def exportProfile(self, instance_id: str, file_url: QUrl, file_type: str) -> None:
         if not file_url.isValid():
             return
         path = file_url.toLocalFile()
         if not path:
             return
-            self._container_registry.exportProfile(instance_id, path, file_type)
+        self._container_registry.exportProfile(instance_id, path, file_type)

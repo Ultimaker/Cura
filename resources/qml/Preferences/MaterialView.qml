@@ -155,8 +155,10 @@ TabView
                     decimals: 2
                     maximumValue: 1000
 
-                    onEditingFinished: base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
-                    onValueChanged: updateCostPerMeter()
+                    onValueChanged: {
+                        base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
+                        updateCostPerMeter()
+                    }
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
@@ -170,8 +172,10 @@ TabView
                     decimals: 0
                     maximumValue: 10000
 
-                    onEditingFinished: base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
-                    onValueChanged: updateCostPerMeter()
+                    onValueChanged: {
+                        base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
+                        updateCostPerMeter()
+                    }
                 }
 
                 Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }

@@ -385,16 +385,20 @@ class BuildVolume(SceneNode):
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
 
-    def _updateExtraZClearance(self):
-        extra_z = None
+    def _updateExtraZClearance(self) -> None:
+        extra_z = 0.0
         extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        use_extruders = False
         for extruder in extruders:
-            retraction_hop = extruder.getProperty("retraction_hop", "value")
-            if extra_z is None or retraction_hop > extra_z:
-                extra_z = retraction_hop
-        if extra_z is None:
+            if extruder.getProperty("retraction_hop_enabled", "value"):
+                retraction_hop = extruder.getProperty("retraction_hop", "value")
+                if extra_z is None or retraction_hop > extra_z:
+                    extra_z = retraction_hop
+            use_extruders = True
+        if not use_extruders:
             # If no extruders, take global value.
-            extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
+            if self._global_container_stack.getProperty("retraction_hop_enabled", "value"):
+                extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
         if extra_z != self._extra_z_clearance:
             self._extra_z_clearance = extra_z
 
@@ -890,7 +894,7 @@ class BuildVolume(SceneNode):
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
-    _extra_z_settings = ["retraction_hop"]
+    _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]

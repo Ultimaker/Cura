@@ -30,8 +30,7 @@ class LayerViewProxy(QObject):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             return active_view.getMaxLayers()
-        #return 100
-    
+
     @pyqtProperty(int, notify = currentLayerChanged)
     def currentLayer(self):
         active_view = self._controller.getActiveView()
@@ -124,25 +123,13 @@ class LayerViewProxy(QObject):
             return active_view.getExtruderCount()
         return 0
 
-    @pyqtSlot()
-    def enableLegend(self):
-        active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.enableLegend()
-
-    @pyqtSlot()
-    def disableLegend(self):
-        active_view = self._controller.getActiveView()
-        if type(active_view) == LayerView.LayerView.LayerView:
-            active_view.disableLegend()
-
     def _layerActivityChanged(self):
         self.activityChanged.emit()
             
     def _onLayerChanged(self):
         self.currentLayerChanged.emit()
         self._layerActivityChanged()
-        
+
     def _onMaxLayersChanged(self):
         self.maxLayersChanged.emit()
 

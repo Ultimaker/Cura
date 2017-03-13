@@ -18,6 +18,10 @@ from cura.QualityManager import QualityManager
 from UM.Scene.SceneNode import SceneNode
 
 MYPY = False
+
+import Savitar
+import numpy
+
 try:
     if not MYPY:
         import xml.etree.cElementTree as ET
@@ -38,98 +42,10 @@ class ThreeMFReader(MeshReader):
         self._base_name = ""
         self._unit = None
 
-    def _createNodeFromObject(self, object, name = ""):
-        node = SceneNode()
-        node.setName(name)
-        mesh_builder = MeshBuilder()
-        vertex_list = []
-
-        components = object.find(".//3mf:components", self._namespaces)
-        if components:
-            for component in components:
-                id = component.get("objectid")
-                new_object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
-                new_node = self._createNodeFromObject(new_object, self._base_name + "_" + str(id))
-                node.addChild(new_node)
-                transform = component.get("transform")
-                if transform is not None:
-                    new_node.setTransformation(self._createMatrixFromTransformationString(transform))
-
-        # for vertex in entry.mesh.vertices.vertex:
-        for vertex in object.findall(".//3mf:vertex", self._namespaces):
-            vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
-            Job.yieldThread()
-
-        xml_settings = list(object.findall(".//cura:setting", self._namespaces))
-
-        # Add the setting override decorator, so we can add settings to this node.
-        if xml_settings:
-            node.addDecorator(SettingOverrideDecorator())
-
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
-            # Ensure the correct next container for the SettingOverride decorator is set.
-            if global_container_stack:
-                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
-                # Ensure that all extruder data is reset
-                if not multi_extrusion:
-                    default_stack_id = global_container_stack.getId()
-                else:
-                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
-                    if default_stack:
-                        default_stack_id = default_stack.getId()
-                    else:
-                        default_stack_id = global_container_stack.getId()
-                node.callDecoration("setActiveExtruder", default_stack_id)
-
-                # Get the definition & set it
-                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
-                node.callDecoration("getStack").getTop().setDefinition(definition)
-
-            setting_container = node.callDecoration("getStack").getTop()
-            for setting in xml_settings:
-                setting_key = setting.get("key")
-                setting_value = setting.text
-
-                # Extruder_nr is a special case.
-                if setting_key == "extruder_nr":
-                    extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
-                    if extruder_stack:
-                        node.callDecoration("setActiveExtruder", extruder_stack.getId())
-                    else:
-                        Logger.log("w", "Unable to find extruder in position %s", setting_value)
-                    continue
-                setting_container.setProperty(setting_key,"value", setting_value)
-
-        if len(node.getChildren()) > 0:
-            group_decorator = GroupDecorator()
-            node.addDecorator(group_decorator)
-
-        triangles = object.findall(".//3mf:triangle", self._namespaces)
-        mesh_builder.reserveFaceCount(len(triangles))
-
-        for triangle in triangles:
-            v1 = int(triangle.get("v1"))
-            v2 = int(triangle.get("v2"))
-            v3 = int(triangle.get("v3"))
-
-            mesh_builder.addFaceByPoints(vertex_list[v1][0], vertex_list[v1][1], vertex_list[v1][2],
-                                         vertex_list[v2][0], vertex_list[v2][1], vertex_list[v2][2],
-                                         vertex_list[v3][0], vertex_list[v3][1], vertex_list[v3][2])
-
-            Job.yieldThread()
-
-        # TODO: We currently do not check for normals and simply recalculate them.
-        mesh_builder.calculateNormals(fast=True)
-        mesh_builder.setFileName(name)
-        mesh_data = mesh_builder.build()
-
-        if len(mesh_data.getVertices()):
-            node.setMeshData(mesh_data)
-
-        node.setSelectable(True)
-        return node
-
     def _createMatrixFromTransformationString(self, transformation):
+        if transformation == "":
+            return Matrix()
+
         splitted_transformation = transformation.split()
         ## Transformation is saved as:
         ## M00 M01 M02 0.0
@@ -156,51 +72,103 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
+
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scenenode.
+    #   \returns Uranium Scenen node.
+    def _convertSavitarNodeToUMNode(self, savitar_node):
+        um_node = SceneNode()
+        transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
+        um_node.setTransformation(transformation)
+        mesh_builder = MeshBuilder()
+
+        data = numpy.fromstring(savitar_node.getMeshData().getFlatVerticesAsBytes(), dtype=numpy.float32)
+
+        vertices = numpy.resize(data, (int(data.size / 3), 3))
+        mesh_builder.setVertices(vertices)
+        mesh_builder.calculateNormals(fast=True)
+        mesh_data = mesh_builder.build()
+
+        if len(mesh_data.getVertices()):
+            um_node.setMeshData(mesh_data)
+
+        for child in savitar_node.getChildren():
+            child_node = self._convertSavitarNodeToUMNode(child)
+            if child_node:
+                um_node.addChild(child_node)
+
+        if um_node.getMeshData() is None and len(um_node.getChildren()) == 0:
+            return None
+
+        settings = savitar_node.getSettings()
+
+        # Add the setting override decorator, so we can add settings to this node.
+        if settings:
+            um_node.addDecorator(SettingOverrideDecorator())
+
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            # Ensure the correct next container for the SettingOverride decorator is set.
+            if global_container_stack:
+                multi_extrusion = global_container_stack.getProperty("machine_extruder_count", "value") > 1
+
+                # Ensure that all extruder data is reset
+                if not multi_extrusion:
+                    default_stack_id = global_container_stack.getId()
+                else:
+                    default_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                    if default_stack:
+                        default_stack_id = default_stack.getId()
+                    else:
+                        default_stack_id = global_container_stack.getId()
+                um_node.callDecoration("setActiveExtruder", default_stack_id)
+
+                # Get the definition & set it
+                definition = QualityManager.getInstance().getParentMachineDefinition(global_container_stack.getBottom())
+                um_node.callDecoration("getStack").getTop().setDefinition(definition)
+
+            setting_container = um_node.callDecoration("getStack").getTop()
+
+            for key in settings:
+                setting_value = settings[key]
+
+                # Extruder_nr is a special case.
+                if key == "extruder_nr":
+                    extruder_stack = ExtruderManager.getInstance().getExtruderStack(int(setting_value))
+                    if extruder_stack:
+                        um_node.callDecoration("setActiveExtruder", extruder_stack.getId())
+                    else:
+                        Logger.log("w", "Unable to find extruder in position %s", setting_value)
+                    continue
+                setting_container.setProperty(key,"value", setting_value)
+
+        if len(um_node.getChildren()) > 0:
+            group_decorator = GroupDecorator()
+            um_node.addDecorator(group_decorator)
+        um_node.setSelectable(True)
+        return um_node
+
     def read(self, file_name):
         result = []
         # The base object of 3mf is a zipped archive.
-        archive = zipfile.ZipFile(file_name, "r")
-        self._base_name = os.path.basename(file_name)
         try:
-            self._root = ET.parse(archive.open("3D/3dmodel.model"))
-            self._unit = self._root.getroot().get("unit")
-
-            build_items = self._root.findall("./3mf:build/3mf:item", self._namespaces)
-
-            for build_item in build_items:
-                id = build_item.get("objectid")
-                object = self._root.find("./3mf:resources/3mf:object[@id='{0}']".format(id), self._namespaces)
-                if "type" in object.attrib:
-                    if object.attrib["type"] == "support" or object.attrib["type"] == "other":
-                        # Ignore support objects, as cura does not support these.
-                        # We can't guarantee that they wont be made solid.
-                        # We also ignore "other", as I have no idea what to do with them.
-                        Logger.log("w", "3MF file contained an object of type %s which is not supported by Cura", object.attrib["type"])
-                        continue
-                    elif object.attrib["type"] == "solidsupport" or object.attrib["type"] == "model":
-                        pass  # Load these as normal
-                    else:
-                        # We should technically fail at this point because it's an invalid 3MF, but try to continue anyway.
-                        Logger.log("e", "3MF file contained an object of type %s which is not supported by the 3mf spec",
-                                   object.attrib["type"])
-                        continue
-
-                build_item_node = self._createNodeFromObject(object, self._base_name + "_" + str(id))
-
+            archive = zipfile.ZipFile(file_name, "r")
+            self._base_name = os.path.basename(file_name)
+            parser = Savitar.ThreeMFParser()
+            scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
+            self._unit = scene_3mf.getUnit()
+            for node in scene_3mf.getSceneNodes():
+                um_node = self._convertSavitarNodeToUMNode(node)
+                if um_node is None:
+                    continue
                 # compensate for original center position, if object(s) is/are not around its zero position
+
                 transform_matrix = Matrix()
-                mesh_data = build_item_node.getMeshData()
+                mesh_data = um_node.getMeshData()
                 if mesh_data is not None:
                     extents = mesh_data.getExtents()
                     center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
                     transform_matrix.setByTranslation(center_vector)
-
-                # offset with transform from 3mf
-                transform = build_item.get("transform")
-                if transform is not None:
-                    transform_matrix.multiply(self._createMatrixFromTransformationString(transform))
-
-                build_item_node.setTransformation(transform_matrix)
+                transform_matrix.multiply(um_node.getLocalTransformation())
+                um_node.setTransformation(transform_matrix)
 
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
 
@@ -215,9 +183,9 @@ class ThreeMFReader(MeshReader):
                 # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
                 # build volume.
                 if global_container_stack:
-                    translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
-                                                y = -global_container_stack.getProperty("machine_depth", "value") / 2,
-                                                z = 0)
+                    translation_vector = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y=-global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z=0)
                     translation_matrix = Matrix()
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)
@@ -228,12 +196,13 @@ class ThreeMFReader(MeshReader):
                 transformation_matrix.multiply(scale_matrix)
 
                 # Pre multiply the transformation with the loaded transformation, so the data is handled correctly.
-                build_item_node.setTransformation(build_item_node.getLocalTransformation().preMultiply(transformation_matrix))
+                um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
 
-                result.append(build_item_node)
+                result.append(um_node)
 
-        except Exception as e:
-            Logger.log("e", "An exception occurred in 3mf reader: %s", e)
+        except Exception:
+            Logger.logException("e", "An exception occurred in 3mf reader.")
+            return []
 
         return result
 
