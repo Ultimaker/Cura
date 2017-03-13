@@ -282,7 +282,9 @@ class GCodeReader(MeshReader):
                         self._layer_number = layer_number
                     except:
                         pass
-                if line[0] == ";":
+
+                # This line is a comment. Ignore it.
+                if line.startswith(";"):
                     continue
 
                 G = self._getInt(line, "G")
