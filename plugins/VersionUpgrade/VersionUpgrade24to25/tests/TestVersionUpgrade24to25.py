@@ -125,15 +125,24 @@ foo = bar
 #   version of preferences.
 @pytest.mark.parametrize("data", test_upgrade_preferences_removed_settings_data)
 def test_upgradePreferencesRemovedSettings(data, upgrader):
+    #Get the settings from the original file.
+    original_parser = configparser.ConfigParser(interpolation = None)
+    original_parser.read_string(data["file_data"])
+    settings = set()
+    if original_parser.has_section("general") and "visible_settings" in original_parser["general"]:
+        settings = set(original_parser["general"]["visible_settings"].split(";"))
+
+    #Perform the upgrade.
     _, upgraded_preferences = upgrader.upgradePreferences(data["file_data"], "<string>")
     upgraded_preferences = upgraded_preferences[0]
 
     #Find whether the removed setting is removed from the file now.
-    bad_setting = "start_layers_at_same_position" #One of the forbidden settings.
+    settings -= VersionUpgrade24to25._removed_settings
     parser = configparser.ConfigParser(interpolation = None)
     parser.read_string(upgraded_preferences)
-    if parser.has_section("general") and "visible_settings" in parser["general"]:
-        assert bad_setting not in parser["general"]["visible_settings"]
+    assert (parser.has_section("general") and "visible_settings" in parser["general"]) == (len(settings) > 0) #If there are settings, there must also be a preference.
+    if settings:
+        assert settings == set(parser["general"]["visible_settings"].split(";"))
 
 test_upgrade_instance_container_removed_settings_data = [
     {
@@ -161,12 +170,21 @@ type = instance_container
 #   version of instance containers.
 @pytest.mark.parametrize("data", test_upgrade_instance_container_removed_settings_data)
 def test_upgradeInstanceContainerRemovedSettings(data, upgrader):
+    #Get the settings from the original file.
+    original_parser = configparser.ConfigParser(interpolation = None)
+    original_parser.read_string(data["file_data"])
+    settings = set()
+    if original_parser.has_section("values"):
+        settings = set(original_parser["values"])
+
+    #Perform the upgrade.
     _, upgraded_container = upgrader.upgradeInstanceContainer(data["file_data"], "<string>")
     upgraded_container = upgraded_container[0]
 
     #Find whether the forbidden setting is still in the container.
-    bad_setting = "start_layers_at_same_position" #One of the forbidden settings.
+    settings -= VersionUpgrade24to25._removed_settings
     parser = configparser.ConfigParser(interpolation = None)
     parser.read_string(upgraded_container)
-    if parser.has_section("values"):
-        assert bad_setting not in parser["values"]
+    assert parser.has_section("values") == (len(settings) > 0) #If there are settings, there must also be the values category.
+    if settings:
+        assert settings == set(parser["values"])
