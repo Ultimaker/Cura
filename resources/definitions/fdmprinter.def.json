@@ -4140,7 +4140,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "0",
                     "maximum_value": "89",
-                    "default_value": 50,
+                    "default_value": 40,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
                 },
