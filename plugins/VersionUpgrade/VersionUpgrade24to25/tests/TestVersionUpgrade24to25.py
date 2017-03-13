@@ -93,3 +93,44 @@ version = not-a-text-version-number
 def test_cfgVersionBad(data, upgrader):
     with pytest.raises(data["exception"]):
         upgrader.getCfgVersion(data["file_data"])
+
+test_removed_settings_data = [
+    {
+        "test_name": "Removed Setting",
+        "file_data": """[general]
+visible_settings = baby;you;know;how;I;like;to;start_layers_at_same_position
+""",
+    },
+    {
+        "test_name": "No Removed Setting",
+        "file_data": """[general]
+visible_settings = baby;you;now;how;I;like;to;eat;chocolate;muffins
+"""
+},
+    {
+        "test_name": "No Visible Settings Key",
+        "file_data": """[general]
+cura = cool
+"""
+    },
+    {
+        "test_name": "No General Category",
+        "file_data": """[foos]
+foo = bar
+"""
+    }
+]
+
+##  Tests whether the settings that should be removed are removed for the 2.5
+#   version of preferences.
+@pytest.mark.parametrize("data", test_removed_settings_data)
+def test_upgradePreferencesRemovedSettings(data, upgrader):
+    _, upgraded_preferences = upgrader.upgradePreferences(data["file_data"], "<string>")
+    upgraded_preferences = upgraded_preferences[0]
+
+    #Find whether the removed setting is removed from the file now.
+    bad_setting = "start_layers_at_same_position"
+    parser = configparser.ConfigParser(interpolation = None)
+    parser.read_string(upgraded_preferences)
+    if parser.has_section("general") and "visible_settings" in parser["general"]:
+        assert bad_setting not in parser["general"]["visible_settings"]
