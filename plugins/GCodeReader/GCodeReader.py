@@ -34,7 +34,7 @@ class GCodeReader(MeshReader):
         self._message = None
         self._layer_number = 0
         self._extruder_number = 0
-
+        self._layer_type = LayerPolygon.Inset0Type
         self._clearValues()
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
@@ -271,6 +271,8 @@ class GCodeReader(MeshReader):
                         self._layer_type = LayerPolygon.SupportType
                     elif type == "FILL":
                         self._layer_type = LayerPolygon.InfillType
+                    else:
+                        Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
                 if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                     try:
