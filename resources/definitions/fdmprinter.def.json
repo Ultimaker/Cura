@@ -4121,7 +4121,7 @@
                 },
                 "mold_width":
                 {
-                    "label": "Minmal Mold Width",
+                    "label": "Minimal Mold Width",
                     "description": "The minimal distance between the ouside of the mold and the outside of the model.",
                     "unit": "mm",
                     "type": "float",
