@@ -49,7 +49,7 @@ version = -20
 #   version number in that CFG file.
 #   \param upgrader The instance of the upgrade class to test.
 @pytest.mark.parametrize("data", test_cfg_version_good_data)
-def test_cfg_version_good(data, upgrader):
+def test_cfgVersionGood(data, upgrader):
     version = upgrader.getCfgVersion(data["file_data"])
     assert version == data["version"]
 
@@ -90,6 +90,6 @@ version = not-a-text-version-number
 #   exception it needs to throw.
 #   \param upgrader The instance of the upgrader to test.
 @pytest.mark.parametrize("data", test_cfg_version_bad_data)
-def test_cfg_version_bad(data, upgrader):
+def test_cfgVersionBad(data, upgrader):
     with pytest.raises(data["exception"]):
         upgrader.getCfgVersion(data["file_data"])
