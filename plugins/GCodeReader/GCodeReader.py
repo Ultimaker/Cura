@@ -180,11 +180,11 @@ class GCodeReader(MeshReader):
 
     def _processGCode(self, G, line, position, path):
         func = getattr(self, "_gCode%s" % G, None)
-        x = self._getFloat(line, "X")
-        y = self._getFloat(line, "Y")
-        z = self._getFloat(line, "Z")
-        e = self._getFloat(line, "E")
         if func is not None:
+            x = self._getFloat(line, "X")
+            y = self._getFloat(line, "Y")
+            z = self._getFloat(line, "Z")
+            e = self._getFloat(line, "E")
             if (x is not None and x < 0) or (y is not None and y < 0):
                 self._center_is_zero = True
             params = self._position(x, y, z, e)
