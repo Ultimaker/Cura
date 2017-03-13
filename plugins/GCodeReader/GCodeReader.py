@@ -131,11 +131,13 @@ class GCodeReader(MeshReader):
         x = params.x if params.x is not None else x
         y = params.y if params.y is not None else y
         z_changed = False
+
         if params.z is not None:
             if z != params.z:
                 z_changed = True
                 self._previous_z = z
             z = params.z
+
         if params.e is not None:
             if params.e > e[self._extruder_number]:
                 path.append([x, y, z, self._layer_type])  # extrusion
@@ -144,6 +146,7 @@ class GCodeReader(MeshReader):
             e[self._extruder_number] = params.e
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
+
         if z_changed:
             if not self._is_layers_in_file:
                 if len(path) > 1 and z > 0:
@@ -152,7 +155,11 @@ class GCodeReader(MeshReader):
                     path.clear()
                 else:
                     path.clear()
+
         return self._position(x, y, z, e)
+
+    # G0 and G1 should be handled exactly the same.
+    _gCode1 = _gCode0
 
     def _gCode28(self, position, params, path):
         return self._position(
@@ -164,13 +171,12 @@ class GCodeReader(MeshReader):
     def _gCode92(self, position, params, path):
         if params.e is not None:
             position.e[self._extruder_number] = params.e
+
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
             params.z if params.z is not None else position.z,
             position.e)
-
-    _gCode1 = _gCode0
 
     def _processGCode(self, G, line, position, path):
         func = getattr(self, "_gCode%s" % G, None)
