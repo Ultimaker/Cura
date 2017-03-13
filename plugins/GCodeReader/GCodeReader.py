@@ -161,6 +161,7 @@ class GCodeReader(MeshReader):
     # G0 and G1 should be handled exactly the same.
     _gCode1 = _gCode0
 
+    ##  Home the head.
     def _gCode28(self, position, params, path):
         return self._position(
             params.x if params.x is not None else position.x,
@@ -168,6 +169,8 @@ class GCodeReader(MeshReader):
             0,
             position.e)
 
+    ##  Reset the current position to the values specified.
+    #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position, params, path):
         if params.e is not None:
             position.e[self._extruder_number] = params.e
@@ -253,6 +256,7 @@ class GCodeReader(MeshReader):
                     self._message.setProgress(math.floor(current_line / file_lines * 100))
                 if len(line) == 0:
                     continue
+
                 if line.find(self._type_keyword) == 0:
                     type = line[len(self._type_keyword):].strip()
                     if type == "WALL-INNER":
@@ -282,6 +286,7 @@ class GCodeReader(MeshReader):
                 G = self._getInt(line, "G")
                 if G is not None:
                     current_position = self._processGCode(G, line, current_position, current_path)
+
                 T = self._getInt(line, "T")
                 if T is not None:
                     current_position = self._processTCode(T, line, current_position, current_path)
