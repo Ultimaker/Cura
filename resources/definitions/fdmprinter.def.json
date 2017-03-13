@@ -4138,7 +4138,7 @@
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
-                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "support_angle",
                     "maximum_value": "89",
                     "default_value": 40,
                     "settable_per_mesh": true,
