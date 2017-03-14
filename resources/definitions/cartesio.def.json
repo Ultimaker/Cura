@@ -14,7 +14,7 @@
         "variants_name": "Nozzle size",
         "preferred_variant": "*0.4*",
         "preferred_material": "*pla*",
-        "preferred_quality": "*coarse*",
+        "preferred_quality": "*draft*",
         "machine_extruder_trains":
         {
             "0": "cartesio_extruder_0",
