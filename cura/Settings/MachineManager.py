@@ -731,8 +731,11 @@ class MachineManager(QObject):
             else:
                 self._material_incompatible_message.hide()
 
-            new_quality_id = old_quality.getId()
-            quality_type = old_quality.getMetaDataEntry("quality_type")
+            quality_type = None
+            new_quality_id = None
+            if old_quality:
+                new_quality_id = old_quality.getId()
+                quality_type = old_quality.getMetaDataEntry("quality_type")
             if old_quality_changes:
                 quality_type = old_quality_changes.getMetaDataEntry("quality_type")
                 new_quality_id = old_quality_changes.getId()
@@ -740,16 +743,20 @@ class MachineManager(QObject):
             # See if the requested quality type is available in the new situation.
             machine_definition = self._active_container_stack.getBottom()
             quality_manager = QualityManager.getInstance()
-            candidate_quality = quality_manager.findQualityByQualityType(quality_type,
-                                    quality_manager.getWholeMachineDefinition(machine_definition),
-                                    [material_container])
+            candidate_quality = None
+            if quality_type:
+                candidate_quality = quality_manager.findQualityByQualityType(quality_type,
+                                        quality_manager.getWholeMachineDefinition(machine_definition),
+                                        [material_container])
             if not candidate_quality or candidate_quality.getId() == "empty_quality":
-                # Fall back to a quality
-                new_quality = quality_manager.findQualityByQualityType(None,
-                                    quality_manager.getWholeMachineDefinition(machine_definition),
-                                    [material_container])
-                if new_quality:
-                    new_quality_id = new_quality.getId()
+                # Fall back to a quality (which must be compatible with all other extruders)
+                new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
+                    self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
+
+                if new_qualities:
+                    new_quality_id = new_qualities[0].getId()  # Just pick the first available one
+                else:
+                    Logger.log("w", "No quality profile found that matches the current machine and extruders.")
             else:
                 if not old_quality_changes:
                     new_quality_id = candidate_quality.getId()
