@@ -43,6 +43,8 @@
         "machine_end_gcode": {
             "default_value": "; -- END GCODE --\nM106 S255\nM140 S5\nM104 S5 T0\nM104 S5 T1\nG1 X20.0 Y260.0 F6000\nG4 S7\nM84\nG4 S90\nM107\nM42 P12 S0\nM42 P13 S0\nM84\n; -- end of END GCODE --"
         },
+        "layer_height": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
+        "layer_height_0": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
         "machine_nozzle_heat_up_speed": {"default_value": 20},
         "machine_nozzle_cool_down_speed": {"default_value": 20},
         "machine_min_cool_heat_time_window": {"default_value": 5}
