@@ -4,6 +4,8 @@
 enable_testing()
 include(CMakeParseArguments)
 
+find_package(PythonInterp 3.5.0 REQUIRED)
+
 function(cura_add_test)
     set(_single_args NAME DIRECTORY PYTHONPATH)
     cmake_parse_arguments("" "" "${_single_args}" "" ${ARGN})
@@ -28,7 +30,7 @@ function(cura_add_test)
     set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT PYTHONPATH=${_PYTHONPATH})
 endfunction()
 
-cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH ${CMAKE_SOURCE_DIR})
+cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH "${CMAKE_SOURCE_DIR}/../Uranium:${CMAKE_SOURCE_DIR}")
 
 file(GLOB_RECURSE _plugins plugins/*/__init__.py)
 foreach(_plugin ${_plugins})
