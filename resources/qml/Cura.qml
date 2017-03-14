@@ -854,7 +854,7 @@ UM.MainWindow
 
         function start(id)
         {
-            var actions =  Cura.MachineActionManager.getFirstStartActions(id)
+            var actions = Cura.MachineActionManager.getFirstStartActions(id)
             resetPages() // Remove previous pages
 
             for (var i = 0; i < actions.length; i++)
@@ -913,7 +913,6 @@ UM.MainWindow
         {
             discardOrKeepProfileChangesDialog.show()
         }
-
     }
 
     Connections
@@ -963,4 +962,3 @@ UM.MainWindow
         }
     }
 }
-
