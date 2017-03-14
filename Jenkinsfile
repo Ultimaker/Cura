@@ -32,7 +32,7 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
     // Perform any post-build actions like notification and publishing of unit tests.
     stage('Finalize') {
         // Publish the test results to Jenkins.
-        junit 'build/junit*.xml'
+        junit allowEmptyResults: true, testResults: 'build/junit*.xml'
 
         notify_build_result(env.CURA_EMAIL_RECIPIENTS, '#cura-dev', ['master', '2.'])
     }
