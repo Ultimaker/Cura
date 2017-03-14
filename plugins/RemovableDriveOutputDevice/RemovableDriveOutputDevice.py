@@ -37,7 +37,8 @@ class RemovableDriveOutputDevice(OutputDevice):
     #   meshes.
     #   \param limit_mimetypes Should we limit the available MIME types to the
     #   MIME types available to the currently active machine?
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    #
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
