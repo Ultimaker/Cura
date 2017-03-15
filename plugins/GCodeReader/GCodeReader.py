@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Application import Application
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Vector import Vector
@@ -184,10 +185,19 @@ class GCodeReader(MeshReader):
     def _processGCode(self, G, line, position, path):
         func = getattr(self, "_gCode%s" % G, None)
         if func is not None:
-            x = self._getFloat(line, "X")
-            y = self._getFloat(line, "Y")
-            z = self._getFloat(line, "Z")
-            e = self._getFloat(line, "E")
+            s = line.upper().split(" ")
+            x, y, z, e = None, None, None, None
+            for item in s[1:]:
+                if not item:
+                    continue
+                if item[0] == "X":
+                    x = float(item[1:])
+                if item[0] == "Y":
+                    y = float(item[1:])
+                if item[0] == "Z":
+                    z = float(item[1:])
+                if item[0] == "E":
+                    e = float(item[1:])
             if (x is not None and x < 0) or (y is not None and y < 0):
                 self._center_is_zero = True
             params = self._position(x, y, z, e)
@@ -295,10 +305,15 @@ class GCodeReader(MeshReader):
                 if T is not None:
                     current_position = self._processTCode(T, line, current_position, current_path)
 
+                if current_line % 32 == 0:
+                    Job.yieldThread()
+
             if not self._is_layers_in_file and len(current_path) > 1 and current_position[2] > 0:
                 if self._createPolygon(current_position[2], current_path):
                     self._layer_number += 1
                 current_path.clear()
+
+
 
         material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
