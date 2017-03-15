@@ -255,6 +255,7 @@ class GCodeReader(MeshReader):
                 current_line += 1
                 if current_line % file_step == 0:
                     self._message.setProgress(math.floor(current_line / file_lines * 100))
+                    Job.yieldThread()
                 if len(line) == 0:
                     continue
                 if line.find(self._type_keyword) == 0:
@@ -289,9 +290,6 @@ class GCodeReader(MeshReader):
                 T = self._getInt(line, "T")
                 if T is not None:
                     current_position = self._processTCode(T, line, current_position, current_path)
-
-                if current_line % 32 == 0:
-                    Job.yieldThread()
 
             if not self._is_layers_in_file and len(current_path) > 1 and current_position[2] > 0:
                 if self._createPolygon(current_position[2], current_path):
