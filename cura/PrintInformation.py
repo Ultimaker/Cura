@@ -122,6 +122,9 @@ class PrintInformation(QObject):
         self._calculateInformation()
 
     def _calculateInformation(self):
+        if Application.getInstance().getGlobalContainerStack() is None:
+            return
+
         # Material amount is sent as an amount of mm^3, so calculate length from that
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths = []
