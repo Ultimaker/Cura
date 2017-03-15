@@ -90,7 +90,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false });
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                 }
                 Menu
                 {
@@ -106,7 +106,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, { "filter_by_machine": false });
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
