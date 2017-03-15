@@ -312,4 +312,9 @@ class GCodeReader(MeshReader):
 
         Logger.log("d", "Loaded %s" % file_name)
 
+        caution_message = Message(catalog.i18nc(
+            "@info:generic",
+            "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."), lifetime=0)
+        caution_message.show()
+
         return scene_node
