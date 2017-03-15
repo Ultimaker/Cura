@@ -215,7 +215,7 @@ Item {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true })
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true, "preferred_mimetype":Printer.preferredOutputMimetype })
             }
 
             style: ButtonStyle {
