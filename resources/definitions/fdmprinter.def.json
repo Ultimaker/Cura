@@ -4139,7 +4139,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value_warning": "support_angle",
-                    "maximum_value": "89",
+                    "maximum_value": "90",
                     "default_value": 40,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
