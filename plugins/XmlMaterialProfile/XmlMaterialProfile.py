@@ -248,11 +248,12 @@ class XmlMaterialProfile(InstanceContainer):
 
         root = builder.close()
         _indent(root)
-        stream = io.StringIO()
+        stream = io.BytesIO()
         tree = ET.ElementTree(root)
-        tree.write(stream, encoding="unicode", xml_declaration=True)
+        # this makes sure that the XML header states encoding="utf-8"
+        tree.write(stream, encoding="utf-8", xml_declaration=True)
 
-        return stream.getvalue()
+        return stream.getvalue().decode('utf-8')
 
     # Recursively resolve loading inherited files
     def _resolveInheritance(self, file_name):
