@@ -21,7 +21,7 @@ This change needs no explanation!
 You can now set your Ultimaker 3 to preheat the build plate, which reduces the downtime, letting you manually speed up your printing workflow. All you need to do is use the ‘preheat’ function in the Print Monitor screen, and set the correct temperature for the active material(s).
 
 *G-code reader.
-The g-code reader has been reintroduced, which means you can load g-code from file and display it in layer view. You can also print saved g-code files with Cura, share and re-use them, and you can check that your printed object looks right via the g-code viewer.
+The g-code reader has been reintroduced, which means you can load g-code from file and display it in layer view. You can also print saved g-code files with Cura, share and re-use them, and you can check that your printed object looks right via the g-code viewer. Thanks to AlephObjects for this feature.
 
 *Switching profiles.
 When you change a printing profile after customizing print settings, you have an option (shown in a popup) to transfer your customizations to the new profile or discard those modifications and continue with default settings instead. We’ve made this dialog window more informative and intuitive.
