@@ -273,6 +273,25 @@ UM.PreferencesPage
                 }
             }
 
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip","Show caution message in gcode reader.")
+
+                CheckBox
+                {
+                    id: gcodeShowCautionCheckbox
+
+                    checked: boolCheck(UM.Preferences.getValue("gcodereader/show_caution"))
+                    onClicked: UM.Preferences.setValue("gcodereader/show_caution", checked)
+
+                    text: catalog.i18nc("@option:check","Caution message in gcode reader");
+                }
+            }
+
             UM.TooltipArea {
                 width: childrenRect.width
                 height: childrenRect.height

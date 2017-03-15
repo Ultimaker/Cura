@@ -10,6 +10,7 @@ from UM.Mesh.MeshReader import MeshReader
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+from UM.Preferences import Preferences
 
 catalog = i18nCatalog("cura")
 
@@ -40,6 +41,8 @@ class GCodeReader(MeshReader):
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
         self._is_layers_in_file = False
+
+        Preferences.getInstance().addPreference("gcodereader/show_caution", True)
 
     def _clearValues(self):
         self._extruder_number = 0
@@ -87,7 +90,7 @@ class GCodeReader(MeshReader):
     def _getNullBoundingBox():
         return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
 
-    def _createPolygon(self, current_z, path):
+    def _createPolygon(self, current_z, path, nozzle_offset_x = 0, nozzle_offset_y = 0):
         countvalid = 0
         for point in path:
             if point[3] > 0:
@@ -99,6 +102,7 @@ class GCodeReader(MeshReader):
             self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
             self._layer_data_builder.setLayerThickness(self._layer_number, math.fabs(current_z - self._previous_z))
             this_layer = self._layer_data_builder.getLayer(self._layer_number)
+            layer_thickness = math.fabs(self._previous_z - current_z)  # TODO: use this value
         except ValueError:
             return False
         count = len(path)
@@ -290,13 +294,14 @@ class GCodeReader(MeshReader):
                 T = self._getInt(line, "T")
                 if T is not None:
                     current_position = self._processTCode(T, line, current_position, current_path)
+                    if self._createPolygon(current_position[2], current_path):
+                        self._layer_number += 1
+                    current_path.clear()
 
             if not self._is_layers_in_file and len(current_path) > 1 and current_position[2] > 0:
                 if self._createPolygon(current_position[2], current_path):
                     self._layer_number += 1
                 current_path.clear()
-
-
 
         material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
@@ -325,9 +330,10 @@ class GCodeReader(MeshReader):
 
         Logger.log("d", "Loaded %s" % file_name)
 
-        caution_message = Message(catalog.i18nc(
-            "@info:generic",
-            "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."), lifetime=0)
-        caution_message.show()
+        if Preferences.getInstance().getValue("gcodereader/show_caution"):
+            caution_message = Message(catalog.i18nc(
+                "@info:generic",
+                "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."), lifetime=0)
+            caution_message.show()
 
         return scene_node
