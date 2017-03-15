@@ -47,7 +47,7 @@ UM.Dialog
 
             Label
             {
-                text: "You have customized some profile settings.\nWould you like to keep or discard those settings?"
+                text: catalog.i18nc("@text:window", "You have customized some profile settings.\nWould you like to keep or discard those settings?")
                 anchors.margins: UM.Theme.getSize("default_margin").width
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.WordWrap
