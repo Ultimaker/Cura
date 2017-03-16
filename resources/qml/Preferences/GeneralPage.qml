@@ -45,6 +45,8 @@ UM.PreferencesPage
         showOverhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
         UM.Preferences.resetPreference("view/center_on_select");
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
+        UM.Preferences.resetPreference("view/invert_zoom");
+        invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
@@ -229,6 +231,20 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button","Center camera when item is selected");
                     checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
                     onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
+                }
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width;
+                height: childrenRect.height;
+                text: catalog.i18nc("@info:tooltip","Should the default zoom behavior of cura be inverted?")
+
+                CheckBox
+                {
+                    id: invertZoomCheckbox
+                    text: catalog.i18nc("@action:button","Invert the direction of camera zoom.");
+                    checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
+                    onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
                 }
             }
 
