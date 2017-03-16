@@ -151,7 +151,6 @@ class GCodeReader(MeshReader):
             if z > self._previous_z and (z - self._previous_z < 1.5):
                 self._current_layer_thickness = z - self._previous_z + 0.05  # allow a tiny overlap
                 self._previous_z = z
-                Logger.log("d", "Layer thickness recalculated: %s" % self._current_layer_thickness)
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         return self._position(x, y, z, e)
