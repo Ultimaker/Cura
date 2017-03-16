@@ -2576,7 +2576,7 @@
                     "minimum_value": "0",
                     "enabled": "start_layers_at_same_position",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false,
+                    "settable_per_extruder": true,
                     "settable_per_meshgroup": true
                 },
                 "layer_start_y":
@@ -2589,7 +2589,7 @@
                     "minimum_value": "0",
                     "enabled": "start_layers_at_same_position",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false,
+                    "settable_per_extruder": true,
                     "settable_per_meshgroup": true
                 },
                 "retraction_hop_enabled": {
