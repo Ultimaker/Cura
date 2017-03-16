@@ -19,6 +19,7 @@ from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
 from cura.GCodeListDecorator import GCodeListDecorator
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import numpy
 import math
@@ -40,7 +41,9 @@ class GCodeReader(MeshReader):
         self._clearValues()
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
-        self._is_layers_in_file = False
+        self._is_layers_in_file = False  # Does the Gcode have the layers comment?
+        self._extruder_offsets = {}  # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
+        self._current_layer_thickness = 0.2  # default
 
         Preferences.getInstance().addPreference("gcodereader/show_caution", True)
 
@@ -90,19 +93,21 @@ class GCodeReader(MeshReader):
     def _getNullBoundingBox():
         return AxisAlignedBox(minimum=Vector(0, 0, 0), maximum=Vector(10, 10, 10))
 
-    def _createPolygon(self, current_z, path, nozzle_offset_x = 0, nozzle_offset_y = 0):
+    def _createPolygon(self, layer_thickness, path, extruder_offsets):
         countvalid = 0
         for point in path:
             if point[3] > 0:
                 countvalid += 1
+                if countvalid >= 2:
+                    # we know what to do now, no need to count further
+                    continue
         if countvalid < 2:
             return False
         try:
             self._layer_data_builder.addLayer(self._layer_number)
             self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
-            self._layer_data_builder.setLayerThickness(self._layer_number, math.fabs(current_z - self._previous_z))
+            self._layer_data_builder.setLayerThickness(self._layer_number, layer_thickness)
             this_layer = self._layer_data_builder.getLayer(self._layer_number)
-            layer_thickness = math.fabs(self._previous_z - current_z)  # TODO: use this value
         except ValueError:
             return False
         count = len(path)
@@ -110,19 +115,16 @@ class GCodeReader(MeshReader):
         line_widths = numpy.empty((count - 1, 1), numpy.float32)
         line_thicknesses = numpy.empty((count - 1, 1), numpy.float32)
         # TODO: need to calculate actual line width based on E values
-        line_widths[:, 0] = 0.4
-        # TODO: need to calculate actual line heights
-        line_thicknesses[:, 0] = 0.2
+        line_widths[:, 0] = 0.35  # Just a guess
+        line_thicknesses[:, 0] = layer_thickness
         points = numpy.empty((count, 3), numpy.float32)
         i = 0
         for point in path:
-            points[i, 0] = point[0]
-            points[i, 1] = point[2]
-            points[i, 2] = -point[1]
+            points[i, :] = [point[0] + extruder_offsets[0], point[2], -point[1] - extruder_offsets[1]]
             if i > 0:
                 line_types[i - 1] = point[3]
                 if point[3] in [LayerPolygon.MoveCombingType, LayerPolygon.MoveRetractionType]:
-                    line_widths[i - 1] = 0.2
+                    line_widths[i - 1] = 0.1
             i += 1
 
         this_poly = LayerPolygon(self._extruder_number, line_types, points, line_widths, line_thicknesses)
@@ -135,28 +137,23 @@ class GCodeReader(MeshReader):
         x, y, z, e = position
         x = params.x if params.x is not None else x
         y = params.y if params.y is not None else y
-        z_changed = False
-        if params.z is not None:
-            if z != params.z:
-                z_changed = True
-                self._previous_z = z
-            z = params.z
+        z = params.z if params.z is not None else position.z
+
         if params.e is not None:
             if params.e > e[self._extruder_number]:
                 path.append([x, y, z, self._layer_type])  # extrusion
             else:
                 path.append([x, y, z, LayerPolygon.MoveRetractionType])  # retraction
             e[self._extruder_number] = params.e
+
+            # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
+            # Also, 1.5 is a heuristic for any priming or whatsoever, we skip those.
+            if z > self._previous_z and (z - self._previous_z < 1.5):
+                self._current_layer_thickness = z - self._previous_z + 0.05  # allow a tiny overlap
+                self._previous_z = z
+                Logger.log("d", "Layer thickness recalculated: %s" % self._current_layer_thickness)
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
-        if z_changed:
-            if not self._is_layers_in_file:
-                if len(path) > 1 and z > 0:
-                    if self._createPolygon(z, path):
-                        self._layer_number += 1
-                    path.clear()
-                else:
-                    path.clear()
         return self._position(x, y, z, e)
 
     def _gCode28(self, position, params, path):
@@ -183,7 +180,9 @@ class GCodeReader(MeshReader):
             s = line.upper().split(" ")
             x, y, z, e = None, None, None, None
             for item in s[1:]:
-                if not item:
+                if len(item) <= 1:
+                    continue
+                if item.startswith(";"):
                     continue
                 if item[0] == "X":
                     x = float(item[1:])
@@ -203,17 +202,19 @@ class GCodeReader(MeshReader):
         self._extruder_number = T
         if self._extruder_number + 1 > len(position.e):
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
-        if not self._is_layers_in_file:
-            if len(path) > 1 and position[2] > 0:
-                if self._createPolygon(position[2], path):
-                    self._layer_number += 1
-                path.clear()
-            else:
-                path.clear()
         return position
 
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"
+
+    ##  For showing correct x, y offsets for each extruder
+    def _extruderOffsets(self):
+        result = {}
+        for extruder in ExtruderManager.getInstance().getExtruderStacks():
+            result[int(extruder.getMetaData().get("position", "0"))] = [
+                extruder.getProperty("machine_nozzle_offset_x", "value"),
+                extruder.getProperty("machine_nozzle_offset_y", "value")]
+        return result
 
     def read(self, file_name):
         Logger.log("d", "Preparing to load %s" % file_name)
@@ -229,6 +230,9 @@ class GCodeReader(MeshReader):
 
         Logger.log("d", "Opening file %s" % file_name)
 
+        self._extruder_offsets = self._extruderOffsets()  # dict with index the extruder number. can be empty
+
+        last_z = 0
         with open(file_name, "r") as file:
             file_lines = 0
             current_line = 0
@@ -247,7 +251,7 @@ class GCodeReader(MeshReader):
             self._message.setProgress(0)
             self._message.show()
 
-            Logger.log("d", "Parsing %s" % file_name)
+            Logger.log("d", "Parsing %s..." % file_name)
 
             current_position = self._position(0, 0, 0, [0])
             current_path = []
@@ -257,6 +261,8 @@ class GCodeReader(MeshReader):
                     Logger.log("d", "Parsing %s cancelled" % file_name)
                     return None
                 current_line += 1
+                last_z = current_position.z
+
                 if current_line % file_step == 0:
                     self._message.setProgress(math.floor(current_line / file_lines * 100))
                     Job.yieldThread()
@@ -280,28 +286,43 @@ class GCodeReader(MeshReader):
                 if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                     try:
                         layer_number = int(line[len(self._layer_keyword):])
-                        self._createPolygon(current_position[2], current_path)
+                        self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                         current_path.clear()
                         self._layer_number = layer_number
                     except:
                         pass
-                if line[0] == ";":
+
+                # This line is a comment. Ignore it (except for the layer_keyword)
+                if line.startswith(";"):
                     continue
 
                 G = self._getInt(line, "G")
                 if G is not None:
                     current_position = self._processGCode(G, line, current_position, current_path)
-                T = self._getInt(line, "T")
-                if T is not None:
-                    current_position = self._processTCode(T, line, current_position, current_path)
-                    if self._createPolygon(current_position[2], current_path):
-                        self._layer_number += 1
-                    current_path.clear()
 
-            if not self._is_layers_in_file and len(current_path) > 1 and current_position[2] > 0:
-                if self._createPolygon(current_position[2], current_path):
+                    # < 2 is a heuristic for a movement only, that should not be counted as a layer
+                    if current_position.z > last_z and abs(current_position.z - last_z) < 2:
+                        if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
+                            current_path.clear()
+
+                            if not self._is_layers_in_file:
+                                self._layer_number += 1
+
+                    continue
+
+                if line.startswith("T"):
+                    T = self._getInt(line, "T")
+                    if T is not None:
+                        self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
+                        current_path.clear()
+
+                        current_position = self._processTCode(T, line, current_position, current_path)
+
+            # "Flush" leftovers
+            if not self._is_layers_in_file and len(current_path) > 1:
+                if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
                     self._layer_number += 1
-                current_path.clear()
+                    current_path.clear()
 
         material_color_map = numpy.zeros((10, 4), dtype = numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
