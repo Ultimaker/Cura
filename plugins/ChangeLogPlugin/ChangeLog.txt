@@ -11,9 +11,6 @@ Need things to be a bit clearer? We’ve now incorporated an improved layer view
 *Disable automatic slicing.
 Some users told us that slicing slowed down their workflow when it auto-starts, and to improve the user experience, we added an option to disable auto-slicing if required. Thanks to community member Aldo Hoeben for contributing to this one.
 
-*Solidworks & Cura macro.
-This macro is designed to run inside SolidWorks, open Cura and load the current document / part. You should also be able to add this macro to your toolbar inside Solidworks.
-
 *Auto-scale off by default.
 This change needs no explanation!
 
