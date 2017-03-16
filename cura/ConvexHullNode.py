@@ -24,7 +24,7 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = None
+        self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
@@ -73,8 +73,6 @@ class ConvexHullNode(SceneNode):
         return True
 
     def _onNodeDecoratorsChanged(self, node):
-        self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
-
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             convex_hull_head_builder = MeshBuilder()
