@@ -25,6 +25,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Workspace.WorkspaceReader import WorkspaceReader
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -1260,3 +1261,21 @@ class CuraApplication(QtApplication):
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
+
+    @pyqtSlot(str, result=bool)
+    def checkIsValidProjectFile(self, file_url):
+        """
+        Checks if the given file URL is a valid project file.
+        """
+        file_url_prefix = 'file:///'
+
+        file_name = file_url
+        if file_name.startswith(file_url_prefix):
+            file_name = file_name[len(file_url_prefix):]
+
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_name)
+        if workspace_reader is None:
+            return False  # non-project files won't get a reader
+
+        result = workspace_reader.preRead(file_name, show_dialog=False)
+        return result == WorkspaceReader.PreReadResult.accepted

@@ -12,7 +12,6 @@ Item
 {
     property alias newProject: newProjectAction;
     property alias open: openAction;
-    property alias loadWorkspace: loadWorkspaceAction;
     property alias quit: quitAction;
 
     property alias undo: undoAction;
@@ -284,7 +283,7 @@ Item
     Action
     {
         id: openAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open File...");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
@@ -294,12 +293,6 @@ Item
         id: newProjectAction
         text: catalog.i18nc("@action:inmenu menubar:file","&New Project...");
         shortcut: StandardKey.New
-    }
-
-    Action
-    {
-        id: loadWorkspaceAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open Project...");
     }
 
     Action
