@@ -21,28 +21,28 @@ function(cura_add_test)
     if(NOT _PYTHONPATH)
         set(_PYTHONPATH ${_DIRECTORY})
     endif()
+    
+    if(WIN32)
+        string(REPLACE "|" "\\;" _PYTHONPATH ${_PYTHONPATH})
+    else()
+        string(REPLACE "|" ":" _PYTHONPATH ${_PYTHONPATH})
+    endif()
 
     add_test(
         NAME ${_NAME}
         COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
     )
     set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
-    set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT PYTHONPATH=${_PYTHONPATH})
+    set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
 endfunction()
 
-if(WIN32)
-    set(_path_sep ";")
-else()
-    set(_path_sep ":")
-endif()
-
-cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH "${CMAKE_SOURCE_DIR}${_path_sep}${URANIUM_DIR}")
+cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH "${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
 
 file(GLOB_RECURSE _plugins plugins/*/__init__.py)
 foreach(_plugin ${_plugins})
     get_filename_component(_plugin_directory ${_plugin} DIRECTORY)
     if(EXISTS ${_plugin_directory}/tests)
         get_filename_component(_plugin_name ${_plugin_directory} NAME)
-        cura_add_test(NAME pytest-${_plugin_name} DIRECTORY ${_plugin_directory} PYTHONPATH "${_plugin_directory}${_path_sep}${CMAKE_SOURCE_DIR}${_path_sep}${URANIUM_DIR}")
+        cura_add_test(NAME pytest-${_plugin_name} DIRECTORY ${_plugin_directory} PYTHONPATH "${_plugin_directory}|${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
     endif()
 endforeach()
