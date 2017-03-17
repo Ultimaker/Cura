@@ -757,7 +757,42 @@
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "value": "line_width",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_bottom_line_width":
+                                {
+                                    "label": "Support Bottom Line Width",
+                                    "description": "Width of a single support bottom line.",
+                                    "unit": "mm",
+                                    "default_value": 0.4,
+                                    "minimum_value": "0.001",
+                                    "minimum_value_warning": "0.4 * machine_nozzle_size",
+                                    "maximum_value_warning": "2 * machine_nozzle_size",
+                                    "type": "float",
+                                    "enabled": "support_enable and support_interface_enable",
+                                    "limit_to_extruder": "support_interface_extruder_nr",
+                                    "value": "support_interface_line_width",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "support_roof_line_width":
+                                {
+                                    "label": "Support Roof Line Width",
+                                    "description": "Width of a single support roof line.",
+                                    "unit": "mm",
+                                    "default_value": 0.4,
+                                    "minimum_value": "0.001",
+                                    "minimum_value_warning": "0.4 * machine_nozzle_size",
+                                    "maximum_value_warning": "2 * machine_nozzle_size",
+                                    "type": "float",
+                                    "enabled": "support_enable and support_interface_enable",
+                                    "limit_to_extruder": "support_interface_extruder_nr",
+                                    "value": "support_interface_line_width",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
                         },
                         "prime_tower_line_width":
                         {
@@ -3275,8 +3310,8 @@
                                     "type": "float",
                                     "default_value": 0.4,
                                     "minimum_value": "0",
-                                    "minimum_value_warning": "support_interface_line_width - 0.0001",
-                                    "value": "0 if support_bottom_density == 0 else (support_interface_line_width * 100) / support_bottom_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                                    "minimum_value_warning": "support_bottom_line_width - 0.0001",
+                                    "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "settable_per_mesh": false,
@@ -3307,8 +3342,8 @@
                                     "type": "float",
                                     "default_value": 0.4,
                                     "minimum_value": "0",
-                                    "minimum_value_warning": "support_interface_line_width - 0.0001",
-                                    "value": "0 if support_roof_density == 0 else (support_interface_line_width * 100) / support_roof_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                                    "minimum_value_warning": "support_roof_line_width - 0.0001",
+                                    "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "settable_per_mesh": false,
