@@ -2202,7 +2202,7 @@
                                         "acceleration_support_bottom":
                                         {
                                             "label": "Support Bottom Acceleration",
-                                            "description": "The accelerations with which the bottoms of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model.",
+                                            "description": "The acceleration with which the bottoms of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model.",
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
@@ -2218,7 +2218,7 @@
                                         "acceleration_support_roof":
                                         {
                                             "label": "Support Roof Acceleration",
-                                            "description": "The accelerations with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality.",
+                                            "description": "The acceleration with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality.",
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
