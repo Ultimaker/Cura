@@ -1875,7 +1875,42 @@
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "value": "speed_support / 1.5",
                                     "settable_per_mesh": false,
-                                    "settable_per_extruder": true
+                                    "settable_per_extruder": true,
+                                    "children":
+                                    {
+                                        "speed_support_bottom":
+                                        {
+                                            "label": "Support Bottom Speed",
+                                            "description": "The speed at which the bottoms of support are printed. Printing them at lower speeds can improve overhang quality.",
+                                            "unit": "mm/s",
+                                            "type": "float",
+                                            "default_value": 40,
+                                            "minimum_value": "0.1",
+                                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                                            "maximum_value_warning": "150",
+                                            "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                            "limit_to_extruder": "support_interface_extruder_nr",
+                                            "value": "speed_support_interface",
+                                            "settable_per_mesh": false,
+                                            "settable_per_extruder": true
+                                        },
+                                        "speed_support_roof":
+                                        {
+                                            "label": "Support Roof Speed",
+                                            "description": "The speed at which the roofs of support are printed. Printing them at lower speeds can improve overhang quality.",
+                                            "unit": "mm/s",
+                                            "type": "float",
+                                            "default_value": 40,
+                                            "minimum_value": "0.1",
+                                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                                            "maximum_value_warning": "150",
+                                            "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                            "limit_to_extruder": "support_interface_extruder_nr",
+                                            "value": "speed_support_interface",
+                                            "settable_per_mesh": false,
+                                            "settable_per_extruder": true
+                                        }
+                                    }
                                 }
                             }
                         },
