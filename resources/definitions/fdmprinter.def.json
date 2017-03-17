@@ -1864,7 +1864,7 @@
                                 "speed_support_interface":
                                 {
                                     "label": "Support Interface Speed",
-                                    "description": "The speed at which the roofs and bottoms of support are printed. Printing the them at lower speeds can improve overhang quality.",
+                                    "description": "The speed at which the roofs and bottoms of support are printed. Printing them at lower speeds can improve overhang quality.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default_value": 40,
