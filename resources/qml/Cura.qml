@@ -92,26 +92,18 @@ UM.MainWindow
                     iconName: "document-save-as";
                     onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                 }
-                Menu
+
+                MenuItem
                 {
-                    id: saveAllMenu
-                    title: catalog.i18nc("@title:menu menubar:file","Save &All")
-                    iconName: "document-save-all";
-                    enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
-
-                    Instantiator
+                    id: saveAsMenu
+                    text: catalog.i18nc("@title:menu menubar:file", "Save &As")
+                    onTriggered:
                     {
-                        model: UM.OutputDevicesModel { id: devicesModel; }
-
-                        MenuItem
-                        {
-                            text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
-                        }
-                        onObjectAdded: saveAllMenu.insertItem(index, object)
-                        onObjectRemoved: saveAllMenu.removeItem(object)
+                        var localDeviceId = "local_file";
+                        UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                     }
                 }
+
                 MenuItem
                 {
                     id: saveWorkspaceMenu
