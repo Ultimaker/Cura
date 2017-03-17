@@ -101,6 +101,7 @@ class DiscoverUM3Action(MachineAction):
             if "um_network_key" in meta_data:
                 global_container_stack.setMetaDataEntry("um_network_key", key)
                 # Delete old authentication data.
+                Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), key)
                 global_container_stack.removeMetaDataEntry("network_authentication_id")
                 global_container_stack.removeMetaDataEntry("network_authentication_key")
             else:
