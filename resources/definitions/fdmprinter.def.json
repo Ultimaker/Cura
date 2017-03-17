@@ -2196,7 +2196,42 @@
                                     "enabled": "resolveOrValue('acceleration_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                                     "limit_to_extruder": "support_interface_extruder_nr",
                                     "settable_per_mesh": false,
-                                    "settable_per_extruder": true
+                                    "settable_per_extruder": true,
+                                    "children":
+                                    {
+                                        "acceleration_support_bottom":
+                                        {
+                                            "label": "Support Bottom Acceleration",
+                                            "description": "The accelerations with which the bottoms of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model.",
+                                            "unit": "mm/s²",
+                                            "type": "float",
+                                            "default_value": 3000,
+                                            "value": "acceleration_support_interface",
+                                            "minimum_value": "0.1",
+                                            "minimum_value_warning": "100",
+                                            "maximum_value_warning": "10000",
+                                            "enabled": "resolveOrValue('acceleration_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                            "limit_to_extruder": "support_interface_extruder_nr",
+                                            "settable_per_mesh": false,
+                                            "settable_per_extruder": true
+                                        },
+                                        "acceleration_support_roof":
+                                        {
+                                            "label": "Support Roof Acceleration",
+                                            "description": "The accelerations with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality.",
+                                            "unit": "mm/s²",
+                                            "type": "float",
+                                            "default_value": 3000,
+                                            "value": "acceleration_support_interface",
+                                            "minimum_value": "0.1",
+                                            "minimum_value_warning": "100",
+                                            "maximum_value_warning": "10000",
+                                            "enabled": "resolveOrValue('acceleration_enabled') and extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                            "limit_to_extruder": "support_interface_extruder_nr",
+                                            "settable_per_mesh": false,
+                                            "settable_per_extruder": true
+                                        }
+                                    }
                                 }
                             }
                         },
