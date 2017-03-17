@@ -1897,7 +1897,7 @@
                                         "speed_support_roof":
                                         {
                                             "label": "Support Roof Speed",
-                                            "description": "The speed at which the roofs of support are printed. Printing them at lower speeds can improve overhang quality.",
+                                            "description": "The speed at which the roofs of support are printed. Printing them at lower speeds can improve adhesion of support on top of your model.",
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 40,
