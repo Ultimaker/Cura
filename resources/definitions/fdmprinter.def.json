@@ -3252,20 +3252,69 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "support_interface_line_distance":
+                        "support_bottom_density":
                         {
-                            "label": "Support Interface Line Distance",
-                            "description": "Distance between the printed support interface lines. This setting is calculated by the Support Interface Density, but can be adjusted separately.",
-                            "unit": "mm",
+                            "label": "Support Bottom Density",
+                            "description": "Adjusts the density of the bottoms of the support structure. A higher value results in better adhesion of the support on top of the model.",
+                            "unit": "%",
                             "type": "float",
-                            "default_value": 0.4,
+                            "default_value": 100,
                             "minimum_value": "0",
-                            "minimum_value_warning": "support_interface_line_width - 0.0001",
-                            "value": "0 if support_interface_density == 0 else (support_interface_line_width * 100) / support_interface_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                            "maximum_value": "100",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_bottom_line_distance":
+                                {
+                                    "label": "Support Bottom Line Distance",
+                                    "description": "Distance between the printed support bottom lines. This setting is calculated by the Support Bottom Density, but can be adjusted separately.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 0.4,
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "support_interface_line_width - 0.0001",
+                                    "value": "0 if support_bottom_density == 0 else (support_interface_line_width * 100) / support_bottom_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                                    "limit_to_extruder": "support_interface_extruder_nr",
+                                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        },
+                        "support_roof_density":
+                        {
+                            "label": "Support Roof Density",
+                            "description": "Adjusts the density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_line_distance":
+                                {
+                                    "label": "Support Roof Line Distance",
+                                    "description": "Distance between the printed support roof lines. This setting is calculated by the Support Roof Density, but can be adjusted separately.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 0.4,
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "support_interface_line_width - 0.0001",
+                                    "value": "0 if support_roof_density == 0 else (support_interface_line_width * 100) / support_roof_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                                    "limit_to_extruder": "support_interface_extruder_nr",
+                                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
                         }
                     }
                 },
