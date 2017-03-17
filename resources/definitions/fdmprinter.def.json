@@ -2185,7 +2185,7 @@
                                 "acceleration_support_interface":
                                 {
                                     "label": "Support Interface Acceleration",
-                                    "description": "The acceleration with which the roofs and bottoms of support are printed. Printing them at lower accelerations can improve overhang quality.",
+                                    "description": "The acceleration with which the roofs and bottoms of support are printed. Printing them at lower acceleration can improve overhang quality.",
                                     "unit": "mm/s²",
                                     "type": "float",
                                     "default_value": 3000,
