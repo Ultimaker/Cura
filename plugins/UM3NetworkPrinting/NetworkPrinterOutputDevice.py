@@ -726,7 +726,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         ## Check if this machine was authenticated before.
         self._authentication_id = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_id", None)
         self._authentication_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_key", None)
-        Logger.log("d", "Loaded authentication id %s from the metadata entry", self._authentication_id)
+
+        if self._authentication_id is None and self._authentication_key is None:
+            Logger.log("d", "No authentication found in metadata.")
+        else:
+            Logger.log("d", "Loaded authentication id %s from the metadata entry", self._authentication_id)
+
         self._update_timer.start()
 
     ##  Stop requesting data from printer
