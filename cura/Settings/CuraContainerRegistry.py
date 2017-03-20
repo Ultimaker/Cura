@@ -26,6 +26,14 @@ class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    ##  Overridden from ContainerRegistry
+    def addContainer(self, container):
+        # Note: Intentional check with type() because we want to ignore subclasses
+        if type(container) == ContainerStack:
+            container = self._convertContainerStack(container)
+
+        super().addContainer(container)
+
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
     #   \param current_name \type{} Current name of the container, which may be an acceptable option
@@ -284,3 +292,26 @@ class CuraContainerRegistry(ContainerRegistry):
         if global_container_stack:
             return parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", False))
         return False
+
+    def _convertContainerStack(self, container):
+        assert type(container) == ContainerStack
+
+        container_type = container.getMetaDataEntry("type")
+        if container_type not in ("extruder_train", "machine"):
+            # It is not an extruder or machine, so do nothing with the stack
+            return container
+
+        new_stack = None
+        if container_type == "extruder_train":
+            new_stack = ExtruderStack(container.getId())
+        else:
+            new_stack = GlobalStack(container.getId())
+
+        container_contents = container.serialize()
+        new_stack.deserialize(container_contents)
+
+        # Delete the old configuration file so we do not get double stacks
+        if os.path.isfile(container.getPath()):
+            os.remove(container.getPath())
+
+        return new_stack
