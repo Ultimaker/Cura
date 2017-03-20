@@ -3035,7 +3035,7 @@
                     "maximum_value": "90",
                     "maximum_value_warning": "80",
                     "default_value": 50,
-                    "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
+                    "limit_to_extruder": "support_roof_extruder_nr if support_interface_enable else support_infill_extruder_nr",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
