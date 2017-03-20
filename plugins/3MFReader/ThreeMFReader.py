@@ -145,9 +145,11 @@ class ThreeMFReader(MeshReader):
             group_decorator = GroupDecorator()
             um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
-        # Assuming that all nodes are printable objects, affects (auto) slicing
-        sliceable_decorator = SliceableObjectDecorator()
-        um_node.addDecorator(sliceable_decorator)
+        if um_node.getMeshData():
+            # Assuming that all nodes with mesh data are printable objects
+            # affects (auto) slicing
+            sliceable_decorator = SliceableObjectDecorator()
+            um_node.addDecorator(sliceable_decorator)
         return um_node
 
     def read(self, file_name):
