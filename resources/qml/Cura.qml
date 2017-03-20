@@ -767,15 +767,15 @@ UM.MainWindow
             var selectedMultipleWithProjectFile = hasProjectFile && selectedMultipleFiles;
             if (selectedMultipleWithProjectFile)
             {
-                askOpenProjectOrModelsDialog.fileUrls = fileUrls;
-                askOpenProjectOrModelsDialog.show();
+                openFilesIncludingProjectsDialog.fileUrls = fileUrls;
+                openFilesIncludingProjectsDialog.show();
                 return;
             }
 
             if (hasProjectFile)
-                loadProjectFile(projectFileUrlList[0]);
+                openFilesIncludingProjectsDialog.loadProjectFile(projectFileUrlList[0]);
             else
-                loadModelFiles(fileUrls);
+                openFilesIncludingProjectsDialog.loadModelFiles(fileUrls);
         }
     }
 
@@ -785,101 +785,9 @@ UM.MainWindow
         onTriggered: openDialog.open()
     }
 
-    function loadProjectFile(projectFile)
+    OpenFilesIncludingProjectsDialog
     {
-        UM.WorkspaceFileHandler.readLocalFile(projectFile);
-
-        var meshName = backgroundItem.getMeshName(projectFile.toString());
-        backgroundItem.hasMesh(decodeURIComponent(meshName));
-    }
-
-    function loadModelFiles(fileUrls)
-    {
-        for (var i in fileUrls)
-            Printer.readLocalFile(fileUrls[i]);
-
-        var meshName = backgroundItem.getMeshName(fileUrls[0].toString());
-        backgroundItem.hasMesh(decodeURIComponent(meshName));
-    }
-
-    UM.Dialog
-    {
-        // This dialog asks the user whether he/she wants to open the project file we have detected or the model files.
-        id: askOpenProjectOrModelsDialog
-
-        title: catalog.i18nc("@title:window", "Open file(s)")
-        width: 420
-        height: 170
-
-        maximumHeight: height
-        maximumWidth: width
-        minimumHeight: height
-        minimumWidth: width
-
-        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-
-        property var fileUrls: []
-        property int spacerHeight: 10
-
-        Column
-        {
-            anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            anchors.left: parent.left
-            anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_margin").width
-
-            Text
-            {
-                id: askOpenProjectOrModelsDialogText
-                text: catalog.i18nc("@text:window", "We have found multiple project file(s) within the files you have\nselected. You can open only one project file at a time. We\nsuggest to only import models from those files. Would you like\nto proceed?")
-                anchors.margins: UM.Theme.getSize("default_margin").width
-                font: UM.Theme.getFont("default")
-                wrapMode: Text.WordWrap
-            }
-
-            Item // Spacer
-            {
-                height: askOpenProjectOrModelsDialog.spacerHeight
-                width: height
-            }
-
-            // Buttons
-            Item
-            {
-                anchors.right: parent.right
-                anchors.left: parent.left
-                height: childrenRect.height
-
-                Button
-                {
-                    id: cancelButton
-                    text: catalog.i18nc("@action:button", "Cancel");
-                    anchors.right: importAllAsModelsButton.left
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    onClicked:
-                    {
-                        // cancel
-                        askOpenProjectOrModelsDialog.hide();
-                    }
-                }
-
-                Button
-                {
-                    id: importAllAsModelsButton
-                    text: catalog.i18nc("@action:button", "Import all as models");
-                    anchors.right: parent.right
-                    isDefault: true
-                    onClicked:
-                    {
-                        // load models from all selected file
-                        loadModelFiles(askOpenProjectOrModelsDialog.fileUrls);
-
-                        askOpenProjectOrModelsDialog.hide();
-                    }
-                }
-            }
-        }
+        id: openFilesIncludingProjectsDialog
     }
 
     EngineLog
