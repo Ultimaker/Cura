@@ -47,7 +47,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._id_mapping[old_id] = self._container_registry.uniqueName(old_id)
         return self._id_mapping[old_id]
 
-    def preRead(self, file_name):
+    def preRead(self, file_name, show_dialog=True, *args, **kwargs):
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
         if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
             pass
@@ -166,6 +166,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
             return WorkspaceReader.PreReadResult.failed
+
+        # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
+        if not show_dialog:
+            return WorkspaceReader.PreReadResult.accepted
 
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
