@@ -773,9 +773,26 @@ UM.MainWindow
             }
 
             if (hasProjectFile)
-                openFilesIncludingProjectsDialog.loadProjectFile(projectFileUrlList[0]);
+            {
+                var projectFile = projectFileUrlList[0];
+
+                // check preference
+                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                if (choice == "open_as_project")
+                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+                else if (choice == "open_as_model")
+                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile]);
+                else    // always ask
+                {
+                    // ask whether to open as project or as models
+                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.show();
+                }
+            }
             else
+            {
                 openFilesIncludingProjectsDialog.loadModelFiles(fileUrls);
+            }
         }
     }
 
@@ -788,6 +805,11 @@ UM.MainWindow
     OpenFilesIncludingProjectsDialog
     {
         id: openFilesIncludingProjectsDialog
+    }
+
+    AskOpenAsProjectOrModelsDialog
+    {
+        id: askOpenAsProjectOrModelsDialog
     }
 
     EngineLog

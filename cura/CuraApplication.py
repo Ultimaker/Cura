@@ -4,6 +4,7 @@ from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
+from UM.FileHandler.ReadFileJob import ReadFileJob
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -247,6 +248,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
         Preferences.getInstance().addPreference("cura/choice_on_profile_override", "always_ask")
+        Preferences.getInstance().addPreference("cura/choice_on_open_project", "always_ask")
 
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
@@ -1122,7 +1124,7 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
 
     def _onJobFinished(self, job):
-        if type(job) is not ReadMeshJob or not job.getResult():
+        if (not isinstance(job, ReadMeshJob) and not isinstance(job, ReadFileJob)) or not job.getResult():
             return
 
         f = QUrl.fromLocalFile(job.getFileName())
