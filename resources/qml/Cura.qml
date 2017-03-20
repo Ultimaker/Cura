@@ -808,8 +808,8 @@ UM.MainWindow
         id: askOpenProjectOrModelsDialog
 
         title: catalog.i18nc("@title:window", "Open file(s)")
-        width: 620
-        height: 250
+        width: 420
+        height: 170
 
         maximumHeight: height
         maximumWidth: width
