@@ -1127,7 +1127,7 @@
                 "spaghetti_infill_enabled":
                 {
                     "label": "Spaghetti Infill",
-                    "description": "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is very unpredictable.",
+                    "description": "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "infill_sparse_density > 0",
@@ -1136,7 +1136,7 @@
                 "spaghetti_max_infill_angle":
                 {
                     "label": "Spaghetti Maximum Infill Angle",
-                    "description": "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards.",
+                    "description": "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer.",
                     "unit": "°",
                     "type": "float",
                     "default_value": 10,
