@@ -59,7 +59,7 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").width
             anchors.left: parent.left
             anchors.right: parent.right
-            height: base.height - 200
+            height: base.height - 150
             id: tableView
             Component
             {
@@ -167,7 +167,7 @@ UM.Dialog
             anchors.right: parent.right
             anchors.left: parent.left
             anchors.margins: UM.Theme.getSize("default_margin").width
-            height:childrenRect.height
+            height: childrenRect.height
 
             Button
             {
