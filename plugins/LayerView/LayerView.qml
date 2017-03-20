@@ -58,6 +58,7 @@ Item
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","View Mode: Layers")
                 font.bold: true
+                style: UM.Theme.styles.text
             }
 
             Label
@@ -75,6 +76,7 @@ Item
                 text: catalog.i18nc("@label","Color scheme")
                 visible: !UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
+                style: UM.Theme.styles.text
             }
 
             ListModel  // matches LayerView.py
@@ -102,6 +104,7 @@ Item
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 model: layerViewTypes
                 visible: !UM.LayerView.compatibilityMode
+                style: UM.Theme.styles.combobox
 
                 property int layer_view_type: UM.Preferences.getValue("layerview/layer_view_type")
                 currentIndex: layer_view_type  // index matches type_id
@@ -174,6 +177,7 @@ Item
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    style: UM.Theme.styles.checkbox
                 }
             }
 
@@ -197,6 +201,7 @@ Item
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                style: UM.Theme.styles.checkbox
             }
             CheckBox {
                 checked: view_settings.show_helpers
@@ -218,6 +223,7 @@ Item
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                style: UM.Theme.styles.checkbox
             }
             CheckBox {
                 checked: view_settings.show_skin
@@ -239,6 +245,7 @@ Item
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                style: UM.Theme.styles.checkbox
             }
             CheckBox {
                 checked: view_settings.show_infill
@@ -260,6 +267,7 @@ Item
                 Layout.fillWidth: true
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                style: UM.Theme.styles.checkbox
             }
             CheckBox {
                 checked: view_settings.only_show_top_layers
@@ -268,6 +276,7 @@ Item
                 }
                 text: catalog.i18nc("@label", "Only Show Top Layers")
                 visible: UM.LayerView.compatibilityMode
+                style: UM.Theme.styles.checkbox
             }
             CheckBox {
                 checked: view_settings.top_layer_count == 5
@@ -276,6 +285,7 @@ Item
                 }
                 text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
                 visible: UM.LayerView.compatibilityMode
+                style: UM.Theme.styles.checkbox
             }
 
             Label
@@ -297,6 +307,7 @@ Item
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 visible: view_settings.show_legend
+                style: UM.Theme.styles.text
             }
 
             Label
@@ -319,6 +330,7 @@ Item
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 visible: view_settings.show_legend
+                style: UM.Theme.styles.text
             }
 
         }
