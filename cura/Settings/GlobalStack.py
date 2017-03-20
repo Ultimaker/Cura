@@ -12,6 +12,14 @@ class GlobalStack(ContainerStack):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
+    def getProperty(self, key, property_name):
+        if property_name == "value":
+            resolve = super().getProperty(key, "resolve")
+            if resolve:
+                return resolve
+
+        return super().getProperty(key, property_name)
+
     def setNextStack(self, next_stack):
         raise CannotSetNextStackError("Global stack cannot have a next stack!")
 
