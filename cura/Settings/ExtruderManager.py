@@ -346,7 +346,8 @@ class ExtruderManager(QObject):
 
         #Get the extruders of all meshes in the scene.
         support_enabled = False
-        support_interface_enabled = False
+        support_bottom_enabled = False
+        support_roof_enabled = False
         scene_root = Application.getInstance().getController().getScene().getRoot()
         meshes = [node for node in DepthFirstIterator(scene_root) if type(node) is SceneNode and node.isSelectable()] #Only use the nodes that will be printed.
         for mesh in meshes:
@@ -359,19 +360,22 @@ class ExtruderManager(QObject):
             per_mesh_stack = mesh.callDecoration("getStack")
             if per_mesh_stack:
                 support_enabled |= per_mesh_stack.getProperty("support_enable", "value")
-                support_interface_enabled |= per_mesh_stack.getProperty("support_interface_enable", "value")
+                support_bottom_enabled |= per_mesh_stack.getProperty("support_bottom_enable", "value")
+                support_roof_enabled |= per_mesh_stack.getProperty("support_roof_enable", "value")
             else: #Take the setting from the build extruder stack.
                 extruder_stack = container_registry.findContainerStacks(id = extruder_stack_id)[0]
                 support_enabled |= extruder_stack.getProperty("support_enable", "value")
-                support_interface_enabled |= extruder_stack.getProperty("support_enable", "value")
+                support_bottom_enabled |= extruder_stack.getProperty("support_bottom_enable", "value")
+                support_roof_enabled |= extruder_stack.getProperty("support_roof_enable", "value")
 
         #The support extruders.
         if support_enabled:
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_infill_extruder_nr", "value"))])
             used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_extruder_nr_layer_0", "value"))])
-            if support_interface_enabled:
-                used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_roof_extruder_nr", "value"))])
+            if support_bottom_enabled:
                 used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_bottom_extruder_nr", "value"))])
+            if support_roof_enabled:
+                used_extruder_stack_ids.add(self.extruderIds[str(global_stack.getProperty("support_roof_extruder_nr", "value"))])
 
         #The platform adhesion extruder. Not used if using none.
         if global_stack.getProperty("adhesion_type", "value") != "none":
