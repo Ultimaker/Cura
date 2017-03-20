@@ -16,6 +16,7 @@ from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
 from UM.Scene.SceneNode import SceneNode
+from cura.SliceableObjectDecorator import SliceableObjectDecorator
 
 MYPY = False
 
@@ -144,6 +145,9 @@ class ThreeMFReader(MeshReader):
             group_decorator = GroupDecorator()
             um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
+        # Assuming that all nodes are printable objects, affects (auto) slicing
+        sliceable_decorator = SliceableObjectDecorator()
+        um_node.addDecorator(sliceable_decorator)
         return um_node
 
     def read(self, file_name):
