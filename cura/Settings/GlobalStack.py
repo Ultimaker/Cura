@@ -12,6 +12,9 @@ class GlobalStack(ContainerStack):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
+    def setNextStack(self, next_stack):
+        raise CannotSetNextStackError("Global stack cannot have a next stack!")
+
 global_stack_mime = MimeType(
     name = "application/x-cura-globalstack",
     comment = "Cura Global Stack",
