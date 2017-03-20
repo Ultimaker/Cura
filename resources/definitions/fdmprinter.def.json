@@ -3336,7 +3336,7 @@
                                     "default_value": 0.4,
                                     "minimum_value": "0",
                                     "minimum_value_warning": "support_bottom_line_width - 0.0001",
-                                    "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                                    "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_bottom_pattern == 'grid' else (3 if support_bottom_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
                                     "enabled": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable') and support_enable",
                                     "settable_per_mesh": false,
@@ -3368,7 +3368,7 @@
                                     "default_value": 0.4,
                                     "minimum_value": "0",
                                     "minimum_value_warning": "support_roof_line_width - 0.0001",
-                                    "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_interface_pattern == 'grid' else (3 if support_interface_pattern == 'triangles' else 1))",
+                                    "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == 'grid' else (3 if support_roof_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_roof_extruder_nr",
                                     "enabled": "extruderValue(support_roof_extruder_nr, 'support_interface_enable') and support_enable",
                                     "settable_per_mesh": false,
@@ -3396,7 +3396,52 @@
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_bottom_pattern":
+                        {
+                            "label": "Support Bottom Pattern",
+                            "description": "The pattern with which the bottoms of the support are printed.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "lines": "Lines",
+                                "grid": "Grid",
+                                "triangles": "Triangles",
+                                "concentric": "Concentric",
+                                "concentric_3d": "Concentric 3D",
+                                "zigzag": "Zig Zag"
+                            },
+                            "default_value": "concentric",
+                            "value": "support_interface_pattern",
+                            "limit_to_extruder": "support_bottom_extruder_nr",
+                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable') and support_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_roof_pattern":
+                        {
+                            "label": "Support Roof Pattern",
+                            "description": "The pattern with which the bottoms of the support are printed.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "lines": "Lines",
+                                "grid": "Grid",
+                                "triangles": "Triangles",
+                                "concentric": "Concentric",
+                                "concentric_3d": "Concentric 3D",
+                                "zigzag": "Zig Zag"
+                            },
+                            "default_value": "concentric",
+                            "value": "support_interface_pattern",
+                            "limit_to_extruder": "support_bottom_extruder_nr",
+                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable') and support_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "support_use_towers":
                 {
