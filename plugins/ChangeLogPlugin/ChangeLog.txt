@@ -1,6 +1,6 @@
 [2.5.0]
 *Speed.
-We’ve given the system a tweak, to make changing printers, profiles, materials and print cores even quicker than ever. That means less hanging around, more time printing. We’ve also adjusted the start-up speed, which is now five seconds faster.
+We’ve given the system a tweak, to make changing printers, profiles, materials, and print cores even quicker than ever. 3MF processing is also much faster now. Opening a 3MF file now takes one tenth of the time. That means less hanging around, more time printing.
 
 *Speedup engine – Multi-threading.
 This is one of the most significant improvements, making slicing even faster. Just like computers with multiple cores, Cura can process multiple operations at the same time. How’s that for efficient?
