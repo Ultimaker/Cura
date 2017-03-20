@@ -91,7 +91,7 @@ UM.MainWindow
                 MenuItem
                 {
                     id: saveAsMenu
-                    text: catalog.i18nc("@title:menu menubar:file", "Save &As")
+                    text: catalog.i18nc("@title:menu menubar:file", "Save &As...")
                     onTriggered:
                     {
                         var localDeviceId = "local_file";
