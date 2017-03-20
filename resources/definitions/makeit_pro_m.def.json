@@ -1,7 +1,7 @@
 {
     "id": "makeit_pro_m",
     "version": 2,
-    "name": "MAKEiT_ProM",
+    "name": "MAKEiT Pro-M",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -19,7 +19,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "MAKEiT ProM" },
+        "machine_name": { "default_value": "MAKEiT Pro-M" },
         "machine_width": {
             "default_value": 200
         },
