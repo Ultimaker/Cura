@@ -3287,7 +3287,7 @@
                 "support_interface_skip_height":
                 {
                     "label": "Support Interface Resolution",
-                    "description": "When checking where there's model above the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
+                    "description": "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
@@ -3295,7 +3295,38 @@
                     "maximum_value_warning": "support_interface_height",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "support_bottom_skip_height":
+                        {
+                            "label": "Support Bottom Resolution",
+                            "description": "When checking where there's model below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been the bottom of support.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.3,
+                            "value": "support_interface_skip_height",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "support_bottom_height",
+                            "limit_to_extruder": "support_bottom_extruder_nr",
+                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable') and support_enable",
+                            "settable_per_mesh": true
+                        },
+                        "support_roof_skip_height":
+                        {
+                            "label": "Support Roof Resolution",
+                            "description": "When checking where there's model above the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been roof on the support.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.3,
+                            "value": "support_interface_skip_height",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "support_roof_height",
+                            "limit_to_extruder": "support_roof_extruder_nr",
+                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_interface_enable') and support_enable",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "support_interface_density":
                 {
