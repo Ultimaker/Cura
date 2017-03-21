@@ -381,7 +381,7 @@ UM.PreferencesPage
                     ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 300
+                        width: 200
 
                         model: ListModel
                         {
