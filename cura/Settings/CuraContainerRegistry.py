@@ -6,6 +6,7 @@ import os.path
 import re
 from PyQt5.QtWidgets import QMessageBox
 
+from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -27,6 +28,7 @@ class CuraContainerRegistry(ContainerRegistry):
         super().__init__(*args, **kwargs)
 
     ##  Overridden from ContainerRegistry
+    @override(ContainerRegistry)
     def addContainer(self, container):
         # Note: Intentional check with type() because we want to ignore subclasses
         if type(container) == ContainerStack:
