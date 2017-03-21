@@ -461,12 +461,6 @@ UM.PreferencesPage
                 width: UM.Theme.getSize("default_margin").width
             }
 
-            Label
-            {
-                font.bold: true
-                text: catalog.i18nc("@label", "Override Profile")
-            }
-
             UM.TooltipArea
             {
                 width: childrenRect.width;
@@ -474,37 +468,48 @@ UM.PreferencesPage
 
                 text: catalog.i18nc("@info:tooltip", "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again.")
 
-                ComboBox
+                Column
                 {
-                    id: choiceOnProfileOverrideDropDownButton
-                    width: 300
+                    spacing: 4
 
-                    model: ListModel
+                    Label
                     {
-                        id: discardOrKeepProfileListModel
-
-                        Component.onCompleted: {
-                            append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
-                            append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
-                            append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
-                        }
+                        font.bold: true
+                        text: catalog.i18nc("@label", "Override Profile")
                     }
 
-                    currentIndex:
+                    ComboBox
                     {
-                        var index = 0;
-                        var code = UM.Preferences.getValue("cura/choice_on_profile_override");
-                        for (var i = 0; i < model.count; ++i)
+                        id: choiceOnProfileOverrideDropDownButton
+                        width: 200
+
+                        model: ListModel
                         {
-                            if (model.get(i).code == code)
-                            {
-                                index = i;
-                                break;
+                            id: discardOrKeepProfileListModel
+
+                            Component.onCompleted: {
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
                             }
                         }
-                        return index;
+
+                        currentIndex:
+                        {
+                            var index = 0;
+                            var code = UM.Preferences.getValue("cura/choice_on_profile_override");
+                            for (var i = 0; i < model.count; ++i)
+                            {
+                                if (model.get(i).code == code)
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            return index;
+                        }
+                        onActivated: UM.Preferences.setValue("cura/choice_on_profile_override", model.get(index).code)
                     }
-                    onActivated: UM.Preferences.setValue("cura/choice_on_profile_override", model.get(index).code)
                 }
             }
 
