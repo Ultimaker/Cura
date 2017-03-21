@@ -4,6 +4,7 @@ from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
+from UM.FileHandler.ReadFileJob import ReadFileJob
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -247,9 +248,12 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
         Preferences.getInstance().addPreference("cura/choice_on_profile_override", "always_ask")
+        Preferences.getInstance().addPreference("cura/choice_on_open_project", "always_ask")
 
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
+
+        Preferences.getInstance().addPreference("view/invert_zoom", False)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -1122,7 +1126,7 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
 
     def _onJobFinished(self, job):
-        if type(job) is not ReadMeshJob or not job.getResult():
+        if (not isinstance(job, ReadMeshJob) and not isinstance(job, ReadFileJob)) or not job.getResult():
             return
 
         f = QUrl.fromLocalFile(job.getFileName())
@@ -1267,15 +1271,10 @@ class CuraApplication(QtApplication):
         """
         Checks if the given file URL is a valid project file.
         """
-        file_url_prefix = 'file:///'
-
-        file_name = file_url
-        if file_name.startswith(file_url_prefix):
-            file_name = file_name[len(file_url_prefix):]
-
-        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_name)
+        file_path = QUrl(file_url).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
         if workspace_reader is None:
             return False  # non-project files won't get a reader
 
-        result = workspace_reader.preRead(file_name, show_dialog=False)
+        result = workspace_reader.preRead(file_path, show_dialog=False)
         return result == WorkspaceReader.PreReadResult.accepted

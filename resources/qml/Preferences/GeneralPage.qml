@@ -37,6 +37,18 @@ UM.PreferencesPage
         }
     }
 
+    function setDefaultOpenProjectOption(code)
+    {
+        for (var i = 0; i < choiceOnOpenProjectDropDownButton.model.count; ++i)
+        {
+            if (choiceOnOpenProjectDropDownButton.model.get(i).code == code)
+            {
+                choiceOnOpenProjectDropDownButton.currentIndex = i
+                break;
+            }
+        }
+    }
+
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
@@ -64,6 +76,9 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
+
+        UM.Preferences.resetPreference("cura/choice_on_open_project")
+        setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
         if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
@@ -386,6 +401,56 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Show summary dialog when saving project")
                     checked: boolCheck(UM.Preferences.getValue("cura/dialog_on_project_save"))
                     onCheckedChanged: UM.Preferences.setValue("cura/dialog_on_project_save", checked)
+                }
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Default behavior when opening a project file")
+
+                Column
+                {
+                    spacing: 4
+
+                    Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
+                    }
+
+                    ComboBox
+                    {
+                        id: choiceOnOpenProjectDropDownButton
+                        width: 200
+
+                        model: ListModel
+                        {
+                            id: openProjectOptionModel
+
+                            Component.onCompleted: {
+                                append({ text: catalog.i18nc("@option:openProject", "Always ask"), code: "always_ask" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always open as a project"), code: "open_as_project" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
+                            }
+                        }
+
+                        currentIndex:
+                        {
+                            var index = 0;
+                            var currentChoice = UM.Preferences.getValue("cura/choice_on_open_project");
+                            for (var i = 0; i < model.count; ++i)
+                            {
+                                if (model.get(i).code == currentChoice)
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            return index;
+                        }
+
+                        onActivated: UM.Preferences.setValue("cura/choice_on_open_project", model.get(index).code)
+                    }
                 }
             }
 
