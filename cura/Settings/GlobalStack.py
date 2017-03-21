@@ -1,18 +1,24 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from PyQt5.QtCore import pyqtProperty, pyqtSlot
+
+from UM.Decorators import override
+
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
-from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 class CannotSetNextStackError(Exception):
     pass
 
 class GlobalStack(ContainerStack):
-    def __init__(self, container_id, *args, **kwargs):
+    def __init__(self, container_id: str, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
-    def getProperty(self, key, property_name):
+        self._empty_instance_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
     @pyqtProperty(InstanceContainer)
     def userChanges(self) -> InstanceContainer:
@@ -42,14 +48,36 @@ class GlobalStack(ContainerStack):
     def definition(self) -> DefinitionContainer:
         return self._containers[_ContainerIndexes.Definition]
 
+    ##  Check whether the specified setting has a 'user' value.
+    #
+    #   A user value here is defined as the setting having a value in either
+    #   the UserChanges or QualityChanges container.
+    #
+    #   \return True if the setting has a user value, False if not.
+    @pyqtSlot(str, result = bool)
+    def hasUserValue(self, key: str) -> bool:
+        if self._containers[_ContainerIndexes.UserChanges].hasProperty(key, "value"):
+            return True
+
+        if self._containers[_ContainerIndexes.QualityChanges].hasProperty(key, "value"):
+            return True
+
+        return False
+
+    ##  Overridden from ContainerStack
+    @override(ContainerStack)
+    def getProperty(self, key: str, property_name: str):
         if property_name == "value":
-            resolve = super().getProperty(key, "resolve")
-            if resolve:
-                return resolve
+            if not self.hasUserValue(key):
+                resolve = super().getProperty(key, "resolve")
+                if resolve:
+                    return resolve
 
         return super().getProperty(key, property_name)
 
-    def setNextStack(self, next_stack):
+    ##  Overridden from ContainerStack
+    @override(ContainerStack)
+    def setNextStack(self, next_stack: ContainerStack) -> None:
         raise CannotSetNextStackError("Global stack cannot have a next stack!")
 
     ##  Overridden from ContainerStack
