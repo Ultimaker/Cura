@@ -76,6 +76,12 @@ Item {
         }
     }
 
+    // Shortcut for "save as/print/..."
+    Action {
+        shortcut: "Ctrl+P"
+        onTriggered: saveToButton.clicked()
+    }
+
     Item {
         id: saveRow
         width: base.width
@@ -212,7 +218,7 @@ Item {
             anchors.right: deviceSelectionMenu.visible ? deviceSelectionMenu.left : parent.right
             anchors.rightMargin: deviceSelectionMenu.visible ? -3 * UM.Theme.getSize("default_lining").width : UM.Theme.getSize("default_margin").width
 
-            text: UM.OutputDeviceManager.activeDeviceShortDescription
+            text: UM.OutputDeviceManager.activeDeviceShortDescription + " (CTRL+P)"
             onClicked:
             {
                 UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true, "preferred_mimetype":Printer.preferredOutputMimetype })
