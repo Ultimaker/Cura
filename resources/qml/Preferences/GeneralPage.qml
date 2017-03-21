@@ -25,6 +25,18 @@ UM.PreferencesPage
         }
     }
 
+    function setDefaultDiscardOrKeepProfile(code)
+    {
+        for (var i = 0; i < choiceOnProfileOverrideDropDownButton.model.count; i++)
+        {
+            if (choiceOnProfileOverrideDropDownButton.model.get(i).code == code)
+            {
+                choiceOnProfileOverrideDropDownButton.currentIndex = i;
+                break;
+            }
+        }
+    }
+
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
@@ -47,8 +59,9 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
+
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
-        choiceOnProfileOverrideDropDownButton.currentIndex = UM.Preferences.getValue("cura/choice_on_profile_override")
+        setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
 
         if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
@@ -364,15 +377,34 @@ UM.PreferencesPage
                 ComboBox
                 {
                     id: choiceOnProfileOverrideDropDownButton
-
-                    model: [
-                        catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
-                        catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
-                        catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
-                    ]
                     width: 300
-                    currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
-                    onCurrentIndexChanged: UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+
+                    model: ListModel
+                    {
+                        id: discardOrKeepProfileListModel
+
+                        Component.onCompleted: {
+                            append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
+                            append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
+                            append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
+                        }
+                    }
+
+                    currentIndex:
+                    {
+                        var index = 0;
+                        var code = UM.Preferences.getValue("cura/choice_on_profile_override");
+                        for (var i = 0; i < model.count; ++i)
+                        {
+                            if (model.get(i).code == code)
+                            {
+                                index = i;
+                                break;
+                            }
+                        }
+                        return index;
+                    }
+                    onActivated: UM.Preferences.setValue("cura/choice_on_profile_override", model.get(index).code)
                 }
             }
 
