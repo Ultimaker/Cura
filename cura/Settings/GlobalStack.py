@@ -52,6 +52,40 @@ class GlobalStack(ContainerStack):
     def setNextStack(self, next_stack):
         raise CannotSetNextStackError("Global stack cannot have a next stack!")
 
+    ##  Overridden from ContainerStack
+    @override(ContainerStack)
+    def deserialize(self, contents: str) -> None:
+        super().deserialize(contents)
+
+        new_containers = self._containers.copy()
+        while(len(new_containers) < len(_ContainerIndexes.IndexTypeMap)):
+            new_containers.append(self._empty_instance_container)
+
+        # Validate and ensure the list of containers matches with what we expect
+        for index, type_name in _ContainerIndexes.IndexTypeMap.items():
+            try:
+                container = new_containers[index]
+            except IndexError:
+                container = None
+
+            if type_name == "definition":
+                if not container or not isinstance(container, DefinitionContainer):
+                    definition = self.findContainer(container_type = DefinitionContainer, category = "*")
+                    if not definition:
+                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self._id))
+
+                    new_containers[index] = definition
+                continue
+
+            if not container or container.getMetaDataEntry("type") != type_name:
+                actual_container = self.findContainer(type = type_name)
+                if actual_container:
+                    new_containers[index] = actual_container
+
+        self._containers = new_containers
+
+## private:
+
 global_stack_mime = MimeType(
     name = "application/x-cura-globalstack",
     comment = "Cura Global Stack",
