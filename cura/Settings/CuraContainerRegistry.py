@@ -16,8 +16,8 @@ from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry #For getting the possible profile writers to write with.
 from UM.Util import parseBool
 
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ContainerManager import ContainerManager
+from . import ExtruderStack
+from . import GlobalStack
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -303,9 +303,9 @@ class CuraContainerRegistry(ContainerRegistry):
 
         new_stack = None
         if container_type == "extruder_train":
-            new_stack = ExtruderStack(container.getId())
+            new_stack = ExtruderStack.ExtruderStack(container.getId())
         else:
-            new_stack = GlobalStack(container.getId())
+            new_stack = GlobalStack.GlobalStack(container.getId())
 
         container_contents = container.serialize()
         new_stack.deserialize(container_contents)
