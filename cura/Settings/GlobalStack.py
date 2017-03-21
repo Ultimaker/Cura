@@ -13,6 +13,35 @@ class GlobalStack(ContainerStack):
         super().__init__(container_id, *args, **kwargs)
 
     def getProperty(self, key, property_name):
+
+    @pyqtProperty(InstanceContainer)
+    def userChanges(self) -> InstanceContainer:
+        return self._containers[_ContainerIndexes.UserChanges]
+
+    @pyqtProperty(InstanceContainer)
+    def qualityChanges(self) -> InstanceContainer:
+        return self._containers[_ContainerIndexes.QualityChanges]
+
+    @pyqtProperty(InstanceContainer)
+    def quality(self) -> InstanceContainer:
+        return self._containers[_ContainerIndexes.Quality]
+
+    @pyqtProperty(InstanceContainer)
+    def material(self) -> InstanceContainer:
+        return self._containers[_ContainerIndexes.Material]
+
+    @pyqtProperty(InstanceContainer)
+    def variant(self) -> InstanceContainer:
+        return self._containers[_ContainerIndexes.Variant]
+
+    @pyqtProperty(InstanceContainer)
+    def definitionChanges(self) -> InstanceContainer:
+        return self._containers[_ContainerIndexes.DefinitionChanges]
+
+    @pyqtProperty(DefinitionContainer)
+    def definition(self) -> DefinitionContainer:
+        return self._containers[_ContainerIndexes.Definition]
+
         if property_name == "value":
             resolve = super().getProperty(key, "resolve")
             if resolve:
