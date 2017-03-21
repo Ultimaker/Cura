@@ -246,7 +246,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
-        Preferences.getInstance().addPreference("cura/choice_on_profile_override", 0)
+        Preferences.getInstance().addPreference("cura/choice_on_profile_override", "always_ask")
 
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
@@ -342,10 +342,10 @@ class CuraApplication(QtApplication):
 
     def discardOrKeepProfileChanges(self):
         choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
-        if choice == 1:
+        if choice == "always_discard":
             # don't show dialog and DISCARD the profile
             self.discardOrKeepProfileChangesClosed("discard")
-        elif choice == 2:
+        elif choice == "always_keep":
             # don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
         else:

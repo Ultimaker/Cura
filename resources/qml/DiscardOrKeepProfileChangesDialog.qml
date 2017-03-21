@@ -21,9 +21,18 @@ UM.Dialog
         if(visible)
         {
             changesModel.forceUpdate()
-        }
 
-        discardOrKeepProfileChangesDropDownButton.currentIndex = UM.Preferences.getValue("cura/choice_on_profile_override")
+            discardOrKeepProfileChangesDropDownButton.currentIndex = 0;
+            for (var i = 0; i < discardOrKeepProfileChangesDropDownButton.model.count; ++i)
+            {
+                var code = discardOrKeepProfileChangesDropDownButton.model.get(i).code;
+                if (code == UM.Preferences.getValue("cura/choice_on_profile_override"))
+                {
+                    discardOrKeepProfileChangesDropDownButton.currentIndex = i;
+                    break;
+                }
+            }
+        }
     }
 
     Column
@@ -133,32 +142,20 @@ UM.Dialog
             ComboBox
             {
                 id: discardOrKeepProfileChangesDropDownButton
-                model: [
-                    catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
-                    catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
-                    catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
-                ]
                 width: 300
-                currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
-                onCurrentIndexChanged:
+
+                model: ListModel
                 {
-                    UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
-                    if (currentIndex == 1) {
-                        // 1 == "Discard and never ask again", so only enable the "Discard" button
-                        discardButton.enabled = true
-                        keepButton.enabled = false
-                    }
-                    else if (currentIndex == 2) {
-                        // 2 == "Keep and never ask again", so only enable the "Keep" button
-                        keepButton.enabled = true
-                        discardButton.enabled = false
-                    }
-                    else {
-                        // 0 == "Always ask me this", so show both
-                        keepButton.enabled = true
-                        discardButton.enabled = true
+                    id: discardOrKeepProfileListModel
+
+                    Component.onCompleted: {
+                        append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
+                        append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
+                        append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
                     }
                 }
+
+                onActivated: UM.Preferences.setValue("cura/choice_on_profile_override", model.get(index).code)
             }
         }
 
