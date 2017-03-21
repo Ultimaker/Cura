@@ -253,6 +253,8 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
 
+        Preferences.getInstance().addPreference("view/invert_zoom", False)
+
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
