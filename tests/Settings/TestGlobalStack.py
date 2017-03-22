@@ -30,6 +30,16 @@ def findSomeContainers(container_id = "*", container_type = None, type = None, c
     if container_type == DefinitionContainer:
         return unittest.mock.MagicMock()
 
+##  Helper function to read the contents of a container stack in the test
+#   stack folder.
+#
+#   \param filename The name of the file in the "stacks" folder to read from.
+#   \return The contents of that file.
+def readStack(filename):
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
+        serialized = file_handle.read()
+    return serialized
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename,                 user_changes_id", [
                         ("Global.global.cfg",       "empty"),
@@ -39,8 +49,7 @@ def findSomeContainers(container_id = "*", container_type = None, type = None, c
                         ("Complete.global.cfg",     "some_user_changes")
 ])
 def test_deserializeUserChanges(filename, user_changes_id, container_registry):
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
-        serialized = file_handle.read()
+    serialized = readStack(filename)
     stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
@@ -61,8 +70,7 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry):
                         ("Complete.global.cfg", "some_quality_changes")
 ])
 def test_deserializeQualityChanges(filename, quality_changes_id, container_registry):
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
-        serialized = file_handle.read()
+    serialized = readStack(filename)
     stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
