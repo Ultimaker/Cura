@@ -43,10 +43,32 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry):
         serialized = file_handle.read()
     stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
-    #Mock the loading of the instances.
+    #Mock the loading of the instance containers.
     stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all profiles you ask of.
 
     stack.deserialize(serialized)
 
     assert stack.userChanges.getId() == user_changes_id
+
+##  Tests whether the quality changes are being read properly from a global
+#   stack.
+@pytest.mark.parametrize("filename,           quality_changes_id", [
+                        ("Global.global.cfg", "empty"),
+                        ("Global.stack.cfg", "empty"),
+                        ("MachineLegacy.stack.cfg", "empty"),
+                        ("OnlyQualityChanges.global.cfg", "some_instance"),
+                        ("Complete.global.cfg", "some_quality_changes")
+])
+def test_deserializeQualityChanges(filename, quality_changes_id, container_registry):
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
+        serialized = file_handle.read()
+    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+
+    #Mock the loading of the instance containers.
+    stack.findContainer = findSomeContainers
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    stack.deserialize(serialized)
+
+    assert stack.qualityChanges.getId() == quality_changes_id
