@@ -1,56 +1,31 @@
 [2.5.0]
-*Speed.
-We’ve given the system a tweak, to make changing printers, profiles, materials, and print cores even quicker than ever. 3MF processing is also much faster now. Opening a 3MF file now takes one tenth of the time. That means less hanging around, more time printing.
+*Improved speed
+We’ve made changing printers, profiles, materials, and print cores even faster. 3MF processing is also much faster now. Opening a 3MF file now takes one tenth of the time.
 
-*Speedup engine – Multi-threading.
-This is one of the most significant improvements, making slicing even faster. Just like computers with multiple cores, Cura can process multiple operations at the same time. How’s that for efficient?
+*Speedup engine – Multithreading
+Cura can process multiple operations at the same time during slicing. Supported by Windows and Linux operating systems only.
 
-*Better layout for 3D layer view options.
-Need things to be a bit clearer? We’ve now incorporated an improved layer view for computers that support OpenGL 4.1. For OpenGL 2.0 we will automatically switch to the old layer view. Thanks to community member Aldo Hoeben for the fancy double handle slider.
+*Preheat the build plate (with a connected printer)
+Users can now set the Ultimaker 3 to preheat the build plate, which reduces the downtime, allowing to manually speed up the printing workflow.
 
-*Disable automatic slicing.
-Some users told us that slicing slowed down their workflow when it auto-starts, and to improve the user experience, we added an option to disable auto-slicing if required. Thanks to community member Aldo Hoeben for contributing to this one.
+*Better layout for 3D layer view options
+An improved layer view has been implemented for computers that support OpenGL 4.1. For OpenGL 2.0 to 4.0, we will automatically switch to the old layer view.
 
-*Auto-scale off by default.
-This change needs no explanation!
+*Disable automatic slicing
+An option to disable auto-slicing has been added for the better user experience.
 
-*Preheat the build plate (with a connected printer).
-You can now set your Ultimaker 3 to preheat the build plate, which reduces the downtime, letting you manually speed up your printing workflow. All you need to do is use the ‘preheat’ function in the Print Monitor screen, and set the correct temperature for the active material(s).
+*Auto-scale off by default
+This change speaks for itself.
 
-*G-code reader.
-The g-code reader has been reintroduced, which means you can load g-code from file and display it in layer view. You can also print saved g-code files with Cura, share and re-use them, and you can check that your printed object looks right via the g-code viewer. Thanks to AlephObjects for this feature.
+*Print cost calculation
+The latest version of Cura now contains code to help users calculate the cost of their prints. To do so, users need to enter a cost per spool and an amount of materials per spool. It is also possible to set the cost per material and gain better control of the expenses. Thanks to our community member Aldo Hoeben for adding this feature.
 
-*Switching profiles.
-When you change a printing profile after customizing print settings, you have an option (shown in a popup) to transfer your customizations to the new profile or discard those modifications and continue with default settings instead. We’ve made this dialog window more informative and intuitive.
+*G-code reader
+The g-code reader has been reintroduced, which means users can load g-code from file and display it in layer view. Users can also print saved g-code files with Cura, share and re-use them, as well as preview the printed object via the g-code viewer. Thanks to AlephObjects for this feature.
 
-*Print cost calculation.
-Cura now contains code to help you calculate the cost of your print. To do so, you’ll need to enter a cost per spool and an amount of materials per spool. You can also set the cost per material and gain better control of your expenses. Thanks to our community member Aldo Hoeben for adding this feature.
+*Discard or Keep Changes popup
+We’ve changed the popup that appears when a user changes a printing profile after setting custom printing settings. It is now more informative and helpful.
 
-*Bug fixes
-
-Property renaming: Properties that start with ‘get’ have been renamed to avoid confusion.
-Window overflow: This is now fixed.
-Multiple machine prefixes: Multiple machine prefixes are gone when loading and saving projects.
-Removal of file extension: When you save a file or project (without changing the file type), no file extension is added to the name. It’s only when you change to another file type that the extension is added.
-Ultimaker 3 Extended connectivity: Selecting Ultimaker 3 Extended in Cura let you connect and print with Ultimaker 3, without any warning. This now has been fixed.
-Different Y / Z colors: Y and Z colors in the tool menu are now different to the colors on the build plate.
-No collision areas: No collision areas were generated for some models.
-Perimeter gaps: Perimeter gaps are not filled often enough; we’ve now amended this.
-File location after restart: The old version of Cura didn’t remember the last opened file location after it’s been restarted. Now it does!
-Project name: The project name changes after the project is opened.
-Slicing when error value is given (print core 2): When a support is printed with extruder 2 (PVA), some support settings will trigger a slice when an error value is given. We’ve now sorted this out.
-Support Towers: Support Towers can now be disabled.
-Support bottoms: When putting one object on top of another with some space in between, and selecting support with support bottom interface, no support bottom is printed. This has now been resolved.
-Summary box size: We’ve enlarged the summary box when saving your project.
-Cubic subdivision infill: In the past, the cubic subdivision infill sometimes didn’t produce the infill (WIN) – this has now been addressed.
-Spiralize outer contour and fill small gaps: When combining Fill Gaps Between Walls with Spiralize Outer Contour, the model gets a massive infill.
-Experimental post-processing plugin: Since the TwaekAtZ post-processing plugin is not officially supported, we added the  ‘Experimental’ tag.
-
-*3rd party printers (bug fixes)
-
-Folgertech printer definition has been added
-Hello BEE Prusa printer definition has been added
-Material profiles for Cartesio printers have been updated
 
 [2.4.0]
 *Project saving & opening
