@@ -33,8 +33,7 @@
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "gantry_height": { "default_value": 35 },
-        "machine_height": { "default_value": 400 },
-        "machine_depth": { "default_value": 270 },
+        "machine_height": { "default_value": 400 },"machine_depth": { "default_value": 270 },
         "machine_width": { "default_value": 450 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": {
