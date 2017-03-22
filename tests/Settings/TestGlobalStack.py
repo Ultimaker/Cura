@@ -13,7 +13,8 @@ import UM.Settings.ContainerRegistry
 @pytest.mark.parametrize("filename, user_changes_id", [
                         ("Global.global.cfg", "empty"),
                         ("Global.stack.cfg", "empty"),
-                        ("MachineLegacy.stack.cfg", "empty")
+                        ("MachineLegacy.stack.cfg", "empty"),
+                        ("OnlyUser.global.cfg", "some_instance") #This one does have a user profile.
 ])
 def test_deserializeUserChanges(filename, user_changes_id):
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
