@@ -31,7 +31,7 @@ def test_loadTypes(filename, output_class, container_registry):
     UM.Settings.ContainerStack.setContainerRegistry(container_registry)
     Resources.getAllResourcesOfType = unittest.mock.MagicMock(return_value = [os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)]) #Return just this tested file.
     def findContainers(id, container_type = 0):
-        if id == "some_material" or id == "some_definition":
+        if id == "some_instance" or id == "some_definition":
             return [UM.Settings.ContainerRegistry._EmptyInstanceContainer(id)]
         else:
             return []

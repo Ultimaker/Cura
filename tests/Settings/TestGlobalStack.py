@@ -22,7 +22,7 @@ def test_deserializeUserChanges(filename, user_changes_id):
 
     #Mock the loading of the instances.
     def findContainer(container_id = "*", container_type = None, type = None, category = "*"):
-        if id == "some_material":
+        if id == "some_instance":
             return UM.Settings.ContainerRegistry._EmptyInstanceContainer(id)
         if container_type == DefinitionContainer:
             return unittest.mock.MagicMock()
