@@ -80,3 +80,24 @@ def test_deserializeQualityChanges(filename, quality_changes_id, container_regis
     stack.deserialize(serialized)
 
     assert stack.qualityChanges.getId() == quality_changes_id
+
+##  Tests whether the quality profile is being read properly from a global
+#   stack.
+@pytest.mark.parametrize("filename,           quality_id", [
+                        ("Global.global.cfg", "empty"),
+                        ("Global.stack.cfg", "empty"),
+                        ("MachineLegacy.stack.cfg", "empty"),
+                        ("OnlyQuality.global.cfg", "some_instance"),
+                        ("Complete.global.cfg", "some_quality")
+])
+def test_deserializeQualityChanges(filename, quality_id, container_registry):
+    serialized = readStack(filename)
+    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+
+    #Mock the loading of the instance containers.
+    stack.findContainer = findSomeContainers
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    stack.deserialize(serialized)
+
+    assert stack.quality.getId() == quality_id
