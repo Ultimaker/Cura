@@ -82,8 +82,9 @@ Item {
         onTriggered:
         {
             // only work when the button is enabled
-            if (saveToButton.enabled)
+            if (saveToButton.enabled) {
                 saveToButton.clicked();
+            }
         }
     }
 
