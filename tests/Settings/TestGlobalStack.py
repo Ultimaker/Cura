@@ -31,12 +31,12 @@ def findSomeContainers(container_id = "*", container_type = None, type = None, c
         return unittest.mock.MagicMock()
 
 ##  Tests whether the user changes are being read properly from a global stack.
-@pytest.mark.parametrize("filename, user_changes_id", [
-                        ("Global.global.cfg", "empty"),
-                        ("Global.stack.cfg", "empty"),
+@pytest.mark.parametrize("filename,                 user_changes_id", [
+                        ("Global.global.cfg",       "empty"),
+                        ("Global.stack.cfg",        "empty"),
                         ("MachineLegacy.stack.cfg", "empty"),
-                        ("OnlyUser.global.cfg", "some_instance"), #This one does have a user profile.
-                        ("Complete.global.cfg", "some_user_changes")
+                        ("OnlyUser.global.cfg",     "some_instance"), #This one does have a user profile.
+                        ("Complete.global.cfg",     "some_user_changes")
 ])
 def test_deserializeUserChanges(filename, user_changes_id, container_registry):
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
