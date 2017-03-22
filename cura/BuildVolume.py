@@ -632,8 +632,13 @@ class BuildVolume(SceneNode):
                 prime_y = prime_y + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
-            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
+
+            #prime_polygon2 = prime_polygon.translate(18, 0)
+
+            #prime_polygon = prime_polygon2.intersectionConvexHulls(prime_polygon)
+
+            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             result[extruder.getId()] = [prime_polygon]
 
         return result
