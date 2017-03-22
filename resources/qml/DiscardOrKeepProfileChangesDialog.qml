@@ -155,7 +155,24 @@ UM.Dialog
                     }
                 }
 
-                onActivated: UM.Preferences.setValue("cura/choice_on_profile_override", model.get(index).code)
+                onCurrentIndexChanged:
+                {
+                    var code = model.get(currentIndex).code;
+                    UM.Preferences.setValue("cura/choice_on_profile_override", code);
+
+                    if (code == "always_keep") {
+                        keepButton.enabled = true;
+                        discardButton.enabled = false;
+                    }
+                    else if (code == "always_discard") {
+                        keepButton.enabled = false;
+                        discardButton.enabled = true;
+                    }
+                    else {
+                        keepButton.enabled = true;
+                        discardButton.enabled = true;
+                    }
+                }
             }
         }
 
