@@ -22,39 +22,43 @@ class GlobalStack(ContainerStack):
 
         self._extruders = []
 
-    @pyqtProperty(InstanceContainer)
+        self.containersChanged.connect(self._onContainersChanged)
+
+    pyqtContainersChanged = pyqtSignal()
+
+    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
     def userChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.UserChanges]
 
     def setQualtiyChanges(self, new_quality_changes: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes)
 
-    @pyqtProperty(InstanceContainer)
+    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
     def qualityChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.QualityChanges]
 
     def setQuality(self, new_quality: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.Quality, new_quality)
 
-    @pyqtProperty(InstanceContainer)
+    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
     def quality(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Quality]
 
     def setMaterial(self, new_material: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.Material, new_material)
 
-    @pyqtProperty(InstanceContainer)
+    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
     def material(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Material]
 
     def setVariant(self, new_variant: InstanceContainer) -> None:
         self.replaceContainer(_ContainerIndexes.Variant, new_variant)
 
-    @pyqtProperty(InstanceContainer)
+    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
     def variant(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Variant]
 
-    @pyqtProperty(InstanceContainer)
+    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
     def definitionChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.DefinitionChanges]
 
@@ -165,6 +169,8 @@ class GlobalStack(ContainerStack):
 
         self._containers = new_containers
 
+    def _onContainersChanged(self, container):
+        self.pyqtContainersChanged.emit()
 
 ## private:
 global_stack_mime = MimeType(
