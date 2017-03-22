@@ -55,7 +55,7 @@ Cura.MachineAction
 
                 Column
                 {
-                    width: parent.width / 2
+                    width: Math.floor(parent.width / 2)
                     spacing: UM.Theme.getSize("default_margin").height
 
                     Label
@@ -243,7 +243,7 @@ Cura.MachineAction
 
                 Column
                 {
-                    width: parent.width / 2
+                    width: Math.floor(parent.width / 2)
                     spacing: UM.Theme.getSize("default_margin").height
 
                     Label
@@ -407,7 +407,7 @@ Cura.MachineAction
                 Column
                 {
                     height: parent.height
-                    width: parent.width / 2
+                    width: Math.floor(parent.width / 2)
                     Label
                     {
                         text: catalog.i18nc("@label", "Start Gcode")
@@ -431,7 +431,7 @@ Cura.MachineAction
                 }
                 Column {
                     height: parent.height
-                    width: parent.width / 2
+                    width: Math.floor(parent.width / 2)
                     Label
                     {
                         text: catalog.i18nc("@label", "End Gcode")
