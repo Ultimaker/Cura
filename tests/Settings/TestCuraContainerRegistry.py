@@ -41,7 +41,8 @@ def test_loadTypes(filename, output_class, container_registry):
         return unittest.mock.MagicMock()
 
     with unittest.mock.patch("cura.Settings.GlobalStack.GlobalStack.findContainer", findContainer):
-        container_registry.load()
+        with unittest.mock.patch("os.remove"):
+            container_registry.load()
 
     #Check whether the resulting type was correct.
     stack_id = filename.split(".")[0]
