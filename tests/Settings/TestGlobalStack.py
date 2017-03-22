@@ -22,6 +22,14 @@ def container_registry():
     registry.findContainers = findContainers
     return registry
 
+##  Place-in function for findContainer that finds only containers that start
+#   with "some_".
+def findSomeContainers(container_id = "*", container_type = None, type = None, category = "*"):
+    if container_id.startswith("some_"):
+        return UM.Settings.ContainerRegistry._EmptyInstanceContainer(container_id)
+    if container_type == DefinitionContainer:
+        return unittest.mock.MagicMock()
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename, user_changes_id", [
                         ("Global.global.cfg", "empty"),
@@ -36,12 +44,7 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry):
     stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instances.
-    def findContainer(container_id = "*", container_type = None, type = None, category = "*"):
-        if container_id.startswith("some_"):
-            return UM.Settings.ContainerRegistry._EmptyInstanceContainer(container_id)
-        if container_type == DefinitionContainer:
-            return unittest.mock.MagicMock()
-    stack.findContainer = findContainer
+    stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all profiles you ask of.
 
     stack.deserialize(serialized)
