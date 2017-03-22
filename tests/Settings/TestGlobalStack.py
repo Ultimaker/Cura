@@ -90,7 +90,7 @@ def test_deserializeQualityChanges(filename, quality_changes_id, container_regis
                         ("OnlyQuality.global.cfg",  "some_instance"),
                         ("Complete.global.cfg",     "some_quality")
 ])
-def test_deserializeQualityChanges(filename, quality_id, container_registry):
+def test_deserializeQuality(filename, quality_id, container_registry):
     serialized = readStack(filename)
     stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
