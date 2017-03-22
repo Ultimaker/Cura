@@ -79,7 +79,12 @@ Item {
     // Shortcut for "save as/print/..."
     Action {
         shortcut: "Ctrl+P"
-        onTriggered: saveToButton.clicked()
+        onTriggered:
+        {
+            // only work when the button is enabled
+            if (saveToButton.enabled)
+                saveToButton.clicked();
+        }
     }
 
     Item {
