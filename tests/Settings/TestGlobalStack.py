@@ -62,12 +62,12 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry):
 
 ##  Tests whether the quality changes are being read properly from a global
 #   stack.
-@pytest.mark.parametrize("filename,           quality_changes_id", [
-                        ("Global.global.cfg", "empty"),
-                        ("Global.stack.cfg", "empty"),
-                        ("MachineLegacy.stack.cfg", "empty"),
+@pytest.mark.parametrize("filename,                       quality_changes_id", [
+                        ("Global.global.cfg",             "empty"),
+                        ("Global.stack.cfg",              "empty"),
+                        ("MachineLegacy.stack.cfg",       "empty"),
                         ("OnlyQualityChanges.global.cfg", "some_instance"),
-                        ("Complete.global.cfg", "some_quality_changes")
+                        ("Complete.global.cfg",           "some_quality_changes")
 ])
 def test_deserializeQualityChanges(filename, quality_changes_id, container_registry):
     serialized = readStack(filename)
@@ -83,12 +83,12 @@ def test_deserializeQualityChanges(filename, quality_changes_id, container_regis
 
 ##  Tests whether the quality profile is being read properly from a global
 #   stack.
-@pytest.mark.parametrize("filename,           quality_id", [
-                        ("Global.global.cfg", "empty"),
-                        ("Global.stack.cfg", "empty"),
+@pytest.mark.parametrize("filename,                 quality_id", [
+                        ("Global.global.cfg",       "empty"),
+                        ("Global.stack.cfg",        "empty"),
                         ("MachineLegacy.stack.cfg", "empty"),
-                        ("OnlyQuality.global.cfg", "some_instance"),
-                        ("Complete.global.cfg", "some_quality")
+                        ("OnlyQuality.global.cfg",  "some_instance"),
+                        ("Complete.global.cfg",     "some_quality")
 ])
 def test_deserializeQualityChanges(filename, quality_id, container_registry):
     serialized = readStack(filename)
