@@ -26,6 +26,29 @@ The g-code reader has been reintroduced, which means users can load g-code from 
 *Discard or Keep Changes popup
 We’ve changed the popup that appears when a user changes a printing profile after setting custom printing settings. It is now more informative and helpful.
 
+*Bug fixes
+- Window overflow: On some configurations (OS and screen dependant), an overflow on the General (Preferences) panel and the credits list on the About window occurred. This is now fixed.
+- “Center camera when the item is selected”: This is now set to ‘off’ by default.
+- Removal of file extension: When users save a file or project (without changing the file type), no file extension is added to the name. It’s only when users change to another file type that the extension is added.
+- Ultimaker 3 Extended connectivity. Selecting Ultimaker 3 Extended in Cura let you connect and print with Ultimaker 3, without any warning. This now has been fixed.
+- Different Y / Z colors: Y and Z colors in the tool menu are now similar to the colors on the build plate.
+- No collision areas: No collision areas used to be generated for some models when "keep models apart" was activated. This is now fixed.
+- Perimeter gaps: Perimeter gaps are not filled often enough; we’ve now amended this.
+- File location after restart: The old version of Cura didn’t remember the last opened file location after it’s been restarted. Now it has been fixed.
+- Project name: The project name changes after the project is opened. This now has been fixed.
+- Slicing when error value is given (print core 2): When a support is printed with the Extruder 2 (PVA), some support settings will trigger a slice when an error value is given. We’ve now sorted this out.
+- Support Towers: Support Towers can now be disabled.
+- Support bottoms: When putting one object on top of another with some space in between, and selecting support with support bottom interface, no support bottom is printed. This has now been resolved.
+- Summary box size: We’ve enlarged the summary box when saving the project.
+- Cubic subdivision infill: In the past, the cubic subdivision infill sometimes didn’t produce the infill (WIN) – this has now been addressed.
+- Spiralize outer contour and fill small gaps: When combining Fill Gaps Between Walls with Spiralize Outer Contour, the model gets a massive infill.
+- Experimental post-processing plugin: Since the TweakAtZ post-processing plugin is not officially supported, we added the  ‘Experimental’ tag.
+
+*3rd party printers (bug fixes)
+- Folgertech printer definition has been added.
+- Hello BEE Prusa printer definition has been added.
+- Velleman Vertex K8400 printer definitions have been added for both single-extrusion and dual-extrusion versions.
+- Material profiles for Cartesio printers have been updated.
 
 [2.4.0]
 *Project saving & opening

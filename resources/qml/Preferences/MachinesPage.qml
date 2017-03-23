@@ -114,6 +114,11 @@ UM.ManagementPage
             property var content
             minimumWidth: 350 * Screen.devicePixelRatio;
             minimumHeight: 350 * Screen.devicePixelRatio;
+
+            // prevent the Machine Settings dialog from going beyond the top of the screen
+            x: (x < 0) ? 0 : x
+            y: (y < 0) ? 0 : y
+
             onContentChanged:
             {
                 contents = content;

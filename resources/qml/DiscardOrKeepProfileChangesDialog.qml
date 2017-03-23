@@ -155,9 +155,9 @@ UM.Dialog
                     }
                 }
 
-                onCurrentIndexChanged:
+                onActivated:
                 {
-                    var code = model.get(currentIndex).code;
+                    var code = model.get(index).code;
                     UM.Preferences.setValue("cura/choice_on_profile_override", code);
 
                     if (code == "always_keep") {
