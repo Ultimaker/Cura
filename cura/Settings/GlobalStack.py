@@ -19,6 +19,8 @@ class GlobalStack(ContainerStack):
 
         self._empty_instance_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
+        self._extruders = []
+
     @pyqtProperty(InstanceContainer)
     def userChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.UserChanges]
@@ -58,6 +60,17 @@ class GlobalStack(ContainerStack):
     @pyqtProperty(DefinitionContainer)
     def definition(self) -> DefinitionContainer:
         return self._containers[_ContainerIndexes.Definition]
+
+    @pyqtProperty("QVariantList")
+    def extruders(self) -> list:
+        return self._extruders
+
+    def addExtruder(self, extruder):
+        extruder_count = self.getProperty("machine_extruder_count", "value")
+        if len(self._extruders) > extruder_count:
+            raise Exceptions.TooManyExtrudersError("Tried to add extruder to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count))
+
+        self._extruders.append(extruder)
 
     ##  Check whether the specified setting has a 'user' value.
     #
