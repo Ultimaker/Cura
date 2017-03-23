@@ -144,3 +144,24 @@ def test_deserializeVariant(filename, variant_id, container_registry):
     stack.deserialize(serialized)
 
     assert stack.variant.getId() == variant_id
+
+##  Tests whether the definition changes profile is being read properly from a
+#   global stack.
+@pytest.mark.parametrize("filename,                          definition_changes_id", [
+                        ("Global.global.cfg",                "empty"),
+                        ("Global.stack.cfg",                 "empty"),
+                        ("MachineLegacy.stack.cfg",          "empty"),
+                        ("OnlyDefinitionChanges.global.cfg", "some_instance"),
+                        ("Complete.global.cfg",              "some_material")
+])
+def test_deserializeDefinitionChanges(filename, definition_changes_id, container_registry):
+    serialized = readStack(filename)
+    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+
+    #Mock the loading of the instance containers.
+    stack.findContainer = findSomeContainers
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    stack.deserialize(serialized)
+
+    assert stack.variant.getId() == definition_changes_id
