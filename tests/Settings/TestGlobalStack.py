@@ -164,7 +164,7 @@ def test_deserializeDefinitionChanges(filename, definition_changes_id, container
 
     stack.deserialize(serialized)
 
-    assert stack.variant.getId() == definition_changes_id
+    assert stack.definitionChanges.getId() == definition_changes_id
 
 ##  Tests whether the definition is being read properly from a global stack.
 @pytest.mark.parametrize("filename,                   definition_id", [
