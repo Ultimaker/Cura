@@ -238,7 +238,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         except KeyError:
             Logger.log("w", "Connection state of %s changed, but it was not found in the list")
 
-
     @pyqtProperty(QObject , notify = connectionStateChanged)
     def connectedPrinterList(self):
         self._usb_output_devices_model = ListModel()
