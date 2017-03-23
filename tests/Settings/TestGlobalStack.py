@@ -28,7 +28,9 @@ def findSomeContainers(container_id = "*", container_type = None, type = None, c
     if container_id.startswith("some_"):
         return UM.Settings.ContainerRegistry._EmptyInstanceContainer(container_id)
     if container_type == DefinitionContainer:
-        return unittest.mock.MagicMock()
+        definition_mock = unittest.mock.MagicMock()
+        definition_mock.getId = unittest.mock.MagicMock(return_value = "some_definition") #getId returns some_definition.
+        return definition_mock
 
 ##  Helper function to read the contents of a container stack in the test
 #   stack folder.
