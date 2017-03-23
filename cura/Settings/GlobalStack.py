@@ -105,6 +105,22 @@ class GlobalStack(ContainerStack):
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
     ##  Overridden from ContainerStack
+    #
+    #   Since we have a fixed order of containers in the stack, we want to enforce this.
+    @override(ContainerStack)
+    def addContainer(self, container: ContainerInterface) -> None:
+        raise Exceptions.InvalidOperationError("Cannot add a container to Global stack")
+
+    ##  Overridden from ContainerStack
+    @override(ContainerStack)
+    def insertContainer(self, index: int, container: ContainerInterface) -> None:
+        raise Exceptions.InvalidOperationError("Cannot insert a container into Global stack")
+
+    ##  Overridden from ContainerStack
+    @override(ContainerStack)
+    def removeContainer(self, index: int) -> None:
+        raise Exceptions.InvalidOperationError("Cannot remove a container from Global stack")
+
     @override(ContainerStack)
     def deserialize(self, contents: str) -> None:
         super().deserialize(contents)
