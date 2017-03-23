@@ -123,3 +123,24 @@ def test_deserializeMaterial(filename, material_id, container_registry):
     stack.deserialize(serialized)
 
     assert stack.material.getId() == material_id
+
+##  Tests whether the variant profile is being read properly from a global
+#   stack.
+@pytest.mark.parametrize("filename,                 variant_id", [
+                        ("Global.global.cfg",       "empty"),
+                        ("Global.stack.cfg",        "empty"),
+                        ("MachineLegacy.stack.cfg", "empty"),
+                        ("OnlyVariant.global.cfg",  "some_instance"),
+                        ("Complete.global.cfg",     "some_variant")
+])
+def test_deserializeVariant(filename, variant_id, container_registry):
+    serialized = readStack(filename)
+    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+
+    #Mock the loading of the instance containers.
+    stack.findContainer = findSomeContainers
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    stack.deserialize(serialized)
+
+    assert stack.variant.getId() == variant_id
