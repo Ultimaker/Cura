@@ -60,11 +60,15 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry, g
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.userChanges.getId() == user_changes_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the quality changes are being read properly from a global
 #   stack.
@@ -80,11 +84,15 @@ def test_deserializeQualityChanges(filename, quality_changes_id, container_regis
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.qualityChanges.getId() == quality_changes_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the quality profile is being read properly from a global
 #   stack.
@@ -100,11 +108,15 @@ def test_deserializeQuality(filename, quality_id, container_registry, global_sta
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.quality.getId() == quality_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the material profile is being read properly from a global
 #   stack.
@@ -121,11 +133,15 @@ def test_deserializeMaterial(filename, material_id, container_registry, global_s
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.material.getId() == material_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the variant profile is being read properly from a global
 #   stack.
@@ -141,11 +157,15 @@ def test_deserializeVariant(filename, variant_id, container_registry, global_sta
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.variant.getId() == variant_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the definition changes profile is being read properly from a
 #   global stack.
@@ -162,11 +182,15 @@ def test_deserializeDefinitionChanges(filename, definition_changes_id, container
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.definitionChanges.getId() == definition_changes_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the definition is being read properly from a global stack.
 @pytest.mark.parametrize("filename,                   definition_id", [
@@ -181,11 +205,15 @@ def test_deserializeDefinition(filename, definition_id, container_registry, glob
 
     #Mock the loading of the instance containers.
     global_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
     global_stack.deserialize(serialized)
 
     assert global_stack.definition.getId() == definition_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
