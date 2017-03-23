@@ -42,7 +42,7 @@ We’ve changed the popup that appears when a user changes a printing profile af
 - Summary box size: We’ve enlarged the summary box when saving the project.
 - Cubic subdivision infill: In the past, the cubic subdivision infill sometimes didn’t produce the infill (WIN) – this has now been addressed.
 - Spiralize outer contour and fill small gaps: When combining Fill Gaps Between Walls with Spiralize Outer Contour, the model gets a massive infill.
-- Experimental post-processing plugin: Since the TwaekAtZ post-processing plugin is not officially supported, we added the  ‘Experimental’ tag.
+- Experimental post-processing plugin: Since the TweakAtZ post-processing plugin is not officially supported, we added the  ‘Experimental’ tag.
 
 *3rd party printers (bug fixes)
 - Folgertech printer definition has been added.
