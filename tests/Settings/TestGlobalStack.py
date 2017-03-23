@@ -22,6 +22,11 @@ def container_registry():
     registry.findContainers = findContainers
     return registry
 
+#An empty global stack to test with.
+@pytest.fixture()
+def global_stack():
+    return cura.Settings.GlobalStack.GlobalStack("TestStack")
+
 ##  Place-in function for findContainer that finds only containers that start
 #   with "some_".
 def findSomeContainers(container_id = "*", container_type = None, type = None, category = "*"):
@@ -50,17 +55,16 @@ def readStack(filename):
                         ("OnlyUser.global.cfg",     "some_instance"), #This one does have a user profile.
                         ("Complete.global.cfg",     "some_user_changes")
 ])
-def test_deserializeUserChanges(filename, user_changes_id, container_registry):
+def test_deserializeUserChanges(filename, user_changes_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.userChanges.getId() == user_changes_id
+    assert global_stack.userChanges.getId() == user_changes_id
 
 ##  Tests whether the quality changes are being read properly from a global
 #   stack.
@@ -71,17 +75,16 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry):
                         ("OnlyQualityChanges.global.cfg", "some_instance"),
                         ("Complete.global.cfg",           "some_quality_changes")
 ])
-def test_deserializeQualityChanges(filename, quality_changes_id, container_registry):
+def test_deserializeQualityChanges(filename, quality_changes_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.qualityChanges.getId() == quality_changes_id
+    assert global_stack.qualityChanges.getId() == quality_changes_id
 
 ##  Tests whether the quality profile is being read properly from a global
 #   stack.
@@ -92,17 +95,16 @@ def test_deserializeQualityChanges(filename, quality_changes_id, container_regis
                         ("OnlyQuality.global.cfg",  "some_instance"),
                         ("Complete.global.cfg",     "some_quality")
 ])
-def test_deserializeQuality(filename, quality_id, container_registry):
+def test_deserializeQuality(filename, quality_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.quality.getId() == quality_id
+    assert global_stack.quality.getId() == quality_id
 
 ##  Tests whether the material profile is being read properly from a global
 #   stack.
@@ -114,17 +116,16 @@ def test_deserializeQuality(filename, quality_id, container_registry):
                         ("OnlyMaterial.global.cfg",   "some_instance"),
                         ("Complete.global.cfg",       "some_material")
 ])
-def test_deserializeMaterial(filename, material_id, container_registry):
+def test_deserializeMaterial(filename, material_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.material.getId() == material_id
+    assert global_stack.material.getId() == material_id
 
 ##  Tests whether the variant profile is being read properly from a global
 #   stack.
@@ -135,17 +136,16 @@ def test_deserializeMaterial(filename, material_id, container_registry):
                         ("OnlyVariant.global.cfg",  "some_instance"),
                         ("Complete.global.cfg",     "some_variant")
 ])
-def test_deserializeVariant(filename, variant_id, container_registry):
+def test_deserializeVariant(filename, variant_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.variant.getId() == variant_id
+    assert global_stack.variant.getId() == variant_id
 
 ##  Tests whether the definition changes profile is being read properly from a
 #   global stack.
@@ -156,17 +156,17 @@ def test_deserializeVariant(filename, variant_id, container_registry):
                         ("OnlyDefinitionChanges.global.cfg", "some_instance"),
                         ("Complete.global.cfg",              "some_material")
 ])
-def test_deserializeDefinitionChanges(filename, definition_changes_id, container_registry):
+def test_deserializeDefinitionChanges(filename, definition_changes_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+    global_stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.definitionChanges.getId() == definition_changes_id
+    assert global_stack.definitionChanges.getId() == definition_changes_id
 
 ##  Tests whether the definition is being read properly from a global stack.
 @pytest.mark.parametrize("filename,                   definition_id", [
@@ -176,44 +176,41 @@ def test_deserializeDefinitionChanges(filename, definition_changes_id, container
                         ("OnlyDefinition.global.cfg", "some_definition"),
                         ("Complete.global.cfg",       "some_definition")
 ])
-def test_deserializeDefinition(filename, definition_id, container_registry):
+def test_deserializeDefinition(filename, definition_id, container_registry, global_stack):
     serialized = readStack(filename)
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
 
     #Mock the loading of the instance containers.
-    stack.findContainer = findSomeContainers
+    global_stack.findContainer = findSomeContainers
     UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
 
-    stack.deserialize(serialized)
+    global_stack.deserialize(serialized)
 
-    assert stack.definition.getId() == definition_id
+    assert global_stack.definition.getId() == definition_id
 
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
-def test_hasUserValueUserChanges():
+def test_hasUserValueUserChanges(global_stack):
     user_changes = unittest.mock.MagicMock()
     def hasProperty(key, property):
         return key == "layer_height" and property == "value" #Only have the layer_height property set.
     user_changes.hasProperty = hasProperty
 
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
-    stack.userChanges = user_changes
+    global_stack.userChanges = user_changes
 
-    assert not stack.hasUserValue("infill_sparse_density")
-    assert stack.hasUserValue("layer_height")
-    assert not stack.hasUserValue("")
+    assert not global_stack.hasUserValue("infill_sparse_density")
+    assert global_stack.hasUserValue("layer_height")
+    assert not global_stack.hasUserValue("")
 
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the quality-changes container.
-def test_hasUserValueQualityChanges():
+def test_hasUserValueQualityChanges(global_stack):
     quality_changes = unittest.mock.MagicMock()
     def hasProperty(key, property):
         return key == "layer_height" and property == "value" #Only have the layer_height property set.
     quality_changes.hasProperty = hasProperty
 
-    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
-    stack.qualityChanges = quality_changes
+    global_stack.qualityChanges = quality_changes
 
-    assert not stack.hasUserValue("infill_sparse_density")
-    assert stack.hasUserValue("layer_height")
-    assert not stack.hasUserValue("")
+    assert not global_stack.hasUserValue("infill_sparse_density")
+    assert global_stack.hasUserValue("layer_height")
+    assert not global_stack.hasUserValue("")
