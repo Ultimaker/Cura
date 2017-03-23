@@ -11,8 +11,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-class CannotSetNextStackError(Exception):
-    pass
+from . import Exceptions
 
 class GlobalStack(ContainerStack):
     def __init__(self, container_id: str, *args, **kwargs):
@@ -78,7 +77,7 @@ class GlobalStack(ContainerStack):
     ##  Overridden from ContainerStack
     @override(ContainerStack)
     def setNextStack(self, next_stack: ContainerStack) -> None:
-        raise CannotSetNextStackError("Global stack cannot have a next stack!")
+        raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
     ##  Overridden from ContainerStack
     @override(ContainerStack)
