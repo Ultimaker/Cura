@@ -36,7 +36,6 @@ def test_loadTypes(filename, output_class, container_registry):
         else:
             return []
     container_registry.findContainers = findContainers
-    mock_definition = unittest.mock.MagicMock()
     def findContainer(container_id = "*", container_type = None, type = "*", category = None):
         return unittest.mock.MagicMock()
 
