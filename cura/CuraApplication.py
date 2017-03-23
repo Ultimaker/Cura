@@ -1031,7 +1031,9 @@ class CuraApplication(QtApplication):
             transformation.setTranslation(zero_translation)
             transformed_mesh = mesh.getTransformed(transformation)
             center = transformed_mesh.getCenterPosition()
-            object_centers.append(center)
+            if center is not None:
+                object_centers.append(center)
+
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
