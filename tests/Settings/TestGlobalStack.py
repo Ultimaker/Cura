@@ -187,3 +187,33 @@ def test_deserializeDefinition(filename, definition_id, container_registry):
     stack.deserialize(serialized)
 
     assert stack.definition.getId() == definition_id
+
+##  Tests whether the hasUserValue returns true for settings that are changed in
+#   the user-changes container.
+def test_hasUserValueUserChanges():
+    user_changes = unittest.mock.MagicMock()
+    def hasProperty(key, property):
+        return key == "layer_height" and property == "value" #Only have the layer_height property set.
+    user_changes.hasProperty = hasProperty
+
+    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+    stack.userChanges = user_changes
+
+    assert not stack.hasUserValue("infill_sparse_density")
+    assert stack.hasUserValue("layer_height")
+    assert not stack.hasUserValue("")
+
+##  Tests whether the hasUserValue returns true for settings that are changed in
+#   the quality-changes container.
+def test_hasUserValueQualityChanges():
+    quality_changes = unittest.mock.MagicMock()
+    def hasProperty(key, property):
+        return key == "layer_height" and property == "value" #Only have the layer_height property set.
+    quality_changes.hasProperty = hasProperty
+
+    stack = cura.Settings.GlobalStack.GlobalStack("TestStack")
+    stack.qualityChanges = quality_changes
+
+    assert not stack.hasUserValue("infill_sparse_density")
+    assert stack.hasUserValue("layer_height")
+    assert not stack.hasUserValue("")
