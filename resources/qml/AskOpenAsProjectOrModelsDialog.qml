@@ -67,6 +67,7 @@ UM.Dialog
         {
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project\nor import the models from it?")
             anchors.margins: UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
         }
 
