@@ -560,10 +560,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             line = line[:line.find(";")]
         line = line.strip()
 
-        # Don't send empty lines
+        # Don't send empty lines. But we do have to send something, so send m105 instead.
         if line == "":
-            self._gcode_position += 1
-            return
+            line = "M105"
 
         try:
             if line == "M0" or line == "M1":
