@@ -215,6 +215,15 @@ def test_deserializeDefinition(filename, definition_id, container_registry, glob
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+def test_deserializeMissingContainer(container_registry, global_stack):
+    serialized = readStack("Global.global.cfg")
+    try:
+        global_stack.deserialize(serialized)
+    except Exception as e:
+        #Must be exactly Exception, not one of its subclasses, since that is what gets raised when a stack has an unknown container.
+        #That's why we can't use pytest.raises.
+        assert type(e) == Exception
+
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
 def test_hasUserValueUserChanges(global_stack):
