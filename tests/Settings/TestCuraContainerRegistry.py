@@ -18,6 +18,12 @@ import UM.Settings.ContainerStack #Setting the container registry here properly.
 def container_registry():
     return CuraContainerRegistry()
 
+def teardown():
+    #If the temporary file for the legacy file rename test still exists, remove it.
+    temporary_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", "temporary.stack.cfg")
+    if os.path.isfile(temporary_file):
+        os.remove(temporary_file)
+
 ##  Tests whether loading gives objects of the correct type.
 @pytest.mark.parametrize("filename,                  output_class", [
                         ("ExtruderLegacy.stack.cfg", ExtruderStack),
