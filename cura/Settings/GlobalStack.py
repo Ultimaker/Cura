@@ -23,17 +23,29 @@ class GlobalStack(ContainerStack):
     def userChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.UserChanges]
 
+    def setQualtiyChanges(self, new_quality_changes: InstanceContainer) -> None:
+        self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes)
+
     @pyqtProperty(InstanceContainer)
     def qualityChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.QualityChanges]
+
+    def setQuality(self, new_quality: InstanceContainer) -> None:
+        self.replaceContainer(_ContainerIndexes.Quality, new_quality)
 
     @pyqtProperty(InstanceContainer)
     def quality(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Quality]
 
+    def setMaterial(self, new_material: InstanceContainer) -> None:
+        self.replaceContainer(_ContainerIndexes.Material, new_material)
+
     @pyqtProperty(InstanceContainer)
     def material(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Material]
+
+    def setVariant(self, new_variant: InstanceContainer) -> None:
+        self.replaceContainer(_ContainerIndexes.Variant, new_variant)
 
     @pyqtProperty(InstanceContainer)
     def variant(self) -> InstanceContainer:
