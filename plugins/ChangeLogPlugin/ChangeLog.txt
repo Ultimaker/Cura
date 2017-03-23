@@ -1,9 +1,31 @@
 [2.5.0]
-*Layerview double slider.
-The layerview now has a nice slider with double handles where you can drag maximum layer, minimum layer and the layer range. Thansk to community member Aldo Hoeben for this feature.
+*Improved speed
+We’ve made changing printers, profiles, materials, and print cores even faster. 3MF processing is also much faster now. Opening a 3MF file now takes one tenth of the time.
 
-*Included PauseBackendPlugin.
-This enables pausing the backend and manually start the backend. Thanks to community member Aldo Hoeben for this feature.
+*Speedup engine – Multithreading
+Cura can process multiple operations at the same time during slicing. Supported by Windows and Linux operating systems only.
+
+*Preheat the build plate (with a connected printer)
+Users can now set the Ultimaker 3 to preheat the build plate, which reduces the downtime, allowing to manually speed up the printing workflow.
+
+*Better layout for 3D layer view options
+An improved layer view has been implemented for computers that support OpenGL 4.1. For OpenGL 2.0 to 4.0, we will automatically switch to the old layer view.
+
+*Disable automatic slicing
+An option to disable auto-slicing has been added for the better user experience.
+
+*Auto-scale off by default
+This change speaks for itself.
+
+*Print cost calculation
+The latest version of Cura now contains code to help users calculate the cost of their prints. To do so, users need to enter a cost per spool and an amount of materials per spool. It is also possible to set the cost per material and gain better control of the expenses. Thanks to our community member Aldo Hoeben for adding this feature.
+
+*G-code reader
+The g-code reader has been reintroduced, which means users can load g-code from file and display it in layer view. Users can also print saved g-code files with Cura, share and re-use them, as well as preview the printed object via the g-code viewer. Thanks to AlephObjects for this feature.
+
+*Discard or Keep Changes popup
+We’ve changed the popup that appears when a user changes a printing profile after setting custom printing settings. It is now more informative and helpful.
+
 
 [2.4.0]
 *Project saving & opening

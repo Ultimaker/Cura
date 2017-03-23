@@ -16,6 +16,7 @@ from UM.Application import Application
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.QualityManager import QualityManager
 from UM.Scene.SceneNode import SceneNode
+from cura.SliceableObjectDecorator import SliceableObjectDecorator
 
 MYPY = False
 
@@ -92,7 +93,12 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            um_node.addChild(self._convertSavitarNodeToUMNode(child))
+            child_node = self._convertSavitarNodeToUMNode(child)
+            if child_node:
+                um_node.addChild(child_node)
+
+        if um_node.getMeshData() is None and len(um_node.getChildren()) == 0:
+            return None
 
         settings = savitar_node.getSettings()
 
@@ -139,6 +145,11 @@ class ThreeMFReader(MeshReader):
             group_decorator = GroupDecorator()
             um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
+        if um_node.getMeshData():
+            # Assuming that all nodes with mesh data are printable objects
+            # affects (auto) slicing
+            sliceable_decorator = SliceableObjectDecorator()
+            um_node.addDecorator(sliceable_decorator)
         return um_node
 
     def read(self, file_name):
@@ -152,6 +163,8 @@ class ThreeMFReader(MeshReader):
             self._unit = scene_3mf.getUnit()
             for node in scene_3mf.getSceneNodes():
                 um_node = self._convertSavitarNodeToUMNode(node)
+                if um_node is None:
+                    continue
                 # compensate for original center position, if object(s) is/are not around its zero position
 
                 transform_matrix = Matrix()

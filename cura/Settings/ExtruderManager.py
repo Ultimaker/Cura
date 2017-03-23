@@ -135,6 +135,13 @@ class ExtruderManager(QObject):
                     return self._extruder_trains[global_container_stack.getId()][str(index)]
         return None
 
+    ##  Get all extruder stacks
+    def getExtruderStacks(self):
+        result = []
+        for i in range(self.extruderCount):
+            result.append(self.getExtruderStack(i))
+        return result
+
     ##  Adds all extruders of a specific machine definition to the extruder
     #   manager.
     #

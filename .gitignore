@@ -10,6 +10,7 @@ resources/i18n/x-test
 resources/firmware
 resources/materials
 LC_MESSAGES
+.cache
 
 # Editors and IDEs.
 *kdev*

@@ -629,11 +629,12 @@ class BuildVolume(SceneNode):
 
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-                prime_y = prime_x + machine_depth / 2
+                prime_y = prime_y + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
-            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
+
+            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             result[extruder.getId()] = [prime_polygon]
 
         return result

@@ -7,12 +7,14 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Settings.SettingFunction import SettingFunction
 
+from collections import OrderedDict
 import os
+
 
 class UserChangesModel(ListModel):
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
-    ExtruderRole = Qt.UserRole +3
+    ExtruderRole = Qt.UserRole + 3
     OriginalValueRole = Qt.UserRole + 4
     UserValueRole = Qt.UserRole + 6
     CategoryRole = Qt.UserRole + 7
@@ -35,7 +37,8 @@ class UserChangesModel(ListModel):
         self._update()
 
     def _update(self):
-        items = []
+        item_dict = OrderedDict()
+        item_list = []
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return
@@ -111,5 +114,9 @@ class UserChangesModel(ListModel):
                 if stack != global_stack:
                     item_to_add["extruder"] = stack.getName()
 
-                items.append(item_to_add)
-        self.setItems(items)
+                if category_label not in item_dict:
+                    item_dict[category_label] = []
+                item_dict[category_label].append(item_to_add)
+        for each_item_list in item_dict.values():
+            item_list += each_item_list
+        self.setItems(item_list)
