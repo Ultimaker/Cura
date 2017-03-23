@@ -12,7 +12,6 @@ from cura.Settings.GlobalStack import GlobalStack #Testing for returning the cor
 from UM.Resources import Resources #Mocking some functions of this.
 import UM.Settings.ContainerRegistry #Making empty container stacks.
 import UM.Settings.ContainerStack #Setting the container registry here properly.
-from UM.Settings.DefinitionContainer import DefinitionContainer #Checking against the DefinitionContainer class.
 
 ##  Gives a fresh CuraContainerRegistry instance.
 @pytest.fixture()
