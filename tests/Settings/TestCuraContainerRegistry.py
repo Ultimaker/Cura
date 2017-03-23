@@ -36,10 +36,8 @@ def test_loadTypes(filename, output_class, container_registry):
         else:
             return []
     container_registry.findContainers = findContainers
-    def findContainer(container_id = "*", container_type = None, type = "*", category = None):
-        return unittest.mock.MagicMock()
 
-    with unittest.mock.patch("cura.Settings.GlobalStack.GlobalStack.findContainer", findContainer):
+    with unittest.mock.patch("cura.Settings.GlobalStack.GlobalStack.findContainer"):
         with unittest.mock.patch("os.remove"):
             container_registry.load()
 
