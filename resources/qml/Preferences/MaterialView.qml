@@ -153,7 +153,7 @@ TabView
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
                     prefix: base.currency + " "
                     decimals: 2
-                    maximumValue: 1000
+                    maximumValue: 100000000
 
                     onValueChanged: {
                         base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
