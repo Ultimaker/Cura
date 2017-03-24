@@ -200,11 +200,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
-            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s",self._authentication_id )
+            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s and key", self._authentication_id, self._getSafeAuthKey())
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
         else:
-            Logger.log("d", "No authentication was required. The ID is: %s", self._authentication_id)
+            Logger.log("d", "No authentication is available to use, but we did got a request for it.")
 
     def getProperties(self):
         return self._properties
@@ -730,7 +730,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if self._authentication_id is None and self._authentication_key is None:
             Logger.log("d", "No authentication found in metadata.")
         else:
-            Logger.log("d", "Loaded authentication id %s from the metadata entry", self._authentication_id)
+            Logger.log("d", "Loaded authentication id %s and key %s from the metadata entry", self._authentication_id, self._getSafeAuthKey())
 
         self._update_timer.start()
 
@@ -847,7 +847,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
-        Logger.log("d", "Checking if authentication is correct for id %s", self._authentication_id)
+        Logger.log("d", "Checking if authentication is correct for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
@@ -1016,7 +1016,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
                     Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
-                    Logger.log("i", "Authentication succeeded for id %s", self._authentication_id)
+                    Logger.log("i", "Authentication succeeded for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
                 else:  # Got a response that we didn't expect, so something went wrong.
                     Logger.log("e", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
                     self.setAuthenticationState(AuthState.NotAuthenticated)
@@ -1046,7 +1046,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
-                Logger.log("i", "Got a new authentication ID. Waiting for authorization: %s", self._authentication_id )
+                Logger.log("i", "Got a new authentication ID (%s) and KEY (%S). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()
@@ -1116,3 +1116,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             icon=QMessageBox.Question,
             callback=callback
         )
+
+    ##  Convenience function to "blur" out all but the last 5 characters of the auth key.
+    #   This can be used to debug print the key, without it compromising the security.
+    def _getSafeAuthKey(self):
+        if self._authentication_key is not None:
+            result = self._authentication_key[-5:]
+            result = result.rjust(len(self._authentication_key), "*")
+            return result
+        return self._authentication_key
