@@ -320,6 +320,34 @@ def test_setPropertyUser(key, property, value, output_value, extruder_stack):
     extruder_stack.setProperty(key, value, property)
     assert extruder_stack.userChanges.getProperty(key, property) == output_value
 
+##  Tests setting properties on specific containers on the extruder stack.
+@pytest.mark.parametrize("target_container", [
+    "user",
+    "quality_changes",
+    "quality",
+    "material",
+    "variant",
+    "definition"
+])
+def test_setPropertyOtherContainers(target_container, extruder_stack):
+    #Other parameters that don't need to be varied.
+    key = "layer_height"
+    property = "value",
+    value = "0.1337",
+    output_value = 0.1337
+
+    extruder_stack.setProperty(key, value, property, target_container = target_container)
+    containers = {
+        "user": extruder_stack.userChanges,
+        "quality_changes": extruder_stack.qualityChanges,
+        "quality": extruder_stack.quality,
+        "material": extruder_stack.material,
+        "variant": extruder_stack.variant,
+        "definition_changes": extruder_stack.definition_changes,
+        "definition": extruder_stack.definition
+    }
+    assert containers[target_container].getProperty(key, property) == output_value
+
 ##  Tests setting qualities by specifying an ID of a quality that exists.
 def test_setQualityByIdExists(extruder_stack, container_registry):
     original_container_registry = UM.Settings.ContainerStack._containerRegistry
