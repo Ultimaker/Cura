@@ -308,6 +308,18 @@ def test_setMaterialByIdDoesntExist(extruder_stack):
     with pytest.raises(KeyError):
         extruder_stack.setMaterialById("some_material") #Container registry is empty now.
 
+##  Tests setting properties directly on the extruder stack.
+@pytest.mark.parametrize("key,              property,         value,       output_value", [
+                        ("layer_height",    "value",          "0.1337",    0.1337),
+                        ("foo",             "value",          "100",       100),
+                        ("support_enabled", "value",          "True",      True),
+                        ("layer_height",    "default_value",  0.1337,      0.1337),
+                        ("layer_height",    "is_bright_pink", "of course", "of course")
+])
+def test_setPropertyUser(key, property, value, output_value, extruder_stack):
+    extruder_stack.setProperty(key, value, property)
+    assert extruder_stack.userChanges.getProperty(key, property) == output_value
+
 ##  Tests setting qualities by specifying an ID of a quality that exists.
 def test_setQualityByIdExists(extruder_stack, container_registry):
     original_container_registry = UM.Settings.ContainerStack._containerRegistry
