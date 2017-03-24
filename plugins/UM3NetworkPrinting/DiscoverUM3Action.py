@@ -35,6 +35,7 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
+            Logger.log("d", "Starting printer discovery.")
             self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
             self._network_plugin.printerListChanged.connect(self._onPrinterDiscoveryChanged)
             self.printersChanged.emit()
@@ -42,6 +43,7 @@ class DiscoverUM3Action(MachineAction):
     ##  Re-filters the list of printers.
     @pyqtSlot()
     def reset(self):
+        Logger.log("d", "Reset the list of found printers.")
         self.printersChanged.emit()
 
     @pyqtSlot()
@@ -95,6 +97,7 @@ class DiscoverUM3Action(MachineAction):
 
     @pyqtSlot(str)
     def setKey(self, key):
+        Logger.log("d", "Attempting to set the network key of the active machine to %s", key)
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
