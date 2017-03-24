@@ -422,6 +422,23 @@ def test_setNextStack(global_stack):
     with pytest.raises(InvalidOperationError):
         global_stack.setNextStack(unittest.mock.MagicMock())
 
+##  Tests adding definition changes by specifying an ID of a container that
+#   exists.
+def test_setDefinitionChangesByIdExists(global_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    global_stack.setDefinitionChangesById("some_definition_changes") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests adding definition changes by specifying an ID of a container that
+#   doesn't exist.
+def test_setDefinitionChangesByIdDoesntExist(global_stack):
+    with pytest.raises(KeyError):
+        global_stack.setDefinitionChangesById("some_definition_changes") #Container registry is empty now.
+
 ##  Tests setting properties directly on the global stack.
 @pytest.mark.parametrize("key,              property,         value,       output_value", [
                         ("layer_height",    "value",          "0.1337",    0.1337),
