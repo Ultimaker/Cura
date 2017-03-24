@@ -409,3 +409,32 @@ def test_setNextStack(global_stack):
 def test_setPropertyUser(key, property, value, output_value, global_stack):
     global_stack.setProperty(key, value, property)
     assert global_stack.userChanges.getProperty(key, property) == output_value
+
+##  Tests setting properties on specific containers on the global stack.
+@pytest.mark.parametrize("target_container", [
+    "user",
+    "quality_changes",
+    "quality",
+    "material",
+    "variant",
+    "definition_changes",
+    "definition"
+])
+def test_setPropertyOtherContainers(target_container, global_stack):
+    #Other parameters that don't need to be varied.
+    key = "layer_height"
+    property = "value",
+    value = "0.1337",
+    output_value = 0.1337
+
+    global_stack.setProperty(key, value, property, target_container = target_container)
+    containers = {
+        "user": global_stack.userChanges,
+        "quality_changes": global_stack.qualityChanges,
+        "quality": global_stack.quality,
+        "material": global_stack.material,
+        "variant": global_stack.variant,
+        "definition_changes": global_stack.definition_changes,
+        "definition": global_stack.definition
+    }
+    assert containers[target_container].getProperty(key, property) == output_value
