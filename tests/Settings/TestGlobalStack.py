@@ -6,7 +6,7 @@ import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
 
 import cura.Settings.GlobalStack #The module we're testing.
-from cura.Settings.Exceptions import TooManyExtrudersError #To test raising this error.
+from cura.Settings.Exceptions import TooManyExtrudersError, InvalidOperationError #To test raising these errors.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To test against the class DefinitionContainer.
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
@@ -49,6 +49,11 @@ def readStack(filename):
     return serialized
 
 #############################START OF TEST CASES################################
+
+##  Tests whether adding a container is properly forbidden.
+def test_addContainer(global_stack):
+    with pytest.raises(InvalidOperationError):
+        global_stack.addContainer(unittest.mock.MagicMock())
 
 ##  Tests adding extruders to the global stack.
 def test_addExtruder(global_stack):
@@ -302,3 +307,17 @@ def test_hasUserValueQualityChanges(global_stack):
     assert not global_stack.hasUserValue("infill_sparse_density")
     assert global_stack.hasUserValue("layer_height")
     assert not global_stack.hasUserValue("")
+
+##  Tests whether inserting a container is properly forbidden.
+def test_insertContainer(global_stack):
+    with pytest.raises(InvalidOperationError):
+        global_stack.insertContainer(0, unittest.mock.MagicMock())
+
+def test_removeContainer(global_stack):
+    with pytest.raises(InvalidOperationError):
+        global_stack.removeContainer(unittest.mock.MagicMock())
+
+##  Tests whether changing the next stack is properly forbidden.
+def test_setNextStack(global_stack):
+    with pytest.raises(InvalidOperationError):
+        global_stack.setNextStack(unittest.mock.MagicMock())
