@@ -75,12 +75,12 @@ def test_deserializeDefinition(filename, definition_id, container_registry, extr
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
-@pytest.mark.parametrize("filename,                   material_id", [
-                        ("Left.extruder.cfg",         "some_instance"),
-                        ("ExtruderLegacy.stack.cfg",  "some_instance"),
-                        ("OnlyMaterial.extruder.cfg", "some_instance"),
+@pytest.mark.parametrize("filename,                     material_id", [
+                        ("Left.extruder.cfg",           "some_instance"),
+                        ("ExtruderLegacy.stack.cfg",    "some_instance"),
+                        ("OnlyMaterial.extruder.cfg",   "some_instance"),
                         ("OnlyDefinition.extruder.cfg", "empty"),
-                        ("Complete.extruder.cfg",     "some_material")
+                        ("Complete.extruder.cfg",       "some_material")
 ])
 def test_deserializeMaterial(filename, material_id, container_registry, extruder_stack):
     serialized = readStack(filename)
