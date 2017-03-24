@@ -135,6 +135,19 @@ def test_deserializeMaterial(filename, material_id, container_registry, extruder
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests that when an extruder is loaded with an unknown instance, it raises an
+#   exception.
+def test_deserializeMissingContainer(extruder_stack):
+    serialized = readStack("Left.extruder.cfg")
+    with pytest.raises(Exception):
+        extruder_stack.deserialize(serialized)
+    try:
+        extruder_stack.deserialize(serialized)
+    except Exception as e:
+        #Must be exactly Exception, not one of its subclasses, since that is what gets raised when a stack has an unknown container.
+        #That's why we can't use pytest.raises.
+        assert type(e) == Exception
+
 ##  Tests whether qualities are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                  quality_id", [
                         ("Left.extruder.cfg",        "empty"),
