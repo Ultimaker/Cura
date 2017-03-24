@@ -275,3 +275,19 @@ def test_insertContainer(extruder_stack):
 def test_removeContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
         extruder_stack.removeContainer(unittest.mock.MagicMock())
+
+##  Tests setting definitions by specifying an ID of a definition that exists.
+def test_setDefinitionByIdExists(extruder_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    extruder_stack.setDefinitionById("some_definition") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests setting definitions by specifying an ID of a definition that doesn't
+#   exist.
+def test_setDefinitionByIdDoesntExist(extruder_stack):
+    with pytest.raises(KeyError):
+        extruder_stack.setDefinitionById("some_definition") #Container registry is empty now.
