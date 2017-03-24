@@ -1122,6 +1122,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _getSafeAuthKey(self):
         if self._authentication_key is not None:
             result = self._authentication_key[-5:]
-            result = result.rjust(len(self._authentication_key), "*")
+            result = "********" + result
             return result
         return self._authentication_key
