@@ -8,8 +8,9 @@ import unittest.mock #For the mocking and monkeypatching functionality.
 import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
+from UM.Settings.InstanceContainer import InstanceContainer #To check against the class of InstanceContainer.
 import cura.Settings.ExtruderStack #The module we're testing.
-from cura.Settings.Exceptions import InvalidOperationError #To check whether the correct exceptions are raised.
+from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.fixture()
@@ -48,12 +49,48 @@ def readStack(filename):
         serialized = file_handle.read()
     return serialized
 
+class DefinitionContainerSubClass(DefinitionContainer):
+    def __init__(self):
+        super().__init__(container_id = "SubDefinitionContainer")
+
+class InstanceContainerSubClass(InstanceContainer):
+    def __init__(self):
+        super().__init__(container_id = "SubInstanceContainer")
+
 #############################START OF TEST CASES################################
 
 ##  Tests whether adding a container is properly forbidden.
 def test_addContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
         extruder_stack.addContainer(unittest.mock.MagicMock())
+
+##  Tests whether the container types are properly enforced on the stack.
+#
+#   When setting a field to have a different type of stack than intended, we
+#   should get an exception.
+@pytest.mark.parametrize("definition_container, instance_container", [
+    (DefinitionContainer(container_id = "TestDefinitionContainer"), InstanceContainer(container_id = "TestInstanceContainer")),
+    (DefinitionContainerSubClass(), InstanceContainerSubClass())
+])
+def test_constrainContainerTypes(definition_container, instance_container, extruder_stack):
+    with pytest.raises(InvalidContainerError): #Putting a definition container in the user changes is not allowed.
+        extruder_stack.userChanges = definition_container
+    extruder_stack.userChanges = instance_container #Putting an instance container in the user changes is allowed.
+    with pytest.raises(InvalidContainerError):
+        extruder_stack.qualityChanges = definition_container
+    extruder_stack.qualityChanges = instance_container
+    with pytest.raises(InvalidContainerError):
+        extruder_stack.quality = definition_container
+    extruder_stack.quality = instance_container
+    with pytest.raises(InvalidContainerError):
+        extruder_stack.material = definition_container
+    extruder_stack.material = instance_container
+    with pytest.raises(InvalidContainerError):
+        extruder_stack.variant = definition_container
+    extruder_stack.variant = instance_container
+    with pytest.raises(InvalidContainerError): #Putting an instance container in the definition is not allowed.
+        extruder_stack.definition = instance_container
+    extruder_stack.definition = definition_container #Putting a definition container in the definition is allowed.
 
 ##  Tests whether definitions are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                     definition_id", [
