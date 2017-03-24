@@ -339,3 +339,18 @@ def test_setQualityChangesByIdExists(extruder_stack, container_registry):
 def test_setQualityChangesByIdDoesntExist(extruder_stack):
     with pytest.raises(KeyError):
         extruder_stack.setQualityChangesById("some_quality_changes") #Container registry is empty now.
+
+##  Tests setting variants by specifying an ID of a variant that exists.
+def test_setVariantByIdExists(extruder_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    extruder_stack.setVariantById("some_variant") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests setting variants by specifying an ID of a variant that doesn't exist.
+def test_setVariantByIdDoesntExist(extruder_stack):
+    with pytest.raises(KeyError):
+        extruder_stack.setVariantById("some_variant") #Container registry is empty now.
