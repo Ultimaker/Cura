@@ -24,7 +24,7 @@ def container_registry():
 
 #An empty global stack to test with.
 @pytest.fixture()
-def global_stack():
+def global_stack() -> cura.Settings.GlobalStack.GlobalStack:
     return cura.Settings.GlobalStack.GlobalStack("TestStack")
 
 ##  Place-in function for findContainer that finds only containers that start
@@ -223,6 +223,42 @@ def test_deserializeMissingContainer(container_registry, global_stack):
         #Must be exactly Exception, not one of its subclasses, since that is what gets raised when a stack has an unknown container.
         #That's why we can't use pytest.raises.
         assert type(e) == Exception
+
+##  Tests whether getProperty properly applies the stack-like behaviour on its
+#   containers.
+def test_getPropertyFallThrough(global_stack):
+    #A few instance container mocks to put in the stack.
+    layer_height_5 = unittest.mock.MagicMock() #Sets layer height to 5.
+    layer_height_5.getProperty = lambda key, property: 5 if (key == "layer_height" and property == "value") else None
+    layer_height_5.hasProperty = lambda key: key == "layer_height"
+    layer_height_10 = unittest.mock.MagicMock() #Sets layer height to 10.
+    layer_height_10.getProperty = lambda key, property: 10 if (key == "layer_height" and property == "value") else None
+    layer_height_10.hasProperty = lambda key: key == "layer_height"
+    no_layer_height = unittest.mock.MagicMock() #No settings at all.
+    no_layer_height.getProperty = lambda key, property: None
+    no_layer_height.hasProperty = lambda key: False
+
+    global_stack.userChanges = no_layer_height
+    global_stack.qualityChanges = no_layer_height
+    global_stack.quality = no_layer_height
+    global_stack.material = no_layer_height
+    global_stack.variant = no_layer_height
+    global_stack.definitionChanges = no_layer_height
+    global_stack.definition = layer_height_5 #Here it is!
+
+    assert global_stack.getProperty("layer_height", "value") == 5
+    global_stack.definitionChanges = layer_height_10
+    assert global_stack.getProperty("layer_height", "value") == 10
+    global_stack.variant = layer_height_5
+    assert global_stack.getProperty("layer_height", "value") == 5
+    global_stack.material = layer_height_10
+    assert global_stack.getProperty("layer_height", "value") == 10
+    global_stack.quality = layer_height_5
+    assert global_stack.getProperty("layer_height", "value") == 5
+    global_stack.qualityChanges = layer_height_10
+    assert global_stack.getProperty("layer_height", "value") == 10
+    global_stack.userChanges = layer_height_5
+    assert global_stack.getProperty("layer_height", "value") == 5
 
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
