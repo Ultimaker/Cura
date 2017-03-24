@@ -49,6 +49,14 @@ def readStack(filename):
         serialized = file_handle.read()
     return serialized
 
+class DefinitionContainerSubClass(DefinitionContainer):
+    def __init__(self):
+        super().__init__(container_id = "SubDefinitionContainer")
+
+class InstanceContainerSubClass(InstanceContainer):
+    def __init__(self):
+        super().__init__(container_id = "SubInstanceContainer")
+
 #############################START OF TEST CASES################################
 
 ##  Tests whether adding a container is properly forbidden.
@@ -72,10 +80,11 @@ def test_addExtruder(global_stack):
 #
 #   When setting a field to have a different type of stack than intended, we
 #   should get an exception.
-def test_constrainContainerTypes(global_stack):
-    definition_container = DefinitionContainer(container_id = "TestDefinitionContainer")
-    instance_container = InstanceContainer(container_id = "TestInstanceContainer")
-
+@pytest.mark.parametrize("definition_container, instance_container", [
+    (DefinitionContainer(container_id = "TestDefinitionContainer"), InstanceContainer(container_id = "TestInstanceContainer")),
+    (DefinitionContainerSubClass(), InstanceContainerSubClass())
+])
+def test_constrainContainerTypes(definition_container, instance_container, global_stack):
     with pytest.raises(InvalidContainerError): #Putting a definition container in the user changes is not allowed.
         global_stack.userChanges = definition_container
     global_stack.userChanges = instance_container #Putting an instance container in the user changes is allowed.
