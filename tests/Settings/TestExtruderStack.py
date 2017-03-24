@@ -55,11 +55,11 @@ def test_addContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
         extruder_stack.addContainer(unittest.mock.MagicMock())
 
-@pytest.mark.parametrize("filename, user_changes_id", [
-    ("Left.extruder.cfg", "empty"),
-    ("ExtruderLegacy.stack.cfg", "empty"),
-    ("OnlyUser.extruder.cfg", "some_instance"),
-    ("Complete.extruder.cfg", "some_user_changes")
+@pytest.mark.parametrize("filename,                  user_changes_id", [
+                        ("Left.extruder.cfg",        "empty"),
+                        ("ExtruderLegacy.stack.cfg", "empty"),
+                        ("OnlyUser.extruder.cfg",    "some_instance"),
+                        ("Complete.extruder.cfg",    "some_user_changes")
 ])
 def test_deserializeUserChanges(filename, user_changes_id, container_registry, extruder_stack):
     serialized = readStack(filename)
