@@ -401,6 +401,22 @@ def test_removeContainer(global_stack):
     with pytest.raises(InvalidOperationError):
         global_stack.removeContainer(unittest.mock.MagicMock())
 
+##  Tests adding a definition by specifying an ID of a definition that exists.
+def test_setDefinitionByIdExists(global_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    global_stack.setDefinitionById("some_definition") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests adding a definition by specifying an ID of a definition that doesn't
+#   exist.
+def test_setDefinitionByIdDoesntExist(global_stack):
+    with pytest.raises(KeyError):
+        global_stack.setDefinitionById("some_definition") #Container registry is empty now.
+
 ##  Tests whether changing the next stack is properly forbidden.
 def test_setNextStack(global_stack):
     with pytest.raises(InvalidOperationError):
@@ -454,6 +470,7 @@ def test_setVariantByIdExists(global_stack, container_registry):
 
     global_stack.setVariantById("some_variant") #The container registry always has a container with the ID.
 
+    #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests adding a variant by specifying an ID of a variant that doesn't exist.
