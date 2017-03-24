@@ -397,3 +397,15 @@ def test_removeContainer(global_stack):
 def test_setNextStack(global_stack):
     with pytest.raises(InvalidOperationError):
         global_stack.setNextStack(unittest.mock.MagicMock())
+
+##  Tests setting properties directly on the global stack.
+@pytest.mark.parametrize("key,              property,         value,       output_value", [
+                        ("layer_height",    "value",          "0.1337",    0.1337),
+                        ("foo",             "value",          "100",       100),
+                        ("support_enabled", "value",          "True",      True),
+                        ("layer_height",    "default_value",  0.1337,      0.1337),
+                        ("layer_height",    "is_bright_pink", "of course", "of course")
+])
+def test_setPropertyUser(key, property, value, output_value, global_stack):
+    global_stack.setProperty(key, value, property)
+    assert global_stack.userChanges.getProperty(key, property) == output_value
