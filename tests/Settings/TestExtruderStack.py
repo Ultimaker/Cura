@@ -233,6 +233,39 @@ def test_deserializeVariant(filename, variant_id, container_registry, extruder_s
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests whether getProperty properly applies the stack-like behaviour on its
+#   containers.
+def test_getPropertyFallThrough(extruder_stack):
+    #A few instance container mocks to put in the stack.
+    layer_height_5 = unittest.mock.MagicMock() #Sets layer height to 5.
+    layer_height_5.getProperty = lambda key, property: 5 if (key == "layer_height" and property == "value") else None
+    layer_height_5.hasProperty = lambda key: key == "layer_height"
+    layer_height_10 = unittest.mock.MagicMock() #Sets layer height to 10.
+    layer_height_10.getProperty = lambda key, property: 10 if (key == "layer_height" and property == "value") else None
+    layer_height_10.hasProperty = lambda key: key == "layer_height"
+    no_layer_height = unittest.mock.MagicMock() #No settings at all.
+    no_layer_height.getProperty = lambda key, property: None
+    no_layer_height.hasProperty = lambda key: False
+
+    extruder_stack.userChanges = no_layer_height
+    extruder_stack.qualityChanges = no_layer_height
+    extruder_stack.quality = no_layer_height
+    extruder_stack.material = no_layer_height
+    extruder_stack.variant = no_layer_height
+    extruder_stack.definition = layer_height_5 #Here it is!
+
+    assert extruder_stack.getProperty("layer_height", "value") == 5
+    extruder_stack.variant = layer_height_10
+    assert extruder_stack.getProperty("layer_height", "value") == 10
+    extruder_stack.material = layer_height_5
+    assert extruder_stack.getProperty("layer_height", "value") == 5
+    extruder_stack.quality = layer_height_10
+    assert extruder_stack.getProperty("layer_height", "value") == 10
+    extruder_stack.qualityChanges = layer_height_5
+    assert extruder_stack.getProperty("layer_height", "value") == 5
+    extruder_stack.userChanges = layer_height_10
+    assert extruder_stack.getProperty("layer_height", "value") == 10
+
 ##  Tests whether inserting a container is properly forbidden.
 def test_insertContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
