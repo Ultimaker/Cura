@@ -59,7 +59,7 @@ def test_addExtruder(global_stack):
 
     global_stack.addExtruder(unittest.mock.MagicMock())
     global_stack.addExtruder(unittest.mock.MagicMock())
-    with pytest.raises(TooManyExtrudersError):
+    with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
         global_stack.addExtruder(unittest.mock.MagicMock())
 
 ##  Tests whether the user changes are being read properly from a global stack.
