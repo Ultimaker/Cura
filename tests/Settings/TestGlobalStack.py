@@ -417,11 +417,6 @@ def test_setDefinitionByIdDoesntExist(global_stack):
     with pytest.raises(KeyError):
         global_stack.setDefinitionById("some_definition") #Container registry is empty now.
 
-##  Tests whether changing the next stack is properly forbidden.
-def test_setNextStack(global_stack):
-    with pytest.raises(InvalidOperationError):
-        global_stack.setNextStack(unittest.mock.MagicMock())
-
 ##  Tests adding definition changes by specifying an ID of a container that
 #   exists.
 def test_setDefinitionChangesByIdExists(global_stack, container_registry):
@@ -438,6 +433,11 @@ def test_setDefinitionChangesByIdExists(global_stack, container_registry):
 def test_setDefinitionChangesByIdDoesntExist(global_stack):
     with pytest.raises(KeyError):
         global_stack.setDefinitionChangesById("some_definition_changes") #Container registry is empty now.
+
+##  Tests whether changing the next stack is properly forbidden.
+def test_setNextStack(global_stack):
+    with pytest.raises(InvalidOperationError):
+        global_stack.setNextStack(unittest.mock.MagicMock())
 
 ##  Tests setting properties directly on the global stack.
 @pytest.mark.parametrize("key,              property,         value,       output_value", [
