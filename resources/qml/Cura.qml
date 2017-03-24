@@ -755,44 +755,84 @@ UM.MainWindow
 
             // look for valid project files
             var projectFileUrlList = [];
+            var hasGcode = false;
             for (var i in fileUrls)
             {
-                if (CuraApplication.checkIsValidProjectFile(fileUrls[i]))
+                var endsWithG = /\.g$/;
+                var endsWithGcode = /\.gcode$/;
+                if (endsWithG.test(fileUrls[i]) || endsWithGcode.test(fileUrls[i])) {
+                    hasGcode = true;
+                    continue;
+                }
+                else if (CuraApplication.checkIsValidProjectFile(fileUrls[i])) {
                     projectFileUrlList.push(fileUrls[i]);
-            }
-
-            // we only allow opening one project file
-            var selectedMultipleFiles = fileUrls.length > 1;
-            var hasProjectFile = projectFileUrlList.length > 0;
-            var selectedMultipleWithProjectFile = hasProjectFile && selectedMultipleFiles;
-            if (selectedMultipleWithProjectFile)
-            {
-                openFilesIncludingProjectsDialog.fileUrls = fileUrls;
-                openFilesIncludingProjectsDialog.show();
-                return;
-            }
-
-            if (hasProjectFile)
-            {
-                var projectFile = projectFileUrlList[0];
-
-                // check preference
-                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-                if (choice == "open_as_project")
-                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
-                else if (choice == "open_as_model")
-                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile]);
-                else    // always ask
-                {
-                    // ask whether to open as project or as models
-                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
-                    askOpenAsProjectOrModelsDialog.show();
                 }
             }
-            else
-            {
-                openFilesIncludingProjectsDialog.loadModelFiles(fileUrls);
+
+            // show a warning if selected multiple files together with Gcode
+            var hasProjectFile = projectFileUrlList.length > 0;
+            var selectedMultipleFiles = fileUrls.length > 1;
+            if (selectedMultipleFiles && hasGcode) {
+                infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
+                infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
+                infoMultipleFilesWithGcodeDialog.fileUrls = fileUrls;
+                infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList;
+                infoMultipleFilesWithGcodeDialog.open();
             }
+            else {
+                handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            }
+        }
+    }
+
+    function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList)
+    {
+        // we only allow opening one project file
+        if (selectedMultipleFiles && hasProjectFile)
+        {
+            openFilesIncludingProjectsDialog.fileUrls = fileUrls;
+            openFilesIncludingProjectsDialog.show();
+            return;
+        }
+
+        if (hasProjectFile)
+        {
+            var projectFile = projectFileUrlList[0];
+
+            // check preference
+            var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+            if (choice == "open_as_project")
+                openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+            else if (choice == "open_as_model")
+                openFilesIncludingProjectsDialog.loadModelFiles([projectFile]);
+            else    // always ask
+            {
+                // ask whether to open as project or as models
+                askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                askOpenAsProjectOrModelsDialog.show();
+            }
+        }
+        else
+        {
+            openFilesIncludingProjectsDialog.loadModelFiles(fileUrls);
+        }
+    }
+
+    MessageDialog {
+        id: infoMultipleFilesWithGcodeDialog
+        title: catalog.i18nc("@title:window", "Open File(s)")
+        icon: StandardIcon.Information
+        standardButtons: StandardButton.Ok
+        text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
+
+        property var selectedMultipleFiles
+        property var hasProjectFile
+        property var fileUrls
+        property var projectFileUrlList
+
+        onAccepted:
+        {
+            handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
         }
     }
 
