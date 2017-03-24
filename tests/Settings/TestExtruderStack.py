@@ -55,6 +55,7 @@ def test_addContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
         extruder_stack.addContainer(unittest.mock.MagicMock())
 
+##  Tests whether definitions are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                     definition_id", [
                         ("Left.extruder.cfg",           "empty"),
                         ("ExtruderLegacy.stack.cfg",    "empty"),
@@ -75,6 +76,7 @@ def test_deserializeDefinition(filename, definition_id, container_registry, extr
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests whether materials are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                     material_id", [
                         ("Left.extruder.cfg",           "some_instance"),
                         ("ExtruderLegacy.stack.cfg",    "some_instance"),
@@ -96,6 +98,7 @@ def test_deserializeMaterial(filename, material_id, container_registry, extruder
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests whether qualities are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                  quality_id", [
                         ("Left.extruder.cfg",        "empty"),
                         ("ExtruderLegacy.stack.cfg", "empty"),
@@ -116,6 +119,8 @@ def test_deserializeQuality(filename, quality_id, container_registry, extruder_s
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests whether quality changes are being read properly from an extruder
+#   stack.
 @pytest.mark.parametrize("filename,                         quality_changes_id", [
                         ("Left.extruder.cfg",               "empty"),
                         ("ExtruderLegacy.stack.cfg",        "empty"),
@@ -136,6 +141,7 @@ def test_deserializeQualityChanges(filename, quality_changes_id, container_regis
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests whether user changes are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                  user_changes_id", [
                         ("Left.extruder.cfg",        "empty"),
                         ("ExtruderLegacy.stack.cfg", "empty"),
@@ -156,6 +162,7 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry, e
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+##  Tests whether variants are being read properly from an extruder stack.
 @pytest.mark.parametrize("filename,                  variant_id", [
                         ("Left.extruder.cfg",        "empty"),
                         ("ExtruderLegacy.stack.cfg", "empty"),
