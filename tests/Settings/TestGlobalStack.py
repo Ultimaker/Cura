@@ -6,6 +6,7 @@ import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
 
 import cura.Settings.GlobalStack #The module we're testing.
+from cura.Settings.Exceptions import TooManyExtrudersError #To test raising this error.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To test against the class DefinitionContainer.
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
@@ -48,6 +49,18 @@ def readStack(filename):
     return serialized
 
 #############################START OF TEST CASES################################
+
+##  Tests adding extruders to the global stack.
+def test_addExtruder(global_stack):
+    mock_definition = unittest.mock.MagicMock()
+    mock_definition.getProperty = lambda key, property: 2 if key == "machine_extruder_count" and property == "value" else None
+
+    global_stack.definition = mock_definition
+
+    global_stack.addExtruder(unittest.mock.MagicMock())
+    global_stack.addExtruder(unittest.mock.MagicMock())
+    with pytest.raises(TooManyExtrudersError):
+        global_stack.addExtruder(unittest.mock.MagicMock())
 
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename,                 user_changes_id", [
