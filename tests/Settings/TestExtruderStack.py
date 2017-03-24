@@ -12,6 +12,8 @@ from cura.Settings.Exceptions import InvalidOperationError #To check whether the
 def extruder_stack() -> cura.Settings.ExtruderStack.ExtruderStack:
     return cura.Settings.ExtruderStack.ExtruderStack
 
+#############################START OF TEST CASES################################
+
 ##  Tests whether adding a container is properly forbidden.
 def test_addContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
