@@ -446,3 +446,17 @@ def test_setPropertyOtherContainers(target_container, global_stack):
         "definition": global_stack.definition
     }
     assert containers[target_container].getProperty(key, property) == output_value
+
+##  Tests adding a variant by specifying an ID of a variant that exists.
+def test_setVariantByIdExists(global_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    global_stack.setVariantById("some_variant") #The container registry always has a container with the ID.
+
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests adding a variant by specifying an ID of a variant that doesn't exist.
+def test_setVariantByIdDoesntExist(global_stack):
+    with pytest.raises(KeyError):
+        global_stack.setVariantById("some_variant") #Container registry is empty now.
