@@ -47,6 +47,8 @@ def readStack(filename):
         serialized = file_handle.read()
     return serialized
 
+#############################START OF TEST CASES################################
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename,                 user_changes_id", [
                         ("Global.global.cfg",       "empty"),
