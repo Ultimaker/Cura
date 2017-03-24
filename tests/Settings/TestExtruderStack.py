@@ -291,3 +291,19 @@ def test_setDefinitionByIdExists(extruder_stack, container_registry):
 def test_setDefinitionByIdDoesntExist(extruder_stack):
     with pytest.raises(KeyError):
         extruder_stack.setDefinitionById("some_definition") #Container registry is empty now.
+
+##  Tests setting materials by specifying an ID of a material that exists.
+def test_setMaterialByIdExists(extruder_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    extruder_stack.setMaterialById("some_material") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests setting materials by specifying an ID of a material that doesn't
+#   exist.
+def test_setMaterialByIdDoesntExist(extruder_stack):
+    with pytest.raises(KeyError):
+        extruder_stack.setMaterialById("some_material") #Container registry is empty now.
