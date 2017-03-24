@@ -511,6 +511,23 @@ def test_setQualityByIdDoesntExist(global_stack):
     with pytest.raises(KeyError):
         global_stack.setQualityById("some_quality") #Container registry is empty now.
 
+##  Tests setting quality changes by specifying an ID of a quality change that
+#   exists.
+def test_setQualityChangesByIdExists(global_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    global_stack.setQualityChangesById("some_quality_changes") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests setting quality changes by specifying an ID of a quality change that
+#   doesn't exist.
+def test_setQualityChangesByIdDoesntExist(global_stack):
+    with pytest.raises(KeyError):
+        global_stack.setQualityChangesById("some_quality_changes") #Container registry is empty now.
+
 ##  Tests setting variants by specifying an ID of a variant that exists.
 def test_setVariantByIdExists(global_stack, container_registry):
     original_container_registry = UM.Settings.ContainerStack._containerRegistry
