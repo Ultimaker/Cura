@@ -313,6 +313,7 @@ def test_insertContainer(global_stack):
     with pytest.raises(InvalidOperationError):
         global_stack.insertContainer(0, unittest.mock.MagicMock())
 
+##  Tests whether removing a container is properly forbidden.
 def test_removeContainer(global_stack):
     with pytest.raises(InvalidOperationError):
         global_stack.removeContainer(unittest.mock.MagicMock())
