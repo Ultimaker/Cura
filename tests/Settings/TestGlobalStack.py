@@ -496,6 +496,21 @@ def test_setPropertyOtherContainers(target_container, global_stack):
     }
     assert containers[target_container].getProperty(key, property) == output_value
 
+##  Tests setting qualities by specifying an ID of a quality that exists.
+def test_setQualityByIdExists(global_stack, container_registry):
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
+
+    global_stack.setQualityById("some_quality") #The container registry always has a container with the ID.
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
+##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
+def test_setQualityByIdDoesntExist(global_stack):
+    with pytest.raises(KeyError):
+        global_stack.setQualityById("some_quality") #Container registry is empty now.
+
 ##  Tests setting variants by specifying an ID of a variant that exists.
 def test_setVariantByIdExists(global_stack, container_registry):
     original_container_registry = UM.Settings.ContainerStack._containerRegistry
