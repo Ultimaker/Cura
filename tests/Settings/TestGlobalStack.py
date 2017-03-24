@@ -283,8 +283,12 @@ def test_deserializeDefinition(filename, definition_id, container_registry, glob
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
-def test_deserializeMissingContainer(container_registry, global_stack):
+##  Tests that when a global stack is loaded with an unknown instance, it raises
+#   an exception.
+def test_deserializeMissingContainer(global_stack):
     serialized = readStack("Global.global.cfg")
+    with pytest.raises(Exception):
+        global_stack.deserialize(serialized)
     try:
         global_stack.deserialize(serialized)
     except Exception as e:
