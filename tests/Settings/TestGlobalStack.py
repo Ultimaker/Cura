@@ -6,8 +6,9 @@ import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
 
 import cura.Settings.GlobalStack #The module we're testing.
-from cura.Settings.Exceptions import TooManyExtrudersError, InvalidOperationError #To test raising these errors.
+from cura.Settings.Exceptions import TooManyExtrudersError, InvalidContainerError, InvalidOperationError #To test raising these errors.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To test against the class DefinitionContainer.
+from UM.Settings.InstanceContainer import InstanceContainer #To test against the class InstanceContainer.
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
 
@@ -66,6 +67,36 @@ def test_addExtruder(global_stack):
     global_stack.addExtruder(unittest.mock.MagicMock())
     with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
         global_stack.addExtruder(unittest.mock.MagicMock())
+
+##  Tests whether the container types are properly enforced on the stack.
+#
+#   When setting a field to have a different type of stack than intended, we
+#   should get an exception.
+def test_constrainContainerTypes(global_stack):
+    definition_container = DefinitionContainer(container_id = "TestDefinitionContainer")
+    instance_container = InstanceContainer(container_id = "TestInstanceContainer")
+
+    with pytest.raises(InvalidContainerError): #Putting a definition container in the user changes is not allowed.
+        global_stack.userChanges = definition_container
+    global_stack.userChanges = instance_container #Putting an instance container in the user changes is allowed.
+    with pytest.raises(InvalidContainerError):
+        global_stack.qualityChanges = definition_container
+    global_stack.qualityChanges = instance_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.quality = definition_container
+    global_stack.quality = instance_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.material = definition_container
+    global_stack.material = instance_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.variant = definition_container
+    global_stack.variant = instance_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.definitionChanges = definition_container
+    global_stack.definitionChanges = instance_container
+    with pytest.raises(InvalidContainerError): #Putting an instance container in the definition is not allowed.
+        global_stack.definition = instance_container
+    global_stack.definition = definition_container #Putting a definition container in the definition is allowed.
 
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename,                 user_changes_id", [
