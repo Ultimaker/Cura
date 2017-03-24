@@ -136,6 +136,26 @@ def test_deserializeUserChanges(filename, user_changes_id, container_registry, e
     #Restore.
     UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
+@pytest.mark.parametrize("filename,                  variant_id", [
+                        ("Left.extruder.cfg",        "empty"),
+                        ("ExtruderLegacy.stack.cfg", "empty"),
+                        ("OnlyVariant.extruder.cfg", "some_instance"),
+                        ("Complete.extruder.cfg",    "some_variant")
+])
+def test_deserializeVariant(filename, variant_id, container_registry, extruder_stack):
+    serialized = readStack(filename)
+
+    #Mock the loading of the instance containers.
+    extruder_stack.findContainer = findSomeContainers
+    original_container_registry = UM.Settings.ContainerStack._containerRegistry
+    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all profiles you ask of.
+
+    extruder_stack.deserialize(serialized)
+    assert extruder_stack.variant.getId() == variant_id
+
+    #Restore.
+    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+
 ##  Tests whether inserting a container is properly forbidden.
 def test_insertContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
