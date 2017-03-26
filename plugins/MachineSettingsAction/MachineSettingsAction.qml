@@ -12,6 +12,9 @@ import Cura 1.0 as Cura
 
 Cura.MachineAction
 {
+    id: base
+    property var extrudersModel: Cura.ExtrudersModel{}
+
     anchors.fill: parent;
     Item
     {
@@ -38,420 +41,443 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "Please enter the correct settings for your printer below:")
         }
 
-        Column
+        TabView
         {
+            id: settingsTabs
             height: parent.height - y
-            width: parent.width - UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getSize("default_margin").height
-
+            width: parent.width
             anchors.left: parent.left
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            Row
+            property real columnWidth: Math.floor((width - 3 * UM.Theme.getSize("default_margin").width) / 2)
+
+            Tab
             {
-                width: parent.width
-                spacing: UM.Theme.getSize("default_margin").height
+                title: catalog.i18nc("@title:tab", "Printer");
+                anchors.margins: UM.Theme.getSize("default_margin").width
 
                 Column
                 {
-                    width: Math.floor(parent.width / 2)
                     spacing: UM.Theme.getSize("default_margin").height
 
-                    Label
+                    Row
                     {
-                        text: catalog.i18nc("@label", "Printer Settings")
-                        font.bold: true
-                    }
+                        width: parent.width
+                        spacing: UM.Theme.getSize("default_margin").height
 
-                    Grid
-                    {
-                        columns: 3
-                        columnSpacing: UM.Theme.getSize("default_margin").width
-
-                        Label
+                        Column
                         {
-                            text: catalog.i18nc("@label", "X (Width)")
-                        }
-                        TextField
-                        {
-                            id: buildAreaWidthField
-                            text: machineWidthProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: { machineWidthProvider.setPropertyValue("value", text); manager.forceUpdate() }
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Y (Depth)")
-                        }
-                        TextField
-                        {
-                            id: buildAreaDepthField
-                            text: machineDepthProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: { machineDepthProvider.setPropertyValue("value", text); manager.forceUpdate() }
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Z (Height)")
-                        }
-                        TextField
-                        {
-                            id: buildAreaHeightField
-                            text: machineHeightProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: { machineHeightProvider.setPropertyValue("value", text); manager.forceUpdate() }
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-                    }
-
-                    Column
-                    {
-                        Row
-                        {
-                            spacing: UM.Theme.getSize("default_margin").width
+                            width: settingsTabs.columnWidth
+                            spacing: UM.Theme.getSize("default_margin").height
 
                             Label
                             {
-                                text: catalog.i18nc("@label", "Build Plate Shape")
+                                text: catalog.i18nc("@label", "Printer Settings")
+                                font.bold: true
                             }
 
-                            ComboBox
+                            Grid
                             {
-                                id: shapeComboBox
-                                model: ListModel
+                                columns: 3
+                                columnSpacing: UM.Theme.getSize("default_margin").width
+
+                                Label
                                 {
-                                    id: shapesModel
-                                    Component.onCompleted:
+                                    text: catalog.i18nc("@label", "X (Width)")
+                                }
+                                TextField
+                                {
+                                    id: buildAreaWidthField
+                                    text: machineWidthProvider.properties.value
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: { machineWidthProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Y (Depth)")
+                                }
+                                TextField
+                                {
+                                    id: buildAreaDepthField
+                                    text: machineDepthProvider.properties.value
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: { machineDepthProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Z (Height)")
+                                }
+                                TextField
+                                {
+                                    id: buildAreaHeightField
+                                    text: machineHeightProvider.properties.value
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: { machineHeightProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+                            }
+
+                            Column
+                            {
+                                Row
+                                {
+                                    spacing: UM.Theme.getSize("default_margin").width
+
+                                    Label
                                     {
-                                        // Options come in as a string-representation of an OrderedDict
-                                        var options = machineShapeProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                                        if(options)
+                                        text: catalog.i18nc("@label", "Build Plate Shape")
+                                    }
+
+                                    ComboBox
+                                    {
+                                        id: shapeComboBox
+                                        model: ListModel
                                         {
-                                            options = options[1].split("), (")
-                                            for(var i = 0; i < options.length; i++)
+                                            id: shapesModel
+                                            Component.onCompleted:
                                             {
-                                                var option = options[i].substring(1, options[i].length - 1).split("', '")
-                                                shapesModel.append({text: option[1], value: option[0]});
+                                                // Options come in as a string-representation of an OrderedDict
+                                                var options = machineShapeProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                                                if(options)
+                                                {
+                                                    options = options[1].split("), (")
+                                                    for(var i = 0; i < options.length; i++)
+                                                    {
+                                                        var option = options[i].substring(1, options[i].length - 1).split("', '")
+                                                        shapesModel.append({text: option[1], value: option[0]});
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        currentIndex:
+                                        {
+                                            var currentValue = machineShapeProvider.properties.value;
+                                            var index = 0;
+                                            for(var i = 0; i < shapesModel.count; i++)
+                                            {
+                                                if(shapesModel.get(i).value == currentValue) {
+                                                    index = i;
+                                                    break;
+                                                }
+                                            }
+                                            return index
+                                        }
+                                        onActivated:
+                                        {
+                                            machineShapeProvider.setPropertyValue("value", shapesModel.get(index).value);
+                                            manager.forceUpdate();
+                                        }
+                                    }
+                                }
+                                CheckBox
+                                {
+                                    id: centerIsZeroCheckBox
+                                    text: catalog.i18nc("@option:check", "Machine Center is Zero")
+                                    checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
+                                    onClicked:
+                                    {
+                                            machineCenterIsZeroProvider.setPropertyValue("value", checked);
+                                            manager.forceUpdate();
+                                    }
+                                }
+                                CheckBox
+                                {
+                                    id: heatedBedCheckBox
+                                    text: catalog.i18nc("@option:check", "Heated Bed")
+                                    checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
+                                    onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
+                                }
+                            }
+
+                            Row
+                            {
+                                spacing: UM.Theme.getSize("default_margin").width
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "GCode Flavor")
+                                }
+
+                                ComboBox
+                                {
+                                    model: ListModel
+                                    {
+                                        id: flavorModel
+                                        Component.onCompleted:
+                                        {
+                                            // Options come in as a string-representation of an OrderedDict
+                                            var options = machineGCodeFlavorProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                                            if(options)
+                                            {
+                                                options = options[1].split("), (")
+                                                for(var i = 0; i < options.length; i++)
+                                                {
+                                                    var option = options[i].substring(1, options[i].length - 1).split("', '")
+                                                    flavorModel.append({text: option[1], value: option[0]});
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                currentIndex:
-                                {
-                                    var currentValue = machineShapeProvider.properties.value;
-                                    var index = 0;
-                                    for(var i = 0; i < shapesModel.count; i++)
+                                    currentIndex:
                                     {
-                                        if(shapesModel.get(i).value == currentValue) {
-                                            index = i;
-                                            break;
+                                        var currentValue = machineGCodeFlavorProvider.properties.value;
+                                        var index = 0;
+                                        for(var i = 0; i < flavorModel.count; i++)
+                                        {
+                                            if(flavorModel.get(i).value == currentValue) {
+                                                index = i;
+                                                break;
+                                            }
+                                        }
+                                        return index
+                                    }
+                                    onActivated:
+                                    {
+                                        machineGCodeFlavorProvider.setPropertyValue("value", flavorModel.get(index).value);
+                                        manager.updateHasMaterialsMetadata();
+                                    }
+                                }
+                            }
+                        }
+
+                        Column
+                        {
+                            width: settingsTabs.columnWidth
+                            spacing: UM.Theme.getSize("default_margin").height
+
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "Printhead Settings")
+                                font.bold: true
+                            }
+
+                            Grid
+                            {
+                                columns: 3
+                                columnSpacing: UM.Theme.getSize("default_margin").width
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "X min")
+                                }
+                                TextField
+                                {
+                                    id: printheadXMinField
+                                    text: getHeadPolygonCoord("x", "min")
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: setHeadPolygon()
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Y min")
+                                }
+                                TextField
+                                {
+                                    id: printheadYMinField
+                                    text: getHeadPolygonCoord("y", "min")
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: setHeadPolygon()
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "X max")
+                                }
+                                TextField
+                                {
+                                    id: printheadXMaxField
+                                    text: getHeadPolygonCoord("x", "max")
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: setHeadPolygon()
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Y max")
+                                }
+                                TextField
+                                {
+                                    id: printheadYMaxField
+                                    text: getHeadPolygonCoord("y", "max")
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: setHeadPolygon()
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Gantry height")
+                                }
+                                TextField
+                                {
+                                    id: gantryHeightField
+                                    text: gantryHeightProvider.properties.value
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: { gantryHeightProvider.setPropertyValue("value", text) }
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                }
+
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
+
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Number of Extruders")
+                                    visible: extruderCountComboBox.visible
+                                }
+
+                                ComboBox
+                                {
+                                    id: extruderCountComboBox
+                                    visible: manager.definedExtruderCount > 1
+                                    model: ListModel
+                                    {
+                                        id: extruderCountModel
+                                        Component.onCompleted:
+                                        {
+                                            for(var i = 0; i < manager.definedExtruderCount; i++)
+                                            {
+                                                extruderCountModel.append({text: String(i + 1), value: i});
+                                            }
                                         }
                                     }
-                                    return index
+                                    currentIndex: machineExtruderCountProvider.properties.value - 1
+                                    onActivated:
+                                    {
+                                        machineExtruderCountProvider.setPropertyValue("value", index + 1);
+                                        manager.forceUpdate();
+                                    }
                                 }
-                                onActivated:
+                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height; visible: extruderCountComboBox.visible }
+
+
+                                Label
                                 {
-                                    machineShapeProvider.setPropertyValue("value", shapesModel.get(index).value);
-                                    manager.forceUpdate();
+                                    text: catalog.i18nc("@label", "Nozzle size")
+                                    visible: nozzleSizeField.visible
                                 }
+                                TextField
+                                {
+                                    id: nozzleSizeField
+                                    text: machineNozzleSizeProvider.properties.value
+                                    visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
+                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                    onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
+                                }
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "mm")
+                                     visible: nozzleSizeField.visible
+                               }
                             }
-                        }
-                        CheckBox
-                        {
-                            id: centerIsZeroCheckBox
-                            text: catalog.i18nc("@option:check", "Machine Center is Zero")
-                            checked: String(machineCenterIsZeroProvider.properties.value).toLowerCase() != 'false'
-                            onClicked:
-                            {
-                                    machineCenterIsZeroProvider.setPropertyValue("value", checked);
-                                    manager.forceUpdate();
-                            }
-                        }
-                        CheckBox
-                        {
-                            id: heatedBedCheckBox
-                            text: catalog.i18nc("@option:check", "Heated Bed")
-                            checked: String(machineHeatedBedProvider.properties.value).toLowerCase() != 'false'
-                            onClicked: machineHeatedBedProvider.setPropertyValue("value", checked)
                         }
                     }
 
                     Row
                     {
                         spacing: UM.Theme.getSize("default_margin").width
-
-                        Label
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        height: parent.height - y
+                        Column
                         {
-                            text: catalog.i18nc("@label", "GCode Flavor")
-                        }
-
-                        ComboBox
-                        {
-                            model: ListModel
+                            height: parent.height
+                            width: settingsTabs.columnWidth
+                            Label
                             {
-                                id: flavorModel
-                                Component.onCompleted:
+                                text: catalog.i18nc("@label", "Start Gcode")
+                            }
+                            TextArea
+                            {
+                                id: machineStartGcodeField
+                                width: parent.width
+                                height: parent.height - y
+                                font: UM.Theme.getFont("fixed")
+                                wrapMode: TextEdit.NoWrap
+                                text: machineStartGcodeProvider.properties.value
+                                onActiveFocusChanged:
                                 {
-                                    // Options come in as a string-representation of an OrderedDict
-                                    var options = machineGCodeFlavorProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                                    if(options)
+                                    if(!activeFocus)
                                     {
-                                        options = options[1].split("), (")
-                                        for(var i = 0; i < options.length; i++)
-                                        {
-                                            var option = options[i].substring(1, options[i].length - 1).split("', '")
-                                            flavorModel.append({text: option[1], value: option[0]});
-                                        }
+                                        machineStartGcodeProvider.setPropertyValue("value", machineStartGcodeField.text)
                                     }
                                 }
                             }
-                            currentIndex:
+                        }
+                        Column {
+                            height: parent.height
+                            width: settingsTabs.columnWidth
+                            Label
                             {
-                                var currentValue = machineGCodeFlavorProvider.properties.value;
-                                var index = 0;
-                                for(var i = 0; i < flavorModel.count; i++)
-                                {
-                                    if(flavorModel.get(i).value == currentValue) {
-                                        index = i;
-                                        break;
-                                    }
-                                }
-                                return index
+                                text: catalog.i18nc("@label", "End Gcode")
                             }
-                            onActivated:
+                            TextArea
                             {
-                                machineGCodeFlavorProvider.setPropertyValue("value", flavorModel.get(index).value);
-                                manager.updateHasMaterialsMetadata();
-                            }
-                        }
-                    }
-                }
-
-                Column
-                {
-                    width: Math.floor(parent.width / 2)
-                    spacing: UM.Theme.getSize("default_margin").height
-
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "Printhead Settings")
-                        font.bold: true
-                    }
-
-                    Grid
-                    {
-                        columns: 3
-                        columnSpacing: UM.Theme.getSize("default_margin").width
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "X min")
-                        }
-                        TextField
-                        {
-                            id: printheadXMinField
-                            text: getHeadPolygonCoord("x", "min")
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: setHeadPolygon()
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Y min")
-                        }
-                        TextField
-                        {
-                            id: printheadYMinField
-                            text: getHeadPolygonCoord("y", "min")
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: setHeadPolygon()
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "X max")
-                        }
-                        TextField
-                        {
-                            id: printheadXMaxField
-                            text: getHeadPolygonCoord("x", "max")
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: setHeadPolygon()
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Y max")
-                        }
-                        TextField
-                        {
-                            id: printheadYMaxField
-                            text: getHeadPolygonCoord("y", "max")
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: setHeadPolygon()
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Gantry height")
-                        }
-                        TextField
-                        {
-                            id: gantryHeightField
-                            text: gantryHeightProvider.properties.value
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: { gantryHeightProvider.setPropertyValue("value", text) }
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                        }
-
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Number of Extruders")
-                            visible: extruderCountComboBox.visible
-                        }
-
-                        ComboBox
-                        {
-                            id: extruderCountComboBox
-                            visible: manager.definedExtruderCount > 1
-                            model: ListModel
-                            {
-                                id: extruderCountModel
-                                Component.onCompleted:
+                                id: machineEndGcodeField
+                                width: parent.width
+                                height: parent.height - y
+                                font: UM.Theme.getFont("fixed")
+                                wrapMode: TextEdit.NoWrap
+                                text: machineEndGcodeProvider.properties.value
+                                onActiveFocusChanged:
                                 {
-                                    for(var i = 0; i < manager.definedExtruderCount; i++)
+                                    if(!activeFocus)
                                     {
-                                        extruderCountModel.append({text: String(i + 1), value: i});
+                                        machineEndGcodeProvider.setPropertyValue("value", machineEndGcodeField.text)
                                     }
                                 }
                             }
-                            currentIndex: machineExtruderCountProvider.properties.value - 1
-                            onActivated:
-                            {
-                                machineExtruderCountProvider.setPropertyValue("value", index + 1);
-                                manager.forceUpdate();
-                            }
                         }
-                        Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height; visible: extruderCountComboBox.visible }
-
-
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "Nozzle size")
-                            visible: nozzleSizeField.visible
-                        }
-                        TextField
-                        {
-                            id: nozzleSizeField
-                            text: machineNozzleSizeProvider.properties.value
-                            visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
-                            validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                            onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
-                        }
-                        Label
-                        {
-                            text: catalog.i18nc("@label", "mm")
-                             visible: nozzleSizeField.visible
-                       }
                     }
                 }
             }
 
-            Row
+            Repeater
             {
-                spacing: UM.Theme.getSize("default_margin").width
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: parent.height - y
-                Column
+                model: (machineExtruderCountProvider.properties.value > 1) ? base.extrudersModel : 0
+
+                Tab
                 {
-                    height: parent.height
-                    width: Math.floor(parent.width / 2)
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "Start Gcode")
-                    }
-                    TextArea
-                    {
-                        id: machineStartGcodeField
-                        width: parent.width
-                        height: parent.height - y
-                        font: UM.Theme.getFont("fixed")
-                        wrapMode: TextEdit.NoWrap
-                        text: machineStartGcodeProvider.properties.value
-                        onActiveFocusChanged:
-                        {
-                            if(!activeFocus)
-                            {
-                                machineStartGcodeProvider.setPropertyValue("value", machineStartGcodeField.text)
-                            }
-                        }
-                    }
-                }
-                Column {
-                    height: parent.height
-                    width: Math.floor(parent.width / 2)
-                    Label
-                    {
-                        text: catalog.i18nc("@label", "End Gcode")
-                    }
-                    TextArea
-                    {
-                        id: machineEndGcodeField
-                        width: parent.width
-                        height: parent.height - y
-                        font: UM.Theme.getFont("fixed")
-                        wrapMode: TextEdit.NoWrap
-                        text: machineEndGcodeProvider.properties.value
-                        onActiveFocusChanged:
-                        {
-                            if(!activeFocus)
-                            {
-                                machineEndGcodeProvider.setPropertyValue("value", machineEndGcodeField.text)
-                            }
-                        }
-                    }
+                    title: model.name
+                    anchors.margins: UM.Theme.getSize("default_margin").width
                 }
             }
         }
