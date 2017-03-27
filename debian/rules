@@ -2,12 +2,12 @@
 # See debhelper(7) (uncomment to enable)
 # output every command that modifies files on the build system.
 export DH_VERBOSE = 1
+include /usr/share/dpkg/pkg-info.mk
 
-DEB_PACKAGE_VERSION ?= $(shell dpkg-parsechangelog -SVersion | cut -f2 -d":" | cut -f1 -d"~")
 DEB_URANIUM_SCRIPTS_DIR ?= /usr/share/uranium/scripts/
 
 %:
 	dh $@ --buildsystem=cmake --with python3 --parallel
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DURANIUM_SCRIPTS_DIR=$(DEB_URANIUM_SCRIPTS_DIR) -DCURA_VERSION=$(DEB_PACKAGE_VERSION)
+	dh_auto_configure -- -DURANIUM_SCRIPTS_DIR=$(DEB_URANIUM_SCRIPTS_DIR) -DCURA_VERSION=$(DEB_VERSION_UPSTREAM)
