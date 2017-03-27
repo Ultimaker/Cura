@@ -6,6 +6,8 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.DefinitionContainer import DefinitionContainer
 
 class ExtruderStack(ContainerStack):
     def __init__(self, container_id, *args, **kwargs):
