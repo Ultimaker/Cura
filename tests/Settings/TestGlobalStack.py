@@ -4,6 +4,8 @@
 import os.path #To find the test files.
 import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
+import copy
+import functools
 
 import cura.Settings.GlobalStack #The module we're testing.
 from cura.Settings.Exceptions import TooManyExtrudersError, InvalidContainerError, InvalidOperationError #To test raising these errors.
@@ -12,17 +14,49 @@ from UM.Settings.InstanceContainer import InstanceContainer #To test against the
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
 
+class MockContainer:
+    def __init__(self, container_id, type = "mock"):
+        self._id = container_id
+        self._type = type
+
+    def getId(self):
+        return self._id
+
+    def getMetaDataEntry(self, entry, default = None):
+        print(entry, self._type)
+        if entry == "type":
+            return self._type
+
+        return default
+
+    propertyChanged = unittest.mock.MagicMock()
+
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.fixture()
 def container_registry():
     registry = unittest.mock.MagicMock()
-    def findContainers(id = None):
-        if not id:
-            return [UM.Settings.ContainerRegistry._EmptyInstanceContainer("test_container")]
+
+    registry.typeMetaData = "registry_mock"
+
+    def findInstanceContainers(registry, **kwargs):
+        if "id" not in kwargs:
+            return [MockContainer("test_container", registry.typeMetaData)]
         else:
-            return [UM.Settings.ContainerRegistry._EmptyInstanceContainer(id)]
-    registry.findContainers = findContainers
-    return registry
+            return [MockContainer(id, registry.typeMetaData)]
+    registry.findInstanceContainers = functools.partial(findInstanceContainers, registry)
+
+    def findContainers(registry, container_type = None, id = None):
+        if not id:
+            return [MockContainer("test_container", registry.typeMetaData)]
+        else:
+            return [MockContainer(id, registry.typeMetaData)]
+    registry.findContainers = functools.partial(findContainers, registry)
+
+    UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
+
+    yield registry
+
+    UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = None
 
 #An empty global stack to test with.
 @pytest.fixture()
