@@ -25,5 +25,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
  python3-uranium (>=2.3.1), uranium-plugins (>=2.3.1), cura-engine (>=1:2.3.1)
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
-Description: 3d printing application
- This is the new, shiny frontend for Cura.
+Description: 3D printing application
+ Cura prepares your model for 3D printing.
+ For novices, it makes it easy to get great results.
+ For experts, there are over 200 settings to adjust to your needs.
+ This is the new, shiny frontend for Cura (dubbed 'Cura 2').
