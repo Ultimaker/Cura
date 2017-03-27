@@ -511,7 +511,7 @@ def test_setPropertyOtherContainers(target_container, global_stack):
         "quality": global_stack.quality,
         "material": global_stack.material,
         "variant": global_stack.variant,
-        "definition_changes": global_stack.definition_changes,
+        "definition_changes": global_stack.definitionChanges,
         "definition": global_stack.definition
     }
     assert containers[target_container].getProperty(key, property) == output_value
