@@ -542,5 +542,5 @@ def test_setVariantByIdExists(global_stack, container_registry):
 
 ##  Tests setting variants by specifying an ID of a variant that doesn't exist.
 def test_setVariantByIdDoesntExist(global_stack):
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidContainerError):
         global_stack.setVariantById("some_variant") #Container registry is empty now.
