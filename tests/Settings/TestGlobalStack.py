@@ -441,13 +441,7 @@ def test_removeContainer(global_stack):
 
 ##  Tests setting definitions by specifying an ID of a definition that exists.
 def test_setDefinitionByIdExists(global_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
     global_stack.setDefinitionById("some_definition") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests setting definitions by specifying an ID of a definition that doesn't
 #   exist.
@@ -458,13 +452,7 @@ def test_setDefinitionByIdDoesntExist(global_stack):
 ##  Tests setting definition changes by specifying an ID of a container that
 #   exists.
 def test_setDefinitionChangesByIdExists(global_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
     global_stack.setDefinitionChangesById("some_definition_changes") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests setting definition changes by specifying an ID of a container that
 #   doesn't exist.
@@ -474,13 +462,7 @@ def test_setDefinitionChangesByIdDoesntExist(global_stack):
 
 ##  Tests setting materials by specifying an ID of a material that exists.
 def test_setMaterialByIdExists(global_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
     global_stack.setMaterialById("some_material") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests setting materials by specifying an ID of a material that doesn't
 #   exist.
@@ -536,13 +518,7 @@ def test_setPropertyOtherContainers(target_container, global_stack):
 
 ##  Tests setting qualities by specifying an ID of a quality that exists.
 def test_setQualityByIdExists(global_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
     global_stack.setQualityById("some_quality") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
 def test_setQualityByIdDoesntExist(global_stack):
@@ -552,13 +528,7 @@ def test_setQualityByIdDoesntExist(global_stack):
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   exists.
 def test_setQualityChangesByIdExists(global_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
     global_stack.setQualityChangesById("some_quality_changes") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   doesn't exist.
@@ -568,13 +538,7 @@ def test_setQualityChangesByIdDoesntExist(global_stack):
 
 ##  Tests setting variants by specifying an ID of a variant that exists.
 def test_setVariantByIdExists(global_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
     global_stack.setVariantById("some_variant") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
 
 ##  Tests setting variants by specifying an ID of a variant that doesn't exist.
 def test_setVariantByIdDoesntExist(global_stack):
