@@ -9,8 +9,8 @@ Standards-Version: 3.9.8
 X-Python3-Version: >= 3.4
 Section: misc
 Homepage: https://github.com/Ultimaker/Cura
-Vcs-Git: https://github.com/Ultimaker/Cura
-Vcs-Browser: https://github.com/Ultimaker/Cura
+Vcs-Git: https://github.com/onitake/Cura
+Vcs-Browser: https://github.com/onitake/Cura
 
 Package: cura
 Architecture: all

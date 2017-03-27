@@ -1,0 +1,3 @@
+version=3
+opts=filenamemangle=s/.+\/d(\d\S+)\.tar\.gz/Cura-$1\.tar\.gz/ \
+  https://github.com/onitake/Cura/tags .*/d(\d\S+)\.tar\.gz
