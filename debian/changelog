@@ -1,11 +1,5 @@
-cura (2.3.0-1) unstable; urgency=medium
+cura (2.3.1-1) UNRELEASED; urgency=medium
 
-  * Update to Cura 2.3
+  * Initial Debian release. Closes: #706656
 
- -- Gregor Riepl <onitake@gmail.com>  Sat, 03 Dec 2016 15:02:07 +0100
-
-cura (2.1.3-1) unstable; urgency=medium
-
-  * Initial Debian release of new Cura from upstream version 2.1.3 (Closes: #706656)
-
- -- Gregor Riepl <onitake@gmail.com>  Wed, 30 Nov 2016 21:50:48 +0100
+ -- Gregor Riepl <onitake@gmail.com>  Tue, 28 Mar 2017 00:35:20 +0200

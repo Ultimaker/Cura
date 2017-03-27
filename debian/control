@@ -3,7 +3,7 @@ Priority: optional
 Maintainer: Gregor Riepl <onitake@gmail.com>
 Build-Depends: debhelper (>= 10), cmake (>=2.8.12), dh-python,
  python3-all,
- uranium-tools (>=2.3.0),
+ uranium-tools (>=2.3.1),
  gettext
 Standards-Version: 3.9.8
 X-Python3-Version: >= 3.4
@@ -22,7 +22,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
  qml-module-qtquick-dialogs,
  qml-module-qt-labs-folderlistmodel,
  qml-module-qt-labs-settings,
- python3-uranium (>=2.3.0), uranium-plugins (>=2.3.0), cura-engine (>=1:2.3.0)
+ python3-uranium (>=2.3.1), uranium-plugins (>=2.3.1), cura-engine (>=1:2.3.1)
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
 Description: 3d printing application
