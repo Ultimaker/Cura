@@ -1,7 +1,7 @@
 Source: cura
 Priority: optional
 Maintainer: Gregor Riepl <onitake@gmail.com>
-Build-Depends: debhelper (>= 9), cmake (>=2.8.12), dh-python,
+Build-Depends: debhelper (>= 10), cmake (>=2.8.12), dh-python,
  python3-all,
  uranium-tools (>=2.3.0),
  gettext
