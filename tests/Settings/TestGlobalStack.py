@@ -19,15 +19,31 @@ class MockContainer:
         self._id = container_id
         self._type = type
 
+        self._property_map = {}
+
     def getId(self):
         return self._id
 
     def getMetaDataEntry(self, entry, default = None):
-        print(entry, self._type)
         if entry == "type":
             return self._type
 
         return default
+
+    def getProperty(self, key, property_name):
+        if key not in self._property_map:
+            return None
+
+        if property_name not in self._property_map[key]:
+            return None
+
+        return self._property_map[key][property_name]
+
+    def setProperty(self, key, property_name, value):
+        if key not in self._property_map:
+            self._property_map[key] = {}
+
+        self._property_map[key][property_name] = value
 
     propertyChanged = unittest.mock.MagicMock()
 
