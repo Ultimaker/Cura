@@ -53,10 +53,12 @@ def container_registry():
     registry.findContainers = functools.partial(findContainers, registry)
 
     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
+    UM.Settings.ContainerStack._containerRegistry = registry
 
     yield registry
 
     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = None
+    UM.Settings.ContainerStack._containerRegistry = None
 
 #An empty global stack to test with.
 @pytest.fixture()
