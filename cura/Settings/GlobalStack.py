@@ -229,6 +229,8 @@ class GlobalStack(ContainerStack):
                 actual_container = self.findContainer(type = type_name)
                 if actual_container:
                     new_containers[index] = actual_container
+                else:
+                    new_containers[index] = self._empty_instance_container
 
         print("containers after", new_containers)
         self._containers = new_containers
