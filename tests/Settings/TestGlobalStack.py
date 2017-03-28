@@ -546,10 +546,9 @@ def test_setNextStack(global_stack):
                         ("layer_height",    "default_value",  0.1337,      0.1337),
                         ("layer_height",    "is_bright_pink", "of course", "of course")
 ])
-def test_setPropertyUser(key, property, value, output_value, global_stack):
-    global_stack.setUserChanges(MockContainer(global_stack.id + "_user", "user"))
-    global_stack.setProperty(key, value, property)
-    assert global_stack.userChanges.getProperty(key, property) == output_value
+def test_setPropertyUser(key, property, value, output_value, writable_global_stack):
+    writable_global_stack.setProperty(key, property, value)
+    assert writable_global_stack.userChanges.getProperty(key, property) == output_value
 
 ##  Tests setting properties on specific containers on the global stack.
 @pytest.mark.parametrize("target_container", [
