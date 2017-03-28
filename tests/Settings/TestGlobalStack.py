@@ -532,7 +532,6 @@ def test_setPropertyUser(key, property, value, output_value, global_stack):
     "material",
     "variant",
     "definition_changes",
-    "definition"
 ])
 def test_setPropertyOtherContainers(target_container, global_stack):
     #Other parameters that don't need to be varied.
