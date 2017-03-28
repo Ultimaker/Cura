@@ -106,7 +106,17 @@ class GlobalStack(ContainerStack):
     def definitionChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.DefinitionChanges]
 
-    @pyqtProperty(DefinitionContainer)
+    def setDefinition(self, new_definition: DefinitionContainer) -> None:
+        self.replaceContainer(_ContainerIndexes.Definition, new_definition)
+
+    def setDefinitionById(self, new_definition_id: str) -> None:
+        new_definition = ContainerRegistry.getInstance().findDefinitionContainers(id = new_definition_id)
+        if new_definition:
+            self.setDefinition(new_definition[0])
+        else:
+            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_definition_id))
+
+    @pyqtProperty(DefinitionContainer, fset = setDefinition, notify = pyqtContainersChanged)
     def definition(self) -> DefinitionContainer:
         return self._containers[_ContainerIndexes.Definition]
 
