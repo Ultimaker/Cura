@@ -559,22 +559,22 @@ def test_setPropertyUser(key, property, value, output_value, writable_global_sta
     "variant",
     "definition_changes",
 ])
-def test_setPropertyOtherContainers(target_container, global_stack):
+def test_setPropertyOtherContainers(target_container, writable_global_stack):
     #Other parameters that don't need to be varied.
     key = "layer_height"
-    property = "value",
-    value = "0.1337",
+    property = "value"
+    value = 0.1337
     output_value = 0.1337
 
-    global_stack.setProperty(key, value, property, target_container = target_container)
+    writable_global_stack.setProperty(key, property, value, target_container = target_container)
     containers = {
-        "user": global_stack.userChanges,
-        "quality_changes": global_stack.qualityChanges,
-        "quality": global_stack.quality,
-        "material": global_stack.material,
-        "variant": global_stack.variant,
-        "definition_changes": global_stack.definitionChanges,
-        "definition": global_stack.definition
+        "user": writable_global_stack.userChanges,
+        "quality_changes": writable_global_stack.qualityChanges,
+        "quality": writable_global_stack.quality,
+        "material": writable_global_stack.material,
+        "variant": writable_global_stack.variant,
+        "definition_changes": writable_global_stack.definitionChanges,
+        "definition": writable_global_stack.definition
     }
     assert containers[target_container].getProperty(key, property) == output_value
 
