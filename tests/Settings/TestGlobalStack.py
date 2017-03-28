@@ -129,24 +129,56 @@ def test_addExtruder(global_stack):
     (DefinitionContainerSubClass(), InstanceContainerSubClass())
 ])
 def test_constrainContainerTypes(definition_container, instance_container, global_stack):
-    with pytest.raises(InvalidContainerError): #Putting a definition container in the user changes is not allowed.
+    instance_container.addMetaDataEntry("type", "")
+
+    with pytest.raises(InvalidContainerError): # Putting a definition container in the user changes is not allowed.
         global_stack.userChanges = definition_container
-    global_stack.userChanges = instance_container #Putting an instance container in the user changes is allowed.
+    with pytest.raises(InvalidContainerError):
+        global_stack.userChanges = instance_container # Putting a random instance container in the user changes is not allowed.
+
+    instance_container.setMetaDataEntry("type", "user") # After setting the metadata type entry correctly, we are allowed to set the container
+    global_stack.userChanges = instance_container
+
     with pytest.raises(InvalidContainerError):
         global_stack.qualityChanges = definition_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.qualityChanges = instance_container
+
+    instance_container.setMetaDataEntry("type", "quality_changes")
     global_stack.qualityChanges = instance_container
+
     with pytest.raises(InvalidContainerError):
         global_stack.quality = definition_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.quality = instance_container
+
+    instance_container.setMetaDataEntry("type", "quality")
     global_stack.quality = instance_container
+
     with pytest.raises(InvalidContainerError):
         global_stack.material = definition_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.material = instance_container
+
+    instance_container.setMetaDataEntry("type", "material")
     global_stack.material = instance_container
+
     with pytest.raises(InvalidContainerError):
         global_stack.variant = definition_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.variant = instance_container
+
+    instance_container.setMetaDataEntry("type", "variant")
     global_stack.variant = instance_container
+
     with pytest.raises(InvalidContainerError):
         global_stack.definitionChanges = definition_container
+    with pytest.raises(InvalidContainerError):
+        global_stack.definitionChanges = instance_container
+
+    instance_container.setMetaDataEntry("type", "definition_changes")
     global_stack.definitionChanges = instance_container
+
     with pytest.raises(InvalidContainerError): #Putting an instance container in the definition is not allowed.
         global_stack.definition = instance_container
     global_stack.definition = definition_container #Putting a definition container in the definition is allowed.
