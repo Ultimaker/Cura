@@ -25,6 +25,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Platform import Platform
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -717,7 +718,9 @@ class CuraApplication(QtApplication):
                 else:
                     # Default
                     self.getController().setActiveTool("TranslateTool")
-            if Preferences.getInstance().getValue("view/center_on_select"):
+
+            # Hack: QVector bindings are broken on PyQt 5.7.1 on Windows. This disables it being called at all.
+            if Preferences.getInstance().getValue("view/center_on_select") and not Platform.isWindows():
                 self._center_after_select = True
         else:
             if self.getController().getActiveTool():

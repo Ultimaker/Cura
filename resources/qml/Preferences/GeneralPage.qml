@@ -242,6 +242,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button","Center camera when item is selected");
                     checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
                     onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
+                    enabled: Qt.platform.os != "windows" // Hack: disable the feature on windows as it's broken for pyqt 5.7.1.
                 }
             }
 
