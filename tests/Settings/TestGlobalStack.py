@@ -520,6 +520,7 @@ def test_setNextStack(global_stack):
                         ("layer_height",    "is_bright_pink", "of course", "of course")
 ])
 def test_setPropertyUser(key, property, value, output_value, global_stack):
+    global_stack.setUserChanges(MockContainer(global_stack.id + "_user", "user"))
     global_stack.setProperty(key, value, property)
     assert global_stack.userChanges.getProperty(key, property) == output_value
 
