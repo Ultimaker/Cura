@@ -81,6 +81,17 @@ def container_registry():
 def global_stack() -> cura.Settings.GlobalStack.GlobalStack:
     return cura.Settings.GlobalStack.GlobalStack("TestStack")
 
+@pytest.fixture()
+def writable_global_stack(global_stack):
+    global_stack.userChanges = MockContainer("test_user_changes", "user")
+    global_stack.qualityChanges = MockContainer("test_quality_changes", "quality_changes")
+    global_stack.quality = MockContainer("test_quality", "quality")
+    global_stack.material = MockContainer("test_material", "material")
+    global_stack.variant = MockContainer("test_variant", "variant")
+    global_stack.definitionChanges = MockContainer("test_definition_changes", "definition_changes")
+    global_stack.definition = DefinitionContainerSubClass()
+    return global_stack
+
 ##  Place-in function for findContainer that finds only containers that start
 #   with "some_".
 def findSomeContainers(container_id = "*", container_type = None, type = None, category = "*"):
