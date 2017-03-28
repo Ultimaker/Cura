@@ -29,7 +29,10 @@ class GlobalStack(ContainerStack):
 
     pyqtContainersChanged = pyqtSignal()
 
-    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
+    def setUserChanges(self, new_user_changes: InstanceContainer) -> None:
+        self.replaceContainer(_ContainerIndexes.UserChanges, new_user_changes)
+
+    @pyqtProperty(InstanceContainer, fset = setUserChanges, notify = pyqtContainersChanged)
     def userChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.UserChanges]
 
