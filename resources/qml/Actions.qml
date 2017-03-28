@@ -31,6 +31,7 @@ Item
     property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
+    property alias arrange: arrangeAction;
     property alias resetAllTranslation: resetAllTranslationAction;
     property alias resetAll: resetAllAction;
 
@@ -264,6 +265,13 @@ Item
         iconName: "document-revert";
         shortcut: "F5"
         onTriggered: Printer.reloadAll();
+    }
+
+    Action
+    {
+        id: arrangeAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange");
+        onTriggered: Printer.arrange();
     }
 
     Action
