@@ -178,9 +178,10 @@ class GlobalStack(ContainerStack):
     @override(ContainerStack)
     def replaceContainer(self, index: int, container: ContainerInterface, postpone_emit: bool = False) -> None:
         expected_type = _ContainerIndexes.IndexTypeMap[index]
-        if expected_type == "definition" and not isinstance(container, DefinitionContainer):
-            raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not a DefinitionContainer".format(index = index))
-        if container != self._empty_instance_container and container.getMetaDataEntry("type") != expected_type:
+        if expected_type == "definition":
+            if not isinstance(container, DefinitionContainer):
+                raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not a DefinitionContainer".format(index = index))
+        elif container != self._empty_instance_container and container.getMetaDataEntry("type") != expected_type:
             raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type".format(index = index, type = expected_type))
 
         super().replaceContainer(index, container, postpone_emit)
