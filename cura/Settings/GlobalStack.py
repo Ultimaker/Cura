@@ -43,7 +43,7 @@ class GlobalStack(ContainerStack):
         else:
             raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_quality_changes_id))
 
-    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
+    @pyqtProperty(InstanceContainer, fset = setQualityChanges, notify = pyqtContainersChanged)
     def qualityChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.QualityChanges]
 
@@ -57,7 +57,7 @@ class GlobalStack(ContainerStack):
         else:
             raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_quality_id))
 
-    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
+    @pyqtProperty(InstanceContainer, fset = setQuality, notify = pyqtContainersChanged)
     def quality(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Quality]
 
@@ -71,7 +71,7 @@ class GlobalStack(ContainerStack):
         else:
             raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_material_id))
 
-    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
+    @pyqtProperty(InstanceContainer, fset = setMaterial, notify = pyqtContainersChanged)
     def material(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Material]
 
@@ -85,7 +85,7 @@ class GlobalStack(ContainerStack):
         else:
             raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_variant_id))
 
-    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
+    @pyqtProperty(InstanceContainer, fset = setVariant, notify = pyqtContainersChanged)
     def variant(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.Variant]
 
@@ -99,7 +99,7 @@ class GlobalStack(ContainerStack):
         else:
             raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_definition_changes_id))
 
-    @pyqtProperty(InstanceContainer, notify = pyqtContainersChanged)
+    @pyqtProperty(InstanceContainer, fset = setDefinitionChanges, notify = pyqtContainersChanged)
     def definitionChanges(self) -> InstanceContainer:
         return self._containers[_ContainerIndexes.DefinitionChanges]
 
