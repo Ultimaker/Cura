@@ -14,6 +14,7 @@ from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Math.Polygon import Polygon
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
@@ -32,6 +33,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from cura.Arrange import Arrange, ShapeArray
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
@@ -844,16 +846,16 @@ class CuraApplication(QtApplication):
             op.push()
 
     ##  Create a number of copies of existing object.
+    #   object_id
+    #   count: number of copies
+    #   min_offset: minimum offset to other objects.
     @pyqtSlot("quint64", int)
-    def multiplyObject(self, object_id, count):
+    def multiplyObject(self, object_id, count, min_offset = 5):
         node = self.getController().getScene().findObject(object_id)
 
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
-        ### testing
-
-        from cura.Arrange import Arrange, ShapeArray
         arranger = Arrange(215, 215, 107, 107)
         arranger.centerFirst()
 
@@ -863,35 +865,56 @@ class CuraApplication(QtApplication):
             # Only count sliceable objects
             if node_.callDecoration("isSliceable"):
                 Logger.log("d", "  # Placing [%s]" % str(node_))
+
                 vertices = node_.callDecoration("getConvexHull")
                 points = copy.deepcopy(vertices._points)
-                #points[:,1] = -points[:,1]
-                #points = points[::-1]  # reverse
                 shape_arr = ShapeArray.from_polygon(points)
-                transform = node_._transformation
-                x = transform._data[0][3]
-                y = transform._data[2][3]
-                arranger.place(x, y, shape_arr)
+                arranger.place(0, 0, shape_arr)
+        Logger.log("d", "Current buildplate: \n%s" % str(arranger._occupied[::10, ::10]))
+        Logger.log("d", "Current scrores: \n%s" % str(arranger._priority[::20, ::20]))
 
         nodes = []
-        for _ in range(count):
+
+        # hacky way to undo transformation
+        transform = node._transformation
+        transform_x = transform._data[0][3]
+        transform_y = transform._data[2][3]
+        hull_verts = node.callDecoration("getConvexHull")
+
+        offset_verts = hull_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
+        offset_points = copy.deepcopy(offset_verts._points)  # x, y
+        offset_points[:, 0] = numpy.add(offset_points[:, 0], -transform_x)
+        offset_points[:, 1] = numpy.add(offset_points[:, 1], -transform_y)
+        offset_shape_arr = ShapeArray.from_polygon(offset_points)
+
+        hull_points = copy.deepcopy(hull_verts._points)
+        hull_points[:, 0] = numpy.add(hull_points[:, 0], -transform_x)
+        hull_points[:, 1] = numpy.add(hull_points[:, 1], -transform_y)
+        hull_shape_arr = ShapeArray.from_polygon(hull_points)  # x, y
+
+        start_prio = 0
+
+        for i in range(count):
             new_node = copy.deepcopy(node)
-            vertices = new_node.callDecoration("getConvexHull")
-            points = copy.deepcopy(vertices._points)
-            #points[:, 1] = -points[:, 1]
-            #points = points[::-1]  # reverse
-            shape_arr = ShapeArray.from_polygon(points)
-            transformation = new_node._transformation
+
             Logger.log("d", "  # Finding spot for %s" % new_node)
-            x, y, penalty_points = arranger.bestSpot(shape_arr)
+            x, y, penalty_points, start_prio = arranger.bestSpot(
+                offset_shape_arr, start_prio = start_prio)
+            transformation = new_node._transformation
             if x is not None:  # We could find a place
                 transformation._data[0][3] = x
                 transformation._data[2][3] = y
-                arranger.place(x, y, shape_arr)  # take place before the next one
+                Logger.log("d", "Best place is: %s %s (points = %s)" % (x, y, penalty_points))
+                arranger.place(x, y, hull_shape_arr)  # take place before the next one
+                Logger.log("d", "New buildplate: \n%s" % str(arranger._occupied[::10, ::10]))
+            else:
+                Logger.log("d", "Could not find spot!")
+                transformation._data[0][3] = 200
+                transformation._data[2][3] = -100 + i * 20
+                # TODO: where to place it?
+
             # new_node.setTransformation(transformation)
             nodes.append(new_node)
-        ### testing
-
 
         if node:
             current_node = node
@@ -902,9 +925,6 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
             for new_node in nodes:
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
-            # for _ in range(count):
-            #     new_node = copy.deepcopy(current_node)
-            #     op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
     ##  Center object on platform.

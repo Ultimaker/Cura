@@ -12,47 +12,24 @@ class ShapeArray:
     def from_polygon(cls, vertices, scale = 1):
         # scale
         vertices = vertices * scale
+        # flip x, y
+        flip_vertices = np.zeros((vertices.shape))
+        flip_vertices[:, 0] = vertices[:, 1]
+        flip_vertices[:, 1] = vertices[:, 0]
+        flip_vertices = flip_vertices[::-1]
         # offset
-        offset_y = int(np.amin(vertices[:, 0]))
-        offset_x = int(np.amin(vertices[:, 1]))
-        # normalize to 0
-        vertices[:, 0] = np.add(vertices[:, 0], -offset_y)
-        vertices[:, 1] = np.add(vertices[:, 1], -offset_x)
-        shape = [int(np.amax(vertices[:, 0])), int(np.amax(vertices[:, 1]))]
-        arr = cls.array_from_polygon(shape, vertices)
+        offset_y = int(np.amin(flip_vertices[:, 0]))
+        offset_x = int(np.amin(flip_vertices[:, 1]))
+        # offset to 0
+        flip_vertices[:, 0] = np.add(flip_vertices[:, 0], -offset_y)
+        flip_vertices[:, 1] = np.add(flip_vertices[:, 1], -offset_x)
+        shape = [int(np.amax(flip_vertices[:, 0])), int(np.amax(flip_vertices[:, 1]))]
+        #from UM.Logger import Logger
+        #Logger.log("d", " Vertices: %s" % str(flip_vertices))
+        arr = cls.array_from_polygon(shape, flip_vertices)
         return cls(arr, offset_x, offset_y)
 
-    ##  Return indices that mark one side of the line, used by array_from_polygon
-    #   Uses the line defined by p1 and p2 to check array of
-    #   input indices against interpolated value
-
-    #   Returns boolean array, with True inside and False outside of shape
     #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
-    @classmethod
-    def _check(cls, p1, p2, base_array):
-        """
-        """
-        if p1[0] == p2[0] and p1[1] == p2[1]:
-            return
-        idxs = np.indices(base_array.shape)  # Create 3D array of indices
-
-        p1 = p1.astype(float)
-        p2 = p2.astype(float)
-
-        if p2[0] == p1[0]:
-            sign = np.sign(p2[1] - p1[1])
-            return idxs[1] * sign
-
-        if p2[1] == p1[1]:
-            sign = np.sign(p2[0] - p1[0])
-            return idxs[1] * sign
-
-        # Calculate max column idx for each row idx based on interpolated line between two points
-
-        max_col_idx = (idxs[0] - p1[0]) / (p2[0] - p1[0]) * (p2[1] - p1[1]) + p1[1]
-        sign = np.sign(p2[0] - p1[0])
-        return idxs[1] * sign <= max_col_idx * sign
-
     @classmethod
     def array_from_polygon(cls, shape, vertices):
         """
@@ -73,6 +50,35 @@ class ShapeArray:
         base_array[fill] = 1
 
         return base_array
+
+    ##  Return indices that mark one side of the line, used by array_from_polygon
+    #   Uses the line defined by p1 and p2 to check array of
+    #   input indices against interpolated value
+
+    #   Returns boolean array, with True inside and False outside of shape
+    #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
+    @classmethod
+    def _check(cls, p1, p2, base_array):
+        if p1[0] == p2[0] and p1[1] == p2[1]:
+            return
+        idxs = np.indices(base_array.shape)  # Create 3D array of indices
+
+        p1 = p1.astype(float)
+        p2 = p2.astype(float)
+
+        if p2[0] == p1[0]:
+            sign = np.sign(p2[1] - p1[1])
+            return idxs[1] * sign
+
+        if p2[1] == p1[1]:
+            sign = np.sign(p2[0] - p1[0])
+            return idxs[1] * sign
+
+        # Calculate max column idx for each row idx based on interpolated line between two points
+
+        max_col_idx = (idxs[0] - p1[0]) / (p2[0] - p1[0]) * (p2[1] - p1[1]) + p1[1]
+        sign = np.sign(p2[0] - p1[0])
+        return idxs[1] * sign <= max_col_idx * sign
 
 
 class Arrange:
@@ -99,7 +105,10 @@ class Arrange:
         occupied_slice = self._occupied[
             offset_y:offset_y + shape_arr.arr.shape[0],
             offset_x:offset_x + shape_arr.arr.shape[1]]
-        if np.any(occupied_slice[np.where(shape_arr.arr == 1)]):
+        try:
+            if np.any(occupied_slice[np.where(shape_arr.arr == 1)]):
+                return 999999
+        except IndexError:  # out of bounds if you try to place an object outside
             return 999999
         prio_slice = self._priority[
             offset_y:offset_y + shape_arr.arr.shape[0],
@@ -122,33 +131,39 @@ class Arrange:
         return best_x, best_y, best_points
 
     ##  Faster
-    def bestSpot(self, shape_arr):
-        min_y = max(-shape_arr.offset_y, 0) - self._offset_y
-        max_y = self.shape[0] - shape_arr.arr.shape[0] - self._offset_y
-        min_x = max(-shape_arr.offset_x, 0) - self._offset_x
-        max_x = self.shape[1] - shape_arr.arr.shape[1] - self._offset_x
-
-        for prio in range(200):
+    def bestSpot(self, shape_arr, start_prio = 0):
+        for prio in range(start_prio, 300):
             tryout_idx = np.where(self._priority == prio)
             for idx in range(len(tryout_idx[0])):
                 x = tryout_idx[0][idx]
                 y = tryout_idx[1][idx]
                 projected_x = x - self._offset_x
                 projected_y = y - self._offset_y
-                if projected_x < min_x or projected_x > max_x or projected_y < min_y or projected_y > max_y:
-                    continue
+
                 # array to "world" coordinates
                 penalty_points = self.check_shape(projected_x, projected_y, shape_arr)
                 if penalty_points != 999999:
-                    return projected_x, projected_y, penalty_points
-        return None, None, None  # No suitable location found :-(
+                    return projected_x, projected_y, penalty_points, prio
+        return None, None, None, prio  # No suitable location found :-(
 
+    ##  Place the object
     def place(self, x, y, shape_arr):
         x = int(self._scale * x)
         y = int(self._scale * y)
         offset_x = x + self._offset_x + shape_arr.offset_x
         offset_y = y + self._offset_y + shape_arr.offset_y
-        occupied_slice = self._occupied[
-            offset_y:offset_y + shape_arr.arr.shape[0],
-            offset_x:offset_x + shape_arr.arr.shape[1]]
-        occupied_slice[np.where(shape_arr.arr == 1)] = 1
+        shape_y, shape_x = self._occupied.shape
+
+        min_x = min(max(offset_x, 0), shape_x - 1)
+        min_y = min(max(offset_y, 0), shape_y - 1)
+        max_x = min(max(offset_x + shape_arr.arr.shape[1], 0), shape_x - 1)
+        max_y = min(max(offset_y + shape_arr.arr.shape[0], 0), shape_y - 1)
+        occupied_slice = self._occupied[min_y:max_y, min_x:max_x]
+        # we use a slice of shape because it can be out of bounds
+        occupied_slice[np.where(shape_arr.arr[
+            min_y - offset_y:max_y - offset_y, min_x - offset_x:max_x - offset_x] == 1)] = 1
+
+        # Set priority to low (= high number), so it won't get picked at trying out.
+        prio_slice = self._priority[min_y:max_y, min_x:max_x]
+        prio_slice[np.where(shape_arr.arr[
+            min_y - offset_y:max_y - offset_y, min_x - offset_x:max_x - offset_x] == 1)] = 999
