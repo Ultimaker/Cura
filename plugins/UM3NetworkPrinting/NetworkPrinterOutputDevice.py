@@ -618,64 +618,67 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
         print_information = Application.getInstance().getPrintInformation()
-
-        # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
-        for index in range(0, self._num_extruders):
-            if print_information.materialLengths[index] != 0:
-                if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
-                    Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
-                    self._error_message = Message(
-                        i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
-                    self._error_message.show()
-                    return
-                if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":
-                    Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
-                    self._error_message = Message(
-                        i18n_catalog.i18nc("@info:status",
-                                           "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)))
-                    self._error_message.show()
-                    return
-
         warnings = []  # There might be multiple things wrong. Keep a list of all the stuff we need to warn about.
 
-        for index in range(0, self._num_extruders):
-            # Check if there is enough material. Any failure in these results in a warning.
-            material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
-            if material_length != -1 and print_information.materialLengths[index] > material_length:
-                Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
-                warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
+        # Only check for mistakes if there is material length information.
+        if print_information.materialLengths:
+            # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
+            for index in range(0, self._num_extruders):
+                if print_information.materialLengths[index] != 0:
+                    if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
+                        Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
+                        self._error_message = Message(
+                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
+                        self._error_message.show()
+                        return
+                    if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":
+                        Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
+                        self._error_message = Message(
+                            i18n_catalog.i18nc("@info:status",
+                                               "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)))
+                        self._error_message.show()
+                        return
 
-            # Check if the right cartridges are loaded. Any failure in these results in a warning.
-            extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
-            if print_information.materialLengths[index] != 0:
-                variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
-                core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
-                if variant:
-                    if variant.getName() != core_name:
-                        Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
-                        warnings.append(i18n_catalog.i18nc("@label", "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
+            for index in range(0, self._num_extruders):
+                # Check if there is enough material. Any failure in these results in a warning.
+                material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
+                if material_length != -1 and print_information.materialLengths[index] > material_length:
+                    Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
+                    warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
-                material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
-                if material:
-                    remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
-                    if material.getMetaDataEntry("GUID") != remote_material_guid:
-                        Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
-                                   remote_material_guid,
-                                   material.getMetaDataEntry("GUID"))
+                # Check if the right cartridges are loaded. Any failure in these results in a warning.
+                extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
+                if print_information.materialLengths[index] != 0:
+                    variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
+                    core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
+                    if variant:
+                        if variant.getName() != core_name:
+                            Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
+                            warnings.append(i18n_catalog.i18nc("@label", "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
 
-                        remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
-                        remote_material_name = "Unknown"
-                        if remote_materials:
-                            remote_material_name = remote_materials[0].getName()
-                        warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
+                    material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
+                    if material:
+                        remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
+                        if material.getMetaDataEntry("GUID") != remote_material_guid:
+                            Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
+                                       remote_material_guid,
+                                       material.getMetaDataEntry("GUID"))
 
-                try:
-                    is_offset_calibrated = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["offset"]["state"] == "valid"
-                except KeyError:  # Older versions of the API don't expose the offset property, so we must asume that all is well.
-                    is_offset_calibrated = True
+                            remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                            remote_material_name = "Unknown"
+                            if remote_materials:
+                                remote_material_name = remote_materials[0].getName()
+                            warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
 
-                if not is_offset_calibrated:
-                    warnings.append(i18n_catalog.i18nc("@label", "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+                    try:
+                        is_offset_calibrated = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["offset"]["state"] == "valid"
+                    except KeyError:  # Older versions of the API don't expose the offset property, so we must asume that all is well.
+                        is_offset_calibrated = True
+
+                    if not is_offset_calibrated:
+                        warnings.append(i18n_catalog.i18nc("@label", "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+        else:
+            Logger.log("w", "There was no material usage found. No check to match used material with machine is done.")
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
