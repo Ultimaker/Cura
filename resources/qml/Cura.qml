@@ -259,40 +259,7 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
-                        // Import models
-                        var imported_model = -1;
-                        for (var i in drop.urls)
-                        {
-                            // There is no endsWith in this version of JS...
-                            if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
-                                // Drop an object
-                                Printer.readLocalFile(drop.urls[i]);
-                                if (imported_model == -1)
-                                {
-                                    imported_model = i;
-                                }
-                            }
-                        }
-
-                        // Import profiles
-                        var import_result = Cura.ContainerManager.importProfiles(drop.urls);
-                        if (import_result.message !== "") {
-                            messageDialog.text = import_result.message
-                            if (import_result.status == "ok")
-                            {
-                                messageDialog.icon = StandardIcon.Information
-                            }
-                            else
-                            {
-                                messageDialog.icon = StandardIcon.Critical
-                            }
-                            messageDialog.open()
-                        }
-                        if (imported_model != -1)
-                        {
-                            var meshName = backgroundItem.getMeshName(drop.urls[imported_model].toString())
-                            backgroundItem.hasMesh(decodeURIComponent(meshName))
-                        }
+                        handleOpenFileUrls(drop.urls);
                     }
                 }
             }
@@ -753,35 +720,44 @@ UM.MainWindow
 
             CuraApplication.setDefaultPath("dialog_load_path", folder);
 
-            // look for valid project files
-            var projectFileUrlList = [];
-            var hasGcode = false;
-            for (var i in fileUrls)
-            {
-                var endsWithG = /\.g$/;
-                var endsWithGcode = /\.gcode$/;
-                if (endsWithG.test(fileUrls[i]) || endsWithGcode.test(fileUrls[i])) {
-                    hasGcode = true;
-                    continue;
-                }
-                else if (CuraApplication.checkIsValidProjectFile(fileUrls[i])) {
-                    projectFileUrlList.push(fileUrls[i]);
-                }
-            }
+            handleOpenFileUrls(fileUrls);
+        }
+    }
 
-            // show a warning if selected multiple files together with Gcode
-            var hasProjectFile = projectFileUrlList.length > 0;
-            var selectedMultipleFiles = fileUrls.length > 1;
-            if (selectedMultipleFiles && hasGcode) {
-                infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
-                infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
-                infoMultipleFilesWithGcodeDialog.fileUrls = fileUrls;
-                infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList;
-                infoMultipleFilesWithGcodeDialog.open();
+    function handleOpenFileUrls(fileUrls)
+    {
+        // look for valid project files
+        var projectFileUrlList = [];
+        var hasGcode = false;
+        for (var i in fileUrls)
+        {
+            var endsWithG = /\.g$/;
+            var endsWithGcode = /\.gcode$/;
+            if (endsWithG.test(fileUrls[i]) || endsWithGcode.test(fileUrls[i]))
+            {
+                hasGcode = true;
+                continue;
             }
-            else {
-                handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            else if (CuraApplication.checkIsValidProjectFile(fileUrls[i]))
+            {
+                projectFileUrlList.push(fileUrls[i]);
             }
+        }
+
+        // show a warning if selected multiple files together with Gcode
+        var hasProjectFile = projectFileUrlList.length > 0;
+        var selectedMultipleFiles = fileUrls.length > 1;
+        if (selectedMultipleFiles && hasGcode)
+        {
+            infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
+            infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
+            infoMultipleFilesWithGcodeDialog.fileUrls = fileUrls.slice();
+            infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
+            infoMultipleFilesWithGcodeDialog.open();
+        }
+        else
+        {
+            handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
         }
     }
 
@@ -790,7 +766,7 @@ UM.MainWindow
         // we only allow opening one project file
         if (selectedMultipleFiles && hasProjectFile)
         {
-            openFilesIncludingProjectsDialog.fileUrls = fileUrls;
+            openFilesIncludingProjectsDialog.fileUrls = fileUrls.slice();
             openFilesIncludingProjectsDialog.show();
             return;
         }
@@ -802,9 +778,13 @@ UM.MainWindow
             // check preference
             var choice = UM.Preferences.getValue("cura/choice_on_open_project");
             if (choice == "open_as_project")
+            {
                 openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+            }
             else if (choice == "open_as_model")
-                openFilesIncludingProjectsDialog.loadModelFiles([projectFile]);
+            {
+                openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
+            }
             else    // always ask
             {
                 // ask whether to open as project or as models
@@ -814,7 +794,7 @@ UM.MainWindow
         }
         else
         {
-            openFilesIncludingProjectsDialog.loadModelFiles(fileUrls);
+            openFilesIncludingProjectsDialog.loadModelFiles(fileUrls.slice());
         }
     }
 
