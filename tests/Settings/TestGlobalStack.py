@@ -465,9 +465,10 @@ def test_getPropertyWithResolve(global_stack):
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
 def test_hasUserValueUserChanges(global_stack):
-    user_changes = unittest.mock.MagicMock()
+    user_changes = MockContainer("test_user_changes", "user")
+
     def hasProperty(key, property):
-        return key == "layer_height" and property == "value" #Only have the layer_height property set.
+        return key == "layer_height" and property == "value" # Only have the layer_height property set.
     user_changes.hasProperty = hasProperty
 
     global_stack.userChanges = user_changes
@@ -479,9 +480,10 @@ def test_hasUserValueUserChanges(global_stack):
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the quality-changes container.
 def test_hasUserValueQualityChanges(global_stack):
-    quality_changes = unittest.mock.MagicMock()
+    quality_changes = MockContainer("test_quality_changes", "quality_changes")
+
     def hasProperty(key, property):
-        return key == "layer_height" and property == "value" #Only have the layer_height property set.
+        return key == "layer_height" and property == "value" # Only have the layer_height property set.
     quality_changes.hasProperty = hasProperty
 
     global_stack.qualityChanges = quality_changes
