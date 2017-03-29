@@ -90,10 +90,16 @@ class Arrange:
 
     ##  Fill priority, take offset as center. lower is better
     def centerFirst(self):
+        # Distance x + distance y
         #self._priority = np.fromfunction(
-        #    lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape)
+        #    lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape, dtype=np.int32)
+        # Square distance
+        # self._priority = np.fromfunction(
+        #     lambda i, j: abs(self._offset_x-i)**2+abs(self._offset_y-j)**2, self.shape, dtype=np.int32)
         self._priority = np.fromfunction(
-            lambda i, j: abs(self._offset_x-i)**2+abs(self._offset_y-j)**2, self.shape, dtype=np.int32)
+            lambda i, j: abs(self._offset_x-i)**3+abs(self._offset_y-j)**3, self.shape, dtype=np.int32)
+        # self._priority = np.fromfunction(
+        #    lambda i, j: max(abs(self._offset_x-i), abs(self._offset_y-j)), self.shape, dtype=np.int32)
         self._priority_unique_values = np.unique(self._priority)
         self._priority_unique_values.sort()
 

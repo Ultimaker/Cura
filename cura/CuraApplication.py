@@ -850,7 +850,7 @@ class CuraApplication(QtApplication):
     def _prepareArranger(self, fixed_nodes = None):
         #arranger = Arrange(215, 215, 107, 107)  # TODO: fill in dimensions
         scale = 0.5
-        arranger = Arrange(250, 250, 125, 125, scale = scale)  # TODO: fill in dimensions
+        arranger = Arrange(220, 220, 110, 110, scale = scale)  # TODO: fill in dimensions
         arranger.centerFirst()
 
         if fixed_nodes is None:
@@ -1097,9 +1097,16 @@ class CuraApplication(QtApplication):
                 nodes.append(node)
 
         arranger = self._prepareArranger(fixed_nodes = fixed_nodes)
+        nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
         for node in nodes:
             offset_shape_arr, hull_shape_arr = self._nodeAsShapeArr(node, min_offset = min_offset)
+            nodes_arr.append((offset_shape_arr.arr.shape[0] * offset_shape_arr.arr.shape[1], node, offset_shape_arr, hull_shape_arr))
 
+        nodes_arr.sort(key = lambda item: item[0])
+        nodes_arr.reverse()
+
+        for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
+            Logger.log("d", "Placing object sized: %s" % size)
             x, y, penalty_points, start_prio = arranger.bestSpot(
                 offset_shape_arr)
             if x is not None:  # We could find a place
