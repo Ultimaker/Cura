@@ -126,7 +126,7 @@ class PrintInformation(QObject):
             return
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
-        r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
+        radius = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths = []
         self._material_weights = []
         self._material_costs = []
@@ -161,8 +161,12 @@ class PrintInformation(QObject):
                     else:
                         cost = 0
 
+            if radius != 0:
+                length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
+            else:
+                length = 0
             self._material_weights.append(weight)
-            self._material_lengths.append(round((amount / (math.pi * r ** 2)) / 1000, 2))
+            self._material_lengths.append(length)
             self._material_costs.append(cost)
 
         self.materialLengthsChanged.emit()
