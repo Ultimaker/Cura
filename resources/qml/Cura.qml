@@ -724,7 +724,7 @@ UM.MainWindow
         }
     }
 
-    // FIXME(lipu): Yeah... I know... it is a mess to put all those things here.
+    // Yeah... I know... it is a mess to put all those things here.
     // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
     // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
     // and view here may require more effort but make things more difficult to understand.
