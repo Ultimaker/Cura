@@ -928,7 +928,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 if status_code == 200:
                     if self._connection_state == ConnectionState.connecting:
                         self.setConnectionState(ConnectionState.connected)
-                    self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    try:
+                        self._json_printer_state = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    except json.decoder.JSONDecodeError:
+                        Logger.log("w", "Received an invalid printer state message: Not valid JSON.")
+                        return
                     self._spliceJSONData()
 
                     # Hide connection error message if the connection was restored
@@ -940,7 +944,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     pass  # TODO: Handle errors
             elif "print_job" in reply_url:  # Status update from print_job:
                 if status_code == 200:
-                    json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    try:
+                        json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                    except json.decoder.JSONDecodeError:
+                        Logger.log("w", "Received an invalid print job state message: Not valid JSON.")
+                        return
                     progress = json_data["progress"]
                     ## If progress is 0 add a bit so another print can't be sent.
                     if progress == 0:
@@ -1024,7 +1032,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     self.setAuthenticationState(AuthState.NotAuthenticated)
 
             elif "auth/check" in reply_url:  # Check if we are authenticated (user can refuse this!)
-                data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                try:
+                    data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                except json.decoder.JSONDecodeError:
+                    Logger.log("w", "Received an invalid authentication check from printer: Not valid JSON.")
+                    return
                 if data.get("message", "") == "authorized":
                     Logger.log("i", "Authentication was approved")
                     self._verifyAuthentication()  # Ensure that the verification is really used and correct.
@@ -1037,7 +1049,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         elif reply.operation() == QNetworkAccessManager.PostOperation:
             if "/auth/request" in reply_url:
                 # We got a response to requesting authentication.
-                data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                try:
+                    data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                except json.decoder.JSONDecodeError:
+                    Logger.log("w", "Received an invalid authentication request reply from printer: Not valid JSON.")
+                    return
                 self.setAuthenticationState(AuthState.AuthenticationRequested)
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
                 if global_container_stack:  # Remove any old data.
