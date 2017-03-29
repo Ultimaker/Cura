@@ -3,6 +3,8 @@
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
+from typing import Dict
+from typing import List
 
 import UM.VersionUpgrade
 from UM.Logger import Logger
@@ -26,7 +28,7 @@ class Profile:
     #
     #   \param serialised A string with the contents of a profile.
     #   \param filename The supposed filename of the profile, without extension.
-    def __init__(self, serialised, filename):
+    def __init__(self, serialised: str, filename: str) -> None:
         self._filename = filename
 
         parser = configparser.ConfigParser(interpolation = None)
@@ -58,17 +60,17 @@ class Profile:
             self._material_name = None
 
         # Parse the settings.
-        self._settings = {}
+        self._settings = {} # type: Dict[str,str]
         if parser.has_section("settings"):
             for key, value in parser["settings"].items():
                 self._settings[key] = value
 
         # Parse the defaults and the disabled defaults.
-        self._changed_settings_defaults = {}
+        self._changed_settings_defaults = {}    # type: Dict[str,str]
         if parser.has_section("defaults"):
             for key, value in parser["defaults"].items():
                 self._changed_settings_defaults[key] = value
-        self._disabled_settings_defaults = []
+        self._disabled_settings_defaults = []   # type: List[str]
         if parser.has_section("disabled_defaults"):
             disabled_defaults_string = parser.get("disabled_defaults", "values")
             self._disabled_settings_defaults = [item for item in disabled_defaults_string.split(",") if item != ""] # Split by comma.

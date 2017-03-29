@@ -15,11 +15,10 @@ UM.Dialog
 
     width: 550
     minimumWidth: 550
-    maximumWidth: 550
 
     height: 350
     minimumHeight: 350
-    maximumHeight: 350
+
     property int spacerHeight: 10
 
     property bool dontShowAgain: true

@@ -8,6 +8,8 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
+from UM.Preferences import Preferences
+from UM.View.GL.OpenGLContext import OpenGLContext
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -15,6 +17,7 @@ from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
 
+from cura.Settings.ExtruderManager import ExtruderManager
 from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 from cura import LayerPolygon
@@ -22,6 +25,17 @@ from cura import LayerPolygon
 import numpy
 from time import time
 catalog = i18nCatalog("cura")
+
+
+##  Return a 4-tuple with floats 0-1 representing the html color code
+#
+#   \param color_code html color code, i.e. "#FF0000" -> red
+def colorCodeToRGBA(color_code):
+    return [
+        int(color_code[1:3], 16) / 255,
+        int(color_code[3:5], 16) / 255,
+        int(color_code[5:7], 16) / 255,
+        1.0]
 
 
 class ProcessSlicedLayersJob(Job):
@@ -92,7 +106,6 @@ class ProcessSlicedLayersJob(Job):
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)
             layer_data.setLayerHeight(abs_layer_number, layer.height)
-            layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
             for p in range(layer.repeatedMessageCount("path_segment")):
                 polygon = layer.getRepeatedMessage("path_segment", p)
@@ -110,23 +123,28 @@ class ProcessSlicedLayersJob(Job):
 
                 line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
-                
+
+                # In the future, line_thicknesses should be given by CuraEngine as well.
+                # Currently the infill layer thickness also translates to line width
+                line_thicknesses = numpy.zeros(line_widths.shape, dtype="f4")
+                line_thicknesses[:] = layer.thickness / 1000  # from micrometer to millimeter
+
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
                 # faster.
                 new_points = numpy.empty((len(points), 3), numpy.float32)
                 if polygon.point_type == 0:  # Point2D
                     new_points[:, 0] = points[:, 0]
-                    new_points[:, 1] = layer.height / 1000 # layer height value is in backend representation
+                    new_points[:, 1] = layer.height / 1000  # layer height value is in backend representation
                     new_points[:, 2] = -points[:, 1]
                 else: # Point3D
                     new_points[:, 0] = points[:, 0]
                     new_points[:, 1] = points[:, 2]
                     new_points[:, 2] = -points[:, 1]
 
-                this_poly = LayerPolygon.LayerPolygon(layer_data, extruder, line_types, new_points, line_widths)
+                this_poly = LayerPolygon.LayerPolygon(extruder, line_types, new_points, line_widths, line_thicknesses)
                 this_poly.buildCache()
-                
+
                 this_layer.polygons.append(this_poly)
 
                 Job.yieldThread()
@@ -144,7 +162,35 @@ class ProcessSlicedLayersJob(Job):
                 self._progress.setProgress(progress)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
-        layer_mesh = layer_data.build()
+
+        # Find out colors per extruder
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        manager = ExtruderManager.getInstance()
+        extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
+        if extruders:
+            material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
+            for extruder in extruders:
+                material = extruder.findContainer({"type": "material"})
+                position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
+                color_code = material.getMetaDataEntry("color_code")
+                color = colorCodeToRGBA(color_code)
+                material_color_map[position, :] = color
+        else:
+            # Single extruder via global stack.
+            material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
+            material = global_container_stack.findContainer({"type": "material"})
+            color_code = material.getMetaDataEntry("color_code")
+            if color_code is None:  # not all stacks have a material color
+                color_code = "#e0e000"
+            color = colorCodeToRGBA(color_code)
+            material_color_map[0, :] = color
+
+        # We have to scale the colors for compatibility mode
+        if OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode")):
+            line_type_brightness = 0.5  # for compatibility mode
+        else:
+            line_type_brightness = 1.0
+        layer_mesh = layer_data.build(material_color_map, line_type_brightness)
 
         if self._abort_requested:
             if self._progress:

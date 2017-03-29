@@ -10,8 +10,8 @@ import Cura 1.0 as Cura
 
 Item
 {
+    property alias newProject: newProjectAction;
     property alias open: openAction;
-    property alias loadWorkspace: loadWorkspaceAction;
     property alias quit: quitAction;
 
     property alias undo: undoAction;
@@ -262,6 +262,7 @@ Item
         id: reloadAllAction;
         text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
         iconName: "document-revert";
+        shortcut: "F5"
         onTriggered: Printer.reloadAll();
     }
 
@@ -282,15 +283,16 @@ Item
     Action
     {
         id: openAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open File...");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
 
     Action
     {
-        id: loadWorkspaceAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open Project...");
+        id: newProjectAction
+        text: catalog.i18nc("@action:inmenu menubar:file","&New Project...");
+        shortcut: StandardKey.New
     }
 
     Action

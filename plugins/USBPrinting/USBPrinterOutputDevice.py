@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
-import serial
+import serial   # type: ignore
 import threading
 import time
 import queue
@@ -123,6 +123,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _homeBed(self):
         self._sendCommand("G28 Z")
+
+    ##  A name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        return self.getName()
+
+    ##  The address of the device.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._serial_port
 
     def startPrint(self):
         self.writeStarted.emit(self)
@@ -433,11 +443,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    #   \param kwargs Keyword arguments.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         container_stack = Application.getInstance().getGlobalContainerStack()
-        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode" or not container_stack.getMetaDataEntry("supports_usb_connection"):
-            self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to start a new job because the printer does not support usb printing."))
+
+        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."))
+            self._error_message.show()
+            return
+        elif not container_stack.getMetaDataEntry("supports_usb_connection"):
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."))
             self._error_message.show()
             return
 
@@ -631,3 +646,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_firmware_thread.daemon = True
 
         self.connect()
+
+    ##  Pre-heats the heated bed of the printer, if it has one.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds. This is
+    #   ignored because there is no g-code to set this.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        Logger.log("i", "Pre-heating the bed to %i degrees.", temperature)
+        self._setTargetBedTemperature(temperature)
+        self.preheatBedRemainingTimeChanged.emit()
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
+        self._setTargetBedTemperature(0)
+        self.preheatBedRemainingTimeChanged.emit()

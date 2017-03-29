@@ -1,10 +1,9 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
-import UM.Settings
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
-import cura.Settings
 from UM.Logger import Logger
 
 
@@ -13,6 +12,12 @@ from UM.Logger import Logger
 #     because some profiles tend to have 'hardcoded' values that break our inheritance. A good example of that are the
 #     speed settings. If all the children of print_speed have a single value override, changing the speed won't
 #     actually do anything, as only the 'leaf' settings are used by the engine.
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.SettingInstance import InstanceState
+
+from cura.Settings.ExtruderManager import ExtruderManager
+
 class SettingInheritanceManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -22,7 +27,7 @@ class SettingInheritanceManager(QObject):
         self._active_container_stack = None
         self._onGlobalContainerChanged()
 
-        cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
 
     settingsWithIntheritanceChanged = pyqtSignal()
@@ -45,7 +50,7 @@ class SettingInheritanceManager(QObject):
         multi_extrusion = self._global_container_stack.getProperty("machine_extruder_count", "value") > 1
         if not multi_extrusion:
             return self._settings_with_inheritance_warning
-        extruder = cura.Settings.ExtruderManager.getInstance().getExtruderStack(extruder_index)
+        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
         if not extruder:
             Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
             return []
@@ -72,7 +77,7 @@ class SettingInheritanceManager(QObject):
         self._update()
 
     def _onActiveExtruderChanged(self):
-        new_active_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
+        new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if not new_active_stack:
             new_active_stack = self._global_container_stack
 
@@ -138,14 +143,14 @@ class SettingInheritanceManager(QObject):
         return self._settings_with_inheritance_warning
 
     ##  Check if a setting has an inheritance function that is overwritten
-    def _settingIsOverwritingInheritance(self, key, stack = None):
+    def _settingIsOverwritingInheritance(self, key: str, stack: ContainerStack = None) -> bool:
         has_setting_function = False
         if not stack:
             stack = self._active_container_stack
         containers = []
 
         ## Check if the setting has a user state. If not, it is never overwritten.
-        has_user_state = stack.getProperty(key, "state") == UM.Settings.InstanceState.User
+        has_user_state = stack.getProperty(key, "state") == InstanceState.User
         if not has_user_state:
             return False
 
@@ -154,7 +159,7 @@ class SettingInheritanceManager(QObject):
             return False
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        if isinstance(stack.getTop().getProperty(key, "value"), UM.Settings.SettingFunction):
+        if isinstance(stack.getTop().getProperty(key, "value"), SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.
@@ -169,7 +174,7 @@ class SettingInheritanceManager(QObject):
                 continue
             if value is not None:
                 # If a setting doesn't use any keys, it won't change it's value, so treat it as if it's a fixed value
-                has_setting_function = isinstance(value, UM.Settings.SettingFunction)
+                has_setting_function = isinstance(value, SettingFunction)
                 if has_setting_function:
                     for setting_key in value.getUsedSettingKeys():
                         if setting_key in self._active_container_stack.getAllKeys():

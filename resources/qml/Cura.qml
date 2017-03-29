@@ -45,7 +45,7 @@ UM.MainWindow
         function getMeshName(path){
             //takes the path the complete path of the meshname and returns only the filebase
             var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
+            var fileBase = fileName.slice(0, fileName.indexOf("."))
             return fileBase
         }
 
@@ -66,6 +66,10 @@ UM.MainWindow
             {
                 id: fileMenu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
+                MenuItem
+                {
+                    action: Cura.Actions.newProject;
+                }
 
                 MenuItem
                 {
@@ -74,11 +78,6 @@ UM.MainWindow
 
                 RecentFilesMenu { }
 
-                MenuItem
-                {
-                    action: Cura.Actions.loadWorkspace
-                }
-
                 MenuSeparator { }
 
                 MenuItem
@@ -86,28 +85,20 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false });
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                 }
-                Menu
+
+                MenuItem
                 {
-                    id: saveAllMenu
-                    title: catalog.i18nc("@title:menu menubar:file","Save &All")
-                    iconName: "document-save-all";
-                    enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
-
-                    Instantiator
+                    id: saveAsMenu
+                    text: catalog.i18nc("@title:menu menubar:file", "Save &As...")
+                    onTriggered:
                     {
-                        model: UM.OutputDevicesModel { id: devicesModel; }
-
-                        MenuItem
-                        {
-                            text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, { "filter_by_machine": false });
-                        }
-                        onObjectAdded: saveAllMenu.insertItem(index, object)
-                        onObjectRemoved: saveAllMenu.removeItem(object)
+                        var localDeviceId = "local_file";
+                        UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetype": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"});
                     }
                 }
+
                 MenuItem
                 {
                     id: saveWorkspaceMenu
@@ -266,42 +257,9 @@ UM.MainWindow
                 anchors.fill: parent;
                 onDropped:
                 {
-                    if(drop.urls.length > 0)
+                    if (drop.urls.length > 0)
                     {
-                        // Import models
-                        var imported_model = -1;
-                        for(var i in drop.urls)
-                        {
-                            // There is no endsWith in this version of JS...
-                            if ((drop.urls[i].length <= 12) || (drop.urls[i].substring(drop.urls[i].length-12) !== ".curaprofile")) {
-                                // Drop an object
-                                Printer.readLocalFile(drop.urls[i]);
-                                if (imported_model == -1)
-                                {
-                                    imported_model = i;
-                                }
-                            }
-                        }
-
-                        // Import profiles
-                        var import_result = Cura.ContainerManager.importProfiles(drop.urls);
-                        if (import_result.message !== "") {
-                            messageDialog.text = import_result.message
-                            if(import_result.status == "ok")
-                            {
-                                messageDialog.icon = StandardIcon.Information
-                            }
-                            else
-                            {
-                                messageDialog.icon = StandardIcon.Critical
-                            }
-                            messageDialog.open()
-                        }
-                        if (imported_model != -1)
-                        {
-                            var meshName = backgroundItem.getMeshName(drop.urls[imported_model].toString())
-                            backgroundItem.hasMesh(decodeURIComponent(meshName))
-                        }
+                        handleOpenFileUrls(drop.urls);
                     }
                 }
             }
@@ -534,6 +492,33 @@ UM.MainWindow
         onTriggered: preferences.visible = true
     }
 
+    MessageDialog
+    {
+        id: newProjectDialog
+        modality: Qt.ApplicationModal
+        title: catalog.i18nc("@title:window", "New project")
+        text: catalog.i18nc("@info:question", "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings.")
+        standardButtons: StandardButton.Yes | StandardButton.No
+        icon: StandardIcon.Question
+        onYes:
+        {
+            Printer.deleteAll();
+            Cura.Actions.resetProfile.trigger();
+        }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.newProject
+        onTriggered:
+        {
+            if(Printer.platformActivity || Cura.MachineManager.hasUserSettings)
+            {
+                newProjectDialog.visible = true
+            }
+        }
+    }
+
     Connections
     {
         target: Cura.Actions.addProfile
@@ -721,27 +706,119 @@ UM.MainWindow
         id: openDialog;
 
         //: File open dialog title
-        title: catalog.i18nc("@title:window","Open file")
+        title: catalog.i18nc("@title:window","Open file(s)")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         folder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
         {
-            //Because several implementations of the file dialog only update the folder
-            //when it is explicitly set.
+            // Because several implementations of the file dialog only update the folder
+            // when it is explicitly set.
             var f = folder;
             folder = f;
 
             CuraApplication.setDefaultPath("dialog_load_path", folder);
 
-            for(var i in fileUrls)
-            {
-                Printer.readLocalFile(fileUrls[i])
-            }
+            handleOpenFileUrls(fileUrls);
+        }
+    }
 
-            var meshName = backgroundItem.getMeshName(fileUrls[0].toString())
-            backgroundItem.hasMesh(decodeURIComponent(meshName))
+    // Yeah... I know... it is a mess to put all those things here.
+    // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
+    // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
+    // and view here may require more effort but make things more difficult to understand.
+    function handleOpenFileUrls(fileUrls)
+    {
+        // look for valid project files
+        var projectFileUrlList = [];
+        var hasGcode = false;
+        var nonGcodeFileList = [];
+        for (var i in fileUrls)
+        {
+            var endsWithG = /\.g$/;
+            var endsWithGcode = /\.gcode$/;
+            if (endsWithG.test(fileUrls[i]) || endsWithGcode.test(fileUrls[i]))
+            {
+                continue;
+            }
+            else if (CuraApplication.checkIsValidProjectFile(fileUrls[i]))
+            {
+                projectFileUrlList.push(fileUrls[i]);
+            }
+            nonGcodeFileList.push(fileUrls[i]);
+        }
+        hasGcode = nonGcodeFileList.length < fileUrls.length;
+
+        // show a warning if selected multiple files together with Gcode
+        var hasProjectFile = projectFileUrlList.length > 0;
+        var selectedMultipleFiles = fileUrls.length > 1;
+        if (selectedMultipleFiles && hasGcode)
+        {
+            infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
+            infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
+            infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
+            infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
+            infoMultipleFilesWithGcodeDialog.open();
+        }
+        else
+        {
+            handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+        }
+    }
+
+    function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList)
+    {
+        // we only allow opening one project file
+        if (selectedMultipleFiles && hasProjectFile)
+        {
+            openFilesIncludingProjectsDialog.fileUrls = fileUrls.slice();
+            openFilesIncludingProjectsDialog.show();
+            return;
+        }
+
+        if (hasProjectFile)
+        {
+            var projectFile = projectFileUrlList[0];
+
+            // check preference
+            var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+            if (choice == "open_as_project")
+            {
+                openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+            }
+            else if (choice == "open_as_model")
+            {
+                openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
+            }
+            else    // always ask
+            {
+                // ask whether to open as project or as models
+                askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                askOpenAsProjectOrModelsDialog.show();
+            }
+        }
+        else
+        {
+            openFilesIncludingProjectsDialog.loadModelFiles(fileUrls.slice());
+        }
+    }
+
+    MessageDialog {
+        id: infoMultipleFilesWithGcodeDialog
+        title: catalog.i18nc("@title:window", "Open File(s)")
+        icon: StandardIcon.Information
+        standardButtons: StandardButton.Ok
+        text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
+
+        property var selectedMultipleFiles
+        property var hasProjectFile
+        property var fileUrls
+        property var projectFileUrlList
+
+        onAccepted:
+        {
+            handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
         }
     }
 
@@ -751,36 +828,14 @@ UM.MainWindow
         onTriggered: openDialog.open()
     }
 
-    FileDialog
+    OpenFilesIncludingProjectsDialog
     {
-        id: openWorkspaceDialog;
-
-        //: File open dialog title
-        title: catalog.i18nc("@title:window","Open workspace")
-        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-        selectMultiple: false
-        nameFilters: UM.WorkspaceFileHandler.supportedReadFileTypes;
-        folder: CuraApplication.getDefaultPath("dialog_load_path")
-        onAccepted:
-        {
-            //Because several implementations of the file dialog only update the folder
-            //when it is explicitly set.
-            var f = folder;
-            folder = f;
-
-            CuraApplication.setDefaultPath("dialog_load_path", folder);
-
-            for(var i in fileUrls)
-            {
-                UM.WorkspaceFileHandler.readLocalFile(fileUrls[i])
-            }
-        }
+        id: openFilesIncludingProjectsDialog
     }
 
-    Connections
+    AskOpenAsProjectOrModelsDialog
     {
-        target: Cura.Actions.loadWorkspace
-        onTriggered: openWorkspaceDialog.open()
+        id: askOpenAsProjectOrModelsDialog
     }
 
     EngineLog
@@ -821,7 +876,7 @@ UM.MainWindow
 
         function start(id)
         {
-            var actions =  Cura.MachineActionManager.getFirstStartActions(id)
+            var actions = Cura.MachineActionManager.getFirstStartActions(id)
             resetPages() // Remove previous pages
 
             for (var i = 0; i < actions.length; i++)
@@ -865,6 +920,20 @@ UM.MainWindow
             messageDialog.standardButtons = buttons
             messageDialog.icon = icon
             messageDialog.visible = true
+        }
+    }
+
+    DiscardOrKeepProfileChangesDialog
+    {
+        id: discardOrKeepProfileChangesDialog
+    }
+
+    Connections
+    {
+        target: Printer
+        onShowDiscardOrKeepProfileChanges:
+        {
+            discardOrKeepProfileChangesDialog.show()
         }
     }
 
@@ -915,4 +984,3 @@ UM.MainWindow
         }
     }
 }
-

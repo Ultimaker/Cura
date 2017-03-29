@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -25,24 +26,23 @@ import numpy
 import copy
 import math
 
-import UM.Settings.ContainerRegistry
-
-
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
 
 
 ##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
-    VolumeOutlineColor = Color(12, 169, 227, 255)
-    XAxisColor = Color(255, 0, 0, 255)
-    YAxisColor = Color(0, 0, 255, 255)
-    ZAxisColor = Color(0, 255, 0, 255)
-
     raftThicknessChanged = Signal()
 
     def __init__(self, parent = None):
         super().__init__(parent)
+
+        self._volume_outline_color = None
+        self._x_axis_color = None
+        self._y_axis_color = None
+        self._z_axis_color = None
+        self._disallowed_area_color = None
+        self._error_area_color = None
 
         self._width = 0
         self._height = 0
@@ -68,12 +68,16 @@ class BuildVolume(SceneNode):
         self._volume_aabb = None
 
         self._raft_thickness = 0.0
+        self._extra_z_clearance = 0.0
         self._adhesion_type = None
         self._platform = Platform(self)
 
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onStackChanged)
         self._onStackChanged()
+
+        self._engine_ready = False
+        Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
         self._has_errors = False
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
@@ -98,6 +102,7 @@ class BuildVolume(SceneNode):
         # This should also ways work, and it is semantically more correct,
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
+
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
@@ -158,6 +163,9 @@ class BuildVolume(SceneNode):
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
+            theme = Application.getInstance().getTheme()
+            self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate").getRgb()))
+            self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_alt").getRgb()))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh)
@@ -176,6 +184,18 @@ class BuildVolume(SceneNode):
         if not self._width or not self._height or not self._depth:
             return
 
+        if not Application.getInstance()._engine:
+            return
+
+        if not self._volume_outline_color:
+            theme = Application.getInstance().getTheme()
+            self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
+            self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
+            self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
+            self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
+            self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
+            self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+
         min_w = -self._width / 2
         max_w = self._width / 2
         min_h = 0.0
@@ -188,20 +208,20 @@ class BuildVolume(SceneNode):
         if self._shape != "elliptic":
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
 
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
 
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
-            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
 
             self.setMeshData(mb.build())
 
@@ -228,8 +248,8 @@ class BuildVolume(SceneNode):
                 aspect = self._depth / self._width
                 scale_matrix.compose(scale = Vector(1, 1, aspect))
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self.VolumeOutlineColor)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self.VolumeOutlineColor)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             self.setMeshData(mb.build().getTransformed(scale_matrix))
 
             # Build plate grid mesh
@@ -260,21 +280,21 @@ class BuildVolume(SceneNode):
             height = self._origin_line_width,
             depth = self._origin_line_width,
             center = origin + Vector(self._origin_line_length / 2, 0, 0),
-            color = self.XAxisColor
+            color = self._x_axis_color
         )
         mb.addCube(
             width = self._origin_line_width,
             height = self._origin_line_length,
             depth = self._origin_line_width,
             center = origin + Vector(0, self._origin_line_length / 2, 0),
-            color = self.YAxisColor
+            color = self._y_axis_color
         )
         mb.addCube(
             width = self._origin_line_width,
             height = self._origin_line_width,
             depth = self._origin_line_length,
             center = origin - Vector(0, 0, self._origin_line_length / 2),
-            color = self.ZAxisColor
+            color = self._z_axis_color
         )
         self._origin_mesh = mb.build()
 
@@ -282,7 +302,7 @@ class BuildVolume(SceneNode):
         disallowed_area_size = 0
         if self._disallowed_areas:
             mb = MeshBuilder()
-            color = Color(0.0, 0.0, 0.0, 0.15)
+            color = self._disallowed_area_color
             for polygon in self._disallowed_areas:
                 points = polygon.getPoints()
                 if len(points) == 0:
@@ -311,7 +331,7 @@ class BuildVolume(SceneNode):
         if self._error_areas:
             mb = MeshBuilder()
             for error_area in self._error_areas:
-                color = Color(1.0, 0.0, 0.0, 0.5)
+                color = self._error_area_color
                 points = error_area.getPoints()
                 first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
                                self._clamp(points[0][1], min_d, max_d))
@@ -328,7 +348,7 @@ class BuildVolume(SceneNode):
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
+            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
 
         bed_adhesion_size = self._getEdgeDisallowedSize()
 
@@ -337,7 +357,7 @@ class BuildVolume(SceneNode):
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + bed_adhesion_size - 1)
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
@@ -364,6 +384,23 @@ class BuildVolume(SceneNode):
         if old_raft_thickness != self._raft_thickness:
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
+
+    def _updateExtraZClearance(self) -> None:
+        extra_z = 0.0
+        extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        use_extruders = False
+        for extruder in extruders:
+            if extruder.getProperty("retraction_hop_enabled", "value"):
+                retraction_hop = extruder.getProperty("retraction_hop", "value")
+                if extra_z is None or retraction_hop > extra_z:
+                    extra_z = retraction_hop
+            use_extruders = True
+        if not use_extruders:
+            # If no extruders, take global value.
+            if self._global_container_stack.getProperty("retraction_hop_enabled", "value"):
+                extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
+        if extra_z != self._extra_z_clearance:
+            self._extra_z_clearance = extra_z
 
     ##  Update the build volume visualization
     def _onStackChanged(self):
@@ -398,7 +435,12 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreas()
             self._updateRaftThickness()
 
-            self.rebuild()
+            if self._engine_ready:
+                self.rebuild()
+
+    def _onEngineCreated(self):
+        self._engine_ready = True
+        self.rebuild()
 
     def _onSettingPropertyChanged(self, setting_key, property_name):
         if property_name != "value":
@@ -424,6 +466,10 @@ class BuildVolume(SceneNode):
 
         if setting_key in self._raft_settings:
             self._updateRaftThickness()
+            rebuild_me = True
+
+        if setting_key in self._extra_z_settings:
+            self._updateExtraZClearance()
             rebuild_me = True
 
         if rebuild_me:
@@ -583,11 +629,12 @@ class BuildVolume(SceneNode):
 
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-                prime_y = prime_x + machine_depth / 2
+                prime_y = prime_y + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
-            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
+
+            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             result[extruder.getId()] = [prime_polygon]
 
         return result
@@ -770,7 +817,7 @@ class BuildVolume(SceneNode):
                 stack = self._global_container_stack
             else:
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-                stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+                stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
 
         value = stack.getProperty(setting_key, property)
         setting_type = stack.getProperty(setting_key, "type")
@@ -848,6 +895,7 @@ class BuildVolume(SceneNode):
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
+    _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]

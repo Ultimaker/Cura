@@ -25,7 +25,7 @@ Item
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    Rectangle
+    Item
     {
         id: infillCellLeft
         anchors.top: parent.top
@@ -216,7 +216,7 @@ Item
         }
     }
 
-    Rectangle
+    Item
     {
         id: helpersCell
         anchors.top: infillCellRight.bottom
@@ -398,7 +398,7 @@ Item
             style: UM.Theme.styles.checkbox;
             enabled: base.settingsEnabled
 
-            checked: platformAdhesionType.properties.value != "skirt"
+            checked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
 
             MouseArea
             {
@@ -461,7 +461,7 @@ Item
         supportExtruderCombobox.updateCurrentColor();
     }
 
-    Rectangle
+    Item
     {
         id: tipsCell
         anchors.top: helpersCell.bottom

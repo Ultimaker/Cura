@@ -9,10 +9,10 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Rectangle {
+Item {
     id: base
 
-    property bool activity: Printer.getPlatformActivity
+    property bool activity: Printer.platformActivity
     property string fileBaseName
     property variant activeMachineName: Cura.MachineManager.activeMachineName
 
@@ -26,9 +26,9 @@ Rectangle {
     property variant printDuration: PrintInformation.currentPrintTime
     property variant printMaterialLengths: PrintInformation.materialLengths
     property variant printMaterialWeights: PrintInformation.materialWeights
+    property variant printMaterialCosts: PrintInformation.materialCosts
 
     height: childrenRect.height
-    color: "transparent"
 
     Connections
     {
@@ -83,9 +83,8 @@ Rectangle {
                 }
                 style: ButtonStyle
                 {
-                    background: Rectangle
+                    background: Item
                     {
-                        color: "transparent"
                         UM.RecolorImage
                         {
                             width: UM.Theme.getSize("save_button_specs_icons").width;
@@ -133,7 +132,8 @@ Rectangle {
         }
     }
 
-    Label{
+    Label
+    {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
         anchors.right: parent.right
@@ -144,17 +144,20 @@ Rectangle {
         text: Printer.getSceneBoundingBoxString
     }
 
-    Rectangle {
+    Rectangle
+    {
         id: specsRow
         anchors.top: boundingSpec.bottom
         anchors.right: parent.right
         height: UM.Theme.getSize("jobspecs_line").height
 
-        Item{
+        Item
+        {
             width: parent.width
             height: parent.height
 
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 id: timeIcon
                 anchors.right: timeSpec.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
@@ -166,7 +169,8 @@ Rectangle {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("print_time")
             }
-            Label{
+            Label
+            {
                 id: timeSpec
                 anchors.right: lengthIcon.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -175,7 +179,8 @@ Rectangle {
                 color: UM.Theme.getColor("text_subtext")
                 text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
-            UM.RecolorImage {
+            UM.RecolorImage
+            {
                 id: lengthIcon
                 anchors.right: lengthSpec.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
@@ -187,7 +192,8 @@ Rectangle {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("category_material")
             }
-            Label{
+            Label
+            {
                 id: lengthSpec
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
@@ -197,19 +203,38 @@ Rectangle {
                 {
                     var lengths = [];
                     var weights = [];
+                    var costs = [];
+                    var someCostsKnown = false;
                     if(base.printMaterialLengths) {
-                        for(var index = 0; index < base.printMaterialLengths.length; index++) {
-                            if(base.printMaterialLengths[index] > 0) {
+                        for(var index = 0; index < base.printMaterialLengths.length; index++)
+                        {
+                            if(base.printMaterialLengths[index] > 0)
+                            {
                                 lengths.push(base.printMaterialLengths[index].toFixed(2));
                                 weights.push(String(Math.floor(base.printMaterialWeights[index])));
+                                costs.push(base.printMaterialCosts[index].toFixed(2));
+                                if(base.printMaterialCosts[index] > 0)
+                                {
+                                    someCostsKnown = true;
+                                }
                             }
                         }
                     }
-                    if(lengths.length == 0) {
+                    if(lengths.length == 0)
+                    {
                         lengths = ["0.00"];
                         weights = ["0"];
+                        costs = ["0.00"];
                     }
-                    return catalog.i18nc("@label", "%1 m / ~ %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                    if(someCostsKnown)
+                    {
+                        return catalog.i18nc("@label", "%1 m / ~ %2 g / ~ %4 %3").arg(lengths.join(" + "))
+                                .arg(weights.join(" + ")).arg(costs.join(" + ")).arg(UM.Preferences.getValue("cura/currency"));
+                    }
+                    else
+                    {
+                        return catalog.i18nc("@label", "%1 m / ~ %2 g").arg(lengths.join(" + ")).arg(weights.join(" + "));
+                    }
                 }
             }
         }

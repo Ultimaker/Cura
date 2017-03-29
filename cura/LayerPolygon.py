@@ -1,5 +1,6 @@
 from UM.Math.Color import Color
-
+from UM.Application import Application
+from typing import Any
 import numpy
 
 
@@ -18,13 +19,19 @@ class LayerPolygon:
     
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(11) == NoneType, numpy.arange(11) == MoveCombingType), numpy.arange(11) == MoveRetractionType)
     
-    def __init__(self, mesh, extruder, line_types, data, line_widths):
-        self._mesh = mesh
+    ##  LayerPolygon, used in ProcessSlicedLayersJob
+    #   \param extruder
+    #   \param line_types array with line_types
+    #   \param data new_points
+    #   \param line_widths array with line widths
+    #   \param line_thicknesses: array with type as index and thickness as value
+    def __init__(self, extruder, line_types, data, line_widths, line_thicknesses):
         self._extruder = extruder
         self._types = line_types
         self._data = data
         self._line_widths = line_widths
-        
+        self._line_thicknesses = line_thicknesses
+
         self._vertex_begin = 0
         self._vertex_end = 0
         self._index_begin = 0
@@ -37,7 +44,7 @@ class LayerPolygon:
 
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.
-        self._color_map = self.__color_map * [1, 1, 1, self._extruder] # The alpha component is used to store the extruder nr
+        self._color_map = LayerPolygon.getColorMap()
         self._colors = self._color_map[self._types]
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
@@ -49,7 +56,7 @@ class LayerPolygon:
         
     def buildCache(self):
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
-        self._build_cache_line_mesh_mask = numpy.logical_not(numpy.logical_or(self._jump_mask, self._types == LayerPolygon.InfillType ))
+        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype=bool)
         mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
         self._index_end = mesh_line_count
@@ -59,13 +66,23 @@ class LayerPolygon:
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
         numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points )
-        
+
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
-        
 
-    def build(self, vertex_offset, index_offset, vertices, colors, indices):
-        if (self._build_cache_line_mesh_mask is None) or (self._build_cache_needed_points is None ):
+    ##  Set all the arrays provided by the function caller, representing the LayerPolygon
+    #   The arrays are either by vertex or by indices.
+    #
+    #   \param vertex_offset : determines where to start and end filling the arrays
+    #   \param index_offset : determines where to start and end filling the arrays
+    #   \param vertices : vertex numpy array to be filled
+    #   \param colors : vertex numpy array to be filled
+    #   \param line_dimensions : vertex numpy array to be filled
+    #   \param extruders : vertex numpy array to be filled
+    #   \param line_types : vertex numpy array to be filled
+    #   \param indices : index numpy array to be filled
+    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, extruders, line_types, indices):
+        if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:
             self.buildCache()
             
         line_mesh_mask = self._build_cache_line_mesh_mask
@@ -82,9 +99,18 @@ class LayerPolygon:
         
         # Points are picked based on the index list to get the vertices needed. 
         vertices[self._vertex_begin:self._vertex_end, :] = self._data[index_list, :]
+
         # Create an array with colors for each vertex and remove the color data for the points that has been thrown away. 
-        colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()] 
-        colors[self._vertex_begin:self._vertex_end, :] *= numpy.array([[0.5, 0.5, 0.5, 1.0]], numpy.float32)
+        colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()]
+
+        # Create an array with line widths for each vertex.
+        line_dimensions[self._vertex_begin:self._vertex_end, 0] = numpy.tile(self._line_widths, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
+        line_dimensions[self._vertex_begin:self._vertex_end, 1] = numpy.tile(self._line_thicknesses, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
+
+        extruders[self._vertex_begin:self._vertex_end] = self._extruder
+
+        # Convert type per vertex to type per line
+        line_types[self._vertex_begin:self._vertex_end] = numpy.tile(self._types, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._index_begin += index_offset
@@ -172,17 +198,25 @@ class LayerPolygon:
 
         return normals
 
-    # Should be generated in better way, not hardcoded.
-    __color_map = numpy.array([
-        [1.0,  1.0,  1.0, 1.0], # NoneType
-        [1.0,  0.0,  0.0, 1.0], # Inset0Type
-        [0.0,  1.0,  0.0, 1.0], # InsetXType
-        [1.0,  1.0,  0.0, 1.0], # SkinType
-        [0.0,  1.0,  1.0, 1.0], # SupportType
-        [0.0,  1.0,  1.0, 1.0], # SkirtType
-        [1.0,  0.75, 0.0, 1.0], # InfillType
-        [0.0,  1.0,  1.0, 1.0], # SupportInfillType
-        [0.0,  0.0,  1.0, 1.0], # MoveCombingType
-        [0.5,  0.5,  1.0, 1.0], # MoveRetractionType
-        [0.25, 0.75, 1.0, 1.0]  # SupportInterfaceType
-    ])
+    __color_map = None # type: numpy.ndarray[Any]
+
+    ##  Gets the instance of the VersionUpgradeManager, or creates one.
+    @classmethod
+    def getColorMap(cls):
+        if cls.__color_map is None:
+            theme = Application.getInstance().getTheme()
+            cls.__color_map = numpy.array([
+                theme.getColor("layerview_none").getRgbF(), # NoneType
+                theme.getColor("layerview_inset_0").getRgbF(), # Inset0Type
+                theme.getColor("layerview_inset_x").getRgbF(), # InsetXType
+                theme.getColor("layerview_skin").getRgbF(), # SkinType
+                theme.getColor("layerview_support").getRgbF(), # SupportType
+                theme.getColor("layerview_skirt").getRgbF(), # SkirtType
+                theme.getColor("layerview_infill").getRgbF(), # InfillType
+                theme.getColor("layerview_support_infill").getRgbF(), # SupportInfillType
+                theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
+                theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
+                theme.getColor("layerview_support_interface").getRgbF()  # SupportInterfaceType
+            ])
+
+        return cls.__color_map

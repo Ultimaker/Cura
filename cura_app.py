@@ -2,7 +2,6 @@
 
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
-
 import os
 import sys
 import platform
@@ -17,6 +16,12 @@ if Platform.isLinux(): # Needed for platform.linux_distribution, which is not av
         from ctypes.util import find_library
         libGL = find_library("GL")
         ctypes.CDLL(libGL, ctypes.RTLD_GLOBAL)
+
+# When frozen, i.e. installer version, don't let PYTHONPATH mess up the search path for DLLs.
+if Platform.isWindows() and hasattr(sys, "frozen"):
+    try:
+        del os.environ["PYTHONPATH"]
+    except KeyError: pass
 
 #WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
@@ -45,7 +50,6 @@ sys.excepthook = exceptHook
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
-from UM.Platform import Platform
 import cura.CuraApplication
 import cura.Settings.CuraContainerRegistry
 
@@ -56,7 +60,11 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
 # Force an instance of CuraContainerRegistry to be created and reused later.
-cura.Settings.CuraContainerRegistry.getInstance()
+cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
+
+# This prestart up check is needed to determine if we should start the application at all.
+if not cura.CuraApplication.CuraApplication.preStartUp():
+    sys.exit(0)
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()

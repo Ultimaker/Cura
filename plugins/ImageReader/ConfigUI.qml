@@ -12,11 +12,9 @@ UM.Dialog
 {
     width: 350 * Screen.devicePixelRatio;
     minimumWidth: 350 * Screen.devicePixelRatio;
-    maximumWidth: 350 * Screen.devicePixelRatio;
 
     height: 250 * Screen.devicePixelRatio;
     minimumHeight: 250 * Screen.devicePixelRatio;
-    maximumHeight: 250 * Screen.devicePixelRatio;
 
     title: catalog.i18nc("@title:window", "Convert Image...")
 
@@ -158,11 +156,10 @@ UM.Dialog
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Rectangle {
+                Item {
                     width: 180
                     height: 20
-                    Layout.fillWidth:true
-                    color: "transparent"
+                    Layout.fillWidth: true
 
                     Slider {
                         id: smoothing

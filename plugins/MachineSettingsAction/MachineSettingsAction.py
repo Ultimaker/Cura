@@ -1,15 +1,18 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 
 from cura.MachineAction import MachineAction
 
-import UM.Application
-import UM.Settings.InstanceContainer
-import UM.Settings.DefinitionContainer
-import UM.Settings.ContainerRegistry
-import UM.Logger
+from UM.Application import Application
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Logger import Logger
+
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
@@ -24,11 +27,11 @@ class MachineSettingsAction(MachineAction):
 
         self._container_index = 0
 
-        self._container_registry = UM.Settings.ContainerRegistry.getInstance()
+        self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
 
     def _reset(self):
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return
 
@@ -44,7 +47,7 @@ class MachineSettingsAction(MachineAction):
             self.containerIndexChanged.emit()
 
     def _createDefinitionChangesContainer(self, global_container_stack, container_index = None):
-        definition_changes_container = UM.Settings.InstanceContainer(global_container_stack.getName() + "_settings")
+        definition_changes_container = InstanceContainer(global_container_stack.getName() + "_settings")
         definition = global_container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
@@ -63,24 +66,24 @@ class MachineSettingsAction(MachineAction):
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
-        if isinstance(container, UM.Settings.DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
+        if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             if container.getProperty("machine_extruder_count", "value") > 1:
                 # Multiextruder printers are not currently supported
-                UM.Logger.log("d", "Not attaching MachineSettingsAction to %s; Multi-extrusion printers are not supported", container.getId())
+                Logger.log("d", "Not attaching MachineSettingsAction to %s; Multi-extrusion printers are not supported", container.getId())
                 return
 
-            UM.Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+            Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     @pyqtSlot()
     def forceUpdate(self):
         # Force rebuilding the build volume by reloading the global container stack.
         # This is a bit of a hack, but it seems quick enough.
-        UM.Application.getInstance().globalContainerStackChanged.emit()
+        Application.getInstance().globalContainerStackChanged.emit()
 
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
         # Updates the has_materials metadata flag after switching gcode flavor
-        global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             definition = global_container_stack.getBottom()
             if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
@@ -110,4 +113,4 @@ class MachineSettingsAction(MachineAction):
                     empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
                     global_container_stack.replaceContainer(material_index, empty_material)
 
-                UM.Application.getInstance().globalContainerStackChanged.emit()
+                Application.getInstance().globalContainerStackChanged.emit()

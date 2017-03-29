@@ -100,12 +100,24 @@ QtObject {
             }
 
             label: Item {
-                Image {
-                    anchors.centerIn: parent;
+                UM.RecolorImage {
+                    color: UM.Theme.getColor("text_reversed")
+                    anchors.centerIn: parent
                     opacity: !control.enabled ? 0.2 : 1.0
-                    source: control.iconSource;
-                    width: Theme.getSize("button_icon").width;
-                    height: Theme.getSize("button_icon").height;
+                    source: control.iconSource
+                    width: Theme.getSize("button_icon").width
+                    height: Theme.getSize("button_icon").height
+
+                    sourceSize: Theme.getSize("button_icon")
+                }
+                UM.RecolorImage {
+                    visible: control.overlayIconSource != ""
+                    color: control.overlayColor
+                    anchors.centerIn: parent
+                    opacity: !control.enabled ? 0.2 : 1.0
+                    source: control.overlayIconSource
+                    width: Theme.getSize("button_icon").width
+                    height: Theme.getSize("button_icon").height
 
                     sourceSize: Theme.getSize("button_icon")
                 }

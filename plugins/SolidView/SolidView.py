@@ -9,15 +9,16 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.View.Renderer import Renderer
 from UM.Settings.Validator import ValidatorState
-
+from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
 
-import cura.Settings
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
 
 ## Standard view for mesh models.
+
 class SolidView(View):
     def __init__(self):
         super().__init__()
@@ -27,7 +28,7 @@ class SolidView(View):
         self._enabled_shader = None
         self._disabled_shader = None
 
-        self._extruders_model = cura.Settings.ExtrudersModel()
+        self._extruders_model = ExtrudersModel()
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -35,11 +36,14 @@ class SolidView(View):
 
         if not self._enabled_shader:
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
+            theme = Application.getInstance().getTheme()
+            self._enabled_shader.setUniformValue("u_overhangColor", Color(*theme.getColor("model_overhang").getRgb()))
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
-            self._disabled_shader.setUniformValue("u_diffuseColor1", [0.48, 0.48, 0.48, 1.0])
-            self._disabled_shader.setUniformValue("u_diffuseColor2", [0.68, 0.68, 0.68, 1.0])
+            theme = Application.getInstance().getTheme()
+            self._disabled_shader.setUniformValue("u_diffuseColor1", Color(*theme.getColor("model_unslicable").getRgb()))
+            self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*theme.getColor("model_unslicable_alt").getRgb()))
             self._disabled_shader.setUniformValue("u_width", 50.0)
 
         multi_extrusion = False
@@ -88,7 +92,7 @@ class SolidView(View):
                             extruder_index = max(0, self._extruders_model.find("id", extruder_id))
                         try:
                             material_color = self._extruders_model.getItem(extruder_index)["color"]
-                        except KeyError: 
+                        except KeyError:
                             material_color = self._extruders_model.defaultColors[0]
 
                         if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:

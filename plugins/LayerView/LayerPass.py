@@ -14,6 +14,7 @@ from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
+
 import os.path
 
 ## RenderPass used to display g-code paths.
@@ -28,15 +29,37 @@ class LayerPass(RenderPass):
         self._extruder_manager = ExtruderManager.getInstance()
 
         self._layer_view = None
+        self._compatibility_mode = None
 
     def setLayerView(self, layerview):
-        self._layerview = layerview
+        self._layer_view = layerview
+        self._compatibility_mode = layerview.getCompatibilityMode()
 
     def render(self):
         if not self._layer_shader:
-            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), "layers.shader"))
+            if self._compatibility_mode:
+                shader_filename = "layers.shader"
+            else:
+                shader_filename = "layers3d.shader"
+            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("LayerView"), shader_filename))
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+        if self._layer_view:
+            self._layer_shader.setUniformValue("u_layer_view_type", self._layer_view.getLayerViewType())
+            self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
+            self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+            self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
+            self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
+            self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+        else:
+            #defaults
+            self._layer_shader.setUniformValue("u_layer_view_type", 1)
+            self._layer_shader.setUniformValue("u_extruder_opacity", [1, 1, 1, 1])
+            self._layer_shader.setUniformValue("u_show_travel_moves", 0)
+            self._layer_shader.setUniformValue("u_show_helpers", 1)
+            self._layer_shader.setUniformValue("u_show_skin", 1)
+            self._layer_shader.setUniformValue("u_show_infill", 1)
+
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
 
@@ -55,13 +78,15 @@ class LayerPass(RenderPass):
                     continue
 
                 # Render all layers below a certain number as line mesh instead of vertices.
-                if self._layerview._current_layer_num - self._layerview._solid_layers > -1 and not self._layerview._only_show_top_layers:
+                if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
                     element_counts = layer_data.getElementCounts()
                     for layer, counts in element_counts.items():
-                        if layer + self._layerview._solid_layers > self._layerview._current_layer_num:
+                        if layer > self._layer_view._current_layer_num:
                             break
+                        if self._layer_view._minimum_layer_num > layer:
+                            start += counts
                         end += counts
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
@@ -72,11 +97,11 @@ class LayerPass(RenderPass):
                 # Create a new batch that is not range-limited
                 batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid)
 
-                if self._layerview._current_layer_mesh:
-                    batch.addItem(node.getWorldTransformation(), self._layerview._current_layer_mesh)
+                if self._layer_view.getCurrentLayerMesh():
+                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerMesh())
 
-                if self._layerview._current_layer_jumps:
-                    batch.addItem(node.getWorldTransformation(), self._layerview._current_layer_jumps)
+                if self._layer_view.getCurrentLayerJumps():
+                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerJumps())
 
                 if len(batch.items) > 0:
                     batch.render(self._scene.getActiveCamera())

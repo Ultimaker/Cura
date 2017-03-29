@@ -1,7 +1,8 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject, pyqtProperty, QCoreApplication
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
+from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
@@ -69,8 +70,9 @@ class WorkspaceDialog(QObject):
         return self._variant_type
 
     def setVariantType(self, variant_type):
-        self._variant_type = variant_type
-        self.variantTypeChanged.emit()
+        if self._variant_type != variant_type:
+            self._variant_type = variant_type
+            self.variantTypeChanged.emit()
 
     @pyqtProperty(str, notify=machineTypeChanged)
     def machineType(self):
@@ -81,8 +83,9 @@ class WorkspaceDialog(QObject):
         self.machineTypeChanged.emit()
 
     def setNumUserSettings(self, num_user_settings):
-        self._num_user_settings = num_user_settings
-        self.numVisibleSettingsChanged.emit()
+        if self._num_user_settings != num_user_settings:
+            self._num_user_settings = num_user_settings
+            self.numVisibleSettingsChanged.emit()
 
     @pyqtProperty(int, notify=numUserSettingsChanged)
     def numUserSettings(self):
@@ -93,40 +96,45 @@ class WorkspaceDialog(QObject):
         return self._objects_on_plate
 
     def setHasObjectsOnPlate(self, objects_on_plate):
-        self._objects_on_plate = objects_on_plate
-        self.objectsOnPlateChanged.emit()
+        if self._objects_on_plate != objects_on_plate:
+            self._objects_on_plate = objects_on_plate
+            self.objectsOnPlateChanged.emit()
 
     @pyqtProperty("QVariantList", notify = materialLabelsChanged)
     def materialLabels(self):
         return self._material_labels
 
     def setMaterialLabels(self, material_labels):
-        self._material_labels = material_labels
-        self.materialLabelsChanged.emit()
+        if self._material_labels != material_labels:
+            self._material_labels = material_labels
+            self.materialLabelsChanged.emit()
 
     @pyqtProperty("QVariantList", notify=extrudersChanged)
     def extruders(self):
         return self._extruders
 
     def setExtruders(self, extruders):
-        self._extruders = extruders
-        self.extrudersChanged.emit()
+        if self._extruders != extruders:
+            self._extruders = extruders
+            self.extrudersChanged.emit()
 
     @pyqtProperty(str, notify = machineNameChanged)
     def machineName(self):
         return self._machine_name
 
     def setMachineName(self, machine_name):
-        self._machine_name = machine_name
-        self.machineNameChanged.emit()
+        if self._machine_name != machine_name:
+            self._machine_name = machine_name
+            self.machineNameChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self):
         return self._quality_type
 
     def setQualityType(self, quality_type):
-        self._quality_type = quality_type
-        self.qualityTypeChanged.emit()
+        if self._quality_type != quality_type:
+            self._quality_type = quality_type
+            self.qualityTypeChanged.emit()
 
     @pyqtProperty(int, notify=numSettingsOverridenByQualityChangesChanged)
     def numSettingsOverridenByQualityChanges(self):
@@ -141,8 +149,9 @@ class WorkspaceDialog(QObject):
         return self._quality_name
 
     def setQualityName(self, quality_name):
-        self._quality_name = quality_name
-        self.qualityNameChanged.emit()
+        if self._quality_name != quality_name:
+            self._quality_name = quality_name
+            self.qualityNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
     def activeMode(self):
@@ -164,8 +173,9 @@ class WorkspaceDialog(QObject):
         return self._num_visible_settings
 
     def setNumVisibleSettings(self, num_visible_settings):
-        self._num_visible_settings = num_visible_settings
-        self.numVisibleSettingsChanged.emit()
+        if self._num_visible_settings != num_visible_settings:
+            self._num_visible_settings = num_visible_settings
+            self.numVisibleSettingsChanged.emit()
 
     @pyqtProperty(bool, notify = machineConflictChanged)
     def machineConflict(self):
@@ -190,16 +200,19 @@ class WorkspaceDialog(QObject):
         Application.getInstance().getBackend().close()
 
     def setMaterialConflict(self, material_conflict):
-        self._has_material_conflict = material_conflict
-        self.materialConflictChanged.emit()
+        if self._has_material_conflict != material_conflict:
+            self._has_material_conflict = material_conflict
+            self.materialConflictChanged.emit()
 
     def setMachineConflict(self, machine_conflict):
-        self._has_machine_conflict = machine_conflict
-        self.machineConflictChanged.emit()
+        if self._has_machine_conflict != machine_conflict:
+            self._has_machine_conflict = machine_conflict
+            self.machineConflictChanged.emit()
 
     def setQualityChangesConflict(self, quality_changes_conflict):
-        self._has_quality_changes_conflict = quality_changes_conflict
-        self.qualityChangesConflictChanged.emit()
+        if self._has_quality_changes_conflict != quality_changes_conflict:
+            self._has_quality_changes_conflict = quality_changes_conflict
+            self.qualityChangesConflictChanged.emit()
 
     def getResult(self):
         if "machine" in self._result and not self._has_machine_conflict:

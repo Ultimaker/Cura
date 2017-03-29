@@ -10,7 +10,7 @@ import QtQuick.Layouts 1.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -19,7 +19,6 @@ Rectangle
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property real progress: printerConnected ? Cura.MachineManager.printerOutputDevices[0].progress : 0
     property int backendState: UM.Backend.state
-
 
     property bool showProgress: {
         // determine if we need to show the progress bar + percentage
@@ -81,7 +80,7 @@ Rectangle
         }
     }
 
-    property bool activity: Printer.getPlatformActivity;
+    property bool activity: Printer.platformActivity;
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
     property string statusText:

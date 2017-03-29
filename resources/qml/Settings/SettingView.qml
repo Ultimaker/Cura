@@ -18,23 +18,10 @@ Item
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
 
-    function toggleFilterField()
-    {
-        filterContainer.visible = !filterContainer.visible
-        if(filterContainer.visible)
-        {
-            filter.forceActiveFocus();
-        }
-        else
-        {
-            filter.text = "";
-        }
-    }
-
     Rectangle
     {
         id: filterContainer
-        visible: false
+        visible: true
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color:
@@ -70,7 +57,7 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-            placeholderText: catalog.i18nc("@label:textbox", "Filter...")
+            placeholderText: catalog.i18nc("@label:textbox", "Search...")
 
             style: TextFieldStyle
             {
@@ -216,6 +203,8 @@ Item
                     switch(model.type)
                     {
                         case "int":
+                            return "SettingTextField.qml"
+                        case "[int]":
                             return "SettingTextField.qml"
                         case "float":
                             return "SettingTextField.qml"

@@ -1,13 +1,13 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
-from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Math.Polygon import Polygon
-from . import ConvexHullNode
+from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
-import UM.Settings.ContainerRegistry
+from cura.Settings.ExtruderManager import ExtruderManager
+from . import ConvexHullNode
 
 import numpy
 
@@ -197,7 +197,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
                     hull = Polygon(vertex_data)
 
-                    if len(vertex_data) >= 4:
+                    if len(vertex_data) >= 3:
                         convex_hull = hull.getConvexHull()
                         offset_hull = self._offsetHull(convex_hull)
             else:
@@ -253,21 +253,21 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     ##  Offset the convex hull with settings that influence the collision area.
     #
-    #   This also applies a minimum offset of 0.5mm, because of edge cases due
-    #   to the rounding we apply.
-    #
     #   \param convex_hull Polygon of the original convex hull.
     #   \return New Polygon instance that is offset with everything that
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
-        horizontal_expansion = max(0.5, self._getSettingProperty("xy_offset", "value"))
-        expansion_polygon = Polygon(numpy.array([
-            [-horizontal_expansion, -horizontal_expansion],
-            [-horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, horizontal_expansion],
-            [horizontal_expansion, -horizontal_expansion]
-        ], numpy.float32))
-        return convex_hull.getMinkowskiHull(expansion_polygon)
+        horizontal_expansion = self._getSettingProperty("xy_offset", "value")
+        if horizontal_expansion != 0:
+            expansion_polygon = Polygon(numpy.array([
+                [-horizontal_expansion, -horizontal_expansion],
+                [-horizontal_expansion, horizontal_expansion],
+                [horizontal_expansion, horizontal_expansion],
+                [horizontal_expansion, -horizontal_expansion]
+            ], numpy.float32))
+            return convex_hull.getMinkowskiHull(expansion_polygon)
+        else:
+            return convex_hull
 
     def _onChanged(self, *args):
         self._raft_thickness = self._build_volume.getRaftThickness()
@@ -308,11 +308,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
             extruder_stack_id = self._node.callDecoration("getActiveExtruder")
             if not extruder_stack_id: #Decoration doesn't exist.
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
-            extruder_stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             return extruder_stack.getProperty(setting_key, property)
         else: #Limit_to_extruder is set. Use that one.
             extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-            stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
             return stack.getProperty(setting_key, property)
 
     ## Returns true if node is a descendant or the same as the root node.

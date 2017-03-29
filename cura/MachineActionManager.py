@@ -6,7 +6,8 @@ from UM.PluginRegistry import PluginRegistry  # So MachineAction can be added as
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt5.QtCore import QObject
+from UM.FlameProfiler import pyqtSlot
 
 ##  Raised when trying to add an unknown machine action as a required action
 class UnknownMachineActionError(Exception):
@@ -104,7 +105,7 @@ class MachineActionManager(QObject):
         if definition_id in self._supported_actions:
             return list(self._supported_actions[definition_id])
         else:
-            return set()
+            return list()
 
     ##  Get all actions required by given machine
     #   \param definition_id The ID of the definition you want the required actions of
