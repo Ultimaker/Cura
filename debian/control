@@ -22,6 +22,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
  qml-module-qtquick-dialogs,
  qml-module-qt-labs-folderlistmodel,
  qml-module-qt-labs-settings,
+ fonts-open-sans,
  python3-uranium (>=2.3.1), uranium-plugins (>=2.3.1), cura-engine (>=1:2.3.1)
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
