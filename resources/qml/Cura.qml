@@ -733,20 +733,22 @@ UM.MainWindow
         // look for valid project files
         var projectFileUrlList = [];
         var hasGcode = false;
+        var nonGcodeFileList = [];
         for (var i in fileUrls)
         {
             var endsWithG = /\.g$/;
             var endsWithGcode = /\.gcode$/;
             if (endsWithG.test(fileUrls[i]) || endsWithGcode.test(fileUrls[i]))
             {
-                hasGcode = true;
                 continue;
             }
             else if (CuraApplication.checkIsValidProjectFile(fileUrls[i]))
             {
                 projectFileUrlList.push(fileUrls[i]);
             }
+            nonGcodeFileList.push(fileUrls[i]);
         }
+        hasGcode = nonGcodeFileList.length < fileUrls.length;
 
         // show a warning if selected multiple files together with Gcode
         var hasProjectFile = projectFileUrlList.length > 0;
@@ -755,7 +757,7 @@ UM.MainWindow
         {
             infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
             infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
-            infoMultipleFilesWithGcodeDialog.fileUrls = fileUrls.slice();
+            infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
             infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
             infoMultipleFilesWithGcodeDialog.open();
         }
