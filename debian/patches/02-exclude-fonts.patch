@@ -1,3 +1,8 @@
+Author: Gregor Riepl <onitake@gmail.com>
+Description: Fonts should be packaged separately.
+  This patch excludes the installation of Open Sans,
+  so a system version is picked up instead.
+  A dependency on fonts-open-sans was added to debian/control.
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -30,7 +28,8 @@

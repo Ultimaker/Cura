@@ -1,3 +1,8 @@
+Author: Gregor Riepl <onitake@gmail.com>
+Description: The Uranium language file scripts
+  are specific to Cura and should not live in a
+  platform-specific, global cmake script directory.
+  This patch updates the search path so the scripts are found.
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -5,6 +5,7 @@
