@@ -848,7 +848,9 @@ class CuraApplication(QtApplication):
 
     ##  Testing, prepare arranger for use
     def _prepareArranger(self, fixed_nodes = None):
-        arranger = Arrange(215, 215, 107, 107)  # TODO: fill in dimensions
+        #arranger = Arrange(215, 215, 107, 107)  # TODO: fill in dimensions
+        scale = 0.5
+        arranger = Arrange(250, 250, 125, 125, scale = scale)  # TODO: fill in dimensions
         arranger.centerFirst()
 
         if fixed_nodes is None:
@@ -864,13 +866,14 @@ class CuraApplication(QtApplication):
 
             vertices = fixed_node.callDecoration("getConvexHull")
             points = copy.deepcopy(vertices._points)
-            shape_arr = ShapeArray.from_polygon(points)
+            shape_arr = ShapeArray.from_polygon(points, scale=scale)
             arranger.place(0, 0, shape_arr)
         Logger.log("d", "Current buildplate: \n%s" % str(arranger._occupied[::10, ::10]))
         return arranger
 
     @classmethod
     def _nodeAsShapeArr(cls, node, min_offset):
+        scale = 0.5
         # hacky way to undo transformation
         transform = node._transformation
         transform_x = transform._data[0][3]
@@ -881,12 +884,12 @@ class CuraApplication(QtApplication):
         offset_points = copy.deepcopy(offset_verts._points)  # x, y
         offset_points[:, 0] = numpy.add(offset_points[:, 0], -transform_x)
         offset_points[:, 1] = numpy.add(offset_points[:, 1], -transform_y)
-        offset_shape_arr = ShapeArray.from_polygon(offset_points)
+        offset_shape_arr = ShapeArray.from_polygon(offset_points, scale = scale)
 
         hull_points = copy.deepcopy(hull_verts._points)
         hull_points[:, 0] = numpy.add(hull_points[:, 0], -transform_x)
         hull_points[:, 1] = numpy.add(hull_points[:, 1], -transform_y)
-        hull_shape_arr = ShapeArray.from_polygon(hull_points)  # x, y
+        hull_shape_arr = ShapeArray.from_polygon(hull_points, scale = scale)  # x, y
 
         return offset_shape_arr, hull_shape_arr
 
@@ -913,7 +916,6 @@ class CuraApplication(QtApplication):
                 transformation._data[0][3] = 200
                 transformation._data[2][3] = -100 + i * 20
 
-            # new_node.setTransformation(transformation)
             nodes.append(new_node)
         return nodes
 
@@ -922,7 +924,7 @@ class CuraApplication(QtApplication):
     #   count: number of copies
     #   min_offset: minimum offset to other objects.
     @pyqtSlot("quint64", int)
-    def multiplyObject(self, object_id, count, min_offset = 5):
+    def multiplyObject(self, object_id, count, min_offset = 8):
         node = self.getController().getScene().findObject(object_id)
 
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
@@ -1063,7 +1065,7 @@ class CuraApplication(QtApplication):
     ##  Testing: arrange selected objects or all objects
     @pyqtSlot()
     def arrange(self):
-        min_offset = 5
+        min_offset = 8
 
         if Selection.getAllSelectedObjects():
             nodes = Selection.getAllSelectedObjects()
@@ -1374,9 +1376,8 @@ class CuraApplication(QtApplication):
         self._currently_loading_files.remove(filename)
 
         arranger = self._prepareArranger()
-        min_offset = 5
+        min_offset = 8
         total_time = 0
-        import time
 
         for node in nodes:
             node.setSelectable(True)
@@ -1403,21 +1404,14 @@ class CuraApplication(QtApplication):
                 node.addDecorator(ConvexHullDecorator())
 
             # find node location
-            if 1:
-                start_time = time.time()
-                offset_shape_arr, hull_shape_arr = self._nodeAsShapeArr(node, min_offset = min_offset)
-                nodes = self._findNodePlacements(arranger, node, offset_shape_arr, hull_shape_arr, count = 1)
-                total_time += (time.time() - start_time)
-            else:
-                nodes = [node]
+            offset_shape_arr, hull_shape_arr = self._nodeAsShapeArr(node, min_offset = min_offset)
+            nodes = self._findNodePlacements(arranger, node, offset_shape_arr, hull_shape_arr, count = 1)
 
             for new_node in nodes:
                 op = AddSceneNodeOperation(new_node, scene.getRoot())
                 op.push()
 
             scene.sceneChanged.emit(node)
-
-        Logger.log("d", "Placement of %s objects took %.1f seconds" % (len(nodes), total_time))
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)

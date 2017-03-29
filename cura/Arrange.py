@@ -12,20 +12,17 @@ class ShapeArray:
     def from_polygon(cls, vertices, scale = 1):
         # scale
         vertices = vertices * scale
-        # flip x, y
+        # flip y, x -> x, y
         flip_vertices = np.zeros((vertices.shape))
         flip_vertices[:, 0] = vertices[:, 1]
         flip_vertices[:, 1] = vertices[:, 0]
         flip_vertices = flip_vertices[::-1]
-        # offset
+        # offset, we want that all coordinates have positive values
         offset_y = int(np.amin(flip_vertices[:, 0]))
         offset_x = int(np.amin(flip_vertices[:, 1]))
-        # offset to 0
         flip_vertices[:, 0] = np.add(flip_vertices[:, 0], -offset_y)
         flip_vertices[:, 1] = np.add(flip_vertices[:, 1], -offset_x)
         shape = [int(np.amax(flip_vertices[:, 0])), int(np.amax(flip_vertices[:, 1]))]
-        #from UM.Logger import Logger
-        #Logger.log("d", " Vertices: %s" % str(flip_vertices))
         arr = cls.array_from_polygon(shape, flip_vertices)
         return cls(arr, offset_x, offset_y)
 
@@ -85,6 +82,7 @@ class Arrange:
     def __init__(self, x, y, offset_x, offset_y, scale=1):
         self.shape = (y, x)
         self._priority = np.zeros((x, y), dtype=np.int32)
+        self._priority_unique_values = []
         self._occupied = np.zeros((x, y), dtype=np.int32)
         self._scale = scale  # convert input coordinates to arrange coordinates
         self._offset_x = offset_x
@@ -92,8 +90,12 @@ class Arrange:
 
     ##  Fill priority, take offset as center. lower is better
     def centerFirst(self):
+        #self._priority = np.fromfunction(
+        #    lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape)
         self._priority = np.fromfunction(
-            lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape)
+            lambda i, j: abs(self._offset_x-i)**2+abs(self._offset_y-j)**2, self.shape, dtype=np.int32)
+        self._priority_unique_values = np.unique(self._priority)
+        self._priority_unique_values.sort()
 
     ##  Return the amount of "penalty points" for polygon, which is the sum of priority
     #   999999 if occupied
@@ -115,24 +117,14 @@ class Arrange:
             offset_x:offset_x + shape_arr.arr.shape[1]]
         return np.sum(prio_slice[np.where(shape_arr.arr == 1)])
 
-    ##  Slower but better (it tries all possible locations)
-    def bestSpot2(self, shape_arr):
-        best_x, best_y, best_points = None, None, None
-        min_y = max(-shape_arr.offset_y, 0) - self._offset_y
-        max_y = self.shape[0] - shape_arr.arr.shape[0] - self._offset_y
-        min_x = max(-shape_arr.offset_x, 0) - self._offset_x
-        max_x = self.shape[1] - shape_arr.arr.shape[1] - self._offset_x
-        for y in range(min_y, max_y):
-            for x in range(min_x, max_x):
-                penalty_points = self.check_shape(x, y, shape_arr)
-                if best_points is None or penalty_points < best_points:
-                    best_points = penalty_points
-                    best_x, best_y = x, y
-        return best_x, best_y, best_points
-
-    ##  Faster
+    ##  Find "best" spot
     def bestSpot(self, shape_arr, start_prio = 0):
-        for prio in range(start_prio, 300):
+        start_idx_list = np.where(self._priority_unique_values == start_prio)
+        if start_idx_list:
+            start_idx = start_idx_list[0]
+        else:
+            start_idx = 0
+        for prio in self._priority_unique_values[start_idx:]:
             tryout_idx = np.where(self._priority == prio)
             for idx in range(len(tryout_idx[0])):
                 x = tryout_idx[0][idx]
