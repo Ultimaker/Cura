@@ -790,13 +790,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "Started sending g-code to remote printer.")
             self._compressing_print = True
             ## Mash the data into single string
+
+            max_chars_per_line = 1024*1024*2  # 2 MB
+
             byte_array_file_data = b""
+            batched_line = ""
             for line in self._gcode:
                 if not self._compressing_print:
                     self._progress_message.hide()
                     return  # Stop trying to zip, abort was called.
+
+                # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
+                # Compressing line by line in this case is extremely slow, so we need to batch them.
+                if len(batched_line) < max_chars_per_line:
+                    batched_line += line
+                    continue
+
                 if self._use_gzip:
-                    byte_array_file_data += gzip.compress(line.encode("utf-8"))
+                    byte_array_file_data += gzip.compress(batched_line.encode("utf-8"))
+                    batched_line = ""
                     QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                     # Pretend that this is a response, as zipping might take a bit of time.
                     self._last_response_time = time()
