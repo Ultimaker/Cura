@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Application import Application
+from UM.Backend import Backend
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -340,6 +341,8 @@ class GCodeReader(MeshReader):
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
+        Application.getInstance().getController().getScene().gcode_list = gcode_list
+
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
 
@@ -360,5 +363,9 @@ class GCodeReader(MeshReader):
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."), lifetime=0)
             caution_message.show()
+
+        # The "save/print" button's state is bound to the backend state.
+        backend = Application.getInstance().getBackend()
+        backend.backendStateChange.emit(Backend.BackendState.Disabled)
 
         return scene_node
