@@ -110,7 +110,7 @@ class BuildVolume(SceneNode):
 
     def _onChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
-        new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode)
+        new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
         if new_scene_objects != self._scene_objects:
             for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
                 self._onNodeDecoratorChanged(node)
