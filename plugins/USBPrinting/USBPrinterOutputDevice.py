@@ -566,7 +566,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if line == "M0" or line == "M1":
                 line = "M105"  # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
             if ("G0" in line or "G1" in line) and "Z" in line:
-                z = float(re.search("Z([0-9\.]*)", line).group(1))
+                z = float(re.search("Z([-0-9\.]*)", line).group(1))
                 if self._current_z != z:
                     self._current_z = z
         except Exception as e:
