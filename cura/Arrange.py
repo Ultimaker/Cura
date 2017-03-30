@@ -124,13 +124,13 @@ class Arrange:
         return np.sum(prio_slice[np.where(shape_arr.arr == 1)])
 
     ##  Find "best" spot
-    def bestSpot(self, shape_arr, start_prio = 0):
+    def bestSpot(self, shape_arr, start_prio = 0, step = 1):
         start_idx_list = np.where(self._priority_unique_values == start_prio)
         if start_idx_list:
             start_idx = start_idx_list[0]
         else:
             start_idx = 0
-        for prio in self._priority_unique_values[start_idx:]:
+        for prio in self._priority_unique_values[start_idx::step]:
             tryout_idx = np.where(self._priority == prio)
             for idx in range(len(tryout_idx[0])):
                 x = tryout_idx[0][idx]

@@ -894,7 +894,7 @@ class CuraApplication(QtApplication):
         return offset_shape_arr, hull_shape_arr
 
     @classmethod
-    def _findNodePlacements(cls, arranger, node, offset_shape_arr, hull_shape_arr, count = 1):
+    def _findNodePlacements(cls, arranger, node, offset_shape_arr, hull_shape_arr, count = 1, step = 1):
         # offset_shape_arr, hull_shape_arr, arranger -> nodes, arranger
         nodes = []
         start_prio = 0
@@ -903,7 +903,7 @@ class CuraApplication(QtApplication):
 
             Logger.log("d", "  # Finding spot for %s" % new_node)
             x, y, penalty_points, start_prio = arranger.bestSpot(
-                offset_shape_arr, start_prio = start_prio)
+                offset_shape_arr, start_prio = start_prio, step = step)
             transformation = new_node._transformation
             if x is not None:  # We could find a place
                 transformation._data[0][3] = x
@@ -1105,12 +1105,13 @@ class CuraApplication(QtApplication):
         nodes_arr.sort(key = lambda item: item[0])
         nodes_arr.reverse()
 
+        start_prio = 0
         for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
-            Logger.log("d", "Placing object sized: %s" % size)
+            # we assume that when a location does not fit, it will also not fit for the next
+            # object (while what can be untrue). That saves a lot of time.
             x, y, penalty_points, start_prio = arranger.bestSpot(
-                offset_shape_arr)
+                offset_shape_arr, start_prio = start_prio)
             if x is not None:  # We could find a place
-                Logger.log("d", "Best place is: %s %s (points = %s)" % (x, y, penalty_points))
                 arranger.place(x, y, hull_shape_arr)  # take place before the next one
 
                 node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
@@ -1384,7 +1385,6 @@ class CuraApplication(QtApplication):
 
         arranger = self._prepareArranger()
         min_offset = 8
-        total_time = 0
 
         for node in nodes:
             node.setSelectable(True)
@@ -1412,7 +1412,8 @@ class CuraApplication(QtApplication):
 
             # find node location
             offset_shape_arr, hull_shape_arr = self._nodeAsShapeArr(node, min_offset = min_offset)
-            nodes = self._findNodePlacements(arranger, node, offset_shape_arr, hull_shape_arr, count = 1)
+            # step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
+            nodes = self._findNodePlacements(arranger, node, offset_shape_arr, hull_shape_arr, count = 1, step = 10)
 
             for new_node in nodes:
                 op = AddSceneNodeOperation(new_node, scene.getRoot())
