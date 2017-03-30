@@ -864,7 +864,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "auth/request")
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._authentication_key = None
+        self._authentication_id = None
         self._manager.post(request, json.dumps({"application": "Cura-" + Application.getInstance().getVersion(), "user": self._getUserName()}).encode())
+        self.setAuthenticationState(AuthState.AuthenticationRequested)
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
@@ -1044,7 +1047,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             if "/auth/request" in reply_url:
                 # We got a response to requesting authentication.
                 data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-                self.setAuthenticationState(AuthState.AuthenticationRequested)
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
                 if global_container_stack:  # Remove any old data.
                     Logger.log("d", "Removing old network authentication data as a new one was requested.")
