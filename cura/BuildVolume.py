@@ -23,7 +23,6 @@ from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")
 
 import numpy
-import copy
 import math
 
 # Setting for clearance around the prime
@@ -113,8 +112,8 @@ class BuildVolume(SceneNode):
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
         if new_scene_objects != self._scene_objects:
             for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
-                self._onNodeDecoratorChanged(node)
-                node.decoratorsChanged.connect(self._onNodeDecoratorChanged)  # Make sure that decoration changes afterwards also receive the same treatment
+                self._updateNodeListeners(node)
+                node.decoratorsChanged.connect(self._updateNodeListeners)  # Make sure that decoration changes afterwards also receive the same treatment
             for node in self._scene_objects - new_scene_objects: #Nodes that were removed from the scene.
                 per_mesh_stack = node.callDecoration("getStack")
                 if per_mesh_stack:
@@ -122,7 +121,7 @@ class BuildVolume(SceneNode):
                 active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
-                node.decoratorsChanged.disconnect(self._onNodeDecoratorChanged)
+                node.decoratorsChanged.disconnect(self._updateNodeListeners)
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -130,7 +129,7 @@ class BuildVolume(SceneNode):
     ##  Updates the listeners that listen for changes in per-mesh stacks.
     #
     #   \param node The node for which the decorators changed.
-    def _onNodeDecoratorChanged(self, node):
+    def _updateNodeListeners(self, node):
         per_mesh_stack = node.callDecoration("getStack")
         if per_mesh_stack:
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
@@ -179,6 +178,56 @@ class BuildVolume(SceneNode):
                                backface_cull=True, sort=-8)
 
         return True
+
+    ##  For every sliceable node, update node._outside_buildarea
+    #
+    def updateNodeBoundaryCheck(self):
+        root = Application.getInstance().getController().getScene().getRoot()
+        nodes = list(BreadthFirstIterator(root))
+        group_nodes = []
+
+        build_volume_bounding_box = self.getBoundingBox()
+        if build_volume_bounding_box:
+            # It's over 9000!
+            build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+        else:
+            # No bounding box. This is triggered when running Cura from command line with a model for the first time
+            # In that situation there is a model, but no machine (and therefore no build volume.
+            return
+
+        for node in nodes:
+
+            # Need to check group nodes later
+            if node.callDecoration("isGroup"):
+                group_nodes.append(node)  # Keep list of affected group_nodes
+
+            if node.callDecoration("isSliceable"):
+                node._outside_buildarea = False
+                bbox = node.getBoundingBox()
+
+                # Mark the node as outside the build volume if the bounding box test fails.
+                if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                    node._outside_buildarea = True
+                    break
+
+                convex_hull = node.callDecoration("getConvexHull")
+                if convex_hull:
+                    if not convex_hull.isValid():
+                        return
+                    # Check for collisions between disallowed areas and the object
+                    for area in self.getDisallowedAreas():
+                        overlap = convex_hull.intersectsPolygon(area)
+                        if overlap is None:
+                            continue
+                        node._outside_buildarea = True
+                        # from UM.Logger import Logger
+                        # Logger.log("d", "   # A node is outside build area")
+                        break
+
+        # Group nodes should override the _outside_buildarea property of their children.
+        for group_node in group_nodes:
+            for child_node in group_node.getAllChildren():
+                child_node._outside_buildarea = group_node._outside_buildarea
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
@@ -362,6 +411,8 @@ class BuildVolume(SceneNode):
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
+
+        self.updateNodeBoundaryCheck()
 
     def getBoundingBox(self):
         return self._volume_aabb
