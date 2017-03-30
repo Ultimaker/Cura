@@ -75,6 +75,8 @@ class PrintInformation(QObject):
         Application.getInstance().getMachineManager().activeMaterialChanged.connect(self._onActiveMaterialChanged)
         self._onActiveMaterialChanged()
 
+        self._material_amounts = []
+
     currentPrintTimeChanged = pyqtSignal()
 
     preSlicedChanged = pyqtSignal()
