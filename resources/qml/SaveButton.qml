@@ -76,6 +76,18 @@ Item {
         }
     }
 
+    // Shortcut for "save as/print/..."
+    Action {
+        shortcut: "Ctrl+P"
+        onTriggered:
+        {
+            // only work when the button is enabled
+            if (saveToButton.enabled) {
+                saveToButton.clicked();
+            }
+        }
+    }
+
     Item {
         id: saveRow
         width: base.width
@@ -215,7 +227,7 @@ Item {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true })
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true, "preferred_mimetype":Printer.preferredOutputMimetype })
             }
 
             style: ButtonStyle {

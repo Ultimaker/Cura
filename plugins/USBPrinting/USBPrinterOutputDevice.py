@@ -443,7 +443,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    #   \param kwargs Keyword arguments.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         container_stack = Application.getInstance().getGlobalContainerStack()
 
         if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":

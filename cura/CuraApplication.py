@@ -4,6 +4,7 @@ from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
+from UM.FileHandler.ReadFileJob import ReadFileJob
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -25,6 +26,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.Workspace.WorkspaceReader import WorkspaceReader
+from UM.Platform import Platform
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -199,7 +202,7 @@ class CuraApplication(QtApplication):
 
         self._message_box_callback = None
         self._message_box_callback_arguments = []
-
+        self._preferred_mimetype = ""
         self._i18n_catalog = i18nCatalog("cura")
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
@@ -224,7 +227,7 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addContainer(empty_material_container)
         empty_quality_container = copy.deepcopy(empty_container)
         empty_quality_container._id = "empty_quality"
-        empty_quality_container.setName("Not supported")
+        empty_quality_container.setName("Not Supported")
         empty_quality_container.addMetaDataEntry("quality_type", "normal")
         empty_quality_container.addMetaDataEntry("type", "quality")
         ContainerRegistry.getInstance().addContainer(empty_quality_container)
@@ -245,10 +248,13 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
         Preferences.getInstance().addPreference("cura/asked_dialog_on_project_save", False)
-        Preferences.getInstance().addPreference("cura/choice_on_profile_override", 0)
+        Preferences.getInstance().addPreference("cura/choice_on_profile_override", "always_ask")
+        Preferences.getInstance().addPreference("cura/choice_on_open_project", "always_ask")
 
         Preferences.getInstance().addPreference("cura/currency", "€")
         Preferences.getInstance().addPreference("cura/material_settings", "{}")
+
+        Preferences.getInstance().addPreference("view/invert_zoom", False)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -314,6 +320,9 @@ class CuraApplication(QtApplication):
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
+
+        self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self._onGlobalContainerChanged()
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
         for f in files:
@@ -338,10 +347,10 @@ class CuraApplication(QtApplication):
 
     def discardOrKeepProfileChanges(self):
         choice = Preferences.getInstance().getValue("cura/choice_on_profile_override")
-        if choice == 1:
+        if choice == "always_discard":
             # don't show dialog and DISCARD the profile
             self.discardOrKeepProfileChangesClosed("discard")
-        elif choice == 2:
+        elif choice == "always_keep":
             # don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
         else:
@@ -717,7 +726,9 @@ class CuraApplication(QtApplication):
                 else:
                     # Default
                     self.getController().setActiveTool("TranslateTool")
-            if Preferences.getInstance().getValue("view/center_on_select"):
+
+            # Hack: QVector bindings are broken on PyQt 5.7.1 on Windows. This disables it being called at all.
+            if Preferences.getInstance().getValue("view/center_on_select") and not Platform.isWindows():
                 self._center_after_select = True
         else:
             if self.getController().getActiveTool():
@@ -731,13 +742,29 @@ class CuraApplication(QtApplication):
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
 
+    def _onGlobalContainerChanged(self):
+        if self._global_container_stack is not None:
+            machine_file_formats = [file_type.strip() for file_type in self._global_container_stack.getMetaDataEntry("file_formats").split(";")]
+            new_preferred_mimetype = ""
+            if machine_file_formats:
+                new_preferred_mimetype =  machine_file_formats[0]
+
+            if new_preferred_mimetype != self._preferred_mimetype:
+                self._preferred_mimetype = new_preferred_mimetype
+                self.preferredOutputMimetypeChanged.emit()
+
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
     sceneBoundingBoxChanged = pyqtSignal()
+    preferredOutputMimetypeChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def platformActivity(self):
         return self._platform_activity
+
+    @pyqtProperty(str, notify=preferredOutputMimetypeChanged)
+    def preferredOutputMimetype(self):
+        return self._preferred_mimetype
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
@@ -1031,7 +1058,9 @@ class CuraApplication(QtApplication):
             transformation.setTranslation(zero_translation)
             transformed_mesh = mesh.getTransformed(transformation)
             center = transformed_mesh.getCenterPosition()
-            object_centers.append(center)
+            if center is not None:
+                object_centers.append(center)
+
         if object_centers and len(object_centers) > 0:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
@@ -1102,7 +1131,7 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
 
     def _onJobFinished(self, job):
-        if type(job) is not ReadMeshJob or not job.getResult():
+        if (not isinstance(job, ReadMeshJob) and not isinstance(job, ReadFileJob)) or not job.getResult():
             return
 
         f = QUrl.fromLocalFile(job.getFileName())
@@ -1241,3 +1270,16 @@ class CuraApplication(QtApplication):
 
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
+
+    @pyqtSlot(str, result=bool)
+    def checkIsValidProjectFile(self, file_url):
+        """
+        Checks if the given file URL is a valid project file.
+        """
+        file_path = QUrl(file_url).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
+        if workspace_reader is None:
+            return False  # non-project files won't get a reader
+
+        result = workspace_reader.preRead(file_path, show_dialog=False)
+        return result == WorkspaceReader.PreReadResult.accepted
