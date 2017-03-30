@@ -3,39 +3,25 @@
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 
+from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
-from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Settings.Interfaces import ContainerInterface
 
-class ExtruderStack(ContainerStack):
+from . import Exceptions
+from .CuraContainerStack import CuraContainerStack
+
+class ExtruderStack(CuraContainerStack):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
-    @pyqtProperty(InstanceContainer)
-    def userChanges(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.UserChanges]
-
-    @pyqtProperty(InstanceContainer)
-    def qualityChanges(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.QualityChanges]
-
-    @pyqtProperty(InstanceContainer)
-    def quality(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.Quality]
-
-    @pyqtProperty(InstanceContainer)
-    def material(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.Material]
-
-    @pyqtProperty(InstanceContainer)
-    def variant(self) -> InstanceContainer:
-        return self._containers[_ContainerIndexes.Variant]
-
-    @pyqtProperty(DefinitionContainer)
-    def definition(self) -> DefinitionContainer:
-        return self._containers[_ContainerIndexes.Definition]
+    @override(ContainerStack)
+    def setNextStack(self, stack):
+        super().setNextStack(stack)
+        stack.addExtruder(self)
 
 extruder_stack_mime = MimeType(
     name = "application/x-cura-extruderstack",
@@ -45,12 +31,3 @@ extruder_stack_mime = MimeType(
 
 MimeTypeDatabase.addMimeType(extruder_stack_mime)
 ContainerRegistry.addContainerTypeByName(ExtruderStack, "extruder_stack", extruder_stack_mime.name)
-
-class _ContainerIndexes:
-    UserChanges = 0
-    QualityChanges = 1
-    Quality = 2
-    Material = 3
-    Variant = 4
-    Definition = 5
-
