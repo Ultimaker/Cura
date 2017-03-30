@@ -791,7 +791,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._compressing_print = True
             ## Mash the data into single string
 
-            max_chars_per_line = 1024*1024*2  # 2 MB
+            max_chars_per_line = 1024 * 1024 / 4  # 1 / 4  MB
 
             byte_array_file_data = b""
             batched_line = ""
