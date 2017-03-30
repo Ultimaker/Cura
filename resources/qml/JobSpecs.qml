@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 Item {
     id: base
 
-    property bool activity: Printer.platformActivity
+    property bool activity: CuraApplication.platformActivity
     property string fileBaseName
     property variant activeMachineName: Cura.MachineManager.activeMachineName
 
@@ -141,7 +141,7 @@ Item {
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text_subtext")
-        text: Printer.getSceneBoundingBoxString
+        text: CuraApplication.getSceneBoundingBoxString
     }
 
     Rectangle

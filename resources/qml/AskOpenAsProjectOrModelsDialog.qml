@@ -40,7 +40,9 @@ UM.Dialog
     function loadModelFiles(fileUrls)
     {
         for (var i in fileUrls)
-            Printer.readLocalFile(fileUrls[i]);
+        {
+            CuraApplication.readLocalFile(fileUrls[i]);
+        }
 
         var meshName = backgroundItem.getMeshName(fileUrls[0].toString());
         backgroundItem.hasMesh(decodeURIComponent(meshName));

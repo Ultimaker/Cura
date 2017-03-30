@@ -21,7 +21,7 @@ UM.MainWindow
     property bool monitoringPrint: false
     Component.onCompleted:
     {
-        Printer.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+        CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
         // Workaround silly issues with QML Action's shortcut property.
         //
         // Currently, there is no way to define shortcuts as "Application Shortcut".
@@ -502,7 +502,7 @@ UM.MainWindow
         icon: StandardIcon.Question
         onYes:
         {
-            Printer.deleteAll();
+            CuraApplication.deleteAll();
             Cura.Actions.resetProfile.trigger();
         }
     }
@@ -619,7 +619,7 @@ UM.MainWindow
             {
                 if(objectContextMenu.objectId != 0)
                 {
-                    Printer.deleteObject(objectContextMenu.objectId);
+                    CuraApplication.deleteObject(objectContextMenu.objectId);
                     objectContextMenu.objectId = 0;
                 }
             }
@@ -652,7 +652,7 @@ UM.MainWindow
             {
                 if(objectContextMenu.objectId != 0)
                 {
-                    Printer.centerObject(objectContextMenu.objectId);
+                    CuraApplication.centerObject(objectContextMenu.objectId);
                     objectContextMenu.objectId = 0;
                 }
             }
@@ -898,14 +898,14 @@ UM.MainWindow
     {
         id: messageDialog
         modality: Qt.ApplicationModal
-        onAccepted: Printer.messageBoxClosed(clickedButton)
-        onApply: Printer.messageBoxClosed(clickedButton)
-        onDiscard: Printer.messageBoxClosed(clickedButton)
-        onHelp: Printer.messageBoxClosed(clickedButton)
-        onNo: Printer.messageBoxClosed(clickedButton)
-        onRejected: Printer.messageBoxClosed(clickedButton)
-        onReset: Printer.messageBoxClosed(clickedButton)
-        onYes: Printer.messageBoxClosed(clickedButton)
+        onAccepted: CuraApplication.messageBoxClosed(clickedButton)
+        onApply: CuraApplication.messageBoxClosed(clickedButton)
+        onDiscard: CuraApplication.messageBoxClosed(clickedButton)
+        onHelp: CuraApplication.messageBoxClosed(clickedButton)
+        onNo: CuraApplication.messageBoxClosed(clickedButton)
+        onRejected: CuraApplication.messageBoxClosed(clickedButton)
+        onReset: CuraApplication.messageBoxClosed(clickedButton)
+        onYes: CuraApplication.messageBoxClosed(clickedButton)
     }
 
     Connections

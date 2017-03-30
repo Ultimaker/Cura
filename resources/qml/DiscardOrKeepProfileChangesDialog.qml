@@ -190,7 +190,7 @@ UM.Dialog
                 anchors.right: parent.right
                 onClicked:
                 {
-                    Printer.discardOrKeepProfileChangesClosed("discard")
+                    CuraApplication.discardOrKeepProfileChangesClosed("discard")
                     base.hide()
                 }
                 isDefault: true
@@ -204,7 +204,7 @@ UM.Dialog
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 onClicked:
                 {
-                    Printer.discardOrKeepProfileChangesClosed("keep")
+                    CuraApplication.discardOrKeepProfileChangesClosed("keep")
                     base.hide()
                 }
             }

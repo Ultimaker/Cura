@@ -183,7 +183,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
-        onTriggered: Printer.deleteSelection();
+        onTriggered: CuraApplication.deleteSelection();
     }
 
     Action
@@ -207,7 +207,7 @@ Item
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
-        onTriggered: Printer.groupSelected();
+        onTriggered: CuraApplication.groupSelected();
     }
 
     Action
@@ -217,7 +217,7 @@ Item
         enabled: UM.Scene.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
-        onTriggered: Printer.ungroupSelected();
+        onTriggered: CuraApplication.ungroupSelected();
     }
 
     Action
@@ -227,7 +227,7 @@ Item
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
-        onTriggered: Printer.mergeSelected();
+        onTriggered: CuraApplication.mergeSelected();
     }
 
     Action
@@ -244,7 +244,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-select-all";
         shortcut: "Ctrl+A";
-        onTriggered: Printer.selectAll();
+        onTriggered: CuraApplication.selectAll();
     }
 
     Action
@@ -254,7 +254,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
-        onTriggered: Printer.deleteAll();
+        onTriggered: CuraApplication.deleteAll();
     }
 
     Action
@@ -263,21 +263,21 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
         iconName: "document-revert";
         shortcut: "F5"
-        onTriggered: Printer.reloadAll();
+        onTriggered: CuraApplication.reloadAll();
     }
 
     Action
     {
         id: resetAllTranslationAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Positions");
-        onTriggered: Printer.resetAllTranslation();
+        onTriggered: CuraApplication.resetAllTranslation();
     }
 
     Action
     {
         id: resetAllAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model &Transformations");
-        onTriggered: Printer.resetAll();
+        onTriggered: CuraApplication.resetAll();
     }
 
     Action
