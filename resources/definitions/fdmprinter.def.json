@@ -4138,7 +4138,7 @@
                     "type": "float",
                     "minimum_value_warning": "wall_line_width_0 * 2",
                     "maximum_value_warning": "100",
-                    "default_value": 0,
+                    "default_value": 5,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
                 },
