@@ -336,6 +336,8 @@ class GCodeReader(MeshReader):
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
+        Application.getInstance().getController().getScene().gcode_list = gcode_list
+
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
 
