@@ -31,7 +31,7 @@ def getMetaData() -> Dict:
             "api": 3
         }
     }
-    if "ThreeMFReader" in sys.modules:
+    if "3MFReader.ThreeMFReader" in sys.modules:
         metaData["mesh_reader"] = [
             {
                 "extension": "3mf",
@@ -49,7 +49,7 @@ def getMetaData() -> Dict:
 
 
 def register(app):
-    if "ThreeMFReader" in sys.modules:
+    if "3MFReader.ThreeMFReader" in sys.modules:
         return {"mesh_reader": ThreeMFReader.ThreeMFReader(),
                 "workspace_reader": ThreeMFWorkspaceReader.ThreeMFWorkspaceReader()}
     else:

@@ -24,7 +24,7 @@ def getMetaData():
         }
     }
 
-    if "ThreeMFWriter" in sys.modules:
+    if "3MFWriter.ThreeMFWriter" in sys.modules:
         metaData["mesh_writer"] = {
             "output": [{
                 "extension": "3mf",
@@ -45,7 +45,7 @@ def getMetaData():
     return metaData
 
 def register(app):
-    if "ThreeMFWriter" in sys.modules:
+    if "3MFWriter.ThreeMFWriter" in sys.modules:
         return {"mesh_writer": ThreeMFWriter.ThreeMFWriter(), 
                 "workspace_writer": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter()}
     else:
