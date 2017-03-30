@@ -1087,7 +1087,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (4 if infill_pattern == 'tetrahedral' else 1)))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' else 1)))",
                             "settable_per_mesh": true
                         }
                     }
@@ -1321,7 +1321,7 @@
                 "max_skin_angle_for_expansion":
                 {
                     "label": "Maximum Skin Angle for Expansion",
-                    "description": "Top and or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical.",
+                    "description": "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
@@ -2555,6 +2555,17 @@
                     "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "start_layers_at_same_position":
+                {
+                    "label": "Start Layers with the Same Part",
+                    "description": "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true
                 },
                 "layer_start_x":
                 {

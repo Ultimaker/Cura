@@ -5,6 +5,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
 from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Qt.Duration import Duration
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -109,13 +110,21 @@ class PrintInformation(QObject):
         return self._material_costs
 
     def _onPrintDurationMessage(self, total_time, material_amounts):
-        self._current_print_time.setDuration(total_time)
+        if total_time != total_time:  # Check for NaN. Engine can sometimes give us weird values.
+            Logger.log("w", "Received NaN for print duration message")
+            self._current_print_time.setDuration(0)
+        else:
+            self._current_print_time.setDuration(total_time)
+
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
         self._calculateInformation()
 
     def _calculateInformation(self):
+        if Application.getInstance().getGlobalContainerStack() is None:
+            return
+
         # Material amount is sent as an amount of mm^3, so calculate length from that
         r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_lengths = []

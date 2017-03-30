@@ -813,6 +813,10 @@ class MachineManager(QObject):
                 Logger.log("e", "Tried to set quality to a container that is not of the right type")
                 return
 
+            # Check if it was at all possible to find new settings
+            if new_quality_settings_list is None:
+                return
+
             name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
             for setting_info in new_quality_settings_list:
                 stack = setting_info["stack"]
@@ -889,7 +893,12 @@ class MachineManager(QObject):
         quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name,
                                                                             global_machine_definition)
 
-        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None][0]
+        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None]
+        if global_quality_changes:
+            global_quality_changes = global_quality_changes[0]
+        else:
+            Logger.log("e", "Could not find the global quality changes container with name %s", quality_changes_name)
+            return None
         material = global_container_stack.findContainer(type="material")
 
         # For the global stack, find a quality which matches the quality_type in

@@ -21,9 +21,18 @@ UM.Dialog
         if(visible)
         {
             changesModel.forceUpdate()
-        }
 
-        discardOrKeepProfileChangesDropDownButton.currentIndex = UM.Preferences.getValue("cura/choice_on_profile_override")
+            discardOrKeepProfileChangesDropDownButton.currentIndex = 0;
+            for (var i = 0; i < discardOrKeepProfileChangesDropDownButton.model.count; ++i)
+            {
+                var code = discardOrKeepProfileChangesDropDownButton.model.get(i).code;
+                if (code == UM.Preferences.getValue("cura/choice_on_profile_override"))
+                {
+                    discardOrKeepProfileChangesDropDownButton.currentIndex = i;
+                    break;
+                }
+            }
+        }
     }
 
     Column
@@ -47,7 +56,7 @@ UM.Dialog
 
             Label
             {
-                text: "You have customized some profile settings.\nWould you like to keep or discard those settings?"
+                text: catalog.i18nc("@text:window", "You have customized some profile settings.\nWould you like to keep or discard those settings?")
                 anchors.margins: UM.Theme.getSize("default_margin").width
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.WordWrap
@@ -59,7 +68,7 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").width
             anchors.left: parent.left
             anchors.right: parent.right
-            height: base.height - 200
+            height: base.height - 150
             id: tableView
             Component
             {
@@ -133,30 +142,35 @@ UM.Dialog
             ComboBox
             {
                 id: discardOrKeepProfileChangesDropDownButton
-                model: [
-                    catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
-                    catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
-                    catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
-                ]
                 width: 300
-                currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
-                onCurrentIndexChanged:
+
+                model: ListModel
                 {
-                    UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
-                    if (currentIndex == 1) {
-                        // 1 == "Discard and never ask again", so only enable the "Discard" button
-                        discardButton.enabled = true
-                        keepButton.enabled = false
+                    id: discardOrKeepProfileListModel
+
+                    Component.onCompleted: {
+                        append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
+                        append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
+                        append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
                     }
-                    else if (currentIndex == 2) {
-                        // 2 == "Keep and never ask again", so only enable the "Keep" button
-                        keepButton.enabled = true
-                        discardButton.enabled = false
+                }
+
+                onActivated:
+                {
+                    var code = model.get(index).code;
+                    UM.Preferences.setValue("cura/choice_on_profile_override", code);
+
+                    if (code == "always_keep") {
+                        keepButton.enabled = true;
+                        discardButton.enabled = false;
+                    }
+                    else if (code == "always_discard") {
+                        keepButton.enabled = false;
+                        discardButton.enabled = true;
                     }
                     else {
-                        // 0 == "Always ask me this", so show both
-                        keepButton.enabled = true
-                        discardButton.enabled = true
+                        keepButton.enabled = true;
+                        discardButton.enabled = true;
                     }
                 }
             }
@@ -167,7 +181,7 @@ UM.Dialog
             anchors.right: parent.right
             anchors.left: parent.left
             anchors.margins: UM.Theme.getSize("default_margin").width
-            height:childrenRect.height
+            height: childrenRect.height
 
             Button
             {

@@ -171,6 +171,10 @@ class PlatformPhysics:
         self._enabled = False
 
     def _onToolOperationStopped(self, tool):
+        # Selection tool should not trigger an update.
+        if tool.getPluginId() == "SelectionTool":
+            return
+
         if tool.getPluginId() == "TranslateTool":
             for node in Selection.getAllSelectedObjects():
                 if node.getBoundingBox().bottom < 0:

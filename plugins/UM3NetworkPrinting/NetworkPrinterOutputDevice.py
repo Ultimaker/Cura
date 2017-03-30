@@ -200,11 +200,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
-            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s",self._authentication_id )
+            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s and key", self._authentication_id, self._getSafeAuthKey())
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
         else:
-            Logger.log("d", "No authentication was required. The ID is: %s", self._authentication_id)
+            Logger.log("d", "No authentication is available to use, but we did got a request for it.")
 
     def getProperties(self):
         return self._properties
@@ -601,7 +601,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    #   \param kwargs Keyword arguments.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._printer_state != "idle":
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
@@ -618,64 +619,67 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
         print_information = Application.getInstance().getPrintInformation()
-
-        # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
-        for index in range(0, self._num_extruders):
-            if print_information.materialLengths[index] != 0:
-                if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
-                    Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
-                    self._error_message = Message(
-                        i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
-                    self._error_message.show()
-                    return
-                if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":
-                    Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
-                    self._error_message = Message(
-                        i18n_catalog.i18nc("@info:status",
-                                           "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)))
-                    self._error_message.show()
-                    return
-
         warnings = []  # There might be multiple things wrong. Keep a list of all the stuff we need to warn about.
 
-        for index in range(0, self._num_extruders):
-            # Check if there is enough material. Any failure in these results in a warning.
-            material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
-            if material_length != -1 and print_information.materialLengths[index] > material_length:
-                Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
-                warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
+        # Only check for mistakes if there is material length information.
+        if print_information.materialLengths:
+            # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
+            for index in range(0, self._num_extruders):
+                if print_information.materialLengths[index] != 0:
+                    if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
+                        Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
+                        self._error_message = Message(
+                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
+                        self._error_message.show()
+                        return
+                    if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":
+                        Logger.log("e", "No material loaded in slot %s, unable to start print", index + 1)
+                        self._error_message = Message(
+                            i18n_catalog.i18nc("@info:status",
+                                               "Unable to start a new print job. No material loaded in slot {0}".format(index + 1)))
+                        self._error_message.show()
+                        return
 
-            # Check if the right cartridges are loaded. Any failure in these results in a warning.
-            extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
-            if print_information.materialLengths[index] != 0:
-                variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
-                core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
-                if variant:
-                    if variant.getName() != core_name:
-                        Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
-                        warnings.append(i18n_catalog.i18nc("@label", "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
+            for index in range(0, self._num_extruders):
+                # Check if there is enough material. Any failure in these results in a warning.
+                material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
+                if material_length != -1 and print_information.materialLengths[index] > material_length:
+                    Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
+                    warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
-                material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
-                if material:
-                    remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
-                    if material.getMetaDataEntry("GUID") != remote_material_guid:
-                        Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
-                                   remote_material_guid,
-                                   material.getMetaDataEntry("GUID"))
+                # Check if the right cartridges are loaded. Any failure in these results in a warning.
+                extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
+                if print_information.materialLengths[index] != 0:
+                    variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
+                    core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
+                    if variant:
+                        if variant.getName() != core_name:
+                            Logger.log("w", "Extruder %s has a different Cartridge (%s) as Cura (%s)", index + 1, core_name, variant.getName())
+                            warnings.append(i18n_catalog.i18nc("@label", "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}".format(variant.getName(), core_name, index + 1)))
 
-                        remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
-                        remote_material_name = "Unknown"
-                        if remote_materials:
-                            remote_material_name = remote_materials[0].getName()
-                        warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
+                    material = extruder_manager.getExtruderStack(index).findContainer({"type": "material"})
+                    if material:
+                        remote_material_guid = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"]
+                        if material.getMetaDataEntry("GUID") != remote_material_guid:
+                            Logger.log("w", "Extruder %s has a different material (%s) as Cura (%s)", index + 1,
+                                       remote_material_guid,
+                                       material.getMetaDataEntry("GUID"))
 
-                try:
-                    is_offset_calibrated = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["offset"]["state"] == "valid"
-                except KeyError:  # Older versions of the API don't expose the offset property, so we must asume that all is well.
-                    is_offset_calibrated = True
+                            remote_materials = UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().findInstanceContainers(type = "material", GUID = remote_material_guid, read_only = True)
+                            remote_material_name = "Unknown"
+                            if remote_materials:
+                                remote_material_name = remote_materials[0].getName()
+                            warnings.append(i18n_catalog.i18nc("@label", "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}").format(material.getName(), remote_material_name, index + 1))
 
-                if not is_offset_calibrated:
-                    warnings.append(i18n_catalog.i18nc("@label", "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+                    try:
+                        is_offset_calibrated = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["offset"]["state"] == "valid"
+                    except KeyError:  # Older versions of the API don't expose the offset property, so we must asume that all is well.
+                        is_offset_calibrated = True
+
+                    if not is_offset_calibrated:
+                        warnings.append(i18n_catalog.i18nc("@label", "Print core {0} is not properly calibrated. XY calibration needs to be performed on the printer.").format(index + 1))
+        else:
+            Logger.log("w", "There was no material usage found. No check to match used material with machine is done.")
 
         if warnings:
             text = i18n_catalog.i18nc("@label", "Are you sure you wish to print with the selected configuration?")
@@ -725,7 +729,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         ## Check if this machine was authenticated before.
         self._authentication_id = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_id", None)
         self._authentication_key = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("network_authentication_key", None)
-        Logger.log("d", "Loaded authentication id %s from the metadata entry", self._authentication_id)
+
+        if self._authentication_id is None and self._authentication_key is None:
+            Logger.log("d", "No authentication found in metadata.")
+        else:
+            Logger.log("d", "Loaded authentication id %s and key %s from the metadata entry", self._authentication_id, self._getSafeAuthKey())
+
         self._update_timer.start()
 
     ##  Stop requesting data from printer
@@ -841,7 +850,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the authentication request was allowed by the printer.
     def _checkAuthentication(self):
-        Logger.log("d", "Checking if authentication is correct for id %s", self._authentication_id)
+        Logger.log("d", "Checking if authentication is correct for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
         self._manager.get(QNetworkRequest(QUrl("http://" + self._address + self._api_prefix + "auth/check/" + str(self._authentication_id))))
 
     ##  Request a authentication key from the printer so we can be authenticated
@@ -1010,7 +1019,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         else:
                             global_container_stack.addMetaDataEntry("network_authentication_id", self._authentication_id)
                     Application.getInstance().saveStack(global_container_stack)  # Force save so we are sure the data is not lost.
-                    Logger.log("i", "Authentication succeeded for id %s", self._authentication_id)
+                    Logger.log("i", "Authentication succeeded for id %s and key %s", self._authentication_id, self._getSafeAuthKey())
                 else:  # Got a response that we didn't expect, so something went wrong.
                     Logger.log("e", "While trying to authenticate, we got an unexpected response: %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
                     self.setAuthenticationState(AuthState.NotAuthenticated)
@@ -1040,7 +1049,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
-                Logger.log("i", "Got a new authentication ID. Waiting for authorization: %s", self._authentication_id )
+                Logger.log("i", "Got a new authentication ID (%s) and KEY (%S). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()
@@ -1110,3 +1119,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             icon=QMessageBox.Question,
             callback=callback
         )
+
+    ##  Convenience function to "blur" out all but the last 5 characters of the auth key.
+    #   This can be used to debug print the key, without it compromising the security.
+    def _getSafeAuthKey(self):
+        if self._authentication_key is not None:
+            result = self._authentication_key[-5:]
+            result = "********" + result
+            return result
+        return self._authentication_key
