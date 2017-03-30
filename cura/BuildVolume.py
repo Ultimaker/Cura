@@ -113,7 +113,8 @@ class BuildVolume(SceneNode):
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode)
         if new_scene_objects != self._scene_objects:
             for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
-                node.decoratorsChanged.connect(self._onNodeDecoratorChanged)
+                self._onNodeDecoratorChanged(node)
+                node.decoratorsChanged.connect(self._onNodeDecoratorChanged)  # Make sure that decoration changes afterwards also receive the same treatment
             for node in self._scene_objects - new_scene_objects: #Nodes that were removed from the scene.
                 per_mesh_stack = node.callDecoration("getStack")
                 if per_mesh_stack:
