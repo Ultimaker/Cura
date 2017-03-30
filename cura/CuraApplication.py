@@ -4,7 +4,6 @@ from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication
-from UM.FileHandler.ReadFileJob import ReadFileJob
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -17,7 +16,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
-from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
@@ -90,6 +88,7 @@ if not MYPY:
         CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
         CuraBuildType = ""
 
+
 class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -104,7 +103,6 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
-
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
@@ -240,7 +238,7 @@ class CuraApplication(QtApplication):
             ContainerRegistry.getInstance().load()
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
-        Preferences.getInstance().addPreference("cura/recent_files", "")
+
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("cura/jobname_prefix", True)
         Preferences.getInstance().addPreference("view/center_on_select", False)
@@ -316,20 +314,13 @@ class CuraApplication(QtApplication):
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
-        JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
+
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
 
         self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
-        self._recent_files = []
-        files = Preferences.getInstance().getValue("cura/recent_files").split(";")
-        for f in files:
-            if not os.path.isfile(f):
-                continue
-
-            self._recent_files.append(QUrl.fromLocalFile(f))
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -1017,12 +1008,6 @@ class CuraApplication(QtApplication):
 
         return log
 
-    recentFilesChanged = pyqtSignal()
-
-    @pyqtProperty("QVariantList", notify = recentFilesChanged)
-    def recentFiles(self):
-        return self._recent_files
-
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories):
         categories = list(set(categories))
@@ -1129,25 +1114,6 @@ class CuraApplication(QtApplication):
         pass
 
     fileLoaded = pyqtSignal(str)
-
-    def _onJobFinished(self, job):
-        if (not isinstance(job, ReadMeshJob) and not isinstance(job, ReadFileJob)) or not job.getResult():
-            return
-
-        f = QUrl.fromLocalFile(job.getFileName())
-        if f in self._recent_files:
-            self._recent_files.remove(f)
-
-        self._recent_files.insert(0, f)
-        if len(self._recent_files) > 10:
-            del self._recent_files[10]
-
-        pref = ""
-        for path in self._recent_files:
-            pref += path.toLocalFile() + ";"
-
-        Preferences.getInstance().setValue("cura/recent_files", pref)
-        self.recentFilesChanged.emit()
 
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
