@@ -37,7 +37,6 @@ class GCodeReader(MeshReader):
         self._message = None
         self._layer_number = 0
         self._extruder_number = 0
-        self._layer_type = LayerPolygon.Inset0Type
         self._clearValues()
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
@@ -153,7 +152,6 @@ class GCodeReader(MeshReader):
                 self._previous_z = z
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
-
         return self._position(x, y, z, e)
 
     # G0 and G1 should be handled exactly the same.
@@ -172,7 +170,6 @@ class GCodeReader(MeshReader):
     def _gCode92(self, position, params, path):
         if params.e is not None:
             position.e[self._extruder_number] = params.e
-
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -307,11 +304,11 @@ class GCodeReader(MeshReader):
                 G = self._getInt(line, "G")
                 if G is not None:
                     current_position = self._processGCode(G, line, current_position, current_path)
+
                     # < 2 is a heuristic for a movement only, that should not be counted as a layer
                     if current_position.z > last_z and abs(current_position.z - last_z) < 2:
                         if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
                             current_path.clear()
-
                             if not self._is_layers_in_file:
                                 self._layer_number += 1
 
