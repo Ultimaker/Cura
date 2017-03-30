@@ -202,6 +202,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         try:
             programmer.connect(self._serial_port)
         except Exception:
+            programmer.close()
             pass
 
         # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
@@ -312,8 +313,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
         # If the programmer connected, we know its an atmega based version.
