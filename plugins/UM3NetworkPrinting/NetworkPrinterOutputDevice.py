@@ -624,7 +624,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if print_information.materialLengths:
             # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
             for index in range(0, self._num_extruders):
-                if print_information.materialLengths[index] != 0:
+                if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
                     if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
                         Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
                         self._error_message = Message(
@@ -642,13 +642,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             for index in range(0, self._num_extruders):
                 # Check if there is enough material. Any failure in these results in a warning.
                 material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
-                if material_length != -1 and print_information.materialLengths[index] > material_length:
+                if material_length != -1 and index < len(print_information.materialLengths) and print_information.materialLengths[index] > material_length:
                     Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
                     warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
                 # Check if the right cartridges are loaded. Any failure in these results in a warning.
                 extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
-                if print_information.materialLengths[index] != 0:
+                if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
                     variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                     core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
                     if variant:
