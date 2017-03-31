@@ -796,25 +796,26 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             byte_array_file_data = b""
             batched_line = ""
 
-            def _compress_data_and_notify_qt(file_data, data_to_append):
-                file_data += gzip.compress(data_to_append.encode("utf-8"))
+            def _compress_data_and_notify_qt(data_to_append):
+                compressed_data = gzip.compress(data_to_append.encode("utf-8"))
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                 # Pretend that this is a response, as zipping might take a bit of time.
                 self._last_response_time = time()
+                return compressed_data
 
             for line in self._gcode:
                 if not self._compressing_print:
                     self._progress_message.hide()
                     return  # Stop trying to zip, abort was called.
 
-                # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
-                # Compressing line by line in this case is extremely slow, so we need to batch them.
-                if len(batched_line) < max_chars_per_line:
-                    batched_line += line
-                    continue
-
                 if self._use_gzip:
-                    _compress_data_and_notify_qt(byte_array_file_data, batched_line)
+                    # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
+                    # Compressing line by line in this case is extremely slow, so we need to batch them.
+                    if len(batched_line) < max_chars_per_line:
+                        batched_line += line
+                        continue
+
+                    byte_array_file_data += _compress_data_and_notify_qt(batched_line)
                     batched_line = ""
                 else:
                     byte_array_file_data += line.encode("utf-8")
@@ -822,7 +823,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             # don't miss the last batch if it's there
             if self._use_gzip:
                 if batched_line:
-                    _compress_data_and_notify_qt(byte_array_file_data, batched_line)
+                    byte_array_file_data += _compress_data_and_notify_qt(batched_line)
 
             if self._use_gzip:
                 file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
