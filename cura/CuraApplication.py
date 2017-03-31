@@ -182,7 +182,10 @@ class CuraApplication(QtApplication):
             "SelectionTool",
             "CameraTool",
             "GCodeWriter",
-            "LocalFileOutputDevice"
+            "LocalFileOutputDevice",
+            "TranslateTool",
+            "FileLogger",
+            "XmlMaterialProfile"
         ])
         self._physics = None
         self._volume = None
