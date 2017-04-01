@@ -46,6 +46,9 @@
             "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
         },
 
+        "acceleration_enabled": {
+            "value": "False"
+        },
         "print_sequence": {
             "enabled": false
         },
@@ -59,7 +62,8 @@
             "enabled": false
         },
         "material_diameter": {
-            "enabled": false
+            "enabled": false,
+            "value": "1.75"
         },
         "cool_fan_enabled": {
             "enabled": false,
@@ -68,7 +72,11 @@
         "retraction_enable": {
             "enabled": false, 
             "value": "False"
-        }, 
+        },
+        "retraction_combing": {
+        	"enabled": false,
+        	"value": "'off'"
+        },
         "retract_at_layer_change": {
             "enabled": false
         },
