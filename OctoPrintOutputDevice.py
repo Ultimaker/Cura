@@ -274,7 +274,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
 
         self._stopCamera()
 
-    def requestWrite(self, node, file_name = None, filter_by_machine = False, file_handler = None):
+    def requestWrite(self, node, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         self.writeStarted.emit(self)
         self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
 
