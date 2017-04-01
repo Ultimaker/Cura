@@ -1,0 +1,49 @@
+{
+    "id": "peopoly_moai",
+    "version": 2,
+    "name": "Moai",
+    "inherits": "ultimaker",
+    "metadata": {
+        "visible": true,
+        "author": "Aldo Hoeben",
+        "manufacturer": "Peopoly",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": true,
+        "has_materials": false
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Moai" },
+        "machine_width": {
+            "default_value": 130
+        },
+        "machine_height": {
+            "default_value": 180
+        },
+        "machine_depth": {
+            "default_value": 130
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.067
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -20, 10 ],
+                [ -20, -10 ],
+                [ 10, 10 ],
+                [ 10, -10 ]
+            ]
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G28 ;Home"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
+        }
+    }
+}
