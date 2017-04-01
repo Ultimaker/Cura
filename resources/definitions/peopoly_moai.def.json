@@ -44,6 +44,42 @@
         },
         "machine_end_gcode": {
             "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
+        },
+
+        "print_sequence": {
+            "enabled": false
+        },
+        "support_enable": {
+            "enabled": false
+        },
+        "machine_nozzle_temp_enabled": {
+            "value": "False"
+        },
+        "material_bed_temperature": {
+            "enabled": false
+        },
+        "material_diameter": {
+            "enabled": false
+        },
+        "cool_fan_enabled": {
+            "enabled": false,
+            "value": "False"
+        },
+        "retraction_enable": {
+            "enabled": false, 
+            "value": "False"
+        }, 
+        "retract_at_layer_change": {
+            "enabled": false
+        },
+        "cool_min_layer_time_fan_speed_max": {
+            "enabled": false
+        },
+        "cool_fan_full_at_height": {
+            "enabled": false
+        },
+        "cool_fan_full_layer": {
+            "enabled": false
         }
     }
 }
