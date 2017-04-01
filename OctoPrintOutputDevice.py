@@ -327,7 +327,7 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             command = "pause"
 
         if command:
-            self._sendCommand(command)
+            self._sendJobCommand(command)
 
     def startPrint(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -405,14 +405,21 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
             Logger.log("e", "An exception occurred in network connection: %s" % str(e))
 
     def _sendCommand(self, command):
-        url = QUrl(self._api_url + "printer/command")
+        self._sendCommandToApi("printer/command", command)
+        Logger.log("d", "Sent gcode command to OctoPrint instance: %s", command)
+
+    def _sendJobCommand(self, command):
+        self._sendCommandToApi("job", command)
+        Logger.log("d", "Sent job command to OctoPrint instance: %s", command)
+
+    def _sendCommandToApi(self, endpoint, command):
+        url = QUrl(self._api_url + endpoint)
         self._command_request = QNetworkRequest(url)
         self._command_request.setRawHeader(self._api_header.encode(), self._api_key.encode())
         self._command_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
 
         data = "{\"command\": \"%s\"}" % command
         self._command_reply = self._manager.post(self._command_request, data.encode())
-        Logger.log("d", "Sent command to OctoPrint instance: %s", data)
 
     ##  Pre-heats the heated bed of the printer.
     #
