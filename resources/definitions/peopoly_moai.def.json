@@ -5,7 +5,7 @@
     "inherits": "ultimaker",
     "metadata": {
         "visible": true,
-        "author": "Aldo Hoeben",
+        "author": "fieldOfView",
         "manufacturer": "Peopoly",
         "category": "Other",
         "file_formats": "text/x-gcode",
@@ -47,16 +47,16 @@
         },
 
         "layer_height": {
-        	"maximum_value_warning": "0.5"	
+            "maximum_value_warning": "0.5"
         },
         "layer_height_0": {
-        	"maximum_value_warning": "0.5"	
+            "maximum_value_warning": "0.5"
         },
         "top_bottom_thickness": {
-        	"minimum_value_warning": "0.1"	
+            "minimum_value_warning": "0.1"
         },
         "infill_sparse_thickness": {
-        	"maximum_value_warning": "0.5"	
+            "maximum_value_warning": "0.5"
         },
 
         "acceleration_enabled": {
@@ -83,12 +83,12 @@
             "value": "False"
         },
         "retraction_enable": {
-            "enabled": false, 
+            "enabled": false,
             "value": "False"
         },
         "retraction_combing": {
-        	"enabled": false,
-        	"value": "'off'"
+            "enabled": false,
+            "value": "'off'"
         },
         "retract_at_layer_change": {
             "enabled": false
