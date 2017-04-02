@@ -4,6 +4,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.1
 
 import UM 1.2 as UM
 import Cura 1.1 as Cura
