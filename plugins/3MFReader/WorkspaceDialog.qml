@@ -12,13 +12,13 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Open Project")
 
-    width: 550
-    minimumWidth: 550
-    maximumWidth: 550
+    width: 550 * Screen.devicePixelRatio
+    minimumWidth: 550 * Screen.devicePixelRatio
+    maximumWidth: minimumWidth
 
-    height: 400
-    minimumHeight: 400
-    maximumHeight: 400
+    height: 400 * Screen.devicePixelRatio
+    minimumHeight: 400 * Screen.devicePixelRatio
+    maximumHeight: minimumHeight
     property int comboboxHeight: 15
     property int spacerHeight: 10
     onClosing: manager.notifyClosed()

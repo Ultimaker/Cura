@@ -13,13 +13,13 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
 
-    width: 550
-    minimumWidth: 550
+    width: 550 * Screen.devicePixelRatio
+    minimumWidth: 550 * Screen.devicePixelRatio
 
-    height: 350
-    minimumHeight: 350
+    height: 350 * Screen.devicePixelRatio
+    minimumHeight: 350 * Screen.devicePixelRatio
 
-    property int spacerHeight: 10
+    property int spacerHeight: 10 * Screen.devicePixelRatio
 
     property bool dontShowAgain: true
 
