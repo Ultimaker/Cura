@@ -41,15 +41,8 @@ UM.Dialog
 
     Item
     {
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        anchors.topMargin: 20
-        anchors.bottomMargin: 20
-        anchors.leftMargin:20
-        anchors.rightMargin: 20
+        anchors.fill: parent
+        anchors.margins: 20 * Screen.devicePixelRatio
 
         UM.SettingDefinitionsModel
         {

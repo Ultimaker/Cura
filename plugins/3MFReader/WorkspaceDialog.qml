@@ -19,8 +19,8 @@ UM.Dialog
     height: 400 * Screen.devicePixelRatio
     minimumHeight: 400 * Screen.devicePixelRatio
     maximumHeight: minimumHeight
-    property int comboboxHeight: 15
-    property int spacerHeight: 10
+    property int comboboxHeight: 15 * Screen.devicePixelRatio
+    property int spacerHeight: 10 * Screen.devicePixelRatio
     onClosing: manager.notifyClosed()
     onVisibleChanged:
     {
@@ -33,15 +33,8 @@ UM.Dialog
     }
     Item
     {
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        anchors.topMargin: 20
-        anchors.bottomMargin: 20
-        anchors.leftMargin:20
-        anchors.rightMargin: 20
+        anchors.fille: parent
+        anchors.margins: 20 * Screen.devicePixelRatio
 
         UM.I18nCatalog
         {
