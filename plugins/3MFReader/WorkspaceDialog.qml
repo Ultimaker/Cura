@@ -74,7 +74,7 @@ UM.Dialog
             {
                 id: titleLabel
                 text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pixelSize: 22
+                font.pointSize: 18
             }
             Rectangle
             {
@@ -97,7 +97,7 @@ UM.Dialog
                 {
                     text: catalog.i18nc("@action:label", "Printer settings")
                     font.bold: true
-                    width: parent.width /3
+                    width: parent.width / 3
                 }
                 Item
                 {

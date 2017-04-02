@@ -66,7 +66,7 @@ UM.Dialog
             id: catalog
             name: "cura"
         }
-        SystemPalette 
+        SystemPalette
         {
             id: palette
         }
@@ -79,7 +79,7 @@ UM.Dialog
             {
                 id: titleLabel
                 text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pixelSize: 22
+                font.pointSize: 18
             }
             Rectangle
             {
@@ -233,6 +233,13 @@ UM.Dialog
                     width: parent.width / 3
                 }
             }
+
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+
             CheckBox
             {
                 id: dontShowAgainCheckbox
