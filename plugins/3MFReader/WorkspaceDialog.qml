@@ -45,8 +45,12 @@ UM.Dialog
 
         UM.I18nCatalog
         {
-            id: catalog;
-            name: "cura";
+            id: catalog
+            name: "cura"
+        }
+        SystemPalette
+        {
+            id: palette
         }
 
         ListModel
@@ -75,7 +79,7 @@ UM.Dialog
             Rectangle
             {
                 id: separator
-                color: "black"
+                color: palette.text
                 width: parent.width
                 height: 1
             }
@@ -360,7 +364,7 @@ UM.Dialog
                     height: width
 
                     source: UM.Theme.getIcon("notice")
-                    color: "black"
+                    color: palette.text
 
                 }
                 Label

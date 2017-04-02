@@ -63,8 +63,12 @@ UM.Dialog
         }
         UM.I18nCatalog
         {
-            id: catalog;
-            name: "cura";
+            id: catalog
+            name: "cura"
+        }
+        SystemPalette 
+        {
+            id: palette
         }
 
         Column
@@ -80,7 +84,7 @@ UM.Dialog
             Rectangle
             {
                 id: separator
-                color: "black"
+                color: palette.text
                 width: parent.width
                 height: 1
             }
