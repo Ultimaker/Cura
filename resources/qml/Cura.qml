@@ -259,7 +259,7 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
-                        handleOpenFileUrls(drop.urls);
+                        openDialog.handleOpenFileUrls(drop.urls);
                     }
                 }
             }
@@ -722,85 +722,85 @@ UM.MainWindow
 
             handleOpenFileUrls(fileUrls);
         }
-    }
 
-    // Yeah... I know... it is a mess to put all those things here.
-    // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
-    // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
-    // and view here may require more effort but make things more difficult to understand.
-    function handleOpenFileUrls(fileUrls)
-    {
-        // look for valid project files
-        var projectFileUrlList = [];
-        var hasGcode = false;
-        var nonGcodeFileList = [];
-        for (var i in fileUrls)
+        // Yeah... I know... it is a mess to put all those things here.
+        // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
+        // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
+        // and view here may require more effort but make things more difficult to understand.
+        function handleOpenFileUrls(fileUrlList)
         {
-            var endsWithG = /\.g$/;
-            var endsWithGcode = /\.gcode$/;
-            if (endsWithG.test(fileUrls[i]) || endsWithGcode.test(fileUrls[i]))
+            // look for valid project files
+            var projectFileUrlList = [];
+            var hasGcode = false;
+            var nonGcodeFileList = [];
+            for (var i in fileUrlList)
             {
-                continue;
+                var endsWithG = /\.g$/;
+                var endsWithGcode = /\.gcode$/;
+                if (endsWithG.test(fileUrlList[i]) || endsWithGcode.test(fileUrlList[i]))
+                {
+                    continue;
+                }
+                else if (CuraApplication.checkIsValidProjectFile(fileUrlList[i]))
+                {
+                    projectFileUrlList.push(fileUrlList[i]);
+                }
+                nonGcodeFileList.push(fileUrlList[i]);
             }
-            else if (CuraApplication.checkIsValidProjectFile(fileUrls[i]))
+            hasGcode = nonGcodeFileList.length < fileUrlList.length;
+
+            // show a warning if selected multiple files together with Gcode
+            var hasProjectFile = projectFileUrlList.length > 0;
+            var selectedMultipleFiles = fileUrlList.length > 1;
+            if (selectedMultipleFiles && hasGcode)
             {
-                projectFileUrlList.push(fileUrls[i]);
+                infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
+                infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
+                infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
+                infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
+                infoMultipleFilesWithGcodeDialog.open();
             }
-            nonGcodeFileList.push(fileUrls[i]);
-        }
-        hasGcode = nonGcodeFileList.length < fileUrls.length;
-
-        // show a warning if selected multiple files together with Gcode
-        var hasProjectFile = projectFileUrlList.length > 0;
-        var selectedMultipleFiles = fileUrls.length > 1;
-        if (selectedMultipleFiles && hasGcode)
-        {
-            infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
-            infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
-            infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
-            infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
-            infoMultipleFilesWithGcodeDialog.open();
-        }
-        else
-        {
-            handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
-        }
-    }
-
-    function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList)
-    {
-        // we only allow opening one project file
-        if (selectedMultipleFiles && hasProjectFile)
-        {
-            openFilesIncludingProjectsDialog.fileUrls = fileUrls.slice();
-            openFilesIncludingProjectsDialog.show();
-            return;
-        }
-
-        if (hasProjectFile)
-        {
-            var projectFile = projectFileUrlList[0];
-
-            // check preference
-            var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-            if (choice == "open_as_project")
+            else
             {
-                openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
-            }
-            else if (choice == "open_as_model")
-            {
-                openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
-            }
-            else    // always ask
-            {
-                // ask whether to open as project or as models
-                askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
-                askOpenAsProjectOrModelsDialog.show();
+                handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList);
             }
         }
-        else
+
+        function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
-            openFilesIncludingProjectsDialog.loadModelFiles(fileUrls.slice());
+            // we only allow opening one project file
+            if (selectedMultipleFiles && hasProjectFile)
+            {
+                openFilesIncludingProjectsDialog.fileUrlList = fileUrlList.slice();
+                openFilesIncludingProjectsDialog.show();
+                return;
+            }
+
+            if (hasProjectFile)
+            {
+                var projectFile = projectFileUrlList[0];
+
+                // check preference
+                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                if (choice == "open_as_project")
+                {
+                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+                }
+                else if (choice == "open_as_model")
+                {
+                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
+                }
+                else    // always ask
+                {
+                    // ask whether to open as project or as models
+                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.show();
+                }
+            }
+            else
+            {
+                openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
+            }
         }
     }
 
@@ -818,7 +818,7 @@ UM.MainWindow
 
         onAccepted:
         {
-            handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            openDialog.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
         }
     }
 
