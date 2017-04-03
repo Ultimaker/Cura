@@ -4147,6 +4147,18 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "support_mesh_drop_down":
+                {
+                    "label": "Drop Down Support Mesh",
+                    "description": "Make support everywhere below the support mesh, so that there's no overhang in the support mesh.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "support_mesh",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "anti_overhang_mesh":
                 {
                     "label": "Anti Overhang Mesh",
