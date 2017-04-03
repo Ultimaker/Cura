@@ -31,7 +31,8 @@ Item
     property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
-    property alias arrange: arrangeAction;
+    property alias arrangeAll: arrangeAllAction;
+    property alias arrangeSelection: arrangeSelectionAction;
     property alias resetAllTranslation: resetAllTranslationAction;
     property alias resetAll: resetAllAction;
 
@@ -269,9 +270,16 @@ Item
 
     Action
     {
-        id: arrangeAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange");
-        onTriggered: Printer.arrange();
+        id: arrangeAllAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All");
+        onTriggered: Printer.arrangeAll();
+    }
+
+    Action
+    {
+        id: arrangeSelectionAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection");
+        onTriggered: Printer.arrangeSelection();
     }
 
     Action
