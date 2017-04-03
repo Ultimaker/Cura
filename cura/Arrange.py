@@ -51,9 +51,8 @@ class Arrange:
         return arranger
 
     ##  Find placement for a node (using offset shape) and place it (using hull shape)
-    #
+    #   return the nodes that should be placed
     def findNodePlacements(self, node, offset_shape_arr, hull_shape_arr, count = 1, step = 1):
-        # offset_shape_arr, hull_shape_arr, arranger -> nodes, arranger
         nodes = []
         start_prio = 0
         for i in range(count):

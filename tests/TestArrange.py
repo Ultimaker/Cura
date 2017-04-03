@@ -12,10 +12,17 @@ def gimmeShapeArray():
     return shape_arr
 
 
+##  Smoke test for Arrange
 def test_smoke_arrange():
     ar = Arrange.create(fixed_nodes = [])
 
 
+##  Smoke test for ShapeArray
+def test_smoke_ShapeArray():
+    shape_arr = gimmeShapeArray()
+
+
+##  Test centerFirst
 def test_centerFirst():
     ar = Arrange(300, 300, 150, 150)
     ar.centerFirst()
@@ -27,6 +34,7 @@ def test_centerFirst():
     assert ar._priority[150][150] < ar._priority[130][130]
 
 
+##  Test backFirst
 def test_backFirst():
     ar = Arrange(300, 300, 150, 150)
     ar.backFirst()
@@ -36,6 +44,7 @@ def test_backFirst():
     assert ar._priority[150][150] > ar._priority[130][130]
 
 
+##  See if the result of bestSpot has the correct form
 def test_smoke_bestSpot():
     ar = Arrange(30, 30, 15, 15)
     ar.centerFirst()
@@ -48,6 +57,7 @@ def test_smoke_bestSpot():
     assert hasattr(best_spot, "priority")
 
 
+##  Try to place an object and see if something explodes
 def test_smoke_place():
     ar = Arrange(30, 30, 15, 15)
     ar.centerFirst()
@@ -59,7 +69,34 @@ def test_smoke_place():
     assert numpy.any(ar._occupied)
 
 
-def test_place_objects():
+##  See of our center has less penalty points than out of the center
+def test_checkShape():
+    ar = Arrange(30, 30, 15, 15)
+    ar.centerFirst()
+
+    shape_arr = gimmeShapeArray()
+    points = ar.checkShape(0, 0, shape_arr)
+    points2 = ar.checkShape(5, 0, shape_arr)
+    points3 = ar.checkShape(0, 5, shape_arr)
+    assert points2 > points
+    assert points3 > points
+
+
+##  After placing an object on a location that location should give more penalty points
+def test_checkShape_place():
+    ar = Arrange(30, 30, 15, 15)
+    ar.centerFirst()
+
+    shape_arr = gimmeShapeArray()
+    points = ar.checkShape(3, 6, shape_arr)
+    ar.place(3, 6, shape_arr)
+    points2 = ar.checkShape(3, 6, shape_arr)
+
+    assert points2 > points
+
+
+##  Test the whole sequence
+def test_smoke_place_objects():
     ar = Arrange(20, 20, 10, 10)
     ar.centerFirst()
     shape_arr = gimmeShapeArray()
@@ -73,3 +110,39 @@ def test_place_objects():
         print(ar._occupied)
 
     print(time.time() - now)
+
+
+##  Polygon -> array
+def test_arrayFromPolygon():
+    vertices = numpy.array([[-3, 1], [3, 1], [0, -3]])
+    array = ShapeArray.arrayFromPolygon([5, 5], vertices)
+    assert numpy.any(array)
+
+
+##  Polygon -> array
+def test_arrayFromPolygon2():
+    vertices = numpy.array([[-3, 1], [3, 1], [2, -3]])
+    array = ShapeArray.arrayFromPolygon([5, 5], vertices)
+    assert numpy.any(array)
+
+
+##  Line definition -> array with true/false
+def test_check():
+    base_array = numpy.zeros([5, 5], dtype=float)
+    p1 = numpy.array([0, 0])
+    p2 = numpy.array([4, 4])
+    check_array = ShapeArray._check(p1, p2, base_array)
+    assert numpy.any(check_array)
+    assert check_array[3][0]
+    assert not check_array[0][3]
+
+
+##  Line definition -> array with true/false
+def test_check2():
+    base_array = numpy.zeros([5, 5], dtype=float)
+    p1 = numpy.array([0, 3])
+    p2 = numpy.array([4, 3])
+    check_array = ShapeArray._check(p1, p2, base_array)
+    assert numpy.any(check_array)
+    assert not check_array[3][0]
+    assert check_array[3][4]

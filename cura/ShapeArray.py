@@ -73,7 +73,7 @@ class ShapeArray:
 
         return base_array
 
-    ##  Return indices that mark one side of the line, used by array_from_polygon
+    ##  Return indices that mark one side of the line, used by arrayFromPolygon
     #   Uses the line defined by p1 and p2 to check array of
     #   input indices against interpolated value
     #   Returns boolean array, with True inside and False outside of shape
