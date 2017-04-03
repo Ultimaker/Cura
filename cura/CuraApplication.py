@@ -856,8 +856,8 @@ class CuraApplication(QtApplication):
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
+        # If object is part of a group, multiply group
         current_node = node
-        # Find the topmost group
         while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
             current_node = current_node.getParent()
 

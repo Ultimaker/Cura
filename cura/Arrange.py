@@ -134,13 +134,10 @@ class Arrange:
                     fixed_nodes.append(node_)
         # place all objects fixed nodes
         for fixed_node in fixed_nodes:
-            Logger.log("d", "  # Placing [%s]" % str(fixed_node))
-
             vertices = fixed_node.callDecoration("getConvexHull")
             points = copy.deepcopy(vertices._points)
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)
-        Logger.log("d", "Current buildplate: \n%s" % str(arranger._occupied[::10, ::10]))
         return arranger
 
     ##  Find placement for a node (using offset shape) and place it (using hull shape)
@@ -152,20 +149,17 @@ class Arrange:
         for i in range(count):
             new_node = copy.deepcopy(node)
 
-            Logger.log("d", "  # Finding spot for %s" % new_node)
             x, y, penalty_points, start_prio = self.bestSpot(
                 offset_shape_arr, start_prio = start_prio, step = step)
             transformation = new_node._transformation
             if x is not None:  # We could find a place
                 transformation._data[0][3] = x
                 transformation._data[2][3] = y
-                Logger.log("d", "Best place is: %s %s (points = %s)" % (x, y, penalty_points))
                 self.place(x, y, hull_shape_arr)  # take place before the next one
-                Logger.log("d", "New buildplate: \n%s" % str(self._occupied[::10, ::10]))
             else:
                 Logger.log("d", "Could not find spot!")
                 transformation._data[0][3] = 200
-                transformation._data[2][3] = -100 + i * 20
+                transformation._data[2][3] = 100 + i * 20
 
             nodes.append(new_node)
         return nodes
