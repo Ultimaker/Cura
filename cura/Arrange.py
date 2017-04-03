@@ -143,7 +143,7 @@ class Arrange:
         Logger.log("d", "Current buildplate: \n%s" % str(arranger._occupied[::10, ::10]))
         return arranger
 
-    ##  Find placement for a node and place it
+    ##  Find placement for a node (using offset shape) and place it (using hull shape)
     #
     def findNodePlacements(self, node, offset_shape_arr, hull_shape_arr, count = 1, step = 1):
         # offset_shape_arr, hull_shape_arr, arranger -> nodes, arranger

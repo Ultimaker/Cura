@@ -856,17 +856,17 @@ class CuraApplication(QtApplication):
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
+        current_node = node
+        # Find the topmost group
+        while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+            current_node = current_node.getParent()
+
         root = self.getController().getScene().getRoot()
         arranger = Arrange.create(scene_root = root)
-        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
-        nodes = arranger.findNodePlacements(node, offset_shape_arr, hull_shape_arr, count = count)
+        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset = min_offset)
+        nodes = arranger.findNodePlacements(current_node, offset_shape_arr, hull_shape_arr, count = count)
 
         if nodes:
-            current_node = node
-            # Find the topmost group
-            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
-                current_node = current_node.getParent()
-
             op = GroupedOperation()
             for new_node in nodes:
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
