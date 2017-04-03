@@ -1,110 +1,15 @@
-import numpy
-from UM.Math.Polygon import Polygon
-
-
-##  Polygon representation as an array
-#
-class ShapeArray:
-    def __init__(self, arr, offset_x, offset_y, scale = 1):
-        self.arr = arr
-        self.offset_x = offset_x
-        self.offset_y = offset_y
-        self.scale = scale
-
-    @classmethod
-    def fromPolygon(cls, vertices, scale = 1):
-        # scale
-        vertices = vertices * scale
-        # flip y, x -> x, y
-        flip_vertices = numpy.zeros((vertices.shape))
-        flip_vertices[:, 0] = vertices[:, 1]
-        flip_vertices[:, 1] = vertices[:, 0]
-        flip_vertices = flip_vertices[::-1]
-        # offset, we want that all coordinates have positive values
-        offset_y = int(numpy.amin(flip_vertices[:, 0]))
-        offset_x = int(numpy.amin(flip_vertices[:, 1]))
-        flip_vertices[:, 0] = numpy.add(flip_vertices[:, 0], -offset_y)
-        flip_vertices[:, 1] = numpy.add(flip_vertices[:, 1], -offset_x)
-        shape = [int(numpy.amax(flip_vertices[:, 0])), int(numpy.amax(flip_vertices[:, 1]))]
-        arr = cls.arrayFromPolygon(shape, flip_vertices)
-        return cls(arr, offset_x, offset_y)
-
-    ##  Return an offset and hull ShapeArray from a scenenode.
-    @classmethod
-    def fromNode(cls, node, min_offset, scale = 0.5):
-        # hacky way to undo transformation
-        transform = node._transformation
-        transform_x = transform._data[0][3]
-        transform_y = transform._data[2][3]
-        hull_verts = node.callDecoration("getConvexHull")
-
-        offset_verts = hull_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
-        offset_points = copy.deepcopy(offset_verts._points)  # x, y
-        offset_points[:, 0] = numpy.add(offset_points[:, 0], -transform_x)
-        offset_points[:, 1] = numpy.add(offset_points[:, 1], -transform_y)
-        offset_shape_arr = ShapeArray.fromPolygon(offset_points, scale = scale)
-
-        hull_points = copy.deepcopy(hull_verts._points)
-        hull_points[:, 0] = numpy.add(hull_points[:, 0], -transform_x)
-        hull_points[:, 1] = numpy.add(hull_points[:, 1], -transform_y)
-        hull_shape_arr = ShapeArray.fromPolygon(hull_points, scale = scale)  # x, y
-
-        return offset_shape_arr, hull_shape_arr
-
-
-    ##  Create np.array with dimensions defined by shape
-    #   Fills polygon defined by vertices with ones, all other values zero
-    #   Only works correctly for convex hull vertices
-    #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
-    @classmethod
-    def arrayFromPolygon(cls, shape, vertices):
-        base_array = numpy.zeros(shape, dtype=float)  # Initialize your array of zeros
-
-        fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
-
-        # Create check array for each edge segment, combine into fill array
-        for k in range(vertices.shape[0]):
-            fill = numpy.all([fill, cls._check(vertices[k - 1], vertices[k], base_array)], axis=0)
-
-        # Set all values inside polygon to one
-        base_array[fill] = 1
-
-        return base_array
-
-    ##  Return indices that mark one side of the line, used by array_from_polygon
-    #   Uses the line defined by p1 and p2 to check array of
-    #   input indices against interpolated value
-    #   Returns boolean array, with True inside and False outside of shape
-    #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
-    @classmethod
-    def _check(cls, p1, p2, base_array):
-        if p1[0] == p2[0] and p1[1] == p2[1]:
-            return
-        idxs = numpy.indices(base_array.shape)  # Create 3D array of indices
-
-        p1 = p1.astype(float)
-        p2 = p2.astype(float)
-
-        if p2[0] == p1[0]:
-            sign = numpy.sign(p2[1] - p1[1])
-            return idxs[1] * sign
-
-        if p2[1] == p1[1]:
-            sign = numpy.sign(p2[0] - p1[0])
-            return idxs[1] * sign
-
-        # Calculate max column idx for each row idx based on interpolated line between two points
-
-        max_col_idx = (idxs[0] - p1[0]) / (p2[0] - p1[0]) * (p2[1] - p1[1]) + p1[1]
-        sign = numpy.sign(p2[0] - p1[0])
-        return idxs[1] * sign <= max_col_idx * sign
-
-
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
+from cura.ShapeArray import ShapeArray
+
+import numpy
 import copy
 
 
+##  The Arrange classed is used together with ShapeArray. The class tries to find
+#   good locations for objects that you try to put on a build place.
+#   Different priority schemes can be defined so it alters the behavior while using
+#   the same logic.
 class Arrange:
     def __init__(self, x, y, offset_x, offset_y, scale=1):
         self.shape = (y, x)
@@ -166,16 +71,18 @@ class Arrange:
 
     ##  Fill priority, take offset as center. lower is better
     def centerFirst(self):
-        # Distance x + distance y
-        #self._priority = np.fromfunction(
-        #    lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape, dtype=np.int32)
-        # Square distance
-        # self._priority = np.fromfunction(
-        #     lambda i, j: abs(self._offset_x-i)**2+abs(self._offset_y-j)**2, self.shape, dtype=np.int32)
+        # Distance x + distance y: creates diamond shape
+        #self._priority = numpy.fromfunction(
+        #    lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape, dtype=numpy.int32)
+        # Square distance: creates a more round shape
         self._priority = numpy.fromfunction(
-            lambda i, j: abs(self._offset_x-i)**3+abs(self._offset_y-j)**3, self.shape, dtype=numpy.int32)
-        # self._priority = np.fromfunction(
-        #    lambda i, j: max(abs(self._offset_x-i), abs(self._offset_y-j)), self.shape, dtype=np.int32)
+            lambda i, j: (self._offset_x - i) ** 2 + (self._offset_y - j) ** 2, self.shape, dtype=numpy.int32)
+        self._priority_unique_values = numpy.unique(self._priority)
+        self._priority_unique_values.sort()
+
+    def backFirst(self):
+        self._priority = numpy.fromfunction(
+            lambda i, j: 10 * j + abs(self._offset_x - i), self.shape, dtype=numpy.int32)
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 

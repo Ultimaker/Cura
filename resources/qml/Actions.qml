@@ -271,8 +271,9 @@ Item
     Action
     {
         id: arrangeAllAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models");
         onTriggered: Printer.arrangeAll();
+        shortcut: "Ctrl+R";
     }
 
     Action
