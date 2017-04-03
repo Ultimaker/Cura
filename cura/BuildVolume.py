@@ -201,7 +201,7 @@ class BuildVolume(SceneNode):
             if node.callDecoration("isGroup"):
                 group_nodes.append(node)  # Keep list of affected group_nodes
 
-            if node.callDecoration("isSliceable"):
+            if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
                 node._outside_buildarea = False
                 bbox = node.getBoundingBox()
 
@@ -220,8 +220,6 @@ class BuildVolume(SceneNode):
                         if overlap is None:
                             continue
                         node._outside_buildarea = True
-                        # from UM.Logger import Logger
-                        # Logger.log("d", "   # A node is outside build area")
                         break
 
         # Group nodes should override the _outside_buildarea property of their children.
