@@ -76,7 +76,7 @@
             "value": "100"
         },
         "material_bed_temperature": {
-            "visible": "False"
+            "enabled": false
         },
         "material_diameter": {
             "value": "1.75"
