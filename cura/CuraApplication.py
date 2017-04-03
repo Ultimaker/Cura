@@ -1043,8 +1043,10 @@ class CuraApplication(QtApplication):
         for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
             # we assume that when a location does not fit, it will also not fit for the next
             # object (while what can be untrue). That saves a lot of time.
-            x, y, penalty_points, start_prio = arranger.bestSpot(
+            best_spot = arranger.bestSpot(
                 offset_shape_arr, start_prio = start_prio)
+            x, y = best_spot.x, best_spot.y
+            start_prio = best_spot.priority
             if x is not None:  # We could find a place
                 arranger.place(x, y, hull_shape_arr)  # take place before the next one
 

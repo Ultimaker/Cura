@@ -2,9 +2,14 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from cura.ShapeArray import ShapeArray
 
+from collections import namedtuple
+
 import numpy
 import copy
 
+
+##  Return object for  bestSpot
+LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points", "priority"])
 
 ##  The Arrange classed is used together with ShapeArray. The class tries to find
 #   good locations for objects that you try to put on a build place.
@@ -54,7 +59,7 @@ class Arrange:
         for i in range(count):
             new_node = copy.deepcopy(node)
 
-            x, y, penalty_points, start_prio = self.bestSpot(
+            x, y = self.bestSpot(
                 offset_shape_arr, start_prio = start_prio, step = step)
             transformation = new_node._transformation
             if x is not None:  # We could find a place
@@ -80,6 +85,7 @@ class Arrange:
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
+    ##
     def backFirst(self):
         self._priority = numpy.fromfunction(
             lambda i, j: 10 * j + abs(self._offset_x - i), self.shape, dtype=numpy.int32)
@@ -107,6 +113,7 @@ class Arrange:
         return numpy.sum(prio_slice[numpy.where(shape_arr.arr == 1)])
 
     ##  Find "best" spot for ShapeArray
+    #   Return namedtuple with properties x, y, penalty_points, priority
     def bestSpot(self, shape_arr, start_prio = 0, step = 1):
         start_idx_list = numpy.where(self._priority_unique_values == start_prio)
         if start_idx_list:
@@ -124,8 +131,8 @@ class Arrange:
                 # array to "world" coordinates
                 penalty_points = self.checkShape(projected_x, projected_y, shape_arr)
                 if penalty_points != 999999:
-                    return projected_x, projected_y, penalty_points, prio
-        return None, None, None, prio  # No suitable location found :-(
+                    return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = prio)
+        return LocationSuggestion(x = None, y = None, penalty_points = None, priority = prio)  # No suitable location found :-(
 
     ##  Place the object
     def place(self, x, y, shape_arr):
