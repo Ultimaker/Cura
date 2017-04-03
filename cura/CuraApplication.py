@@ -988,7 +988,24 @@ class CuraApplication(QtApplication):
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
 
-    ##  Testing: arrange selected objects or all objects
+    ##  Arrange all objects.
+    @pyqtSlot()
+    def arrangeAll(self):
+        nodes = []
+        fixed_nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
+            nodes.append(node)
+        self.arrange(nodes, fixed_nodes)
+
+    ##  Arrange Selection
     @pyqtSlot()
     def arrangeSelection(self):
         nodes = Selection.getAllSelectedObjects()
@@ -1005,22 +1022,6 @@ class CuraApplication(QtApplication):
             if not node.isSelectable():
                 continue  # i.e. node with layer data
             fixed_nodes.append(node)
-        self.arrange(nodes, fixed_nodes)
-
-    @pyqtSlot()
-    def arrangeAll(self):
-        nodes = []
-        fixed_nodes = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode:
-                continue
-            if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            if not node.isSelectable():
-                continue  # i.e. node with layer data
-            nodes.append(node)
         self.arrange(nodes, fixed_nodes)
 
     ##  Arrange the nodes, given fixed nodes
