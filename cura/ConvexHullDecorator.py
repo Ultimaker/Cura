@@ -258,12 +258,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   influences the collision area.
     def _offsetHull(self, convex_hull):
         horizontal_expansion = self._getSettingProperty("xy_offset", "value")
-        if horizontal_expansion != 0:
+        mold_width = 0
+        if self._getSettingProperty("mold_enabled", "value"):
+            mold_width = self._getSettingProperty("mold_width", "value")
+        hull_offset = horizontal_expansion + mold_width
+        if hull_offset != 0:
             expansion_polygon = Polygon(numpy.array([
-                [-horizontal_expansion, -horizontal_expansion],
-                [-horizontal_expansion, horizontal_expansion],
-                [horizontal_expansion, horizontal_expansion],
-                [horizontal_expansion, -horizontal_expansion]
+                [-hull_offset, -hull_offset],
+                [-hull_offset, hull_offset],
+                [hull_offset, hull_offset],
+                [hull_offset, -hull_offset]
             ], numpy.float32))
             return convex_hull.getMinkowskiHull(expansion_polygon)
         else:
@@ -331,4 +335,4 @@ class ConvexHullDecorator(SceneNodeDecorator):
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset"}
+    _influencing_settings = {"xy_offset", "mold_enabled", "mold_width"}
