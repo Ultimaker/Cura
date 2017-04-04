@@ -4,8 +4,7 @@ import copy
 from UM.Math.Polygon import Polygon
 
 
-##  Polygon representation as an array
-#
+##  Polygon representation as an array for use with Arrange
 class ShapeArray:
     def __init__(self, arr, offset_x, offset_y, scale = 1):
         self.arr = arr
@@ -13,6 +12,9 @@ class ShapeArray:
         self.offset_y = offset_y
         self.scale = scale
 
+    ##  Instantiate from a bunch of vertices
+    #   \param vertices
+    #   \param scale  scale the coordinates
     @classmethod
     def fromPolygon(cls, vertices, scale = 1):
         # scale
@@ -31,7 +33,10 @@ class ShapeArray:
         arr = cls.arrayFromPolygon(shape, flip_vertices)
         return cls(arr, offset_x, offset_y)
 
-    ##  Return an offset and hull ShapeArray from a scene node.
+    ##  Instantiate an offset and hull ShapeArray from a scene node.
+    #   \param node source node where the convex hull must be present
+    #   \param min_offset offset for the offset ShapeArray
+    #   \param scale scale the coordinates
     @classmethod
     def fromNode(cls, node, min_offset, scale = 0.5):
         transform = node._transformation
@@ -52,11 +57,12 @@ class ShapeArray:
 
         return offset_shape_arr, hull_shape_arr
 
-
     ##  Create np.array with dimensions defined by shape
     #   Fills polygon defined by vertices with ones, all other values zero
     #   Only works correctly for convex hull vertices
     #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
+    #   \param shape  numpy format shape, [x-size, y-size]
+    #   \param vertices
     @classmethod
     def arrayFromPolygon(cls, shape, vertices):
         base_array = numpy.zeros(shape, dtype=float)  # Initialize your array of zeros
@@ -77,6 +83,9 @@ class ShapeArray:
     #   input indices against interpolated value
     #   Returns boolean array, with True inside and False outside of shape
     #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
+    #   \param p1 2-tuple with x, y for point 1
+    #   \param p2 2-tuple with x, y for point 2
+    #   \param base_array boolean array to project the line on
     @classmethod
     def _check(cls, p1, p2, base_array):
         if p1[0] == p2[0] and p1[1] == p2[1]:

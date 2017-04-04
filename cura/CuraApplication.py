@@ -847,9 +847,9 @@ class CuraApplication(QtApplication):
             op.push()
 
     ##  Create a number of copies of existing object.
-    #   object_id
-    #   count: number of copies
-    #   min_offset: minimum offset to other objects.
+    #   \param object_id
+    #   \param count number of copies
+    #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count, min_offset = 8):
         node = self.getController().getScene().findObject(object_id)
@@ -1027,6 +1027,8 @@ class CuraApplication(QtApplication):
         self.arrange(nodes, fixed_nodes)
 
     ##  Arrange the nodes, given fixed nodes
+    #   \param nodes nodes that we have to place
+    #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
     def arrange(self, nodes, fixed_nodes):
         min_offset = 8
 
