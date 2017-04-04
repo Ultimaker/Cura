@@ -1,17 +1,17 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Cura
+# Copyright (C) 2017 Ultimaker
+# This file is distributed under the same license as the Cura package.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Cura 2.5\n"
+"Report-Msgid-Bugs-To: https://github.com/Ultimaker/Cura\n"
 "POT-Creation-Date: 2017-03-27 17:27+0200\n"
-"PO-Revision-Date: 2017-01-27 16:32+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2017-04-04 11:26+0200\n"
+"Last-Translator: Bothof <info@bothof.nl>\n"
+"Language-Team: Bothof <info@bothof.nl>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -165,7 +165,7 @@ msgstr "No se puede iniciar un trabajo nuevo porque la impresora está ocupada o
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:450
 msgctxt "@info:status"
 msgid "This printer does not support USB printing because it uses UltiGCode flavor."
-msgstr ""
+msgstr "Esta impresora no es compatible con la impresión USB porque utiliza el tipo UltiGCode."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:454
 msgctxt "@info:status"
@@ -329,17 +329,17 @@ msgstr "Envía la solicitud de acceso a la impresora."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:336
 msgctxt "@info:status"
 msgid "Connected over the network. Please approve the access request on the printer."
-msgstr ""
+msgstr "Conectado a través de la red. Apruebe la solicitud de acceso en la impresora."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:343
 msgctxt "@info:status"
 msgid "Connected over the network."
-msgstr ""
+msgstr "Conectado a través de la red."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:356
 msgctxt "@info:status"
 msgid "Connected over the network. No access to control the printer."
-msgstr ""
+msgstr "Conectado a través de la red. No hay acceso para controlar la impresora."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/NetworkPrinterOutputDevice.py:361
 msgctxt "@info:status"
@@ -589,12 +589,12 @@ msgstr "Cura no muestra correctamente las capas si la impresión de alambre est�
 #: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade24to25/__init__.py:14
 msgctxt "@label"
 msgid "Version Upgrade 2.4 to 2.5"
-msgstr ""
+msgstr "Actualización de la versión 2.4 a la 2.5"
 
 #: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade24to25/__init__.py:17
 msgctxt "@info:whatsthis"
 msgid "Upgrades configurations from Cura 2.4 to Cura 2.5."
-msgstr ""
+msgstr "Actualiza la configuración de Cura 2.4 a Cura 2.5."
 
 #: /home/ruben/Projects/Cura/plugins/VersionUpgrade/VersionUpgrade21to22/__init__.py:14
 msgctxt "@label"
@@ -761,22 +761,22 @@ msgstr "Sólido"
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:12
 msgctxt "@label"
 msgid "G-code Reader"
-msgstr ""
+msgstr "Lector de GCode"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Allows loading and displaying G-code files."
-msgstr ""
+msgstr "Permite cargar y visualizar archivos GCode."
 
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/__init__.py:25
 msgctxt "@item:inlistbox"
 msgid "G File"
-msgstr ""
+msgstr "Archivo G"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/GCodeReader.py:227
 msgctxt "@info:status"
 msgid "Parsing G-code"
-msgstr ""
+msgstr "Analizar GCode"
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:12
 msgctxt "@label"
@@ -858,7 +858,7 @@ msgstr "Proporciona asistencia para la importación de perfiles de Cura."
 #, python-brace-format
 msgctxt "@label"
 msgid "Pre-sliced file {0}"
-msgstr ""
+msgstr "Archivo {0} presegmentado"
 
 #: /home/ruben/Projects/Cura/cura/PrinterOutputDevice.py:376
 msgctxt "@item:material"
@@ -948,11 +948,7 @@ msgid ""
 "        <p>We hope this picture of a kitten helps you recover from the shock.</p>\n"
 "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 "    "
-msgstr ""
-"<p>Se ha producido una excepción fatal de la que no podemos recuperarnos.</p>\n"
-"        <p>Esperamos que la imagen de este gatito le ayude a recuperarse del shock.</p>\n"
-"        <p>Use la siguiente información para enviar un informe de error a <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
-"    "
+msgstr "<p>Se ha producido una excepción fatal de la que no podemos recuperarnos.</p>\n        <p>Esperamos que la imagen de este gatito le ayude a recuperarse del shock.</p>\n        <p>Use la siguiente información para enviar un informe de error a <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n    "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:101
 msgctxt "@action:button"
@@ -984,13 +980,13 @@ msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr ""
+msgstr "Solo se puede cargar un archivo GCode a la vez. Se omitió la importación de {0}"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1201
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
-msgstr ""
+msgstr "No se puede abrir ningún archivo si se está cargando un archivo GCode. Se omitió la importación de {0}"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:27
 msgctxt "@title"
@@ -1224,10 +1220,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"Para imprimir directamente en la impresora a través de la red, asegúrese de que esta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n"
-"\n"
-"Seleccione la impresora de la siguiente lista:"
+msgstr "Para imprimir directamente en la impresora a través de la red, asegúrese de que esta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n\nSeleccione la impresora de la siguiente lista:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/DiscoverUM3Action.qml:77
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -1357,72 +1350,72 @@ msgstr "Cambia las secuencias de comandos de posprocesamiento."
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:59
 msgctxt "@label"
 msgid "View Mode: Layers"
-msgstr ""
+msgstr "Ver modo: Capas"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:75
 msgctxt "@label"
 msgid "Color scheme"
-msgstr ""
+msgstr "Combinación de colores"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:88
 msgctxt "@label:listbox"
 msgid "Material Color"
-msgstr ""
+msgstr "Color del material"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:92
 msgctxt "@label:listbox"
 msgid "Line Type"
-msgstr ""
+msgstr "Tipo de línea"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:133
 msgctxt "@label"
 msgid "Compatibility Mode"
-msgstr ""
+msgstr "Modo de compatibilidad"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:171
 msgctxt "@label"
 msgid "Extruder %1"
-msgstr ""
+msgstr "Extrusor %1"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:185
 msgctxt "@label"
 msgid "Show Travels"
-msgstr ""
+msgstr "Mostrar desplazamientos"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:206
 msgctxt "@label"
 msgid "Show Helpers"
-msgstr ""
+msgstr "Mostrar asistentes"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:227
 msgctxt "@label"
 msgid "Show Shell"
-msgstr ""
+msgstr "Mostrar perímetro"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:248
 msgctxt "@label"
 msgid "Show Infill"
-msgstr ""
+msgstr "Mostrar relleno"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:269
 msgctxt "@label"
 msgid "Only Show Top Layers"
-msgstr ""
+msgstr "Mostrar solo capas superiores"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:277
 msgctxt "@label"
 msgid "Show 5 Detailed Layers On Top"
-msgstr ""
+msgstr "Mostrar cinco capas detalladas en la parte superior"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:285
 msgctxt "@label"
 msgid "Top / Bottom"
-msgstr ""
+msgstr "Superior o inferior"
 
 #: /home/ruben/Projects/Cura/plugins/LayerView/LayerView.qml:306
 msgctxt "@label"
 msgid "Inner Wall"
-msgstr ""
+msgstr "Pared interior"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -1889,62 +1882,62 @@ msgstr "¿Está seguro de que desea cancelar la impresión?"
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:14
 msgctxt "@title:window"
 msgid "Discard or Keep changes"
-msgstr ""
+msgstr "Descartar o guardar cambios"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:59
 msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr ""
+msgstr "Ha personalizado parte de los ajustes del perfil.\n¿Desea descartar los cambios o guardarlos?"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:108
 msgctxt "@title:column"
 msgid "Profile settings"
-msgstr ""
+msgstr "Ajustes del perfil"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:115
 msgctxt "@title:column"
 msgid "Default"
-msgstr ""
+msgstr "Valor predeterminado"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:122
 msgctxt "@title:column"
 msgid "Customized"
-msgstr ""
+msgstr "Valor personalizado"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:152
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
-msgstr ""
+msgstr "Preguntar siempre"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:153
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:392
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
-msgstr ""
+msgstr "Descartar y no volver a preguntar"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:154
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:393
 msgctxt "@option:discardOrKeep"
 msgid "Keep and never ask again"
-msgstr ""
+msgstr "Guardar y no volver a preguntar"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:189
 msgctxt "@action:button"
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:202
 msgctxt "@action:button"
 msgid "Keep"
-msgstr ""
+msgstr "Guardar"
 
 #: /home/ruben/Projects/Cura/resources/qml/DiscardOrKeepProfileChangesDialog.qml:215
 msgctxt "@action:button"
 msgid "Create New Profile"
-msgstr ""
+msgstr "Crear nuevo perfil"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:29
 msgctxt "@title"
@@ -2004,7 +1997,7 @@ msgstr "Longitud del filamento"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:190
 msgctxt "@label"
 msgid "Cost per Meter"
-msgstr ""
+msgstr "Coste por metro"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MaterialView.qml:201
 msgctxt "@label"
@@ -2070,7 +2063,7 @@ msgstr "Idioma:"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:157
 msgctxt "@label"
 msgid "Currency:"
-msgstr ""
+msgstr "Moneda:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:173
 msgctxt "@label"
@@ -2080,12 +2073,12 @@ msgstr "Tendrá que reiniciar la aplicación para que tengan efecto los cambios 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:190
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
-msgstr ""
+msgstr "Segmentar automáticamente al cambiar los ajustes."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:199
 msgctxt "@option:check"
 msgid "Slice automatically"
-msgstr ""
+msgstr "Segmentar automáticamente"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:213
 msgctxt "@label"
@@ -2135,17 +2128,17 @@ msgstr "Arrastrar modelos a la placa de impresión de forma automática"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:278
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
-msgstr ""
+msgstr "¿Debe forzarse el modo de compatibilidad de la capa?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:283
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
-msgstr ""
+msgstr "Forzar modo de compatibilidad de la vista de capas (necesario reiniciar)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:299
 msgctxt "@label"
 msgid "Opening and saving files"
-msgstr ""
+msgstr "Abrir y guardar archivos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:305
 msgctxt "@info:tooltip"
@@ -2190,12 +2183,12 @@ msgstr "Mostrar un cuadro de diálogo de resumen al guardar el proyecto"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:369
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
-msgstr ""
+msgstr "Si ha realizado cambios en un perfil y, a continuación, ha cambiado a otro, aparecerá un cuadro de diálogo que le preguntará si desea guardar o descartar los cambios. También puede elegir el comportamiento predeterminado, así ese cuadro de diálogo no volverá a aparecer."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:378
 msgctxt "@label"
 msgid "Override Profile"
-msgstr ""
+msgstr "Anular perfil"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:427
 msgctxt "@label"
@@ -2447,7 +2440,7 @@ msgstr "00h 00min"
 #: /home/ruben/Projects/Cura/resources/qml/JobSpecs.qml:231
 msgctxt "@label"
 msgid "%1 m / ~ %2 g / ~ %4 %3"
-msgstr ""
+msgstr "%1 m / ~ %2 g / ~ %4 %3"
 
 #: /home/ruben/Projects/Cura/resources/qml/JobSpecs.qml:236
 msgctxt "@label"
@@ -2469,9 +2462,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Ultimaker B.V. ha desarrollado Cura en cooperación con la comunidad.\n"
-"Cura se enorgullece de utilizar los siguientes proyectos de código abierto:"
+msgstr "Ultimaker B.V. ha desarrollado Cura en cooperación con la comunidad.\nCura se enorgullece de utilizar los siguientes proyectos de código abierto:"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:118
 msgctxt "@label"
@@ -2536,7 +2527,7 @@ msgstr "Biblioteca de apoyo para gestionar archivos STL"
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:131
 msgctxt "@label"
 msgid "Support library for handling 3MF files"
-msgstr ""
+msgstr "Biblioteca de compatibilidad para trabajar con archivos 3MF"
 
 #: /home/ruben/Projects/Cura/resources/qml/AboutDialog.qml:132
 msgctxt "@label"
@@ -2594,10 +2585,7 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"Algunos ajustes ocultos utilizan valores diferentes de los valores normales calculados.\n"
-"\n"
-"Haga clic para mostrar estos ajustes."
+msgstr "Algunos ajustes ocultos utilizan valores diferentes de los valores normales calculados.\n\nHaga clic para mostrar estos ajustes."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:60
 msgctxt "@label Header for list of settings."
@@ -2625,10 +2613,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"Este ajuste tiene un valor distinto del perfil.\n"
-"\n"
-"Haga clic para restaurar el valor del perfil."
+msgstr "Este ajuste tiene un valor distinto del perfil.\n\nHaga clic para restaurar el valor del perfil."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:282
 msgctxt "@label"
@@ -2636,10 +2621,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"Este ajuste se calcula normalmente pero actualmente tiene un valor absoluto establecido.\n"
-"\n"
-"Haga clic para restaurar el valor calculado."
+msgstr "Este ajuste se calcula normalmente pero actualmente tiene un valor absoluto establecido.\n\nHaga clic para restaurar el valor calculado."
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:185
 msgctxt "@tooltip"
@@ -2661,7 +2643,7 @@ msgctxt "@label:listbox"
 msgid ""
 "Print Setup disabled\n"
 "G-code files cannot be modified"
-msgstr ""
+msgstr "Ajustes de impresión deshabilitados\nNo se pueden modificar los archivos GCode"
 
 #: /home/ruben/Projects/Cura/resources/qml/Sidebar.qml:572
 msgctxt "@tooltip"
@@ -2696,7 +2678,7 @@ msgstr "Abrir &reciente"
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:33
 msgctxt "@info:status"
 msgid "No printer connected"
-msgstr ""
+msgstr "No hay ninguna impresora conectada"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:90
 msgctxt "@label"
@@ -2706,22 +2688,22 @@ msgstr "Extremo caliente"
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:119
 msgctxt "@tooltip"
 msgid "The current temperature of this extruder."
-msgstr ""
+msgstr "Temperatura actual de este extrusor."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:154
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
-msgstr ""
+msgstr "Color del material en este extrusor."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:186
 msgctxt "@tooltip"
 msgid "The material in this extruder."
-msgstr ""
+msgstr "Material en este extrusor."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:218
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
-msgstr ""
+msgstr "Tobera insertada en este extrusor."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:249
 msgctxt "@label"
@@ -2731,32 +2713,32 @@ msgstr "Placa de impresión"
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:278
 msgctxt "@tooltip"
 msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
-msgstr ""
+msgstr "Temperatura objetivo de la plataforma calentada. La plataforma se calentará o enfriará en función de esta temperatura. Si el valor es 0, el calentamiento de la plataforma se desactivará."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:310
 msgctxt "@tooltip"
 msgid "The current temperature of the heated bed."
-msgstr ""
+msgstr "Temperatura actual de la plataforma caliente."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:379
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the bed to."
-msgstr ""
+msgstr "Temperatura a la que se va a precalentar la plataforma."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:573
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:573
 msgctxt "@button"
 msgid "Pre-heat"
-msgstr ""
+msgstr "Precalentar"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:600
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
-msgstr ""
+msgstr "Caliente la plataforma antes de imprimir. Puede continuar ajustando la impresión durante el calentamiento, así no tendrá que esperar a que la plataforma se caliente para poder imprimir."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:633
 msgctxt "@label"
@@ -2951,7 +2933,7 @@ msgstr "Cargue un modelo en 3D"
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:33
 msgctxt "@label:PrintjobStatus"
 msgid "Ready to slice"
-msgstr ""
+msgstr "Preparado para segmentar"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:35
 msgctxt "@label:PrintjobStatus"
@@ -2971,17 +2953,17 @@ msgstr "No se puede segmentar."
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:41
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing unavailable"
-msgstr ""
+msgstr "No se puede segmentar"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:136
 msgctxt "@label:Printjob"
 msgid "Prepare"
-msgstr ""
+msgstr "Preparar"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:136
 msgctxt "@label:Printjob"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: /home/ruben/Projects/Cura/resources/qml/SaveButton.qml:276
 msgctxt "@info:tooltip"
@@ -3212,10 +3194,7 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"Algunos valores de los ajustes o sobrescrituras son distintos a los valores almacenados en el perfil.\n"
-"\n"
-"Haga clic para abrir el administrador de perfiles."
+msgstr "Algunos valores de los ajustes o sobrescrituras son distintos a los valores almacenados en el perfil.\n\nHaga clic para abrir el administrador de perfiles."
 
 #~ msgctxt "@info:status"
 #~ msgid "Connected over the network to {0}. Please approve the access request on the printer."

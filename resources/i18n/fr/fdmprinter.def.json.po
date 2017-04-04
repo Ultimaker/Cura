@@ -1,12 +1,18 @@
+# Cura JSON setting files
+# Copyright (C) 2017 Ultimaker
+# This file is distributed under the same license as the Cura package.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
-"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
+"Project-Id-Version: Cura 2.5\n"
+"Report-Msgid-Bugs-To: http://github.com/Ultimaker/Cura\n"
 "POT-Creation-Date: 2017-03-27 17:27+0000\n"
-"PO-Revision-Date: 2017-01-27 16:32+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"PO-Revision-Date: 2017-04-04 11:27+0200\n"
+"Last-Translator: Bothof <info@bothof.nl>\n"
+"Language-Team: Bothof <info@bothof.nl>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "Gcode commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Commandes Gcode à exécuter au tout début, séparées par \n"
-"."
+msgstr "Commandes Gcode à exécuter au tout début, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -65,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "Gcode commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Commandes Gcode à exécuter à la toute fin, séparées par \n"
-"."
+msgstr "Commandes Gcode à exécuter à la toute fin, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -252,12 +254,12 @@ msgstr "Distance depuis la pointe du bec sur laquelle stationner le filament lor
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
 msgid "Enable Nozzle Temperature Control"
-msgstr ""
+msgstr "Permettre le contrôle de la température de la buse"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
-msgstr ""
+msgstr "Contrôler ou non la température depuis Cura. Désactivez cette option pour contrôler la température de la buse depuis une source autre que Cura."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
@@ -807,37 +809,37 @@ msgstr "Zig Zag"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 label"
 msgid "Bottom Pattern Initial Layer"
-msgstr ""
+msgstr "Couche initiale du motif du dessous."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 description"
 msgid "The pattern on the bottom of the print on the first layer."
-msgstr ""
+msgstr "Motif au bas de l'impression sur la première couche."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option lines"
 msgid "Lines"
-msgstr ""
+msgstr "Lignes"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "Concentrique"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
-msgstr ""
+msgstr "Sens de la ligne du dessus / dessous"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles description"
 msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr ""
+msgstr "Une liste de sens de ligne (exprimés en nombres entiers) à utiliser lorsque les couches du haut / bas utilisent le motif en lignes ou en zig zag. Les éléments de la liste sont utilisés de manière séquentielle à mesure de l'avancement des couches. La liste reprend depuis le début lorsque la fin est atteinte. Les éléments de la liste sont séparés par des virgules et la liste entière est encadrée entre crochets. La valeur par défaut est une liste vide, ce qui signifie que les angles traditionnels par défaut seront utilisés (45 et 135 degrés)."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1072,12 +1074,12 @@ msgstr "Zig Zag"
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
 msgid "Infill Line Directions"
-msgstr ""
+msgstr "Sens de ligne de remplissage"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
-msgstr ""
+msgstr "Une liste de sens de ligne (exprimés en nombres entiers) à utiliser. Les éléments de la liste sont utilisés de manière séquentielle à mesure de l'avancement des couches. La liste reprend depuis le début lorsque la fin est atteinte. Les éléments de la liste sont séparés par des virgules et la liste entière est encadrée entre crochets. La valeur par défaut est une liste vide, ce qui signifie que les angles traditionnels par défaut seront utilisés (45 et 135 degrés pour les motifs en lignes et en zig zag et 45 degrés pour tout autre motif)."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_mult label"
@@ -1192,72 +1194,72 @@ msgstr "Imprime le remplissage avant d'imprimer les parois. Imprimer les parois 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
-msgstr ""
+msgstr "Zone de remplissage minimum"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
-msgstr ""
+msgstr "Ne pas générer de zones de remplissage plus petites que cela (utiliser plutôt une couche extérieure)"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_into_infill label"
 msgid "Expand Skins Into Infill"
-msgstr ""
+msgstr "Étendre les couches extérieures dans le remplissage"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_into_infill description"
 msgid "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin."
-msgstr ""
+msgstr "Étendre les zones de couche extérieure du haut et / ou du bas des surfaces planes. Par défaut, les couches extérieures s'arrêtent sous les lignes de paroi qui entourent le remplissage, mais cela peut entraîner l'apparition de trous si la densité de remplissage est faible. Ce paramètre permet d'étendre les couches extérieures au-delà des lignes de paroi de sorte que le remplissage sur les couches suivantes repose sur la couche extérieure."
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins label"
 msgid "Expand Upper Skins"
-msgstr ""
+msgstr "Étendre les couches extérieures supérieures"
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins description"
 msgid "Expand upper skin areas (areas with air above) so that they support infill above."
-msgstr ""
+msgstr "Étendre les zones de couches extérieures supérieures (zones ayant de l'air au-dessus d'elles) de sorte que le remplissage au-dessus repose sur elles."
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins label"
 msgid "Expand Lower Skins"
-msgstr ""
+msgstr "Étendre les couches extérieures inférieures"
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins description"
 msgid "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below."
-msgstr ""
+msgstr "Étendre les zones de couches extérieures inférieures (zones ayant de l'air en-dessous d'elles) de sorte à ce qu'elles soient ancrées par les couches de remplissage au-dessus et en-dessous."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
 msgid "Skin Expand Distance"
-msgstr ""
+msgstr "Distance d'expansion de la couche extérieure"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient."
-msgstr ""
+msgstr "La distance par laquelle les couches extérieures sont étendues dans le remplissage. La distance par défaut est suffisante pour combler l'espace entre les lignes de remplissage et remédiera aux trous qui apparaissent là où la couche extérieure rencontre la paroi lorsque la densité de remplissage est faible. Une distance moindre sera souvent suffisante."
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
 msgid "Maximum Skin Angle for Expansion"
-msgstr ""
+msgstr "Angle maximum de la couche extérieure pour l'expansion"
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr ""
+msgstr "Les couches extérieures supérieures / inférieures des surfaces supérieures et / ou inférieures de votre objet possédant un angle supérieur à ce paramètre ne seront pas étendues. Cela permet d'éviter d'étendre les zones de couche extérieure étroites qui sont créées lorsque la surface du modèle possède une pente proche de la verticale. Un angle de 0° est horizontal, et un angle de 90° est vertical."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
 msgid "Minimum Skin Width for Expansion"
-msgstr ""
+msgstr "Largeur minimum de la couche extérieure pour l'expansion"
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion description"
 msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr ""
+msgstr "Les zones de couche extérieure plus étroites que cette valeur ne seront pas étendues. Cela permet d'éviter d'étendre les zones de couche extérieure étroites qui sont créées lorsque la surface du modèle possède une pente proche de la verticale."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -1297,7 +1299,7 @@ msgstr "Température d’impression"
 #: fdmprinter.def.json
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
-msgstr ""
+msgstr "Température utilisée pour l'impression."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature_layer_0 label"
@@ -1357,7 +1359,7 @@ msgstr "Température du plateau"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print."
-msgstr ""
+msgstr "Température utilisée pour le plateau chauffant. Si elle est définie sur 0, le plateau ne sera pas chauffé pour cette impression."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2097,12 +2099,12 @@ msgstr "Pas de couche extérieure"
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
-msgstr ""
+msgstr "Rétracter avant la paroi externe"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
-msgstr ""
+msgstr "Toujours rétracter lors du déplacement pour commencer une paroi externe."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -2482,7 +2484,7 @@ msgstr "Distance Z des supports"
 #: fdmprinter.def.json
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr ""
+msgstr "Distance entre le dessus/dessous du support et l'impression. Cet écart offre un espace permettant de retirer les supports une fois l'impression du modèle terminée. Cette valeur est arrondie au chiffre supérieur jusqu'à atteindre un multiple de la hauteur de la couche."
 
 #: fdmprinter.def.json
 msgctxt "support_top_distance label"
@@ -2814,9 +2816,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"La distance horizontale entre la jupe et la première couche de l’impression.\n"
-"Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+msgstr "La distance horizontale entre la jupe et la première couche de l’impression.\nIl s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3833,9 +3833,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\n"
-"Cela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
+msgstr "Distance d’un déplacement ascendant qui est extrudé à mi-vitesse.\nCela peut permettre une meilleure adhérence aux couches précédentes sans surchauffer le matériau dans ces couches. Uniquement applicable à l'impression filaire."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
