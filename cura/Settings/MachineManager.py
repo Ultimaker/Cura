@@ -25,6 +25,9 @@ from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.ExtruderManager import ExtruderManager
 
+from .GlobalStack import GlobalStack
+from .CuraStackBuilder import CuraStackBuilder
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -44,10 +47,16 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.activeQualityChanged)
 
         self._stacks_have_errors = None
-        self._empty_variant_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_variant")[0]
-        self._empty_material_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_material")[0]
-        self._empty_quality_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality")[0]
+        #self._empty_variant_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_variant")[0]
+        #self._empty_material_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_material")[0]
+        #self._empty_quality_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality")[0]
+        #self._empty_quality_changes_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality_changes")[0]
+
+        self._empty_variant_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        self._empty_material_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        self._empty_quality_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
         self._empty_quality_changes_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality_changes")[0]
+
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
@@ -349,30 +358,38 @@ class MachineManager(QObject):
         if definitions:
             definition = definitions[0]
             name = self._createUniqueName("machine", "", name, definition.getName())
-            new_global_stack = ContainerStack(name)
-            new_global_stack.addMetaDataEntry("type", "machine")
-            container_registry.addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
             material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
             quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
 
-            current_settings_instance_container = InstanceContainer(name + "_current_settings")
-            current_settings_instance_container.addMetaDataEntry("machine", name)
-            current_settings_instance_container.addMetaDataEntry("type", "user")
-            current_settings_instance_container.setDefinition(definitions[0])
-            container_registry.addContainer(current_settings_instance_container)
+            #new_global_stack = GlobalStack(name)
+            #container_registry.addContainer(new_global_stack)
 
-            new_global_stack.addContainer(definition)
-            if variant_instance_container:
-                new_global_stack.addContainer(variant_instance_container)
-            if material_instance_container:
-                new_global_stack.addContainer(material_instance_container)
-            if quality_instance_container:
-                new_global_stack.addContainer(quality_instance_container)
+            new_global_stack = CuraStackBuilder.createGlobalStack(
+                new_stack_id = name,
+                definition = definition,
+                quality = quality_instance_container.getId(),
+                material = material_instance_container.getId(),
+                variant = variant_instance_container.getId(),
+            )
 
-            new_global_stack.addContainer(self._empty_quality_changes_container)
-            new_global_stack.addContainer(current_settings_instance_container)
+            #current_settings_instance_container = InstanceContainer(name + "_current_settings")
+            #current_settings_instance_container.addMetaDataEntry("machine", name)
+            #current_settings_instance_container.addMetaDataEntry("type", "user")
+            #current_settings_instance_container.setDefinition(definitions[0])
+            #container_registry.addContainer(current_settings_instance_container)
+
+            #new_global_stack.addContainer(definition)
+            #if variant_instance_container:
+                #new_global_stack.addContainer(variant_instance_container)
+            #if material_instance_container:
+                #new_global_stack.addContainer(material_instance_container)
+            #if quality_instance_container:
+                #new_global_stack.addContainer(quality_instance_container)
+
+            #new_global_stack.addContainer(self._empty_quality_changes_container)
+            #new_global_stack.addContainer(current_settings_instance_container)
 
             ExtruderManager.getInstance().addMachineExtruders(definition, new_global_stack.getId())
 
