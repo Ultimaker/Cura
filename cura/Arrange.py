@@ -11,7 +11,7 @@ import copy
 ##  Return object for  bestSpot
 LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points", "priority"])
 
-##  The Arrange classed is used together with ShapeArray. The class tries to find
+##  The Arrange classed is used together with ShapeArray. Use it to find
 #   good locations for objects that you try to put on a build place.
 #   Different priority schemes can be defined so it alters the behavior while using
 #   the same logic.
@@ -29,8 +29,8 @@ class Arrange:
     #
     #   Either fill in scene_root and create will find all sliceable nodes by itself,
     #   or use fixed_nodes to provide the nodes yourself.
-    #   \param scene_root
-    #   \param fixed_nodes
+    #   \param scene_root   Root for finding all scene nodes
+    #   \param fixed_nodes  Scene nodes to be placed
     @classmethod
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5):
         arranger = Arrange(220, 220, 110, 110, scale = scale)
@@ -52,6 +52,10 @@ class Arrange:
 
     ##  Find placement for a node (using offset shape) and place it (using hull shape)
     #   return the nodes that should be placed
+    #   \param node
+    #   \param offset_shape_arr ShapeArray with offset, used to find location
+    #   \param hull_shape_arr ShapeArray without offset, for placing the shape
+    #   \param count Number of objects
     def findNodePlacements(self, node, offset_shape_arr, hull_shape_arr, count = 1, step = 1):
         nodes = []
         start_prio = 0
@@ -75,7 +79,7 @@ class Arrange:
             nodes.append(new_node)
         return nodes
 
-    ##  Fill priority, take offset as center. lower is better
+    ##  Fill priority, center is best. lower value is better
     def centerFirst(self):
         # Distance x + distance y: creates diamond shape
         #self._priority = numpy.fromfunction(
@@ -86,7 +90,7 @@ class Arrange:
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
-    ##
+    ##  Fill priority, back is best. lower value is better
     def backFirst(self):
         self._priority = numpy.fromfunction(
             lambda i, j: 10 * j + abs(self._offset_x - i), self.shape, dtype=numpy.int32)
@@ -95,6 +99,9 @@ class Arrange:
 
     ##  Return the amount of "penalty points" for polygon, which is the sum of priority
     #   999999 if occupied
+    #   \param x x-coordinate to check shape
+    #   \param y y-coordinate
+    #   \param shape_arr the ShapeArray object to place
     def checkShape(self, x, y, shape_arr):
         x = int(self._scale * x)
         y = int(self._scale * y)
@@ -115,6 +122,9 @@ class Arrange:
 
     ##  Find "best" spot for ShapeArray
     #   Return namedtuple with properties x, y, penalty_points, priority
+    #   \param shape_arr ShapeArray
+    #   \param start_prio Start with this priority value (and skip the ones before)
+    #   \param step Slicing value, higher = more skips = faster but less accurate
     def bestSpot(self, shape_arr, start_prio = 0, step = 1):
         start_idx_list = numpy.where(self._priority_unique_values == start_prio)
         if start_idx_list:
@@ -135,7 +145,11 @@ class Arrange:
                     return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = prio)
         return LocationSuggestion(x = None, y = None, penalty_points = None, priority = prio)  # No suitable location found :-(
 
-    ##  Place the object
+    ##  Place the object.
+    #   Marks the locations in self._occupied and self._priority
+    #   \param x x-coordinate
+    #   \param y y-coordinate
+    #   \param shape_arr ShapeArray object
     def place(self, x, y, shape_arr):
         x = int(self._scale * x)
         y = int(self._scale * y)
