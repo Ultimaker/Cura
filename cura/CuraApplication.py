@@ -695,6 +695,10 @@ class CuraApplication(QtApplication):
             if type_name in ("Cura", "Actions"):
                 continue
 
+            # Ignore anything that is not a QML file.
+            if not path.endswith(".qml"):
+                continue
+
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
     def onSelectionChanged(self):
