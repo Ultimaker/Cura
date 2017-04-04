@@ -58,8 +58,10 @@ class Arrange:
         for i in range(count):
             new_node = copy.deepcopy(node)
 
-            x, y = self.bestSpot(
+            best_spot = self.bestSpot(
                 offset_shape_arr, start_prio = start_prio, step = step)
+            x, y = best_spot.x, best_spot.y
+            start_prio = best_spot.priority
             transformation = new_node._transformation
             if x is not None:  # We could find a place
                 transformation._data[0][3] = x

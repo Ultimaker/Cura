@@ -31,10 +31,9 @@ class ShapeArray:
         arr = cls.arrayFromPolygon(shape, flip_vertices)
         return cls(arr, offset_x, offset_y)
 
-    ##  Return an offset and hull ShapeArray from a scenenode.
+    ##  Return an offset and hull ShapeArray from a scene node.
     @classmethod
     def fromNode(cls, node, min_offset, scale = 0.5):
-        # hacky way to undo transformation
         transform = node._transformation
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
