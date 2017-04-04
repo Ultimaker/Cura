@@ -513,16 +513,16 @@ class ExtruderManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
         resolved_value = global_stack.getProperty(key, "resolve")
-        if resolved_value is not None:
-            user_container = global_stack.findContainer({"type": "user"})
-            quality_changes_container = global_stack.findContainer({"type": "quality_changes"})
-            if user_container.hasProperty(key, "value") or quality_changes_container.hasProperty(key, "value"):
-                # Normal case
-                value = global_stack.getProperty(key, "value")
-            else:
-                # We have a resolved value and we're using it because of no user and quality_changes value
-                value = resolved_value
-        else:
-            value = global_stack.getRawProperty(key, "value")
+        #if resolved_value is not None:
+            #user_container = global_stack.findContainer({"type": "user"})
+            #quality_changes_container = global_stack.findContainer({"type": "quality_changes"})
+            #if user_container.hasProperty(key, "value") or quality_changes_container.hasProperty(key, "value"):
+                ## Normal case
+                #value = global_stack.getProperty(key, "value")
+            #else:
+                ## We have a resolved value and we're using it because of no user and quality_changes value
+                #value = resolved_value
+        #else:
+            #value = global_stack.getRawProperty(key, "value")
 
-        return value
+        return resolved_value
