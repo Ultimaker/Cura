@@ -23,6 +23,8 @@ class GlobalStack(CuraContainerStack):
 
         self._extruders = []
 
+        self._resolving_property = None
+
     @pyqtProperty("QVariantList")
     def extruders(self) -> list:
         return self._extruders
@@ -37,8 +39,9 @@ class GlobalStack(CuraContainerStack):
     ##  Overridden from ContainerStack
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str) -> Any:
-        if property_name == "value":
+        if property_name == "value" and not self._resolving_property:
             if not self.hasUserValue(key):
+                self._resolving_property = key
                 resolve = super().getProperty(key, "resolve")
                 if resolve:
                     return resolve
