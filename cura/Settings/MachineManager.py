@@ -11,6 +11,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Decorators import deprecated
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
@@ -482,6 +483,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("Use activeMachine.name", "2.6")
     def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getName()
@@ -489,6 +491,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("Use activeMachine.id", "2.6")
     def activeMachineId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getId()
