@@ -4,6 +4,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.1
 
 import UM 1.2 as UM
 import Cura 1.1 as Cura
@@ -13,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 800
-    height: 400
+    width: 800 * Screen.devicePixelRatio
+    height: 400 * Screen.devicePixelRatio
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -68,7 +69,7 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").width
             anchors.left: parent.left
             anchors.right: parent.right
-            height: base.height - 150
+            height: base.height - 150 * Screen.devicePixelRatio
             id: tableView
             Component
             {
