@@ -128,7 +128,7 @@ class Arrange:
     def bestSpot(self, shape_arr, start_prio = 0, step = 1):
         start_idx_list = numpy.where(self._priority_unique_values == start_prio)
         if start_idx_list:
-            start_idx = start_idx_list[0]
+            start_idx = start_idx_list[0][0]
         else:
             start_idx = 0
         for prio in self._priority_unique_values[start_idx::step]:
