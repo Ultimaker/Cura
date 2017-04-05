@@ -31,6 +31,8 @@ Item
     property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
+    property alias arrangeAll: arrangeAllAction;
+    property alias arrangeSelection: arrangeSelectionAction;
     property alias resetAllTranslation: resetAllTranslationAction;
     property alias resetAll: resetAllAction;
 
@@ -264,6 +266,21 @@ Item
         iconName: "document-revert";
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll();
+    }
+
+    Action
+    {
+        id: arrangeAllAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models");
+        onTriggered: Printer.arrangeAll();
+        shortcut: "Ctrl+R";
+    }
+
+    Action
+    {
+        id: arrangeSelectionAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection");
+        onTriggered: Printer.arrangeSelection();
     }
 
     Action

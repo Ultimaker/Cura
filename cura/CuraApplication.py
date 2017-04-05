@@ -31,6 +31,9 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from cura.Arrange import Arrange
+from cura.ShapeArray import ShapeArray
+from cura.ConvexHullDecorator import ConvexHullDecorator
 from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
@@ -838,22 +841,29 @@ class CuraApplication(QtApplication):
             op.push()
 
     ##  Create a number of copies of existing object.
+    #   \param object_id
+    #   \param count number of copies
+    #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
-    def multiplyObject(self, object_id, count):
+    def multiplyObject(self, object_id, count, min_offset = 8):
         node = self.getController().getScene().findObject(object_id)
 
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
-        if node:
-            current_node = node
-            # Find the topmost group
-            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
-                current_node = current_node.getParent()
+        # If object is part of a group, multiply group
+        current_node = node
+        while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+            current_node = current_node.getParent()
 
+        root = self.getController().getScene().getRoot()
+        arranger = Arrange.create(scene_root = root)
+        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset = min_offset)
+        nodes = arranger.findNodePlacements(current_node, offset_shape_arr, hull_shape_arr, count = count)
+
+        if nodes:
             op = GroupedOperation()
-            for _ in range(count):
-                new_node = copy.deepcopy(current_node)
+            for new_node in nodes:
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
 
@@ -972,6 +982,83 @@ class CuraApplication(QtApplication):
                     center_y = 0
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
+
+    ##  Arrange all objects.
+    @pyqtSlot()
+    def arrangeAll(self):
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
+            nodes.append(node)
+        self.arrange(nodes, fixed_nodes = [])
+
+    ##  Arrange Selection
+    @pyqtSlot()
+    def arrangeSelection(self):
+        nodes = Selection.getAllSelectedObjects()
+
+        # What nodes are on the build plate and are not being moved
+        fixed_nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode:
+                continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            if not node.isSelectable():
+                continue  # i.e. node with layer data
+            if node in nodes:  # exclude selected node from fixed_nodes
+                continue
+            fixed_nodes.append(node)
+        self.arrange(nodes, fixed_nodes)
+
+    ##  Arrange the nodes, given fixed nodes
+    #   \param nodes nodes that we have to place
+    #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
+    def arrange(self, nodes, fixed_nodes):
+        min_offset = 8
+
+        arranger = Arrange.create(fixed_nodes = fixed_nodes)
+
+        # Collect nodes to be placed
+        nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
+        for node in nodes:
+            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+            nodes_arr.append((offset_shape_arr.arr.shape[0] * offset_shape_arr.arr.shape[1], node, offset_shape_arr, hull_shape_arr))
+
+        # Sort nodes biggest area first
+        nodes_arr.sort(key = lambda item: item[0])
+        nodes_arr.reverse()
+
+        # Place nodes one at a time
+        start_prio = 0
+        for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
+            # For performance reasons, we assume that when a location does not fit,
+            # it will also not fit for the next object (while what can be untrue).
+            # We also skip possibilities by slicing through the possibilities (step = 10)
+            best_spot = arranger.bestSpot(offset_shape_arr, start_prio = start_prio, step = 10)
+            x, y = best_spot.x, best_spot.y
+            start_prio = best_spot.priority
+            if x is not None:  # We could find a place
+                arranger.place(x, y, hull_shape_arr)  # take place before the next one
+
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                if node.getBoundingBox():
+                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                else:
+                    center_y = 0
+
+                op = GroupedOperation()
+                op.addOperation(SetTransformOperation(node, Vector(x, center_y, y)))
+                op.push()
 
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
@@ -1209,6 +1296,10 @@ class CuraApplication(QtApplication):
         filename = job.getFileName()
         self._currently_loading_files.remove(filename)
 
+        root = self.getController().getScene().getRoot()
+        arranger = Arrange.create(scene_root = root)
+        min_offset = 8
+
         for node in nodes:
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
@@ -1229,8 +1320,18 @@ class CuraApplication(QtApplication):
 
             scene = self.getController().getScene()
 
-            op = AddSceneNodeOperation(node, scene.getRoot())
-            op.push()
+            # If there is no convex hull for the node, start calculating it and continue.
+            if not node.getDecorator(ConvexHullDecorator):
+                node.addDecorator(ConvexHullDecorator())
+
+            # find node location
+            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+            # step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
+            nodes = arranger.findNodePlacements(node, offset_shape_arr, hull_shape_arr, count = 1, step = 10)
+
+            for new_node in nodes:
+                op = AddSceneNodeOperation(new_node, scene.getRoot())
+                op.push()
 
             scene.sceneChanged.emit(node)
 
