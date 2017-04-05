@@ -1041,12 +1041,9 @@ class CuraApplication(QtApplication):
         # Place nodes one at a time
         start_prio = 0
         for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
-            # For performance reasons, we assume that when a location does not fit,
-            # it will also not fit for the next object (while what can be untrue).
             # We also skip possibilities by slicing through the possibilities (step = 10)
             best_spot = arranger.bestSpot(offset_shape_arr, start_prio = start_prio, step = 10)
             x, y = best_spot.x, best_spot.y
-            start_prio = best_spot.priority
             if x is not None:  # We could find a place
                 arranger.place(x, y, hull_shape_arr)  # take place before the next one
 
