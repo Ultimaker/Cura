@@ -774,7 +774,7 @@ UM.MainWindow
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
             {
-                openFilesIncludingProjectsDialog.fileUrlList = fileUrlList.slice();
+                openFilesIncludingProjectsDialog.fileUrls = fileUrlList.slice();
                 openFilesIncludingProjectsDialog.show();
                 return;
             }
