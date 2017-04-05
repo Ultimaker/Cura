@@ -61,3 +61,5 @@ class ArrangeObjectsJob(Job):
 
                 transformation_operation = SetTransformOperation(node, Vector(x, center_y, y))
                 transformation_operation.push()
+
+            Job.yieldThread()
