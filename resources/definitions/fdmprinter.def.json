@@ -3241,7 +3241,7 @@
                         "support_bottom_enable":
                         {
                             "label": "Enable Support Bottom",
-                            "description": "Generate a dense flooring below the support where it rests on the model. This will create a skin between the model and support.",
+                            "description": "Generate dense floors below the support where it rests on the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
                             "value": "support_interface_enable",
