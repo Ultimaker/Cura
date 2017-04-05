@@ -33,7 +33,7 @@ UM.Dialog
     }
     Item
     {
-        anchors.fille: parent
+        anchors.fill: parent
         anchors.margins: 20 * Screen.devicePixelRatio
 
         UM.I18nCatalog
