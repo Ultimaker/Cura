@@ -1040,10 +1040,19 @@ class CuraApplication(QtApplication):
 
         # Place nodes one at a time
         start_prio = 0
+        last_size = None
         for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
+            # For performance reasons, we assume that when a location does not fit,
+            # it will also not fit for the next object (while what can be untrue).
             # We also skip possibilities by slicing through the possibilities (step = 10)
+            if last_size == size:  # This optimization works if many of the objects have the same size
+                start_prio = last_priority
+            else:
+                start_prio = 0
             best_spot = arranger.bestSpot(offset_shape_arr, start_prio = start_prio, step = 10)
             x, y = best_spot.x, best_spot.y
+            last_size = size
+            last_priority = best_spot.priority
             if x is not None:  # We could find a place
                 arranger.place(x, y, hull_shape_arr)  # take place before the next one
 
