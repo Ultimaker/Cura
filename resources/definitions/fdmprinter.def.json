@@ -3339,7 +3339,7 @@
                         "support_bottom_density":
                         {
                             "label": "Support Bottom Density",
-                            "description": "Adjusts the density of the bottoms of the support structure. A higher value results in better adhesion of the support on top of the model.",
+                            "description": "The density of the bottoms of the support structure. A higher value results in better adhesion of the support on top of the model.",
                             "unit": "%",
                             "type": "float",
                             "default_value": 100,
@@ -3371,7 +3371,7 @@
                         "support_roof_density":
                         {
                             "label": "Support Roof Density",
-                            "description": "Adjusts the density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
+                            "description": "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
                             "unit": "%",
                             "type": "float",
                             "default_value": 100,
