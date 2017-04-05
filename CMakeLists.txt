@@ -67,5 +67,3 @@ else()
     install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
-
-include(CPackConfig.cmake)
