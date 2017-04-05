@@ -1,5 +1,6 @@
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
+from UM.Math.Vector import Vector
 from cura.ShapeArray import ShapeArray
 
 from collections import namedtuple
@@ -66,15 +67,12 @@ class Arrange:
                 offset_shape_arr, start_prio = start_prio, step = step)
             x, y = best_spot.x, best_spot.y
             start_prio = best_spot.priority
-            transformation = new_node._transformation
             if x is not None:  # We could find a place
-                transformation._data[0][3] = x
-                transformation._data[2][3] = y
+                new_node.setPosition(Vector(x, 0, y))
                 self.place(x, y, hull_shape_arr)  # take place before the next one
             else:
                 Logger.log("d", "Could not find spot!")
-                transformation._data[0][3] = 200
-                transformation._data[2][3] = 100 + i * 20
+                new_node.setPosition(Vector(200, 0, 100 + i * 20))
 
             nodes.append(new_node)
         return nodes
