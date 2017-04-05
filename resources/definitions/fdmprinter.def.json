@@ -3447,7 +3447,7 @@
                         "support_roof_pattern":
                         {
                             "label": "Support Roof Pattern",
-                            "description": "The pattern with which the bottoms of the support are printed.",
+                            "description": "The pattern with which the roofs of the support are printed.",
                             "type": "enum",
                             "options":
                             {
