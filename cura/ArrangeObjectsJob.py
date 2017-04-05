@@ -5,6 +5,7 @@ from UM.Job import Job
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -42,7 +43,7 @@ class ArrangeObjectsJob(Job):
         start_priority = 0
         last_priority = start_priority
         last_size = None
-
+        grouped_operation = GroupedOperation()
         for idx, (size, node, offset_shape_arr, hull_shape_arr) in enumerate(nodes_arr):
             # For performance reasons, we assume that when a location does not fit,
             # it will also not fit for the next object (while what can be untrue).
@@ -63,10 +64,10 @@ class ArrangeObjectsJob(Job):
                     center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
                 else:
                     center_y = 0
+                grouped_operation.addOperation(SetTransformOperation(node, Vector(x, center_y, y)))
 
-                transformation_operation = SetTransformOperation(node, Vector(x, center_y, y))
-                transformation_operation.push()
             status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
             Job.yieldThread()
 
+        grouped_operation.push()
         status_message.hide()
