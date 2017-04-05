@@ -38,6 +38,8 @@ from cura.SetParentOperation import SetParentOperation
 from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
+from cura.ArrangeObjectsJob import ArrangeObjectsJob
+
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
@@ -1020,51 +1022,12 @@ class CuraApplication(QtApplication):
             fixed_nodes.append(node)
         self.arrange(nodes, fixed_nodes)
 
-    ##  Arrange the nodes, given fixed nodes
+    ##  Arrange a set of nodes given a set of fixed nodes
     #   \param nodes nodes that we have to place
     #   \param fixed_nodes nodes that are placed in the arranger before finding spots for nodes
     def arrange(self, nodes, fixed_nodes):
-        min_offset = 8
-
-        arranger = Arrange.create(fixed_nodes = fixed_nodes)
-
-        # Collect nodes to be placed
-        nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
-        for node in nodes:
-            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
-            nodes_arr.append((offset_shape_arr.arr.shape[0] * offset_shape_arr.arr.shape[1], node, offset_shape_arr, hull_shape_arr))
-
-        # Sort nodes biggest area first
-        nodes_arr.sort(key = lambda item: item[0])
-        nodes_arr.reverse()
-
-        # Place nodes one at a time
-        start_prio = 0
-        last_size = None
-        for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
-            # For performance reasons, we assume that when a location does not fit,
-            # it will also not fit for the next object (while what can be untrue).
-            # We also skip possibilities by slicing through the possibilities (step = 10)
-            if last_size == size:  # This optimization works if many of the objects have the same size
-                start_prio = last_priority
-            else:
-                start_prio = 0
-            best_spot = arranger.bestSpot(offset_shape_arr, start_prio = start_prio, step = 10)
-            x, y = best_spot.x, best_spot.y
-            last_size = size
-            last_priority = best_spot.priority
-            if x is not None:  # We could find a place
-                arranger.place(x, y, hull_shape_arr)  # take place before the next one
-
-                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-                if node.getBoundingBox():
-                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
-                else:
-                    center_y = 0
-
-                op = GroupedOperation()
-                op.addOperation(SetTransformOperation(node, Vector(x, center_y, y)))
-                op.push()
+        job = ArrangeObjectsJob(nodes, fixed_nodes)
+        job.start()
 
     ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
