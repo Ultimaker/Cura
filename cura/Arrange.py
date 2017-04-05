@@ -79,18 +79,17 @@ class Arrange:
             nodes.append(new_node)
         return nodes
 
-    ##  Fill priority, center is best. lower value is better
+    ##  Fill priority, center is best. Lower value is better
+    #   This is a strategy for the arranger.
     def centerFirst(self):
-        # Distance x + distance y: creates diamond shape
-        #self._priority = numpy.fromfunction(
-        #    lambda i, j: abs(self._offset_x-i)+abs(self._offset_y-j), self.shape, dtype=numpy.int32)
         # Square distance: creates a more round shape
         self._priority = numpy.fromfunction(
             lambda i, j: (self._offset_x - i) ** 2 + (self._offset_y - j) ** 2, self.shape, dtype=numpy.int32)
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
-    ##  Fill priority, back is best. lower value is better
+    ##  Fill priority, back is best. Lower value is better
+    #   This is a strategy for the arranger.
     def backFirst(self):
         self._priority = numpy.fromfunction(
             lambda i, j: 10 * j + abs(self._offset_x - i), self.shape, dtype=numpy.int32)
