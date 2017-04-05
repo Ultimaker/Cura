@@ -1330,13 +1330,17 @@ class CuraApplication(QtApplication):
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
 
-            # find node location
-            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
-            # step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-            nodes = arranger.findNodePlacements(node, offset_shape_arr, hull_shape_arr, count = 1, step = 10)
+            if node.callDecoration("isSliceable"):
+                # find node location
+                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+                # step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
+                nodes = arranger.findNodePlacements(node, offset_shape_arr, hull_shape_arr, count = 1, step = 10)
 
-            for new_node in nodes:
-                op = AddSceneNodeOperation(new_node, scene.getRoot())
+                for new_node in nodes:
+                    op = AddSceneNodeOperation(new_node, scene.getRoot())
+                    op.push()
+            else:
+                op = AddSceneNodeOperation(node, scene.getRoot())
                 op.push()
 
             scene.sceneChanged.emit(node)
