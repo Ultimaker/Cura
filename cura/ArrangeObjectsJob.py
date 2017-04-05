@@ -6,6 +6,8 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Message import Message
+from UM.i18n import i18nCatalog
+i18n_catalog = i18nCatalog("cura")
 
 from cura.ZOffsetDecorator import ZOffsetDecorator
 from cura.Arrange import Arrange
@@ -22,6 +24,8 @@ class ArrangeObjectsJob(Job):
         self._min_offset = min_offset
 
     def run(self):
+        status_message = Message(i18n_catalog.i18nc("@info:status", "Finding new location for objects"), lifetime = 0, dismissable=False, progress = 0)
+        status_message.show()
         arranger = Arrange.create(fixed_nodes = self._fixed_nodes)
 
         # Collect nodes to be placed
@@ -38,7 +42,8 @@ class ArrangeObjectsJob(Job):
         start_priority = 0
         last_priority = start_priority
         last_size = None
-        for size, node, offset_shape_arr, hull_shape_arr in nodes_arr:
+
+        for idx, (size, node, offset_shape_arr, hull_shape_arr) in enumerate(nodes_arr):
             # For performance reasons, we assume that when a location does not fit,
             # it will also not fit for the next object (while what can be untrue).
             # We also skip possibilities by slicing through the possibilities (step = 10)
@@ -61,5 +66,7 @@ class ArrangeObjectsJob(Job):
 
                 transformation_operation = SetTransformOperation(node, Vector(x, center_y, y))
                 transformation_operation.push()
-
+            status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
             Job.yieldThread()
+
+        status_message.hide()
