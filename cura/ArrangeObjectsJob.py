@@ -5,6 +5,7 @@ from UM.Job import Job
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Logger import Logger
 from UM.Message import Message
@@ -66,10 +67,10 @@ class ArrangeObjectsJob(Job):
 
                 arranger.place(x, y, hull_shape_arr)  # take place before the next one
 
-                grouped_operation.addOperation(SetTransformOperation(node, Vector(x, center_y, y)))
+                grouped_operation.addOperation(TranslateOperation(node, Vector(x, center_y, y), set_position = True))
             else:
                 Logger.log("d", "Arrange all: could not find spot!")
-                grouped_operation.addOperation(SetTransformOperation(node, Vector(200, center_y, - idx * 20)))
+                grouped_operation.addOperation(TranslateOperation(node, Vector(200, center_y, - idx * 20), set_position = True))
 
             status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
             Job.yieldThread()
