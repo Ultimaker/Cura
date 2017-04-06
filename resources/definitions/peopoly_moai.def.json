@@ -1,7 +1,7 @@
 {
     "id": "peopoly_moai",
     "version": 2,
-    "name": "Moai",
+    "name": "Peopoly Moai",
     "inherits": "ultimaker",
     "metadata": {
         "visible": true,
@@ -46,17 +46,55 @@
             "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
         },
 
+        "line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "wall_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "wall_line_width_x": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "skin_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "infill_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "skirt_brim_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
         "layer_height": {
-            "maximum_value_warning": "0.5"
+            "maximum_value_warning": "0.5",
+            "minimum_value_warning": "0.02"
         },
         "layer_height_0": {
-            "maximum_value_warning": "0.5"
+            "maximum_value_warning": "0.5",
+            "minimum_value_warning": "0.02"
         },
         "top_bottom_thickness": {
             "minimum_value_warning": "0.1"
         },
         "infill_sparse_thickness": {
             "maximum_value_warning": "0.5"
+        },
+        "speed_print": {
+            "maximum_value_warning": "300"
+        },
+        "speed_infill": {
+            "maximum_value_warning": "300"
+        },
+        "speed_wall": {
+            "maximum_value_warning": "300"
+        },
+        "speed_wall_0": {
+            "maximum_value_warning": "300"
+        },
+        "speed_wall_x": {
+            "maximum_value_warning": "300"
+        },
+        "speed_topbottom": {
+            "maximum_value_warning": "300"
         },
 
         "acceleration_enabled": {
