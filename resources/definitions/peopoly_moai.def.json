@@ -14,7 +14,9 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Moai" },
+        "machine_name": {
+            "default_value": "Moai"
+        },
         "machine_width": {
             "default_value": 130
         },
@@ -70,7 +72,8 @@
         },
         "layer_height_0": {
             "maximum_value_warning": "0.5",
-            "minimum_value_warning": "0.02"
+            "minimum_value_warning": "0.02",
+            "value": "0.1"
         },
         "top_bottom_thickness": {
             "minimum_value_warning": "0.1"
@@ -85,16 +88,31 @@
             "maximum_value_warning": "300"
         },
         "speed_wall": {
-            "maximum_value_warning": "300"
+            "maximum_value_warning": "300",
+            "value": "speed_print"
         },
         "speed_wall_0": {
             "maximum_value_warning": "300"
         },
         "speed_wall_x": {
-            "maximum_value_warning": "300"
+            "maximum_value_warning": "300",
+            "value": "speed_print"
         },
         "speed_topbottom": {
-            "maximum_value_warning": "300"
+            "maximum_value_warning": "300",
+            "value": "speed_print"
+        },
+        "speed_travel": {
+            "value": "300"
+        },
+        "speed_travel_layer_0": {
+            "value": "300"
+        },
+        "speed_layer_0": {
+            "value": "5"
+        },
+        "speed_slowdown_layers": {
+            "value": "2"
         },
 
         "acceleration_enabled": {
