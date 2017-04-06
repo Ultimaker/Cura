@@ -463,6 +463,14 @@ Cura.MachineAction
                 }
             }
 
+            onCurrentIndexChanged:
+            {
+                if(currentIndex > 0)
+                {
+                    ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
+                }
+            }
+
             Repeater
             {
                 model: (machineExtruderCountProvider.properties.value > 1) ? parseInt(machineExtruderCountProvider.properties.value) : 0
