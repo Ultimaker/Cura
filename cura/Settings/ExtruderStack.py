@@ -18,6 +18,8 @@ class ExtruderStack(CuraContainerStack):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
+        self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
+
     @override(ContainerStack)
     def setNextStack(self, stack):
         super().setNextStack(stack)

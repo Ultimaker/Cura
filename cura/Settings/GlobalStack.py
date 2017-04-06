@@ -21,6 +21,8 @@ class GlobalStack(CuraContainerStack):
     def __init__(self, container_id: str, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
+        self.addMetaDataEntry("type", "machine") # For backward compatibility
+
         self._extruders = []
 
         self._resolving_property = None
