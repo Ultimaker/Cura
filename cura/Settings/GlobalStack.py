@@ -39,12 +39,13 @@ class GlobalStack(CuraContainerStack):
     ##  Overridden from ContainerStack
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str) -> Any:
-        if property_name == "value" and not self._resolving_property:
-            if not self.hasUserValue(key):
+        if not self.definition.findDefinitions(key = key):
+            return None
+
+        if property_name == "value" and self._resolving_property != key:
+            if not self.hasUserValue(key) and len(self._extruders) > 1:
                 self._resolving_property = key
                 resolve = super().getProperty(key, "resolve")
-                if resolve:
-                    return resolve
 
         return super().getProperty(key, property_name)
 
