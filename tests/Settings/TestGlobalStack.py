@@ -132,19 +132,23 @@ def test_addExtruder(global_stack):
     mock_definition = unittest.mock.MagicMock()
     mock_definition.getProperty = lambda key, property: 2 if key == "machine_extruder_count" and property == "value" else None
 
-    global_stack.definition = mock_definition
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
+        global_stack.definition = mock_definition
 
     assert len(global_stack.extruders) == 0
     first_extruder = unittest.mock.MagicMock()
-    global_stack.addExtruder(first_extruder)
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
+        global_stack.addExtruder(first_extruder)
     assert len(global_stack.extruders) == 1
     assert global_stack.extruders[0] == first_extruder
     second_extruder = unittest.mock.MagicMock()
-    global_stack.addExtruder(second_extruder)
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
+        global_stack.addExtruder(second_extruder)
     assert len(global_stack.extruders) == 2
     assert global_stack.extruders[1] == second_extruder
-    with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
-        global_stack.addExtruder(unittest.mock.MagicMock())
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
+        with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
+            global_stack.addExtruder(unittest.mock.MagicMock())
     assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
 
 ##  Tests whether the container types are properly enforced on the stack.
