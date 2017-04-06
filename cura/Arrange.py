@@ -72,7 +72,7 @@ class Arrange:
                 self.place(x, y, hull_shape_arr)  # take place before the next one
             else:
                 Logger.log("d", "Could not find spot!")
-                new_node.setPosition(Vector(200, 0, 100 + i * 20))
+                new_node.setPosition(Vector(200, 0, 100 - i * 20))
 
             nodes.append(new_node)
         return nodes
