@@ -716,7 +716,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from printer
     def connect(self):
-        self.close()  # Ensure that previous connection (if any) is killed.
+        if self.isConnected():
+            self.close()  # Close previous connection
 
         self._createNetworkManager()
 

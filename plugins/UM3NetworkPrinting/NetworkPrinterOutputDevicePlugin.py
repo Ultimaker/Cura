@@ -157,12 +157,14 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         for key in self._printers:
             if key == active_machine.getMetaDataEntry("um_network_key"):
-                Logger.log("d", "Connecting [%s]..." % key)
-                self._printers[key].connect()
-                self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+                if not self._printers[key].isConnected():
+                    Logger.log("d", "Connecting [%s]..." % key)
+                    self._printers[key].connect()
+                    self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
                 if self._printers[key].isConnected():
                     Logger.log("d", "Closing connection [%s]..." % key)
+                    self._printers[key].connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
                     self._printers[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
