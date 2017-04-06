@@ -815,10 +815,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     return  # Stop trying to zip, abort was called.
 
                 if self._use_gzip:
+                    batched_line += line
                     # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
                     # Compressing line by line in this case is extremely slow, so we need to batch them.
                     if len(batched_line) < max_chars_per_line:
-                        batched_line += line
                         continue
 
                     byte_array_file_data += _compress_data_and_notify_qt(batched_line)
