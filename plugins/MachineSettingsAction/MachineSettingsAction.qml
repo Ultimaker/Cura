@@ -31,15 +31,6 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             font.pointSize: 18;
         }
-        Label
-        {
-            id: pageDescription
-            anchors.top: pageTitle.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            width: parent.width
-            wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "Please enter the correct settings for your printer below:")
-        }
 
         TabView
         {
@@ -47,7 +38,7 @@ Cura.MachineAction
             height: parent.height - y
             width: parent.width
             anchors.left: parent.left
-            anchors.top: pageDescription.bottom
+            anchors.top: pageTitle.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
             property real columnWidth: Math.floor((width - 3 * UM.Theme.getSize("default_margin").width) / 2)
@@ -81,6 +72,7 @@ Cura.MachineAction
                             {
                                 columns: 3
                                 columnSpacing: UM.Theme.getSize("default_margin").width
+                                rowSpacing: UM.Theme.getSize("default_lining").width
 
                                 Label
                                 {
@@ -269,6 +261,7 @@ Cura.MachineAction
                             {
                                 columns: 3
                                 columnSpacing: UM.Theme.getSize("default_margin").width
+                                rowSpacing: UM.Theme.getSize("default_lining").width
 
                                 Label
                                 {
@@ -405,8 +398,8 @@ Cura.MachineAction
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "mm")
-                                     visible: nozzleSizeField.visible
-                               }
+                                    visible: nozzleSizeField.visible
+                                }
                             }
                         }
                     }
@@ -472,12 +465,135 @@ Cura.MachineAction
 
             Repeater
             {
-                model: (machineExtruderCountProvider.properties.value > 1) ? base.extrudersModel : 0
+                model: (machineExtruderCountProvider.properties.value > 1) ? parseInt(machineExtruderCountProvider.properties.value) : 0
 
                 Tab
                 {
-                    title: model.name
+                    title: base.extrudersModel.getItem(index).name
                     anchors.margins: UM.Theme.getSize("default_margin").width
+
+                    Column
+                    {
+                        spacing: UM.Theme.getSize("default_margin").width
+
+                        Label
+                        {
+                            text: catalog.i18nc("@label", "Printer Settings")
+                            font.bold: true
+                        }
+
+                        Grid
+                        {
+                            columns: 3
+                            columnSpacing: UM.Theme.getSize("default_margin").width
+                            rowSpacing: UM.Theme.getSize("default_lining").width
+
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "Nozzle size")
+                            }
+                            TextField
+                            {
+                                id: extruderNozzleSizeField
+                                text: extruderNozzleSizeProvider.properties.value
+                                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                onEditingFinished: { extruderNozzleSizeProvider.setPropertyValue("value", text) }
+                            }
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "mm")
+                            }
+
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "Nozzle offset X")
+                            }
+                            TextField
+                            {
+                                id: extruderOffsetXField
+                                text: extruderOffsetXProvider.properties.value
+                                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                onEditingFinished: { extruderOffsetXProvider.setPropertyValue("value", text) }
+                            }
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "mm")
+                            }
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "Nozzle offset Y")
+                            }
+                            TextField
+                            {
+                                id: extruderOffsetYField
+                                text: extruderOffsetYProvider.properties.value
+                                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                                onEditingFinished: { extruderOffsetYProvider.setPropertyValue("value", text) }
+                            }
+                            Label
+                            {
+                                text: catalog.i18nc("@label", "mm")
+                            }
+
+                        }
+
+                        Row
+                        {
+                            spacing: UM.Theme.getSize("default_margin").width
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            height: parent.height - y
+                            Column
+                            {
+                                height: parent.height
+                                width: settingsTabs.columnWidth
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Extruder Start Gcode")
+                                }
+                                TextArea
+                                {
+                                    id: extruderStartGcodeField
+                                    width: parent.width
+                                    height: parent.height - y
+                                    font: UM.Theme.getFont("fixed")
+                                    wrapMode: TextEdit.NoWrap
+                                    text: extruderStartGcodeProvider.properties.value
+                                    onActiveFocusChanged:
+                                    {
+                                        if(!activeFocus)
+                                        {
+                                            extruderStartGcodeProvider.setPropertyValue("value", extruderStartGcodeField.text)
+                                        }
+                                    }
+                                }
+                            }
+                            Column {
+                                height: parent.height
+                                width: settingsTabs.columnWidth
+                                Label
+                                {
+                                    text: catalog.i18nc("@label", "Extruder End Gcode")
+                                }
+                                TextArea
+                                {
+                                    id: extruderEndGcodeField
+                                    width: parent.width
+                                    height: parent.height - y
+                                    font: UM.Theme.getFont("fixed")
+                                    wrapMode: TextEdit.NoWrap
+                                    text: extruderEndGcodeProvider.properties.value
+                                    onActiveFocusChanged:
+                                    {
+                                        if(!activeFocus)
+                                        {
+                                            extruderEndGcodeProvider.setPropertyValue("value", extruderEndGcodeField.text)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -639,5 +755,56 @@ Cura.MachineAction
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
     }
+
+    UM.SettingPropertyProvider
+    {
+        id: extruderNozzleSizeProvider
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "machine_nozzle_size"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: extruderOffsetXProvider
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "machine_nozzle_offset_x"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: extruderOffsetYProvider
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "machine_nozzle_offset_y"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: extruderStartGcodeProvider
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "machine_extruder_start_code"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: extruderEndGcodeProvider
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "machine_extruder_end_code"
+        watchedProperties: [ "value" ]
+        storeIndex: manager.containerIndex
+    }
+
 
 }
