@@ -6,6 +6,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -54,20 +55,25 @@ class ArrangeObjectsJob(Job):
                 start_priority = 0
             best_spot = arranger.bestSpot(offset_shape_arr, start_prio=start_priority, step=10)
             x, y = best_spot.x, best_spot.y
-            last_size = size
-            last_priority = best_spot.priority
+            node.removeDecorator(ZOffsetDecorator)
+            if node.getBoundingBox():
+                center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+            else:
+                center_y = 0
             if x is not None:  # We could find a place
+                last_size = size
+                last_priority = best_spot.priority
+
                 arranger.place(x, y, hull_shape_arr)  # take place before the next one
 
-                node.removeDecorator(ZOffsetDecorator)
-                if node.getBoundingBox():
-                    center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
-                else:
-                    center_y = 0
                 grouped_operation.addOperation(SetTransformOperation(node, Vector(x, center_y, y)))
+            else:
+                Logger.log("d", "Arrange all: could not find spot!")
+                grouped_operation.addOperation(SetTransformOperation(node, Vector(200, center_y, - idx * 20)))
 
             status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
             Job.yieldThread()
 
         grouped_operation.push()
+
         status_message.hide()
