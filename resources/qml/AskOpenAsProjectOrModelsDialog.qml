@@ -6,6 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
+import QtQuick.Window 2.1
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -17,13 +18,13 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 420
-    height: 140
+    width: 420 * Screen.devicePixelRatio
+    height: 140 * Screen.devicePixelRatio
 
     maximumHeight: height
     maximumWidth: width
-    minimumHeight: height
-    minimumWidth: width
+    minimumHeight: maximumHeight
+    minimumWidth: maximumWidth
 
     modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
 
@@ -60,10 +61,8 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.margins: UM.Theme.getSize("default_margin").width
-        anchors.left: parent.left
-        anchors.right: parent.right
-        spacing: UM.Theme.getSize("default_margin").width
+        anchors.margins: 20 * Screen.devicePixelRatio
+        spacing: 10 * Screen.devicePixelRatio
 
         Label
         {
@@ -93,7 +92,7 @@ UM.Dialog
                 id: openAsProjectButton
                 text: catalog.i18nc("@action:button", "Open as project");
                 anchors.right: importModelsButton.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width * Screen.devicePixelRatio
                 isDefault: true
                 onClicked:
                 {
