@@ -62,6 +62,8 @@ from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.ExtruderStack import ExtruderStack
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -427,16 +429,18 @@ class CuraApplication(QtApplication):
 
         mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
         file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-        stack_type = stack.getMetaDataEntry("type", None)
+
         path = None
-        if not stack_type or stack_type == "machine":
+        if isinstance(stack, GlobalStack):
             path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-        elif stack_type == "extruder_train":
+        elif isinstance(stack, ExtruderStack):
             path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-        if path:
-            stack.setPath(path)
-            with SaveFile(path, "wt") as f:
-                f.write(data)
+        else:
+            path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
+
+        stack.setPath(path)
+        with SaveFile(path, "wt") as f:
+            f.write(data)
 
 
     @pyqtSlot(str, result = QUrl)
