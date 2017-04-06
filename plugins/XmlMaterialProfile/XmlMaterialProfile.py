@@ -564,7 +564,8 @@ class XmlMaterialProfile(InstanceContainer):
         "processing temperature graph": "material_flow_temp_graph",
         "print cooling": "cool_fan_speed",
         "retraction amount": "retraction_amount",
-        "retraction speed": "retraction_speed"
+        "retraction speed": "retraction_speed",
+        "retraction prime speed": "retraction_prime_speed"
     }
     __unmapped_settings = [
         "hardware compatible"
