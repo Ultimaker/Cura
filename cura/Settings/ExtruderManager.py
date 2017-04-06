@@ -512,7 +512,7 @@ class ExtruderManager(QObject):
     def getResolveOrValue(key):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
-        resolved_value = global_stack.getProperty(key, "resolve")
+        resolved_value = global_stack.getProperty(key, "value")
         #if resolved_value is not None:
             #user_container = global_stack.findContainer({"type": "user"})
             #quality_changes_container = global_stack.findContainer({"type": "quality_changes"})
