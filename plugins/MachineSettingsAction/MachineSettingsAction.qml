@@ -377,6 +377,26 @@ Cura.MachineAction
                                     {
                                         machineExtruderCountProvider.setPropertyValue("value", index + 1);
                                         manager.forceUpdate();
+                                        if(index > 0)
+                                        {
+                                            // multiextrusion; make sure one of these extruder stacks is active
+                                            if(ExtruderManager.activeExtruderIndex == -1)
+                                            {
+                                                ExtruderManager.setActiveExtruderIndex(0);
+                                            }
+                                            else if(ExtruderManager.activeExtruderIndex > index)
+                                            {
+                                                ExtruderManager.setActiveExtruderIndex(index);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // single extrusion; make sure the machine stack is active
+                                            if(ExtruderManager.activeExtruderIndex != -1)
+                                            {
+                                                ExtruderManager.setActiveExtruderIndex(-1);
+                                            }
+                                        }
                                     }
                                 }
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height; visible: extruderCountComboBox.visible }
@@ -435,6 +455,7 @@ Cura.MachineAction
                                 }
                             }
                         }
+
                         Column {
                             height: parent.height
                             width: settingsTabs.columnWidth
