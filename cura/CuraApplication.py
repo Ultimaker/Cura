@@ -39,6 +39,7 @@ from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
 from cura.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.MultiplyObjectsJob import MultiplyObjectsJob
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -321,8 +322,6 @@ class CuraApplication(QtApplication):
                 infill_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
-
-
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -852,26 +851,9 @@ class CuraApplication(QtApplication):
     #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count, min_offset = 8):
-        node = self.getController().getScene().findObject(object_id)
-
-        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
-            node = Selection.getSelectedObject(0)
-
-        # If object is part of a group, multiply group
-        current_node = node
-        while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
-            current_node = current_node.getParent()
-
-        root = self.getController().getScene().getRoot()
-        arranger = Arrange.create(scene_root = root)
-        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset = min_offset)
-        nodes = arranger.findNodePlacements(current_node, offset_shape_arr, hull_shape_arr, count = count)
-
-        if nodes:
-            op = GroupedOperation()
-            for new_node in nodes:
-                op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
-            op.push()
+        job = MultiplyObjectsJob(object_id, count, min_offset)
+        job.start()
+        return
 
     ##  Center object on platform.
     @pyqtSlot("quint64")

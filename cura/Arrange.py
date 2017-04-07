@@ -29,6 +29,7 @@ class Arrange:
         self._scale = scale  # convert input coordinates to arrange coordinates
         self._offset_x = offset_x
         self._offset_y = offset_y
+        self._start_priority = 0
 
     ##  Helper to create an Arranger instance
     #
@@ -71,14 +72,12 @@ class Arrange:
     #   \param count Number of objects
     def findNodePlacements(self, node, offset_shape_arr, hull_shape_arr, count = 1, step = 1):
         nodes = []
-        start_prio = 0
         for i in range(count):
             new_node = copy.deepcopy(node)
-
             best_spot = self.bestSpot(
-                offset_shape_arr, start_prio = start_prio, step = step)
+                offset_shape_arr, start_prio = self._start_priority, step = step)
             x, y = best_spot.x, best_spot.y
-            start_prio = best_spot.priority
+            self._start_priority = best_spot.priority
             # Ensure that the object is above the build platform
             new_node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
             if new_node.getBoundingBox():
