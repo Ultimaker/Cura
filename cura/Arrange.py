@@ -13,11 +13,14 @@ import copy
 ##  Return object for  bestSpot
 LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points", "priority"])
 
+
 ##  The Arrange classed is used together with ShapeArray. Use it to find
 #   good locations for objects that you try to put on a build place.
 #   Different priority schemes can be defined so it alters the behavior while using
 #   the same logic.
 class Arrange:
+    build_volume = None
+
     def __init__(self, x, y, offset_x, offset_y, scale=1):
         self.shape = (y, x)
         self._priority = numpy.zeros((x, y), dtype=numpy.int32)
@@ -50,6 +53,14 @@ class Arrange:
             points = copy.deepcopy(vertices._points)
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)
+            
+        # If a build volume was set, add the disallowed areas
+        if Arrange.build_volume:
+            disallowed_areas = Arrange.build_volume.getDisallowedAreas()
+            for area in disallowed_areas:
+                points = copy.deepcopy(area._points)
+                shape_arr = ShapeArray.fromPolygon(points, scale = scale)
+                arranger.place(0, 0, shape_arr)
         return arranger
 
     ##  Find placement for a node (using offset shape) and place it (using hull shape)

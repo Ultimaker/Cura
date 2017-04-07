@@ -593,6 +593,9 @@ class CuraApplication(QtApplication):
         # The platform is a child of BuildVolume
         self._volume = BuildVolume.BuildVolume(root)
 
+        # Set the build volume of the arranger to the used build volume
+        Arrange.build_volume = self._volume
+
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
