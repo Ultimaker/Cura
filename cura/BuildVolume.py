@@ -208,7 +208,7 @@ class BuildVolume(SceneNode):
                 # Mark the node as outside the build volume if the bounding box test fails.
                 if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
                     node._outside_buildarea = True
-                    break
+                    continue
 
                 convex_hull = node.callDecoration("getConvexHull")
                 if convex_hull:
@@ -220,7 +220,7 @@ class BuildVolume(SceneNode):
                         if overlap is None:
                             continue
                         node._outside_buildarea = True
-                        break
+                        continue
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:

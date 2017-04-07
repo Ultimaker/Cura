@@ -2,6 +2,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
 from cura.ShapeArray import ShapeArray
+from cura import ZOffsetDecorator
 
 from collections import namedtuple
 
@@ -67,12 +68,19 @@ class Arrange:
                 offset_shape_arr, start_prio = start_prio, step = step)
             x, y = best_spot.x, best_spot.y
             start_prio = best_spot.priority
+            # Ensure that the object is above the build platform
+            new_node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+            if new_node.getBoundingBox():
+                center_y = new_node.getWorldPosition().y - new_node.getBoundingBox().bottom
+            else:
+                center_y = 0
+
             if x is not None:  # We could find a place
-                new_node.setPosition(Vector(x, 0, y))
-                self.place(x, y, hull_shape_arr)  # take place before the next one
+                new_node.setPosition(Vector(x, center_y, y))
+                self.place(x, y, hull_shape_arr)  # place the object in arranger
             else:
                 Logger.log("d", "Could not find spot!")
-                new_node.setPosition(Vector(200, 0, 100 - i * 20))
+                new_node.setPosition(Vector(200, center_y, 100 - i * 20))
 
             nodes.append(new_node)
         return nodes
