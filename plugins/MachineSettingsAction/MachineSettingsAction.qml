@@ -14,6 +14,23 @@ Cura.MachineAction
 {
     id: base
     property var extrudersModel: Cura.ExtrudersModel{}
+    property int extruderTabsCount: 0
+
+    Component.onCompleted:
+    {
+        // Populate extruder tabs after a short delay, because otherwise the tabs that are added when
+        // the dialog is created are stuck.
+        extruderTabsCountDelay.start();
+    }
+
+    Timer
+    {
+        id: extruderTabsCountDelay
+        repeat: false
+        interval: 1
+
+        onTriggered: base.extruderTabsCount = (machineExtruderCountProvider.properties.value > 1) ? parseInt(machineExtruderCountProvider.properties.value) : 0
+    }
 
     anchors.fill: parent;
     Item
@@ -377,16 +394,14 @@ Cura.MachineAction
                                     {
                                         machineExtruderCountProvider.setPropertyValue("value", index + 1);
                                         manager.forceUpdate();
+                                        base.extruderTabsCount = (index > 0) ? index + 1 : 0;
+
                                         if(index > 0)
                                         {
                                             // multiextrusion; make sure one of these extruder stacks is active
                                             if(ExtruderManager.activeExtruderIndex == -1)
                                             {
                                                 ExtruderManager.setActiveExtruderIndex(0);
-                                            }
-                                            else if(ExtruderManager.activeExtruderIndex > index)
-                                            {
-                                                ExtruderManager.setActiveExtruderIndex(index);
                                             }
                                         }
                                         else
@@ -488,18 +503,21 @@ Cura.MachineAction
             {
                 if(currentIndex > 0)
                 {
-                    ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
+                    ExtruderManager.setActiveExtruderIndex(settingsTabs.getTab(currentIndex).extruderIndex);
                 }
             }
 
             Repeater
             {
-                model: (machineExtruderCountProvider.properties.value > 1) ? parseInt(machineExtruderCountProvider.properties.value) : 0
+                id: extruderTabsRepeater
+                model: base.extruderTabsCount
 
                 Tab
                 {
                     title: base.extrudersModel.getItem(index).name
                     anchors.margins: UM.Theme.getSize("default_margin").width
+
+                    property int extruderIndex: index
 
                     Column
                     {
