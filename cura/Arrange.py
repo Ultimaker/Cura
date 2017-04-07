@@ -21,7 +21,7 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 class Arrange:
     build_volume = None
 
-    def __init__(self, x, y, offset_x, offset_y, scale=1):
+    def __init__(self, x, y, offset_x, offset_y, scale= 1.0):
         self.shape = (y, x)
         self._priority = numpy.zeros((x, y), dtype=numpy.int32)
         self._priority_unique_values = []
@@ -48,7 +48,8 @@ class Arrange:
                 # Only count sliceable objects
                 if node_.callDecoration("isSliceable"):
                     fixed_nodes.append(node_)
-        # place all objects fixed nodes
+
+        # Place all objects fixed nodes
         for fixed_node in fixed_nodes:
             vertices = fixed_node.callDecoration("getConvexHull")
             points = copy.deepcopy(vertices._points)
@@ -146,8 +147,8 @@ class Arrange:
             start_idx = start_idx_list[0][0]
         else:
             start_idx = 0
-        for prio in self._priority_unique_values[start_idx::step]:
-            tryout_idx = numpy.where(self._priority == prio)
+        for priority in self._priority_unique_values[start_idx::step]:
+            tryout_idx = numpy.where(self._priority == priority)
             for idx in range(len(tryout_idx[0])):
                 x = tryout_idx[0][idx]
                 y = tryout_idx[1][idx]
@@ -157,8 +158,8 @@ class Arrange:
                 # array to "world" coordinates
                 penalty_points = self.checkShape(projected_x, projected_y, shape_arr)
                 if penalty_points != 999999:
-                    return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = prio)
-        return LocationSuggestion(x = None, y = None, penalty_points = None, priority = prio)  # No suitable location found :-(
+                    return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = priority)
+        return LocationSuggestion(x = None, y = None, penalty_points = None, priority = priority)  # No suitable location found :-(
 
     ##  Place the object.
     #   Marks the locations in self._occupied and self._priority
