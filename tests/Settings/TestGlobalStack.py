@@ -4,7 +4,6 @@
 import os.path #To find the test files.
 import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
-import copy
 import functools
 
 import cura.Settings.GlobalStack #The module we're testing.
