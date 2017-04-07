@@ -65,6 +65,10 @@ def container_registry():
         return [MockContainer(id, registry.typeMetaData)]
     registry.findContainers = functools.partial(findContainers, registry)
 
+    def getEmptyInstanceContainer():
+        return MockContainer(container_id = "empty")
+    registry.getEmptyInstanceContainer = getEmptyInstanceContainer
+
     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
     UM.Settings.ContainerStack._containerRegistry = registry
 
