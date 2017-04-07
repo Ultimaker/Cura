@@ -450,7 +450,8 @@ def test_getPropertyWithResolve(global_stack):
     empty = unittest.mock.MagicMock() #Sets no value or resolve.
     empty.getProperty = unittest.mock.MagicMock(return_value = None)
 
-    global_stack.definition = resolve_and_value
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
+        global_stack.definition = resolve_and_value
     assert global_stack.getProperty("material_bed_temperature", "value") == 7.5 #Resolve wins in the definition.
     global_stack.userChanges = resolve_and_value
     assert global_stack.getProperty("material_bed_temperature", "value") == 5 #Value wins in other places.
