@@ -55,17 +55,14 @@ def container_registry():
     registry.typeMetaData = "registry_mock"
 
     def findInstanceContainers(registry, **kwargs):
-        if "id" not in kwargs:
-            return [MockContainer("test_container", registry.typeMetaData)]
-        else:
-            return [MockContainer(id, registry.typeMetaData)]
+        container_id = kwargs.get("id", default = "test_container")
+        return [MockContainer(container_id, registry.typeMetaData)]
     registry.findInstanceContainers = functools.partial(findInstanceContainers, registry)
 
     def findContainers(registry, container_type = None, id = None):
         if not id:
-            return [MockContainer("test_container", registry.typeMetaData)]
-        else:
-            return [MockContainer(id, registry.typeMetaData)]
+            id = "test_container"
+        return [MockContainer(id, registry.typeMetaData)]
     registry.findContainers = functools.partial(findContainers, registry)
 
     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
