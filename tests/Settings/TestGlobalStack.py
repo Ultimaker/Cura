@@ -55,7 +55,7 @@ def container_registry():
     registry.typeMetaData = "registry_mock"
 
     def findInstanceContainers(registry, **kwargs):
-        container_id = kwargs.get("id", default = "test_container")
+        container_id = kwargs.get("id", "test_container")
         return [MockContainer(container_id, registry.typeMetaData)]
     registry.findInstanceContainers = functools.partial(findInstanceContainers, registry)
 
