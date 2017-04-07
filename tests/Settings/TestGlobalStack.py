@@ -517,7 +517,8 @@ def test_removeContainer(global_stack):
 
 ##  Tests setting definitions by specifying an ID of a definition that exists.
 def test_setDefinitionByIdExists(global_stack, container_registry):
-    global_stack.setDefinitionById("some_definition") #The container registry always has a container with the ID.
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against type checking the DefinitionContainer.
+        global_stack.setDefinitionById("some_definition") #The container registry always has a container with the ID.
 
 ##  Tests setting definitions by specifying an ID of a definition that doesn't
 #   exist.
