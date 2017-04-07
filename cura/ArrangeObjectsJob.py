@@ -46,6 +46,7 @@ class ArrangeObjectsJob(Job):
         last_priority = start_priority
         last_size = None
         grouped_operation = GroupedOperation()
+        found_solution_for_all = True
         for idx, (size, node, offset_shape_arr, hull_shape_arr) in enumerate(nodes_arr):
             # For performance reasons, we assume that when a location does not fit,
             # it will also not fit for the next object (while what can be untrue).
@@ -70,6 +71,7 @@ class ArrangeObjectsJob(Job):
                 grouped_operation.addOperation(TranslateOperation(node, Vector(x, center_y, y), set_position = True))
             else:
                 Logger.log("d", "Arrange all: could not find spot!")
+                found_solution_for_all = False
                 grouped_operation.addOperation(TranslateOperation(node, Vector(200, center_y, - idx * 20), set_position = True))
 
             status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
@@ -78,3 +80,7 @@ class ArrangeObjectsJob(Job):
         grouped_operation.push()
 
         status_message.hide()
+
+        if not found_solution_for_all:
+            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"))
+            no_full_solution_message.show()

@@ -53,7 +53,7 @@ class Arrange:
             points = copy.deepcopy(vertices._points)
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)
-            
+
         # If a build volume was set, add the disallowed areas
         if Arrange.build_volume:
             disallowed_areas = Arrange.build_volume.getDisallowedAreas()
