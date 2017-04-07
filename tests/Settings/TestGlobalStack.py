@@ -7,6 +7,7 @@ import unittest.mock #To monkeypatch some mocks in place of dependencies.
 import functools
 
 import cura.Settings.GlobalStack #The module we're testing.
+import cura.Settings.CuraContainerStack #To get the list of container types.
 from cura.Settings.Exceptions import TooManyExtrudersError, InvalidContainerError, InvalidOperationError #To test raising these errors.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To test against the class DefinitionContainer.
 from UM.Settings.InstanceContainer import InstanceContainer #To test against the class InstanceContainer.
@@ -399,37 +400,43 @@ def test_deserializeMissingContainer(global_stack):
 #   containers.
 def test_getPropertyFallThrough(global_stack):
     #A few instance container mocks to put in the stack.
-    layer_height_5 = unittest.mock.MagicMock() #Sets layer height to 5.
-    layer_height_5.getProperty = lambda key, property: 5 if (key == "layer_height" and property == "value") else None
-    layer_height_5.hasProperty = lambda key: key == "layer_height"
-    layer_height_10 = unittest.mock.MagicMock() #Sets layer height to 10.
-    layer_height_10.getProperty = lambda key, property: 10 if (key == "layer_height" and property == "value") else None
-    layer_height_10.hasProperty = lambda key: key == "layer_height"
-    no_layer_height = unittest.mock.MagicMock() #No settings at all.
-    no_layer_height.getProperty = lambda key, property: None
-    no_layer_height.hasProperty = lambda key: False
+    mock_layer_heights = {} #For each container type, a mock container that defines layer height to something unique.
+    mock_no_settings = {} #For each container type, a mock container that has no settings at all.
+    for type_id, type_name in cura.Settings.CuraContainerStack._ContainerIndexes.IndexTypeMap.items():
+        container = unittest.mock.MagicMock()
+        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else None #Returns the container type ID as layer height, in order to identify it.
+        container.hasProperty = lambda key, property: key == "layer_height"
+        container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
+        mock_layer_heights[type_id] = container
 
-    global_stack.userChanges = no_layer_height
-    global_stack.qualityChanges = no_layer_height
-    global_stack.quality = no_layer_height
-    global_stack.material = no_layer_height
-    global_stack.variant = no_layer_height
-    global_stack.definitionChanges = no_layer_height
-    global_stack.definition = layer_height_5 #Here it is!
+        container = unittest.mock.MagicMock()
+        container.getProperty = unittest.mock.MagicMock(return_value = None) #Has no settings at all.
+        container.hasProperty = unittest.mock.MagicMock(return_value = False)
+        container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
+        mock_no_settings[type_id] = container
 
-    assert global_stack.getProperty("layer_height", "value") == 5
-    global_stack.definitionChanges = layer_height_10
-    assert global_stack.getProperty("layer_height", "value") == 10
-    global_stack.variant = layer_height_5
-    assert global_stack.getProperty("layer_height", "value") == 5
-    global_stack.material = layer_height_10
-    assert global_stack.getProperty("layer_height", "value") == 10
-    global_stack.quality = layer_height_5
-    assert global_stack.getProperty("layer_height", "value") == 5
-    global_stack.qualityChanges = layer_height_10
-    assert global_stack.getProperty("layer_height", "value") == 10
-    global_stack.userChanges = layer_height_5
-    assert global_stack.getProperty("layer_height", "value") == 5
+    global_stack.userChanges = mock_no_settings[cura.Settings.CuraContainerStack._ContainerIndexes.UserChanges]
+    global_stack.qualityChanges = mock_no_settings[cura.Settings.CuraContainerStack._ContainerIndexes.QualityChanges]
+    global_stack.quality = mock_no_settings[cura.Settings.CuraContainerStack._ContainerIndexes.Quality]
+    global_stack.material = mock_no_settings[cura.Settings.CuraContainerStack._ContainerIndexes.Material]
+    global_stack.variant = mock_no_settings[cura.Settings.CuraContainerStack._ContainerIndexes.Variant]
+    global_stack.definitionChanges = mock_no_settings[cura.Settings.CuraContainerStack._ContainerIndexes.DefinitionChanges]
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
+        global_stack.definition = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] #There's a layer height in here!
+
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.Definition
+    global_stack.definitionChanges = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.DefinitionChanges]
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.DefinitionChanges
+    global_stack.variant = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.Variant]
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.Variant
+    global_stack.material = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.Material]
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.Material
+    global_stack.quality = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.Quality]
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.Quality
+    global_stack.qualityChanges = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.QualityChanges]
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.QualityChanges
+    global_stack.userChanges = mock_layer_heights[cura.Settings.CuraContainerStack._ContainerIndexes.UserChanges]
+    assert global_stack.getProperty("layer_height", "value") == cura.Settings.CuraContainerStack._ContainerIndexes.UserChanges
 
 def test_getPropertyWithResolve(global_stack):
     #Define some containers for the stack.
