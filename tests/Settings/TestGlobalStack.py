@@ -48,7 +48,7 @@ class MockContainer:
     propertyChanged = unittest.mock.MagicMock()
 
 ##  Fake container registry that always provides all containers you ask of.
-@pytest.fixture()
+@pytest.yield_fixture()
 def container_registry():
     registry = unittest.mock.MagicMock()
 
