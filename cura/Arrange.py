@@ -84,11 +84,13 @@ class Arrange:
 
         if x is not None:  # We could find a place
             new_node.setPosition(Vector(x, center_y, y))
+            found_spot = True
             self.place(x, y, hull_shape_arr)  # place the object in arranger
         else:
-            Logger.log("d", "Could not find spot!")
+            Logger.log("d", "Could not find spot!"),
+            found_spot = False
             new_node.setPosition(Vector(200, center_y, 100))
-        return new_node
+        return new_node, found_spot
 
     ##  Fill priority, center is best. Lower value is better
     #   This is a strategy for the arranger.

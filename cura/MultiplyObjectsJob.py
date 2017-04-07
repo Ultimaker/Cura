@@ -49,10 +49,17 @@ class MultiplyObjectsJob(Job):
         arranger = Arrange.create(scene_root=root)
         offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset=self._min_offset)
         nodes = []
-
+        found_solution_for_all = True
         for i in range(self._count):
             # We do place the nodes one by one, as we want to yield in between.
-            nodes.append(arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr))
+            node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
+            if not solution_found:
+                found_solution_for_all = False
+                new_location = node.getPosition()
+                new_location = new_location.set(z = 100 - i * 20)
+                node.setPosition(new_location)
+
+            nodes.append(node)
             Job.yieldThread()
             status_message.setProgress((i + 1) / self._count * 100)
 
@@ -62,3 +69,7 @@ class MultiplyObjectsJob(Job):
                 op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
             op.push()
         status_message.hide()
+
+        if not found_solution_for_all:
+            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"))
+            no_full_solution_message.show()
