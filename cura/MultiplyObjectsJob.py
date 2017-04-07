@@ -52,7 +52,7 @@ class MultiplyObjectsJob(Job):
 
         for i in range(self._count):
             # We do place the nodes one by one, as we want to yield in between.
-            nodes.extend(arranger.findNodePlacements(current_node, offset_shape_arr, hull_shape_arr, count = 1))
+            nodes.append(arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr))
             Job.yieldThread()
             status_message.setProgress((i + 1) / self._count * 100)
 

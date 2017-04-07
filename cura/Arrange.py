@@ -69,31 +69,26 @@ class Arrange:
     #   \param node
     #   \param offset_shape_arr ShapeArray with offset, used to find location
     #   \param hull_shape_arr ShapeArray without offset, for placing the shape
-    #   \param count Number of objects
-    def findNodePlacements(self, node, offset_shape_arr, hull_shape_arr, count = 1, step = 1):
-        nodes = []
-        for i in range(count):
-            new_node = copy.deepcopy(node)
-            best_spot = self.bestSpot(
-                offset_shape_arr, start_prio = self._start_priority, step = step)
-            x, y = best_spot.x, best_spot.y
-            self._start_priority = best_spot.priority
-            # Ensure that the object is above the build platform
-            new_node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
-            if new_node.getBoundingBox():
-                center_y = new_node.getWorldPosition().y - new_node.getBoundingBox().bottom
-            else:
-                center_y = 0
+    def findNodePlacement(self, node, offset_shape_arr, hull_shape_arr, step = 1):
+        new_node = copy.deepcopy(node)
+        best_spot = self.bestSpot(
+            offset_shape_arr, start_prio = self._start_priority, step = step)
+        x, y = best_spot.x, best_spot.y
+        self._start_priority = best_spot.priority
+        # Ensure that the object is above the build platform
+        new_node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+        if new_node.getBoundingBox():
+            center_y = new_node.getWorldPosition().y - new_node.getBoundingBox().bottom
+        else:
+            center_y = 0
 
-            if x is not None:  # We could find a place
-                new_node.setPosition(Vector(x, center_y, y))
-                self.place(x, y, hull_shape_arr)  # place the object in arranger
-            else:
-                Logger.log("d", "Could not find spot!")
-                new_node.setPosition(Vector(200, center_y, 100 - i * 20))
-
-            nodes.append(new_node)
-        return nodes
+        if x is not None:  # We could find a place
+            new_node.setPosition(Vector(x, center_y, y))
+            self.place(x, y, hull_shape_arr)  # place the object in arranger
+        else:
+            Logger.log("d", "Could not find spot!")
+            new_node.setPosition(Vector(200, center_y, 100))
+        return new_node
 
     ##  Fill priority, center is best. Lower value is better
     #   This is a strategy for the arranger.
