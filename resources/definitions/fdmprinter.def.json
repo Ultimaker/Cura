@@ -4181,6 +4181,17 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "cutting_mesh":
+                {
+                    "label": "Cutting Mesh",
+                    "description": "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "mold_enabled":
                 {
                     "label": "Mold",

@@ -320,6 +320,7 @@ class CuraApplication(QtApplication):
             blackmagic
                 print_sequence
                 infill_mesh
+                cutting_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
