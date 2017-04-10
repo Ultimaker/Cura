@@ -333,6 +333,18 @@ def test_deserializeWrongDefinitionClass(global_stack):
         with pytest.raises(UM.Settings.ContainerStack.InvalidContainerStackError): #Must raise an error that there is no definition container.
             global_stack.deserialize("")
 
+##  Tests whether an instance container with the wrong type is moved into the
+#   correct slot by deserialising.
+def test_deserializeMoveInstanceContainer(global_stack):
+    global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = getInstanceContainer(container_type = "material") #Not in the correct spot.
+    global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
+
+    with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
+        global_stack.deserialize("")
+
+    assert global_stack.quality.getId() == "empty"
+    assert global_stack.material.getId() != "empty"
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.skip
 @pytest.mark.parametrize("filename,                 user_changes_id", [
