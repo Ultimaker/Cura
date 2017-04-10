@@ -324,6 +324,8 @@ def test_deserializeRemovesWrongContainerClass(global_stack):
 
     assert global_stack.quality == global_stack._empty_instance_container #Replaced with empty.
 
+##  Tests whether an instance container in the definition spot results in an
+#   error.
 def test_deserializeWrongDefinitionClass(global_stack):
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = getInstanceContainer(container_type = "definition") #Correct type but wrong class.
 
