@@ -347,6 +347,7 @@ def test_deserializeMoveInstanceContainer(global_stack):
 
 ##  Tests whether a definition container in the wrong spot is moved into the
 #   correct spot by deserialising.
+@pytest.mark.skip
 def test_deserializeMoveDefinitionContainer(global_stack):
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Material] = DefinitionContainer(container_id = "some definition") #Not in the correct spot.
 
