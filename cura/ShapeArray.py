@@ -43,8 +43,10 @@ class ShapeArray:
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
         hull_verts = node.callDecoration("getConvexHull")
+        # For one_at_a_time printing you need the convex hull head.
+        hull_head_verts = node.callDecoration("getConvexHullHead") or hull_verts
 
-        offset_verts = hull_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
+        offset_verts = hull_head_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
         offset_points = copy.deepcopy(offset_verts._points)  # x, y
         offset_points[:, 0] = numpy.add(offset_points[:, 0], -transform_x)
         offset_points[:, 1] = numpy.add(offset_points[:, 1], -transform_y)
