@@ -100,7 +100,14 @@ Cura.MachineAction
                                     id: buildAreaWidthField
                                     text: machineWidthProvider.properties.value
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: { machineWidthProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                                    onEditingFinished:
+                                    {
+                                        if (text != machineWidthProvider.properties.value)
+                                        {
+                                            machineWidthProvider.setPropertyValue("value", text);
+                                            manager.forceUpdate();
+                                        }
+                                    }
                                 }
                                 Label
                                 {
@@ -116,7 +123,13 @@ Cura.MachineAction
                                     id: buildAreaDepthField
                                     text: machineDepthProvider.properties.value
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: { machineDepthProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                                    onEditingFinished: {
+                                        if (text != machineDepthProvider.properties.value)
+                                        {
+                                            machineDepthProvider.setPropertyValue("value", text);
+                                            manager.forceUpdate();
+                                        }
+                                    }
                                 }
                                 Label
                                 {
@@ -132,7 +145,13 @@ Cura.MachineAction
                                     id: buildAreaHeightField
                                     text: machineHeightProvider.properties.value
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: { machineHeightProvider.setPropertyValue("value", text); manager.forceUpdate() }
+                                    onEditingFinished: {
+                                        if (text != machineHeightProvider.properties.value)
+                                        {
+                                            machineHeightProvider.setPropertyValue("value", text);
+                                            manager.forceUpdate();
+                                        }
+                                    }
                                 }
                                 Label
                                 {
@@ -187,8 +206,11 @@ Cura.MachineAction
                                         }
                                         onActivated:
                                         {
-                                            machineShapeProvider.setPropertyValue("value", shapesModel.get(index).value);
-                                            manager.forceUpdate();
+                                            if(machineShapeProvider.properties.value != shapesModel.get(index).value)
+                                            {
+                                                machineShapeProvider.setPropertyValue("value", shapesModel.get(index).value);
+                                                manager.forceUpdate();
+                                            }
                                         }
                                     }
                                 }
@@ -392,6 +414,11 @@ Cura.MachineAction
                                     currentIndex: machineExtruderCountProvider.properties.value - 1
                                     onActivated:
                                     {
+                                        if(machineExtruderCountProvider.properties.value == index + 1)
+                                        {
+                                            return;
+                                        }
+
                                         machineExtruderCountProvider.setPropertyValue("value", index + 1);
                                         manager.forceUpdate();
                                         base.extruderTabsCount = (index > 0) ? index + 1 : 0;
@@ -503,7 +530,7 @@ Cura.MachineAction
             {
                 if(currentIndex > 0)
                 {
-                    ExtruderManager.setActiveExtruderIndex(settingsTabs.getTab(currentIndex).extruderIndex);
+                    ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
                 }
             }
 
@@ -516,8 +543,6 @@ Cura.MachineAction
                 {
                     title: base.extrudersModel.getItem(index).name
                     anchors.margins: UM.Theme.getSize("default_margin").width
-
-                    property int extruderIndex: index
 
                     Column
                     {
@@ -668,8 +693,12 @@ Cura.MachineAction
         polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
         polygon.push([ parseFloat(printheadXMaxField.text), parseFloat(printheadYMaxField.text)]);
         polygon.push([ parseFloat(printheadXMaxField.text),-parseFloat(printheadYMinField.text)]);
-        machineHeadPolygonProvider.setPropertyValue("value", JSON.stringify(polygon));
-        manager.forceUpdate();
+        var polygon_string = JSON.stringify(polygon);
+        if(polygon != machineHeadPolygonProvider.properties.value)
+        {
+            machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
+            manager.forceUpdate();
+        }
     }
 
     UM.SettingPropertyProvider
@@ -807,7 +836,7 @@ Cura.MachineAction
     {
         id: extruderNozzleSizeProvider
 
-        containerStackId: Cura.ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_size"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -817,7 +846,7 @@ Cura.MachineAction
     {
         id: extruderOffsetXProvider
 
-        containerStackId: Cura.ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_offset_x"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -827,7 +856,7 @@ Cura.MachineAction
     {
         id: extruderOffsetYProvider
 
-        containerStackId: Cura.ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_offset_y"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -837,7 +866,7 @@ Cura.MachineAction
     {
         id: extruderStartGcodeProvider
 
-        containerStackId: Cura.ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_extruder_start_code"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -847,7 +876,7 @@ Cura.MachineAction
     {
         id: extruderEndGcodeProvider
 
-        containerStackId: Cura.ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_extruder_end_code"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
