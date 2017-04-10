@@ -357,6 +357,8 @@ def test_deserializeMoveDefinitionContainer(global_stack):
     assert global_stack.material.getId() == "empty"
     assert global_stack.definition.getId() != "empty"
 
+    UM.Settings.ContainerStack._containerRegistry = None
+
 ##  Tests whether getProperty properly applies the stack-like behaviour on its
 #   containers.
 def test_getPropertyFallThrough(global_stack):
