@@ -345,6 +345,17 @@ def test_deserializeMoveInstanceContainer(global_stack):
     assert global_stack.quality.getId() == "empty"
     assert global_stack.material.getId() != "empty"
 
+##  Tests whether a definition container in the wrong spot is moved into the
+#   correct spot by deserialising.
+def test_deserializeMoveDefinitionContainer(global_stack):
+    global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Material] = DefinitionContainer(container_id = "some definition") #Not in the correct spot.
+
+    with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
+        global_stack.deserialize("")
+
+    assert global_stack.material.getId() == "empty"
+    assert global_stack.definition.getId() != "empty"
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.skip
 @pytest.mark.parametrize("filename,                 user_changes_id", [
