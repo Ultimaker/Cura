@@ -87,7 +87,7 @@ Cura.MachineAction
 
                             Grid
                             {
-                                columns: 3
+                                columns: 2
                                 columnSpacing: UM.Theme.getSize("default_margin").width
                                 rowSpacing: UM.Theme.getSize("default_lining").width
 
@@ -95,67 +95,39 @@ Cura.MachineAction
                                 {
                                     text: catalog.i18nc("@label", "X (Width)")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: buildAreaWidthField
-                                    text: machineWidthProvider.properties.value
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished:
-                                    {
-                                        if (text != machineWidthProvider.properties.value)
-                                        {
-                                            machineWidthProvider.setPropertyValue("value", text);
-                                            manager.forceUpdate();
-                                        }
-                                    }
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
+                                    sourceComponent: numericTextFieldWithUnit
+                                    property var propertyProvider: machineWidthProvider
+                                    property string unit: catalog.i18nc("@label", "mm")
+                                    property bool forceUpdateOnChange: true
                                 }
 
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Y (Depth)")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: buildAreaDepthField
-                                    text: machineDepthProvider.properties.value
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: {
-                                        if (text != machineDepthProvider.properties.value)
-                                        {
-                                            machineDepthProvider.setPropertyValue("value", text);
-                                            manager.forceUpdate();
-                                        }
-                                    }
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
+                                    sourceComponent: numericTextFieldWithUnit
+                                    property var propertyProvider: machineDepthProvider
+                                    property string unit: catalog.i18nc("@label", "mm")
+                                    property bool forceUpdateOnChange: true
                                 }
 
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Z (Height)")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: buildAreaHeightField
-                                    text: machineHeightProvider.properties.value
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: {
-                                        if (text != machineHeightProvider.properties.value)
-                                        {
-                                            machineHeightProvider.setPropertyValue("value", text);
-                                            manager.forceUpdate();
-                                        }
-                                    }
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
+                                    sourceComponent: numericTextFieldWithUnit
+                                    property var propertyProvider: machineHeightProvider
+                                    property string unit: catalog.i18nc("@label", "mm")
+                                    property bool forceUpdateOnChange: true
                                 }
                             }
 
@@ -298,7 +270,7 @@ Cura.MachineAction
 
                             Grid
                             {
-                                columns: 3
+                                columns: 2
                                 columnSpacing: UM.Theme.getSize("default_margin").width
                                 rowSpacing: UM.Theme.getSize("default_lining").width
 
@@ -313,10 +285,6 @@ Cura.MachineAction
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                                     onEditingFinished: setHeadPolygon()
                                 }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
-                                }
 
                                 Label
                                 {
@@ -328,10 +296,6 @@ Cura.MachineAction
                                     text: getHeadPolygonCoord("y", "min")
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                                     onEditingFinished: setHeadPolygon()
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
                                 }
 
                                 Label
@@ -345,10 +309,6 @@ Cura.MachineAction
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                                     onEditingFinished: setHeadPolygon()
                                 }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
-                                }
 
                                 Label
                                 {
@@ -361,12 +321,7 @@ Cura.MachineAction
                                     validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                                     onEditingFinished: setHeadPolygon()
                                 }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
-                                }
 
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
@@ -374,19 +329,15 @@ Cura.MachineAction
                                 {
                                     text: catalog.i18nc("@label", "Gantry height")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: gantryHeightField
-                                    text: gantryHeightProvider.properties.value
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: { gantryHeightProvider.setPropertyValue("value", text) }
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
+                                    sourceComponent: numericTextFieldWithUnit
+                                    property var propertyProvider: gantryHeightProvider
+                                    property string unit: catalog.i18nc("@label", "mm")
+                                    property bool forceUpdateOnChange: false
                                 }
 
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
 
@@ -441,7 +392,6 @@ Cura.MachineAction
                                         }
                                     }
                                 }
-                                Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height; visible: extruderCountComboBox.visible }
 
 
                                 Label
@@ -449,18 +399,14 @@ Cura.MachineAction
                                     text: catalog.i18nc("@label", "Nozzle size")
                                     visible: nozzleSizeField.visible
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: nozzleSizeField
-                                    text: machineNozzleSizeProvider.properties.value
                                     visible: !Cura.MachineManager.hasVariants && machineExtruderCountProvider.properties.value == 1
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: { machineNozzleSizeProvider.setPropertyValue("value", text) }
-                                }
-                                Label
-                                {
-                                    text: catalog.i18nc("@label", "mm")
-                                    visible: nozzleSizeField.visible
+                                    sourceComponent: numericTextFieldWithUnit
+                                    property var propertyProvider: machineNozzleSizeProvider
+                                    property string unit: catalog.i18nc("@label", "mm")
+                                    property bool forceUpdateOnChange: false
                                 }
                             }
                         }
@@ -556,57 +502,49 @@ Cura.MachineAction
 
                         Grid
                         {
-                            columns: 3
+                            columns: 2
                             columnSpacing: UM.Theme.getSize("default_margin").width
                             rowSpacing: UM.Theme.getSize("default_lining").width
 
                             Label
                             {
                                 text: catalog.i18nc("@label", "Nozzle size")
+                                visible: extruderNozzleSizeField.visible
                             }
-                            TextField
+                            Loader
                             {
                                 id: extruderNozzleSizeField
-                                text: extruderNozzleSizeProvider.properties.value
-                                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                onEditingFinished: { extruderNozzleSizeProvider.setPropertyValue("value", text) }
-                            }
-                            Label
-                            {
-                                text: catalog.i18nc("@label", "mm")
+                                visible: !Cura.MachineManager.hasVariants
+                                sourceComponent: numericTextFieldWithUnit
+                                property var propertyProvider: extruderNozzleSizeProvider
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property bool forceUpdateOnChange: false
                             }
 
                             Label
                             {
                                 text: catalog.i18nc("@label", "Nozzle offset X")
                             }
-                            TextField
+                            Loader
                             {
                                 id: extruderOffsetXField
-                                text: extruderOffsetXProvider.properties.value
-                                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                onEditingFinished: { extruderOffsetXProvider.setPropertyValue("value", text) }
-                            }
-                            Label
-                            {
-                                text: catalog.i18nc("@label", "mm")
+                                sourceComponent: numericTextFieldWithUnit
+                                property var propertyProvider: extruderOffsetXProvider
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property bool forceUpdateOnChange: false
                             }
                             Label
                             {
                                 text: catalog.i18nc("@label", "Nozzle offset Y")
                             }
-                            TextField
+                            Loader
                             {
                                 id: extruderOffsetYField
-                                text: extruderOffsetYProvider.properties.value
-                                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                onEditingFinished: { extruderOffsetYProvider.setPropertyValue("value", text) }
+                                sourceComponent: numericTextFieldWithUnit
+                                property var propertyProvider: extruderOffsetYProvider
+                                property string unit: catalog.i18nc("@label", "mm")
+                                property bool forceUpdateOnChange: false
                             }
-                            Label
-                            {
-                                text: catalog.i18nc("@label", "mm")
-                            }
-
                         }
 
                         Row
@@ -698,6 +636,40 @@ Cura.MachineAction
         {
             machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
             manager.forceUpdate();
+        }
+    }
+
+    Component
+    {
+        id: numericTextFieldWithUnit
+        Item {
+            height: textField.height
+            width: textField.width
+            TextField
+            {
+                id: textField
+                text: propertyProvider.properties.value
+                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                onEditingFinished:
+                {
+                    if (propertyProvider && text != propertyProvider.properties.value)
+                    {
+                        propertyProvider.setPropertyValue("value", text);
+                        if(forceUpdateOnChange)
+                        {
+                            manager.forceUpdate();
+                        }
+                    }
+                }
+            }
+
+            Label
+            {
+                text: unit
+                anchors.right: textField.right
+                anchors.rightMargin: y - textField.y
+                anchors.verticalCenter: textField.verticalCenter
+            }
         }
     }
 
