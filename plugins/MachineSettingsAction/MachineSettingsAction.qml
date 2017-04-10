@@ -476,6 +476,7 @@ Cura.MachineAction
             {
                 if(currentIndex > 0)
                 {
+                    contentItem.forceActiveFocus();
                     ExtruderManager.setActiveExtruderIndex(currentIndex - 1);
                 }
             }
