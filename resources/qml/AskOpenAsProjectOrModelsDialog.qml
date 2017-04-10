@@ -18,8 +18,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 420 * Screen.devicePixelRatio
-    height: 140 * Screen.devicePixelRatio
+    width: 450 * Screen.devicePixelRatio
+    height: 150 * Screen.devicePixelRatio
 
     maximumHeight: height
     maximumWidth: width
@@ -61,13 +61,16 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.margins: 20 * Screen.devicePixelRatio
+        anchors.leftMargin: 20 * Screen.devicePixelRatio
+        anchors.rightMargin: 20 * Screen.devicePixelRatio
+        anchors.bottomMargin: 20 * Screen.devicePixelRatio
         spacing: 10 * Screen.devicePixelRatio
 
         Label
         {
-            text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project\nor import the models from it?")
-            anchors.margins: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
+            anchors.left: parent.left
+            anchors.right: parent.right
             font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
         }
@@ -76,7 +79,6 @@ UM.Dialog
         {
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")
-            anchors.margins: UM.Theme.getSize("default_margin").width
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
         }
 
