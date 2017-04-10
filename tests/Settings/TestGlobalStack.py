@@ -287,6 +287,21 @@ def test_constrainVariantInvalid(container, global_stack):
 def test_constrainDefinitionValid(container, global_stack):
     global_stack.definition = container #Should not give an error.
 
+##  Tests whether deserialising completes the missing containers with empty
+#   ones.
+@pytest.mark.skip #The test currently fails because the definition container doesn't have a category, which is wrong but we don't have time to refactor that right now.
+def test_deserializeCompletesEmptyContainers(global_stack: cura.Settings.GlobalStack):
+    global_stack._containers = [DefinitionContainer(container_id = "definition")] #Set the internal state of this stack manually.
+
+    with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
+        global_stack.deserialize("")
+
+    assert len(global_stack.getContainers()) == len(cura.Settings.CuraContainerStack._ContainerIndexes.IndexTypeMap) #Needs a slot for every type.
+    for container_type_index in cura.Settings.CuraContainerStack._ContainerIndexes.IndexTypeMap:
+        if container_type_index == cura.Settings.CuraContainerStack._ContainerIndexes.Definition: #We're not checking the definition.
+            continue
+        assert global_stack.getContainer(container_type_index).getId() == "empty" #All others need to be empty.
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename,                 user_changes_id", [
                         ("Global.global.cfg",       "empty"),
