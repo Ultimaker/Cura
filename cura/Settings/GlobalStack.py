@@ -33,7 +33,7 @@ class GlobalStack(CuraContainerStack):
 
     def addExtruder(self, extruder):
         extruder_count = self.getProperty("machine_extruder_count", "value")
-        if len(self._extruders) + 1 > extruder_count:
+        if extruder_count and len(self._extruders) + 1 > extruder_count:
             raise Exceptions.TooManyExtrudersError("Tried to add extruder to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count))
 
         self._extruders.append(extruder)
