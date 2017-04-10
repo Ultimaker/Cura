@@ -167,7 +167,7 @@ class CuraContainerStack(ContainerStack):
             if not isinstance(container, DefinitionContainer):
                 raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not a DefinitionContainer".format(index = index))
         elif container != self._empty_instance_container and container.getMetaDataEntry("type") != expected_type:
-            raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type".format(index = index, type = expected_type))
+            raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type, but {actual_type} type.".format(index = index, type = expected_type, actual_type = container.getMetaDataEntry("type")))
 
         super().replaceContainer(index, container, postpone_emit)
 
