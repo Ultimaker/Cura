@@ -19,8 +19,8 @@ from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-class USBPrinterOutputDevice(PrinterOutputDevice):
 
+class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
@@ -202,6 +202,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         try:
             programmer.connect(self._serial_port)
         except Exception:
+            programmer.close()
             pass
 
         # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
@@ -312,8 +313,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
         # If the programmer connected, we know its an atmega based version.
@@ -559,6 +562,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if ";" in line:
             line = line[:line.find(";")]
         line = line.strip()
+
+        # Don't send empty lines. But we do have to send something, so send m105 instead.
+        if line == "":
+            line = "M105"
+
         try:
             if line == "M0" or line == "M1":
                 line = "M105"  # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.

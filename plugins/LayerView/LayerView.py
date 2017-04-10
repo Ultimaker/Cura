@@ -1,6 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import sys
+
 from UM.PluginRegistry import PluginRegistry
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -253,8 +255,17 @@ class LayerView(View):
             if not layer_data:
                 continue
 
-            if new_max_layers < len(layer_data.getLayers()):
-                new_max_layers = len(layer_data.getLayers()) - 1
+            min_layer_number = sys.maxsize
+            max_layer_number = -sys.maxsize
+            for layer_id in layer_data.getLayers():
+                if max_layer_number < layer_id:
+                    max_layer_number = layer_id
+                if min_layer_number > layer_id:
+                    min_layer_number = layer_id
+            layer_count = max_layer_number - min_layer_number
+
+            if new_max_layers < layer_count:
+                new_max_layers = layer_count
 
         if new_max_layers > 0 and new_max_layers != self._old_max_layers:
             self._max_layers = new_max_layers

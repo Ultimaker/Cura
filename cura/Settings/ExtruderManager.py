@@ -255,7 +255,12 @@ class ExtruderManager(QObject):
 
                 preferred_materials = container_registry.findInstanceContainers(**search_criteria)
                 if len(preferred_materials) >= 1:
-                    material = preferred_materials[0]
+                    # In some cases we get multiple materials. In that case, prefer materials that are marked as read only.
+                    read_only_preferred_materials = [preferred_material for preferred_material in preferred_materials if preferred_material.isReadOnly()]
+                    if len(read_only_preferred_materials) >= 1:
+                        material = read_only_preferred_materials[0]
+                    else:
+                        material = preferred_materials[0]
                 else:
                     Logger.log("w", "The preferred material \"%s\" of machine %s doesn't exist or is not a material profile.", preferred_material_id, machine_id)
                     # And leave it at the default material.

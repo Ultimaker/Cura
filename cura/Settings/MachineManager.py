@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 from typing import Union
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 from UM import Util
@@ -82,6 +82,11 @@ class MachineManager(QObject):
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
                                               "The selected material is incompatible with the selected machine or configuration."))
+
+        self._error_check_timer = QTimer()
+        self._error_check_timer.setInterval(250)
+        self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -306,33 +311,7 @@ class MachineManager(QObject):
             self.activeStackValueChanged.emit()
 
         elif property_name == "validationState":
-            if not self._stacks_have_errors:
-                # fast update, we only have to look at the current changed property
-                if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1 and self._active_container_stack.getProperty(key, "settable_per_extruder"):
-                    extruder_index = int(self._active_container_stack.getProperty(key, "limit_to_extruder"))
-                    if extruder_index >= 0: #We have to look up the value from a different extruder.
-                        stack = ExtruderManager.getInstance().getExtruderStack(str(extruder_index))
-                    else:
-                        stack = self._active_container_stack
-                else:
-                    stack = self._global_container_stack
-                changed_validation_state = stack.getProperty(key, property_name)
-
-                if changed_validation_state is None:
-                    # Setting is not validated. This can happen if there is only a setting definition.
-                    # We do need to validate it, because a setting defintions value can be set by a function, which could
-                    # be an invalid setting.
-                    definition = self._active_container_stack.getSettingDefinition(key)
-                    validator_type = SettingDefinition.getValidatorForType(definition.type)
-                    if validator_type:
-                        validator = validator_type(key)
-                        changed_validation_state = validator(self._active_container_stack)
-                if changed_validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
-                    self._stacks_have_errors = True
-                    self.stacksValidationChanged.emit()
-            else:
-                # Normal check
-                self._updateStacksHaveErrors()
+            self._error_check_timer.start()
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
@@ -813,6 +792,10 @@ class MachineManager(QObject):
                 Logger.log("e", "Tried to set quality to a container that is not of the right type")
                 return
 
+            # Check if it was at all possible to find new settings
+            if new_quality_settings_list is None:
+                return
+
             name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
             for setting_info in new_quality_settings_list:
                 stack = setting_info["stack"]
@@ -889,7 +872,12 @@ class MachineManager(QObject):
         quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name,
                                                                             global_machine_definition)
 
-        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None][0]
+        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None]
+        if global_quality_changes:
+            global_quality_changes = global_quality_changes[0]
+        else:
+            Logger.log("e", "Could not find the global quality changes container with name %s", quality_changes_name)
+            return None
         material = global_container_stack.findContainer(type="material")
 
         # For the global stack, find a quality which matches the quality_type in

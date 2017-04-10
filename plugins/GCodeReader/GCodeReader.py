@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Application import Application
+from UM.Backend import Backend
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -37,7 +38,6 @@ class GCodeReader(MeshReader):
         self._message = None
         self._layer_number = 0
         self._extruder_number = 0
-        self._layer_type = LayerPolygon.Inset0Type
         self._clearValues()
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
@@ -153,7 +153,6 @@ class GCodeReader(MeshReader):
                 self._previous_z = z
         else:
             path.append([x, y, z, LayerPolygon.MoveCombingType])
-
         return self._position(x, y, z, e)
 
     # G0 and G1 should be handled exactly the same.
@@ -172,7 +171,6 @@ class GCodeReader(MeshReader):
     def _gCode92(self, position, params, path):
         if params.e is not None:
             position.e[self._extruder_number] = params.e
-
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -307,11 +305,11 @@ class GCodeReader(MeshReader):
                 G = self._getInt(line, "G")
                 if G is not None:
                     current_position = self._processGCode(G, line, current_position, current_path)
+
                     # < 2 is a heuristic for a movement only, that should not be counted as a layer
                     if current_position.z > last_z and abs(current_position.z - last_z) < 2:
                         if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
                             current_path.clear()
-
                             if not self._is_layers_in_file:
                                 self._layer_number += 1
 
@@ -343,6 +341,8 @@ class GCodeReader(MeshReader):
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
+        Application.getInstance().getController().getScene().gcode_list = gcode_list
+
         Logger.log("d", "Finished parsing %s" % file_name)
         self._message.hide()
 
@@ -363,5 +363,9 @@ class GCodeReader(MeshReader):
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."), lifetime=0)
             caution_message.show()
+
+        # The "save/print" button's state is bound to the backend state.
+        backend = Application.getInstance().getBackend()
+        backend.backendStateChange.emit(Backend.BackendState.Disabled)
 
         return scene_node
