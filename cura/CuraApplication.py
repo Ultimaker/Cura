@@ -1278,6 +1278,9 @@ class CuraApplication(QtApplication):
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
+            for child in node.getAllChildren():
+                if not child.getDecorator(ConvexHullDecorator):
+                    child.addDecorator(ConvexHullDecorator())
 
             if node.callDecoration("isSliceable"):
                 # Find node location
