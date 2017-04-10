@@ -13,6 +13,7 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Logger import Logger
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.ExtruderManager import ExtruderManager
 
 import UM.i18n
 catalog = UM.i18n.i18nCatalog("cura")
@@ -26,10 +27,12 @@ class MachineSettingsAction(MachineAction):
         self._qml_url = "MachineSettingsAction.qml"
 
         self._container_index = 0
+        self._extruder_container_index = 0
 
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
 
     def _reset(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -39,7 +42,7 @@ class MachineSettingsAction(MachineAction):
         # Make sure there is a definition_changes container to store the machine settings
         definition_changes_container = global_container_stack.findContainer({"type": "definition_changes"})
         if not definition_changes_container:
-            definition_changes_container = self._createDefinitionChangesContainer(global_container_stack)
+            definition_changes_container = self._createDefinitionChangesContainer(global_container_stack, global_container_stack.getName() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
         container_index = global_container_stack.getContainerIndex(definition_changes_container)
@@ -47,15 +50,32 @@ class MachineSettingsAction(MachineAction):
             self._container_index = container_index
             self.containerIndexChanged.emit()
 
-    def _createDefinitionChangesContainer(self, global_container_stack, container_index = None):
-        definition_changes_container = InstanceContainer(global_container_stack.getName() + "_settings")
-        definition = global_container_stack.getBottom()
+    def _onActiveExtruderStackChanged(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        extruder_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        if not global_container_stack or not extruder_container_stack:
+            return
+
+        # Make sure there is a definition_changes container to store the machine settings
+        definition_changes_container = extruder_container_stack.findContainer({"type": "definition_changes"})
+        if not definition_changes_container:
+            definition_changes_container = self._createDefinitionChangesContainer(extruder_container_stack, global_container_stack.getName() + "_" + extruder_container_stack.getId() + "_settings")
+
+        # Notify the UI in which container to store the machine settings data
+        container_index = extruder_container_stack.getContainerIndex(definition_changes_container)
+        if container_index != self._extruder_container_index:
+            self._extruder_container_index = container_index
+            self.extruderContainerIndexChanged.emit()
+
+    def _createDefinitionChangesContainer(self, container_stack, container_name, container_index = None):
+        definition_changes_container = InstanceContainer(container_name)
+        definition = container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
 
         self._container_registry.addContainer(definition_changes_container)
         # Insert definition_changes between the definition and the variant
-        global_container_stack.insertContainer(-1, definition_changes_container)
+        container_stack.insertContainer(-1, definition_changes_container)
 
         return definition_changes_container
 
@@ -64,6 +84,13 @@ class MachineSettingsAction(MachineAction):
     @pyqtProperty(int, notify = containerIndexChanged)
     def containerIndex(self):
         return self._container_index
+
+    extruderContainerIndexChanged = pyqtSignal()
+
+    @pyqtProperty(int, notify = extruderContainerIndexChanged)
+    def extruderContainerIndex(self):
+        return self._extruder_container_index
+
 
     def _onContainerAdded(self, container):
         # Add this action as a supported action to all machine definitions
