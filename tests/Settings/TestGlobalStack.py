@@ -113,13 +113,23 @@ def readStack(filename):
         serialized = file_handle.read()
     return serialized
 
+##  Gets an instance container with a specified container type.
+#
+#   \param container_type The type metadata for the instance container.
+#   \return An instance container instance.
+def getInstanceContainer(container_type) -> InstanceContainer:
+    container = InstanceContainer(container_id = "InstanceContainer")
+    container.addMetaDataEntry("type", container_type)
+    return container
+
 class DefinitionContainerSubClass(DefinitionContainer):
     def __init__(self):
         super().__init__(container_id = "SubDefinitionContainer")
 
 class InstanceContainerSubClass(InstanceContainer):
-    def __init__(self):
+    def __init__(self, container_type):
         super().__init__(container_id = "SubInstanceContainer")
+        self.addMetaDataEntry("type", container_type)
 
 #############################START OF TEST CASES################################
 
@@ -152,68 +162,130 @@ def test_addExtruder(global_stack):
             global_stack.addExtruder(unittest.mock.MagicMock())
     assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
 
-##  Tests whether the container types are properly enforced on the stack.
-#
-#   When setting a field to have a different type of stack than intended, we
-#   should get an exception.
-@pytest.mark.parametrize("definition_container, instance_container", [
-    (DefinitionContainer(container_id = "TestDefinitionContainer"), InstanceContainer(container_id = "TestInstanceContainer")),
-    (DefinitionContainerSubClass(), InstanceContainerSubClass())
+#Tests setting user changes profiles to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong container type"),
+    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
+    DefinitionContainer(container_id = "wrong class")
 ])
-def test_constrainContainerTypes(definition_container, instance_container, global_stack):
-    instance_container.addMetaDataEntry("type", "")
+def test_constrainUserChangesInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.userChanges = container
 
-    with pytest.raises(InvalidContainerError): # Putting a definition container in the user changes is not allowed.
-        global_stack.userChanges = definition_container
-    with pytest.raises(InvalidContainerError):
-        global_stack.userChanges = instance_container # Putting a random instance container in the user changes is not allowed.
+#Tests setting user changes profiles.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "user"),
+    InstanceContainerSubClass(container_type = "user")
+])
+def test_constrainUserChangesValid(container, global_stack):
+    global_stack.userChanges = container #Should not give an error.
 
-    instance_container.setMetaDataEntry("type", "user") # After setting the metadata type entry correctly, we are allowed to set the container
-    global_stack.userChanges = instance_container
+#Tests setting quality changes profiles to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong container type"),
+    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
+    DefinitionContainer(container_id = "wrong class")
+])
+def test_constrainQualityChangesInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.qualityChanges = container
 
-    with pytest.raises(InvalidContainerError):
-        global_stack.qualityChanges = definition_container
-    with pytest.raises(InvalidContainerError):
-        global_stack.qualityChanges = instance_container
+#Test setting quality changes profiles.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "quality_changes"),
+    InstanceContainerSubClass(container_type = "quality_changes")
+])
+def test_constrainQualityChangesValid(container, global_stack):
+    global_stack.qualityChanges = container #Should not give an error.
 
-    instance_container.setMetaDataEntry("type", "quality_changes")
-    global_stack.qualityChanges = instance_container
+#Tests setting quality profiles to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong container type"),
+    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
+    DefinitionContainer(container_id = "wrong class")
+])
+def test_constrainQualityInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.quality = container
 
-    with pytest.raises(InvalidContainerError):
-        global_stack.quality = definition_container
-    with pytest.raises(InvalidContainerError):
-        global_stack.quality = instance_container
+#Test setting quality profiles.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "quality"),
+    InstanceContainerSubClass(container_type = "quality")
+])
+def test_constrainQualityValid(container, global_stack):
+    global_stack.quality = container #Should not give an error.
 
-    instance_container.setMetaDataEntry("type", "quality")
-    global_stack.quality = instance_container
+#Tests setting materials to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong container type"),
+    getInstanceContainer(container_type = "quality"), #Existing, but still wrong type.
+    DefinitionContainer(container_id = "wrong class")
+])
+def test_constrainMaterialInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.material = container
 
-    with pytest.raises(InvalidContainerError):
-        global_stack.material = definition_container
-    with pytest.raises(InvalidContainerError):
-        global_stack.material = instance_container
+#Test setting materials.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "material"),
+    InstanceContainerSubClass(container_type = "material")
+])
+def test_constrainMaterialValid(container, global_stack):
+    global_stack.material = container #Should not give an error.
 
-    instance_container.setMetaDataEntry("type", "material")
-    global_stack.material = instance_container
+#Tests setting variants to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong container type"),
+    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
+    DefinitionContainer(container_id = "wrong class")
+])
+def test_constrainVariantInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.variant = container
 
-    with pytest.raises(InvalidContainerError):
-        global_stack.variant = definition_container
-    with pytest.raises(InvalidContainerError):
-        global_stack.variant = instance_container
+#Test setting variants.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "variant"),
+    InstanceContainerSubClass(container_type = "variant")
+])
+def test_constrainVariantValid(container, global_stack):
+    global_stack.variant = container #Should not give an error.
 
-    instance_container.setMetaDataEntry("type", "variant")
-    global_stack.variant = instance_container
+#Tests setting definition changes profiles to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong container type"),
+    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
+    DefinitionContainer(container_id = "wrong class")
+])
+def test_constrainDefinitionChangesInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.definitionChanges = container
 
-    with pytest.raises(InvalidContainerError):
-        global_stack.definitionChanges = definition_container
-    with pytest.raises(InvalidContainerError):
-        global_stack.definitionChanges = instance_container
+#Test setting definition changes profiles.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "definition_changes"),
+    InstanceContainerSubClass(container_type = "definition_changes")
+])
+def test_constrainDefinitionChangesValid(container, global_stack):
+    global_stack.definitionChanges = container #Should not give an error.
 
-    instance_container.setMetaDataEntry("type", "definition_changes")
-    global_stack.definitionChanges = instance_container
+#Tests setting definitions to invalid containers.
+@pytest.mark.parametrize("container", [
+    getInstanceContainer(container_type = "wrong class"),
+    getInstanceContainer(container_type = "material"), #Existing, but still wrong class.
+])
+def test_constrainVariantInvalid(container, global_stack):
+    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+        global_stack.definition = container
 
-    with pytest.raises(InvalidContainerError): #Putting an instance container in the definition is not allowed.
-        global_stack.definition = instance_container
-    global_stack.definition = definition_container #Putting a definition container in the definition is allowed.
+#Test setting definitions.
+@pytest.mark.parametrize("container", [
+    DefinitionContainer(container_id = "DefinitionContainer"),
+    DefinitionContainerSubClass()
+])
+def test_constrainDefinitionValid(container, global_stack):
+    global_stack.definition = container #Should not give an error.
 
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.parametrize("filename,                 user_changes_id", [
