@@ -808,7 +808,7 @@ Cura.MachineAction
     {
         id: extruderNozzleSizeProvider
 
-        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_size"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -818,7 +818,7 @@ Cura.MachineAction
     {
         id: extruderOffsetXProvider
 
-        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_offset_x"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -828,7 +828,7 @@ Cura.MachineAction
     {
         id: extruderOffsetYProvider
 
-        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_nozzle_offset_y"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -838,7 +838,7 @@ Cura.MachineAction
     {
         id: extruderStartGcodeProvider
 
-        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_extruder_start_code"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
@@ -848,7 +848,7 @@ Cura.MachineAction
     {
         id: extruderEndGcodeProvider
 
-        containerStackId: ExtruderManager.activeExtruderIndex > 0 ? Cura.MachineManager.activeStackId : ""
+        containerStackId: settingsTabs.currentIndex > 0 ? Cura.MachineManager.activeStackId : ""
         key: "machine_extruder_end_code"
         watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
