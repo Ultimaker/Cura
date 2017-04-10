@@ -313,6 +313,17 @@ def test_deserializeRemovesWrongInstanceContainer(global_stack):
 
     assert global_stack.quality == global_stack._empty_instance_container #Replaced with empty.
 
+##  Tests whether a container with the wrong class gets removed when
+#   deserialising.
+def test_deserializeRemovesWrongContainerClass(global_stack):
+    global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = DefinitionContainer(container_id = "wrong class")
+    global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
+
+    with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
+        global_stack.deserialize("")
+
+    assert global_stack.quality == global_stack._empty_instance_container #Replaced with empty.
+
 ##  Tests whether the user changes are being read properly from a global stack.
 @pytest.mark.skip
 @pytest.mark.parametrize("filename,                 user_changes_id", [
