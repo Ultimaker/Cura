@@ -1089,7 +1089,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
-                Logger.log("i", "Got a new authentication ID (%s) and KEY (%S). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
+                Logger.log("i", "Got a new authentication ID (%s) and KEY (%s). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()
