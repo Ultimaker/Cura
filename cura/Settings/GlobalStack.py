@@ -25,7 +25,10 @@ class GlobalStack(CuraContainerStack):
 
         self._extruders = []
 
-        self._resolving_property = None
+        # This property is used to track which settings we are calculating the "resolve" for
+        # and if so, to bypass the resolve to prevent an infinite recursion that would occur
+        # if the resolve function tried to access the same property it is a resolve for.
+        self._resolving_settings = set()
 
     @pyqtProperty("QVariantList")
     def extruders(self) -> list:
@@ -44,10 +47,12 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
-        if property_name == "value" and self._resolving_property != key:
-            if not self.hasUserValue(key) and len(self._extruders) > 1:
-                self._resolving_property = key
-                resolve = super().getProperty(key, "resolve")
+        if self._shouldResolve(key, property_name):
+            self._resolving_settings.add(key)
+            resolve = super().getProperty(key, "resolve")
+            self._resolving_settings.remove(key)
+            if resolve is not None:
+                return resolve
 
         return super().getProperty(key, property_name)
 
@@ -55,6 +60,25 @@ class GlobalStack(CuraContainerStack):
     @override(ContainerStack)
     def setNextStack(self, next_stack: ContainerStack) -> None:
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
+
+    def _shouldResolve(self, key: str, property_name: str) -> bool:
+        if property_name is not "value":
+            # Do not try to resolve anything but the "value" property
+            return False
+
+        if key in self._resolving_settings:
+            # To prevent infinite recursion, if getProperty is called with the same key as
+            # we are already trying to resolve, we should not try to resolve again. Since
+            # this can happen multiple times when trying to resolve a value, we need to
+            # track all settings that are being resolved.
+            return False
+
+        if self.hasUserValue(key):
+            # When the user has explicitly set a value, we should ignore any resolve and
+            # just return that value.
+            return False
+
+        return True
 
 
 ## private:
