@@ -402,6 +402,17 @@ def test_getPropertyFallThrough(global_stack):
     global_stack.userChanges = mock_layer_heights[container_indexes.UserChanges]
     assert global_stack.getProperty("layer_height", "value") == container_indexes.UserChanges
 
+##  In definitions, when the value is asked and there is a resolve function, it
+#   must get the resolve first.
+def test_getPropertyResolveInDefinition(global_stack):
+    resolve_and_value = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
+    resolve_and_value.getProperty = lambda key, property: (7.5 if property == "resolve" else 5) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
+
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
+        global_stack.definition = resolve_and_value
+    assert global_stack.getProperty("material_bed_temperature", "value") == 7.5 #Resolve wins in the definition.
+
+##  Tests whether the resolve property is properly obtained in all cases.
 @pytest.mark.skip
 def test_getPropertyWithResolve(global_stack):
     #Define some containers for the stack.
