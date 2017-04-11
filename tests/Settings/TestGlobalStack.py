@@ -53,6 +53,7 @@ def container_registry():
     registry = unittest.mock.MagicMock()
     registry.return_value = unittest.mock.NonCallableMagicMock()
     registry.findInstanceContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
+    registry.findDefinitionContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
 
     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
     UM.Settings.ContainerStack._containerRegistry = registry
@@ -490,8 +491,8 @@ def test_removeContainer(global_stack):
 
 ##  Tests setting definitions by specifying an ID of a definition that exists.
 def test_setDefinitionByIdExists(global_stack, container_registry):
-    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against type checking the DefinitionContainer.
-        global_stack.setDefinitionById("some_definition") #The container registry always has a container with the ID.
+    container_registry.return_value = DefinitionContainer(container_id = "some_definition")
+    global_stack.setDefinitionById("some_definition")
 
 ##  Tests setting definitions by specifying an ID of a definition that doesn't
 #   exist.
