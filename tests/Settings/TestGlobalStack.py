@@ -597,8 +597,9 @@ def test_setQualityChangesByIdDoesntExist(global_stack):
 
 ##  Tests setting variants by specifying an ID of a variant that exists.
 def test_setVariantByIdExists(global_stack, container_registry):
-    container_registry.typeMetaData = "variant"
-    global_stack.setVariantById("some_variant") #The container registry always has a container with the ID.
+    container_registry.return_value = getInstanceContainer(container_type = "variant")
+    global_stack.setVariantById("InstanceContainer")
+    assert global_stack.variant.getId() == "InstanceContainer"
 
 ##  Tests setting variants by specifying an ID of a variant that doesn't exist.
 def test_setVariantByIdDoesntExist(global_stack):
