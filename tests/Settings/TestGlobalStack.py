@@ -448,6 +448,21 @@ def test_getPropertyResolveInInstance(global_stack):
     global_stack.userChanges = instance_containers[container_indices.UserChanges]
     assert global_stack.getProperty("material_bed_temperature", "value") == 5
 
+##  Tests whether the value in instances gets evaluated before the resolve in
+#   definitions.
+def test_getPropertyInstancesBeforeResolve(global_stack):
+    value = unittest.mock.MagicMock() #Sets just the value.
+    value.getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None
+    value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
+    resolve = unittest.mock.MagicMock() #Sets just the resolve.
+    resolve.getProperty = lambda key, property: 7.5 if (key == "material_bed_temperature" and property == "resolve") else None
+
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
+        global_stack.definition = resolve
+    global_stack.quality = value
+
+    assert global_stack.getProperty("material_bed_temperature", "value") == 10
+
 ##  Tests whether the resolve property is properly obtained in all cases.
 @pytest.mark.skip
 def test_getPropertyWithResolve(global_stack):
