@@ -25,10 +25,21 @@ class ExtruderStack(CuraContainerStack):
         super().setNextStack(stack)
         stack.addExtruder(self)
 
+    @override(ContainerStack)
+    def getProperty(self, key: str, property_name: str) -> Any:
+        if not self._next_stack:
+            raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
+
+        if not super().getProperty(key, "settable_per_extruder"):
+            return self.getNextStack().getProperty(key, property_name)
+
+        return super().getProperty(key, property_name)
+
+
 extruder_stack_mime = MimeType(
     name = "application/x-cura-extruderstack",
     comment = "Cura Extruder Stack",
-    suffixes = [ "extruder.cfg" ]
+    suffixes = ["extruder.cfg"]
 )
 
 MimeTypeDatabase.addMimeType(extruder_stack_mime)

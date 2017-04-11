@@ -15,3 +15,8 @@ class InvalidContainerError(Exception):
 ##  Raised when trying to add an extruder to a Global stack that already has the maximum number of extruders.
 class TooManyExtrudersError(Exception):
     pass
+
+
+##  Raised when an extruder has no next stack set.
+class NoGlobalStackError(Exception):
+    pass
