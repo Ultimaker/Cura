@@ -473,6 +473,16 @@ def test_hasUserValueQualityChanges(global_stack):
     assert not global_stack.hasUserValue("infill_sparse_density")
     assert not global_stack.hasUserValue("")
 
+##  Tests whether a container in some other place on the stack is correctly not
+#   recognised as user value.
+def test_hasNoUserValue(global_stack):
+    container = unittest.mock.MagicMock()
+    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
+    container.hasProperty = lambda key, property: key == "layer_height" #Only have the layer_height property set.
+    global_stack.quality = container
+
+    assert not global_stack.hasUserValue("layer_height") #However this container is quality, so it's not a user value.
+
 ##  Tests whether inserting a container is properly forbidden.
 def test_insertContainer(global_stack):
     with pytest.raises(InvalidOperationError):
