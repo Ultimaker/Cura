@@ -585,8 +585,9 @@ def test_setQualityByIdDoesntExist(global_stack):
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   exists.
 def test_setQualityChangesByIdExists(global_stack, container_registry):
-    container_registry.typeMetaData = "quality_changes"
-    global_stack.setQualityChangesById("some_quality_changes") #The container registry always has a container with the ID.
+    container_registry.return_value = getInstanceContainer(container_type = "quality_changes")
+    global_stack.setQualityChangesById("InstanceContainer")
+    assert global_stack.qualityChanges.getId() == "InstanceContainer"
 
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   doesn't exist.
