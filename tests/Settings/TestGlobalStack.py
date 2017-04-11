@@ -52,23 +52,8 @@ class MockContainer:
 @pytest.yield_fixture()
 def container_registry():
     registry = unittest.mock.MagicMock()
-
-    registry.typeMetaData = "registry_mock"
-
-    def findInstanceContainers(registry, **kwargs):
-        container_id = kwargs.get("id", "test_container")
-        return [MockContainer(container_id, registry.typeMetaData)]
-    registry.findInstanceContainers = functools.partial(findInstanceContainers, registry)
-
-    def findContainers(registry, container_type = None, id = None):
-        if not id:
-            id = "test_container"
-        return [MockContainer(id, registry.typeMetaData)]
-    registry.findContainers = functools.partial(findContainers, registry)
-
-    def getEmptyInstanceContainer():
-        return MockContainer(container_id = "empty")
-    registry.getEmptyInstanceContainer = getEmptyInstanceContainer
+    registry.return_value = unittest.mock.NonCallableMagicMock()
+    registry.findInstanceContainers = lambda *args, registry = registry, **kwargs: [registry.return_value]
 
     UM.Settings.ContainerRegistry.ContainerRegistry._ContainerRegistry__instance = registry
     UM.Settings.ContainerStack._containerRegistry = registry
@@ -518,8 +503,8 @@ def test_setDefinitionByIdDoesntExist(global_stack):
 ##  Tests setting definition changes by specifying an ID of a container that
 #   exists.
 def test_setDefinitionChangesByIdExists(global_stack, container_registry):
-    container_registry.typeMetaData = "definition_changes"
-    global_stack.setDefinitionChangesById("some_definition_changes") #The container registry always has a container with the ID.
+    container_registry.return_value = getInstanceContainer(container_type = "definition_changes")
+    global_stack.setDefinitionChangesById("InstanceContainer")
 
 ##  Tests setting definition changes by specifying an ID of a container that
 #   doesn't exist.
