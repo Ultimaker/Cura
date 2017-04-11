@@ -257,34 +257,41 @@ def test_deserializeMoveDefinitionContainer(extruder_stack):
 #   containers.
 def test_getPropertyFallThrough(extruder_stack):
     #A few instance container mocks to put in the stack.
-    layer_height_5 = unittest.mock.MagicMock() #Sets layer height to 5.
-    layer_height_5.getProperty = lambda key, property: 5 if (key == "layer_height" and property == "value") else None
-    layer_height_5.hasProperty = lambda key: key == "layer_height"
-    layer_height_10 = unittest.mock.MagicMock() #Sets layer height to 10.
-    layer_height_10.getProperty = lambda key, property: 10 if (key == "layer_height" and property == "value") else None
-    layer_height_10.hasProperty = lambda key: key == "layer_height"
-    no_layer_height = unittest.mock.MagicMock() #No settings at all.
-    no_layer_height.getProperty = lambda key, property: None
-    no_layer_height.hasProperty = lambda key: False
+    mock_layer_heights = {} #For each container type, a mock container that defines layer height to something unique.
+    mock_no_settings = {} #For each container type, a mock container that has no settings at all.
+    container_indices = cura.Settings.CuraContainerStack._ContainerIndexes #Cache.
+    for type_id, type_name in container_indices.IndexTypeMap.items():
+        container = unittest.mock.MagicMock()
+        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else None #Returns the container type ID as layer height, in order to identify it.
+        container.hasProperty = lambda key, property: key == "layer_height"
+        container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
+        mock_layer_heights[type_id] = container
 
-    extruder_stack.userChanges = no_layer_height
-    extruder_stack.qualityChanges = no_layer_height
-    extruder_stack.quality = no_layer_height
-    extruder_stack.material = no_layer_height
-    extruder_stack.variant = no_layer_height
-    extruder_stack.definition = layer_height_5 #Here it is!
+        container = unittest.mock.MagicMock()
+        container.getProperty = unittest.mock.MagicMock(return_value = None) #Has no settings at all.
+        container.hasProperty = unittest.mock.MagicMock(return_value = False)
+        container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
+        mock_no_settings[type_id] = container
 
-    assert extruder_stack.getProperty("layer_height", "value") == 5
-    extruder_stack.variant = layer_height_10
-    assert extruder_stack.getProperty("layer_height", "value") == 10
-    extruder_stack.material = layer_height_5
-    assert extruder_stack.getProperty("layer_height", "value") == 5
-    extruder_stack.quality = layer_height_10
-    assert extruder_stack.getProperty("layer_height", "value") == 10
-    extruder_stack.qualityChanges = layer_height_5
-    assert extruder_stack.getProperty("layer_height", "value") == 5
-    extruder_stack.userChanges = layer_height_10
-    assert extruder_stack.getProperty("layer_height", "value") == 10
+    extruder_stack.userChanges = mock_no_settings[container_indices.UserChanges]
+    extruder_stack.qualityChanges = mock_no_settings[container_indices.QualityChanges]
+    extruder_stack.quality = mock_no_settings[container_indices.Quality]
+    extruder_stack.material = mock_no_settings[container_indices.Material]
+    extruder_stack.variant = mock_no_settings[container_indices.Variant]
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
+        extruder_stack.definition = mock_layer_heights[container_indices.Definition] #There's a layer height in here!
+
+    assert extruder_stack.getProperty("layer_height", "value") == container_indices.Definition
+    extruder_stack.variant = mock_layer_heights[container_indices.Variant]
+    assert extruder_stack.getProperty("layer_height", "value") == container_indices.Variant
+    extruder_stack.material = mock_layer_heights[container_indices.Material]
+    assert extruder_stack.getProperty("layer_height", "value") == container_indices.Material
+    extruder_stack.quality = mock_layer_heights[container_indices.Quality]
+    assert extruder_stack.getProperty("layer_height", "value") == container_indices.Quality
+    extruder_stack.qualityChanges = mock_layer_heights[container_indices.QualityChanges]
+    assert extruder_stack.getProperty("layer_height", "value") == container_indices.QualityChanges
+    extruder_stack.userChanges = mock_layer_heights[container_indices.UserChanges]
+    assert extruder_stack.getProperty("layer_height", "value") == container_indices.UserChanges
 
 ##  Tests whether inserting a container is properly forbidden.
 def test_insertContainer(extruder_stack):
