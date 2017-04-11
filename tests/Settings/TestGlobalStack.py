@@ -575,7 +575,7 @@ def test_setPropertyOtherContainers(target_container, writable_global_stack):
 def test_setQualityByIdExists(global_stack, container_registry):
     container_registry.return_value = getInstanceContainer(container_type = "quality")
     global_stack.setQualityById("InstanceContainer")
-    global_stack.quality.getId() == "InstanceContainer"
+    assert global_stack.quality.getId() == "InstanceContainer"
 
 ##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
 def test_setQualityByIdDoesntExist(global_stack):
