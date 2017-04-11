@@ -537,9 +537,9 @@ def test_setNextStack(global_stack):
 
 ##  Tests setting properties directly on the global stack.
 @pytest.mark.parametrize("key,              property,         value,       output_value", [
-                        ("layer_height",    "value",          0.1337,    0.1337),
-                        ("foo",             "value",          100,       100),
-                        ("support_enabled", "value",          True,      True),
+                        ("layer_height",    "value",          0.1337,      0.1337),
+                        ("foo",             "value",          100,         100),
+                        ("support_enabled", "value",          True,        True),
                         ("layer_height",    "default_value",  0.1337,      0.1337),
                         ("layer_height",    "is_bright_pink", "of course", "of course")
 ])
