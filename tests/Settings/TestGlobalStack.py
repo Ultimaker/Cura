@@ -421,6 +421,33 @@ def test_getPropertyResolveInDefinition(global_stack):
         global_stack.definition = resolve_and_value
     assert global_stack.getProperty("material_bed_temperature", "value") == 7.5 #Resolve wins in the definition.
 
+##  In instance containers, when the value is asked and there is a resolve
+#   function, it must get the value first.
+def test_getPropertyResolveInInstance(global_stack):
+    container_indices = cura.Settings.CuraContainerStack._ContainerIndexes
+    instance_containers = {}
+    for container_type in container_indices.IndexTypeMap:
+        instance_containers[container_type] = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
+        instance_containers[container_type].getProperty = lambda key, property: (7.5 if property == "resolve" else 5) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
+        instance_containers[container_type].getMetaDataEntry = unittest.mock.MagicMock(return_value = container_indices.IndexTypeMap[container_type]) #Make queries for the type return the desired type.
+    instance_containers[container_indices.Definition].getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None #Definition only has value.
+    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
+        global_stack.definition = instance_containers[container_indices.Definition] #Stack must have a definition.
+
+    #For all instance container slots, the value reigns over resolve.
+    global_stack.definitionChanges = instance_containers[container_indices.DefinitionChanges]
+    assert global_stack.getProperty("material_bed_temperature", "value") == 5
+    global_stack.variant = instance_containers[container_indices.Variant]
+    assert global_stack.getProperty("material_bed_temperature", "value") == 5
+    global_stack.material = instance_containers[container_indices.Material]
+    assert global_stack.getProperty("material_bed_temperature", "value") == 5
+    global_stack.quality = instance_containers[container_indices.Quality]
+    assert global_stack.getProperty("material_bed_temperature", "value") == 5
+    global_stack.qualityChanges = instance_containers[container_indices.QualityChanges]
+    assert global_stack.getProperty("material_bed_temperature", "value") == 5
+    global_stack.userChanges = instance_containers[container_indices.UserChanges]
+    assert global_stack.getProperty("material_bed_temperature", "value") == 5
+
 ##  Tests whether the resolve property is properly obtained in all cases.
 @pytest.mark.skip
 def test_getPropertyWithResolve(global_stack):
