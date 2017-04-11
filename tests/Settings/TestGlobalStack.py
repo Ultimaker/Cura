@@ -463,44 +463,6 @@ def test_getPropertyInstancesBeforeResolve(global_stack):
 
     assert global_stack.getProperty("material_bed_temperature", "value") == 10
 
-##  Tests whether the resolve property is properly obtained in all cases.
-@pytest.mark.skip
-def test_getPropertyWithResolve(global_stack):
-    #Define some containers for the stack.
-    resolve = unittest.mock.MagicMock() #Sets just the resolve for bed temperature.
-    resolve.getProperty = lambda key, property: 15 if (key == "material_bed_temperature" and property == "resolve") else None
-    resolve_and_value = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
-    resolve_and_value.getProperty = lambda key, property: (7.5 if property == "resolve" else 5) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
-    value = unittest.mock.MagicMock() #Sets just the value for bed temperature.
-    value.getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None
-    empty = unittest.mock.MagicMock() #Sets no value or resolve.
-    empty.getProperty = unittest.mock.MagicMock(return_value = None)
-
-    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
-        global_stack.definition = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 7.5 #Resolve wins in the definition.
-    global_stack.userChanges = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 5 #Value wins in other places.
-    global_stack.userChanges = value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 10 #Resolve in the definition doesn't influence the value in the user changes.
-    global_stack.userChanges = resolve
-    assert global_stack.getProperty("material_bed_temperature", "value") == 15 #Falls through to definition for lack of values, but then asks the start of the stack for the resolve.
-    global_stack.userChanges = empty
-    global_stack.qualityChanges = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 5 #Value still wins in lower places, except definition.
-    global_stack.qualityChanges = empty
-    global_stack.quality = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 5
-    global_stack.quality = empty
-    global_stack.material = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 5
-    global_stack.material = empty
-    global_stack.variant = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 5
-    global_stack.variant = empty
-    global_stack.definitionChanges = resolve_and_value
-    assert global_stack.getProperty("material_bed_temperature", "value") == 5
-
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
 def test_hasUserValueUserChanges(global_stack):
