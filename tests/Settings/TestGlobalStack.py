@@ -516,8 +516,9 @@ def test_setDefinitionChangesByIdDoesntExist(global_stack):
 
 ##  Tests setting materials by specifying an ID of a material that exists.
 def test_setMaterialByIdExists(global_stack, container_registry):
-    container_registry.typeMetaData = "material"
-    global_stack.setMaterialById("some_material") #The container registry always has a container with the ID.
+    container_registry.return_value = getInstanceContainer(container_type = "material")
+    global_stack.setMaterialById("InstanceContainer")
+    assert global_stack.material.getId() == "InstanceContainer"
 
 ##  Tests setting materials by specifying an ID of a material that doesn't
 #   exist.
