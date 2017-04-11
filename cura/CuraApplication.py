@@ -111,7 +111,7 @@ class CuraApplication(QtApplication):
     def __init__(self):
         # this list of dir names will be used by UM to detect an old cura directory
         for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
-            Resources.addExpectedDirNameInConfig(dir_name)
+            Resources.addExpectedDirNameInData(dir_name)
 
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
