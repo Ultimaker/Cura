@@ -493,6 +493,7 @@ def test_removeContainer(global_stack):
 def test_setDefinitionByIdExists(global_stack, container_registry):
     container_registry.return_value = DefinitionContainer(container_id = "some_definition")
     global_stack.setDefinitionById("some_definition")
+    assert global_stack.definition.getId() == "some_definition"
 
 ##  Tests setting definitions by specifying an ID of a definition that doesn't
 #   exist.
@@ -505,6 +506,7 @@ def test_setDefinitionByIdDoesntExist(global_stack):
 def test_setDefinitionChangesByIdExists(global_stack, container_registry):
     container_registry.return_value = getInstanceContainer(container_type = "definition_changes")
     global_stack.setDefinitionChangesById("InstanceContainer")
+    assert global_stack.definitionChanges.getId() == "InstanceContainer"
 
 ##  Tests setting definition changes by specifying an ID of a container that
 #   doesn't exist.
