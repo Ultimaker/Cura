@@ -10,6 +10,7 @@ from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
@@ -73,7 +74,8 @@ class GlobalStack(CuraContainerStack):
             # track all settings that are being resolved.
             return False
 
-        if self.hasUserValue(key):
+        setting_state = super().getProperty(key, "state")
+        if setting_state is not None and setting_state != InstanceState.Default:
             # When the user has explicitly set a value, we should ignore any resolve and
             # just return that value.
             return False
