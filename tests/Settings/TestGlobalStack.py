@@ -452,31 +452,25 @@ def test_getPropertyInstancesBeforeResolve(global_stack):
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the user-changes container.
 def test_hasUserValueUserChanges(global_stack):
-    user_changes = MockContainer("test_user_changes", "user")
+    container = unittest.mock.MagicMock()
+    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = "user")
+    container.hasProperty = lambda key, property: key == "layer_height" #Only have the layer_height property set.
+    global_stack.userChanges = container
 
-    def hasProperty(key, property):
-        return key == "layer_height" and property == "value" # Only have the layer_height property set.
-    user_changes.hasProperty = hasProperty
-
-    global_stack.userChanges = user_changes
-
-    assert not global_stack.hasUserValue("infill_sparse_density")
     assert global_stack.hasUserValue("layer_height")
+    assert not global_stack.hasUserValue("infill_sparse_density")
     assert not global_stack.hasUserValue("")
 
 ##  Tests whether the hasUserValue returns true for settings that are changed in
 #   the quality-changes container.
 def test_hasUserValueQualityChanges(global_stack):
-    quality_changes = MockContainer("test_quality_changes", "quality_changes")
+    container = unittest.mock.MagicMock()
+    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality_changes")
+    container.hasProperty = lambda key, property: key == "layer_height" #Only have the layer_height property set.
+    global_stack.qualityChanges = container
 
-    def hasProperty(key, property):
-        return key == "layer_height" and property == "value" # Only have the layer_height property set.
-    quality_changes.hasProperty = hasProperty
-
-    global_stack.qualityChanges = quality_changes
-
-    assert not global_stack.hasUserValue("infill_sparse_density")
     assert global_stack.hasUserValue("layer_height")
+    assert not global_stack.hasUserValue("infill_sparse_density")
     assert not global_stack.hasUserValue("")
 
 ##  Tests whether inserting a container is properly forbidden.
