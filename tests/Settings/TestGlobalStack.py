@@ -548,36 +548,32 @@ def test_setPropertyUser(key, property, value, global_stack):
     user_changes.getMetaDataEntry = unittest.mock.MagicMock(return_value = "user")
     global_stack.userChanges = user_changes
 
-    global_stack.setProperty(key, property, value)
-    global_stack.userChanges.setProperty.assert_called_once_with(key, property, value)
+    global_stack.setProperty(key, property, value) #The actual test.
+
+    global_stack.userChanges.setProperty.assert_called_once_with(key, property, value) #Make sure that the user container gets a setProperty call.
 
 ##  Tests setting properties on specific containers on the global stack.
-@pytest.mark.parametrize("target_container", [
-    "user",
-    "quality_changes",
-    "quality",
-    "material",
-    "variant",
-    "definition_changes",
+@pytest.mark.parametrize("target_container,    stack_variable", [
+                        ("user",               "userChanges"),
+                        ("quality_changes",    "qualityChanges"),
+                        ("quality",            "quality"),
+                        ("material",           "material"),
+                        ("variant",            "variant"),
+                        ("definition_changes", "definitionChanges")
 ])
-def test_setPropertyOtherContainers(target_container, writable_global_stack):
+def test_setPropertyOtherContainers(target_container, stack_variable, global_stack):
     #Other parameters that don't need to be varied.
     key = "layer_height"
     property = "value"
     value = 0.1337
-    output_value = 0.1337
+    #A mock container in the right spot.
+    container = unittest.mock.MagicMock()
+    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = target_container)
+    setattr(global_stack, stack_variable, container) #For instance, set global_stack.qualityChanges = container.
 
-    writable_global_stack.setProperty(key, property, value, target_container = target_container)
-    containers = {
-        "user": writable_global_stack.userChanges,
-        "quality_changes": writable_global_stack.qualityChanges,
-        "quality": writable_global_stack.quality,
-        "material": writable_global_stack.material,
-        "variant": writable_global_stack.variant,
-        "definition_changes": writable_global_stack.definitionChanges,
-        "definition": writable_global_stack.definition
-    }
-    assert containers[target_container].getProperty(key, property) == output_value
+    global_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
+
+    getattr(global_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.
 
 ##  Tests setting qualities by specifying an ID of a quality that exists.
 def test_setQualityByIdExists(global_stack, container_registry):
