@@ -353,48 +353,11 @@ class MachineManager(QObject):
 
     @pyqtSlot(str, str)
     def addMachine(self, name: str, definition_id: str) -> None:
-        container_registry = ContainerRegistry.getInstance()
-        definitions = container_registry.findDefinitionContainers(id = definition_id)
-        if definitions:
-            definition = definitions[0]
-            name = self._createUniqueName("machine", "", name, definition.getName())
-
-            variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
-            quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
-
-            #new_global_stack = GlobalStack(name)
-            #container_registry.addContainer(new_global_stack)
-
-            new_global_stack = CuraStackBuilder.createGlobalStack(
-                new_stack_id = name,
-                definition = definition,
-                quality = quality_instance_container.getId(),
-                material = material_instance_container.getId(),
-                variant = variant_instance_container.getId(),
-            )
-
-            #current_settings_instance_container = InstanceContainer(name + "_current_settings")
-            #current_settings_instance_container.addMetaDataEntry("machine", name)
-            #current_settings_instance_container.addMetaDataEntry("type", "user")
-            #current_settings_instance_container.setDefinition(definitions[0])
-            #container_registry.addContainer(current_settings_instance_container)
-
-            #new_global_stack.addContainer(definition)
-            #if variant_instance_container:
-                #new_global_stack.addContainer(variant_instance_container)
-            #if material_instance_container:
-                #new_global_stack.addContainer(material_instance_container)
-            #if quality_instance_container:
-                #new_global_stack.addContainer(quality_instance_container)
-
-            #new_global_stack.addContainer(self._empty_quality_changes_container)
-            #new_global_stack.addContainer(current_settings_instance_container)
-
-            ExtruderManager.getInstance().addMachineExtruders(definition, new_global_stack.getId())
-
-            Application.getInstance().setGlobalContainerStack(new_global_stack)
-
+        new_stack = CuraStackBuilder.createMachine(name, definition_id)
+        if new_stack:
+            Application.getInstance().setGlobalContainerStack(new_stack)
+        else:
+            Logger.log("w", "Failed creating a new machine!")
 
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
