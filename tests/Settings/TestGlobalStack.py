@@ -543,9 +543,13 @@ def test_setNextStack(global_stack):
                         ("layer_height",    "default_value",  0.1337,      0.1337),
                         ("layer_height",    "is_bright_pink", "of course", "of course")
 ])
-def test_setPropertyUser(key, property, value, output_value, writable_global_stack):
-    writable_global_stack.setProperty(key, property, value)
-    assert writable_global_stack.userChanges.getProperty(key, property) == output_value
+def test_setPropertyUser(key, property, value, output_value, global_stack):
+    user_changes = unittest.mock.MagicMock()
+    user_changes.getMetaDataEntry = unittest.mock.MagicMock(return_value = "user")
+    global_stack.userChanges = user_changes
+
+    global_stack.setProperty(key, property, value)
+    global_stack.userChanges.setProperty.assert_called_once_with(key, property, value)
 
 ##  Tests setting properties on specific containers on the global stack.
 @pytest.mark.parametrize("target_container", [
