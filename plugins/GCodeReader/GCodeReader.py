@@ -179,6 +179,7 @@ class GCodeReader(MeshReader):
 
     def _processGCode(self, G, line, position, path):
         func = getattr(self, "_gCode%s" % G, None)
+        line = line.split(";", 1)[0]  # Remove comments (if any)
         if func is not None:
             s = line.upper().split(" ")
             x, y, z, e = None, None, None, None
