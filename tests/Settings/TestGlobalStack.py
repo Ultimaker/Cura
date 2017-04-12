@@ -536,14 +536,14 @@ def test_setNextStack(global_stack):
         global_stack.setNextStack(unittest.mock.MagicMock())
 
 ##  Tests setting properties directly on the global stack.
-@pytest.mark.parametrize("key,              property,         value,       output_value", [
-                        ("layer_height",    "value",          0.1337,      0.1337),
-                        ("foo",             "value",          100,         100),
-                        ("support_enabled", "value",          True,        True),
-                        ("layer_height",    "default_value",  0.1337,      0.1337),
-                        ("layer_height",    "is_bright_pink", "of course", "of course")
+@pytest.mark.parametrize("key,              property,         value", [
+                        ("layer_height",    "value",          0.1337),
+                        ("foo",             "value",          100),
+                        ("support_enabled", "value",          True),
+                        ("layer_height",    "default_value",  0.1337),
+                        ("layer_height",    "is_bright_pink", "of course")
 ])
-def test_setPropertyUser(key, property, value, output_value, global_stack):
+def test_setPropertyUser(key, property, value, global_stack):
     user_changes = unittest.mock.MagicMock()
     user_changes.getMetaDataEntry = unittest.mock.MagicMock(return_value = "user")
     global_stack.userChanges = user_changes
