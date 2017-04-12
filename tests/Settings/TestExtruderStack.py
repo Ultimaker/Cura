@@ -389,15 +389,10 @@ def test_setQualityByIdDoesntExist(extruder_stack):
 
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   exists.
-@pytest.mark.skip
 def test_setQualityChangesByIdExists(extruder_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
-    extruder_stack.setQualityChangesById("some_quality_changes") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+    container_registry.return_value = getInstanceContainer(container_type = "quality_changes")
+    extruder_stack.setQualityChangesById("InstanceContainer")
+    assert extruder_stack.qualityChanges.getId() == "InstanceContainer"
 
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   doesn't exist.
