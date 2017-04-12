@@ -9,12 +9,16 @@
         "manufacturer": "Cartesio bv",
         "category": "Other",
         "file_formats": "text/x-gcode",
+
         "has_machine_materials": true,
+        "has_machine_quality": true,
         "has_variants": true,
+
         "variants_name": "Nozzle size",
         "preferred_variant": "*0.4*",
         "preferred_material": "*pla*",
         "preferred_quality": "*draft*",
+
         "machine_extruder_trains":
         {
             "0": "cartesio_extruder_0",
