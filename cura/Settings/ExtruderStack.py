@@ -1,6 +1,8 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from typing import Any
+
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.Decorators import override
@@ -21,7 +23,7 @@ class ExtruderStack(CuraContainerStack):
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
 
     @override(ContainerStack)
-    def setNextStack(self, stack):
+    def setNextStack(self, stack: ContainerStack) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
 
