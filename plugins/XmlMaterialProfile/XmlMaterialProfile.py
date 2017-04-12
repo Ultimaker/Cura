@@ -11,7 +11,7 @@ from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
-from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 ##  Handles serializing and deserializing material containers from an XML file
@@ -369,8 +369,30 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
         self._path = ""
 
+    def getConfigurationType(self) -> str:
+        return "material"  # FIXME: not sure if this is correct
+
+    def getVersionFromSerialized(self, serialized: str) -> int:
+        version = None
+        data = ET.fromstring(serialized)
+        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
+        for entry in metadata:
+            tag_name = _tag_without_namespace(entry)
+            if tag_name == "version":
+                try:
+                    version = int(entry.text)
+                except Exception as e:
+                    raise InvalidInstanceError("Invalid version string '%s': %s" % (entry.text, e))
+                break
+        if version is None:
+            raise InvalidInstanceError("Missing version in metadata")
+        return version
+
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
+        # update the serialized data first
+        from UM.Settings.Interfaces import ContainerInterface
+        serialized = ContainerInterface.deserialize(self, serialized)
         data = ET.fromstring(serialized)
 
         # Reset previous metadata
@@ -405,10 +427,10 @@ class XmlMaterialProfile(InstanceContainer):
                 continue
             meta_data[tag_name] = entry.text
 
-        if not "description" in meta_data:
+        if "description" not in meta_data:
             meta_data["description"] = ""
 
-        if not "adhesion_info" in meta_data:
+        if "adhesion_info" not in meta_data:
             meta_data["adhesion_info"] = ""
 
         property_values = {}
