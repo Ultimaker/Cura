@@ -1,7 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import os.path #To find the test stack files.
 import pytest #This module contains automated tests.
 import unittest.mock #For the mocking and monkeypatching functionality.
 
@@ -32,26 +31,6 @@ def container_registry():
 @pytest.fixture()
 def extruder_stack() -> cura.Settings.ExtruderStack.ExtruderStack:
     return cura.Settings.ExtruderStack.ExtruderStack("TestStack")
-
-##  Place-in function for findContainer that finds only containers that start
-#   with "some_".
-def findSomeContainers(container_id = "*", container_type = None, type = None, category = "*"):
-    if container_id.startswith("some_"):
-        return UM.Settings.ContainerRegistry._EmptyInstanceContainer(container_id)
-    if container_type == DefinitionContainer:
-        definition_mock = unittest.mock.MagicMock()
-        definition_mock.getId = unittest.mock.MagicMock(return_value = "some_definition") #getId returns some_definition.
-        return definition_mock
-
-##  Helper function to read the contents of a container stack in the test
-#   stack folder.
-#
-#   \param filename The name of the file in the "stacks" folder to read from.
-#   \return The contents of that file.
-def readStack(filename):
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
-        serialized = file_handle.read()
-    return serialized
 
 ##  Gets an instance container with a specified container type.
 #
