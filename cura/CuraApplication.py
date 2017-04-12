@@ -1287,7 +1287,7 @@ class CuraApplication(QtApplication):
                 offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
                 # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                node,_ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()
