@@ -26,6 +26,10 @@ class ExtruderStack(CuraContainerStack):
     def setNextStack(self, stack: ContainerStack) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
+        if not self.getMetaDataEntry("machine"):
+            self.addMetaDataEntry("machine", stack.id)
+        else:
+            self.setMetaDataEntry("machine", stack.id)
 
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str) -> Any:
