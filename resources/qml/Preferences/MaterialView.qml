@@ -273,10 +273,10 @@ TabView
                     {
                         id: spinBox
                         anchors.left: label.right
-                        value: parseFloat(provider.properties.value);
+                        value: (provider.properties.value != "None") ? parseFloat(provider.properties.value) : 0
                         width: base.secondColumnWidth;
                         readOnly: !base.editingEnabled
-                        suffix: model.unit
+                        suffix: " " + model.unit
                         maximumValue: 99999
                         decimals: model.unit == "mm" ? 2 : 0
 
