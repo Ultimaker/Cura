@@ -332,7 +332,7 @@ class MachineManager(QObject):
             container_registry.addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+            material_instance_container = self._updateMaterialContainer(definition, new_global_stack, variant_instance_container)
             quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
 
             current_settings_instance_container = InstanceContainer(name + "_current_settings")
@@ -760,7 +760,7 @@ class MachineManager(QObject):
                 if old_material:
                     preferred_material_name = old_material.getName()
 
-                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
+                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
@@ -1110,11 +1110,12 @@ class MachineManager(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, variant_container = None, preferred_material_name = None):
+    def _updateMaterialContainer(self, stack, definition, variant_container = None, preferred_material_name = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
-        search_criteria = { "type": "material" }
+        approximate_material_diameter = round(stack.getProperty("material_diameter", "value"))
+        search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
 
         if definition.getMetaDataEntry("has_machine_materials"):
             search_criteria["definition"] = self.getQualityDefinitionId(definition)
