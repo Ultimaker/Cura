@@ -1,7 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import os.path #To find the test files.
 import pytest #This module contains unit tests.
 import unittest.mock #To monkeypatch some mocks in place of dependencies.
 
@@ -13,39 +12,6 @@ from UM.Settings.InstanceContainer import InstanceContainer #To test against the
 from UM.Settings.SettingInstance import InstanceState
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
-
-class MockContainer:
-    def __init__(self, container_id, type = "mock"):
-        self._id = container_id
-        self._type = type
-
-        self._property_map = {}
-
-    def getId(self):
-        return self._id
-
-    def getMetaDataEntry(self, entry, default = None):
-        if entry == "type":
-            return self._type
-
-        return default
-
-    def getProperty(self, key, property_name):
-        if key not in self._property_map:
-            return None
-
-        if property_name not in self._property_map[key]:
-            return None
-
-        return self._property_map[key][property_name]
-
-    def setProperty(self, key, property_name, value):
-        if key not in self._property_map:
-            self._property_map[key] = {}
-
-        self._property_map[key][property_name] = value
-
-    propertyChanged = unittest.mock.MagicMock()
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -67,37 +33,6 @@ def container_registry():
 @pytest.fixture()
 def global_stack() -> cura.Settings.GlobalStack.GlobalStack:
     return cura.Settings.GlobalStack.GlobalStack("TestStack")
-
-@pytest.fixture()
-def writable_global_stack(global_stack):
-    global_stack.userChanges = MockContainer("test_user_changes", "user")
-    global_stack.qualityChanges = MockContainer("test_quality_changes", "quality_changes")
-    global_stack.quality = MockContainer("test_quality", "quality")
-    global_stack.material = MockContainer("test_material", "material")
-    global_stack.variant = MockContainer("test_variant", "variant")
-    global_stack.definitionChanges = MockContainer("test_definition_changes", "definition_changes")
-    global_stack.definition = DefinitionContainerSubClass()
-    return global_stack
-
-##  Place-in function for findContainer that finds only containers that start
-#   with "some_".
-def findSomeContainers(container_id = "*", container_type = None, type = None, category = "*"):
-    if container_id.startswith("some_"):
-        return UM.Settings.ContainerRegistry._EmptyInstanceContainer(container_id)
-    if container_type == DefinitionContainer:
-        definition_mock = unittest.mock.MagicMock()
-        definition_mock.getId = unittest.mock.MagicMock(return_value = "some_definition") #getId returns some_definition.
-        return definition_mock
-
-##  Helper function to read the contents of a container stack in the test
-#   stack folder.
-#
-#   \param filename The name of the file in the "stacks" folder to read from.
-#   \return The contents of that file.
-def readStack(filename):
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)) as file_handle:
-        serialized = file_handle.read()
-    return serialized
 
 ##  Gets an instance container with a specified container type.
 #
