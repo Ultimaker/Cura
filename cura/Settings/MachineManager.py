@@ -55,7 +55,7 @@ class MachineManager(QObject):
         self._empty_variant_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
         self._empty_material_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
         self._empty_quality_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
-        self._empty_quality_changes_container = ContainerRegistry.getInstance().findInstanceContainers(id="empty_quality_changes")[0]
+        self._empty_quality_changes_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
         self._onGlobalContainerChanged()
 
