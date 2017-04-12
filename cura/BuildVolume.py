@@ -139,13 +139,16 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreasAndRebuild()
 
     def setWidth(self, width):
-        if width: self._width = width
+        if width is not None:
+            self._width = width
 
     def setHeight(self, height):
-        if height: self._height = height
+        if height is not None:
+            self._height = height
 
     def setDepth(self, depth):
-        if depth: self._depth = depth
+        if depth is not None:
+            self._depth = depth
 
     def setShape(self, shape):
         if shape: self._shape = shape
