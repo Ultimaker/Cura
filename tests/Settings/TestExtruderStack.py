@@ -315,9 +315,8 @@ def test_setDefinitionByIdExists(extruder_stack, container_registry):
 
 ##  Tests setting definitions by specifying an ID of a definition that doesn't
 #   exist.
-@pytest.mark.skip
 def test_setDefinitionByIdDoesntExist(extruder_stack):
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidContainerError):
         extruder_stack.setDefinitionById("some_definition") #Container registry is empty now.
 
 ##  Tests setting materials by specifying an ID of a material that exists.
@@ -328,9 +327,8 @@ def test_setMaterialByIdExists(extruder_stack, container_registry):
 
 ##  Tests setting materials by specifying an ID of a material that doesn't
 #   exist.
-@pytest.mark.skip
 def test_setMaterialByIdDoesntExist(extruder_stack):
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidContainerError):
         extruder_stack.setMaterialById("some_material") #Container registry is empty now.
 
 ##  Tests setting properties directly on the extruder stack.
@@ -382,9 +380,8 @@ def test_setQualityByIdExists(extruder_stack, container_registry):
     assert extruder_stack.quality.getId() == "InstanceContainer"
 
 ##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
-@pytest.mark.skip
 def test_setQualityByIdDoesntExist(extruder_stack):
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidContainerError):
         extruder_stack.setQualityById("some_quality") #Container registry is empty now.
 
 ##  Tests setting quality changes by specifying an ID of a quality change that
@@ -396,9 +393,8 @@ def test_setQualityChangesByIdExists(extruder_stack, container_registry):
 
 ##  Tests setting quality changes by specifying an ID of a quality change that
 #   doesn't exist.
-@pytest.mark.skip
 def test_setQualityChangesByIdDoesntExist(extruder_stack):
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidContainerError):
         extruder_stack.setQualityChangesById("some_quality_changes") #Container registry is empty now.
 
 ##  Tests setting variants by specifying an ID of a variant that exists.
@@ -408,7 +404,6 @@ def test_setVariantByIdExists(extruder_stack, container_registry):
     assert extruder_stack.variant.getId() == "InstanceContainer"
 
 ##  Tests setting variants by specifying an ID of a variant that doesn't exist.
-@pytest.mark.skip
 def test_setVariantByIdDoesntExist(extruder_stack):
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidContainerError):
         extruder_stack.setVariantById("some_variant") #Container registry is empty now.
