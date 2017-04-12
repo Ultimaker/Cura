@@ -984,7 +984,9 @@ class CuraApplication(QtApplication):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
-            nodes.append(node)
+            # Skip nodes that are too big
+            if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                nodes.append(node)
         self.arrange(nodes, fixed_nodes = [])
 
     ##  Arrange Selection

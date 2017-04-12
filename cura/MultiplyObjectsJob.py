@@ -47,13 +47,18 @@ class MultiplyObjectsJob(Job):
 
         root = scene.getRoot()
         arranger = Arrange.create(scene_root=root)
-        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset=self._min_offset)
+        node_too_big = False
+        if node.getBoundingBox().width < 300 or node.getBoundingBox().depth < 300:
+            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset=self._min_offset)
+        else:
+            node_too_big = True
         nodes = []
         found_solution_for_all = True
         for i in range(self._count):
             # We do place the nodes one by one, as we want to yield in between.
-            node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
-            if not solution_found:
+            if not node_too_big:
+                node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
+            if node_too_big or not solution_found:
                 found_solution_for_all = False
                 new_location = node.getPosition()
                 new_location = new_location.set(z = 100 - i * 20)
