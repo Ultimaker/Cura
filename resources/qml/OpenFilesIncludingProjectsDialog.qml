@@ -79,7 +79,7 @@ UM.Dialog
         {
             anchors.right: parent.right
             anchors.left: parent.left
-            height: childrenRect.height * Screen.devicePixelRatio
+            height: childrenRect.height
 
             Button
             {
