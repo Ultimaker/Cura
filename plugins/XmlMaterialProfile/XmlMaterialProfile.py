@@ -118,6 +118,7 @@ class XmlMaterialProfile(InstanceContainer):
         metadata.pop("variant", "")
         metadata.pop("type", "")
         metadata.pop("base_file", "")
+        metadata.pop("approximate_diameter", "")
 
         ## Begin Name Block
         builder.start("name")
@@ -437,6 +438,7 @@ class XmlMaterialProfile(InstanceContainer):
                 Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = global_setting_values
 
+        meta_data["approximate_diameter"] = round(diameter)
         meta_data["compatible"] = global_compatibility
         self.setMetaData(meta_data)
         self._dirty = False
