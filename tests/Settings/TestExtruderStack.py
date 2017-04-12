@@ -332,46 +332,43 @@ def test_setMaterialByIdDoesntExist(extruder_stack):
         extruder_stack.setMaterialById("some_material") #Container registry is empty now.
 
 ##  Tests setting properties directly on the extruder stack.
-@pytest.mark.skip
-@pytest.mark.parametrize("key,              property,         value,       output_value", [
-                        ("layer_height",    "value",          "0.1337",    0.1337),
-                        ("foo",             "value",          "100",       100),
-                        ("support_enabled", "value",          "True",      True),
-                        ("layer_height",    "default_value",  0.1337,      0.1337),
-                        ("layer_height",    "is_bright_pink", "of course", "of course")
+@pytest.mark.parametrize("key,              property,         value", [
+                        ("layer_height",    "value",          0.1337),
+                        ("foo",             "value",          100),
+                        ("support_enabled", "value",          True),
+                        ("layer_height",    "default_value",  0.1337),
+                        ("layer_height",    "is_bright_pink", "of course")
 ])
-def test_setPropertyUser(key, property, value, output_value, extruder_stack):
-    extruder_stack.setProperty(key, value, property)
-    assert extruder_stack.userChanges.getProperty(key, property) == output_value
+def test_setPropertyUser(key, property, value, extruder_stack):
+    user_changes = unittest.mock.MagicMock()
+    user_changes.getMetaDataEntry = unittest.mock.MagicMock(return_value = "user")
+    extruder_stack.userChanges = user_changes
 
-##  Tests setting properties on specific containers on the extruder stack.
-@pytest.mark.skip
-@pytest.mark.parametrize("target_container", [
-    "user",
-    "quality_changes",
-    "quality",
-    "material",
-    "variant",
-    "definition"
+    extruder_stack.setProperty(key, property, value) #The actual test.
+
+    extruder_stack.userChanges.setProperty.assert_called_once_with(key, property, value) #Make sure that the user container gets a setProperty call.
+
+##  Tests setting properties on specific containers on the global stack.
+@pytest.mark.parametrize("target_container,    stack_variable", [
+                        ("user",               "userChanges"),
+                        ("quality_changes",    "qualityChanges"),
+                        ("quality",            "quality"),
+                        ("material",           "material"),
+                        ("variant",            "variant")
 ])
-def test_setPropertyOtherContainers(target_container, extruder_stack):
+def test_setPropertyOtherContainers(target_container, stack_variable, extruder_stack):
     #Other parameters that don't need to be varied.
     key = "layer_height"
-    property = "value",
-    value = "0.1337",
-    output_value = 0.1337
+    property = "value"
+    value = 0.1337
+    #A mock container in the right spot.
+    container = unittest.mock.MagicMock()
+    container.getMetaDataEntry = unittest.mock.MagicMock(return_value = target_container)
+    setattr(extruder_stack, stack_variable, container) #For instance, set global_stack.qualityChanges = container.
 
-    extruder_stack.setProperty(key, value, property, target_container = target_container)
-    containers = {
-        "user": extruder_stack.userChanges,
-        "quality_changes": extruder_stack.qualityChanges,
-        "quality": extruder_stack.quality,
-        "material": extruder_stack.material,
-        "variant": extruder_stack.variant,
-        "definition_changes": extruder_stack.definition_changes,
-        "definition": extruder_stack.definition
-    }
-    assert containers[target_container].getProperty(key, property) == output_value
+    extruder_stack.setProperty(key, property, value, target_container = target_container) #The actual test.
+
+    getattr(extruder_stack, stack_variable).setProperty.assert_called_once_with(key, property, value) #Make sure that the proper container gets a setProperty call.
 
 ##  Tests setting qualities by specifying an ID of a quality that exists.
 def test_setQualityByIdExists(extruder_stack, container_registry):
