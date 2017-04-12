@@ -263,6 +263,7 @@ def test_getPropertyFallThrough(extruder_stack):
     extruder_stack.variant = mock_no_settings[container_indices.Variant]
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         extruder_stack.definition = mock_layer_heights[container_indices.Definition] #There's a layer height in here!
+    extruder_stack.setNextStack(unittest.mock.MagicMock())
 
     assert extruder_stack.getProperty("layer_height", "value") == container_indices.Definition
     extruder_stack.variant = mock_layer_heights[container_indices.Variant]
