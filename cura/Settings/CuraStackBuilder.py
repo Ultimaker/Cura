@@ -7,11 +7,50 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
+from .CuraContainerStack import CuraContainerStack
 
 class CuraStackBuilder:
-    @staticmethod
-    def createExtruderStack(new_stack_id: str, definition_id: str, **kwargs) -> ExtruderStack:
-        registry = ContainerRegistry.getInstance()
+    @classmethod
+    def createMachine(cls, name: str, definition_id: str) -> GlobalStack:
+        cls.__registry = ContainerRegistry.getInstance()
+        definitions = cls.__registry.findDefinitionContainers(id = definition_id)
+        if not definitions:
+            Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
+            return None
+
+        machine_definition = definitions[0]
+        name = cls.__registry.createUniqueName("machine", "", name, machine_definition.name)
+
+        new_global_stack = cls.createGlobalStack(
+            new_stack_id = name,
+            definition = machine_definition,
+            quality = "default",
+            material = "default",
+            variant = "default",
+        )
+
+        for extruder_definition in cls.__registry.findDefinitionContainers(machine = machine_definition.id):
+            position = extruder_definition.getMetaDataEntry("position", None)
+            if not position:
+                Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.id)
+
+            new_extruder_id = cls.__registry.uniqueName(extruder_definition.id)
+            new_extruder = cls.createExtruderStack(
+                new_extruder_id = new_extruder_id,
+                definition = extruder_definition,
+                machine_definition = machine_definition,
+                quality = "default",
+                material = "default",
+                variant = "default",
+                next_stack = new_global_stack
+            )
+
+        return new_global_stack
+
+
+    @classmethod
+    def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainer, machine_definition: DefinitionContainer, **kwargs) -> ExtruderStack:
+        cls.__registry = ContainerRegistry.getInstance()
 
         stack = ExtruderStack(new_stack_id)
 
@@ -84,3 +123,9 @@ class CuraStackBuilder:
         registry.addContainer(user_container)
 
         return stack
+
+    # Convenience variable
+    # It should get set before any private functions are called so the privates do not need to
+    # re-get the container registry.
+    __registry = None # type: ContainerRegistry
+
