@@ -376,15 +376,10 @@ def test_setPropertyOtherContainers(target_container, extruder_stack):
     assert containers[target_container].getProperty(key, property) == output_value
 
 ##  Tests setting qualities by specifying an ID of a quality that exists.
-@pytest.mark.skip
 def test_setQualityByIdExists(extruder_stack, container_registry):
-    original_container_registry = UM.Settings.ContainerStack._containerRegistry
-    UM.Settings.ContainerStack._containerRegistry = container_registry #Always has all the profiles you ask of.
-
-    extruder_stack.setQualityById("some_quality") #The container registry always has a container with the ID.
-
-    #Restore.
-    UM.Settings.ContainerStack._containerRegistry = original_container_registry
+    container_registry.return_value = getInstanceContainer(container_type = "quality")
+    extruder_stack.setQualityById("InstanceContainer")
+    assert extruder_stack.quality.getId() == "InstanceContainer"
 
 ##  Tests setting qualities by specifying an ID of a quality that doesn't exist.
 @pytest.mark.skip
