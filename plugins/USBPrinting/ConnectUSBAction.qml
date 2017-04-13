@@ -37,51 +37,88 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "Select the port and communication speed to use to connect with this printer.")
         }
 
-        Row
+        GridLayout
         {
-            spacing: UM.Theme.getSize("default_margin").width
+            width: parent.width
+            columns: 3
+            columnSpacing: UM.Theme.getSize("default_margin").width
+            rowSpacing: UM.Theme.getSize("default_lining").height
+
             Label
             {
-                text: catalog.i18nc("@label", "Port:")
-                anchors.verticalCenter: parent.verticalCenter
+                text: catalog.i18nc("@label", "Serial Port:")
             }
             ComboBox
             {
+                id: connectionPort
                 model:
                 {
                     var port_list = Cura.USBPrinterManager.portList
                     port_list.unshift("AUTO")
                     return port_list
                 }
-                anchors.verticalCenter: parent.verticalCenter
             }
             Label
             {
-                text: catalog.i18nc("@label", "Communication Speed:")
-                anchors.verticalCenter: parent.verticalCenter
+                text:
+                {
+                    if (connectionPort.currentText == "AUTO")
+                    {
+                        return catalog.i18nc("@label", "Note: this selection will result in Cura scanning all serial ports which may reset connected devices.");
+                    }
+                    return "";
+                }
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "Connection Speed:")
             }
             ComboBox
             {
+                id: connectionRate
                 model: ["AUTO", "250000", "230400", "115200", "57600", "38400", "19200", "9600"]
-                anchors.verticalCenter: parent.verticalCenter
+            }
+            Label
+            {
+                text:
+                {
+                    if (connectionRate.currentText == "AUTO")
+                    {
+                        return catalog.i18nc("@label", "Note: this selection will slow down detection of the connected printers.")
+                    }
+                    return "";
+                }
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+            }
+
+            Label
+            {
+                text: ""
             }
             Button
             {
                 text: catalog.i18nc("@action:button", "Detect")
+                visible: connectionPort.currentText == "AUTO" || connectionRate.currentText == "AUTO"
             }
         }
 
         CheckBox
         {
-            text: catalog.i18nc("@label", "Automatically detect this printer on startup if the connection seems to have changed.")
+            id: autoConnect
+            text: catalog.i18nc("@label", "Automatically connect this printer on startup.")
             checked: true
+            enabled: false
         }
 
         Label
         {
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "Note: detecting printers may reset devices connected to this computer, and may interrupt an ongoing print on a USB-connected printer.")
+            visible: autoConnect.checked
+            text: catalog.i18nc("@label", "Note: connecting to a printer will interrupt ongoing prints on the printer.")
         }
 
         Button
