@@ -57,6 +57,16 @@ Cura.MachineAction
                     port_list.unshift("NONE", "AUTO")
                     return port_list
                 }
+                currentIndex:
+                {
+                    var index = model.indexOf(manager.serialPort);
+                    if(index == -1)
+                    {
+                        index = 0;
+                    }
+                    return index
+                }
+                onActivated: manager.setSerialPort(model[index])
             }
             Label
             {
@@ -81,6 +91,16 @@ Cura.MachineAction
                 id: connectionRate
                 model: ["AUTO", "250000", "230400", "115200", "57600", "38400", "19200", "9600"]
                 visible: connectionPort.currentText != "NONE"
+                currentIndex:
+                {
+                    var index = model.indexOf(manager.serialRate);
+                    if(index == -1)
+                    {
+                        index = 0;
+                    }
+                    return index
+                }
+                onActivated: manager.setSerialRate(model[index])
             }
             Label
             {
@@ -112,8 +132,8 @@ Cura.MachineAction
         {
             id: autoConnect
             text: catalog.i18nc("@label", "Automatically connect this printer on startup.")
-            checked: true
-            enabled: false
+            checked: manager.autoConnect
+            onClicked: manager.setAutoConnect(checked)
         }
 
         Label
