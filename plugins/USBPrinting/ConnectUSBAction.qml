@@ -54,7 +54,7 @@ Cura.MachineAction
                 model:
                 {
                     var port_list = Cura.USBPrinterManager.portList
-                    port_list.unshift("AUTO")
+                    port_list.unshift("NONE", "AUTO")
                     return port_list
                 }
             }
@@ -74,11 +74,13 @@ Cura.MachineAction
             Label
             {
                 text: catalog.i18nc("@label", "Connection Speed:")
+                visible: connectionRate.visible
             }
             ComboBox
             {
                 id: connectionRate
                 model: ["AUTO", "250000", "230400", "115200", "57600", "38400", "19200", "9600"]
+                visible: connectionPort.currentText != "NONE"
             }
             Label
             {
@@ -90,6 +92,7 @@ Cura.MachineAction
                     }
                     return "";
                 }
+                visible: connectionRate.visible
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
             }
@@ -101,7 +104,7 @@ Cura.MachineAction
             Button
             {
                 text: catalog.i18nc("@action:button", "Detect")
-                visible: connectionPort.currentText == "AUTO" || connectionRate.currentText == "AUTO"
+                visible: connectionPort.currentText != "NONE" && (connectionPort.currentText == "AUTO" || connectionRate.currentText == "AUTO")
             }
         }
 
