@@ -746,7 +746,7 @@
                         "support_interface_line_width":
                         {
                             "label": "Support Interface Line Width",
-                            "description": "Width of a single support interface line.",
+                            "description": "Width of a single line of support roof or floor.",
                             "unit": "mm",
                             "default_value": 0.4,
                             "minimum_value": "0.001",
@@ -762,8 +762,8 @@
                             {
                                 "support_bottom_line_width":
                                 {
-                                    "label": "Support Bottom Line Width",
-                                    "description": "Width of a single support bottom line.",
+                                    "label": "Support Floor Line Width",
+                                    "description": "Width of a single support floor line.",
                                     "unit": "mm",
                                     "default_value": 0.4,
                                     "minimum_value": "0.001",
@@ -1958,7 +1958,7 @@
                                 "speed_support_interface":
                                 {
                                     "label": "Support Interface Speed",
-                                    "description": "The speed at which the roofs and bottoms of support are printed. Printing them at lower speeds can improve overhang quality.",
+                                    "description": "The speed at which the roofs and floors of support are printed. Printing them at lower speeds can improve overhang quality.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default_value": 40,
@@ -1974,8 +1974,8 @@
                                     {
                                         "speed_support_bottom":
                                         {
-                                            "label": "Support Bottom Speed",
-                                            "description": "The speed at which the bottoms of support are printed. Printing them at lower speeds can improve adhesion of support on top of your model.",
+                                            "label": "Support Floor Speed",
+                                            "description": "The speed at which the floor of support is printed. Printing it at lower speed can improve adhesion of support on top of your model.",
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 40,
@@ -2279,7 +2279,7 @@
                                 "acceleration_support_interface":
                                 {
                                     "label": "Support Interface Acceleration",
-                                    "description": "The acceleration with which the roofs and bottoms of support are printed. Printing them at lower acceleration can improve overhang quality.",
+                                    "description": "The acceleration with which the roofs and floors of support are printed. Printing them at lower acceleration can improve overhang quality.",
                                     "unit": "mm/s²",
                                     "type": "float",
                                     "default_value": 3000,
@@ -2295,8 +2295,8 @@
                                     {
                                         "acceleration_support_bottom":
                                         {
-                                            "label": "Support Bottom Acceleration",
-                                            "description": "The acceleration with which the bottoms of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model.",
+                                            "label": "Support Floor Acceleration",
+                                            "description": "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model.",
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
@@ -2553,7 +2553,7 @@
                                 "jerk_support_interface":
                                 {
                                     "label": "Support Interface Jerk",
-                                    "description": "The maximum instantaneous velocity change with which the roofs and bottoms of support are printed.",
+                                    "description": "The maximum instantaneous velocity change with which the roofs and floors of support are printed.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default_value": 20,
@@ -2569,8 +2569,8 @@
                                     {
                                         "jerk_support_bottom":
                                         {
-                                            "label": "Support Bottom Jerk",
-                                            "description": "The maximum instantaneous velocity change with which the bottoms of support are printed.",
+                                            "label": "Support Floor Jerk",
+                                            "description": "The maximum instantaneous velocity change with which the floors of support are printed.",
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 20,
@@ -3044,8 +3044,8 @@
                             {
                                 "support_bottom_extruder_nr":
                                 {
-                                    "label": "Support Bottom Extruder",
-                                    "description": "The extruder train to use for printing the bottoms of the support. This is used in multi-extrusion.",
+                                    "label": "Support Floor Extruder",
+                                    "description": "The extruder train to use for printing the floors of the support. This is used in multi-extrusion.",
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
@@ -3299,8 +3299,8 @@
                     {
                         "support_bottom_enable":
                         {
-                            "label": "Enable Support Bottom",
-                            "description": "Generate dense floors below the support where it rests on the model. This will create a skin between the model and support.",
+                            "label": "Enable Support Floor",
+                            "description": "Generate a dense slab of material below the support where it rests on the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
                             "value": "support_interface_enable",
@@ -3353,8 +3353,8 @@
                         },
                         "support_bottom_height":
                         {
-                            "label": "Support Bottom Thickness",
-                            "description": "The thickness of the support bottoms. This controls the number of dense layers are printed on top of places of a model on which support rests.",
+                            "label": "Support Floor Thickness",
+                            "description": "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1,
@@ -3397,8 +3397,8 @@
                     {
                         "support_bottom_density":
                         {
-                            "label": "Support Bottom Density",
-                            "description": "The density of the bottoms of the support structure. A higher value results in better adhesion of the support on top of the model.",
+                            "label": "Support Floor Density",
+                            "description": "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model.",
                             "unit": "%",
                             "type": "float",
                             "default_value": 100,
@@ -3412,8 +3412,8 @@
                             {
                                 "support_bottom_line_distance":
                                 {
-                                    "label": "Support Bottom Line Distance",
-                                    "description": "Distance between the printed support bottom lines. This setting is calculated by the Support Bottom Density, but can be adjusted separately.",
+                                    "label": "Support Floor Line Distance",
+                                    "description": "Distance between the printed support floor lines. This setting is calculated by the Support Floor Density, but can be adjusted separately.",
                                     "unit": "mm",
                                     "type": "float",
                                     "default_value": 0.4,
@@ -3484,8 +3484,8 @@
                     {
                         "support_bottom_pattern":
                         {
-                            "label": "Support Bottom Pattern",
-                            "description": "The pattern with which the bottoms of the support are printed.",
+                            "label": "Support Floor Pattern",
+                            "description": "The pattern with which the floors of the support are printed.",
                             "type": "enum",
                             "options":
                             {
