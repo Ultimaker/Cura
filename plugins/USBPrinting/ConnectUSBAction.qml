@@ -37,6 +37,14 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "Select the port and communication speed to use to connect with this printer.")
         }
 
+        CheckBox
+        {
+            id: listAllSerialPortsCheckBox
+            text: catalog.i18nc("@label", "List all serial ports.")
+            checked: UM.Preferences.getValue("usb_printing/list_all_serial_ports")
+            onClicked: Cura.USBPrinterManager.setListAllSerialPorts(checked)
+        }
+
         GridLayout
         {
             width: parent.width

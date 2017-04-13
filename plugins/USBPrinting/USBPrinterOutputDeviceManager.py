@@ -11,6 +11,7 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from cura.PrinterOutputDevice import ConnectionState
 from UM.Qt.ListModel import ListModel
 from UM.Message import Message
+from UM.Preferences import Preferences
 
 from cura.CuraApplication import CuraApplication
 
@@ -44,6 +45,10 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+
+        self._preferences = Preferences.getInstance()
+        self._preferences.addPreference("usb_printing/list_all_serial_ports", "False")
+        self._list_all_serial_ports = self._preferences.getValue("usb_printing/list_all_serial_ports")
 
     addUSBOutputDeviceSignal = Signal()
     connectionStateChanged = pyqtSignal()
@@ -84,7 +89,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     def _updateThread(self):
         while self._check_updates:
-            result = self.getSerialPortList(only_list_usb = False)
+            result = self.getSerialPortList(only_list_usb = not self._list_all_serial_ports)
             self._addRemovePorts(result)
             time.sleep(5)
 
@@ -274,3 +279,14 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         return self._serial_port_list
 
     _instance = None    # type: "USBPrinterOutputDeviceManager"
+
+    @pyqtSlot(bool)
+    def setListAllSerialPorts(self, list_all_serial_ports):
+        if self._list_all_serial_ports == list_all_serial_ports:
+            return
+
+        self._list_all_serial_ports = list_all_serial_ports
+        self._preferences.setValue("usb_printing/list_all_serial_ports", str(list_all_serial_ports))
+
+        result = self.getSerialPortList(only_list_usb = not list_all_serial_ports)
+        self._addRemovePorts(result)
