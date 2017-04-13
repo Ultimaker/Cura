@@ -1,21 +1,16 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
-# This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 2.5\n"
-"Report-Msgid-Bugs-To: http://github.com/Ultimaker/Cura\n"
+"Project-Id-Version: Uranium json setting files\n"
+"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
 "POT-Creation-Date: 2017-03-27 17:27+0000\n"
-"PO-Revision-Date: 2017-03-28 04:41+0300\n"
-"Language-Team: Ruslan Popov <ruslan.popov@gmail.com>\n"
-"Language: ru\n"
+"PO-Revision-Date: 2017-03-30 15:05+0300\n"
+"Last-Translator: Ruslan Popov <ruslan.popov@gmail.com>\n"
+"Language-Team: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: fdmprinter.def.json
@@ -259,12 +254,12 @@ msgstr "Расстояние от кончика сопла до места, г�
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
 msgid "Enable Nozzle Temperature Control"
-msgstr ""
+msgstr "Разрешить управление температурой сопла"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
-msgstr ""
+msgstr "Следует ли управлять температурой из Cura. Выключение этого параметра предполагает управление температурой сопла вне Cura."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
@@ -814,37 +809,37 @@ msgstr "Зигзаг"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 label"
 msgid "Bottom Pattern Initial Layer"
-msgstr ""
+msgstr "Нижний шаблон начального слоя"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 description"
 msgid "The pattern on the bottom of the print on the first layer."
-msgstr ""
+msgstr "Шаблон низа печати на первом слое."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option lines"
 msgid "Lines"
-msgstr ""
+msgstr "Линии"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "Концентрический"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Зигзаг"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
-msgstr ""
+msgstr "Направление линии дна/крышки"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles description"
 msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr ""
+msgstr "Список направлений линии при печати слоёв дна/крышки линиями или зигзагом. Элементы списка используются последовательно по мере печати слоёв и когда конец списка будет достигнут, он начнётся сначала. Элементы списка отделяются запятыми и сам список заключён в квадратные скобки. По умолчанию, он пустой, что означает использование стандартных углов (45 и 135 градусов)."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -989,7 +984,7 @@ msgstr "Игнорирование Z зазоров"
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
 msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
-msgstr "Когда модель имеет небольшие вертикальные зазоры, около 5% дополнительного времени будет потрачено на вычисления верхних и нижних поверхностей в этих узких пространствах. В этом случае, отключите данный параметр."
+msgstr "Когда модель имеет небольшие вертикальные зазоры, около 5% дополнительного времени будет потрачено на вычисления верхних и нижних оболочек в этих узких пространствах. В этом случае, отключите данный параметр."
 
 #: fdmprinter.def.json
 msgctxt "infill label"
@@ -1079,12 +1074,12 @@ msgstr "Зигзаг"
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
 msgid "Infill Line Directions"
-msgstr ""
+msgstr "Направления линии заполнения"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
-msgstr ""
+msgstr "Список направлений линии при печати слоёв. Элементы списка используются последовательно по мере печати слоёв и когда конец списка будет достигнут, он начнётся сначала. Элементы списка отделяются запятыми и сам список заключён в квадратные скобки. По умолчанию, он пустой, что означает использование стандартных углов (45 и 135 градусов для линий из зигзага и 45 градусов для всех остальных шаблонов)."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_mult label"
@@ -1129,22 +1124,22 @@ msgstr "Величина перекрытия между заполнением 
 #: fdmprinter.def.json
 msgctxt "skin_overlap label"
 msgid "Skin Overlap Percentage"
-msgstr "Процент перекрытия поверхности"
+msgstr "Процент перекрытия оболочек"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "Величина перекрытия между поверхностью и стенками. Небольшое перекрытие позволяет стенкам плотно соединиться с поверхностью."
+msgstr "Величина перекрытия между оболочкой и стенками. Небольшое перекрытие позволяет стенкам плотно соединиться с оболочкой."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
 msgid "Skin Overlap"
-msgstr "Перекрытие поверхности"
+msgstr "Перекрытие оболочек"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "Величина перекрытия между поверхностью и стенками. Небольшое перекрытие позволяет стенкам плотно соединиться с поверхностью."
+msgstr "Величина перекрытия между оболочкой и стенками. Небольшое перекрытие позволяет стенкам плотно соединиться с оболочкой."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -1199,72 +1194,72 @@ msgstr "Печатать заполнение до печати стенок. Е
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
-msgstr ""
+msgstr "Минимальная область заполнения"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
-msgstr ""
+msgstr "Не генерировать области заполнения меньше чем указано здесь (вместо этого использовать оболочку)."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_into_infill label"
 msgid "Expand Skins Into Infill"
-msgstr ""
+msgstr "Расширять оболочку в заполнение"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_into_infill description"
 msgid "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin."
-msgstr ""
+msgstr "Расширять области оболочки на верхних и/или нижних обшивках плоских поверхностях. По умолчанию, обшивки завершаются под линиями стенки, которые окружают заполнение, но это может приводить к отверстиям, появляющимся при малой плотности заполнения. Данный параметр расширяет обшивку позади линий стенки таким образом, что заполнение следующего слоя располагается на обшивке."
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins label"
 msgid "Expand Upper Skins"
-msgstr ""
+msgstr "Расширять верхние оболочки"
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins description"
 msgid "Expand upper skin areas (areas with air above) so that they support infill above."
-msgstr ""
+msgstr "Расширять области верхней оболочки (над ними будет воздух) так, что они поддерживают заполнение над ними."
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins label"
 msgid "Expand Lower Skins"
-msgstr ""
+msgstr "Расширять нижние оболочки"
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins description"
 msgid "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below."
-msgstr ""
+msgstr "Расширять области нижней оболочки (под ними будет воздух) так, что они сцепляются с слоями заполнения сверху и снизу."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
 msgid "Skin Expand Distance"
-msgstr ""
+msgstr "Дистанция расширения оболочки"
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient."
-msgstr ""
+msgstr "Дистанция, на которую расширяется оболочка внутри заполнения. По умолчанию, дистанция достаточна для связывания промежутков между линиями заполнения и предотвращает появление отверстий в оболочке, где она встречается со стенкой когда плотность заполнения низкая. Меньшая дистанция чаще всего будет достаточной."
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion label"
 msgid "Maximum Skin Angle for Expansion"
-msgstr ""
+msgstr "Максимальный угол оболочки при расширении"
 
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr ""
+msgstr "Верхняя и/или нижняя поверхности вашего объекта с углом больше указанного в данном параметре, не будут иметь расширенные оболочки дна/крышки. Это предотвращает расширение узких областей оболочек, которые создаются, если поверхность модели имеет почти вертикальный наклон. Угол в 0° является горизонтальным, а в 90° - вертикальным."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
 msgid "Minimum Skin Width for Expansion"
-msgstr ""
+msgstr "Минимальная ширина оболочки при расширении"
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion description"
 msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr ""
+msgstr "Области оболочек уже указанного значения не расширяются. Это предотвращает расширение узких областей оболочек, которые создаются, если наклон поверхности модели близок к вертикальному."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -1304,7 +1299,7 @@ msgstr "Температура сопла"
 #: fdmprinter.def.json
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
-msgstr ""
+msgstr "Температура, используемая при печати."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature_layer_0 label"
@@ -1364,7 +1359,7 @@ msgstr "Температура стола"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print."
-msgstr ""
+msgstr "Температура, используемая для горячего стола. Если указан 0, то горячий стол не нагревается при печати."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2104,12 +2099,12 @@ msgstr "Без поверхности"
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
-msgstr ""
+msgstr "Откат перед внешней стенкой"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
-msgstr ""
+msgstr "Всегда откатывать материал при движении к началу внешней стенки."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -2489,7 +2484,7 @@ msgstr "Зазор поддержки по оси Z"
 #: fdmprinter.def.json
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr ""
+msgstr "Дистанция от дна/крышки структуры поддержек до печати. Этот зазор упрощает извлечение поддержек после окончания печати модели. Это значение округляется до числа, кратного высоте слоя."
 
 #: fdmprinter.def.json
 msgctxt "support_top_distance label"
@@ -3293,7 +3288,7 @@ msgstr "Ремонт объектов"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "category_fixes"
-msgstr ""
+msgstr "category_fixes"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -3373,7 +3368,7 @@ msgstr "Специальные режимы"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "category_blackmagic"
-msgstr ""
+msgstr "category_blackmagic"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -3403,7 +3398,7 @@ msgstr "Заполнение объекта"
 #: fdmprinter.def.json
 msgctxt "infill_mesh description"
 msgid "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh. It's suggested to only print one Wall and no Top/Bottom Skin for this mesh."
-msgstr "Использовать указанный объект для изменения заполнения других объектов, с которыми он перекрывается. Заменяет области заполнения других объектов областями для этого объекта. Предлагается только для печати одной стенки без верхних и нижних поверхностей."
+msgstr "Использовать указанный объект для изменения заполнения других объектов, с которыми он перекрывается. Заменяет области заполнения других объектов областями для этого объекта. Предлагается только для печати одной стенки без верхних и нижних оболочек."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
@@ -3443,7 +3438,7 @@ msgstr "Поверхностный режим"
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode description"
 msgid "Treat the model as a surface only, a volume, or volumes with loose surfaces. The normal print mode only prints enclosed volumes. \"Surface\" prints a single wall tracing the mesh surface with no infill and no top/bottom skin. \"Both\" prints enclosed volumes like normal and any remaining polygons as surfaces."
-msgstr "Рассматривать модель только в виде поверхности или как объёмы со свободными поверхностями. При нормальном режиме печатаются только закрытые объёмы. В режиме \"Поверхность\" печатается одиночная стенка по границе объекта, без заполнения, верха и низа. В режиме \"Оба варианта\" печатаются закрытые объёмы как нормальные, а любые оставшиеся полигоны как поверхности."
+msgstr "Рассматривать модель только в виде поверхности или как объёмы со свободными поверхностями. При нормальном режиме печатаются только закрытые объёмы. В режиме \"Поверхность\" печатается одиночная стенка по границе объекта, без заполнения, без верхних и нижних оболочек. В режиме \"Оба варианта\" печатаются закрытые объёмы как нормальные, а любые оставшиеся полигоны как поверхности."
 
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode option normal"
@@ -3593,7 +3588,7 @@ msgstr "Скорость, с которой производятся движе�
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
 msgid "Extra Skin Wall Count"
-msgstr "Количество внешних дополнительных поверхностей"
+msgstr "Количество внешних дополнительных оболочек"
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count description"
@@ -3603,7 +3598,7 @@ msgstr "Заменяет внешнюю часть шаблона крышки/�
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation label"
 msgid "Alternate Skin Rotation"
-msgstr "Чередование вращения поверхности"
+msgstr "Чередование вращения оболочек"
 
 #: fdmprinter.def.json
 msgctxt "skin_alternate_rotation description"
@@ -3653,7 +3648,7 @@ msgstr "Удаляет всё заполнение и разрешает ген�
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
 msgid "Fuzzy Skin"
-msgstr "Нечёткая поверхность"
+msgstr "Нечёткая оболочка"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled description"
@@ -3663,7 +3658,7 @@ msgstr "Вносит небольшое дрожание при печати в�
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
 msgid "Fuzzy Skin Thickness"
-msgstr "Толщина шершавости"
+msgstr "Толщина шершавости оболочки"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness description"
@@ -3673,7 +3668,7 @@ msgstr "Величина амплитуды дрожания. Рекоменду
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_density label"
 msgid "Fuzzy Skin Density"
-msgstr "Плотность шершавой стенки"
+msgstr "Плотность шершавой оболочки"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_density description"
@@ -3683,12 +3678,12 @@ msgstr "Средняя плотность точек, добавленных н�
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_dist label"
 msgid "Fuzzy Skin Point Distance"
-msgstr "Дистанция между точками шершавости"
+msgstr "Дистанция между точками шершавой оболочки"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_point_dist description"
 msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
-msgstr "Среднее расстояние между случайными точками, который вносятся в каждый сегмент линии. Следует отметить, что оригинальные точки полигона отбрасываются, таким образом, сильное сглаживание приводит к уменьшению разрешения. Это значение должно быть больше половины толщины шершавости."
+msgstr "Среднее расстояние между случайными точками, который вносятся в каждый сегмент линии. Следует отметить, что оригинальные точки полигона отбрасываются, таким образом, сильное сглаживание приводит к уменьшению разрешения. Это значение должно быть больше половины толщины шершавой оболочки."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
