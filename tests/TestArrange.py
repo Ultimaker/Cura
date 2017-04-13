@@ -100,16 +100,10 @@ def test_smoke_place_objects():
     ar = Arrange(20, 20, 10, 10)
     ar.centerFirst()
     shape_arr = gimmeShapeArray()
-    print(shape_arr)
 
-    now = time.time()
     for i in range(5):
         best_spot_x, best_spot_y, score, prio = ar.bestSpot(shape_arr)
-        print(best_spot_x, best_spot_y, score)
         ar.place(best_spot_x, best_spot_y, shape_arr)
-        print(ar._occupied)
-
-    print(time.time() - now)
 
 
 ##  Polygon -> array
