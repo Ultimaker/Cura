@@ -3300,7 +3300,7 @@
                         "support_bottom_enable":
                         {
                             "label": "Enable Support Floor",
-                            "description": "Generate a dense slab of material below the support where it rests on the model. This will create a skin between the model and support.",
+                            "description": "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
                             "value": "support_interface_enable",
@@ -3311,7 +3311,7 @@
                         "support_roof_enable":
                         {
                             "label": "Enable Support Roof",
-                            "description": "Generate a dense roof above the support where the model rests on the support. This will create a skin between the model and support.",
+                            "description": "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
                             "value": "support_interface_enable",
