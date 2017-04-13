@@ -47,6 +47,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     addUSBOutputDeviceSignal = Signal()
     connectionStateChanged = pyqtSignal()
+    serialPortsChanged = pyqtSignal()
 
     progressChanged = pyqtSignal()
     firmwareUpdateChange = pyqtSignal()
@@ -83,7 +84,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     def _updateThread(self):
         while self._check_updates:
-            result = self.getSerialPortList(only_list_usb = True)
+            result = self.getSerialPortList(only_list_usb = False)
             self._addRemovePorts(result)
             time.sleep(5)
 
@@ -203,9 +204,11 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):
+        ports_changed = False
         # First, find and add all new or changed keys
         for serial_port in list(serial_ports):
             if serial_port not in self._serial_port_list:
+                ports_changed = True
                 self.addUSBOutputDeviceSignal.emit(serial_port)  # Hack to ensure its created in main thread
                 continue
         self._serial_port_list = list(serial_ports)
@@ -213,11 +216,14 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         devices_to_remove = []
         for port, device in self._usb_output_devices.items():
             if port not in self._serial_port_list:
+                ports_changed = True
                 device.close()
                 devices_to_remove.append(port)
 
         for port in devices_to_remove:
             del self._usb_output_devices[port]
+
+        self.serialPortsChanged.emit()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addOutputDevice(self, serial_port):
@@ -261,5 +267,9 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             base_list += [port[0]]
 
         return list(base_list)
+
+    @pyqtProperty("QVariantList", notify = serialPortsChanged)
+    def portList(self):
+        return self._serial_port_list
 
     _instance = None    # type: "USBPrinterOutputDeviceManager"

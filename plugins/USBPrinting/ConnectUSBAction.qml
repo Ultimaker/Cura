@@ -47,7 +47,12 @@ Cura.MachineAction
             }
             ComboBox
             {
-                model: ["COM3", "COM4", "COM5"]
+                model:
+                {
+                    var port_list = Cura.USBPrinterManager.portList
+                    port_list.unshift("AUTO")
+                    return port_list
+                }
                 anchors.verticalCenter: parent.verticalCenter
             }
             Label
@@ -57,7 +62,7 @@ Cura.MachineAction
             }
             ComboBox
             {
-                model: [250000, 230400, 115200, 57600, 38400, 19200, 9600]
+                model: ["AUTO", "250000", "230400", "115200", "57600", "38400", "19200", "9600"]
                 anchors.verticalCenter: parent.verticalCenter
             }
             Button
