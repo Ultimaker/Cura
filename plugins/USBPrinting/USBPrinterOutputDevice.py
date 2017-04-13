@@ -148,6 +148,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
+        Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
             self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
             self._error_message.show()
@@ -183,6 +184,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
+        Logger.log("d", "Attempting to update firmware")
         self._error_code = 0
         self.setProgress(0, 100)
         self._firmware_update_finished = False
@@ -536,6 +538,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:  # Because a resend can be asked with "resend" and "rs"
                     try:
+                        Logger.log("d", "Got a resend response")
                         self._gcode_position = int(line.replace(b"N:",b" ").replace(b"N",b" ").replace(b":",b" ").split()[-1])
                     except:
                         if b"rs" in line:
