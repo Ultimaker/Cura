@@ -82,7 +82,7 @@ def test_checkShape():
     assert points3 > points
 
 
-##  After placing an object on a location that location should give more penalty points
+## Check that placing an object on occupied place returns None.
 def test_checkShape_place():
     ar = Arrange(30, 30, 15, 15)
     ar.centerFirst()
@@ -92,7 +92,7 @@ def test_checkShape_place():
     ar.place(3, 6, shape_arr)
     points2 = ar.checkShape(3, 6, shape_arr)
 
-    assert points2 > points
+    assert points2 is None
 
 
 ##  Test the whole sequence
