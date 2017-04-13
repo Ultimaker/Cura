@@ -312,7 +312,7 @@ Item
                 }
             }
 
-            UM.I18nCatalog { id: catalog; name: "uranium"; }
+            UM.I18nCatalog { id: catalog; name: "cura"; }
 
             add: Transition {
                 SequentialAnimation {
