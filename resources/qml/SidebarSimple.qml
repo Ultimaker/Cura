@@ -232,7 +232,7 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: enableSupportCheckBox.verticalCenter
             width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Enable Support");
+            text: catalog.i18nc("@label", "Generate Support");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -263,7 +263,7 @@ Item
                 onEntered:
                 {
                     base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
-                        catalog.i18nc("@label", "Enable support structures. These structures support parts of the model with severe overhangs."));
+                        catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."));
                 }
                 onExited:
                 {
