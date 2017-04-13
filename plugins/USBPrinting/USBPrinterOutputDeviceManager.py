@@ -223,7 +223,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         for port in devices_to_remove:
             del self._usb_output_devices[port]
 
-        self.serialPortsChanged.emit()
+        if ports_changed:
+            self.serialPortsChanged.emit()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addOutputDevice(self, serial_port):
