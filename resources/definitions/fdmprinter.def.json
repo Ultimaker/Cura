@@ -3555,7 +3555,7 @@
                     "value": "resolveOrValue('layer_height') * 1.5",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
-                    "maximum_value_warning": "0.75 * extruderValue(adhesion_extruder_nr, 'raft_interface_line_width')",
+                    "maximum_value_warning": "0.75 * extruderValue(adhesion_extruder_nr, 'machine_nozzle_size')",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
