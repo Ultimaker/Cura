@@ -33,7 +33,7 @@ Item
         width: base.width * .45 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        Label
+        Text
         {
             id: infillLabel
             //: Infill selection label
@@ -162,7 +162,7 @@ Item
                         }
                     }
                 }
-                Label
+                Text
                 {
                     id: infillLabel
                     font: UM.Theme.getFont("default")
@@ -225,7 +225,7 @@ Item
         anchors.right: parent.right
         height: childrenRect.height
 
-        Label
+        Text
         {
             id: enableSupportLabel
             anchors.left: parent.left
@@ -272,7 +272,7 @@ Item
             }
         }
 
-        Label
+        Text
         {
             id: supportExtruderLabel
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
@@ -372,7 +372,7 @@ Item
 
         }
 
-        Label
+        Text
         {
             id: adhesionHelperLabel
             anchors.left: parent.left
@@ -470,7 +470,7 @@ Item
         width: parent.width
         height: childrenRect.height
 
-        Label
+        Text
         {
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
