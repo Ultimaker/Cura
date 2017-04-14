@@ -570,7 +570,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # m105 instead.
         # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as
         # an LCD menu pause.
-        if line == "" or line == "M1" or line == "M1":
+        if line == "" or line == "M0" or line == "M1":
             line = "M105"
         try:
             if ("G0" in line or "G1" in line) and "Z" in line:
