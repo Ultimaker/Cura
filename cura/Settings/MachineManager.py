@@ -329,6 +329,7 @@ class MachineManager(QObject):
             name = self._createUniqueName("machine", "", name, definition.getName())
             new_global_stack = ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
+            new_global_stack.addContainer(definition)
             container_registry.addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
@@ -341,7 +342,7 @@ class MachineManager(QObject):
             current_settings_instance_container.setDefinition(definitions[0])
             container_registry.addContainer(current_settings_instance_container)
 
-            new_global_stack.addContainer(definition)
+
             if variant_instance_container:
                 new_global_stack.addContainer(variant_instance_container)
             if material_instance_container:
@@ -1110,7 +1111,7 @@ class MachineManager(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, stack, definition, variant_container = None, preferred_material_name = None):
+    def _updateMaterialContainer(self, definition, stack, variant_container = None, preferred_material_name = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
