@@ -3,6 +3,7 @@
 
 import copy
 import io
+from typing import Optional
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -369,10 +370,10 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
         self._path = ""
 
-    def getConfigurationType(self) -> str:
-        return "material"  # FIXME: not sure if this is correct
+    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
+        return "material"
 
-    def getVersionFromSerialized(self, serialized: str) -> int:
+    def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
         version = None
         data = ET.fromstring(serialized)
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
