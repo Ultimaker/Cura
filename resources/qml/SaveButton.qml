@@ -44,7 +44,7 @@ Item {
         }
     }
 
-    Label {
+    Text {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("default_margin").width
         anchors.top: parent.top
