@@ -34,3 +34,10 @@ plugins/GodMode
 plugins/PostProcessingPlugin
 plugins/X3GWriter
 
+#Build stuff
+CmakeCache.txt
+CmakeFiles
+CTestTestfile.cmake
+Makefile
+
+
