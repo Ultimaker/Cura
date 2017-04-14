@@ -15,9 +15,7 @@ from UM.Message import Message
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.Validator import ValidatorState
 from UM.Signal import postponeSignals
 
 from cura.QualityManager import QualityManager
@@ -26,6 +24,11 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from UM.Settings.DefinitionContainer import DefinitionContainer
 
 import os
 
@@ -1095,7 +1098,7 @@ class MachineManager(QObject):
     def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
-    def _updateVariantContainer(self, definition):
+    def _updateVariantContainer(self, definition: "DefinitionContainer"):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
         machine_definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(definition)
@@ -1111,7 +1114,7 @@ class MachineManager(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, stack, variant_container = None, preferred_material_name = None):
+    def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
@@ -1148,7 +1151,7 @@ class MachineManager(QObject):
         Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
         return self._empty_material_container
 
-    def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
+    def _updateQualityContainer(self, definition: "DefinitionContainer", variant_container: "ContainerStack", material_container = None, preferred_quality_name: Optional[str] = None):
         container_registry = ContainerRegistry.getInstance()
         search_criteria = { "type": "quality" }
 
