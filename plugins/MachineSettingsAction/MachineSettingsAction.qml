@@ -545,7 +545,7 @@ Cura.MachineAction
                                 sourceComponent: numericTextFieldWithUnit
                                 property var propertyProvider: extruderOffsetXProvider
                                 property string unit: catalog.i18nc("@label", "mm")
-                                property bool forceUpdateOnChange: false
+                                property bool forceUpdateOnChange: true
                             }
                             Label
                             {
@@ -557,7 +557,7 @@ Cura.MachineAction
                                 sourceComponent: numericTextFieldWithUnit
                                 property var propertyProvider: extruderOffsetYProvider
                                 property string unit: catalog.i18nc("@label", "mm")
-                                property bool forceUpdateOnChange: false
+                                property bool forceUpdateOnChange: true
                             }
                         }
 
