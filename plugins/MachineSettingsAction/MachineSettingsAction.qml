@@ -671,7 +671,12 @@ Cura.MachineAction
                         propertyProvider.setPropertyValue("value", text);
                         if(forceUpdateOnChange)
                         {
+                            var extruderIndex = ExtruderManager.activeExtruderIndex;
                             manager.forceUpdate();
+                            if(ExtruderManager.activeExtruderIndex != extruderIndex)
+                            {
+                                ExtruderManager.setActiveExtruderIndex(extruderIndex)
+                            }
                         }
                     }
                 }
