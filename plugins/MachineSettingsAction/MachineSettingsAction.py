@@ -98,6 +98,7 @@ class MachineSettingsAction(MachineAction):
             Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     def _onGlobalContainerChanged(self):
+        # This stub is needed because we cannot connect a UM.Signal directly to a pyqtSignal
         self.globalContainerChanged.emit()
 
     globalContainerChanged = pyqtSignal()
