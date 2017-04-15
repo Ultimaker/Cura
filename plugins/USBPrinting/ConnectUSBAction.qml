@@ -37,14 +37,6 @@ Cura.MachineAction
             text: catalog.i18nc("@label", "Select the port and communication speed to use to connect with this printer.")
         }
 
-        CheckBox
-        {
-            id: listAllSerialPortsCheckBox
-            text: catalog.i18nc("@label", "List all serial ports.")
-            checked: UM.Preferences.getValue("usb_printing/list_all_serial_ports")
-            onClicked: Cura.USBPrinterManager.setListAllSerialPorts(checked)
-        }
-
         GridLayout
         {
             width: parent.width
@@ -59,28 +51,63 @@ Cura.MachineAction
             ComboBox
             {
                 id: connectionPort
-                model:
+
+                property bool populatingModel: false
+                model: ListModel
                 {
-                    var port_list = Cura.USBPrinterManager.portList
-                    port_list.unshift("NONE", "AUTO")
-                    return port_list
-                }
-                currentIndex:
-                {
-                    var index = model.indexOf(manager.serialPort);
-                    if(index == -1)
+                    id: connectionPortModel
+
+                    Component.onCompleted: populateModel()
+
+                    function populateModel()
                     {
-                        index = 0;
+                        connectionPort.populatingModel = true;
+                        clear();
+
+                        append({key: "NONE", text: catalog.i18nc("@label", "Don't connect")});
+                        append({key: "AUTO", text: catalog.i18nc("@label", "Automatically detect")});
+                        var current_index = (manager.serialPort == "AUTO") ? 1:0;
+
+                        var port_list = Cura.USBPrinterManager.portList;
+                        for(var index in port_list)
+                        {
+                            append({key: port_list[index], text: port_list[index]});
+                            if(port_list[index] == manager.serialPort)
+                            {
+                                current_index = parseInt(index) + 2;
+                            }
+                        }
+
+                        if(current_index == 0 && manager.serialPort != "NONE")
+                        {
+                            append({key: manager.serialPort, text: catalog.i18nc("@label", "%1 (not available)").arg(manager.serialPort)});
+                            current_index = count - 1;
+                        }
+
+                        connectionPort.currentIndex = current_index;
+                        connectionPort.populatingModel = false;
                     }
-                    return index
                 }
-                onActivated: manager.setSerialPort(model[index])
+                onActivated:
+                {
+                    if(!populatingModel && model[index])
+                    {
+                        manager.setSerialPort(model[index].key);
+                    }
+                }
+
+                Connections
+                {
+                    target: Cura.USBPrinterManager
+                    onSerialPortsChanged: connectionPortModel.populateModel()
+                }
+
             }
             Label
             {
                 text:
                 {
-                    if (connectionPort.currentText == "AUTO")
+                    if (connectionPortModel.get(connectionPort.currentIndex).key == "AUTO")
                     {
                         return catalog.i18nc("@label", "Note: this selection will result in Cura scanning all serial ports which may reset connected devices.");
                     }
@@ -97,8 +124,17 @@ Cura.MachineAction
             ComboBox
             {
                 id: connectionRate
-                model: ["AUTO", "250000", "230400", "115200", "57600", "38400", "19200", "9600"]
-                visible: connectionPort.currentText != "NONE"
+                model: [
+                    {key: "AUTO", text: catalog.i18nc("@label", "Automatically detect")},
+                    {key: "250000", text: "250000"},
+                    {key: "230400", text: "230400"},
+                    {key: "115200", text: "115200"},
+                    {key: "57600", text: "57600"},
+                    {key: "38400", text: "38400"},
+                    {key: "19200", text: "19200"},
+                    {key: "9600", text: "9600"},
+                ]
+                visible: connectionPortModel.get(connectionPort.currentIndex).key != "NONE"
                 currentIndex:
                 {
                     var index = model.indexOf(manager.serialRate);
@@ -114,7 +150,7 @@ Cura.MachineAction
             {
                 text:
                 {
-                    if (connectionRate.currentText == "AUTO")
+                    if (connectionRate.model[connectionRate.currentIndex].key == "AUTO")
                     {
                         return catalog.i18nc("@label", "Note: this selection will slow down detection of the connected printers.")
                     }
@@ -125,15 +161,22 @@ Cura.MachineAction
                 wrapMode: Text.WordWrap
             }
 
-            Label
-            {
-                text: ""
-            }
+            Label { text: ""; visible: detectButton.visible }
             Button
             {
+                id: detectButton
                 text: catalog.i18nc("@action:button", "Detect")
-                visible: connectionPort.currentText != "NONE" && (connectionPort.currentText == "AUTO" || connectionRate.currentText == "AUTO")
+                visible: connectionPortModel.get(connectionPort.currentIndex).key != "NONE" && (connectionPortModel.get(connectionPort.currentIndex).key == "AUTO" || connectionRate.model[connectionRate.currentIndex].key == "AUTO")
             }
+            Label { text: ""; visible: detectButton.visible }
+        }
+
+        CheckBox
+        {
+            id: listAllSerialPortsCheckBox
+            text: catalog.i18nc("@label", "Only list USB serial ports.")
+            checked: !UM.Preferences.getValue("usb_printing/list_all_serial_ports")
+            onClicked: Cura.USBPrinterManager.setListAllSerialPorts(!checked)
         }
 
         CheckBox
