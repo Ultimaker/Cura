@@ -65,7 +65,7 @@ Cura.MachineAction
                         clear();
 
                         append({key: "NONE", text: catalog.i18nc("@label", "Don't connect")});
-                        append({key: "AUTO", text: catalog.i18nc("@label", "Automatically detect")});
+                        append({key: "AUTO", text: catalog.i18nc("@label", "Autodetect")});
                         var current_index = (manager.serialPort == "AUTO") ? 1:0;
 
                         var port_list = Cura.USBPrinterManager.portList;
@@ -125,7 +125,7 @@ Cura.MachineAction
             {
                 id: connectionRate
                 model: [
-                    {key: "AUTO", text: catalog.i18nc("@label", "Automatically detect")},
+                    {key: "AUTO", text: catalog.i18nc("@label", "Autodetect")},
                     {key: "250000", text: "250000"},
                     {key: "230400", text: "230400"},
                     {key: "115200", text: "115200"},
@@ -184,6 +184,7 @@ Cura.MachineAction
             id: autoConnect
             text: catalog.i18nc("@label", "Automatically connect this printer on startup.")
             checked: manager.autoConnect
+            visible: connectionPortModel.get(connectionPort.currentIndex).key != "NONE"
             onClicked: manager.setAutoConnect(checked)
         }
 
@@ -191,13 +192,15 @@ Cura.MachineAction
         {
             width: parent.width
             wrapMode: Text.WordWrap
-            visible: autoConnect.checked
+            visible: autoConnect.visible && autoConnect.checked
             text: catalog.i18nc("@label", "Note: connecting to a printer will interrupt ongoing prints on the printer.")
         }
 
         Button
         {
+            id: testCommunication
             text: catalog.i18nc("@action:button", "Test Communication")
+            visible: connectionPortModel.get(connectionPort.currentIndex).key != "NONE"
             onClicked: testOutput.visible = true
         }
 
