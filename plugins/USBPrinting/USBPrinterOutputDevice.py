@@ -31,6 +31,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._serial = None
         self._serial_port = serial_port
+        self._serial_speed = 0 # Autodetect
         self._error_state = None
 
         self._connect_thread = threading.Thread(target = self._connect)
@@ -137,6 +138,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def address(self):
         return self._serial_port
 
+    def setSerialSpeed(self, speed = "AUTO"):
+        try:
+            speed = int(speed)
+        except ValueError:
+            pass
+
+        if speed in self._getBaudrateList():
+            self._serial_speed = speed
+        else:
+            self._serial_speed = 0 # Autodetect
+
     def startPrint(self):
         self.writeStarted.emit(self)
         gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
@@ -183,6 +195,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def connect(self):
         if not self._updating_firmware and not self._connect_thread.isAlive():
             self._connect_thread.start()
+
+    def isConnected(self):
+        return self._connection_state != ConnectionState.closed
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
@@ -318,14 +333,19 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
             programmer.close()
-            Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
+            Logger.log("i", "Could not establish stk500v2 connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
             programmer.close()
-            Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
+            Logger.log("i", "Could not establish stk500v2 connection on %s, unknown reasons. Device is not arduino based." % self._serial_port)
 
         # If the programmer connected, we know its an atmega based version.
         # Not all that useful, but it does give some debugging information.
-        for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
+        if self._serial_speed == 0:
+            baud_rates = self._getBaudrateList()
+        else:
+            baud_rates = [self._serial_speed]
+
+        for baud_rate in baud_rates: # Cycle all baud rates (auto detect)
             if self.stop_connect_thread.isSet():
                 break
 

@@ -15,6 +15,8 @@ from UM.Preferences import Preferences
 
 from cura.CuraApplication import CuraApplication
 
+from UM.Util import parseBool
+
 import threading
 import platform
 import glob
@@ -43,14 +45,17 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         self._check_updates = True
         self._firmware_view = None
 
+        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        self.removeUSBOutputDeviceSignal.connect(self.removeOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
 
         self._preferences = Preferences.getInstance()
         self._preferences.addPreference("usb_printing/list_all_serial_ports", "False")
         self._list_all_serial_ports = self._preferences.getValue("usb_printing/list_all_serial_ports")
 
     addUSBOutputDeviceSignal = Signal()
+    removeUSBOutputDeviceSignal = Signal()
     connectionStateChanged = pyqtSignal()
     serialPortsChanged = pyqtSignal()
 
@@ -92,6 +97,21 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             result = self.getSerialPortList(only_list_usb = not self._list_all_serial_ports)
             self._addRemovePorts(result)
             time.sleep(5)
+
+    def reCheckConnections(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return
+
+        for key in self._usb_output_devices:
+            if key == global_container_stack.getMetaDataEntry("serial_port") or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
+                self._usb_output_devices[key].setSerialSpeed(global_container_stack.getMetaDataEntry("serial_speed", "AUTO"))
+                self._usb_output_devices[key].connectionStateChanged.connect(self._onConnectionStateChanged)
+                if parseBool(global_container_stack.getMetaDataEntry("serial_auto_coonect")) or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
+                    self._usb_output_devices[key].connect()
+            else:
+                if self._usb_output_devices[key].isConnected():
+                    self._usb_output_devices[key].close()
 
     ##  Show firmware interface.
     #   This will create the view if its not already created.
@@ -215,14 +235,13 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             if serial_port not in self._serial_port_list:
                 ports_changed = True
                 self.addUSBOutputDeviceSignal.emit(serial_port)  # Hack to ensure its created in main thread
-                continue
         self._serial_port_list = list(serial_ports)
 
         devices_to_remove = []
         for port, device in self._usb_output_devices.items():
             if port not in self._serial_port_list:
                 ports_changed = True
-                device.close()
+                self.removeUSBOutputDeviceSignal.emit(serial_port)  # Hack to ensure this happens in main thread
                 devices_to_remove.append(port)
 
         for port in devices_to_remove:
@@ -234,11 +253,19 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addOutputDevice(self, serial_port):
         device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
-        device.connectionStateChanged.connect(self._onConnectionStateChanged)
-        device.connect()
         device.progressChanged.connect(self.progressChanged)
         device.firmwareUpdateChange.connect(self.firmwareUpdateChange)
         self._usb_output_devices[serial_port] = device
+
+    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+    def removeOutputDevice(self, serial_port):
+        device = self._usb_output_devices.pop(serial_port, None)
+        if device:
+            if device.isConnected():
+                device.close()
+
+            device.progressChanged.disconnect(self.progressChanged)
+            device.firmwareUpdateChange.disconnect(self.firmwareUpdateChange)
 
     ##  If one of the states of the connected devices change, we might need to add / remove them from the global list.
     def _onConnectionStateChanged(self, serial_port):
