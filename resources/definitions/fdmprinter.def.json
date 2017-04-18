@@ -3033,7 +3033,7 @@
                         "support_interface_extruder_nr":
                         {
                             "label": "Support Interface Extruder",
-                            "description": "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion.",
+                            "description": "The extruder train to use for printing the roofs and floors of the support. This is used in multi-extrusion.",
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
@@ -3383,7 +3383,7 @@
                 "support_interface_density":
                 {
                     "label": "Support Interface Density",
-                    "description": "Adjusts the density of the roofs and bottoms of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
+                    "description": "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
