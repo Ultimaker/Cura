@@ -19,6 +19,7 @@ LC_MESSAGES
 *~
 *.qm
 .idea
+cura.desktop
 
 # Eclipse+PyDev
 .project
@@ -33,4 +34,21 @@ plugins/Doodle3D-cura-plugin
 plugins/GodMode
 plugins/PostProcessingPlugin
 plugins/X3GWriter
+plugins/FlatProfileExporter
+plugins/cura-god-mode-plugin
+
+#Build stuff
+CMakeCache.txt
+CMakeFiles
+CPackSourceConfig.cmake
+Testing/
+CTestTestfile.cmake
+Makefile*
+junit-pytest-*
+CuraVersion.py
+cmake_install.cmake
+
+#Debug
+*.gcode
+run.sh
 

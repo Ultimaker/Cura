@@ -13,11 +13,11 @@ Menu
     title: catalog.i18nc("@title:menu menubar:file", "Open &Recent")
     iconName: "document-open-recent";
 
-    enabled: Printer.recentFiles.length > 0;
+    enabled: CuraApplication.recentFiles.length > 0;
 
     Instantiator
     {
-        model: Printer.recentFiles
+        model: CuraApplication.recentFiles
         MenuItem
         {
             text:
@@ -36,11 +36,13 @@ Menu
                     var choice = UM.Preferences.getValue("cura/choice_on_open_project");
 
                     if (choice == "open_as_project")
+                    {
                         toOpenAsProject = true;
-                    else if (choice == "open_as_model")
+                    }else if (choice == "open_as_model"){
                         toOpenAsModel = true;
-                    else
+                    }else{
                         toShowDialog = true;
+                    }
                 }
                 else {
                     toOpenAsModel = true;
@@ -54,9 +56,13 @@ Menu
 
                 // open file in the prefered way
                 if (toOpenAsProject)
+                {
                     UM.WorkspaceFileHandler.readLocalFile(modelData);
+                }
                 else if (toOpenAsModel)
-                    Printer.readLocalFile(modelData);
+                {
+                    CuraApplication.readLocalFile(modelData);
+                }
                 var meshName = backgroundItem.getMeshName(modelData.toString())
                 backgroundItem.hasMesh(decodeURIComponent(meshName))
             }

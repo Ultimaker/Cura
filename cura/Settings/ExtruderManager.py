@@ -244,7 +244,13 @@ class ExtruderManager(QObject):
                 material = materials[0]
             preferred_material_id = machine_definition.getMetaDataEntry("preferred_material")
             if preferred_material_id:
-                search_criteria = { "type": "material",  "id": preferred_material_id}
+                global_stack = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
+                if global_stack:
+                    approximate_material_diameter = round(global_stack[0].getProperty("material_diameter", "value"))
+                else:
+                    approximate_material_diameter = round(machine_definition.getProperty("material_diameter", "value"))
+
+                search_criteria = { "type": "material",  "id": preferred_material_id, "approximate_diameter": approximate_material_diameter}
                 if machine_definition.getMetaDataEntry("has_machine_materials"):
                     search_criteria["definition"] = machine_definition_id
 
@@ -255,7 +261,12 @@ class ExtruderManager(QObject):
 
                 preferred_materials = container_registry.findInstanceContainers(**search_criteria)
                 if len(preferred_materials) >= 1:
-                    material = preferred_materials[0]
+                    # In some cases we get multiple materials. In that case, prefer materials that are marked as read only.
+                    read_only_preferred_materials = [preferred_material for preferred_material in preferred_materials if preferred_material.isReadOnly()]
+                    if len(read_only_preferred_materials) >= 1:
+                        material = read_only_preferred_materials[0]
+                    else:
+                        material = preferred_materials[0]
                 else:
                     Logger.log("w", "The preferred material \"%s\" of machine %s doesn't exist or is not a material profile.", preferred_material_id, machine_id)
                     # And leave it at the default material.

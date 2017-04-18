@@ -200,7 +200,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
-            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s and key", self._authentication_id, self._getSafeAuthKey())
+            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s and key %s", self._authentication_id, self._getSafeAuthKey())
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
         else:
@@ -625,7 +625,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         if print_information.materialLengths:
             # Check if print cores / materials are loaded at all. Any failure in these results in an Error.
             for index in range(0, self._num_extruders):
-                if print_information.materialLengths[index] != 0:
+                if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
                     if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
                         Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
                         self._error_message = Message(
@@ -643,13 +643,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             for index in range(0, self._num_extruders):
                 # Check if there is enough material. Any failure in these results in a warning.
                 material_length = self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["length_remaining"]
-                if material_length != -1 and print_information.materialLengths[index] > material_length:
+                if material_length != -1 and index < len(print_information.materialLengths) and print_information.materialLengths[index] > material_length:
                     Logger.log("w", "Printer reports that there is not enough material left for extruder %s. We need %s and the printer has %s", index + 1, print_information.materialLengths[index], material_length)
                     warnings.append(i18n_catalog.i18nc("@label", "Not enough material for spool {0}.").format(index+1))
 
                 # Check if the right cartridges are loaded. Any failure in these results in a warning.
                 extruder_manager = cura.Settings.ExtruderManager.ExtruderManager.getInstance()
-                if print_information.materialLengths[index] != 0:
+                if index < len(print_information.materialLengths) and print_information.materialLengths[index] != 0:
                     variant = extruder_manager.getExtruderStack(index).findContainer({"type": "variant"})
                     core_name = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"]
                     if variant:
@@ -716,7 +716,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from printer
     def connect(self):
-        self.close()  # Ensure that previous connection (if any) is killed.
+        if self.isConnected():
+            self.close()  # Close previous connection
 
         self._createNetworkManager()
 
@@ -796,18 +797,40 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "Started sending g-code to remote printer.")
             self._compressing_print = True
             ## Mash the data into single string
+
+            max_chars_per_line = 1024 * 1024 / 4  # 1 / 4  MB
+
             byte_array_file_data = b""
+            batched_line = ""
+
+            def _compress_data_and_notify_qt(data_to_append):
+                compressed_data = gzip.compress(data_to_append.encode("utf-8"))
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+                # Pretend that this is a response, as zipping might take a bit of time.
+                self._last_response_time = time()
+                return compressed_data
+
             for line in self._gcode:
                 if not self._compressing_print:
                     self._progress_message.hide()
                     return  # Stop trying to zip, abort was called.
+
                 if self._use_gzip:
-                    byte_array_file_data += gzip.compress(line.encode("utf-8"))
-                    QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-                    # Pretend that this is a response, as zipping might take a bit of time.
-                    self._last_response_time = time()
+                    batched_line += line
+                    # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
+                    # Compressing line by line in this case is extremely slow, so we need to batch them.
+                    if len(batched_line) < max_chars_per_line:
+                        continue
+
+                    byte_array_file_data += _compress_data_and_notify_qt(batched_line)
+                    batched_line = ""
                 else:
                     byte_array_file_data += line.encode("utf-8")
+
+            # don't miss the last batch if it's there
+            if self._use_gzip:
+                if batched_line:
+                    byte_array_file_data += _compress_data_and_notify_qt(batched_line)
 
             if self._use_gzip:
                 file_name = "%s.gcode.gz" % Application.getInstance().getPrintInformation().jobName
@@ -858,7 +881,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + "auth/request")
         request = QNetworkRequest(url)
         request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
+        self._authentication_key = None
+        self._authentication_id = None
         self._manager.post(request, json.dumps({"application": "Cura-" + Application.getInstance().getVersion(), "user": self._getUserName()}).encode())
+        self.setAuthenticationState(AuthState.AuthenticationRequested)
 
     ##  Send all material profiles to the printer.
     def sendMaterialProfiles(self):
@@ -1054,7 +1080,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 except json.decoder.JSONDecodeError:
                     Logger.log("w", "Received an invalid authentication request reply from printer: Not valid JSON.")
                     return
-                self.setAuthenticationState(AuthState.AuthenticationRequested)
                 global_container_stack = Application.getInstance().getGlobalContainerStack()
                 if global_container_stack:  # Remove any old data.
                     Logger.log("d", "Removing old network authentication data as a new one was requested.")
@@ -1064,7 +1089,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
-                Logger.log("i", "Got a new authentication ID (%s) and KEY (%S). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
+                Logger.log("i", "Got a new authentication ID (%s) and KEY (%s). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()

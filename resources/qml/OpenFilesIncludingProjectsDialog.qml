@@ -6,6 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
+import QtQuick.Window 2.1
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -16,8 +17,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open file(s)")
-    width: 420
-    height: 170
+    width: 420 * Screen.devicePixelRatio
+    height: 170 * Screen.devicePixelRatio
 
     maximumHeight: height
     maximumWidth: width
@@ -40,7 +41,9 @@ UM.Dialog
     function loadModelFiles(fileUrls)
     {
         for (var i in fileUrls)
-            Printer.readLocalFile(fileUrls[i]);
+        {
+            CuraApplication.readLocalFile(fileUrls[i]);
+        }
 
         var meshName = backgroundItem.getMeshName(fileUrls[0].toString());
         backgroundItem.hasMesh(decodeURIComponent(meshName));
@@ -49,15 +52,18 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: 20 * Screen.devicePixelRatio
+        anchors.rightMargin: 20 * Screen.devicePixelRatio
+        anchors.bottomMargin: 20 * Screen.devicePixelRatio
         anchors.left: parent.left
         anchors.right: parent.right
-        spacing: UM.Theme.getSize("default_margin").width
+        spacing: 10 * Screen.devicePixelRatio
 
         Text
         {
-            text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you\nhave selected. You can open only one project file at a time. We\nsuggest to only import models from those files. Would you like\nto proceed?")
-            anchors.margins: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?")
+            anchors.left: parent.left
+            anchors.right: parent.right
             font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
         }
@@ -80,7 +86,6 @@ UM.Dialog
                 id: cancelButton
                 text: catalog.i18nc("@action:button", "Cancel");
                 anchors.right: importAllAsModelsButton.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 onClicked:
                 {
                     // cancel

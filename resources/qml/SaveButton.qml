@@ -16,7 +16,7 @@ Item {
     property int backendState: UM.Backend.state;
 
     property var backend: CuraApplication.getBackend();
-    property bool activity: Printer.platformActivity;
+    property bool activity: CuraApplication.platformActivity;
 
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
@@ -44,7 +44,7 @@ Item {
         }
     }
 
-    Label {
+    Text {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("default_margin").width
         anchors.top: parent.top
@@ -110,8 +110,8 @@ Item {
             onAdditionalComponentsChanged:
             {
                 if(areaId == "saveButton") {
-                    for (var component in Printer.additionalComponents["saveButton"]) {
-                        Printer.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                    for (var component in CuraApplication.additionalComponents["saveButton"]) {
+                        CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
                     }
                 }
             }

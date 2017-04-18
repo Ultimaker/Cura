@@ -43,7 +43,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
-            onClicked: Printer.requestAddPrinter()
+            onClicked: CuraApplication.requestAddPrinter()
         },
         Button
         {
@@ -216,8 +216,8 @@ UM.ManagementPage
 
             Component.onCompleted:
             {
-                for (var component in Printer.additionalComponents["machinesDetailPane"]) {
-                    Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
+                    CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
                 }
             }
         }
@@ -227,8 +227,8 @@ UM.ManagementPage
             onAdditionalComponentsChanged:
             {
                 if(areaId == "machinesDetailPane") {
-                    for (var component in Printer.additionalComponents["machinesDetailPane"]) {
-                        Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                    for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
+                        CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
                     }
                 }
             }

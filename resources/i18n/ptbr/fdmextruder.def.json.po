@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2016-12-28 10:51+0000\n"
-"PO-Revision-Date: 2016-01-25 05:05-0300\n"
+"POT-Creation-Date: 2017-03-27 17:27+0000\n"
+"PO-Revision-Date: 2017-04-10 09:05-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: LANGUAGE\n"
 "Language: ptbr\n"
@@ -70,12 +70,8 @@ msgstr "Posição de Início do Extrusor Absoluta"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs description"
-msgid ""
-"Make the extruder starting position absolute rather than relative to the "
-"last-known location of the head."
-msgstr ""
-"Faz a posição de início do extrusor ser absoluta ao invés de relativa à "
-"última posição conhecida da cabeça de impressão."
+msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
+msgstr "Faz a posição de início do extrusor ser absoluta ao invés de relativa à última posição conhecida da cabeça de impressão."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_x label"
@@ -114,12 +110,8 @@ msgstr "Posição Final do Extrusor Absoluta"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs description"
-msgid ""
-"Make the extruder ending position absolute rather than relative to the last-"
-"known location of the head."
-msgstr ""
-"Faz a posição final do extrusor ser absoluta ao invés de relativa à última "
-"posição conhecida da cabeça de impressão."
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgstr "Faz a posição final do extrusor ser absoluta ao invés de relativa à última posição conhecida da cabeça de impressão."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_x label"
@@ -148,11 +140,8 @@ msgstr "Posição Z de Purga do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
-msgid ""
-"The Z coordinate of the position where the nozzle primes at the start of "
-"printing."
-msgstr ""
-"A coordenada Z da posição onde o bico faz a purga no início da impressão."
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "A coordenada Z da posição onde o bico faz a purga no início da impressão."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"
@@ -171,11 +160,8 @@ msgstr "Posição X de Purga do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
-msgid ""
-"The X coordinate of the position where the nozzle primes at the start of "
-"printing."
-msgstr ""
-"A coordenada X da posição onde o bico faz a purga no início da impressão."
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "A coordenada X da posição onde o bico faz a purga no início da impressão."
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y label"
@@ -184,8 +170,5 @@ msgstr "Posição Y de Purga do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
-msgid ""
-"The Y coordinate of the position where the nozzle primes at the start of "
-"printing."
-msgstr ""
-"A coordenada Y da posição onde o bico faz a purga no início da impressão."
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "A coordenada Y da posição onde o bico faz a purga no início da impressão."
