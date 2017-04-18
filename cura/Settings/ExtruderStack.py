@@ -60,6 +60,12 @@ class ExtruderStack(CuraContainerStack):
 
         return super().getProperty(key, property_name)
 
+    @override(CuraContainerStack)
+    def _getMachineDefinition(self) -> ContainerInterface:
+        if not self.getNextStack():
+            raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
+
+        return self.getNextStack()._getMachineDefinition()
 
 extruder_stack_mime = MimeType(
     name = "application/x-cura-extruderstack",

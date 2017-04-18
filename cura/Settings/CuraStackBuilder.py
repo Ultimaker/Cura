@@ -21,14 +21,14 @@ class CuraStackBuilder:
     #   \return The new global stack or None if an error occurred.
     @classmethod
     def createMachine(cls, name: str, definition_id: str) -> GlobalStack:
-        cls.__registry = ContainerRegistry.getInstance()
-        definitions = cls.__registry.findDefinitionContainers(id = definition_id)
+        registry = ContainerRegistry.getInstance()
+        definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 
         machine_definition = definitions[0]
-        name = cls.__registry.createUniqueName("machine", "", name, machine_definition.name)
+        name = registry.createUniqueName("machine", "", name, machine_definition.name)
 
         new_global_stack = cls.createGlobalStack(
             new_stack_id = name,
@@ -38,14 +38,14 @@ class CuraStackBuilder:
             variant = "default",
         )
 
-        for extruder_definition in cls.__registry.findDefinitionContainers(machine = machine_definition.id):
+        for extruder_definition in registry.findDefinitionContainers(machine = machine_definition.id):
             position = extruder_definition.getMetaDataEntry("position", None)
             if not position:
                 Logger.log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.id)
 
-            new_extruder_id = cls.__registry.uniqueName(extruder_definition.id)
+            new_extruder_id = registry.uniqueName(extruder_definition.id)
             new_extruder = cls.createExtruderStack(
-                new_extruder_id = new_extruder_id,
+                new_extruder_id,
                 definition = extruder_definition,
                 machine_definition = machine_definition,
                 quality = "default",
@@ -66,34 +66,34 @@ class CuraStackBuilder:
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
     def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainer, machine_definition: DefinitionContainer, **kwargs) -> ExtruderStack:
-        cls.__registry = ContainerRegistry.getInstance()
-
         stack = ExtruderStack(new_stack_id)
+        stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
 
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("extruder", new_stack_id)
+        user_container.setDefinition(machine_definition)
 
         stack.setUserChanges(user_container)
 
         if "next_stack" in kwargs:
             stack.setNextStack(kwargs["next_stack"])
 
-        # Important! The order here matters, because that allows functions like __setStackQuality to
+        # Important! The order here matters, because that allows the stack to
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
 
         if "variant" in kwargs:
-            cls.__setStackVariant(stack, kwargs["variant"])
+            stack.setVariantById(kwargs["variant"])
 
         if "material" in kwargs:
-            cls.__setStackMaterial(stack, kwargs["material"])
+            stack.setMaterialById(kwargs["material"])
 
         if "quality" in kwargs:
-            cls.__setStackQuality(stack, kwargs["quality"])
+            stack.setQualityById(kwargs["quality"])
 
         if "quality_changes" in kwargs:
             stack.setQualityChangesById(kwargs["quality_changes"])
@@ -101,8 +101,9 @@ class CuraStackBuilder:
         # Only add the created containers to the registry after we have set all the other
         # properties. This makes the create operation more transactional, since any problems
         # setting properties will not result in incomplete containers being added.
-        cls.__registry.addContainer(stack)
-        cls.__registry.addContainer(user_container)
+        registry = ContainerRegistry.getInstance()
+        registry.addContainer(stack)
+        registry.addContainer(user_container)
 
         return stack
 
@@ -115,8 +116,6 @@ class CuraStackBuilder:
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
     def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainer, **kwargs) -> GlobalStack:
-        cls.__registry = ContainerRegistry.getInstance()
-
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
 
@@ -127,24 +126,25 @@ class CuraStackBuilder:
 
         stack.setUserChanges(user_container)
 
-        # Important! The order here matters, because that allows functions like __setStackQuality to
+        # Important! The order here matters, because that allows the stack to
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
 
         if "variant" in kwargs:
-            cls.__setStackVariant(stack, kwargs["variant"])
+            stack.setVariantById(kwargs["variant"])
 
         if "material" in kwargs:
-            cls.__setStackMaterial(stack, kwargs["material"])
+            stack.setMaterialById(kwargs["material"])
 
         if "quality" in kwargs:
-            cls.__setStackQuality(stack, kwargs["quality"])
+            stack.setQualityById(kwargs["quality"])
 
         if "quality_changes" in kwargs:
             stack.setQualityChangesById(kwargs["quality_changes"])
 
-        cls.__registry.addContainer(stack)
-        cls.__registry.addContainer(user_container)
+        registry = ContainerRegistry.getInstance()
+        registry.addContainer(stack)
+        registry.addContainer(user_container)
 
         return stack

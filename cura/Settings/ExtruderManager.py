@@ -396,7 +396,6 @@ class ExtruderManager(QObject):
     #   \param machine_id The machine to get the extruders of.
     def getMachineExtruders(self, machine_id):
         if machine_id not in self._extruder_trains:
-            Logger.log("w", "Tried to get the extruder trains for machine %s, which doesn't exist.", machine_id)
             return []
         return [self._extruder_trains[machine_id][name] for name in self._extruder_trains[machine_id]]
 
@@ -420,13 +419,12 @@ class ExtruderManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
 
         result = []
-        if global_stack:
+        if global_stack and global_stack.getId() in self._extruder_trains:
             for extruder in sorted(self._extruder_trains[global_stack.getId()]):
                 result.append(self._extruder_trains[global_stack.getId()][extruder])
         return result
 
     def __globalContainerStackChanged(self) -> None:
-        self._addCurrentMachineExtruders()
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack and global_container_stack.getBottom() and global_container_stack.getBottom().getId() != self._global_container_stack_definition_id:
             self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
