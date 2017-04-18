@@ -16,12 +16,18 @@ from UM.Settings.Interfaces import ContainerInterface
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
 
+##  Represents an Extruder and its related containers.
+#
+#
 class ExtruderStack(CuraContainerStack):
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
 
         self.addMetaDataEntry("type", "extruder_train") # For backward compatibility
 
+    ##  Overridden from ContainerStack
+    #
+    #   This will set the next stack and ensure that we register this stack as an extruder.
     @override(ContainerStack)
     def setNextStack(self, stack: ContainerStack) -> None:
         super().setNextStack(stack)
@@ -31,6 +37,15 @@ class ExtruderStack(CuraContainerStack):
         else:
             self.setMetaDataEntry("machine", stack.id)
 
+    ##  Overridden from ContainerStack
+    #
+    #   It will perform a few extra checks when trying to get properties.
+    #
+    #   The two extra checks it currently does is to ensure a next stack is set and to bypass
+    #   the extruder when the property is not settable per extruder.
+    #
+    #   \throws Exceptions.NoGlobalStackError Raised when trying to get a property from an extruder without
+    #                                         having a next stack set.
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str) -> Any:
         if not self._next_stack:
