@@ -583,7 +583,8 @@ class XmlMaterialProfile(InstanceContainer):
         "Ultimaker 2 Extended": "ultimaker2_extended",
         "Ultimaker 2 Extended+": "ultimaker2_extended_plus",
         "Ultimaker Original": "ultimaker_original",
-        "Ultimaker Original+": "ultimaker_original_plus"
+        "Ultimaker Original+": "ultimaker_original_plus",
+        "IMADE3D JellyBOX": "imade3d_jellybox"
     }
 
     # Map of recognised namespaces with a proper prefix.
