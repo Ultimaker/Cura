@@ -1,12 +1,14 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any
+import os.path
+
+from typing import Any, Optional
 
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import override
-
+from UM.Logger import Logger
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -95,15 +97,28 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the quality container by an ID.
     #
+    #   This will search for the specified container and set it. If no container was found, an error will be raised.
+    #   There is a special value for ID, which is "default". The "default" value indicates the quality should be set
+    #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultQuality
+    #   for details.
+    #
     #   \param new_quality_id The ID of the new quality container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setQualityById(self, new_quality_id: str) -> None:
-        quality = ContainerRegistry.getInstance().findInstanceContainers(id = new_quality_id)
-        if quality:
-            self.setQuality(quality[0])
+        quality = self._empty_instance_container
+        if new_quality_id == "default":
+            new_quality = self.findDefaultQuality()
+            if new_quality:
+                quality = new_quality
         else:
-            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_quality_id))
+            qualities = ContainerRegistry.getInstance().findInstanceContainers(id = new_quality_id)
+            if qualities:
+                quality = qualities[0]
+            else:
+                raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_quality_id))
+
+        self.setQuality(quality)
 
     ##  Get the quality container.
     #
@@ -120,15 +135,28 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the material container by an ID.
     #
+    #   This will search for the specified container and set it. If no container was found, an error will be raised.
+    #   There is a special value for ID, which is "default". The "default" value indicates the quality should be set
+    #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultMaterial
+    #   for details.
+    #
     #   \param new_quality_changes_id The ID of the new material container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setMaterialById(self, new_material_id: str) -> None:
-        material = ContainerRegistry.getInstance().findInstanceContainers(id = new_material_id)
-        if material:
-            self.setMaterial(material[0])
+        material = self._empty_instance_container
+        if new_material_id == "default":
+            new_material = self.findDefaultMaterial()
+            if new_material:
+                material = new_material
         else:
-            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_material_id))
+            materials = ContainerRegistry.getInstance().findInstanceContainers(id = new_material_id)
+            if materials:
+                material = materials[0]
+            else:
+                raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_material_id))
+
+        self.setMaterial(material)
 
     ##  Get the material container.
     #
@@ -145,16 +173,28 @@ class CuraContainerStack(ContainerStack):
 
     ##  Set the variant container by an ID.
     #
+    #   This will search for the specified container and set it. If no container was found, an error will be raised.
+    #   There is a special value for ID, which is "default". The "default" value indicates the quality should be set
+    #   to whatever the machine definition specifies as "preferred" container, or a fallback value. See findDefaultVariant
+    #   for details.
+    #
     #   \param new_quality_changes_id The ID of the new variant container.
     #
     #   \throws Exceptions.InvalidContainerError Raised when no container could be found with the specified ID.
     def setVariantById(self, new_variant_id: str) -> None:
-        variant = ContainerRegistry.getInstance().findInstanceContainers(id = new_variant_id)
-        if variant:
-            self.setVariant(variant[0])
+        variant = self._empty_instance_container
+        if new_variant_id == "default":
+            new_variant = self.findDefaultVariant()
+            if new_variant:
+                variant = new_variant
         else:
-            raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_variant_id))
+            variants = ContainerRegistry.getInstance().findInstanceContainers(id = new_variant_id)
+            if variants:
+                variant = variants[0]
+            else:
+                raise Exceptions.InvalidContainerError("Could not find container with id {id}".format(id = new_variant_id))
 
+        self.setVariant(variant)
 
     ##  Get the variant container.
     #
@@ -328,8 +368,215 @@ class CuraContainerStack(ContainerStack):
 
         self._containers = new_containers
 
-    def _onContainersChanged(self, container):
+    ##  Find the variant that should be used as "default" variant.
+    #
+    #   This will search for variants that match the current definition and pick the preferred one,
+    #   if specified by the machine definition.
+    #
+    #   The following criteria are used to find the default variant:
+    #   - If the machine definition does not have a metadata entry "has_variants" set to True, return None
+    #   - The definition of the variant should be the same as the machine definition for this stack.
+    #   - The container should have a metadata entry "type" with value "variant".
+    #   - If the machine definition has a metadata entry "preferred_variant", filter the variant IDs based on that.
+    #
+    #   \return The container that should be used as default, or None if nothing was found or the machine does not use variants.
+    #
+    #   \note This method assumes the stack has a valid machine definition.
+    def findDefaultVariant(self) -> Optional[ContainerInterface]:
+        definition = self._getMachineDefinition()
+        if not definition.getMetaDataEntry("has_variants"):
+            # If the machine does not use variants, we should never set a variant.
+            return None
+
+        # First add any variant. Later, overwrite with preference if the preference is valid.
+        variant = None
+        definition_id = self._findInstanceContainerDefinitionId(definition)
+        variants = ContainerRegistry.getInstance().findInstanceContainers(definition = definition_id, type = "variant")
+        if variants:
+            variant = variants[0]
+
+        preferred_variant_id = definition.getMetaDataEntry("preferred_variant")
+        if preferred_variant_id:
+            preferred_variants = ContainerRegistry.getInstance().findInstanceContainers(id = preferred_variant_id, definition = definition_id, type = "variant")
+            if preferred_variants:
+                variant = preferred_variants[0]
+            else:
+                Logger.log("w", "The preferred variant \"{variant}\" of stack {stack} does not exist or is not a variant.", variant = preferred_variant_id, stack = self.id)
+                # And leave it at the default variant.
+
+        if variant:
+            return variant
+
+        Logger.log("w", "Could not find a valid default variant for stack {stack}", stack = self.id)
+        return None
+
+    ##  Find the material that should be used as "default" material.
+    #
+    #   This will search for materials that match the current definition and pick the preferred one,
+    #   if specified by the machine definition.
+    #
+    #   The following criteria are used to find the default material:
+    #   - If the machine definition does not have a metadata entry "has_materials" set to True, return None
+    #   - If the machine definition has a metadata entry "has_machine_materials", the definition of the material should
+    #     be the same as the machine definition for this stack. Otherwise, the definition should be "fdmprinter".
+    #   - The container should have a metadata entry "type" with value "material".
+    #   - If the machine definition has a metadata entry "has_variants" and set to True, the "variant" metadata entry of
+    #     the material should be the same as the ID of the variant in the stack. Only applies if "has_machine_materials" is also True.
+    #   - If the stack currently has a material set, try to find a material that matches the current material by name.
+    #   - Otherwise, if the machine definition has a metadata entry "preferred_material", try to find a material that matches the specified ID.
+    #
+    #   \return The container that should be used as default, or None if nothing was found or the machine does not use materials.
+    #
+    #
+    def findDefaultMaterial(self) -> Optional[ContainerInterface]:
+        definition = self._getMachineDefinition()
+        if not definition.getMetaDataEntry("has_materials"):
+            # Machine does not use materials, never try to set it.
+            return None
+
+        material = None
+        search_criteria = {"type": "material"}
+        if definition.getMetaDataEntry("has_machine_materials"):
+            search_criteria["definition"] = self._findInstanceContainerDefinitionId(definition)
+
+            if definition.getMetaDataEntry("has_variants"):
+                search_criteria["variant"] = self.variant.id
+        else:
+            search_criteria["definition"] = "fdmprinter"
+
+        if self.material != self._empty_instance_container:
+            search_criteria["name"] = self.material.name
+        else:
+            preferred_material = definition.getMetaDataEntry("preferred_material")
+            if preferred_material:
+                search_criteria["id"] = preferred_material
+
+        materials = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+        if not materials:
+            Logger.log("w", "The preferred material \"{material}\" could not be found for stack {stack}", material = preferred_material, stack = self.id)
+            # We failed to find any materials matching the specified criteria, drop some specific criteria and try to find
+            # a material that sort-of matches what we want.
+            search_criteria.pop("variant", None)
+            search_criteria.pop("id", None)
+            search_criteria.pop("name", None)
+            materials = ContainerRegistry.getInstance().findInstanceContainers(**search_criteria)
+
+        if materials:
+            return materials[0]
+
+        Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
+        return None
+
+    def findDefaultQuality(self) -> Optional[ContainerInterface]:
+        definition = self._getMachineDefinition()
+        registry = ContainerRegistry.getInstance()
+        material_container = self.material if self.material != self._empty_instance_container else None
+
+        quality = None
+        search_criteria = {"type": "quality"}
+
+        if definition.getMetaDataEntry("has_machine_quality"):
+            search_criteria["definition"] = self._findInstanceContainerDefinitionId(definition)
+
+            if definition.getMetaDataEntry("has_materials") and material_container:
+                search_criteria["material"] = material_container.id
+        else:
+            search_criteria["definition"] = "fdmprinter"
+
+        if self.quality != self._empty_instance_container:
+            search_criteria["name"] = self.quality.name
+        else:
+            preferred_quality = definition.getMetaDataEntry("preferred_quality")
+            if preferred_quality:
+                search_criteria["id"] = preferred_quality
+
+        containers = registry.findInstanceContainers(**search_criteria)
+        if containers:
+            return containers[0]
+
+        if "material" in search_criteria:
+            # First check if we can solve our material not found problem by checking if we can find quality containers
+            # that are assigned to the parents of this material profile.
+            try:
+                inherited_files = material_container.getInheritedFiles()
+            except AttributeError:  # Material_container does not support inheritance.
+                inherited_files = []
+
+            if inherited_files:
+                for inherited_file in inherited_files:
+                    # Extract the ID from the path we used to load the file.
+                    search_criteria["material"] = os.path.basename(inherited_file).split(".")[0]
+                    containers = registry.findInstanceContainers(**search_criteria)
+                    if containers:
+                        return containers[0]
+
+            # We still weren't able to find a quality for this specific material.
+            # Try to find qualities for a generic version of the material.
+            material_search_criteria = {"type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
+            if definition.getMetaDataEntry("has_machine_quality"):
+                if self.material != self._em:
+                    material_search_criteria["definition"] = material_container.getDefinition().id
+
+                    if definition.getMetaDataEntry("has_variants"):
+                        material_search_criteria["variant"] = material_container.getMetaDataEntry("variant")
+                else:
+                    material_search_criteria["definition"] = self._findInstanceContainerDefinitionId(definition)
+
+                    if definition.getMetaDataEntry("has_variants") and self.variant != self._empty_instance_container:
+                        material_search_criteria["variant"] = self.variant.id
+            else:
+                material_search_criteria["definition"] = "fdmprinter"
+            material_containers = registry.findInstanceContainers(**material_search_criteria)
+            # Try all materials to see if there is a quality profile available.
+            for material_container in material_containers:
+                search_criteria["material"] = material_container.getId()
+
+                containers = registry.findInstanceContainers(**search_criteria)
+                if containers:
+                    return containers[0]
+
+        if "name" in search_criteria or "id" in search_criteria:
+            # If a quality by this name can not be found, try a wider set of search criteria
+            search_criteria.pop("name", None)
+            search_criteria.pop("id", None)
+
+            containers = registry.findInstanceContainers(**search_criteria)
+            if containers:
+                return containers[0]
+
+        return None
+
+    ## protected:
+
+    # Helper to make sure we emit a PyQt signal on container changes.
+    def _onContainersChanged(self, container: Any) -> None:
         self.pyqtContainersChanged.emit()
+
+    # Helper that can be overridden to get the "machine" definition, that is, the definition that defines the machine
+    # and its properties rather than, for example, the extruder. Defaults to simply returning the definition property.
+    def _getMachineDefinition(self) -> ContainerInterface:
+        return self.definition
+
+    ##  Find the ID that should be used when searching for instance containers for a specified definition.
+    #
+    #   This handles the situation where the definition specifies we should use a different definition when
+    #   searching for instance containers.
+    #
+    #   \param machine_definition The definition to find the "quality definition" for.
+    #
+    #   \return The ID of the definition container to use when searching for instance containers.
+    @classmethod
+    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainer) -> str:
+        quality_definition = machine_definition.getMetaDataEntry("quality_definition")
+        if not quality_definition:
+            return machine_definition.id
+
+        definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition)
+        if not definitions:
+            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id)
+            return machine_definition.id
+
+        return cls._findInstanceContainerDefinitionId(definitions[0])
 
 ## private:
 
