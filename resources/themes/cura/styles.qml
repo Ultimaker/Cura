@@ -8,6 +8,44 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
+    property Component toggle_button: Component {
+        SwitchStyle {
+            groove: Rectangle {
+                implicitWidth: 40
+                implicitHeight: 15
+                radius: 9
+                border.color: {
+                    if (control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    } else if(control.hovered) {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    } else {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on border.color { ColorAnimation { duration: 50; } }
+                border.width: 2
+            }
+
+            handle: Rectangle {
+                implicitWidth: Math.round((parent.parent.width - padding.left - padding.right)/2)
+                implicitHeight: implicitWidth
+                radius: 9
+
+                color: {
+                    if (control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    } else if(control.hovered) {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    } else {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
+    }
+
     property Component sidebar_header_button: Component {
         ButtonStyle {
             background: Rectangle {

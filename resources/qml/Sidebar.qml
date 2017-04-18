@@ -407,6 +407,8 @@ Rectangle
             }
         }
         ExclusiveGroup { id: modeMenuGroup; }
+
+        /*
         ListView{
             id: modesList
             property var index: 0
@@ -415,6 +417,54 @@ Rectangle
             anchors.top: parent.top
             anchors.left: parent.left
             width: parent.width
+        }*/
+
+        Text
+        {
+            id: toggleLeftText
+            anchors.right: modeToggleSwitch.left
+            anchors.rightMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            text: ""
+            color: UM.Theme.getColor("toggle_active_text")
+            font: UM.Theme.getFont("default")
+        }
+
+        Switch
+        {
+            id: modeToggleSwitch
+            checked: false
+            anchors.right: toggleRightText.left
+            anchors.rightMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+
+            onClicked:
+            {
+                var index = 0;
+                if (checked)
+                {
+                    index = 1;
+                }
+                updateActiveMode(index);
+            }
+
+            function updateActiveMode(index)
+            {
+                base.currentModeIndex = index;
+                UM.Preferences.setValue("cura/active_mode", index);
+            }
+
+            style: UM.Theme.styles.toggle_button
+        }
+
+        Text
+        {
+            id: toggleRightText
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: ""
+            color: UM.Theme.getColor("toggle_active_text")
+            font: UM.Theme.getFont("default")
         }
     }
 
@@ -541,10 +591,14 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
+        toggleLeftText.text = modesListModel.get(0).text
+        toggleRightText.text = modesListModel.get(1).text
+
         var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
         if(index)
         {
             currentModeIndex = index;
+            modeToggleSwitch.checked = index > 0;
         }
     }
 
