@@ -6,6 +6,7 @@ from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application #To get the global container stack to find the current machine.
 from UM.Logger import Logger
+from UM.Decorators import deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers by ID.
@@ -147,6 +148,7 @@ class ExtruderManager(QObject):
     #
     #   \param machine_definition   The machine definition to add the extruders for.
     #   \param machine_id           The machine_id to add the extruders for.
+    @deprecated("Use CuraStackBuilder", "2.6")
     def addMachineExtruders(self, machine_definition: DefinitionContainer, machine_id: str) -> None:
         changed = False
         machine_definition_id = machine_definition.getId()
@@ -199,6 +201,7 @@ class ExtruderManager(QObject):
     #   \param machine_definition   The machine that the extruder train belongs to.
     #   \param position             The position of this extruder train in the extruder slots of the machine.
     #   \param machine_id           The id of the "global" stack this extruder is linked to.
+    @deprecated("Use CuraStackBuilder::createExtruderStack", "2.6")
     def createExtruderTrain(self, extruder_definition: DefinitionContainer, machine_definition: DefinitionContainer,
                             position, machine_id: str) -> None:
         # Cache some things.
