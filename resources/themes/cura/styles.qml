@@ -11,7 +11,7 @@ QtObject {
     property Component toggle_button: Component {
         SwitchStyle {
             groove: Rectangle {
-                implicitWidth: 40
+                implicitWidth: 30
                 implicitHeight: 15
                 radius: 9
                 border.color: {
@@ -24,12 +24,12 @@ QtObject {
                     }
                 }
                 Behavior on border.color { ColorAnimation { duration: 50; } }
-                border.width: 2
+                border.width: 1
             }
 
             handle: Rectangle {
-                implicitWidth: Math.round((parent.parent.width - padding.left - padding.right)/2)
-                implicitHeight: implicitWidth
+                implicitHeight: 15
+                implicitWidth: 15
                 radius: 9
 
                 color: {
