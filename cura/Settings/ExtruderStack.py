@@ -15,6 +15,7 @@ from UM.Settings.Interfaces import ContainerInterface
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
+from .ExtruderManager import ExtruderManager
 
 ##  Represents an Extruder and its related containers.
 #
@@ -36,6 +37,9 @@ class ExtruderStack(CuraContainerStack):
             self.addMetaDataEntry("machine", stack.id)
         else:
             self.setMetaDataEntry("machine", stack.id)
+
+        # For backward compatibility: Register the extruder with the Extruder Manager
+        ExtruderManager.getInstance().registerExtruder(self, stack.id)
 
     ##  Overridden from ContainerStack
     #
