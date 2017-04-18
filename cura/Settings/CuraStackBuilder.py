@@ -11,7 +11,14 @@ from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 from .CuraContainerStack import CuraContainerStack
 
+##  Contains helper functions to create new machines.
 class CuraStackBuilder:
+    ##  Create a new instance of a machine.
+    #
+    #   \param name The name of the new machine.
+    #   \param definition_id The ID of the machine definition to use.
+    #
+    #   \return The new global stack or None if an error occurred.
     @classmethod
     def createMachine(cls, name: str, definition_id: str) -> GlobalStack:
         cls.__registry = ContainerRegistry.getInstance()
@@ -49,7 +56,14 @@ class CuraStackBuilder:
 
         return new_global_stack
 
-
+    ##  Create a new Extruder stack
+    #
+    #   \param new_stack_id The ID of the new stack.
+    #   \param definition The definition to base the new stack on.
+    #   \param machine_definition The machine definition to use for the user container.
+    #   \param kwargs You can add keyword arguments to specify IDs of containers to use for a specific type, for example "variant": "0.4mm"
+    #
+    #   \return A new Global stack instance with the specified parameters.
     @classmethod
     def createExtruderStack(cls, new_stack_id: str, definition: DefinitionContainer, machine_definition: DefinitionContainer, **kwargs) -> ExtruderStack:
         cls.__registry = ContainerRegistry.getInstance()
@@ -92,6 +106,13 @@ class CuraStackBuilder:
 
         return stack
 
+    ##  Create a new Global stack
+    #
+    #   \param new_stack_id The ID of the new stack.
+    #   \param definition The definition to base the new stack on.
+    #   \param kwargs You can add keyword arguments to specify IDs of containers to use for a specific type, for example "variant": "0.4mm"
+    #
+    #   \return A new Global stack instance with the specified parameters.
     @classmethod
     def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainer, **kwargs) -> GlobalStack:
         cls.__registry = ContainerRegistry.getInstance()
