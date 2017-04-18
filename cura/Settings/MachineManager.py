@@ -699,7 +699,7 @@ class MachineManager(QObject):
                 Logger.log("w", "While trying to set the active material, no material was found to replace it.")
                 return
 
-            if old_quality_changes.getId() == "empty_quality_changes":
+            if old_quality_changes and old_quality_changes.getId() == "empty_quality_changes":
                 old_quality_changes = None
 
             self.blurSettings.emit()
