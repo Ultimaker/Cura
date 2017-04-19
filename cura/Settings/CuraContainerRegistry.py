@@ -28,6 +28,11 @@ class CuraContainerRegistry(ContainerRegistry):
         super().__init__(*args, **kwargs)
 
     ##  Overridden from ContainerRegistry
+    #
+    #   Adds a container to the registry.
+    #
+    #   This will also try to convert a ContainerStack to either Extruder or
+    #   Global stack based on metadata information.
     @override(ContainerRegistry)
     def addContainer(self, container):
         # Note: Intentional check with type() because we want to ignore subclasses
@@ -295,6 +300,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", False))
         return False
 
+    ##  Convert an "old-style" pure ContainerStack to either an Extruder or Global stack.
     def _convertContainerStack(self, container):
         assert type(container) == ContainerStack
 

@@ -426,8 +426,6 @@ class CuraContainerStack(ContainerStack):
     #   - Otherwise, if the machine definition has a metadata entry "preferred_material", try to find a material that matches the specified ID.
     #
     #   \return The container that should be used as default, or None if nothing was found or the machine does not use materials.
-    #
-    #
     def findDefaultMaterial(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
         if not definition.getMetaDataEntry("has_materials"):
@@ -467,6 +465,12 @@ class CuraContainerStack(ContainerStack):
         Logger.log("w", "Could not find a valid material for stack {stack}", stack = self.id)
         return None
 
+    ##  Find the quality that should be used as "default" quality.
+    #
+    #   This will search for qualities that match the current definition and pick the preferred one,
+    #   if specified by the machine definition.
+    #
+    #   \return The container that should be used as default, or None if nothing was found.
     def findDefaultQuality(self) -> Optional[ContainerInterface]:
         definition = self._getMachineDefinition()
         registry = ContainerRegistry.getInstance()
