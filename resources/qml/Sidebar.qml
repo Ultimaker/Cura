@@ -408,17 +408,6 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        /*
-        ListView{
-            id: modesList
-            property var index: 0
-            model: modesListModel
-            delegate: wizardDelegate
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: parent.width
-        }*/
-
         Text
         {
             id: toggleLeftText
@@ -591,11 +580,11 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        toggleLeftText.text = modesListModel.get(0).text
-        toggleRightText.text = modesListModel.get(1).text
+        toggleLeftText.text = modesListModel.get(0).text;
+        toggleRightText.text = modesListModel.get(1).text;
 
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-        if(index)
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
+        if (index)
         {
             currentModeIndex = index;
             modeToggleSwitch.checked = index > 0;
