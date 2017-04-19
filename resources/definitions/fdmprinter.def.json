@@ -1301,7 +1301,7 @@
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value_warning": "4",
-                    "maximum_value": "(20 - math.log(infill_line_distance) / math.log(2)) if infill_line_distance > 0 and not spaghetti_infill_enabled else 0",
+                    "maximum_value": "(20 - math.log(infill_line_distance) / math.log(2)) if infill_line_distance > 0 and not spaghetti_infill_enabled else (0 if spaghetti_infill_enabled else 20)",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv' and not spaghetti_infill_enabled",
                     "settable_per_mesh": true
                 },
