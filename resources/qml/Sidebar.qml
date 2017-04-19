@@ -423,7 +423,7 @@ Rectangle
         {
             id: toggleLeftText
             anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: 10
+            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             color: UM.Theme.getColor("toggle_active_text")
@@ -435,7 +435,7 @@ Rectangle
             id: modeToggleSwitch
             checked: false
             anchors.right: toggleRightText.left
-            anchors.rightMargin: 10
+            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
             onClicked:
