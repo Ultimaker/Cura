@@ -358,7 +358,10 @@ class OctoPrintOutputDevice(PrinterOutputDevice):
                     QCoreApplication.processEvents()
                     last_process_events = time()
 
-            file_name = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
+            job_name = Application.getInstance().getPrintInformation().jobName.strip()
+            if job_name is "":
+                job_name = "untitled_print"
+            file_name = "%s.gcode" % job_name
 
             ##  Create multi_part request
             self._post_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
