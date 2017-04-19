@@ -294,6 +294,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
 
+    ##  Updates the target bed temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param temperature The new target temperature of the bed.
+    def _updateTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature == temperature:
+            return
+        self._target_bed_temperature = temperature
+        self.targetBedTemperatureChanged.emit()
+
     def _stopCamera(self):
         self._camera_timer.stop()
         if self._image_reply:
@@ -528,7 +537,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
         self._setBedTemperature(bed_temperature)
         target_bed_temperature = self._json_printer_state["bed"]["temperature"]["target"]
-        self._setTargetBedTemperature(target_bed_temperature)
+        self._updateTargetBedTemperature(target_bed_temperature)
 
         head_x = self._json_printer_state["heads"][0]["position"]["x"]
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
