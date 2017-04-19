@@ -417,6 +417,20 @@ Rectangle
             text: ""
             color: UM.Theme.getColor("toggle_active_text")
             font: UM.Theme.getFont("default")
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    modeToggleSwitch.checked = false;
+                }
+
+                Component.onCompleted:
+                {
+                    clicked.connect(modeToggleSwitch.clicked)
+                }
+            }
         }
 
         Switch
@@ -454,6 +468,20 @@ Rectangle
             text: ""
             color: UM.Theme.getColor("toggle_active_text")
             font: UM.Theme.getFont("default")
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    modeToggleSwitch.checked = true;
+                }
+
+                Component.onCompleted:
+                {
+                    clicked.connect(modeToggleSwitch.clicked)
+                }
+            }
         }
     }
 
