@@ -855,7 +855,14 @@ class CuraApplication(QtApplication):
     #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count, min_offset = 8):
-        job = MultiplyObjectsJob(object_id, count, min_offset)
+        node = self.getController().getScene().findObject(object_id)
+        if not node:
+            node = Selection.getSelectedObject(0)
+
+        while node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
+
+        job = MultiplyObjectsJob([node], count, min_offset)
         job.start()
         return
 
