@@ -10,8 +10,10 @@ from UM.Application import Application
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from .SetParentOperation import SetParentOperation
 from .MultiplyObjectsJob import MultiplyObjectsJob
 
 class CuraActions(QObject):
@@ -52,5 +54,25 @@ class CuraActions(QObject):
         job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, 8)
         job.start()
         return
+
+    ##  Delete all selected objects.
+    @pyqtSlot()
+    def deleteSelection(self) -> None:
+        if not Application.getInstance().getController().getToolsEnabled():
+            return
+
+        removed_group_nodes = []
+        op = GroupedOperation()
+        nodes = Selection.getAllSelectedObjects()
+        for node in nodes:
+            op.addOperation(RemoveSceneNodeOperation(node))
+            group_node = node.getParent()
+            if group_node and group_node.callDecoration("isGroup") and group_node not in removed_group_nodes:
+                remaining_nodes_in_group = list(set(group_node.getChildren()) - set(nodes))
+                if len(remaining_nodes_in_group) == 1:
+                    removed_group_nodes.append(group_node)
+                    op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
+                    op.addOperation(RemoveSceneNodeOperation(group_node))
+        op.push()
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)
