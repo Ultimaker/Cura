@@ -16,6 +16,8 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from .SetParentOperation import SetParentOperation
 from .MultiplyObjectsJob import MultiplyObjectsJob
 
+from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
+
 class CuraActions(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -74,5 +76,15 @@ class CuraActions(QObject):
                     op.addOperation(SetParentOperation(remaining_nodes_in_group[0], group_node.getParent()))
                     op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
+
+    @pyqtSlot(str)
+    def setSelectionExtruder(self, extruder_id: str) -> None:
+        operation = GroupedOperation()
+        for node in Selection.getAllSelectedObjects():
+            if node.callDecoration("getActiveExtruder") == extruder_id:
+                continue
+            operation.addOperation(SetObjectExtruderOperation(node, extruder_id))
+        operation.push()
+
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)
