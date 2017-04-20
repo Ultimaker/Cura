@@ -26,6 +26,7 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Platform import Platform
+from UM.Decorators import deprecated
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -807,6 +808,7 @@ class CuraApplication(QtApplication):
 
     # Remove all selected objects from the scene.
     @pyqtSlot()
+    @deprecated("Moved to CuraActions", "2.6")
     def deleteSelection(self):
         if not self.getController().getToolsEnabled():
             return
@@ -827,6 +829,7 @@ class CuraApplication(QtApplication):
     ##  Remove an object from the scene.
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
+    @deprecated("Use deleteSelection instead", "2.6")
     def deleteObject(self, object_id):
         if not self.getController().getToolsEnabled():
             return
@@ -854,6 +857,7 @@ class CuraApplication(QtApplication):
     #   \param count number of copies
     #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
+    @deprecated("Use CuraActions::multiplySelection", "2.6")
     def multiplyObject(self, object_id, count, min_offset = 8):
         node = self.getController().getScene().findObject(object_id)
         if not node:
@@ -868,6 +872,7 @@ class CuraApplication(QtApplication):
 
     ##  Center object on platform.
     @pyqtSlot("quint64")
+    @deprecated("Use CuraActions::centerSelection", "2.6")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
