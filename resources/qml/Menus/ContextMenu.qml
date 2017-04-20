@@ -13,10 +13,31 @@ Menu
 {
     id: base
 
+    property bool shouldShowExtruders: machineExtruderCount.properties.value > 1;
+
     // Selection-related actions.
     MenuItem { action: Cura.Actions.centerSelection; }
     MenuItem { action: Cura.Actions.deleteSelection; }
     MenuItem { action: Cura.Actions.multiplySelection; }
+
+    // Extruder selection - only visible if there is more than 1 extruder
+    MenuSeparator { visible: base.shouldShowExtruders }
+    MenuItem { id: extruderHeader; text: catalog.i18ncp("@label", "Print Selected Model With:", "Print Selected Models With:", UM.Selection.selectionCount); enabled: false; visible: base.shouldShowExtruders }
+    Instantiator
+    {
+        model: Cura.ExtrudersModel { id: extrudersModel }
+        MenuItem {
+            text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
+            visible: base.shouldShowExtruders
+            enabled: UM.Selection.hasSelection
+            checkable: true
+            checked: ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
+            onTriggered: CuraActions.setSelectionExtruder(model.id)
+            shortcut: "Ctrl+" + (model.index + 1)
+        }
+        onObjectAdded: base.insertItem(base.findItemIndex(extruderHeader) + index, object)
+        onObjectRemoved: base.removeItem(object)
+    }
 
     // Global actions
     MenuSeparator { }
@@ -43,6 +64,15 @@ Menu
     {
         target: Cura.Actions.multiplySelection
         onTriggered: multiplyDialog.open()
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
     }
 
     Dialog
