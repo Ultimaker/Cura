@@ -1,9 +1,16 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
 from UM.FlameProfiler import pyqtSlot
 
 from UM.Event import CallFunctionEvent
 from UM.Application import Application
+from UM.Math.Vector import Vector
+from UM.Scene.Selection import Selection
+from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.SetTransformOperation import SetTransformOperation
 
 
 class CuraActions(QObject):
@@ -22,6 +29,19 @@ class CuraActions(QObject):
     def openBugReportPage(self):
         event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
         Application.getInstance().functionEvent(event)
+
+    ##  Center all objects in the selection
+    @pyqtSlot()
+    def centerSelection(self) -> None:
+        operation = GroupedOperation()
+        for node in Selection.getAllSelectedObjects():
+            current_node = node
+            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+                current_node = current_node.getParent()
+
+            center_operation = SetTransformOperation(current_node, Vector())
+            operation.addOperation(center_operation)
+        operation.push()
 
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)
