@@ -219,6 +219,7 @@ class CuraApplication(QtApplication):
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
+        self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -1332,3 +1333,10 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("e", "Could not check file %s: %s", file_url, e)
             return False
+
+    def _onContextMenuRequested(self, x, y):
+        # Ensure we select the object if we request a context menu over an object without having a selection.
+        if not Selection.hasSelection():
+            node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
+            if node:
+                Selection.add(node)
