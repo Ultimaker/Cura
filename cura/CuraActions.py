@@ -12,6 +12,7 @@ from UM.Scene.Selection import Selection
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from .MultiplyObjectsJob import MultiplyObjectsJob
 
 class CuraActions(QObject):
     def __init__(self, parent = None):
@@ -43,5 +44,13 @@ class CuraActions(QObject):
             operation.addOperation(center_operation)
         operation.push()
 
+    ##  Multiply all objects in the selection
+    #
+    #   \param count The number of times to multiply the selection.
+    @pyqtSlot(int)
+    def multiplySelection(self, count: int) -> None:
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, 8)
+        job.start()
+        return
     def _openUrl(self, url):
         QDesktopServices.openUrl(url)

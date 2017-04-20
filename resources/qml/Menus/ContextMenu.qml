@@ -54,6 +54,8 @@ Menu
         width: 400 * Screen.devicePixelRatio
         height: 80 * Screen.devicePixelRatio
 
+        onAccepted: CuraActions.multiplySelection(copiesField.value)
+
         signal reset()
         onReset:
         {
