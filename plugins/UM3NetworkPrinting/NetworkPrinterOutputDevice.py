@@ -283,10 +283,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #
     #   /param temperature The new target temperature of the bed.
     def _setTargetBedTemperature(self, temperature):
-        if self._target_bed_temperature == temperature:
+        if not self._updateTargetBedTemperature(temperature):
             return
-        self._target_bed_temperature = temperature
-        self.targetBedTemperatureChanged.emit()
 
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/temperature/target")
         data = str(temperature)
@@ -297,11 +295,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     ##  Updates the target bed temperature from the printer, and emit a signal if it was changed.
     #
     #   /param temperature The new target temperature of the bed.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
     def _updateTargetBedTemperature(self, temperature):
         if self._target_bed_temperature == temperature:
-            return
+            return False
         self._target_bed_temperature = temperature
         self.targetBedTemperatureChanged.emit()
+        return True
 
     def _stopCamera(self):
         self._camera_timer.stop()
