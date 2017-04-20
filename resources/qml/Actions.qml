@@ -187,7 +187,7 @@ Item
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
-        onTriggered: CuraApplication.deleteSelection();
+        onTriggered: CuraActions.deleteSelection();
     }
 
     Action
@@ -196,6 +196,7 @@ Item
         text: catalog.i18ncp("@action:inmenu menubar:edit", "Center Selected Model", "Center Selected Models", UM.Selection.selectionCount);
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "align-vertical-center";
+        onTriggered: CuraActions.centerSelection();
     }
 
     Action
