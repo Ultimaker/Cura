@@ -3290,6 +3290,16 @@
             "description": "Adhesion",
             "children":
             {
+                "prime_enable":
+                {
+                    "label": "Enable Prime",
+                    "description": "Whether to prime the filament before printing.",
+                    "type": "bool",
+                    "resolve": "any(extruderValues('prime_enable'))",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "extruder_prime_pos_x":
                 {
                     "label": "Extruder Prime X Position",
