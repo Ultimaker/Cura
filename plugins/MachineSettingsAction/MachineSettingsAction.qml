@@ -32,6 +32,18 @@ Cura.MachineAction
         onTriggered: base.extruderTabsCount = (machineExtruderCountProvider.properties.value > 1) ? parseInt(machineExtruderCountProvider.properties.value) : 0
     }
 
+    Connections
+    {
+        target: dialog ? dialog : null
+        ignoreUnknownSignals: true
+        // Any which way this action dialog is dismissed, make sure it is properly finished
+        onNextClicked: manager.onFinishAction()
+        onBackClicked: manager.onFinishAction()
+        onAccepted: manager.onFinishAction()
+        onRejected: manager.onFinishAction()
+        onClosing: manager.onFinishAction()
+    }
+
     anchors.fill: parent;
     Item
     {

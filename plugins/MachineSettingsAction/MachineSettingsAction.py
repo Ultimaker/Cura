@@ -34,6 +34,8 @@ class MachineSettingsAction(MachineAction):
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
 
+        self._backend = Application.getInstance().getBackend()
+
     def _reset(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
@@ -49,6 +51,15 @@ class MachineSettingsAction(MachineAction):
         if container_index != self._container_index:
             self._container_index = container_index
             self.containerIndexChanged.emit()
+
+        # Disable autoslicing while the machineaction is showing
+        self._backend.disableTimer()
+
+    @pyqtSlot()
+    def onFinishAction(self):
+        # Restore autoslicing when the machineaction is dismissed
+        if self._backend.determineAutoSlicing():
+            self._backend.tickle()
 
     def _onActiveExtruderStackChanged(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
