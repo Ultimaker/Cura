@@ -21,7 +21,7 @@ class ImageReader(MeshReader):
         self._supported_extensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"]
         self._ui = ImageReaderUI(self)
 
-    def preRead(self, file_name):
+    def preRead(self, file_name, *args, **kwargs):
         img = QImage(file_name)
 
         if img.isNull():

@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -22,11 +23,9 @@ from UM.View.GL.OpenGL import OpenGL
 catalog = i18nCatalog("cura")
 
 import numpy
-import copy
 import math
 
-import UM.Settings.ContainerRegistry
-
+from typing import List
 
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
@@ -70,6 +69,7 @@ class BuildVolume(SceneNode):
         self._volume_aabb = None
 
         self._raft_thickness = 0.0
+        self._extra_z_clearance = 0.0
         self._adhesion_type = None
         self._platform = Platform(self)
 
@@ -111,10 +111,11 @@ class BuildVolume(SceneNode):
 
     def _onChangeTimerFinished(self):
         root = Application.getInstance().getController().getScene().getRoot()
-        new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.getMeshData() and type(node) is SceneNode)
+        new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
         if new_scene_objects != self._scene_objects:
             for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
-                node.decoratorsChanged.connect(self._onNodeDecoratorChanged)
+                self._updateNodeListeners(node)
+                node.decoratorsChanged.connect(self._updateNodeListeners)  # Make sure that decoration changes afterwards also receive the same treatment
             for node in self._scene_objects - new_scene_objects: #Nodes that were removed from the scene.
                 per_mesh_stack = node.callDecoration("getStack")
                 if per_mesh_stack:
@@ -122,7 +123,7 @@ class BuildVolume(SceneNode):
                 active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
-                node.decoratorsChanged.disconnect(self._onNodeDecoratorChanged)
+                node.decoratorsChanged.disconnect(self._updateNodeListeners)
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -130,7 +131,7 @@ class BuildVolume(SceneNode):
     ##  Updates the listeners that listen for changes in per-mesh stacks.
     #
     #   \param node The node for which the decorators changed.
-    def _onNodeDecoratorChanged(self, node):
+    def _updateNodeListeners(self, node: SceneNode):
         per_mesh_stack = node.callDecoration("getStack")
         if per_mesh_stack:
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
@@ -140,21 +141,25 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreasAndRebuild()
 
     def setWidth(self, width):
-        if width: self._width = width
+        if width is not None:
+            self._width = width
 
     def setHeight(self, height):
-        if height: self._height = height
+        if height is not None:
+            self._height = height
 
     def setDepth(self, depth):
-        if depth: self._depth = depth
+        if depth is not None:
+            self._depth = depth
 
-    def setShape(self, shape):
-        if shape: self._shape = shape
+    def setShape(self, shape: str):
+        if shape:
+            self._shape = shape
 
-    def getDisallowedAreas(self):
+    def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
 
-    def setDisallowedAreas(self, areas):
+    def setDisallowedAreas(self, areas: List[Polygon]):
         self._disallowed_areas = areas
 
     def render(self, renderer):
@@ -179,6 +184,53 @@ class BuildVolume(SceneNode):
                                backface_cull=True, sort=-8)
 
         return True
+
+    ##  For every sliceable node, update node._outside_buildarea
+    #
+    def updateNodeBoundaryCheck(self):
+        root = Application.getInstance().getController().getScene().getRoot()
+        nodes = list(BreadthFirstIterator(root))
+        group_nodes = []
+
+        build_volume_bounding_box = self.getBoundingBox()
+        if build_volume_bounding_box:
+            # It's over 9000!
+            build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
+        else:
+            # No bounding box. This is triggered when running Cura from command line with a model for the first time
+            # In that situation there is a model, but no machine (and therefore no build volume.
+            return
+
+        for node in nodes:
+            # Need to check group nodes later
+            if node.callDecoration("isGroup"):
+                group_nodes.append(node)  # Keep list of affected group_nodes
+
+            if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
+                node._outside_buildarea = False
+                bbox = node.getBoundingBox()
+
+                # Mark the node as outside the build volume if the bounding box test fails.
+                if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                    node._outside_buildarea = True
+                    continue
+
+                convex_hull = node.callDecoration("getConvexHull")
+                if convex_hull:
+                    if not convex_hull.isValid():
+                        return
+                    # Check for collisions between disallowed areas and the object
+                    for area in self.getDisallowedAreas():
+                        overlap = convex_hull.intersectsPolygon(area)
+                        if overlap is None:
+                            continue
+                        node._outside_buildarea = True
+                        continue
+
+        # Group nodes should override the _outside_buildarea property of their children.
+        for group_node in group_nodes:
+            for child_node in group_node.getAllChildren():
+                child_node._outside_buildarea = group_node._outside_buildarea
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
@@ -349,7 +401,7 @@ class BuildVolume(SceneNode):
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness, max_d))
+            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
 
         bed_adhesion_size = self._getEdgeDisallowedSize()
 
@@ -358,15 +410,17 @@ class BuildVolume(SceneNode):
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness, max_d - disallowed_area_size + bed_adhesion_size - 1)
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
-    def getBoundingBox(self):
+        self.updateNodeBoundaryCheck()
+
+    def getBoundingBox(self) -> AxisAlignedBox:
         return self._volume_aabb
 
-    def getRaftThickness(self):
+    def getRaftThickness(self) -> float:
         return self._raft_thickness
 
     def _updateRaftThickness(self):
@@ -385,6 +439,23 @@ class BuildVolume(SceneNode):
         if old_raft_thickness != self._raft_thickness:
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
+
+    def _updateExtraZClearance(self) -> None:
+        extra_z = 0.0
+        extruders = ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId())
+        use_extruders = False
+        for extruder in extruders:
+            if extruder.getProperty("retraction_hop_enabled", "value"):
+                retraction_hop = extruder.getProperty("retraction_hop", "value")
+                if extra_z is None or retraction_hop > extra_z:
+                    extra_z = retraction_hop
+            use_extruders = True
+        if not use_extruders:
+            # If no extruders, take global value.
+            if self._global_container_stack.getProperty("retraction_hop_enabled", "value"):
+                extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
+        if extra_z != self._extra_z_clearance:
+            self._extra_z_clearance = extra_z
 
     ##  Update the build volume visualization
     def _onStackChanged(self):
@@ -426,7 +497,7 @@ class BuildVolume(SceneNode):
         self._engine_ready = True
         self.rebuild()
 
-    def _onSettingPropertyChanged(self, setting_key, property_name):
+    def _onSettingPropertyChanged(self, setting_key: str, property_name: str):
         if property_name != "value":
             return
 
@@ -452,10 +523,14 @@ class BuildVolume(SceneNode):
             self._updateRaftThickness()
             rebuild_me = True
 
+        if setting_key in self._extra_z_settings:
+            self._updateExtraZClearance()
+            rebuild_me = True
+
         if rebuild_me:
             self.rebuild()
 
-    def hasErrors(self):
+    def hasErrors(self) -> bool:
         return self._has_errors
 
     ##  Calls _updateDisallowedAreas and makes sure the changes appear in the
@@ -609,11 +684,12 @@ class BuildVolume(SceneNode):
 
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
-                prime_y = prime_x + machine_depth / 2
+                prime_y = prime_y + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
-            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             prime_polygon = prime_polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
+
+            prime_polygon = prime_polygon.translate(prime_x, prime_y)
             result[extruder.getId()] = [prime_polygon]
 
         return result
@@ -796,7 +872,7 @@ class BuildVolume(SceneNode):
                 stack = self._global_container_stack
             else:
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]
-                stack = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+                stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
 
         value = stack.getProperty(setting_key, property)
         setting_type = stack.getProperty(setting_key, "type")
@@ -874,6 +950,7 @@ class BuildVolume(SceneNode):
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
+    _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]

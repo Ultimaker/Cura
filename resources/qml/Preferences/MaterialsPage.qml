@@ -18,7 +18,7 @@ UM.ManagementPage
     {
         filter:
         {
-            var result = { "type": "material" }
+            var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value) }
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
                 result.definition = Cura.MachineManager.activeQualityDefinitionId;
@@ -128,7 +128,11 @@ UM.ManagementPage
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId && Cura.MachineManager.hasMaterials
-            onClicked: Cura.MachineManager.setActiveMaterial(base.currentItem.id)
+            onClicked:
+            {
+                Cura.MachineManager.setActiveMaterial(base.currentItem.id)
+                currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
+            }
         },
         Button
         {
@@ -321,6 +325,15 @@ UM.ManagementPage
         MessageDialog
         {
             id: messageDialog
+        }
+
+        UM.SettingPropertyProvider
+        {
+            id: materialDiameterProvider
+
+            containerStackId: Cura.MachineManager.activeMachineId
+            key: "material_diameter"
+            watchedProperties: [ "value" ]
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

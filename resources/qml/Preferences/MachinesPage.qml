@@ -43,7 +43,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
-            onClicked: Printer.requestAddPrinter()
+            onClicked: CuraApplication.requestAddPrinter()
         },
         Button
         {
@@ -66,7 +66,7 @@ UM.ManagementPage
         visible: base.currentItem != null
         anchors.fill: parent
 
-        Label
+        Text
         {
             id: machineName
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
@@ -89,15 +89,20 @@ UM.ManagementPage
                 id: machineActionRepeater
                 model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
 
-                Button
+                Item
                 {
-                    text: machineActionRepeater.model[index].label
-                    onClicked:
+                    width: childrenRect.width + 2
+                    height: childrenRect.height
+                    Button
                     {
-                        actionDialog.content = machineActionRepeater.model[index].displayItem;
-                        machineActionRepeater.model[index].displayItem.reset();
-                        actionDialog.title = machineActionRepeater.model[index].label;
-                        actionDialog.show();
+                        text: machineActionRepeater.model[index].label
+                        onClicked:
+                        {
+                            actionDialog.content = machineActionRepeater.model[index].displayItem;
+                            machineActionRepeater.model[index].displayItem.reset();
+                            actionDialog.title = machineActionRepeater.model[index].label;
+                            actionDialog.show();
+                        }
                     }
                 }
             }
@@ -141,26 +146,28 @@ UM.ManagementPage
             property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
             property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
 
-            Label
+            Text
             {
                 text: catalog.i18nc("@label", "Printer type:")
                 visible: base.currentItem && "definition_name" in base.currentItem.metadata
             }
-            Label {
+            Text
+            {
                 text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
             }
-            Label
+            Text
             {
                 text: catalog.i18nc("@label", "Connection:")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
             }
-            Label {
+            Text
+            {
                 width: parent.width * 0.7
                 text: machineInfo.printerConnected ? machineInfo.connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
                 wrapMode: Text.WordWrap
             }
-            Label
+            Text
             {
                 text: catalog.i18nc("@label", "State:")
                 visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
@@ -211,8 +218,8 @@ UM.ManagementPage
 
             Component.onCompleted:
             {
-                for (var component in Printer.additionalComponents["machinesDetailPane"]) {
-                    Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
+                    CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
                 }
             }
         }
@@ -222,8 +229,8 @@ UM.ManagementPage
             onAdditionalComponentsChanged:
             {
                 if(areaId == "machinesDetailPane") {
-                    for (var component in Printer.additionalComponents["machinesDetailPane"]) {
-                        Printer.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
+                    for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
+                        CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
                     }
                 }
             }

@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 Item {
     id: base
 
-    property bool activity: Printer.getPlatformActivity
+    property bool activity: CuraApplication.platformActivity
     property string fileBaseName
     property variant activeMachineName: Cura.MachineManager.activeMachineName
 
@@ -132,7 +132,7 @@ Item {
         }
     }
 
-    Label
+    Text
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
@@ -141,7 +141,7 @@ Item {
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text_subtext")
-        text: Printer.getSceneBoundingBoxString
+        text: CuraApplication.getSceneBoundingBoxString
     }
 
     Rectangle
@@ -169,7 +169,7 @@ Item {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("print_time")
             }
-            Label
+            Text
             {
                 id: timeSpec
                 anchors.right: lengthIcon.left
@@ -192,7 +192,7 @@ Item {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("category_material")
             }
-            Label
+            Text
             {
                 id: lengthSpec
                 anchors.right: parent.right

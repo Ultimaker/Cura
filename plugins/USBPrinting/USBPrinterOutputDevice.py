@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from .avr_isp import stk500v2, ispBase, intelHex
-import serial
+import serial   # type: ignore
 import threading
 import time
 import queue
@@ -19,8 +19,8 @@ from PyQt5.QtCore import QUrl, pyqtSlot, pyqtSignal, pyqtProperty
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-class USBPrinterOutputDevice(PrinterOutputDevice):
 
+class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port):
         super().__init__(serial_port)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
@@ -124,6 +124,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _homeBed(self):
         self._sendCommand("G28 Z")
 
+    ##  A name for the device.
+    @pyqtProperty(str, constant = True)
+    def name(self):
+        return self.getName()
+
+    ##  The address of the device.
+    @pyqtProperty(str, constant = True)
+    def address(self):
+        return self._serial_port
+
     def startPrint(self):
         self.writeStarted.emit(self)
         gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
@@ -138,6 +148,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
+        Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
             self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
             self._error_message.show()
@@ -173,6 +184,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
+        Logger.log("d", "Attempting to update firmware")
         self._error_code = 0
         self.setProgress(0, 100)
         self._firmware_update_finished = False
@@ -192,6 +204,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         try:
             programmer.connect(self._serial_port)
         except Exception:
+            programmer.close()
             pass
 
         # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
@@ -302,8 +315,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
+            programmer.close()
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
         # If the programmer connected, we know its an atmega based version.
@@ -433,11 +448,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   This is ignored.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None):
+    #   \param kwargs Keyword arguments.
+    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         container_stack = Application.getInstance().getGlobalContainerStack()
-        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode" or not container_stack.getMetaDataEntry("supports_usb_connection"):
-            self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to start a new job because the printer does not support usb printing."))
+
+        if container_stack.getProperty("machine_gcode_flavor", "value") == "UltiGCode":
+            self._error_message = Message(catalog.i18nc("@info:status", "This printer does not support USB printing because it uses UltiGCode flavor."))
+            self._error_message.show()
+            return
+        elif not container_stack.getMetaDataEntry("supports_usb_connection"):
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer does not support usb printing."))
             self._error_message.show()
             return
 
@@ -518,6 +538,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:  # Because a resend can be asked with "resend" and "rs"
                     try:
+                        Logger.log("d", "Got a resend response")
                         self._gcode_position = int(line.replace(b"N:",b" ").replace(b"N",b" ").replace(b":",b" ").split()[-1])
                     except:
                         if b"rs" in line:
@@ -544,15 +565,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if ";" in line:
             line = line[:line.find(";")]
         line = line.strip()
+
+        # Don't send empty lines. But we do have to send something, so send
+        # m105 instead.
+        # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as
+        # an LCD menu pause.
+        if line == "" or line == "M0" or line == "M1":
+            line = "M105"
         try:
-            if line == "M0" or line == "M1":
-                line = "M105"  # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
             if ("G0" in line or "G1" in line) and "Z" in line:
                 z = float(re.search("Z([0-9\.]*)", line).group(1))
                 if self._current_z != z:
                     self._current_z = z
         except Exception as e:
-            Logger.log("e", "Unexpected error with printer connection: %s" % e)
+            Logger.log("e", "Unexpected error with printer connection, could not parse current Z: %s: %s" % (e, line))
             self._setErrorState("Unexpected error: %s" %e)
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
@@ -631,3 +657,24 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_firmware_thread.daemon = True
 
         self.connect()
+
+    ##  Pre-heats the heated bed of the printer, if it has one.
+    #
+    #   \param temperature The temperature to heat the bed to, in degrees
+    #   Celsius.
+    #   \param duration How long the bed should stay warm, in seconds. This is
+    #   ignored because there is no g-code to set this.
+    @pyqtSlot(float, float)
+    def preheatBed(self, temperature, duration):
+        Logger.log("i", "Pre-heating the bed to %i degrees.", temperature)
+        self._setTargetBedTemperature(temperature)
+        self.preheatBedRemainingTimeChanged.emit()
+
+    ##  Cancels pre-heating the heated bed of the printer.
+    #
+    #   If the bed is not pre-heated, nothing happens.
+    @pyqtSlot()
+    def cancelPreheatBed(self):
+        Logger.log("i", "Cancelling pre-heating of the bed.")
+        self._setTargetBedTemperature(0)
+        self.preheatBedRemainingTimeChanged.emit()

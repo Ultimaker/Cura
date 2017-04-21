@@ -10,8 +10,8 @@ import Cura 1.0 as Cura
 
 Item
 {
+    property alias newProject: newProjectAction;
     property alias open: openAction;
-    property alias loadWorkspace: loadWorkspaceAction;
     property alias quit: quitAction;
 
     property alias undo: undoAction;
@@ -31,6 +31,8 @@ Item
     property alias selectAll: selectAllAction;
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
+    property alias arrangeAll: arrangeAllAction;
+    property alias arrangeSelection: arrangeSelectionAction;
     property alias resetAllTranslation: resetAllTranslationAction;
     property alias resetAll: resetAllAction;
 
@@ -183,7 +185,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
-        onTriggered: Printer.deleteSelection();
+        onTriggered: CuraApplication.deleteSelection();
     }
 
     Action
@@ -207,7 +209,7 @@ Item
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
-        onTriggered: Printer.groupSelected();
+        onTriggered: CuraApplication.groupSelected();
     }
 
     Action
@@ -217,7 +219,7 @@ Item
         enabled: UM.Scene.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
-        onTriggered: Printer.ungroupSelected();
+        onTriggered: CuraApplication.ungroupSelected();
     }
 
     Action
@@ -227,7 +229,7 @@ Item
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
-        onTriggered: Printer.mergeSelected();
+        onTriggered: CuraApplication.mergeSelected();
     }
 
     Action
@@ -244,7 +246,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-select-all";
         shortcut: "Ctrl+A";
-        onTriggered: Printer.selectAll();
+        onTriggered: CuraApplication.selectAll();
     }
 
     Action
@@ -254,7 +256,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
-        onTriggered: Printer.deleteAll();
+        onTriggered: CuraApplication.deleteAll();
     }
 
     Action
@@ -262,35 +264,52 @@ Item
         id: reloadAllAction;
         text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Models");
         iconName: "document-revert";
-        onTriggered: Printer.reloadAll();
+        shortcut: "F5"
+        onTriggered: CuraApplication.reloadAll();
+    }
+
+    Action
+    {
+        id: arrangeAllAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models");
+        onTriggered: Printer.arrangeAll();
+        shortcut: "Ctrl+R";
+    }
+
+    Action
+    {
+        id: arrangeSelectionAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection");
+        onTriggered: Printer.arrangeSelection();
     }
 
     Action
     {
         id: resetAllTranslationAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Positions");
-        onTriggered: Printer.resetAllTranslation();
+        onTriggered: CuraApplication.resetAllTranslation();
     }
 
     Action
     {
         id: resetAllAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model &Transformations");
-        onTriggered: Printer.resetAll();
+        onTriggered: CuraApplication.resetAll();
     }
 
     Action
     {
         id: openAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open File...");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
 
     Action
     {
-        id: loadWorkspaceAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open Project...");
+        id: newProjectAction
+        text: catalog.i18nc("@action:inmenu menubar:file","&New Project...");
+        shortcut: StandardKey.New
     }
 
     Action

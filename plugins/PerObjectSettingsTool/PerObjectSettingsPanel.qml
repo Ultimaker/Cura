@@ -209,6 +209,8 @@ Item {
                                 {
                                     case "int":
                                         return settingTextField
+                                    case "[int]":
+                                        return settingTextField
                                     case "float":
                                         return settingTextField
                                     case "enum":

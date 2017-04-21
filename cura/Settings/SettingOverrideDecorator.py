@@ -8,11 +8,11 @@ from UM.Signal import Signal, signalemitter
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-import UM.Logger
-
-import cura.Settings
+from UM.Logger import Logger
 
 from UM.Application import Application
+
+from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
 #   the linked node. The Stack in question will refer to the global stack (so that settings that are not defined by
@@ -29,8 +29,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
 
-        if cura.Settings.ExtruderManager.getInstance().extruderCount > 1:
-            self._extruder_stack = cura.Settings.ExtruderManager.getInstance().getExtruderStack(0).getId()
+        if ExtruderManager.getInstance().extruderCount > 1:
+            self._extruder_stack = ExtruderManager.getInstance().getExtruderStack(0).getId()
         else:
             self._extruder_stack = None
 
@@ -77,8 +77,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             return container_stack.getMetaDataEntry("position", default=None)
 
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        if property_name == "value":  # Only reslice if the value has changed.
-            Application.getInstance().getBackend().forceSlice()
+        # Trigger slice/need slicing if the value has changed.
+        if property_name == "value":
+            Application.getInstance().getBackend().needsSlicing()
+            Application.getInstance().getBackend().tickle()
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.
@@ -92,10 +94,12 @@ class SettingOverrideDecorator(SceneNodeDecorator):
                     old_extruder_stack_id = ""
 
                 self._stack.setNextStack(extruder_stack[0])
-                if self._stack.getNextStack().getId() != old_extruder_stack_id: #Only reslice if the extruder changed.
-                    Application.getInstance().getBackend().forceSlice()
+                # Trigger slice/need slicing if the extruder changed.
+                if self._stack.getNextStack().getId() != old_extruder_stack_id:
+                    Application.getInstance().getBackend().needsSlicing()
+                    Application.getInstance().getBackend().tickle()
             else:
-                UM.Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
+                Logger.log("e", "Extruder stack %s below per-object settings does not exist.", self._extruder_stack)
         else:
             self._stack.setNextStack(Application.getInstance().getGlobalContainerStack())
 

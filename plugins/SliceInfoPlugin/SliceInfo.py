@@ -1,5 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+from typing import Any
 
 from cura.CuraApplication import CuraApplication
 
@@ -26,8 +27,8 @@ import json
 catalog = i18nCatalog("cura")
 
 class SliceInfoJob(Job):
-    data = None
-    url = None
+    data = None # type: Any
+    url = None  # type: str
 
     def __init__(self, url, data):
         super().__init__()
@@ -89,9 +90,8 @@ class SliceInfo(Extension):
             # Listing all files placed on the buildplate
             modelhashes = []
             for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
-                if type(node) is not SceneNode or not node.getMeshData():
-                    continue
-                modelhashes.append(node.getMeshData().getHash())
+                if node.callDecoration("isSliceable"):
+                    modelhashes.append(node.getMeshData().getHash())
 
             # Creating md5sums and formatting them as discussed on JIRA
             modelhash_formatted = ",".join(modelhashes)
