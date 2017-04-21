@@ -450,6 +450,7 @@ Cura.MachineAction
                             Label
                             {
                                 text: catalog.i18nc("@label", "Start Gcode")
+                                font.bold: true
                             }
                             TextArea
                             {
@@ -457,7 +458,6 @@ Cura.MachineAction
                                 width: parent.width
                                 height: parent.height - y
                                 font: UM.Theme.getFont("fixed")
-                                wrapMode: TextEdit.NoWrap
                                 text: machineStartGcodeProvider.properties.value
                                 onActiveFocusChanged:
                                 {
@@ -465,6 +465,10 @@ Cura.MachineAction
                                     {
                                         machineStartGcodeProvider.setPropertyValue("value", machineStartGcodeField.text)
                                     }
+                                }
+                                Component.onCompleted:
+                                {
+                                    wrapMode = TextEdit.NoWrap;
                                 }
                             }
                         }
@@ -475,6 +479,7 @@ Cura.MachineAction
                             Label
                             {
                                 text: catalog.i18nc("@label", "End Gcode")
+                                font.bold: true
                             }
                             TextArea
                             {
@@ -482,7 +487,6 @@ Cura.MachineAction
                                 width: parent.width
                                 height: parent.height - y
                                 font: UM.Theme.getFont("fixed")
-                                wrapMode: TextEdit.NoWrap
                                 text: machineEndGcodeProvider.properties.value
                                 onActiveFocusChanged:
                                 {
@@ -490,6 +494,10 @@ Cura.MachineAction
                                     {
                                         machineEndGcodeProvider.setPropertyValue("value", machineEndGcodeField.text)
                                     }
+                                }
+                                Component.onCompleted:
+                                {
+                                    wrapMode = TextEdit.NoWrap;
                                 }
                             }
                         }
@@ -552,7 +560,7 @@ Cura.MachineAction
 
                         Label
                         {
-                            text: catalog.i18nc("@label", "Printer Settings")
+                            text: catalog.i18nc("@label", "Nozzle Settings")
                             font.bold: true
                         }
 
@@ -616,6 +624,7 @@ Cura.MachineAction
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Extruder Start Gcode")
+                                    font.bold: true
                                 }
                                 TextArea
                                 {
@@ -623,14 +632,17 @@ Cura.MachineAction
                                     width: parent.width
                                     height: parent.height - y
                                     font: UM.Theme.getFont("fixed")
-                                    wrapMode: TextEdit.NoWrap
-                                    text: extruderStartGcodeProvider.properties.value
+                                    text: (extruderStartGcodeProvider.properties.value) ? extruderStartGcodeProvider.properties.value : ""
                                     onActiveFocusChanged:
                                     {
                                         if(!activeFocus)
                                         {
                                             extruderStartGcodeProvider.setPropertyValue("value", extruderStartGcodeField.text)
                                         }
+                                    }
+                                    Component.onCompleted:
+                                    {
+                                        wrapMode = TextEdit.NoWrap;
                                     }
                                 }
                             }
@@ -640,6 +652,7 @@ Cura.MachineAction
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Extruder End Gcode")
+                                    font.bold: true
                                 }
                                 TextArea
                                 {
@@ -647,14 +660,17 @@ Cura.MachineAction
                                     width: parent.width
                                     height: parent.height - y
                                     font: UM.Theme.getFont("fixed")
-                                    wrapMode: TextEdit.NoWrap
-                                    text: extruderEndGcodeProvider.properties.value
+                                    text: (extruderEndGcodeProvider.properties.value) ? extruderEndGcodeProvider.properties.value : ""
                                     onActiveFocusChanged:
                                     {
                                         if(!activeFocus)
                                         {
                                             extruderEndGcodeProvider.setPropertyValue("value", extruderEndGcodeField.text)
                                         }
+                                    }
+                                    Component.onCompleted:
+                                    {
+                                        wrapMode = TextEdit.NoWrap;
                                     }
                                 }
                             }
@@ -674,7 +690,7 @@ Cura.MachineAction
             TextField
             {
                 id: textField
-                text: propertyProvider.properties.value
+                text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
                 validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
                 onEditingFinished:
                 {
