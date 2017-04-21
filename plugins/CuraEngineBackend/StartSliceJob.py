@@ -16,8 +16,7 @@ from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
-
-import cura.Settings
+from cura.Settings.ExtruderManager import ExtruderManager
 
 class StartJobResult(IntEnum):
     Finished = 1
@@ -84,7 +83,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.BuildPlateError)
             return
 
-        for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+        for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
             material = extruder_stack.findContainer({"type": "material"})
             if material:
                 if material.getMetaDataEntry("compatible") == False:
@@ -149,7 +148,7 @@ class StartSliceJob(Job):
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
-            for extruder_stack in cura.Settings.ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
                 self._buildExtruderMessage(extruder_stack)
 
             for group in object_groups:

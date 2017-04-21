@@ -20,7 +20,7 @@ UM.Dialog
     height: minimumHeight
 
     property var objectId: 0;
-    onAccepted: Printer.multiplyObject(base.objectId, parseInt(copiesField.text))
+    onAccepted: CuraApplication.multiplyObject(base.objectId, parseInt(copiesField.text))
 
     property variant catalog: UM.I18nCatalog { name: "cura" }
 

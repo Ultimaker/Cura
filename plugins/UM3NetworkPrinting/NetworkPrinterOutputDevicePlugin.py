@@ -1,7 +1,10 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from . import NetworkPrinterOutputDevice
 
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo  # type: ignore
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.Application import Application
@@ -75,9 +78,13 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
             self._manual_instances.append(address)
             self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
 
-        name = address
         instance_name = "manual:%s" % address
-        properties = { b"name": name.encode("utf-8"), b"manual": b"true", b"incomplete": b"true" }
+        properties = {
+            b"name": address.encode("utf-8"),
+            b"address": address.encode("utf-8"),
+            b"manual": b"true",
+            b"incomplete": b"true"
+        }
 
         if instance_name not in self._printers:
             # Add a preliminary printer instance
@@ -112,10 +119,23 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                 if status_code == 200:
                     system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
                     address = reply.url().host()
-                    name = ("%s (%s)" % (system_info["name"], address))
 
                     instance_name = "manual:%s" % address
-                    properties = { b"name": name.encode("utf-8"), b"firmware_version": system_info["firmware"].encode("utf-8"), b"manual": b"true" }
+                    machine = "unknown"
+                    if "variant" in system_info:
+                        variant = system_info["variant"]
+                        if variant == "Ultimaker 3":
+                            machine = "9066"
+                        elif variant == "Ultimaker 3 Extended":
+                            machine = "9511"
+
+                    properties = {
+                        b"name": system_info["name"].encode("utf-8"),
+                        b"address": address.encode("utf-8"),
+                        b"firmware_version": system_info["firmware"].encode("utf-8"),
+                        b"manual": b"true",
+                        b"machine": machine.encode("utf-8")
+                    }
                     if instance_name in self._printers:
                         # Only replace the printer if it is still in the list of (manual) printers
                         self.removePrinter(instance_name)
@@ -137,13 +157,15 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
 
         for key in self._printers:
             if key == active_machine.getMetaDataEntry("um_network_key"):
-                Logger.log("d", "Connecting [%s]..." % key)
-                self._printers[key].connect()
-                self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+                if not self._printers[key].isConnected():
+                    Logger.log("d", "Connecting [%s]..." % key)
+                    self._printers[key].connect()
+                    self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
                 if self._printers[key].isConnected():
                     Logger.log("d", "Closing connection [%s]..." % key)
                     self._printers[key].close()
+                    self._printers[key].connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties):
@@ -161,9 +183,9 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
         printer = self._printers.pop(name, None)
         if printer:
             if printer.isConnected():
+                printer.disconnect()
                 printer.connectionStateChanged.disconnect(self._onPrinterConnectionStateChanged)
                 Logger.log("d", "removePrinter, disconnecting [%s]..." % name)
-                printer.disconnect()
         self.printerListChanged.emit()
 
     ##  Handler for when the connection state of one of the detected printers changes
@@ -196,12 +218,13 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin):
                 info = zeroconf.get_service_info(service_type, name)
 
             if info:
-                type_of_device = info.properties.get(b"type", None).decode("utf-8")
-                if type_of_device == "printer":
-                    address = '.'.join(map(lambda n: str(n), info.address))
-                    self.addPrinterSignal.emit(str(name), address, info.properties)
-                else:
-                    Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." %type_of_device )
+                type_of_device = info.properties.get(b"type", None)
+                if type_of_device:
+                    if type_of_device == b"printer":
+                        address = '.'.join(map(lambda n: str(n), info.address))
+                        self.addPrinterSignal.emit(str(name), address, info.properties)
+                    else:
+                        Logger.log("w", "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device )
             else:
                 Logger.log("w", "Could not get information about %s" % name)
 

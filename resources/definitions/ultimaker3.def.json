@@ -17,7 +17,7 @@
         "has_machine_materials": true,
         "has_variant_materials": true,
         "has_variants": true,
-        "preferred_variant": "*aa*",
+        "preferred_variant": "*aa04*",
         "preferred_quality": "*Normal*",
         "variants_name": "Print core",
         "machine_extruder_trains":
@@ -70,7 +70,7 @@
         "machine_start_gcode": { "default_value": "" },
         "machine_end_gcode": { "default_value": "" },
         "prime_tower_position_x": { "default_value": 175 },
-        "prime_tower_position_y": { "default_value": 179 },
+        "prime_tower_position_y": { "default_value": 178 },
         "prime_tower_wipe_enabled": { "default_value": false },
 
         "acceleration_enabled": { "value": "True" },
@@ -106,6 +106,7 @@
         "line_width": { "value": "machine_nozzle_size * 0.875" },
         "machine_min_cool_heat_time_window": { "value": "15" },
         "default_material_print_temperature": { "value": "200" },
+        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
         "material_bed_temperature": { "maximum_value": "115" },
         "material_bed_temperature_layer_0": { "maximum_value": "115" },
         "material_standby_temperature": { "value": "100" },

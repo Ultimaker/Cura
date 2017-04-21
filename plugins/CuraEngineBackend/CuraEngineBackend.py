@@ -13,14 +13,11 @@ from UM.Resources import Resources
 from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 from UM.Platform import Platform
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from PyQt5.QtCore import QObject, pyqtSlot
 
 
-import cura.Settings
-
-from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
 from . import ProcessSlicedLayersJob
-from . import ProcessGCodeJob
 from . import StartSliceJob
 
 import os
@@ -34,13 +31,14 @@ import Arcus
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-class CuraEngineBackend(Backend):
+class CuraEngineBackend(QObject, Backend):
     ##  Starts the back-end plug-in.
     #
     #   This registers all the signal listeners and prepares for communication
     #   with the back-end in general.
-    def __init__(self):
-        super().__init__()
+    #   CuraEngineBackend is exposed to qml as well.
+    def __init__(self, parent = None):
+        super().__init__(parent = parent)
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
         executable_name = "CuraEngine"
@@ -68,11 +66,6 @@ class CuraEngineBackend(Backend):
         default_engine_location = os.path.abspath(default_engine_location)
         Preferences.getInstance().addPreference("backend/location", default_engine_location)
 
-        self._scene = Application.getInstance().getController().getScene()
-        self._scene.sceneChanged.connect(self._onSceneChanged)
-
-        self._pause_slicing = False
-
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
@@ -80,22 +73,17 @@ class CuraEngineBackend(Backend):
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
 
+        self._scene = Application.getInstance().getController().getScene()
+        self._scene.sceneChanged.connect(self._onSceneChanged)
+
         # Triggers for when to (re)start slicing:
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         self._active_extruder_stack = None
-        cura.Settings.ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
         self._onActiveExtruderChanged()
-
-        # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
-        # This timer will group them up, and only slice for the last setting changed signal.
-        # TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
-        self._change_timer = QTimer()
-        self._change_timer.setInterval(500)
-        self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self.slice)
 
         # Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
@@ -109,12 +97,16 @@ class CuraEngineBackend(Backend):
         self._start_slice_job = None
         self._slicing = False  # Are we currently slicing?
         self._restart = False  # Back-end is currently restarting?
-        self._enabled = True  # Should we be slicing? Slicing might be paused when, for instance, the user is dragging the mesh around.
+        self._tool_active = False  # If a tool is active, some tasks do not have to do anything
         self._always_restart = True  # Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None  # The currently active job to process layers, or None if it is not processing layers.
+        self._need_slicing = False
+        self._engine_is_fresh = True  # Is the newly started engine used before or not?
 
         self._backend_log_max_lines = 20000  # Maximum number of lines to buffer
         self._error_message = None  # Pop-up message that shows errors.
+        self._last_num_objects = 0  # Count number of objects to see if there is something changed
+        self._postponed_scene_change_sources = []  # scene change is postponed (by a tool)
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
@@ -125,9 +117,22 @@ class CuraEngineBackend(Backend):
 
         self._slice_start_time = None
 
-    ##  Called when closing the application.
+        Preferences.getInstance().addPreference("general/auto_slice", True)
+
+        self._use_timer = False
+        # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
+        # This timer will group them up, and only slice for the last setting changed signal.
+        # TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
+        self._change_timer = QTimer()
+        self._change_timer.setSingleShot(True)
+        self._change_timer.setInterval(500)
+        self.determineAutoSlicing()
+        Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
+
+    ##  Terminate the engine process.
     #
     #   This function should terminate the engine process.
+    #   Called when closing the application.
     def close(self):
         # Terminate CuraEngine if it is still running at this point
         self._terminate()
@@ -151,24 +156,12 @@ class CuraEngineBackend(Backend):
     ##  Emitted when the slicing process is aborted forcefully.
     slicingCancelled = Signal()
 
-    ##  Perform a slice of the scene.
-    def slice(self):
-        Logger.log("d", "Starting slice job...")
-        if self._pause_slicing:
-            return
-        self._slice_start_time = time()
-        if not self._enabled or not self._global_container_stack:  # We shouldn't be slicing.
-            # try again in a short time
-            self._change_timer.start()
-            return
-
-        self.printDurationMessage.emit(0, [0])
-
-        self._stored_layer_data = []
-        self._stored_optimized_layer_data = []
-
+    @pyqtSlot()
+    def stopSlicing(self):
+        self.backendStateChange.emit(BackendState.NotStarted)
         if self._slicing:  # We were already slicing. Stop the old job.
             self._terminate()
+            self._createSocket()
 
         if self._process_layers_job:  # We were processing layers. Stop that, the layers are going to change soon.
             self._process_layers_job.abort()
@@ -176,6 +169,33 @@ class CuraEngineBackend(Backend):
 
         if self._error_message:
             self._error_message.hide()
+
+    ##  Manually triggers a reslice
+    @pyqtSlot()
+    def forceSlice(self):
+        if self._use_timer:
+            self._change_timer.start()
+        else:
+            self.slice()
+
+    ##  Perform a slice of the scene.
+    def slice(self):
+        self._slice_start_time = time()
+        if not self._need_slicing:
+            self.processingProgress.emit(1.0)
+            self.backendStateChange.emit(BackendState.Done)
+            Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
+            return
+
+        self.printDurationMessage.emit(0, [0])
+
+        self._stored_layer_data = []
+        self._stored_optimized_layer_data = []
+
+        if self._process is None:
+            self._createSocket()
+        self.stopSlicing()
+        self._engine_is_fresh = False  # Yes we're going to use the engine
 
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
@@ -189,21 +209,10 @@ class CuraEngineBackend(Backend):
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
 
-
-    def pauseSlicing(self):
-        self.close()
-        self._pause_slicing = True
-        self.backendStateChange.emit(BackendState.Disabled)
-
-    def continueSlicing(self):
-        if self._pause_slicing:
-            self._pause_slicing = False
-            self.backendStateChange.emit(BackendState.NotStarted)
-
     ##  Terminate the engine process.
+    #   Start the engine process by calling _createSocket()
     def _terminate(self):
         self._slicing = False
-        self._restart = True
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
         if self._start_slice_job is not None:
@@ -225,9 +234,6 @@ class CuraEngineBackend(Backend):
 
             except Exception as e:  # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
-        else:
-            # Process is none, but something did went wrong here. Try and re-create the socket
-            self._createSocket()
 
     ##  Event handler to call when the job to initiate the slicing process is
     #   completed.
@@ -249,7 +255,7 @@ class CuraEngineBackend(Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.MaterialIncompatible:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
                                             "The selected material is incompatible with the selected machine or configuration."))
                 self._error_message.show()
@@ -259,7 +265,7 @@ class CuraEngineBackend(Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.SettingError:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 extruders = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
                 error_keys = []
                 for extruder in extruders:
@@ -280,7 +286,7 @@ class CuraEngineBackend(Backend):
             return
 
         if job.getResult() == StartSliceJob.StartJobResult.BuildPlateError:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
@@ -288,7 +294,7 @@ class CuraEngineBackend(Backend):
                 self.backendStateChange.emit(BackendState.NotStarted)
 
         if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
-            if Application.getInstance().getPlatformActivity:
+            if Application.getInstance().platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."))
                 self._error_message.show()
                 self.backendStateChange.emit(BackendState.Error)
@@ -303,6 +309,33 @@ class CuraEngineBackend(Backend):
 
         Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
 
+    ##  Determine enable or disable auto slicing. Return True for enable timer and False otherwise.
+    #   It disables when
+    #   - preference auto slice is off
+    #   - decorator isBlockSlicing is found (used in g-code reader)
+    def determineAutoSlicing(self):
+        enable_timer = True
+
+        if not Preferences.getInstance().getValue("general/auto_slice"):
+            enable_timer = False
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if node.callDecoration("isBlockSlicing"):
+                enable_timer = False
+                self.backendStateChange.emit(BackendState.Disabled)
+            gcode_list = node.callDecoration("getGCodeList")
+            if gcode_list is not None:
+                self._scene.gcode_list = gcode_list
+
+        if self._use_timer == enable_timer:
+            return self._use_timer
+        if enable_timer:
+            self.backendStateChange.emit(BackendState.NotStarted)
+            self.enableTimer()
+            return True
+        else:
+            self.disableTimer()
+            return False
+
     ##  Listener for when the scene has changed.
     #
     #   This should start a slice if the scene is now ready to slice.
@@ -312,28 +345,33 @@ class CuraEngineBackend(Backend):
         if type(source) is not SceneNode:
             return
 
-        if source is self._scene.getRoot():
+        root_scene_nodes_changed = False
+        if source == self._scene.getRoot():
+            num_objects = 0
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                # Only count sliceable objects
+                if node.callDecoration("isSliceable"):
+                    num_objects += 1
+            if num_objects != self._last_num_objects:
+                self._last_num_objects = num_objects
+                root_scene_nodes_changed = True
+            else:
+                return
+
+        if not source.callDecoration("isGroup") and not root_scene_nodes_changed:
+            if source.getMeshData() is None:
+                return
+            if source.getMeshData().getVertices() is None:
+                return
+
+        if self._tool_active:
+            # do it later, each source only has to be done once
+            if source not in self._postponed_scene_change_sources:
+                self._postponed_scene_change_sources.append(source)
             return
 
-        should_pause = False
-        for node in DepthFirstIterator(self._scene.getRoot()):
-            if node.callDecoration("isBlockSlicing"):
-                should_pause = True
-            gcode_list = node.callDecoration("getGCodeList")
-            if gcode_list is not None:
-                self._scene.gcode_list = gcode_list
-
-        if should_pause:
-            self.pauseSlicing()
-        else:
-            self.continueSlicing()
-
-        if source.getMeshData() is None:
-            return
-
-        if source.getMeshData().getVertices() is None:
-            return
-
+        self.needsSlicing()
+        self.stopSlicing()
         self._onChanged()
 
     ##  Called when an error occurs in the socket connection towards the engine.
@@ -348,9 +386,26 @@ class CuraEngineBackend(Backend):
             return
 
         self._terminate()
+        self._createSocket()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
+
+    ##  Remove old layer data (if any)
+    def _clearLayerData(self):
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if node.callDecoration("getLayerData"):
+                node.getParent().removeChild(node)
+                break
+
+    ##  Convenient function: set need_slicing, emit state and clear layer data
+    def needsSlicing(self):
+        self._need_slicing = True
+        self.processingProgress.emit(0.0)
+        self.backendStateChange.emit(BackendState.NotStarted)
+        if not self._use_timer:
+            # With manually having to slice, we want to clear the old invalid layer data.
+            self._clearLayerData()
 
     ##  A setting has changed, so check if we must reslice.
     #
@@ -358,6 +413,7 @@ class CuraEngineBackend(Backend):
     #   \param property The property of the setting instance that has changed.
     def _onSettingChanged(self, instance, property):
         if property == "value": # Only reslice if the value has changed.
+            self.needsSlicing()
             self._onChanged()
 
     ##  Called when a sliced layer data message is received from the engine.
@@ -387,6 +443,7 @@ class CuraEngineBackend(Backend):
         self.processingProgress.emit(1.0)
 
         self._slicing = False
+        self._need_slicing = False
         Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
             self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data)
@@ -420,22 +477,21 @@ class CuraEngineBackend(Backend):
     ##  Creates a new socket connection.
     def _createSocket(self):
         super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
-
-    ##  Manually triggers a reslice
-    def forceSlice(self):
-        self._change_timer.start()
+        self._engine_is_fresh = True
 
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #
     #   This indicates that we should probably re-slice soon.
     def _onChanged(self, *args, **kwargs):
-        self._change_timer.start()
+        self.needsSlicing()
+        if self._use_timer:
+            self._change_timer.start()
 
     ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):
         if self._restart:
-            self._onChanged()
             self._restart = False
+            self._onChanged()
 
     ##  Called when the user starts using some tool.
     #
@@ -444,9 +500,12 @@ class CuraEngineBackend(Backend):
     #
     #   \param tool The tool that the user is using.
     def _onToolOperationStarted(self, tool):
-        self._enabled = False  # Do not reslice when a tool is doing it's 'thing'
-        self._terminate()  # Do not continue slicing once a tool has started
-
+        self._tool_active = True  # Do not react on scene change
+        self.disableTimer()
+        # Restart engine as soon as possible, we know we want to slice afterwards
+        if not self._engine_is_fresh:
+            self._terminate()
+            self._createSocket()
 
     ##  Called when the user stops using some tool.
     #
@@ -454,8 +513,13 @@ class CuraEngineBackend(Backend):
     #
     #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
-        self._enabled = True  # Tool stop, start listening for changes again.
-        
+        self._tool_active = False  # React on scene change again
+        self.determineAutoSlicing()  # Switch timer on if appropriate
+        # Process all the postponed scene changes
+        while self._postponed_scene_change_sources:
+            source = self._postponed_scene_change_sources.pop(0)
+            self._onSceneChanged(source)
+
     ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
@@ -480,7 +544,6 @@ class CuraEngineBackend(Backend):
             if self._process:
                 Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
                 self._process = None
-            self._createSocket()
 
     ##  Called when the global container stack changes
     def _onGlobalStackChanged(self):
@@ -515,9 +578,34 @@ class CuraEngineBackend(Backend):
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.disconnect(self._onChanged)
 
-        self._active_extruder_stack = cura.Settings.ExtruderManager.getInstance().getActiveExtruderStack()
+        self._active_extruder_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if self._active_extruder_stack:
             self._active_extruder_stack.containersChanged.connect(self._onChanged)
 
     def _onProcessLayersFinished(self, job):
         self._process_layers_job = None
+
+    ##  Connect slice function to timer.
+    def enableTimer(self):
+        if not self._use_timer:
+            self._change_timer.timeout.connect(self.slice)
+            self._use_timer = True
+
+    ##  Disconnect slice function from timer.
+    #   This means that slicing will not be triggered automatically
+    def disableTimer(self):
+        if self._use_timer:
+            self._use_timer = False
+            self._change_timer.timeout.disconnect(self.slice)
+
+    def _onPreferencesChanged(self, preference):
+        if preference != "general/auto_slice":
+            return
+        auto_slice = self.determineAutoSlicing()
+        if auto_slice:
+            self._change_timer.start()
+
+    ##   Tickle the backend so in case of auto slicing, it starts the timer.
+    def tickle(self):
+        if self._use_timer:
+            self._change_timer.start()

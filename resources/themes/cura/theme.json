@@ -24,6 +24,10 @@
             "bold": true,
             "family": "Open Sans"
         },
+        "very_small": {
+            "size": 1.0,
+            "family": "Open Sans"
+        },
         "button_tooltip": {
             "size": 1.0,
             "family": "Open Sans"
@@ -247,9 +251,11 @@
         "sidebar_header_mode_toggle": [0.0, 2.0],
         "sidebar_header_mode_tabs": [0.0, 3.0],
         "sidebar_lining": [0.5, 0.5],
+        "sidebar_lining_thin": [0.2, 0.2],
         "sidebar_setup": [0.0, 2.0],
         "sidebar_tabs": [0.0, 3.5],
         "sidebar_inputfields": [0.0, 2.0],
+        "sidebar_extruder_box": [0.0, 6.0],
         "simple_mode_infill_caption": [0.0, 5.0],
         "simple_mode_infill_height": [0.0, 8.0],
 
@@ -284,9 +290,15 @@
 
         "slider_groove": [0.5, 0.5],
         "slider_handle": [1.5, 1.5],
-        "slider_layerview_size": [1.0, 16.0],
+        "slider_layerview_size": [1.0, 22.0],
         "slider_layerview_background": [4.0, 0.0],
-        "slider_layerview_margin": [3.0, 3.0],
+        "slider_layerview_margin": [1.0, 1.0],
+
+        "layerview_menu_size": [16.5, 21.0],
+        "layerview_menu_size_compatibility": [22, 23.0],
+        "layerview_legend_size": [1.0, 1.0],
+        "layerview_row": [11.0, 1.5],
+        "layerview_row_spacing": [0.0, 0.5],
 
         "checkbox": [2.0, 2.0],
 
@@ -307,6 +319,11 @@
 
         "infill_button_margin": [0.5, 0.5],
 
-        "jobspecs_line": [2.0, 2.0]
+        "jobspecs_line": [2.0, 2.0],
+
+        "toggle_button_text_anchoring_margin": [1.0, 1.0],
+        "toggle_button_radius": [1.0, 1.0],
+        "toggle_button_background_implicit_size": [2.0, 1.0],
+        "toggle_button_knob_implicit_size": [1.0, 1.0]
     }
 }
