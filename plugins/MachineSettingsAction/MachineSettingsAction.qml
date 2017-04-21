@@ -494,6 +494,36 @@ Cura.MachineAction
                             }
                         }
                     }
+
+                    function getHeadPolygonCoord(axis, minMax)
+                    {
+                        var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
+                        var item = (axis == "x") ? 0 : 1
+                        var result = polygon[0][item];
+                        for(var i = 1; i < polygon.length; i++) {
+                            if (minMax == "min") {
+                                result = Math.min(result, polygon[i][item]);
+                            } else {
+                                result = Math.max(result, polygon[i][item]);
+                            }
+                        }
+                        return Math.abs(result);
+                    }
+
+                    function setHeadPolygon()
+                    {
+                        var polygon = [];
+                        polygon.push([-parseFloat(printheadXMinField.text), parseFloat(printheadYMaxField.text)]);
+                        polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
+                        polygon.push([ parseFloat(printheadXMaxField.text), parseFloat(printheadYMaxField.text)]);
+                        polygon.push([ parseFloat(printheadXMaxField.text),-parseFloat(printheadYMinField.text)]);
+                        var polygon_string = JSON.stringify(polygon);
+                        if(polygon != machineHeadPolygonProvider.properties.value)
+                        {
+                            machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
+                            manager.forceUpdate();
+                        }
+                    }
                 }
             }
 
@@ -632,36 +662,6 @@ Cura.MachineAction
                     }
                 }
             }
-        }
-    }
-
-    function getHeadPolygonCoord(axis, minMax)
-    {
-        var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
-        var item = (axis == "x") ? 0 : 1
-        var result = polygon[0][item];
-        for(var i = 1; i < polygon.length; i++) {
-            if (minMax == "min") {
-                result = Math.min(result, polygon[i][item]);
-            } else {
-                result = Math.max(result, polygon[i][item]);
-            }
-        }
-        return Math.abs(result);
-    }
-
-    function setHeadPolygon()
-    {
-        var polygon = [];
-        polygon.push([-parseFloat(printheadXMinField.text), parseFloat(printheadYMaxField.text)]);
-        polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
-        polygon.push([ parseFloat(printheadXMaxField.text), parseFloat(printheadYMaxField.text)]);
-        polygon.push([ parseFloat(printheadXMaxField.text),-parseFloat(printheadYMinField.text)]);
-        var polygon_string = JSON.stringify(polygon);
-        if(polygon != machineHeadPolygonProvider.properties.value)
-        {
-            machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
-            manager.forceUpdate();
         }
     }
 
