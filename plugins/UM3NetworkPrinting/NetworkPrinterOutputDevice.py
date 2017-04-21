@@ -200,7 +200,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _onAuthenticationRequired(self, reply, authenticator):
         if self._authentication_id is not None and self._authentication_key is not None:
-            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s and key", self._authentication_id, self._getSafeAuthKey())
+            Logger.log("d", "Authentication was required. Setting up authenticator with ID %s and key %s", self._authentication_id, self._getSafeAuthKey())
             authenticator.setUser(self._authentication_id)
             authenticator.setPassword(self._authentication_key)
         else:
@@ -283,16 +283,25 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #
     #   /param temperature The new target temperature of the bed.
     def _setTargetBedTemperature(self, temperature):
-        if self._target_bed_temperature == temperature:
+        if not self._updateTargetBedTemperature(temperature):
             return
-        self._target_bed_temperature = temperature
-        self.targetBedTemperatureChanged.emit()
 
         url = QUrl("http://" + self._address + self._api_prefix + "printer/bed/temperature/target")
         data = str(temperature)
         put_request = QNetworkRequest(url)
         put_request.setHeader(QNetworkRequest.ContentTypeHeader, "application/json")
         self._manager.put(put_request, data.encode())
+
+    ##  Updates the target bed temperature from the printer, and emit a signal if it was changed.
+    #
+    #   /param temperature The new target temperature of the bed.
+    #   /return boolean, True if the temperature was changed, false if the new temperature has the same value as the already stored temperature
+    def _updateTargetBedTemperature(self, temperature):
+        if self._target_bed_temperature == temperature:
+            return False
+        self._target_bed_temperature = temperature
+        self.targetBedTemperatureChanged.emit()
+        return True
 
     def _stopCamera(self):
         self._camera_timer.stop()
@@ -528,7 +537,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         bed_temperature = self._json_printer_state["bed"]["temperature"]["current"]
         self._setBedTemperature(bed_temperature)
         target_bed_temperature = self._json_printer_state["bed"]["temperature"]["target"]
-        self._setTargetBedTemperature(target_bed_temperature)
+        self._updateTargetBedTemperature(target_bed_temperature)
 
         head_x = self._json_printer_state["heads"][0]["position"]["x"]
         head_y = self._json_printer_state["heads"][0]["position"]["y"]
@@ -716,7 +725,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start requesting data from printer
     def connect(self):
-        self.close()  # Ensure that previous connection (if any) is killed.
+        if self.isConnected():
+            self.close()  # Close previous connection
 
         self._createNetworkManager()
 
@@ -815,10 +825,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     return  # Stop trying to zip, abort was called.
 
                 if self._use_gzip:
+                    batched_line += line
                     # if the gcode was read from a gcode file, self._gcode will be a list of all lines in that file.
                     # Compressing line by line in this case is extremely slow, so we need to batch them.
                     if len(batched_line) < max_chars_per_line:
-                        batched_line += line
                         continue
 
                     byte_array_file_data += _compress_data_and_notify_qt(batched_line)
@@ -1088,7 +1098,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
                 self._authentication_key = data["key"]
                 self._authentication_id = data["id"]
-                Logger.log("i", "Got a new authentication ID (%s) and KEY (%S). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
+                Logger.log("i", "Got a new authentication ID (%s) and KEY (%s). Waiting for authorization.", self._authentication_id, self._getSafeAuthKey())
 
                 # Check if the authentication is accepted.
                 self._checkAuthentication()

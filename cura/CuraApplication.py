@@ -39,6 +39,7 @@ from cura.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.BlockSlicingDecorator import BlockSlicingDecorator
 
 from cura.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.MultiplyObjectsJob import MultiplyObjectsJob
 
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -109,6 +110,10 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
+        # this list of dir names will be used by UM to detect an old cura directory
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
+            Resources.addExpectedDirNameInData(dir_name)
+
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
@@ -324,8 +329,6 @@ class CuraApplication(QtApplication):
                 infill_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
-
-
 
         self.applicationShuttingDown.connect(self.saveSettings)
         self.engineCreatedSignal.connect(self._onEngineCreated)
@@ -596,6 +599,9 @@ class CuraApplication(QtApplication):
         # The platform is a child of BuildVolume
         self._volume = BuildVolume.BuildVolume(root)
 
+        # Set the build volume of the arranger to the used build volume
+        Arrange.build_volume = self._volume
+
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
@@ -670,6 +676,7 @@ class CuraApplication(QtApplication):
     #
     #   \param engine The QML engine.
     def registerObjects(self, engine):
+        super().registerObjects(engine)
         engine.rootContext().setContextProperty("Printer", self)
         engine.rootContext().setContextProperty("CuraApplication", self)
         self._print_information = PrintInformation.PrintInformation()
@@ -851,26 +858,9 @@ class CuraApplication(QtApplication):
     #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count, min_offset = 8):
-        node = self.getController().getScene().findObject(object_id)
-
-        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
-            node = Selection.getSelectedObject(0)
-
-        # If object is part of a group, multiply group
-        current_node = node
-        while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
-            current_node = current_node.getParent()
-
-        root = self.getController().getScene().getRoot()
-        arranger = Arrange.create(scene_root = root)
-        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset = min_offset)
-        nodes = arranger.findNodePlacements(current_node, offset_shape_arr, hull_shape_arr, count = count)
-
-        if nodes:
-            op = GroupedOperation()
-            for new_node in nodes:
-                op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
-            op.push()
+        job = MultiplyObjectsJob(object_id, count, min_offset)
+        job.start()
+        return
 
     ##  Center object on platform.
     @pyqtSlot("quint64")
@@ -1001,7 +991,9 @@ class CuraApplication(QtApplication):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
-            nodes.append(node)
+            # Skip nodes that are too big
+            if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                nodes.append(node)
         self.arrange(nodes, fixed_nodes = [])
 
     ##  Arrange Selection
@@ -1295,20 +1287,21 @@ class CuraApplication(QtApplication):
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
+            for child in node.getAllChildren():
+                if not child.getDecorator(ConvexHullDecorator):
+                    child.addDecorator(ConvexHullDecorator())
 
             if node.callDecoration("isSliceable"):
-                # find node location
-                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
-                # step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                nodes = arranger.findNodePlacements(node, offset_shape_arr, hull_shape_arr, count = 1, step = 10)
+                # Only check position if it's not already blatantly obvious that it won't fit.
+                if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                    # Find node location
+                    offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
-                for new_node in nodes:
-                    op = AddSceneNodeOperation(new_node, scene.getRoot())
-                    op.push()
-            else:
-                op = AddSceneNodeOperation(node, scene.getRoot())
-                op.push()
+                    # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
+                    node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
+            op = AddSceneNodeOperation(node, scene.getRoot())
+            op.push()
             scene.sceneChanged.emit(node)
 
     def addNonSliceableExtension(self, extension):

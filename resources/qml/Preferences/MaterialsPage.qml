@@ -18,7 +18,7 @@ UM.ManagementPage
     {
         filter:
         {
-            var result = { "type": "material" }
+            var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value) }
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
                 result.definition = Cura.MachineManager.activeQualityDefinitionId;
@@ -325,6 +325,15 @@ UM.ManagementPage
         MessageDialog
         {
             id: messageDialog
+        }
+
+        UM.SettingPropertyProvider
+        {
+            id: materialDiameterProvider
+
+            containerStackId: Cura.MachineManager.activeMachineId
+            key: "material_diameter"
+            watchedProperties: [ "value" ]
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }

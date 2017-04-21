@@ -25,6 +25,8 @@ catalog = i18nCatalog("cura")
 import numpy
 import math
 
+from typing import List
+
 # Setting for clearance around the prime
 PRIME_CLEARANCE = 6.5
 
@@ -129,7 +131,7 @@ class BuildVolume(SceneNode):
     ##  Updates the listeners that listen for changes in per-mesh stacks.
     #
     #   \param node The node for which the decorators changed.
-    def _updateNodeListeners(self, node):
+    def _updateNodeListeners(self, node: SceneNode):
         per_mesh_stack = node.callDecoration("getStack")
         if per_mesh_stack:
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
@@ -139,21 +141,25 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreasAndRebuild()
 
     def setWidth(self, width):
-        if width: self._width = width
+        if width is not None:
+            self._width = width
 
     def setHeight(self, height):
-        if height: self._height = height
+        if height is not None:
+            self._height = height
 
     def setDepth(self, depth):
-        if depth: self._depth = depth
+        if depth is not None:
+            self._depth = depth
 
-    def setShape(self, shape):
-        if shape: self._shape = shape
+    def setShape(self, shape: str):
+        if shape:
+            self._shape = shape
 
-    def getDisallowedAreas(self):
+    def getDisallowedAreas(self) -> List[Polygon]:
         return self._disallowed_areas
 
-    def setDisallowedAreas(self, areas):
+    def setDisallowedAreas(self, areas: List[Polygon]):
         self._disallowed_areas = areas
 
     def render(self, renderer):
@@ -196,7 +202,6 @@ class BuildVolume(SceneNode):
             return
 
         for node in nodes:
-
             # Need to check group nodes later
             if node.callDecoration("isGroup"):
                 group_nodes.append(node)  # Keep list of affected group_nodes
@@ -208,7 +213,7 @@ class BuildVolume(SceneNode):
                 # Mark the node as outside the build volume if the bounding box test fails.
                 if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
                     node._outside_buildarea = True
-                    break
+                    continue
 
                 convex_hull = node.callDecoration("getConvexHull")
                 if convex_hull:
@@ -220,7 +225,7 @@ class BuildVolume(SceneNode):
                         if overlap is None:
                             continue
                         node._outside_buildarea = True
-                        break
+                        continue
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
@@ -412,10 +417,10 @@ class BuildVolume(SceneNode):
 
         self.updateNodeBoundaryCheck()
 
-    def getBoundingBox(self):
+    def getBoundingBox(self) -> AxisAlignedBox:
         return self._volume_aabb
 
-    def getRaftThickness(self):
+    def getRaftThickness(self) -> float:
         return self._raft_thickness
 
     def _updateRaftThickness(self):
@@ -492,7 +497,7 @@ class BuildVolume(SceneNode):
         self._engine_ready = True
         self.rebuild()
 
-    def _onSettingPropertyChanged(self, setting_key, property_name):
+    def _onSettingPropertyChanged(self, setting_key: str, property_name: str):
         if property_name != "value":
             return
 
@@ -525,7 +530,7 @@ class BuildVolume(SceneNode):
         if rebuild_me:
             self.rebuild()
 
-    def hasErrors(self):
+    def hasErrors(self) -> bool:
         return self._has_errors
 
     ##  Calls _updateDisallowedAreas and makes sure the changes appear in the

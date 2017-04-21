@@ -132,7 +132,7 @@ Item {
         }
     }
 
-    Label
+    Text
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
@@ -169,7 +169,7 @@ Item {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("print_time")
             }
-            Label
+            Text
             {
                 id: timeSpec
                 anchors.right: lengthIcon.left
@@ -192,7 +192,7 @@ Item {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("category_material")
             }
-            Label
+            Text
             {
                 id: lengthSpec
                 anchors.right: parent.right
