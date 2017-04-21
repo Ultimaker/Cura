@@ -649,6 +649,7 @@ Column
         sourceComponent: monitorItem
         property string label: catalog.i18nc("@label", "Estimated time left")
         property string value: connectedPrinter != null ? getPrettyTime(connectedPrinter.timeTotal - connectedPrinter.timeElapsed) : ""
+        visible: connectedPrinter != null && (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused")
     }
 
     Component
