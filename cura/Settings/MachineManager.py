@@ -227,6 +227,10 @@ class MachineManager(QObject):
             self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
 
+            # DO NOT serialize printer authentication data
+            self._global_container_stack.addMetaDataSerializationExcludedKey("network_authentication_key")
+            self._global_container_stack.addMetaDataSerializationExcludedKey("network_authentication_id")
+
             material = self._global_container_stack.findContainer({"type": "material"})
             material.nameChanged.disconnect(self._onMaterialNameChanged)
 
@@ -329,6 +333,11 @@ class MachineManager(QObject):
             name = self._createUniqueName("machine", "", name, definition.getName())
             new_global_stack = ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
+
+            # DO NOT serialize printer authentication data
+            new_global_stack.addMetaDataSerializationExcludedKey("network_authentication_key")
+            new_global_stack.addMetaDataSerializationExcludedKey("network_authentication_id")
+
             container_registry.addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
