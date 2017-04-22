@@ -26,6 +26,7 @@ class MachineSettingsAction(MachineAction):
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
 
+        self._global_container_stack = None
         self._container_index = 0
         self._extruder_container_index = 0
 
@@ -37,17 +38,16 @@ class MachineSettingsAction(MachineAction):
         self._backend = Application.getInstance().getBackend()
 
     def _reset(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
+        if not self._global_container_stack:
             return
 
         # Make sure there is a definition_changes container to store the machine settings
-        definition_changes_container = global_container_stack.findContainer({"type": "definition_changes"})
+        definition_changes_container = self._global_container_stack.findContainer({"type": "definition_changes"})
         if not definition_changes_container:
-            definition_changes_container = self._createDefinitionChangesContainer(global_container_stack, global_container_stack.getName() + "_settings")
+            definition_changes_container = self._createDefinitionChangesContainer(self._global_container_stack, self._global_container_stack.getName() + "_settings")
 
         # Notify the UI in which container to store the machine settings data
-        container_index = global_container_stack.getContainerIndex(definition_changes_container)
+        container_index = self._global_container_stack.getContainerIndex(definition_changes_container)
         if container_index != self._container_index:
             self._container_index = container_index
             self.containerIndexChanged.emit()
@@ -62,9 +62,8 @@ class MachineSettingsAction(MachineAction):
             self._backend.tickle()
 
     def _onActiveExtruderStackChanged(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
         extruder_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if not global_container_stack or not extruder_container_stack:
+        if not self._global_container_stack or not extruder_container_stack:
             return
 
         # Make sure there is a definition_changes container to store the machine settings
@@ -109,18 +108,19 @@ class MachineSettingsAction(MachineAction):
             Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     def _onGlobalContainerChanged(self):
-        # This stub is needed because we cannot connect a UM.Signal directly to a pyqtSignal
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+        # This additional emit is needed because we cannot connect a UM.Signal directly to a pyqtSignal
         self.globalContainerChanged.emit()
 
     globalContainerChanged = pyqtSignal()
 
     @pyqtProperty(int, notify = globalContainerChanged)
     def definedExtruderCount(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
+        if not self._global_container_stack:
             return 0
 
-        return len(global_container_stack.getMetaDataEntry("machine_extruder_trains"))
+        return len(self._global_container_stack.getMetaDataEntry("machine_extruder_trains"))
 
     @pyqtSlot()
     def forceUpdate(self):
@@ -131,34 +131,35 @@ class MachineSettingsAction(MachineAction):
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
         # Updates the has_materials metadata flag after switching gcode flavor
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            definition = global_container_stack.getBottom()
-            if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
-                has_materials = global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
+        if not self._global_container_stack:
+            return
 
-                material_container = global_container_stack.findContainer({"type": "material"})
-                material_index = global_container_stack.getContainerIndex(material_container)
+        definition = self._global_container_stack.getBottom()
+        if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
+            has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
-                if has_materials:
-                    if "has_materials" in global_container_stack.getMetaData():
-                        global_container_stack.setMetaDataEntry("has_materials", True)
-                    else:
-                        global_container_stack.addMetaDataEntry("has_materials", True)
+            material_container = self._global_container_stack.findContainer({"type": "material"})
+            material_index = self._global_container_stack.getContainerIndex(material_container)
 
-                    # Set the material container to a sane default
-                    if material_container.getId() == "empty_material":
-                        search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*" }
-                        containers = self._container_registry.findInstanceContainers(**search_criteria)
-                        if containers:
-                            global_container_stack.replaceContainer(material_index, containers[0])
+            if has_materials:
+                if "has_materials" in self._global_container_stack.getMetaData():
+                    self._global_container_stack.setMetaDataEntry("has_materials", True)
                 else:
-                    # The metadata entry is stored in an ini, and ini files are parsed as strings only.
-                    # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
-                    if "has_materials" in global_container_stack.getMetaData():
-                        global_container_stack.removeMetaDataEntry("has_materials")
+                    self._global_container_stack.addMetaDataEntry("has_materials", True)
 
-                    empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
-                    global_container_stack.replaceContainer(material_index, empty_material)
+                # Set the material container to a sane default
+                if material_container.getId() == "empty_material":
+                    search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*" }
+                    containers = self._container_registry.findInstanceContainers(**search_criteria)
+                    if containers:
+                        self._global_container_stack.replaceContainer(material_index, containers[0])
+            else:
+                # The metadata entry is stored in an ini, and ini files are parsed as strings only.
+                # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
+                if "has_materials" in self._global_container_stack.getMetaData():
+                    self._global_container_stack.removeMetaDataEntry("has_materials")
 
-                Application.getInstance().globalContainerStackChanged.emit()
+                empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
+                self._global_container_stack.replaceContainer(material_index, empty_material)
+
+            Application.getInstance().globalContainerStackChanged.emit()
