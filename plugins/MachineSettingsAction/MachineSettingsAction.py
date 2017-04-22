@@ -10,6 +10,7 @@ from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
@@ -142,6 +143,21 @@ class MachineSettingsAction(MachineAction):
                extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
             if machine_manager.hasVariants:
                extruder_variant_id = machine_manager.activeVariantIds[0]
+
+        # Check to see if any features are set to print with an extruder that will no longer exist
+        for setting_name in ["adhesion_extruder_nr", "support_extruder_nr", "support_extruder_nr_layer_0", "support_infill_extruder_nr", "support_interface_extruder_nr"]:
+            if int(self._global_container_stack.getProperty(setting_name, "value")) > extruder_count -1:
+                Logger.log("i", "Lowering %s setting to match number of extruders", setting_name)
+                self._global_container_stack.getTop().setProperty(setting_name, "value", extruder_count -1)
+
+        # Check to see if any objects are set to print with an extruder that will no longer exist
+        root_node = Application.getInstance().getController().getScene().getRoot()
+        for node in DepthFirstIterator(root_node):
+            if node.getMeshData():
+                extruder_nr = node.callDecoration("getActiveExtruderPosition")
+
+                if extruder_nr is not None and extruder_nr > extruder_count - 1:
+                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count -1).getId())
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
         self.forceUpdate()
