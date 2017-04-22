@@ -122,6 +122,40 @@ class MachineSettingsAction(MachineAction):
 
         return len(self._global_container_stack.getMetaDataEntry("machine_extruder_trains"))
 
+    @pyqtSlot(int)
+    def setMachineExtruderCount(self, extruder_count):
+        machine_manager = Application.getInstance().getMachineManager()
+        extruder_manager = ExtruderManager.getInstance()
+
+        definition_changes_container = self._global_container_stack.findContainer({"type": "definition_changes"})
+        if not self._global_container_stack or not definition_changes_container:
+            return
+
+        if extruder_count == self._global_container_stack.getProperty("machine_extruder_count", "value"):
+            return
+
+        extruder_material = None
+        if extruder_count == 1 and machine_manager.hasMaterials:
+            extruder_material = machine_manager.allActiveMaterialIds[machine_manager.activeStackId]
+
+        definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
+        self.forceUpdate()
+
+        if extruder_count > 1:
+            # multiextrusion; make sure one of these extruder stacks is active
+            if extruder_manager.activeExtruderIndex == -1:
+                extruder_manager.setActiveExtruderIndex(0)
+        else:
+            # single extrusion; make sure the machine stack is active
+            if extruder_manager.activeExtruderIndex > -1:
+                extruder_manager.setActiveExtruderIndex(-1);
+
+            if extruder_material:
+                # restore material on global stack
+                # MachineManager._onGlobalContainerChanged removes the global material of multiextruder machines
+                machine_manager.setActiveMaterial(extruder_material);
+
+
     @pyqtSlot()
     def forceUpdate(self):
         # Force rebuilding the build volume by reloading the global container stack.

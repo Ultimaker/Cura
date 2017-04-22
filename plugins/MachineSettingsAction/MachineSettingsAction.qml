@@ -377,47 +377,10 @@ Cura.MachineAction
                                     currentIndex: machineExtruderCountProvider.properties.value - 1
                                     onActivated:
                                     {
-                                        if(machineExtruderCountProvider.properties.value == index + 1)
-                                        {
-                                            return;
-                                        }
-
-                                        var extruder_material;
-                                        if(index == 0 && Cura.MachineManager.hasMaterials)
-                                        {
-                                            // setting back to single extrusion
-                                            extruder_material = Cura.MachineManager.allActiveMaterialIds[Cura.MachineManager.activeStackId];
-                                        }
-
-                                        machineExtruderCountProvider.setPropertyValue("value", index + 1);
-                                        manager.forceUpdate();
+                                        manager.setMachineExtruderCount(index + 1);
                                         base.extruderTabsCount = (index > 0) ? index + 1 : 0;
-
-                                        if(index > 0)
-                                        {
-                                            // multiextrusion; make sure one of these extruder stacks is active
-                                            if(ExtruderManager.activeExtruderIndex == -1)
-                                            {
-                                                ExtruderManager.setActiveExtruderIndex(0);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // single extrusion; make sure the machine stack is active
-                                            if(ExtruderManager.activeExtruderIndex != -1)
-                                            {
-                                                ExtruderManager.setActiveExtruderIndex(-1);
-                                            }
-                                            if(extruder_material)
-                                            {
-                                                // restore material on global stack
-                                                // MachineManager._onGlobalContainerChanged removes the global material of multiextruder machines
-                                                Cura.MachineManager.setActiveMaterial(extruder_material);
-                                            }
-                                        }
                                     }
                                 }
-
 
                                 Label
                                 {
