@@ -95,6 +95,8 @@ UM.PreferencesPage
         width: parent.width
         height: parent.height
 
+        flickableItem.flickableDirection: Flickable.VerticalFlick;
+
         Column
         {
             //: Model used to check if a plugin exists
