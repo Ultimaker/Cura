@@ -134,9 +134,14 @@ class MachineSettingsAction(MachineAction):
         if extruder_count == self._global_container_stack.getProperty("machine_extruder_count", "value"):
             return
 
-        extruder_material = None
-        if extruder_count == 1 and machine_manager.hasMaterials:
-            extruder_material = machine_manager.allActiveMaterialIds[machine_manager.activeStackId]
+        extruder_material_id = None
+        extruder_variant_id = None
+        if extruder_count == 1:
+            # Get the material and variant of the first extruder before setting the number extruders to 1
+            if machine_manager.hasMaterials:
+               extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
+            if machine_manager.hasVariants:
+               extruder_variant_id = machine_manager.activeVariantIds[0]
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
         self.forceUpdate()
@@ -150,10 +155,12 @@ class MachineSettingsAction(MachineAction):
             if extruder_manager.activeExtruderIndex > -1:
                 extruder_manager.setActiveExtruderIndex(-1);
 
-            if extruder_material:
-                # restore material on global stack
-                # MachineManager._onGlobalContainerChanged removes the global material of multiextruder machines
-                machine_manager.setActiveMaterial(extruder_material);
+            # Restore material and variant on global stack
+            # MachineManager._onGlobalContainerChanged removes the global material and vaiant of multiextruder machines
+            if extruder_material_id:
+                machine_manager.setActiveMaterial(extruder_material_id);
+            if extruder_variant_id:
+                machine_manager.setActiveVariant(extruder_variant_id);
 
 
     @pyqtSlot()
