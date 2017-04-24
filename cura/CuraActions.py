@@ -13,9 +13,8 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
-from .SetParentOperation import SetParentOperation
-from .MultiplyObjectsJob import MultiplyObjectsJob
-
+from cura.SetParentOperation import SetParentOperation
+from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 
 class CuraActions(QObject):
