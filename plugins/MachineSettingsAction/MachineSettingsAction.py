@@ -34,10 +34,25 @@ class MachineSettingsAction(MachineAction):
 
         self._container_registry = ContainerRegistry.getInstance()
         self._container_registry.containerAdded.connect(self._onContainerAdded)
+        self._container_registry.containerRemoved.connect(self._onContainerRemoved)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
 
         self._backend = Application.getInstance().getBackend()
+
+    def _onContainerAdded(self, container):
+        # Add this action as a supported action to all machine definitions
+        if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
+            Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+
+    def _onContainerRemoved(self, container):
+        # Remove definition_changes containers when a stack is removed
+        if container.getMetaDataEntry("type") in ["machine", "extruder_train"]:
+            definition_changes_container = container.findContainer({"type": "definition_changes"})
+            if not definition_changes_container:
+                return
+
+            self._container_registry.removeContainer(definition_changes_container.getId())
 
     def _reset(self):
         if not self._global_container_stack:
@@ -103,11 +118,6 @@ class MachineSettingsAction(MachineAction):
     def extruderContainerIndex(self):
         return self._extruder_container_index
 
-
-    def _onContainerAdded(self, container):
-        # Add this action as a supported action to all machine definitions
-        if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
-            Application.getInstance().getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
     def _onGlobalContainerChanged(self):
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
