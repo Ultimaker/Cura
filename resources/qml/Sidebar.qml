@@ -332,7 +332,7 @@ Rectangle
         }
     }
 
-    Label {
+    Text {
         id: settingsModeLabel
         text: !hideSettings ? catalog.i18nc("@label:listbox", "Print Setup") : catalog.i18nc("@label:listbox","Print Setup disabled\nG-code files cannot be modified");
         anchors.left: parent.left
@@ -407,14 +407,81 @@ Rectangle
             }
         }
         ExclusiveGroup { id: modeMenuGroup; }
-        ListView{
-            id: modesList
-            property var index: 0
-            model: modesListModel
-            delegate: wizardDelegate
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: parent.width
+
+        Text
+        {
+            id: toggleLeftText
+            anchors.right: modeToggleSwitch.left
+            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            text: ""
+            color: UM.Theme.getColor("toggle_active_text")
+            font: UM.Theme.getFont("default")
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    modeToggleSwitch.checked = false;
+                }
+
+                Component.onCompleted:
+                {
+                    clicked.connect(modeToggleSwitch.clicked)
+                }
+            }
+        }
+
+        Switch
+        {
+            id: modeToggleSwitch
+            checked: false
+            anchors.right: toggleRightText.left
+            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+
+            onClicked:
+            {
+                var index = 0;
+                if (checked)
+                {
+                    index = 1;
+                }
+                updateActiveMode(index);
+            }
+
+            function updateActiveMode(index)
+            {
+                base.currentModeIndex = index;
+                UM.Preferences.setValue("cura/active_mode", index);
+            }
+
+            style: UM.Theme.styles.toggle_button
+        }
+
+        Text
+        {
+            id: toggleRightText
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: ""
+            color: UM.Theme.getColor("toggle_active_text")
+            font: UM.Theme.getFont("default")
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    modeToggleSwitch.checked = true;
+                }
+
+                Component.onCompleted:
+                {
+                    clicked.connect(modeToggleSwitch.clicked)
+                }
+            }
         }
     }
 
@@ -541,10 +608,14 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-        if(index)
+        toggleLeftText.text = modesListModel.get(0).text;
+        toggleRightText.text = modesListModel.get(1).text;
+
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
+        if (index)
         {
             currentModeIndex = index;
+            modeToggleSwitch.checked = index > 0;
         }
     }
 

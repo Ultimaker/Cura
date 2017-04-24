@@ -15,9 +15,7 @@ from UM.Message import Message
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.Validator import ValidatorState
 from UM.Signal import postponeSignals
 
 from cura.QualityManager import QualityManager
@@ -26,6 +24,11 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from UM.Settings.DefinitionContainer import DefinitionContainer
 
 import os
 
@@ -331,10 +334,11 @@ class MachineManager(QObject):
             name = self._createUniqueName("machine", "", name, definition.getName())
             new_global_stack = ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
+            new_global_stack.addContainer(definition)
             container_registry.addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+            material_instance_container = self._updateMaterialContainer(definition, new_global_stack, variant_instance_container)
             quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
 
             current_settings_instance_container = InstanceContainer(name + "_current_settings")
@@ -343,7 +347,7 @@ class MachineManager(QObject):
             current_settings_instance_container.setDefinition(definitions[0])
             container_registry.addContainer(current_settings_instance_container)
 
-            new_global_stack.addContainer(definition)
+
             if variant_instance_container:
                 new_global_stack.addContainer(variant_instance_container)
             if material_instance_container:
@@ -762,7 +766,7 @@ class MachineManager(QObject):
                 if old_material:
                     preferred_material_name = old_material.getName()
 
-                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
+                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
@@ -1096,7 +1100,7 @@ class MachineManager(QObject):
     def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
-    def _updateVariantContainer(self, definition):
+    def _updateVariantContainer(self, definition: "DefinitionContainer"):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
         machine_definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(definition)
@@ -1112,11 +1116,12 @@ class MachineManager(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, variant_container = None, preferred_material_name = None):
+    def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
-        search_criteria = { "type": "material" }
+        approximate_material_diameter = round(stack.getProperty("material_diameter", "value"))
+        search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
 
         if definition.getMetaDataEntry("has_machine_materials"):
             search_criteria["definition"] = self.getQualityDefinitionId(definition)
@@ -1148,7 +1153,7 @@ class MachineManager(QObject):
         Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
         return self._empty_material_container
 
-    def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
+    def _updateQualityContainer(self, definition: "DefinitionContainer", variant_container: "ContainerStack", material_container = None, preferred_quality_name: Optional[str] = None):
         container_registry = ContainerRegistry.getInstance()
         search_criteria = { "type": "quality" }
 

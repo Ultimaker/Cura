@@ -163,6 +163,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
+        Logger.log("d", "Started printing g-code")
         if self._progress or self._connection_state != ConnectionState.connected:
             self._error_message = Message(catalog.i18nc("@info:status", "Unable to start a new job because the printer is busy or not connected."))
             self._error_message.show()
@@ -201,6 +202,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
+        Logger.log("d", "Attempting to update firmware")
         self._error_code = 0
         self.setProgress(0, 100)
         self._firmware_update_finished = False
@@ -566,6 +568,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:  # Because a resend can be asked with "resend" and "rs"
                     try:
+                        Logger.log("d", "Got a resend response")
                         self._gcode_position = int(line.replace(b"N:",b" ").replace(b"N",b" ").replace(b":",b" ").split()[-1])
                     except:
                         if b"rs" in line:
@@ -593,19 +596,19 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             line = line[:line.find(";")]
         line = line.strip()
 
-        # Don't send empty lines. But we do have to send something, so send m105 instead.
-        if line == "":
+        # Don't send empty lines. But we do have to send something, so send
+        # m105 instead.
+        # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as
+        # an LCD menu pause.
+        if line == "" or line == "M0" or line == "M1":
             line = "M105"
-
         try:
-            if line == "M0" or line == "M1":
-                line = "M105"  # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
             if ("G0" in line or "G1" in line) and "Z" in line:
                 z = float(re.search("Z([0-9\.]*)", line).group(1))
                 if self._current_z != z:
                     self._current_z = z
         except Exception as e:
-            Logger.log("e", "Unexpected error with printer connection: %s" % e)
+            Logger.log("e", "Unexpected error with printer connection, could not parse current Z: %s: %s" % (e, line))
             self._setErrorState("Unexpected error: %s" %e)
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
 
