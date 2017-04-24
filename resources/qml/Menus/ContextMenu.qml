@@ -114,12 +114,22 @@ Menu
         }
     }
 
+    // Find the index of an item in the list of child items of this menu.
+    //
+    // This is primarily intended as a helper function so we do not have to
+    // hard-code the position of the extruder selection actions.
+    //
+    // \param item The item to find the index of.
+    //
+    // \return The index of the item or -1 if it was not found.
     function findItemIndex(item)
     {
         for(var i in base.items)
         {
             if(base.items[i] == item)
+            {
                 return i;
+            }
         }
         return -1;
     }
