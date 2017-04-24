@@ -1339,4 +1339,7 @@ class CuraApplication(QtApplication):
         if not Selection.hasSelection():
             node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
             if node:
+                while(node.getParent() and node.getParent().callDecoration("isGroup")):
+                    node = node.getParent()
+
                 Selection.add(node)
