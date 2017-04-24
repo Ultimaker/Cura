@@ -1,5 +1,5 @@
-cura (2.3.1-1) UNRELEASED; urgency=medium
+cura (2.4.0-1) UNRELEASED; urgency=medium
 
   * Initial Debian release. Closes: #706656
 
- -- Gregor Riepl <onitake@gmail.com>  Tue, 28 Mar 2017 00:35:20 +0200
+ -- Gregor Riepl <onitake@gmail.com>  Mon, 24 Apr 2017 21:47:55 +0200

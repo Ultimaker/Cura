@@ -5,7 +5,7 @@ Description: The Uranium language file scripts
   This patch updates the search path so the scripts are found.
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -5,6 +5,7 @@
+@@ -4,6 +4,7 @@
  include(GNUInstallDirs)
  
  set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
