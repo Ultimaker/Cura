@@ -9,6 +9,7 @@ from UM.Logger import Logger
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers by ID.
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
@@ -129,7 +130,21 @@ class ExtruderManager(QObject):
     def selectedObjectExtruders(self) -> List[str]:
         if not self._selected_object_extruders:
             object_extruders = set()
+
+            # First, build a list of the actual selected objects (including children of groups, excluding group nodes)
+            selected_nodes = []
             for node in Selection.getAllSelectedObjects():
+                if node.callDecoration("isGroup"):
+                    for grouped_node in BreadthFirstIterator(node):
+                        if grouped_node.callDecoration("isGroup"):
+                            continue
+
+                        selected_nodes.append(grouped_node)
+                else:
+                    selected_nodes.append(node)
+
+            # Then, figure out which nodes are used by those selected nodes.
+            for node in selected_nodes:
                 extruder = node.callDecoration("getActiveExtruder")
                 if extruder:
                     object_extruders.add(extruder)
