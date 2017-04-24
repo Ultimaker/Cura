@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, pyqtSlot
 
 import UM.Qt.ListModel
 from UM.Application import Application
@@ -33,6 +33,12 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     # The ID of the definition of the extruder.
     DefinitionRole = Qt.UserRole + 5
 
+    # The material of the extruder.
+    MaterialRole = Qt.UserRole + 6
+
+    # The variant of the extruder.
+    VariantRole = Qt.UserRole + 7
+
     ##  List of colours to display if there is no material or the material has no known
     #   colour.
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
@@ -49,6 +55,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.ColorRole, "color")
         self.addRoleName(self.IndexRole, "index")
         self.addRoleName(self.DefinitionRole, "definition")
+        self.addRoleName(self.MaterialRole, "material")
+        self.addRoleName(self.VariantRole, "variant")
 
         self._add_global = False
         self._simple_names = False
@@ -140,6 +148,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             for extruder in manager.getMachineExtruders(global_container_stack.getId()):
                 extruder_name = extruder.getName()
                 material = extruder.findContainer({ "type": "material" })
+                variant = extruder.findContainer({"type": "variant"})
                 position = extruder.getMetaDataEntry("position", default = "0")  # Get the position
                 try:
                     position = int(position)
@@ -152,7 +161,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     "name": extruder_name,
                     "color": color,
                     "index": position,
-                    "definition": extruder.getBottom().getId()
+                    "definition": extruder.getBottom().getId(),
+                    "material": material.getName() if material else "",
+                    "variant": variant.getName() if variant else "",
                 }
                 items.append(item)
                 changed = True

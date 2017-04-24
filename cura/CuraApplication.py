@@ -26,6 +26,7 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Platform import Platform
+from UM.Decorators import deprecated
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -109,6 +110,10 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
+        # this list of dir names will be used by UM to detect an old cura directory
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
+            Resources.addExpectedDirNameInData(dir_name)
+
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
@@ -214,6 +219,7 @@ class CuraApplication(QtApplication):
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
+        self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -803,6 +809,7 @@ class CuraApplication(QtApplication):
 
     # Remove all selected objects from the scene.
     @pyqtSlot()
+    @deprecated("Moved to CuraActions", "2.6")
     def deleteSelection(self):
         if not self.getController().getToolsEnabled():
             return
@@ -823,6 +830,7 @@ class CuraApplication(QtApplication):
     ##  Remove an object from the scene.
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
+    @deprecated("Use deleteSelection instead", "2.6")
     def deleteObject(self, object_id):
         if not self.getController().getToolsEnabled():
             return
@@ -850,13 +858,22 @@ class CuraApplication(QtApplication):
     #   \param count number of copies
     #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
+    @deprecated("Use CuraActions::multiplySelection", "2.6")
     def multiplyObject(self, object_id, count, min_offset = 8):
-        job = MultiplyObjectsJob(object_id, count, min_offset)
+        node = self.getController().getScene().findObject(object_id)
+        if not node:
+            node = Selection.getSelectedObject(0)
+
+        while node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
+
+        job = MultiplyObjectsJob([node], count, min_offset)
         job.start()
         return
 
     ##  Center object on platform.
     @pyqtSlot("quint64")
+    @deprecated("Use CuraActions::centerSelection", "2.6")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
@@ -1316,3 +1333,10 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("e", "Could not check file %s: %s", file_url, e)
             return False
+
+    def _onContextMenuRequested(self, x: float, y: float) -> None:
+        # Ensure we select the object if we request a context menu over an object without having a selection.
+        if not Selection.hasSelection():
+            node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
+            if node:
+                Selection.add(node)
