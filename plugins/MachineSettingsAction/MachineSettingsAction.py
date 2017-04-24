@@ -147,7 +147,7 @@ class MachineSettingsAction(MachineAction):
                extruder_variant_id = machine_manager.activeVariantIds[0]
 
             # Copy any settable_per_extruder setting value from the extruders to the global stack
-            extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+            extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
             extruder_stacks.reverse() # make sure the first extruder is done last, so its settings override any higher extruder settings
 
             global_user_container = self._global_container_stack.getTop()
@@ -191,7 +191,7 @@ class MachineSettingsAction(MachineAction):
 
             # Move settable_per_extruder values out of the global container
             if previous_extruder_count == 1:
-                extruder_stacks = list(ExtruderManager.getInstance().getMachineExtruders(self._global_container_stack.getId()))
+                extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
                 global_user_container = self._global_container_stack.getTop()
 
                 for setting_instance in global_user_container.findInstances():
