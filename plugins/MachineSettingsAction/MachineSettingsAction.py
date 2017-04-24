@@ -7,6 +7,7 @@ from UM.FlameProfiler import pyqtSlot
 from cura.MachineAction import MachineAction
 
 from UM.Application import Application
+from UM.Preferences import Preferences
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -209,11 +210,20 @@ class MachineSettingsAction(MachineAction):
                 extruder_manager.setActiveExtruderIndex(-1);
 
             # Restore material and variant on global stack
-            # MachineManager._onGlobalContainerChanged removes the global material and vaiant of multiextruder machines
-            if extruder_material_id:
-                machine_manager.setActiveMaterial(extruder_material_id);
-            if extruder_variant_id:
-                machine_manager.setActiveVariant(extruder_variant_id);
+            # MachineManager._onGlobalContainerChanged removes the global material and variant of multiextruder machines
+            if extruder_material_id or extruder_variant_id:
+                # Prevent the DiscardOrKeepProfileChangesDialog from popping up (twice) if there are user changes
+                # The dialog is not relevant here, since we're restoring the previous situation as good as possible
+                preferences = Preferences.getInstance()
+                choice_on_profile_override = preferences.getValue("cura/choice_on_profile_override")
+                preferences.setValue("cura/choice_on_profile_override", "always_keep")
+
+                if extruder_material_id:
+                    machine_manager.setActiveMaterial(extruder_material_id);
+                if extruder_variant_id:
+                    machine_manager.setActiveVariant(extruder_variant_id);
+
+                preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
 
 
     @pyqtSlot()
