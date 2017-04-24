@@ -8,12 +8,13 @@ from UM.Application import Application #To get the global container stack to fin
 from UM.Logger import Logger
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Selection import Selection
 from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers by ID.
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
-from typing import Optional
+from typing import Optional, List
 
 ##  Manages all existing extruder stacks.
 #
@@ -34,9 +35,12 @@ class ExtruderManager(QObject):
         super().__init__(parent)
         self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs.
         self._active_extruder_index = 0
+        self._selected_object_extruders = []
         Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
         self._global_container_stack_definition_id = None
         self._addCurrentMachineExtruders()
+
+        Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
 
     ##  Gets the unique identifier of the currently active extruder stack.
     #
@@ -116,6 +120,34 @@ class ExtruderManager(QObject):
             return list(self.getActiveExtruderStacks())[index].getName()
         except IndexError:
             return ""
+
+    ## Emitted whenever the selectedObjectExtruders property changes.
+    selectedObjectExtrudersChanged = pyqtSignal()
+
+    ##  Provides a list of extruder IDs used by the current selected objects.
+    @pyqtProperty("QVariantList", notify = selectedObjectExtrudersChanged)
+    def selectedObjectExtruders(self) -> List[str]:
+        if not self._selected_object_extruders:
+            object_extruders = set()
+            for node in Selection.getAllSelectedObjects():
+                extruder = node.callDecoration("getActiveExtruder")
+                if extruder:
+                    object_extruders.add(extruder)
+                else:
+                    global_stack = Application.getInstance().getGlobalContainerStack()
+                    object_extruders.add(self._extruder_trains[global_stack.getId()]["0"].getId())
+
+            self._selected_object_extruders = list(object_extruders)
+
+        return self._selected_object_extruders
+
+    ##  Reset the internal list used for the selectedObjectExtruders property
+    #
+    #   This will trigger a recalculation of the extruders used for the
+    #   selection.
+    def resetSelectedObjectExtruders(self) -> None:
+        self._selected_object_extruders = []
+        self.selectedObjectExtrudersChanged.emit()
 
     def getActiveExtruderStack(self) -> ContainerStack:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -443,6 +475,8 @@ class ExtruderManager(QObject):
             self._global_container_stack_definition_id = global_container_stack.getBottom().getId()
             self.globalContainerStackDefinitionChanged.emit()
         self.activeExtruderChanged.emit()
+
+        self.resetSelectedObjectExtruders()
 
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self) -> None:

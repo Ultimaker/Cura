@@ -18,6 +18,8 @@ Item
     property alias redo: redoAction;
 
     property alias deleteSelection: deleteSelectionAction;
+    property alias centerSelection: centerSelectionAction;
+    property alias multiplySelection: multiplySelectionAction;
 
     property alias deleteObject: deleteObjectAction;
     property alias centerObject: centerObjectAction;
@@ -181,11 +183,28 @@ Item
     Action
     {
         id: deleteSelectionAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","Delete &Selection");
-        enabled: UM.Controller.toolsEnabled;
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete &Selected Model", "Delete &Selected Models", UM.Selection.selectionCount);
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
-        onTriggered: CuraApplication.deleteSelection();
+        onTriggered: CuraActions.deleteSelection();
+    }
+
+    Action
+    {
+        id: centerSelectionAction;
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Center Selected Model", "Center Selected Models", UM.Selection.selectionCount);
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
+        iconName: "align-vertical-center";
+        onTriggered: CuraActions.centerSelection();
+    }
+
+    Action
+    {
+        id: multiplySelectionAction;
+        text: catalog.i18ncp("@action:inmenu menubar:edit", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount);
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
+        iconName: "edit-duplicate";
     }
 
     Action
