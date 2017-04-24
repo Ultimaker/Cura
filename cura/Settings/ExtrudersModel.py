@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, pyqtSlot
 import UM.Qt.ListModel
 from UM.Application import Application
 
-from .ExtruderManager import ExtruderManager
+from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  Model that holds extruders.
 #
