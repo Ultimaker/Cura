@@ -3498,8 +3498,8 @@
                             },
                             "default_value": "concentric",
                             "value": "support_interface_pattern",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_roof_enable') and support_enable",
+                            "limit_to_extruder": "support_roof_extruder_nr",
+                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
