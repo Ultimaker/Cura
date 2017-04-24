@@ -1334,7 +1334,7 @@ class CuraApplication(QtApplication):
             Logger.log("e", "Could not check file %s: %s", file_url, e)
             return False
 
-    def _onContextMenuRequested(self, x, y):
+    def _onContextMenuRequested(self, x: float, y: float) -> None:
         # Ensure we select the object if we request a context menu over an object without having a selection.
         if not Selection.hasSelection():
             node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
