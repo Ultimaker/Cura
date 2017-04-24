@@ -9,7 +9,6 @@ from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import override
 from UM.Logger import Logger
-from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -280,7 +279,7 @@ class CuraContainerStack(ContainerStack):
     #   \param new_value The new value to set the property to.
     #   \param target_container The type of the container to set the property of. Defaults to "user".
     def setProperty(self, key: str, property_name: str, new_value: Any, target_container: str = "user") -> None:
-        container_index = _ContainerIndexes.indexForType(target_container)
+        container_index = _ContainerIndexes.TypeIndexMap.get(target_container, -1)
         if container_index != -1:
             self._containers[container_index].setProperty(key, property_name, new_value)
         else:
@@ -605,12 +604,5 @@ class _ContainerIndexes:
         Definition: "definition",
     }
 
-    # Perform reverse lookup (type name -> index)
-    @classmethod
-    def indexForType(cls, type_name: str) -> int:
-        for key, value in cls.IndexTypeMap.items():
-            if value == type_name:
-                return key
-
-        return -1
-
+    # Reverse lookup: type -> index
+    TypeIndexMap = dict([(v, k) for k, v in IndexTypeMap.items()])
