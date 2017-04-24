@@ -75,8 +75,11 @@ class CuraActions(QObject):
                     op.addOperation(RemoveSceneNodeOperation(group_node))
         op.push()
 
+    ##  Set the extruder that should be used to print the selection.
+    #
+    #   \param extruder_id The ID of the extruder stack to use for the selected objects.
     @pyqtSlot(str)
-    def setSelectionExtruder(self, extruder_id: str) -> None:
+    def setExtruderForSelection(self, extruder_id: str) -> None:
         operation = GroupedOperation()
         for node in Selection.getAllSelectedObjects():
             if node.callDecoration("getActiveExtruder") == extruder_id:

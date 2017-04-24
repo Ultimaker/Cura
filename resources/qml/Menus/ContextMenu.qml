@@ -32,7 +32,7 @@ Menu
             enabled: UM.Selection.hasSelection
             checkable: true
             checked: ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
-            onTriggered: CuraActions.setSelectionExtruder(model.id)
+            onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
         onObjectAdded: base.insertItem(base.findItemIndex(extruderHeader) + index, object)
