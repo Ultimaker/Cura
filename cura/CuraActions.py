@@ -17,6 +17,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from cura.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
+from cura.Settings.ExtruderManager import ExtruderManager
 
 class CuraActions(QObject):
     def __init__(self, parent = None):
@@ -104,6 +105,10 @@ class CuraActions(QObject):
             nodes_to_change.append(node)
 
         if not nodes_to_change:
+            # If there are no changes to make, we still need to reset the selected extruders.
+            # This is a workaround for checked menu items being deselected while still being
+            # selected.
+            ExtruderManager.getInstance().resetSelectedObjectExtruders()
             return
 
         for node in nodes_to_change:
