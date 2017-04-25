@@ -3,6 +3,7 @@
 
 import copy
 import io
+from typing import Optional
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -11,7 +12,7 @@ from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
-from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 ##  Handles serializing and deserializing material containers from an XML file
@@ -118,6 +119,7 @@ class XmlMaterialProfile(InstanceContainer):
         metadata.pop("variant", "")
         metadata.pop("type", "")
         metadata.pop("base_file", "")
+        metadata.pop("approximate_diameter", "")
 
         ## Begin Name Block
         builder.start("name")
@@ -369,8 +371,30 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
         self._path = ""
 
+    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
+        return "material"
+
+    def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
+        version = None
+        data = ET.fromstring(serialized)
+        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
+        for entry in metadata:
+            tag_name = _tag_without_namespace(entry)
+            if tag_name == "version":
+                try:
+                    version = int(entry.text)
+                except Exception as e:
+                    raise InvalidInstanceError("Invalid version string '%s': %s" % (entry.text, e))
+                break
+        if version is None:
+            raise InvalidInstanceError("Missing version in metadata")
+        return version
+
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
+        # update the serialized data first
+        from UM.Settings.Interfaces import ContainerInterface
+        serialized = ContainerInterface.deserialize(self, serialized)
         data = ET.fromstring(serialized)
 
         # Reset previous metadata
@@ -405,10 +429,10 @@ class XmlMaterialProfile(InstanceContainer):
                 continue
             meta_data[tag_name] = entry.text
 
-        if not "description" in meta_data:
+        if "description" not in meta_data:
             meta_data["description"] = ""
 
-        if not "adhesion_info" in meta_data:
+        if "adhesion_info" not in meta_data:
             meta_data["adhesion_info"] = ""
 
         property_values = {}
@@ -437,6 +461,7 @@ class XmlMaterialProfile(InstanceContainer):
                 Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = global_setting_values
 
+        meta_data["approximate_diameter"] = round(diameter)
         meta_data["compatible"] = global_compatibility
         self.setMetaData(meta_data)
         self._dirty = False
@@ -581,7 +606,8 @@ class XmlMaterialProfile(InstanceContainer):
         "Ultimaker 2 Extended": "ultimaker2_extended",
         "Ultimaker 2 Extended+": "ultimaker2_extended_plus",
         "Ultimaker Original": "ultimaker_original",
-        "Ultimaker Original+": "ultimaker_original_plus"
+        "Ultimaker Original+": "ultimaker_original_plus",
+        "IMADE3D JellyBOX": "imade3d_jellybox"
     }
 
     # Map of recognised namespaces with a proper prefix.

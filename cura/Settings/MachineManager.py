@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 from typing import Union
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
 from UM import Util
@@ -15,9 +15,7 @@ from UM.Message import Message
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.Validator import ValidatorState
 from UM.Signal import postponeSignals
 
 from cura.QualityManager import QualityManager
@@ -26,6 +24,11 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
+
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from UM.Settings.DefinitionContainer import DefinitionContainer
 
 import os
 
@@ -82,6 +85,11 @@ class MachineManager(QObject):
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
                                               "The selected material is incompatible with the selected machine or configuration."))
+
+        self._error_check_timer = QTimer()
+        self._error_check_timer.setInterval(250)
+        self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -306,33 +314,7 @@ class MachineManager(QObject):
             self.activeStackValueChanged.emit()
 
         elif property_name == "validationState":
-            if not self._stacks_have_errors:
-                # fast update, we only have to look at the current changed property
-                if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1 and self._active_container_stack.getProperty(key, "settable_per_extruder"):
-                    extruder_index = int(self._active_container_stack.getProperty(key, "limit_to_extruder"))
-                    if extruder_index >= 0: #We have to look up the value from a different extruder.
-                        stack = ExtruderManager.getInstance().getExtruderStack(str(extruder_index))
-                    else:
-                        stack = self._active_container_stack
-                else:
-                    stack = self._global_container_stack
-                changed_validation_state = stack.getProperty(key, property_name)
-
-                if changed_validation_state is None:
-                    # Setting is not validated. This can happen if there is only a setting definition.
-                    # We do need to validate it, because a setting defintions value can be set by a function, which could
-                    # be an invalid setting.
-                    definition = self._active_container_stack.getSettingDefinition(key)
-                    validator_type = SettingDefinition.getValidatorForType(definition.type)
-                    if validator_type:
-                        validator = validator_type(key)
-                        changed_validation_state = validator(self._active_container_stack)
-                if changed_validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
-                    self._stacks_have_errors = True
-                    self.stacksValidationChanged.emit()
-            else:
-                # Normal check
-                self._updateStacksHaveErrors()
+            self._error_check_timer.start()
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
@@ -350,10 +332,11 @@ class MachineManager(QObject):
             name = self._createUniqueName("machine", "", name, definition.getName())
             new_global_stack = ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
+            new_global_stack.addContainer(definition)
             container_registry.addContainer(new_global_stack)
 
             variant_instance_container = self._updateVariantContainer(definition)
-            material_instance_container = self._updateMaterialContainer(definition, variant_instance_container)
+            material_instance_container = self._updateMaterialContainer(definition, new_global_stack, variant_instance_container)
             quality_instance_container = self._updateQualityContainer(definition, variant_instance_container, material_instance_container)
 
             current_settings_instance_container = InstanceContainer(name + "_current_settings")
@@ -362,7 +345,7 @@ class MachineManager(QObject):
             current_settings_instance_container.setDefinition(definitions[0])
             container_registry.addContainer(current_settings_instance_container)
 
-            new_global_stack.addContainer(definition)
+
             if variant_instance_container:
                 new_global_stack.addContainer(variant_instance_container)
             if material_instance_container:
@@ -781,7 +764,7 @@ class MachineManager(QObject):
                 if old_material:
                     preferred_material_name = old_material.getName()
 
-                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), containers[0], preferred_material_name).id)
+                self.setActiveMaterial(self._updateMaterialContainer(self._global_container_stack.getBottom(), self._global_container_stack, containers[0], preferred_material_name).id)
             else:
                 Logger.log("w", "While trying to set the active variant, no variant was found to replace.")
 
@@ -811,6 +794,10 @@ class MachineManager(QObject):
                 new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
             else:
                 Logger.log("e", "Tried to set quality to a container that is not of the right type")
+                return
+
+            # Check if it was at all possible to find new settings
+            if new_quality_settings_list is None:
                 return
 
             name_changed_connect_stacks = []  # Connect these stacks to the name changed callback
@@ -889,7 +876,12 @@ class MachineManager(QObject):
         quality_changes_profiles = quality_manager.findQualityChangesByName(quality_changes_name,
                                                                             global_machine_definition)
 
-        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None][0]
+        global_quality_changes = [qcp for qcp in quality_changes_profiles if qcp.getMetaDataEntry("extruder") is None]
+        if global_quality_changes:
+            global_quality_changes = global_quality_changes[0]
+        else:
+            Logger.log("e", "Could not find the global quality changes container with name %s", quality_changes_name)
+            return None
         material = global_container_stack.findContainer(type="material")
 
         # For the global stack, find a quality which matches the quality_type in
@@ -1106,7 +1098,7 @@ class MachineManager(QObject):
     def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
-    def _updateVariantContainer(self, definition):
+    def _updateVariantContainer(self, definition: "DefinitionContainer"):
         if not definition.getMetaDataEntry("has_variants"):
             return self._empty_variant_container
         machine_definition_id = Application.getInstance().getMachineManager().getQualityDefinitionId(definition)
@@ -1122,11 +1114,12 @@ class MachineManager(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, variant_container = None, preferred_material_name = None):
+    def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
-        search_criteria = { "type": "material" }
+        approximate_material_diameter = round(stack.getProperty("material_diameter", "value"))
+        search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
 
         if definition.getMetaDataEntry("has_machine_materials"):
             search_criteria["definition"] = self.getQualityDefinitionId(definition)
@@ -1158,7 +1151,7 @@ class MachineManager(QObject):
         Logger.log("w", "Unable to find a material container with provided criteria, returning an empty one instead.")
         return self._empty_material_container
 
-    def _updateQualityContainer(self, definition, variant_container, material_container = None, preferred_quality_name = None):
+    def _updateQualityContainer(self, definition: "DefinitionContainer", variant_container: "ContainerStack", material_container = None, preferred_quality_name: Optional[str] = None):
         container_registry = ContainerRegistry.getInstance()
         search_criteria = { "type": "quality" }
 

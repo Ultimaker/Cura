@@ -8,6 +8,44 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
+    property Component toggle_button: Component {
+        SwitchStyle {
+            groove: Rectangle {
+                implicitWidth: UM.Theme.getSize("toggle_button_background_implicit_size").width
+                implicitHeight: UM.Theme.getSize("toggle_button_background_implicit_size").height
+                radius: UM.Theme.getSize("toggle_button_radius").width
+                border.color: {
+                    if (control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    } else if(control.hovered) {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    } else {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on border.color { ColorAnimation { duration: 50; } }
+                border.width: 1
+            }
+
+            handle: Rectangle {
+                implicitWidth: UM.Theme.getSize("toggle_button_knob_implicit_size").width
+                implicitHeight: UM.Theme.getSize("toggle_button_knob_implicit_size").height
+                radius: UM.Theme.getSize("toggle_button_radius").width
+
+                color: {
+                    if (control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.getColor("sidebar_header_active");
+                    } else if(control.hovered) {
+                        return UM.Theme.getColor("sidebar_header_hover");
+                    } else {
+                        return UM.Theme.getColor("sidebar_header_bar");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
+    }
+
     property Component sidebar_header_button: Component {
         ButtonStyle {
             background: Rectangle {

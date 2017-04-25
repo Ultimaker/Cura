@@ -363,7 +363,7 @@ Item
             property bool roundValues: true
 
             property var activeHandle: upperHandle
-            property bool layersVisible: UM.LayerView.layerActivity && Printer.platformActivity ? true : false
+            property bool layersVisible: UM.LayerView.layerActivity && CuraApplication.platformActivity ? true : false
 
             function getUpperValueFromHandle()
             {
