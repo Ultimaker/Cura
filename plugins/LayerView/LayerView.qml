@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.0 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -164,16 +165,26 @@ Item
             }
 
             Repeater {
-                model: UM.LayerView.extruderCount
+                model: Cura.ExtrudersModel{}
                 CheckBox {
                     checked: view_settings.extruder_opacities[index] > 0.5 || view_settings.extruder_opacities[index] == undefined || view_settings.extruder_opacities[index] == ""
                     onClicked: {
                         view_settings.extruder_opacities[index] = checked ? 1.0 : 0.0
                         UM.Preferences.setValue("layerview/extruder_opacities", view_settings.extruder_opacities.join("|"));
                     }
-                    text: catalog.i18nc("@label", "Extruder %1").arg(index + 1)
+                    text: model.name
                     visible: !UM.LayerView.compatibilityMode
                     enabled: index + 1 <= 4
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        width: UM.Theme.getSize("layerview_legend_size").width
+                        height: UM.Theme.getSize("layerview_legend_size").height
+                        color: model.color
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: !view_settings.show_legend
+                    }
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
