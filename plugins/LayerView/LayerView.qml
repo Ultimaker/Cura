@@ -175,100 +175,67 @@ Item
                     visible: !UM.LayerView.compatibilityMode
                     enabled: index + 1 <= 4
                     Layout.fillWidth: true
-                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
                 }
             }
 
-            CheckBox {
-                checked: view_settings.show_travel_moves
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_travel_moves", checked);
+            Repeater {
+                model: ListModel {
+                    id: typesLegenModel
+                    Component.onCompleted:
+                    {
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Travels"),
+                            initialValue: view_settings.show_travel_moves,
+                            preference: "layerview/show_travel_moves",
+                            colorId:  "layerview_move_combing"
+                        });
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Helpers"),
+                            initialValue: view_settings.show_helpers,
+                            preference: "layerview/show_helpers",
+                            colorId:  "layerview_support"
+                        });
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Shell"),
+                            initialValue: view_settings.show_skin,
+                            preference: "layerview/show_skin",
+                            colorId:  "layerview_inset_0"
+                        });
+                        typesLegenModel.append({
+                            label: catalog.i18nc("@label", "Show Infill"),
+                            initialValue: view_settings.show_infill,
+                            preference: "layerview/show_infill",
+                            colorId:  "layerview_infill"
+                        });
+                    }
                 }
-                text: catalog.i18nc("@label", "Show Travels")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_move_combing")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
+
+                CheckBox {
+                    checked: model.initialValue
+                    onClicked: {
+                        UM.Preferences.setValue(model.preference, checked);
+                    }
+                    text: label
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        width: UM.Theme.getSize("layerview_legend_size").width
+                        height: UM.Theme.getSize("layerview_legend_size").height
+                        color: UM.Theme.getColor(model.colorId)
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: view_settings.show_legend
+                    }
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    style: UM.Theme.styles.checkbox
                 }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                style: UM.Theme.styles.checkbox
             }
-            CheckBox {
-                checked: view_settings.show_helpers
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_helpers", checked);
-                }
-                text: catalog.i18nc("@label", "Show Helpers")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_support")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
-                }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                style: UM.Theme.styles.checkbox
-            }
-            CheckBox {
-                checked: view_settings.show_skin
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_skin", checked);
-                }
-                text: catalog.i18nc("@label", "Show Shell")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_inset_0")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
-                }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                style: UM.Theme.styles.checkbox
-            }
-            CheckBox {
-                checked: view_settings.show_infill
-                onClicked: {
-                    UM.Preferences.setValue("layerview/show_infill", checked);
-                }
-                text: catalog.i18nc("@label", "Show Infill")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_infill")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
-                }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                style: UM.Theme.styles.checkbox
-            }
+
             CheckBox {
                 checked: view_settings.only_show_top_layers
                 onClicked: {
@@ -288,51 +255,40 @@ Item
                 style: UM.Theme.styles.checkbox
             }
 
-            Label
-            {
-                id: topBottomLabel
-                anchors.left: parent.left
-                text: catalog.i18nc("@label","Top / Bottom")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_skin")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
+            Repeater {
+                model: ListModel {
+                    id: typesLegenModelNoCheck
+                    Component.onCompleted:
+                    {
+                        typesLegenModelNoCheck.append({
+                            label: catalog.i18nc("@label", "Top / Bottom"),
+                            colorId:  "layerview_skin"
+                        });
+                        typesLegenModelNoCheck.append({
+                            label: catalog.i18nc("@label", "Inner Wall"),
+                            colorId:  "layerview_inset_x"
+                        });
+                    }
                 }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                visible: view_settings.show_legend
-                color: UM.Theme.getColor("text")
-            }
 
-            Label
-            {
-                id: innerWallLabel
-                anchors.left: parent.left
-                text: catalog.i18nc("@label","Inner Wall")
-                Rectangle {
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                    anchors.right: parent.right
-                    width: UM.Theme.getSize("layerview_legend_size").width
-                    height: UM.Theme.getSize("layerview_legend_size").height
-                    color: UM.Theme.getColor("layerview_inset_x")
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: UM.Theme.getColor("lining")
-                    visible: view_settings.show_legend
+                Label {
+                    text: label
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        width: UM.Theme.getSize("layerview_legend_size").width
+                        height: UM.Theme.getSize("layerview_legend_size").height
+                        color: UM.Theme.getColor(model.colorId)
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: UM.Theme.getColor("lining")
+                        visible: view_settings.show_legend
+                    }
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                    Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
+                    color: UM.Theme.getColor("text")
                 }
-                Layout.fillWidth: true
-                Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
-                Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
-                visible: view_settings.show_legend
-                color: UM.Theme.getColor("text")
             }
-
         }
 
         Item
