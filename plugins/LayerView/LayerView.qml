@@ -58,7 +58,7 @@ Item
                 anchors.left: parent.left
                 text: catalog.i18nc("@label","View Mode: Layers")
                 font.bold: true
-                style: UM.Theme.styles.text
+                color: UM.Theme.getColor("text")
             }
 
             Label
@@ -76,7 +76,7 @@ Item
                 text: catalog.i18nc("@label","Color scheme")
                 visible: !UM.LayerView.compatibilityMode
                 Layout.fillWidth: true
-                style: UM.Theme.styles.text
+                color: UM.Theme.getColor("text")
             }
 
             ListModel  // matches LayerView.py
@@ -307,7 +307,7 @@ Item
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 visible: view_settings.show_legend
-                style: UM.Theme.styles.text
+                color: UM.Theme.getColor("text")
             }
 
             Label
@@ -330,7 +330,7 @@ Item
                 Layout.preferredHeight: UM.Theme.getSize("layerview_row").height
                 Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                 visible: view_settings.show_legend
-                style: UM.Theme.styles.text
+                color: UM.Theme.getColor("text")
             }
 
         }

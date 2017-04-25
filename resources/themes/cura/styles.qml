@@ -632,13 +632,6 @@ QtObject {
         }
     }
 
-    property Component text: Component {
-        TextFieldStyle {
-            textColor: Theme.getColor("text");
-            font: Theme.getFont("default");
-        }
-    }
-
     property Component sidebar_action_button: Component {
         ButtonStyle
         {
