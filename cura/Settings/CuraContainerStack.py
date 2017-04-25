@@ -431,7 +431,6 @@ class CuraContainerStack(ContainerStack):
             # Machine does not use materials, never try to set it.
             return None
 
-        material = None
         search_criteria = {"type": "material"}
         if definition.getMetaDataEntry("has_machine_materials"):
             search_criteria["definition"] = self._findInstanceContainerDefinitionId(definition)
@@ -475,7 +474,6 @@ class CuraContainerStack(ContainerStack):
         registry = ContainerRegistry.getInstance()
         material_container = self.material if self.material != self._empty_instance_container else None
 
-        quality = None
         search_criteria = {"type": "quality"}
 
         if definition.getMetaDataEntry("has_machine_quality"):
