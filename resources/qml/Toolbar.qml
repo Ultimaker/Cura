@@ -6,7 +6,8 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -66,6 +67,14 @@ Item
                     }
                 }
             }
+        }
+
+        Item { height: UM.Theme.getSize("default_margin").height; width: 1; visible: machineExtruderCount.properties.value > 1 }
+
+        Repeater
+        {
+            model: Cura.ExtrudersModel { id: extrudersModel }
+            ExtruderButton { extruder: model }
         }
     }
 
@@ -147,4 +156,15 @@ Item
 
         visible: toolHint.text != "";
     }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+    }
+
+    UM.I18nCatalog { id: catalog; name: "cura" }
 }
