@@ -544,3 +544,15 @@ def test_setVariantByIdExists(global_stack, container_registry):
 def test_setVariantByIdDoesntExist(global_stack):
     with pytest.raises(InvalidContainerError):
         global_stack.setVariantById("some_variant") #Container registry is empty now.
+
+##  Smoke test for findDefaultVariant
+def test_smoke_findDefaultVariant(global_stack):
+    global_stack.findDefaultVariant()
+
+##  Smoke test for findDefaultMaterial
+def test_smoke_findDefaultMaterial(global_stack):
+    global_stack.findDefaultMaterial()
+
+##  Smoke test for findDefaultQuality
+def test_smoke_findDefaultQuality(global_stack):
+    global_stack.findDefaultQuality()
