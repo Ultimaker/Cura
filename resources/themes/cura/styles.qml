@@ -206,7 +206,10 @@ QtObject {
                     property bool down: control.pressed || (control.checkable && control.checked);
 
                     color: {
-                        if(control.checkable && control.checked && control.hovered) {
+                        if(control.customColor !== undefined && control.customColor !== null) {
+                            return control.customColor
+                        }
+                        else if(control.checkable && control.checked && control.hovered) {
                             return Theme.getColor("button_active_hover");
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return Theme.getColor("button_active");
