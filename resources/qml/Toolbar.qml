@@ -8,26 +8,30 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Item {
+Item
+{
     id: base;
 
     width: buttons.width;
     height: buttons.height
     property int activeY
 
-    ColumnLayout {
+    Column
+    {
         id: buttons;
 
         anchors.bottom: parent.bottom;
         anchors.left: parent.left;
         spacing: UM.Theme.getSize("button_lining").width
 
-        Repeater {
+        Repeater
+        {
             id: repeat
 
             model: UM.ToolModel { }
 
-            Button {
+            Button
+            {
                 text: model.name
                 iconSource: UM.Theme.getIcon(model.icon);
 
@@ -45,9 +49,11 @@ Item {
                 }
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
-                MouseArea {
+                MouseArea
+                {
                     anchors.fill: parent;
-                    onClicked: {
+                    onClicked:
+                    {
                         forceActiveFocus() //First grab focus, so all the text fields are updated
                         if(parent.checked)
                         {
@@ -63,7 +69,8 @@ Item {
         }
     }
 
-    UM.PointingRectangle {
+    UM.PointingRectangle
+    {
         id: panelBorder;
 
         anchors.left: parent.right;
@@ -75,7 +82,8 @@ Item {
         target: Qt.point(parent.right, base.activeY +  UM.Theme.getSize("button").height/2)
         arrowSize: UM.Theme.getSize("default_arrow").width
 
-        width: {
+        width:
+        {
             if (panel.item && panel.width > 0){
                  return Math.max(panel.width + 2 * UM.Theme.getSize("default_margin").width)
             }
@@ -90,7 +98,8 @@ Item {
 
         color: UM.Theme.getColor("lining");
 
-        UM.PointingRectangle {
+        UM.PointingRectangle
+        {
             id: panelBackground;
 
             color: UM.Theme.getColor("tool_panel_background");
@@ -105,7 +114,8 @@ Item {
             }
         }
 
-        Loader {
+        Loader
+        {
             id: panel
 
             x: UM.Theme.getSize("default_margin").width;
@@ -116,6 +126,8 @@ Item {
         }
     }
 
+    // This rectangle displays the information about the current angle etc. when
+    // dragging a tool handle.
     Rectangle
     {
         x: -base.x + base.mouseX + UM.Theme.getSize("default_margin").width
