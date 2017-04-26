@@ -8,6 +8,38 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
+    property Component toggle_switch_text_button: Component {
+        ButtonStyle
+        {
+            background: Rectangle
+            {
+                border.width: 0
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+
+                Label
+                {
+                    id: actualLabel
+                    anchors.centerIn: parent
+                    color:
+                    {
+                        if (control.hovered) {
+                            return UM.Theme.getColor("sidebar_header_hover");
+                        } else if (control.pressed || (control.checkable && control.checked)) {
+                            return UM.Theme.getColor("sidebar_header_highlight");
+                        } else {
+                            return UM.Theme.getColor("sidebar_header_active");
+                        }
+                    }
+                    font: UM.Theme.getFont("action_button")
+                    text: control.text
+                }
+            }
+            label: Item { }
+        }
+    }
+
     property Component toggle_switch: Component {
         SwitchStyle {
             groove: Rectangle {

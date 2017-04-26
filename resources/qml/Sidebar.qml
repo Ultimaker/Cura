@@ -408,28 +408,27 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Text
+        Button
         {
             id: toggleLeftText
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
             anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("toggle_switch_text_anchoring_margin").width
-            anchors.verticalCenter: parent.verticalCenter
             text: ""
-            color: UM.Theme.getColor("toggle_active_text")
-            font: UM.Theme.getFont("default")
+            style: UM.Theme.styles.toggle_switch_text_button
 
-            MouseArea
+            checkable: true
+            checked: modeToggleSwitch.checked
+
+            onClicked:
             {
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = false;
-                }
+                modeToggleSwitch.checked = false;
+            }
 
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
+            Component.onCompleted:
+            {
+                clicked.connect(modeToggleSwitch.clicked)
+                checked = !modeToggleSwitch.checked;
             }
         }
 
@@ -437,9 +436,9 @@ Rectangle
         {
             id: modeToggleSwitch
             checked: false
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
             anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("toggle_switch_text_anchoring_margin").width
-            anchors.verticalCenter: parent.verticalCenter
 
             onClicked:
             {
@@ -453,6 +452,9 @@ Rectangle
 
             function updateActiveMode(index)
             {
+                toggleLeftText.checked = !checked;
+                toggleRightText.checked = checked;
+
                 base.currentModeIndex = index;
                 UM.Preferences.setValue("cura/active_mode", index);
             }
@@ -460,27 +462,27 @@ Rectangle
             style: UM.Theme.styles.toggle_switch
         }
 
-        Text
+        Button
         {
             id: toggleRightText
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
             anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
             text: ""
-            color: UM.Theme.getColor("toggle_active_text")
-            font: UM.Theme.getFont("default")
+            style: UM.Theme.styles.toggle_switch_text_button
 
-            MouseArea
+            checkable: true
+            checked: !modeToggleSwitch.checked
+
+            onClicked:
             {
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = true;
-                }
+                modeToggleSwitch.checked = true;
+            }
 
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
+            Component.onCompleted:
+            {
+                clicked.connect(modeToggleSwitch.clicked)
+                checked = modeToggleSwitch.checked;
             }
         }
     }
