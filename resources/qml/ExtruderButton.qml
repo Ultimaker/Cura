@@ -18,7 +18,6 @@ Button
     style: UM.Theme.styles.tool_button;
     iconSource: checked ? UM.Theme.getIcon("material_selected") : UM.Theme.getIcon("material_not_selected");
 
-    checkable: true;
     checked: ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
     enabled: UM.Selection.hasSelection
 
@@ -73,14 +72,9 @@ Button
         border.color: UM.Theme.getColor("lining");
     }
 
-    // See line 51, same workaround
-    MouseArea
+    onClicked:
     {
-        anchors.fill: parent;
-        onClicked:
-        {
-            forceActiveFocus() //First grab focus, so all the text fields are updated
-            CuraActions.setExtruderForSelection(extruder.id);
-        }
+        forceActiveFocus() //First grab focus, so all the text fields are updated
+        CuraActions.setExtruderForSelection(extruder.id);
     }
 }
