@@ -321,9 +321,9 @@
 
         "jobspecs_line": [2.0, 2.0],
 
-        "toggle_button_text_anchoring_margin": [1.0, 1.0],
-        "toggle_button_radius": [1.0, 1.0],
-        "toggle_button_background_implicit_size": [2.0, 1.0],
-        "toggle_button_knob_implicit_size": [1.0, 1.0]
+        "toggle_switch_text_anchoring_margin": [1.0, 1.0],
+        "toggle_switch_radius": [1.0, 1.0],
+        "toggle_switch_background_implicit_size": [2.0, 1.0],
+        "toggle_switch_knob_implicit_size": [1.0, 1.0]
     }
 }

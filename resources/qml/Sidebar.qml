@@ -412,7 +412,7 @@ Rectangle
         {
             id: toggleLeftText
             anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
+            anchors.rightMargin: UM.Theme.getSize("toggle_switch_text_anchoring_margin").width
             anchors.verticalCenter: parent.verticalCenter
             text: ""
             color: UM.Theme.getColor("toggle_active_text")
@@ -438,7 +438,7 @@ Rectangle
             id: modeToggleSwitch
             checked: false
             anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
+            anchors.rightMargin: UM.Theme.getSize("toggle_switch_text_anchoring_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
             onClicked:
@@ -457,7 +457,7 @@ Rectangle
                 UM.Preferences.setValue("cura/active_mode", index);
             }
 
-            style: UM.Theme.styles.toggle_button
+            style: UM.Theme.styles.toggle_switch
         }
 
         Text

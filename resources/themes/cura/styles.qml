@@ -8,12 +8,12 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
-    property Component toggle_button: Component {
+    property Component toggle_switch: Component {
         SwitchStyle {
             groove: Rectangle {
-                implicitWidth: UM.Theme.getSize("toggle_button_background_implicit_size").width
-                implicitHeight: UM.Theme.getSize("toggle_button_background_implicit_size").height
-                radius: UM.Theme.getSize("toggle_button_radius").width
+                implicitWidth: UM.Theme.getSize("toggle_switch_background_implicit_size").width
+                implicitHeight: UM.Theme.getSize("toggle_switch_background_implicit_size").height
+                radius: UM.Theme.getSize("toggle_switch_radius").width
                 border.color: {
                     if (control.pressed || (control.checkable && control.checked)) {
                         return UM.Theme.getColor("sidebar_header_active");
@@ -28,9 +28,9 @@ QtObject {
             }
 
             handle: Rectangle {
-                implicitWidth: UM.Theme.getSize("toggle_button_knob_implicit_size").width
-                implicitHeight: UM.Theme.getSize("toggle_button_knob_implicit_size").height
-                radius: UM.Theme.getSize("toggle_button_radius").width
+                implicitWidth: UM.Theme.getSize("toggle_switch_knob_implicit_size").width
+                implicitHeight: UM.Theme.getSize("toggle_switch_knob_implicit_size").height
+                radius: UM.Theme.getSize("toggle_switch_radius").width
 
                 color: {
                     if (control.pressed || (control.checkable && control.checked)) {
