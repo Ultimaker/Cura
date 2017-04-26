@@ -23,7 +23,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
  qml-module-qt-labs-folderlistmodel,
  qml-module-qt-labs-settings,
  fonts-open-sans,
- python3-uranium (>=2.5.0), uranium-plugins (>=2.5.0), cura-engine (>=1:2.5.0)
+ python3-uranium (>=2.5.0), uranium-plugins (>=2.5.0), cura-engine (>=1:2.5.0),
+ python3-savitar (>=2.5)
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
 Description: 3D printing application
