@@ -4,10 +4,10 @@
 export DH_VERBOSE = 1
 include /usr/share/dpkg/pkg-info.mk
 
-DEB_URANIUM_SCRIPTS_DIR ?= /usr/share/uranium/scripts/
+DEB_URANIUM_DIR ?= /usr/share/uranium
 
 %:
 	dh $@ --buildsystem=cmake --with python3 --parallel
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DURANIUM_SCRIPTS_DIR=$(DEB_URANIUM_SCRIPTS_DIR) -DCURA_VERSION=$(DEB_VERSION_UPSTREAM)
+	dh_auto_configure -- -DURANIUM_DIR=$(DEB_URANIUM_DIR) -DCURA_VERSION=$(DEB_VERSION_UPSTREAM)

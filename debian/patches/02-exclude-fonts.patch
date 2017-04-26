@@ -5,7 +5,7 @@ Description: Fonts should be packaged separately.
   A dependency on fonts-open-sans was added to debian/control.
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -30,7 +30,8 @@
+@@ -34,7 +34,8 @@
  find_package(PythonInterp 3.5.0 REQUIRED)
  
  install(DIRECTORY resources
