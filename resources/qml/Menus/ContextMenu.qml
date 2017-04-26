@@ -35,7 +35,7 @@ Menu
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
-        onObjectAdded: base.insertItem( index, object)
+        onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
     }
 
