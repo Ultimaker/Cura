@@ -69,10 +69,11 @@ Item
             }
         }
 
-        Item { height: UM.Theme.getSize("default_margin").height; width: 1; visible: machineExtruderCount.properties.value > 1 }
+        Item { height: UM.Theme.getSize("default_margin").height; width: 1; visible: extruders.count > 0 }
 
         Repeater
         {
+            id: extruders
             model: Cura.ExtrudersModel { id: extrudersModel }
             ExtruderButton { extruder: model }
         }
@@ -156,15 +157,4 @@ Item
 
         visible: toolHint.text != "";
     }
-
-    UM.SettingPropertyProvider
-    {
-        id: machineExtruderCount
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "machine_extruder_count"
-        watchedProperties: [ "value" ]
-    }
-
-    UM.I18nCatalog { id: catalog; name: "cura" }
 }
