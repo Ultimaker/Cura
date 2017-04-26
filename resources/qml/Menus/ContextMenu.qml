@@ -35,12 +35,12 @@ Menu
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
-        onObjectAdded: base.insertItem(base.findItemIndex(extruderHeader) + index, object)
+        onObjectAdded: base.insertItem( index, object)
         onObjectRemoved: base.removeItem(object)
     }
 
     // Global actions
-    MenuSeparator { }
+    MenuSeparator {}
     MenuItem { action: Cura.Actions.selectAll; }
     MenuItem { action: Cura.Actions.arrangeAll; }
     MenuItem { action: Cura.Actions.deleteAll; }
@@ -49,7 +49,7 @@ Menu
     MenuItem { action: Cura.Actions.resetAll; }
 
     // Group actions
-    MenuSeparator { }
+    MenuSeparator {}
     MenuItem { action: Cura.Actions.groupObjects; }
     MenuItem { action: Cura.Actions.mergeObjects; }
     MenuItem { action: Cura.Actions.unGroupObjects; }
