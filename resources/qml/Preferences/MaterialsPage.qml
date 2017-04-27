@@ -136,6 +136,23 @@ UM.ManagementPage
         },
         Button
         {
+            text: catalog.i18nc("@action:button", "Create")
+            iconName: "list-add"
+            onClicked:
+            {
+                var material_id = Cura.ContainerManager.createMaterial()
+                if(material_id == "")
+                {
+                    return
+                }
+                if(Cura.MachineManager.hasMaterials)
+                {
+                    Cura.MachineManager.setActiveMaterial(material_id)
+                }
+            }
+        },
+        Button
+        {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add";
             enabled: base.currentItem != null

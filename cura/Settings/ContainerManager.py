@@ -3,6 +3,7 @@
 
 import os.path
 import urllib
+import uuid
 from typing import Dict, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
@@ -692,6 +693,33 @@ class ContainerManager(QObject):
         with open(containers[0].getPath(), encoding="utf-8") as f:
             duplicated_container.deserialize(f.read())
         duplicated_container.setDirty(True)
+        self._container_registry.addContainer(duplicated_container)
+
+    @pyqtSlot(result = str)
+    def createMaterial(self) -> str:
+        # Ensure all settings are saved.
+        Application.getInstance().saveSettings()
+
+        containers = self._container_registry.findInstanceContainers(id="generic_pla")
+        if not containers:
+            Logger.log("d", "Unable to creata a new material by cloning generic_pla, because it doesn't exist.")
+            return ""
+
+        # Create a new ID & container to hold the data.
+        new_id = self._container_registry.uniqueName("custom_material")
+        container_type = type(containers[0])  # Could be either a XMLMaterialProfile or a InstanceContainer
+        duplicated_container = container_type(new_id)
+
+        # Instead of duplicating we load the data from the basefile again.
+        # This ensures that the inheritance goes well and all "cut up" subclasses of the xmlMaterial profile
+        # are also correctly created.
+        with open(containers[0].getPath(), encoding="utf-8") as f:
+            duplicated_container.deserialize(f.read())
+
+        duplicated_container.setMetaDataEntry("base_file", new_id)
+        duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
+        duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
+
         self._container_registry.addContainer(duplicated_container)
 
     ##  Get the singleton instance for this class.
