@@ -9,8 +9,8 @@ Standards-Version: 3.9.8
 X-Python3-Version: >= 3.4
 Section: misc
 Homepage: https://github.com/Ultimaker/Cura
-Vcs-Git: https://github.com/onitake/Cura
-Vcs-Browser: https://github.com/onitake/Cura
+Vcs-Browser: https://anonscm.debian.org/cgit/3dprinter/packages/cura.git/
+Vcs-Git: https://anonscm.debian.org/git/3dprinter/packages/cura.git
 
 Package: cura
 Architecture: all
