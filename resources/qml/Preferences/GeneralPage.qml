@@ -25,6 +25,17 @@ UM.PreferencesPage
         }
     }
 
+    function setDefaultTheme(defaultThemeCode)
+    {
+        for(var i = 0; i < themeList.count; i++)
+        {
+            if (themeComboBox.model.get(i).code == defaultThemeCode)
+            {
+                themeComboBox.currentIndex = i
+            }
+        }
+    }
+
     function setDefaultDiscardOrKeepProfile(code)
     {
         for (var i = 0; i < choiceOnProfileOverrideDropDownButton.model.count; i++)
@@ -54,6 +65,10 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/language")
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
+
+        UM.Preferences.resetPreference("general/theme")
+        var defaultTheme = UM.Preferences.getValue("general/theme")
+        setDefaultTheme(defaultTheme)
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
