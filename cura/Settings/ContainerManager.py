@@ -695,6 +695,7 @@ class ContainerManager(QObject):
         duplicated_container.setDirty(True)
         self._container_registry.addContainer(duplicated_container)
 
+    #  Create a new material by cloning Generic PLA and setting the GUID to something unqiue
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
         # Ensure all settings are saved.
@@ -702,7 +703,7 @@ class ContainerManager(QObject):
 
         containers = self._container_registry.findInstanceContainers(id="generic_pla")
         if not containers:
-            Logger.log("d", "Unable to creata a new material by cloning generic_pla, because it doesn't exist.")
+            Logger.log("d", "Unable to create a new material by cloning generic_pla, because it doesn't exist.")
             return ""
 
         # Create a new ID & container to hold the data.
@@ -721,6 +722,39 @@ class ContainerManager(QObject):
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
+
+    @pyqtSlot(str, result = "QStringList")
+    def getLinkedMaterials(self, material_id: str):
+        containers = self._container_registry.findInstanceContainers(id=material_id)
+        if not containers:
+            Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't exist.", material_id)
+            return []
+
+        material_container = containers[0]
+        material_guid = material_container.getMetaDataEntry("GUID", "")
+        if not material_guid:
+            Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't have a GUID.", material_id)
+            return []
+
+        containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_guid)
+        linked_material_names = []
+        for container in containers:
+            if container.getId() == material_id or container.getMetaDataEntry("base_file") != container.getId():
+                continue
+
+            linked_material_names.append(container.getName())
+        return linked_material_names
+
+    @pyqtSlot(str)
+    def unlinkMaterial(self, material_id: str):
+        containers = self._container_registry.findInstanceContainers(id=material_id)
+        if not containers:
+            Logger.log("d", "Unable to make the material with id %s unique, because it doesn't exist.", material_id)
+            return ""
+
+        containers[0].setMetaDataEntry("base_file", material_id)
+        containers[0].setMetaDataEntry("GUID", str(uuid.uuid4()))
+
 
     ##  Get the singleton instance for this class.
     @classmethod

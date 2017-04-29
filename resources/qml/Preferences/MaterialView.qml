@@ -24,6 +24,16 @@ TabView
     property double spoolLength: calculateSpoolLength()
     property real costPerMeter: calculateCostPerMeter()
 
+    property string linkedMaterialNames:
+    {
+        if(!base.containerId || !base.editingEnabled)
+        {
+            return ""
+        }
+        var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.containerId);
+        return linkedMaterials.join(", ");
+    }
+
     Tab
     {
         title: catalog.i18nc("@title","Information")
@@ -194,6 +204,23 @@ TabView
                     text: "~ %1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
+                }
+
+                Item { width: parent.width; height: UM.Theme.getSize("default_margin").height; visible: unlinkMaterialButton.visible }
+                Label
+                {
+                    width: parent.width
+                    verticalAlignment: Qt.AlignVCenter
+                    text: catalog.i18nc("@label", "This material is linked to %1 and shares some of its properties.").arg(base.linkedMaterialNames)
+                    wrapMode: Text.WordWrap
+                    visible: unlinkMaterialButton.visible
+                }
+                Button
+                {
+                    id: unlinkMaterialButton
+                    text: catalog.i18nc("@label", "Unlink Material")
+                    visible: base.linkedMaterialNames != ""
+                    onClicked: Cura.ContainerManager.unlinkMaterial(base.containerId)
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
