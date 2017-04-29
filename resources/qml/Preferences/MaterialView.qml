@@ -24,8 +24,13 @@ TabView
     property double spoolLength: calculateSpoolLength()
     property real costPerMeter: calculateCostPerMeter()
 
+    property bool reevaluateLinkedMaterials: false
     property string linkedMaterialNames:
     {
+        if (reevaluateLinkedMaterials)
+        {
+            reevaluateLinkedMaterials = false;
+        }
         if(!base.containerId || !base.editingEnabled)
         {
             return ""
@@ -220,7 +225,11 @@ TabView
                     id: unlinkMaterialButton
                     text: catalog.i18nc("@label", "Unlink Material")
                     visible: base.linkedMaterialNames != ""
-                    onClicked: Cura.ContainerManager.unlinkMaterial(base.containerId)
+                    onClicked:
+                    {
+                        Cura.ContainerManager.unlinkMaterial(base.containerId)
+                        base.reevaluateLinkedMaterials = true
+                    }
                 }
 
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
