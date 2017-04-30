@@ -43,62 +43,62 @@ TabView
     {
         title: catalog.i18nc("@title","Information")
 
-        anchors
-        {
-            leftMargin: UM.Theme.getSize("default_margin").width
-            topMargin: UM.Theme.getSize("default_margin").height
-            bottomMargin: UM.Theme.getSize("default_margin").height
-            rightMargin: 0
-        }
+        anchors.margins: UM.Theme.getSize("default_margin").width
 
         ScrollView
         {
+            id: scrollView
             anchors.fill: parent
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
             flickableItem.flickableDirection: Flickable.VerticalFlick
+            frameVisible: true
+
+            property real columnWidth: Math.floor(viewport.width * 0.5) - UM.Theme.getSize("default_margin").width
 
             Flow
             {
                 id: containerGrid
 
-                width: base.width;
+                x: UM.Theme.getSize("default_margin").width
+                y: UM.Theme.getSize("default_lining").height
 
-                property real rowHeight: textField.height;
+                width: base.width
+                property real rowHeight: textField.height + UM.Theme.getSize("default_lining").height
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
                 ReadOnlyTextField
                 {
                     id: displayNameTextField;
-                    width: base.secondColumnWidth;
+                    width: scrollView.columnWidth;
                     text: properties.name;
                     readOnly: !base.editingEnabled;
                     onEditingFinished: base.setName(properties.name, text)
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
                 ReadOnlyTextField
                 {
                     id: textField;
-                    width: base.secondColumnWidth;
+                    width: scrollView.columnWidth;
                     text: properties.supplier;
                     readOnly: !base.editingEnabled;
                     onEditingFinished: base.setMetaDataEntry("brand", properties.supplier, text)
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
                 ReadOnlyTextField
                 {
-                    width: base.secondColumnWidth;
+                    width: scrollView.columnWidth;
                     text: properties.material_type;
                     readOnly: !base.editingEnabled;
                     onEditingFinished: base.setMetaDataEntry("material", properties.material_type, text)
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
 
                 Row
                 {
-                    width: base.secondColumnWidth;
+                    width: scrollView.columnWidth;
                     height:  parent.rowHeight;
                     spacing: UM.Theme.getSize("default_margin").width/2
 
@@ -130,11 +130,11 @@ TabView
 
                 Label { width: parent.width; height: parent.rowHeight; font.bold: true; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Properties") }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
                 ReadOnlySpinBox
                 {
                     id: densitySpinBox
-                    width: base.secondColumnWidth
+                    width: scrollView.columnWidth
                     value: properties.density
                     decimals: 2
                     suffix: " g/cm³"
@@ -145,11 +145,11 @@ TabView
                     onValueChanged: updateCostPerMeter()
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
                 ReadOnlySpinBox
                 {
                     id: diameterSpinBox
-                    width: base.secondColumnWidth
+                    width: scrollView.columnWidth
                     value: properties.diameter
                     decimals: 2
                     suffix: " mm"
@@ -160,11 +160,11 @@ TabView
                     onValueChanged: updateCostPerMeter()
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
                 SpinBox
                 {
                     id: spoolCostSpinBox
-                    width: base.secondColumnWidth
+                    width: scrollView.columnWidth
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
                     prefix: base.currency + " "
                     decimals: 2
@@ -176,11 +176,11 @@ TabView
                     }
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
                 SpinBox
                 {
                     id: spoolWeightSpinBox
-                    width: base.secondColumnWidth
+                    width: scrollView.columnWidth
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_weight")
                     suffix: " g"
                     stepSize: 100
@@ -193,19 +193,19 @@ TabView
                     }
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
                 Label
                 {
-                    width: base.secondColumnWidth
+                    width: scrollView.columnWidth
                     text: "~ %1 m".arg(Math.round(base.spoolLength))
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
                 }
 
-                Label { width: base.firstColumnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter") }
+                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter") }
                 Label
                 {
-                    width: base.secondColumnWidth
+                    width: scrollView.columnWidth
                     text: "~ %1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.rowHeight
@@ -214,7 +214,7 @@ TabView
                 Item { width: parent.width; height: UM.Theme.getSize("default_margin").height; visible: unlinkMaterialButton.visible }
                 Label
                 {
-                    width: parent.width
+                    width: 2 * scrollView.columnWidth
                     verticalAlignment: Qt.AlignVCenter
                     text: catalog.i18nc("@label", "This material is linked to %1 and shares some of its properties.").arg(base.linkedMaterialNames)
                     wrapMode: Text.WordWrap
@@ -239,7 +239,7 @@ TabView
                 ReadOnlyTextArea
                 {
                     text: properties.description;
-                    width: base.firstColumnWidth + base.secondColumnWidth
+                    width: 2 * scrollView.columnWidth
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
@@ -252,13 +252,15 @@ TabView
                 ReadOnlyTextArea
                 {
                     text: properties.adhesion_info;
-                    width: base.firstColumnWidth + base.secondColumnWidth
+                    width: 2 * scrollView.columnWidth
                     wrapMode: Text.WordWrap
 
                     readOnly: !base.editingEnabled;
 
                     onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
                 }
+
+                Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
             }
 
             function updateCostPerMeter()
@@ -304,6 +306,7 @@ TabView
                         width: base.firstColumnWidth;
                         height: spinBox.height
                         text: model.label
+                        elide: Text.ElideRight
                     }
                     ReadOnlySpinBox
                     {
