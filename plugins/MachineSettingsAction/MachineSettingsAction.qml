@@ -384,6 +384,18 @@ Cura.MachineAction
 
                                 Label
                                 {
+                                    text: catalog.i18nc("@label", "Material Diameter")
+                                }
+                                Loader
+                                {
+                                    id: materialDiameterField
+                                    sourceComponent: numericTextFieldWithUnit
+                                    property var propertyProvider: materialDiameterProvider
+                                    property string unit: catalog.i18nc("@label", "mm")
+                                    property bool forceUpdateOnChange: false
+                                }
+                                Label
+                                {
                                     text: catalog.i18nc("@label", "Nozzle size")
                                     visible: nozzleSizeField.visible
                                 }
@@ -750,6 +762,16 @@ Cura.MachineAction
         containerStackId: Cura.MachineManager.activeMachineId
         key: "machine_gcode_flavor"
         watchedProperties: [ "value", "options" ]
+        storeIndex: manager.containerIndex
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: materialDiameterProvider
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "material_diameter"
+        watchedProperties: [ "value" ]
         storeIndex: manager.containerIndex
     }
 
