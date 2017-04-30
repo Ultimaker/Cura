@@ -11,16 +11,22 @@ QtObject {
     property Component toggle_button: Component {
         SwitchStyle {
             groove: Rectangle {
-                implicitWidth: UM.Theme.getSize("toggle_button_background_implicit_size").width
-                implicitHeight: UM.Theme.getSize("toggle_button_background_implicit_size").height
-                radius: UM.Theme.getSize("toggle_button_radius").width
-                border.color: {
-                    if (control.pressed || (control.checkable && control.checked)) {
-                        return UM.Theme.getColor("sidebar_header_active");
-                    } else if(control.hovered) {
-                        return UM.Theme.getColor("sidebar_header_hover");
+                implicitWidth: UM.Theme.getSize("toggle_button").width
+                implicitHeight: UM.Theme.getSize("toggle_button").height
+                radius: implicitHeight / 2
+                color: {
+                    if(control.hovered || control._hovered) {
+                        return UM.Theme.getColor("toggle_button_hover");
                     } else {
-                        return UM.Theme.getColor("sidebar_header_bar");
+                        return UM.Theme.getColor("toggle_button");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+                border.color: {
+                    if(control.hovered || control._hovered) {
+                        return UM.Theme.getColor("toggle_button_border_hover");
+                    } else {
+                        return UM.Theme.getColor("toggle_button_border");
                     }
                 }
                 Behavior on border.color { ColorAnimation { duration: 50; } }
@@ -28,9 +34,9 @@ QtObject {
             }
 
             handle: Rectangle {
-                implicitWidth: UM.Theme.getSize("toggle_button_knob_implicit_size").width
-                implicitHeight: UM.Theme.getSize("toggle_button_knob_implicit_size").height
-                radius: UM.Theme.getSize("toggle_button_radius").width
+                implicitWidth: implicitHeight
+                implicitHeight: UM.Theme.getSize("toggle_button").height
+                radius: implicitHeight / 2
 
                 color: {
                     if (control.pressed || (control.checkable && control.checked)) {
