@@ -240,6 +240,8 @@ Item
         CheckBox
         {
             id: enableSupportCheckBox
+            property alias _hovered: enableSupportMouseArea.containsMouse
+
             anchors.top: parent.top
             anchors.left: enableSupportLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
