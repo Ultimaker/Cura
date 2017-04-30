@@ -182,7 +182,7 @@
         "toggle_button_handle": [24, 41, 77, 255],
         "toggle_button_text": [24, 41, 77, 255],
         "toggle_button_text_hover": [24, 41, 77, 255],
-        "toggle_button_text_selected": [24, 41, 77, 255],
+        "toggle_button_text_checked": [12, 169, 227, 255],
 
         "tooltip": [12, 169, 227, 255],
         "tooltip_text": [255, 255, 255, 255],

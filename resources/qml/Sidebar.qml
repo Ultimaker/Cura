@@ -408,18 +408,34 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Text
+        Label
         {
             id: toggleLeftText
             anchors.right: modeToggleSwitch.left
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             text: ""
-            color: UM.Theme.getColor("toggle_active_text")
+            color:
+            {
+                if(toggleLeftTextMouseArea.containsMouse)
+                {
+                    return UM.Theme.getColor("toggle_button_text_hover");
+                }
+                else if(!modeToggleSwitch.checked)
+                {
+                    return UM.Theme.getColor("toggle_button_text_checked");
+                }
+                else
+                {
+                    return UM.Theme.getColor("toggle_button_text");
+                }
+            }
             font: UM.Theme.getFont("default")
 
             MouseArea
             {
+                id: toggleLeftTextMouseArea
+                hoverEnabled: true
                 anchors.fill: parent
                 onClicked:
                 {
@@ -441,11 +457,11 @@ Rectangle
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
-            property alias _hovered: enableSupportMouseArea.containsMouse
+            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
 
             MouseArea
             {
-                id: enableSupportMouseArea
+                id: modeToggleSwitchMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.NoButton
@@ -470,17 +486,33 @@ Rectangle
             style: UM.Theme.styles.toggle_button
         }
 
-        Text
+        Label
         {
             id: toggleRightText
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             text: ""
-            color: UM.Theme.getColor("toggle_active_text")
+            color:
+            {
+                if(toggleRightTextMouseArea.containsMouse)
+                {
+                    return UM.Theme.getColor("toggle_button_text_hover");
+                }
+                else if(modeToggleSwitch.checked)
+                {
+                    return UM.Theme.getColor("toggle_button_text_checked");
+                }
+                else
+                {
+                    return UM.Theme.getColor("toggle_button_text");
+                }
+            }
             font: UM.Theme.getFont("default")
 
             MouseArea
             {
+                id: toggleRightTextMouseArea
+                hoverEnabled: true
                 anchors.fill: parent
                 onClicked:
                 {
