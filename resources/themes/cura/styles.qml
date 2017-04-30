@@ -8,25 +8,25 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
-    property Component toggle_button: Component {
+    property Component mode_switch: Component {
         SwitchStyle {
             groove: Rectangle {
-                implicitWidth: UM.Theme.getSize("toggle_button").width
-                implicitHeight: UM.Theme.getSize("toggle_button").height
+                implicitWidth: UM.Theme.getSize("mode_switch").width
+                implicitHeight: UM.Theme.getSize("mode_switch").height
                 radius: implicitHeight / 2
                 color: {
                     if(control.hovered || control._hovered) {
-                        return UM.Theme.getColor("toggle_button_hover");
+                        return UM.Theme.getColor("mode_switch_hover");
                     } else {
-                        return UM.Theme.getColor("toggle_button");
+                        return UM.Theme.getColor("mode_switch");
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
                 border.color: {
                     if(control.hovered || control._hovered) {
-                        return UM.Theme.getColor("toggle_button_border_hover");
+                        return UM.Theme.getColor("mode_switch_border_hover");
                     } else {
-                        return UM.Theme.getColor("toggle_button_border");
+                        return UM.Theme.getColor("mode_switch_border");
                     }
                 }
                 Behavior on border.color { ColorAnimation { duration: 50; } }
@@ -35,7 +35,7 @@ QtObject {
 
             handle: Rectangle {
                 implicitWidth: implicitHeight
-                implicitHeight: UM.Theme.getSize("toggle_button").height
+                implicitHeight: UM.Theme.getSize("mode_switch").height
                 radius: implicitHeight / 2
 
                 color: {

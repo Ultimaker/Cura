@@ -419,15 +419,15 @@ Rectangle
             {
                 if(toggleLeftTextMouseArea.containsMouse)
                 {
-                    return UM.Theme.getColor("toggle_button_text_hover");
+                    return UM.Theme.getColor("mode_switch_text_hover");
                 }
                 else if(!modeToggleSwitch.checked)
                 {
-                    return UM.Theme.getColor("toggle_button_text_checked");
+                    return UM.Theme.getColor("mode_switch_text_checked");
                 }
                 else
                 {
-                    return UM.Theme.getColor("toggle_button_text");
+                    return UM.Theme.getColor("mode_switch_text");
                 }
             }
             font: UM.Theme.getFont("default")
@@ -483,7 +483,7 @@ Rectangle
                 UM.Preferences.setValue("cura/active_mode", index);
             }
 
-            style: UM.Theme.styles.toggle_button
+            style: UM.Theme.styles.mode_switch
         }
 
         Label
@@ -496,15 +496,15 @@ Rectangle
             {
                 if(toggleRightTextMouseArea.containsMouse)
                 {
-                    return UM.Theme.getColor("toggle_button_text_hover");
+                    return UM.Theme.getColor("mode_switch_text_hover");
                 }
                 else if(modeToggleSwitch.checked)
                 {
-                    return UM.Theme.getColor("toggle_button_text_checked");
+                    return UM.Theme.getColor("mode_switch_text_checked");
                 }
                 else
                 {
-                    return UM.Theme.getColor("toggle_button_text");
+                    return UM.Theme.getColor("mode_switch_text");
                 }
             }
             font: UM.Theme.getFont("default")
