@@ -198,7 +198,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._connect_thread.start()
 
     def isConnected(self):
-        return self._connection_state != ConnectionState.closed
+        return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
 
     ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
@@ -376,7 +376,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     self.setConnectionState(ConnectionState.closed)
                     return
 
-                if b"T:" in line:
+                if b"T:" in line or b"ok" in line:
                     Logger.log("d", "Correct response for auto-baudrate detection received.")
                     self._serial.timeout = 0.5
                     sucesfull_responses += 1
