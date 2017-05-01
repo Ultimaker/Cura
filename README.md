@@ -44,10 +44,7 @@ Please checkout [cura-build](https://github.com/Ultimaker/cura-build)
 
 Third party plugins
 -------------
-* [Print Cost Calculator](https://github.com/nallath/PrintCostCalculator): Calculates weight and monetary cost of your print.
 * [Post Processing Plugin](https://github.com/nallath/PostProcessingPlugin): Allows for post-processing scripts to run on g-code.
-* [Barbarian Plugin](https://github.com/nallath/BarbarianPlugin): Simple scale tool for imperial to metric.
-* [X3G Writer](https://github.com/Ghostkeeper/X3GWriter): Adds support for exporting X3G files.
 * [Auto orientation](https://github.com/nallath/CuraOrientationPlugin): Calculate the optimal orientation for a model.
 * [OctoPrint Plugin](https://github.com/fieldofview/OctoPrintPlugin): Send printjobs directly to OctoPrint and monitor their progress in Cura.
 * [WirelessPrinting Plugin](https://github.com/probonopd/WirelessPrinting): Print wirelessly from Cura to your 3D printer connected to an ESP8266 module.
