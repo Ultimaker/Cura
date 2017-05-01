@@ -33,7 +33,7 @@ class DiscoverOctoPrintAction(MachineAction):
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:
-            self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("OctoPrintPlugin")
+            self._network_plugin = Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("OctoPrintConnection")
             self._network_plugin.addInstanceSignal.connect(self._onInstanceDiscovery)
             self._network_plugin.removeInstanceSignal.connect(self._onInstanceDiscovery)
             self._network_plugin.instanceListChanged.connect(self._onInstanceDiscovery)
@@ -141,7 +141,7 @@ class DiscoverOctoPrintAction(MachineAction):
     def _createAdditionalComponentsView(self):
         Logger.log("d", "Creating additional ui components for OctoPrint-connected printers.")
 
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("OctoPrintPlugin"), "OctoPrintComponents.qml"))
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("OctoPrintConnection"), "OctoPrintComponents.qml"))
         self._additional_component = QQmlComponent(Application.getInstance()._engine, path)
 
         # We need access to engine (although technically we can't)
