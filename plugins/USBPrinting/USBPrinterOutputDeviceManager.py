@@ -107,7 +107,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
             if key == global_container_stack.getMetaDataEntry("serial_port") or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
                 self._usb_output_devices[key].setSerialSpeed(global_container_stack.getMetaDataEntry("serial_speed", "AUTO"))
                 self._usb_output_devices[key].connectionStateChanged.connect(self._onConnectionStateChanged)
-                if parseBool(global_container_stack.getMetaDataEntry("serial_auto_coonect")) or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
+                if parseBool(global_container_stack.getMetaDataEntry("serial_auto_connect")) or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
                     self._usb_output_devices[key].connect()
             else:
                 if self._usb_output_devices[key].isConnected():
@@ -241,7 +241,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         for port, device in self._usb_output_devices.items():
             if port not in self._serial_port_list:
                 ports_changed = True
-                self.removeUSBOutputDeviceSignal.emit(serial_port)  # Hack to ensure this happens in main thread
+                self.removeUSBOutputDeviceSignal.emit(port)  # Hack to ensure this happens in main thread
                 devices_to_remove.append(port)
 
         for port in devices_to_remove:
