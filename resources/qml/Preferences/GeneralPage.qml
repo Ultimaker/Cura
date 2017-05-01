@@ -277,19 +277,6 @@ UM.PreferencesPage
 	            font.italic: true
 	        }
 
-	        Item
-	        {
-	            //: Spacer
-	            height: UM.Theme.getSize("default_margin").height
-	            width: UM.Theme.getSize("default_margin").width
-	        }
-
-	        Label
-	        {
-	            font.bold: true
-	            text: catalog.i18nc("@label","Viewport behavior")
-	        }
-
             Item
             {
                 //: Spacer
@@ -313,7 +300,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Slice automatically");
                 }
             }
-
+            
             Item
             {
                 //: Spacer
