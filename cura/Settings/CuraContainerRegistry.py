@@ -171,6 +171,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 name_seed = os.path.splitext(os.path.basename(file_name))[0]
                 new_name = self.uniqueName(name_seed)
                 if type(profile_or_list) is not list:
+                    new_name = self.uniqueName(name_seed)
                     profile = profile_or_list
                     self._configureProfile(profile, name_seed, new_name)
                     return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
