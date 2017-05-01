@@ -90,9 +90,9 @@ Cura.MachineAction
                 }
                 onActivated:
                 {
-                    if(!populatingModel && model[index])
+                    if(!populatingModel && model.get(index))
                     {
-                        manager.setSerialPort(model[index].key);
+                        manager.setSerialPort(model.get(index).key);
                     }
                 }
 
@@ -137,14 +137,16 @@ Cura.MachineAction
                 visible: connectionPortModel.get(connectionPort.currentIndex).key != "NONE"
                 currentIndex:
                 {
-                    var index = model.indexOf(manager.serialRate);
-                    if(index == -1)
+                    for(var index in model)
                     {
-                        index = 0;
+                        if(model[index].key == manager.serialRate)
+                        {
+                            return index;
+                        }
                     }
-                    return index
+                    return 0; // default to "AUTO"
                 }
-                onActivated: manager.setSerialRate(model[index])
+                onActivated: manager.setSerialRate(model[index].key)
             }
             Label
             {
