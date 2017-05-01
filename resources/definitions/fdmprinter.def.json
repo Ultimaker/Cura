@@ -821,6 +821,45 @@
             "type": "category",
             "children":
             {
+                "wall_extruder_nr":
+                {
+                    "label": "Wall Extruder",
+                    "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
+                    "type": "extruder",
+                    "default_value": "0",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "children":
+                    {
+                        "wall_0_extruder_nr":
+                        {
+                            "label": "Outer Wall Extruder",
+                            "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "wall_extruder_nr",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true
+                        },
+                        "wall_x_extruder_nr":
+                        {
+                            "label": "Inner Walls Extruder",
+                            "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
+                            "type": "extruder",
+                            "default_value": "0",
+                            "value": "wall_extruder_nr",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true
+                        }
+                    }
+                },
                 "wall_thickness":
                 {
                     "label": "Wall Thickness",
@@ -859,6 +898,18 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": true
+                },
+                "top_bottom_extruder_nr":
+                {
+                    "label": "Top/Bottom Extruder",
+                    "description": "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion.",
+                    "type": "extruder",
+                    "default_value": "0",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true
                 },
                 "top_bottom_thickness":
                 {
@@ -1101,6 +1152,18 @@
             "type": "category",
             "children":
             {
+                "infill_extruder_nr":
+                {
+                    "label": "Infill Extruder",
+                    "description": "The extruder train used for printing infill. This is used in multi-extrusion.",
+                    "type": "extruder",
+                    "default_value": "0",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true
+                },
                 "infill_sparse_density":
                 {
                     "label": "Infill Density",
