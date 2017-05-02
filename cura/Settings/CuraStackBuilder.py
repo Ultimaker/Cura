@@ -10,6 +10,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 from .CuraContainerStack import CuraContainerStack
+from typing import Optional
+
 
 ##  Contains helper functions to create new machines.
 class CuraStackBuilder:
@@ -20,7 +22,7 @@ class CuraStackBuilder:
     #
     #   \return The new global stack or None if an error occurred.
     @classmethod
-    def createMachine(cls, name: str, definition_id: str) -> GlobalStack:
+    def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
         registry = ContainerRegistry.getInstance()
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
