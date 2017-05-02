@@ -247,8 +247,11 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         start_gcode = settings["machine_start_gcode"]
-        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
-        settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
+        #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
+        bed_temperature_settings = {"material_bed_temperature", "material_bed_temperature_layer_0"}
+        settings["material_bed_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in bed_temperature_settings))
+        print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
+        settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
