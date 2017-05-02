@@ -25,6 +25,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
  fonts-open-sans,
  python3-uranium (>=2.5.0), uranium-plugins (>=2.5.0), cura-engine (>=1:2.5.0),
  python3-savitar (>=2.5)
+Recommends: python3-zeroconf
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
 Description: 3D printing application
