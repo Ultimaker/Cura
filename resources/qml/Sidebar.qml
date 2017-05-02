@@ -408,18 +408,34 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Text
+        Label
         {
             id: toggleLeftText
             anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             text: ""
-            color: UM.Theme.getColor("toggle_active_text")
+            color:
+            {
+                if(toggleLeftTextMouseArea.containsMouse)
+                {
+                    return UM.Theme.getColor("mode_switch_text_hover");
+                }
+                else if(!modeToggleSwitch.checked)
+                {
+                    return UM.Theme.getColor("mode_switch_text_checked");
+                }
+                else
+                {
+                    return UM.Theme.getColor("mode_switch_text");
+                }
+            }
             font: UM.Theme.getFont("default")
 
             MouseArea
             {
+                id: toggleLeftTextMouseArea
+                hoverEnabled: true
                 anchors.fill: parent
                 onClicked:
                 {
@@ -438,8 +454,18 @@ Rectangle
             id: modeToggleSwitch
             checked: false
             anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("toggle_button_text_anchoring_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
+
+            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
+
+            MouseArea
+            {
+                id: modeToggleSwitchMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                acceptedButtons: Qt.NoButton
+            }
 
             onClicked:
             {
@@ -457,20 +483,36 @@ Rectangle
                 UM.Preferences.setValue("cura/active_mode", index);
             }
 
-            style: UM.Theme.styles.toggle_button
+            style: UM.Theme.styles.mode_switch
         }
 
-        Text
+        Label
         {
             id: toggleRightText
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             text: ""
-            color: UM.Theme.getColor("toggle_active_text")
+            color:
+            {
+                if(toggleRightTextMouseArea.containsMouse)
+                {
+                    return UM.Theme.getColor("mode_switch_text_hover");
+                }
+                else if(modeToggleSwitch.checked)
+                {
+                    return UM.Theme.getColor("mode_switch_text_checked");
+                }
+                else
+                {
+                    return UM.Theme.getColor("mode_switch_text");
+                }
+            }
             font: UM.Theme.getFont("default")
 
             MouseArea
             {
+                id: toggleRightTextMouseArea
+                hoverEnabled: true
                 anchors.fill: parent
                 onClicked:
                 {
