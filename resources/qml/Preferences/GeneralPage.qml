@@ -25,6 +25,17 @@ UM.PreferencesPage
         }
     }
 
+    function setDefaultTheme(defaultThemeCode)
+    {
+        for(var i = 0; i < themeList.count; i++)
+        {
+            if (themeComboBox.model.get(i).code == defaultThemeCode)
+            {
+                themeComboBox.currentIndex = i
+            }
+        }
+    }
+
     function setDefaultDiscardOrKeepProfile(code)
     {
         for (var i = 0; i < choiceOnProfileOverrideDropDownButton.model.count; i++)
@@ -54,6 +65,10 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/language")
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
+
+        UM.Preferences.resetPreference("general/theme")
+        var defaultTheme = UM.Preferences.getValue("general/theme")
+        setDefaultTheme(defaultTheme)
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
@@ -95,6 +110,8 @@ UM.PreferencesPage
         width: parent.width
         height: parent.height
 
+        flickableItem.flickableDirection: Flickable.VerticalFlick;
+
         Column
         {
             //: Model used to check if a plugin exists
@@ -109,9 +126,11 @@ UM.PreferencesPage
                 text: catalog.i18nc("@label","Interface")
             }
 
-            Row
+            GridLayout
             {
-                spacing: UM.Theme.getSize("default_margin").width
+                id: interfaceGrid
+                columns: 4
+
                 Label
                 {
                     id: languageLabel
@@ -172,22 +191,75 @@ UM.PreferencesPage
                 {
                     id: currencyLabel
                     text: catalog.i18nc("@label","Currency:")
-                    anchors.verticalCenter: languageComboBox.verticalCenter
+                    anchors.verticalCenter: currencyField.verticalCenter
                 }
+
                 TextField
                 {
                     id: currencyField
                     text: UM.Preferences.getValue("cura/currency")
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
+
+                Label
+                {
+                    id: themeLabel
+                    text: catalog.i18nc("@label","Theme:")
+                    anchors.verticalCenter: themeComboBox.verticalCenter
+                }
+
+                ComboBox
+                {
+                    id: themeComboBox
+
+                    model: ListModel
+                    {
+                        id: themeList
+
+                        Component.onCompleted: {
+                            append({ text: catalog.i18nc("@item:inlistbox", "Ultimaker"), code: "cura" })
+                        }
+                    }
+
+                    currentIndex:
+                    {
+                        var code = UM.Preferences.getValue("general/theme");
+                        for(var i = 0; i < themeList.count; ++i)
+                        {
+                            if(model.get(i).code == code)
+                            {
+                                return i
+                            }
+                        }
+                    }
+                    onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
+
+                    Component.onCompleted:
+                    {
+                        // Because ListModel is stupid and does not allow using qsTr() for values.
+                        for(var i = 0; i < themeList.count; ++i)
+                        {
+                            themeList.setProperty(i, "text", catalog.i18n(themeList.get(i).text));
+                        }
+
+                        // Glorious hack time. ComboBox does not update the text properly after changing the
+                        // model. So change the indices around to force it to update.
+                        currentIndex += 1;
+                        currentIndex -= 1;
+                    }
+
+                }
             }
 
-            Label
+
+
+
+	        Label
             {
                 id: languageCaption
 
                 //: Language change warning
-                text: catalog.i18nc("@label", "You will need to restart the application for language changes to have effect.")
+                text: catalog.i18nc("@label", "You will need to restart the application for these changes to have effect.")
                 wrapMode: Text.WordWrap
                 font.italic: true
             }
@@ -209,14 +281,13 @@ UM.PreferencesPage
                 CheckBox
                 {
                     id: autoSliceCheckbox
-
                     checked: boolCheck(UM.Preferences.getValue("general/auto_slice"))
                     onClicked: UM.Preferences.setValue("general/auto_slice", checked)
 
                     text: catalog.i18nc("@option:check","Slice automatically");
                 }
             }
-
+            
             Item
             {
                 //: Spacer
