@@ -351,7 +351,7 @@ class CuraContainerStack(ContainerStack):
 
             if type_name == "definition":
                 if not container or not isinstance(container, DefinitionContainer):
-                    definition = self.findContainer(container_type = DefinitionContainer, category = "*")
+                    definition = self.findContainer(container_type = DefinitionContainer)
                     if not definition:
                         raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self._id))
 
