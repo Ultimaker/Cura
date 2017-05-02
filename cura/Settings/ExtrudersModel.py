@@ -144,6 +144,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 items.append(item)
                 changed = True
 
+            machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
             manager = ExtruderManager.getInstance()
             for extruder in manager.getMachineExtruders(global_container_stack.getId()):
                 extruder_name = extruder.getName()
@@ -154,6 +155,9 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                     position = int(position)
                 except ValueError: #Not a proper int.
                     position = -1
+                if position >= machine_extruder_count:
+                    continue
+
                 default_color = self.defaultColors[position] if position >= 0 and position < len(self.defaultColors) else self.defaultColors[0]
                 color = material.getMetaDataEntry("color_code", default = default_color) if material else default_color
                 item = { #Construct an item with only the relevant information.

@@ -106,6 +106,7 @@ class CuraApplication(QtApplication):
         UserInstanceContainer = Resources.UserType + 6
         MachineStack = Resources.UserType + 7
         ExtruderStack = Resources.UserType + 8
+        DefinitionChangesContainer = Resources.UserType + 9
 
     Q_ENUMS(ResourceTypes)
 
@@ -151,6 +152,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
         Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+        Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
@@ -158,6 +160,7 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
@@ -413,7 +416,7 @@ class CuraApplication(QtApplication):
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
                 elif instance_type == "definition_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+                    path = Resources.getStoragePath(self.ResourceTypes.DefinitionChangesContainer, file_name)
 
                 if path:
                     instance.setPath(path)
