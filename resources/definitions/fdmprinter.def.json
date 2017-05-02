@@ -654,6 +654,7 @@
                             "value": "line_width",
                             "default_value": 0.4,
                             "type": "float",
+                            "limit_to_extruder": "wall_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -668,6 +669,7 @@
                                     "default_value": 0.4,
                                     "value": "wall_line_width",
                                     "type": "float",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
                                 "wall_line_width_x":
@@ -681,6 +683,7 @@
                                     "default_value": 0.4,
                                     "value": "wall_line_width",
                                     "type": "float",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -696,6 +699,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "infill_line_width":
@@ -710,6 +714,7 @@
                             "type": "float",
                             "value": "line_width",
                             "enabled": "infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "skirt_brim_line_width":
