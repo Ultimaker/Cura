@@ -17,6 +17,7 @@ from UM.Settings.Interfaces import ContainerInterface
 
 from . import Exceptions
 
+
 ##  Base class for Cura related stacks that want to enforce certain containers are available.
 #
 #   This class makes sure that the stack has the following containers set: user changes, quality
@@ -306,7 +307,7 @@ class CuraContainerStack(ContainerStack):
     #   Since we have a fixed order of containers in the stack and this method would modify the container
     #   ordering, we disallow this operation.
     @override(ContainerStack)
-    def removeContainer(self, index: int) -> None:
+    def removeContainer(self, index: int = 0) -> None:
         raise Exceptions.InvalidOperationError("Cannot remove a container from Global stack")
 
     ##  Overridden from ContainerStack
@@ -339,7 +340,7 @@ class CuraContainerStack(ContainerStack):
         super().deserialize(contents)
 
         new_containers = self._containers.copy()
-        while(len(new_containers) < len(_ContainerIndexes.IndexTypeMap)):
+        while len(new_containers) < len(_ContainerIndexes.IndexTypeMap):
             new_containers.append(self._empty_instance_container)
 
         # Validate and ensure the list of containers matches with what we expect
@@ -555,7 +556,7 @@ class CuraContainerStack(ContainerStack):
 
     # Helper that can be overridden to get the "machine" definition, that is, the definition that defines the machine
     # and its properties rather than, for example, the extruder. Defaults to simply returning the definition property.
-    def _getMachineDefinition(self) -> ContainerInterface:
+    def _getMachineDefinition(self) -> DefinitionContainer:
         return self.definition
 
     ##  Find the ID that should be used when searching for instance containers for a specified definition.
