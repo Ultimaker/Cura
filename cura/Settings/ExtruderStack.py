@@ -33,10 +33,7 @@ class ExtruderStack(CuraContainerStack):
     def setNextStack(self, stack: ContainerStack) -> None:
         super().setNextStack(stack)
         stack.addExtruder(self)
-        if not self.getMetaDataEntry("machine"):
-            self.addMetaDataEntry("machine", stack.id)
-        else:
-            self.setMetaDataEntry("machine", stack.id)
+        self.addMetaDataEntry("machine", stack.id)
 
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
