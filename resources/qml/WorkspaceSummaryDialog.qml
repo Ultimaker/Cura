@@ -13,13 +13,13 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
 
-    width: 550
-    minimumWidth: 550
+    width: 550 * Screen.devicePixelRatio
+    minimumWidth: 550 * Screen.devicePixelRatio
 
-    height: 350
-    minimumHeight: 350
+    height: 350 * Screen.devicePixelRatio
+    minimumHeight: 350 * Screen.devicePixelRatio
 
-    property int spacerHeight: 10
+    property int spacerHeight: 10 * Screen.devicePixelRatio
 
     property bool dontShowAgain: true
 
@@ -41,15 +41,8 @@ UM.Dialog
 
     Item
     {
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        anchors.topMargin: 20
-        anchors.bottomMargin: 20
-        anchors.leftMargin:20
-        anchors.rightMargin: 20
+        anchors.fill: parent
+        anchors.margins: 20 * Screen.devicePixelRatio
 
         UM.SettingDefinitionsModel
         {
@@ -63,8 +56,12 @@ UM.Dialog
         }
         UM.I18nCatalog
         {
-            id: catalog;
-            name: "cura";
+            id: catalog
+            name: "cura"
+        }
+        SystemPalette
+        {
+            id: palette
         }
 
         Column
@@ -75,12 +72,12 @@ UM.Dialog
             {
                 id: titleLabel
                 text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pixelSize: 22
+                font.pointSize: 18
             }
             Rectangle
             {
                 id: separator
-                color: "black"
+                color: palette.text
                 width: parent.width
                 height: 1
             }
@@ -229,6 +226,13 @@ UM.Dialog
                     width: parent.width / 3
                 }
             }
+
+            Item // Spacer
+            {
+                height: spacerHeight
+                width: height
+            }
+
             CheckBox
             {
                 id: dontShowAgainCheckbox

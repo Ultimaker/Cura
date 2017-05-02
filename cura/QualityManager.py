@@ -16,9 +16,9 @@ class QualityManager:
 
     ##  Get the singleton instance for this class.
     @classmethod
-    def getInstance(cls):
+    def getInstance(cls) -> "QualityManager":
         # Note: Explicit use of class name to prevent issues with inheritance.
-        if QualityManager.__instance is None:
+        if not QualityManager.__instance:
             QualityManager.__instance = cls()
         return QualityManager.__instance
 

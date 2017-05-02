@@ -33,7 +33,7 @@ Item
         width: base.width * .45 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        Label
+        Text
         {
             id: infillLabel
             //: Infill selection label
@@ -162,7 +162,7 @@ Item
                         }
                     }
                 }
-                Label
+                Text
                 {
                     id: infillLabel
                     font: UM.Theme.getFont("default")
@@ -225,14 +225,14 @@ Item
         anchors.right: parent.right
         height: childrenRect.height
 
-        Label
+        Text
         {
             id: enableSupportLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: enableSupportCheckBox.verticalCenter
             width: parent.width * .45 - 3 * UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@label", "Enable Support");
+            text: catalog.i18nc("@label", "Generate Support");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
@@ -240,6 +240,8 @@ Item
         CheckBox
         {
             id: enableSupportCheckBox
+            property alias _hovered: enableSupportMouseArea.containsMouse
+
             anchors.top: parent.top
             anchors.left: enableSupportLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -263,7 +265,7 @@ Item
                 onEntered:
                 {
                     base.showTooltip(enableSupportCheckBox, Qt.point(-enableSupportCheckBox.x, 0),
-                        catalog.i18nc("@label", "Enable support structures. These structures support parts of the model with severe overhangs."));
+                        catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."));
                 }
                 onExited:
                 {
@@ -272,7 +274,7 @@ Item
             }
         }
 
-        Label
+        Text
         {
             id: supportExtruderLabel
             visible: (supportEnabled.properties.value == "True") && (machineExtruderCount.properties.value > 1)
@@ -372,7 +374,7 @@ Item
 
         }
 
-        Label
+        Text
         {
             id: adhesionHelperLabel
             anchors.left: parent.left
@@ -470,7 +472,7 @@ Item
         width: parent.width
         height: childrenRect.height
 
-        Label
+        Text
         {
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width

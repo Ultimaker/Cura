@@ -9,7 +9,10 @@ from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the c
 
 from UM.View.GL.OpenGL import OpenGL
 
+
 class ConvexHullNode(SceneNode):
+    shader = None  # To prevent the shader from being re-built over and over again, only load it once.
+
     ##  Convex hull node is a special type of scene node that is used to display an area, to indicate the
     #   location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
     #   then displayed as a transparent shadow. If the adhesion type is set to raft, the area is extruded
@@ -18,8 +21,6 @@ class ConvexHullNode(SceneNode):
         super().__init__(parent)
 
         self.setCalculateBoundingBox(False)
-
-        self._shader = None
 
         self._original_parent = parent
 
@@ -59,16 +60,16 @@ class ConvexHullNode(SceneNode):
         return self._node
 
     def render(self, renderer):
-        if not self._shader:
-            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
-            self._shader.setUniformValue("u_diffuseColor", self._color)
-            self._shader.setUniformValue("u_opacity", 0.6)
+        if not ConvexHullNode.shader:
+            ConvexHullNode.shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
+            ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
+            ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
         if self.getParent():
             if self.getMeshData():
-                renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
+                renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
                 if self._convex_hull_head_mesh:
-                    renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+                    renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 

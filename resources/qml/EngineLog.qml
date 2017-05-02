@@ -27,7 +27,7 @@ UM.Dialog
             interval: 1000;
             running: false;
             repeat: true;
-            onTriggered: textArea.text = Printer.getEngineLog();
+            onTriggered: textArea.text = CuraApplication.getEngineLog();
         }
         UM.I18nCatalog{id: catalog; name:"cura"}
     }
@@ -43,7 +43,7 @@ UM.Dialog
     {
         if(visible)
         {
-            textArea.text = Printer.getEngineLog();
+            textArea.text = CuraApplication.getEngineLog();
             updateTimer.start();
         } else
         {

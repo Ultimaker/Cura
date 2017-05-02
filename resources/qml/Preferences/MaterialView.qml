@@ -153,7 +153,7 @@ TabView
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
                     prefix: base.currency + " "
                     decimals: 2
-                    maximumValue: 1000
+                    maximumValue: 100000000
 
                     onValueChanged: {
                         base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
@@ -273,17 +273,28 @@ TabView
                     {
                         id: spinBox
                         anchors.left: label.right
-                        value: parseFloat(provider.properties.value);
-                        width: base.secondColumnWidth;
+                        value: {
+                            if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
+                            {
+                                return parseFloat(materialPropertyProvider.properties.value);
+                            }
+                            if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
+                            {
+                                return parseFloat(machinePropertyProvider.properties.value);
+                            }
+                            return 0;
+                        }
+                        width: base.secondColumnWidth
                         readOnly: !base.editingEnabled
-                        suffix: model.unit
+                        suffix: " " + model.unit
                         maximumValue: 99999
                         decimals: model.unit == "mm" ? 2 : 0
 
-                        onEditingFinished: provider.setPropertyValue("value", value)
+                        onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
                     }
 
-                    UM.ContainerPropertyProvider { id: provider; containerId: base.containerId; watchedProperties: [ "value" ]; key: model.key }
+                    UM.ContainerPropertyProvider { id: materialPropertyProvider; containerId: base.containerId; watchedProperties: [ "value" ]; key: model.key }
+                    UM.ContainerPropertyProvider { id: machinePropertyProvider; containerId: Cura.MachineManager.activeDefinitionId; watchedProperties: [ "value" ]; key: model.key }
                 }
             }
         }

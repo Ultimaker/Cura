@@ -91,7 +91,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
             self.writeStarted.emit(self)
 
-            job._message = message
+            job.setMessage(message)
             self._writing = True
             job.start()
         except PermissionError as e:
@@ -118,8 +118,6 @@ class RemovableDriveOutputDevice(OutputDevice):
         raise OutputDeviceError.WriteRequestFailedError("Could not find a file name when trying to write to {device}.".format(device = self.getName()))
 
     def _onProgress(self, job, progress):
-        if hasattr(job, "_message"):
-            job._message.setProgress(progress)
         self.writeProgress.emit(self, progress)
 
     def _onFinished(self, job):
@@ -127,10 +125,6 @@ class RemovableDriveOutputDevice(OutputDevice):
             # Explicitly closing the stream flushes the write-buffer
             self._stream.close()
             self._stream = None
-
-        if hasattr(job, "_message"):
-            job._message.hide()
-            job._message = None
 
         self._writing = False
         self.writeFinished.emit(self)

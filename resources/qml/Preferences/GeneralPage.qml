@@ -25,11 +25,50 @@ UM.PreferencesPage
         }
     }
 
+    function setDefaultTheme(defaultThemeCode)
+    {
+        for(var i = 0; i < themeList.count; i++)
+        {
+            if (themeComboBox.model.get(i).code == defaultThemeCode)
+            {
+                themeComboBox.currentIndex = i
+            }
+        }
+    }
+
+    function setDefaultDiscardOrKeepProfile(code)
+    {
+        for (var i = 0; i < choiceOnProfileOverrideDropDownButton.model.count; i++)
+        {
+            if (choiceOnProfileOverrideDropDownButton.model.get(i).code == code)
+            {
+                choiceOnProfileOverrideDropDownButton.currentIndex = i;
+                break;
+            }
+        }
+    }
+
+    function setDefaultOpenProjectOption(code)
+    {
+        for (var i = 0; i < choiceOnOpenProjectDropDownButton.model.count; ++i)
+        {
+            if (choiceOnOpenProjectDropDownButton.model.get(i).code == code)
+            {
+                choiceOnOpenProjectDropDownButton.currentIndex = i
+                break;
+            }
+        }
+    }
+
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
+
+        UM.Preferences.resetPreference("general/theme")
+        var defaultTheme = UM.Preferences.getValue("general/theme")
+        setDefaultTheme(defaultTheme)
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
@@ -49,8 +88,12 @@ UM.PreferencesPage
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
+
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
-        choiceOnProfileOverrideDropDownButton.currentIndex = UM.Preferences.getValue("cura/choice_on_profile_override")
+        setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
+
+        UM.Preferences.resetPreference("cura/choice_on_open_project")
+        setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
         if (plugins.find("id", "SliceInfoPlugin") > -1) {
             UM.Preferences.resetPreference("info/send_slice_info")
@@ -66,6 +109,8 @@ UM.PreferencesPage
     {
         width: parent.width
         height: parent.height
+
+        flickableItem.flickableDirection: Flickable.VerticalFlick;
 
         Column
         {
@@ -165,6 +210,74 @@ UM.PreferencesPage
             }
 
             Item
+	        {
+	            //: Spacer
+	            height: UM.Theme.getSize("default_margin").height
+	            width: UM.Theme.getSize("default_margin").width
+	        }
+
+            Row
+	        {
+	            spacing: UM.Theme.getSize("default_margin").width
+	            Label
+	            {
+	                id: themeLabel
+	                text: catalog.i18nc("@label","Theme:")
+	                anchors.verticalCenter: themeComboBox.verticalCenter
+	            }
+
+	            ComboBox
+	            {
+	                id: themeComboBox
+	                model: ListModel
+	                {
+	                    id: themeList
+
+	                    Component.onCompleted: {
+	                        append({ text: catalog.i18nc("@item:inlistbox", "Ultimaker"), code: "cura" })
+	                    }
+	                }
+
+	                currentIndex:
+	                {
+	                    var code = UM.Preferences.getValue("general/theme");
+	                    for(var i = 0; i < themeList.count; ++i)
+	                    {
+	                        if(model.get(i).code == code)
+	                        {
+	                            return i
+	                        }
+	                    }
+	                }
+	                onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
+
+	                Component.onCompleted:
+	                {
+	                    // Because ListModel is stupid and does not allow using qsTr() for values.
+	                    for(var i = 0; i < themeList.count; ++i)
+	                    {
+	                        themeList.setProperty(i, "text", catalog.i18n(themeList.get(i).text));
+	                    }
+
+	                    // Glorious hack time. ComboBox does not update the text properly after changing the
+	                    // model. So change the indices around to force it to update.
+	                    currentIndex += 1;
+	                    currentIndex -= 1;
+	                }
+	            }
+	        }
+
+	        Label
+	        {
+	            id: themeCaption
+
+	            //: Theme change warning
+	            text: catalog.i18nc("@label", "You will need to restart the application for theme changes to have effect.")
+	            wrapMode: Text.WordWrap
+	            font.italic: true
+	        }
+
+            Item
             {
                 //: Spacer
                 height: UM.Theme.getSize("default_margin").height
@@ -181,14 +294,13 @@ UM.PreferencesPage
                 CheckBox
                 {
                     id: autoSliceCheckbox
-
                     checked: boolCheck(UM.Preferences.getValue("general/auto_slice"))
                     onClicked: UM.Preferences.setValue("general/auto_slice", checked)
 
                     text: catalog.i18nc("@option:check","Slice automatically");
                 }
             }
-
+            
             Item
             {
                 //: Spacer
@@ -231,6 +343,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button","Center camera when item is selected");
                     checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
                     onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
+                    enabled: Qt.platform.os != "windows" // Hack: disable the feature on windows as it's broken for pyqt 5.7.1.
                 }
             }
 
@@ -376,17 +489,61 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Default behavior when opening a project file")
+
+                Column
+                {
+                    spacing: 4
+
+                    Label
+                    {
+                        text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
+                    }
+
+                    ComboBox
+                    {
+                        id: choiceOnOpenProjectDropDownButton
+                        width: 200
+
+                        model: ListModel
+                        {
+                            id: openProjectOptionModel
+
+                            Component.onCompleted: {
+                                append({ text: catalog.i18nc("@option:openProject", "Always ask"), code: "always_ask" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always open as a project"), code: "open_as_project" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
+                            }
+                        }
+
+                        currentIndex:
+                        {
+                            var index = 0;
+                            var currentChoice = UM.Preferences.getValue("cura/choice_on_open_project");
+                            for (var i = 0; i < model.count; ++i)
+                            {
+                                if (model.get(i).code == currentChoice)
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            return index;
+                        }
+
+                        onActivated: UM.Preferences.setValue("cura/choice_on_open_project", model.get(index).code)
+                    }
+                }
+            }
+
             Item
             {
                 //: Spacer
                 height: UM.Theme.getSize("default_margin").height
                 width: UM.Theme.getSize("default_margin").width
-            }
-
-            Label
-            {
-                font.bold: true
-                text: catalog.i18nc("@label", "Override Profile")
             }
 
             UM.TooltipArea
@@ -396,18 +553,48 @@ UM.PreferencesPage
 
                 text: catalog.i18nc("@info:tooltip", "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again.")
 
-                ComboBox
+                Column
                 {
-                    id: choiceOnProfileOverrideDropDownButton
+                    spacing: 4
 
-                    model: [
-                        catalog.i18nc("@option:discardOrKeep", "Always ask me this"),
-                        catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"),
-                        catalog.i18nc("@option:discardOrKeep", "Keep and never ask again")
-                    ]
-                    width: 300
-                    currentIndex: UM.Preferences.getValue("cura/choice_on_profile_override")
-                    onCurrentIndexChanged: UM.Preferences.setValue("cura/choice_on_profile_override", currentIndex)
+                    Label
+                    {
+                        font.bold: true
+                        text: catalog.i18nc("@label", "Override Profile")
+                    }
+
+                    ComboBox
+                    {
+                        id: choiceOnProfileOverrideDropDownButton
+                        width: 200
+
+                        model: ListModel
+                        {
+                            id: discardOrKeepProfileListModel
+
+                            Component.onCompleted: {
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Always ask me this"), code: "always_ask" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Discard and never ask again"), code: "always_discard" })
+                                append({ text: catalog.i18nc("@option:discardOrKeep", "Keep and never ask again"), code: "always_keep" })
+                            }
+                        }
+
+                        currentIndex:
+                        {
+                            var index = 0;
+                            var code = UM.Preferences.getValue("cura/choice_on_profile_override");
+                            for (var i = 0; i < model.count; ++i)
+                            {
+                                if (model.get(i).code == code)
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            return index;
+                        }
+                        onActivated: UM.Preferences.setValue("cura/choice_on_profile_override", model.get(index).code)
+                    }
                 }
             }
 
