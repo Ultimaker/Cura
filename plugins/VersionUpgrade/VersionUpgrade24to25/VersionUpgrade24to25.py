@@ -55,7 +55,7 @@ class VersionUpgrade24to25(VersionUpgrade):
                         new_visible_settings.append(replaced_setting)
                     continue #Don't add the original.
                 new_visible_settings.append(setting) #No special handling, so just add the original visible setting back.
-            parser["general"]["visible_settings"] = ";".join(visible_settings)
+            parser["general"]["visible_settings"] = ";".join(new_visible_settings)
 
         #Change the version number in the file.
         if parser.has_section("general"): #It better have!
