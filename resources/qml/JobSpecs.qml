@@ -212,8 +212,9 @@ Item {
                             {
                                 lengths.push(base.printMaterialLengths[index].toFixed(2));
                                 weights.push(String(Math.floor(base.printMaterialWeights[index])));
-                                costs.push(base.printMaterialCosts[index].toFixed(2));
-                                if(base.printMaterialCosts[index] > 0)
+                                var cost = base.printMaterialCosts[index] == undefined ? 0 : base.printMaterialCosts[index].toFixed(2);
+                                costs.push(cost);
+                                if(cost > 0)
                                 {
                                     someCostsKnown = true;
                                 }
