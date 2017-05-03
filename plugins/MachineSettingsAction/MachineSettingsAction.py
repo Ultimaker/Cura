@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
@@ -101,8 +101,7 @@ class MachineSettingsAction(MachineAction):
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
 
         self._container_registry.addContainer(definition_changes_container)
-        # Insert definition_changes between the definition and the variant
-        container_stack.insertContainer(-1, definition_changes_container)
+        container_stack.definitionChanges = definition_changes_container
 
         return definition_changes_container
 
