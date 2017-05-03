@@ -273,17 +273,20 @@ Item
                     {
                         typesLegenModelNoCheck.append({
                             label: catalog.i18nc("@label", "Top / Bottom"),
-                            colorId:  "layerview_skin"
+                            colorId: "layerview_skin",
+                            visible: UM.Preferences.getValue("layerview/layer_view_type") != 0
                         });
                         typesLegenModelNoCheck.append({
                             label: catalog.i18nc("@label", "Inner Wall"),
-                            colorId:  "layerview_inset_x"
+                            colorId: "layerview_inset_x",
+                            visible: UM.Preferences.getValue("layerview/layer_view_type") != 0
                         });
                     }
                 }
 
                 Label {
                     text: label
+                    visible: model.visible && view_settings.show_legend
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
@@ -292,7 +295,7 @@ Item
                         color: UM.Theme.getColor(model.colorId)
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: view_settings.show_legend
+                        visible: model.visible && view_settings.show_legend
                     }
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
