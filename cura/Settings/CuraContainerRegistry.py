@@ -6,6 +6,7 @@ import os.path
 import re
 from PyQt5.QtWidgets import QMessageBox
 
+from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -16,8 +17,8 @@ from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry #For getting the possible profile writers to write with.
 from UM.Util import parseBool
 
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ContainerManager import ContainerManager
+from . import ExtruderStack
+from . import GlobalStack
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -25,6 +26,20 @@ catalog = i18nCatalog("cura")
 class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    ##  Overridden from ContainerRegistry
+    #
+    #   Adds a container to the registry.
+    #
+    #   This will also try to convert a ContainerStack to either Extruder or
+    #   Global stack based on metadata information.
+    @override(ContainerRegistry)
+    def addContainer(self, container):
+        # Note: Intentional check with type() because we want to ignore subclasses
+        if type(container) == ContainerStack:
+            container = self._convertContainerStack(container)
+
+        super().addContainer(container)
 
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
@@ -284,3 +299,27 @@ class CuraContainerRegistry(ContainerRegistry):
         if global_container_stack:
             return parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", False))
         return False
+
+    ##  Convert an "old-style" pure ContainerStack to either an Extruder or Global stack.
+    def _convertContainerStack(self, container):
+        assert type(container) == ContainerStack
+
+        container_type = container.getMetaDataEntry("type")
+        if container_type not in ("extruder_train", "machine"):
+            # It is not an extruder or machine, so do nothing with the stack
+            return container
+
+        new_stack = None
+        if container_type == "extruder_train":
+            new_stack = ExtruderStack.ExtruderStack(container.getId())
+        else:
+            new_stack = GlobalStack.GlobalStack(container.getId())
+
+        container_contents = container.serialize()
+        new_stack.deserialize(container_contents)
+
+        # Delete the old configuration file so we do not get double stacks
+        if os.path.isfile(container.getPath()):
+            os.remove(container.getPath())
+
+        return new_stack

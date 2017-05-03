@@ -231,20 +231,7 @@ class StartSliceJob(Job):
         keys = stack.getAllKeys()
         settings = {}
         for key in keys:
-            # Use resolvement value if available, or take the value
-            resolved_value = stack.getProperty(key, "resolve")
-            if resolved_value is not None:
-                # There is a resolvement value. Check if we need to use it.
-                user_container = stack.findContainer({"type": "user"})
-                quality_changes_container = stack.findContainer({"type": "quality_changes"})
-                if user_container.hasProperty(key,"value") or quality_changes_container.hasProperty(key,"value"):
-                    # Normal case
-                    settings[key] = stack.getProperty(key, "value")
-                else:
-                    settings[key] = resolved_value
-            else:
-                # Normal case
-                settings[key] = stack.getProperty(key, "value")
+            settings[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
         start_gcode = settings["machine_start_gcode"]

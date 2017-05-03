@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
@@ -101,8 +101,7 @@ class MachineSettingsAction(MachineAction):
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
 
         self._container_registry.addContainer(definition_changes_container)
-        # Insert definition_changes between the definition and the variant
-        container_stack.insertContainer(-1, definition_changes_container)
+        container_stack.definitionChanges = definition_changes_container
 
         return definition_changes_container
 
@@ -152,9 +151,9 @@ class MachineSettingsAction(MachineAction):
         if extruder_count == 1:
             # Get the material and variant of the first extruder before setting the number extruders to 1
             if machine_manager.hasMaterials:
-               extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
+                extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
             if machine_manager.hasVariants:
-               extruder_variant_id = machine_manager.activeVariantIds[0]
+                extruder_variant_id = machine_manager.activeVariantIds[0]
 
             # Copy any settable_per_extruder setting value from the extruders to the global stack
             extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -168,7 +167,7 @@ class MachineSettingsAction(MachineAction):
                     setting_key = setting_instance.definition.key
                     settable_per_extruder = self._global_container_stack.getProperty(setting_key, "settable_per_extruder")
                     if settable_per_extruder:
-                        limit_to_extruder =  self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
+                        limit_to_extruder = self._global_container_stack.getProperty(setting_key, "limit_to_extruder")
 
                         if limit_to_extruder == "-1" or limit_to_extruder == extruder_index:
                             global_user_container.setProperty(setting_key, "value", extruder_user_container.getProperty(setting_key, "value"))
@@ -176,9 +175,9 @@ class MachineSettingsAction(MachineAction):
 
         # Check to see if any features are set to print with an extruder that will no longer exist
         for setting_key in ["adhesion_extruder_nr", "support_extruder_nr", "support_extruder_nr_layer_0", "support_infill_extruder_nr", "support_interface_extruder_nr"]:
-            if int(self._global_container_stack.getProperty(setting_key, "value")) > extruder_count -1:
+            if int(self._global_container_stack.getProperty(setting_key, "value")) > extruder_count - 1:
                 Logger.log("i", "Lowering %s setting to match number of extruders", setting_key)
-                self._global_container_stack.getTop().setProperty(setting_key, "value", extruder_count -1)
+                self._global_container_stack.getTop().setProperty(setting_key, "value", extruder_count - 1)
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = Application.getInstance().getController().getScene().getRoot()
@@ -217,7 +216,7 @@ class MachineSettingsAction(MachineAction):
 
             # Make sure the machine stack is active
             if extruder_manager.activeExtruderIndex > -1:
-                extruder_manager.setActiveExtruderIndex(-1);
+                extruder_manager.setActiveExtruderIndex(-1)
 
             # Restore material and variant on global stack
             # MachineManager._onGlobalContainerChanged removes the global material and variant of multiextruder machines
@@ -229,9 +228,9 @@ class MachineSettingsAction(MachineAction):
                 preferences.setValue("cura/choice_on_profile_override", "always_keep")
 
                 if extruder_material_id:
-                    machine_manager.setActiveMaterial(extruder_material_id);
+                    machine_manager.setActiveMaterial(extruder_material_id)
                 if extruder_variant_id:
-                    machine_manager.setActiveVariant(extruder_variant_id);
+                    machine_manager.setActiveVariant(extruder_variant_id)
 
                 preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
 
@@ -263,7 +262,7 @@ class MachineSettingsAction(MachineAction):
 
                 # Set the material container to a sane default
                 if material_container.getId() == "empty_material":
-                    search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*" }
+                    search_criteria = { "type": "material", "definition": "fdmprinter", "id": "*pla*"}
                     containers = self._container_registry.findInstanceContainers(**search_criteria)
                     if containers:
                         self._global_container_stack.replaceContainer(material_index, containers[0])
