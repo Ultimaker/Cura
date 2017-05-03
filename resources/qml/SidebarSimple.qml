@@ -30,6 +30,7 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: base.width * .45 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
@@ -47,7 +48,7 @@ Item
         }
     }
 
-    Flow
+    Row
     {
         id: infillCellRight
 
@@ -85,7 +86,7 @@ Item
                 {
                     id: infillIconLining
 
-                    width: (infillCellRight.width - 3 * UM.Theme.getSize("default_margin").width) / 4;
+                    width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("default_margin").width)) / (infillModel.count);
                     height: width
 
                     border.color:
@@ -181,16 +182,18 @@ Item
             Component.onCompleted:
             {
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Hollow"),
+                    name: catalog.i18nc("@label", "Empty"),
                     percentage: 0,
+                    steps: 0,
                     percentageMin: -1,
                     percentageMax: 0,
-                    text: catalog.i18nc("@label", "No (0%) infill will leave your model hollow at the cost of low strength"),
+                    text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength"),
                     icon: "hollow"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Light"),
                     percentage: 20,
+                    steps: 0,
                     percentageMin: 0,
                     percentageMax: 30,
                     text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
@@ -199,6 +202,7 @@ Item
                 infillModel.append({
                     name: catalog.i18nc("@label", "Dense"),
                     percentage: 50,
+                    steps: 0,
                     percentageMin: 30,
                     percentageMax: 70,
                     text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
@@ -207,10 +211,19 @@ Item
                 infillModel.append({
                     name: catalog.i18nc("@label", "Solid"),
                     percentage: 100,
+                    steps: 0,
                     percentageMin: 70,
                     percentageMax: 100,
                     text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
                     icon: "solid"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Gradual"),
+                    percentage: 90,
+                    steps: 5,
+                    infill_layer_height: 1.5,
+                    text: catalog.i18nc("@label", "This will gradually fill your model towards the top"),
+                    icon: "gradual"
                 })
             }
         }
@@ -220,7 +233,7 @@ Item
     {
         id: helpersCell
         anchors.top: infillCellRight.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
         anchors.left: parent.left
         anchors.right: parent.right
         height: childrenRect.height
@@ -392,7 +405,7 @@ Item
             property alias _hovered: adhesionMouseArea.containsMouse
 
             anchors.top: supportExtruderCombobox.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
             anchors.left: adhesionHelperLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
@@ -467,7 +480,7 @@ Item
     {
         id: tipsCell
         anchors.top: helpersCell.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
         anchors.left: parent.left
         width: parent.width
         height: childrenRect.height
@@ -480,7 +493,7 @@ Item
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             wrapMode: Text.WordWrap
             //: Tips label
-            text: catalog.i18nc("@label", "Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
+            text: catalog.i18nc("@label", "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
             linkColor: UM.Theme.getColor("text_link")
