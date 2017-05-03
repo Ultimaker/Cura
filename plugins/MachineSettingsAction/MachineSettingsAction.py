@@ -186,8 +186,8 @@ class MachineSettingsAction(MachineAction):
             if node.getMeshData():
                 extruder_nr = node.callDecoration("getActiveExtruderPosition")
 
-                if extruder_nr is not None and extruder_nr > extruder_count - 1:
-                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count -1).getId())
+                if extruder_nr is not None and int(extruder_nr) > extruder_count - 1:
+                    node.callDecoration("setActiveExtruder", extruder_manager.getExtruderStack(extruder_count - 1).getId())
 
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
         self.forceUpdate()
