@@ -573,7 +573,7 @@ class MachineManager(QObject):
     def activeQualityName(self):
         if self._active_container_stack and self._global_container_stack:
             quality = self._global_container_stack.qualityChanges
-            if quality and quality != self._empty_quality_changes_container:
+            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
                 return quality.getName()
             quality = self._active_container_stack.quality
             if quality:
@@ -584,7 +584,7 @@ class MachineManager(QObject):
     def activeQualityId(self):
         if self._active_container_stack:
             quality = self._active_container_stack.qualityChanges
-            if quality and quality != self._empty_quality_changes_container:
+            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
                 return quality.getId()
             quality = self._active_container_stack.quality
             if quality:
@@ -595,7 +595,7 @@ class MachineManager(QObject):
     def globalQualityId(self):
         if self._global_container_stack:
             quality = self._global_container_stack.qualityChanges
-            if quality and quality != self._empty_quality_changes_container:
+            if quality and not isinstance(quality, type(self._empty_quality_changes_container)):
                 return quality.getId()
             quality = self._global_container_stack.quality
             if quality:
@@ -637,7 +637,7 @@ class MachineManager(QObject):
     def activeQualityChangesId(self):
         if self._active_container_stack:
             changes = self._active_container_stack.qualityChanges
-            if changes:
+            if changes and changes.getId() != "empty":
                 return changes.getId()
         return ""
 
