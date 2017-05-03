@@ -38,6 +38,10 @@ class ExtruderStack(CuraContainerStack):
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
 
+    @classmethod
+    def getLoadingPriority(cls) -> int:
+        return 3
+
     ##  Overridden from ContainerStack
     #
     #   It will perform a few extra checks when trying to get properties.
@@ -63,6 +67,13 @@ class ExtruderStack(CuraContainerStack):
             raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
 
         return self.getNextStack()._getMachineDefinition()
+
+    @override(CuraContainerStack)
+    def deserialize(self, contents: str) -> None:
+        super().deserialize(contents)
+        stacks = ContainerRegistry.getInstance().findContainerStacks(id=self.getMetaDataEntry("machine", ""))
+        if stacks:
+            self.setNextStack(stacks[0])
 
 extruder_stack_mime = MimeType(
     name = "application/x-cura-extruderstack",

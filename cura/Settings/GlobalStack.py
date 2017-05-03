@@ -40,6 +40,10 @@ class GlobalStack(CuraContainerStack):
     def extruders(self) -> list:
         return self._extruders
 
+    @classmethod
+    def getLoadingPriority(cls) -> int:
+        return 2
+
     ##  Add an extruder to the list of extruders of this stack.
     #
     #   \param extruder The extruder to add.
