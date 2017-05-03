@@ -348,6 +348,7 @@ Rectangle
 
     Rectangle {
         id: settingsModeSelection
+		color: UM.Theme.getColor("tool_panel_background")
         width: parent.width * 0.55
         height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
