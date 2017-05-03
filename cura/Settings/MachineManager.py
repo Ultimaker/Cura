@@ -912,11 +912,14 @@ class MachineManager(QObject):
         if container_type == "quality":
             stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
             stack.setQuality(container)
-            stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
-        elif container_type == "quality_changes":
+            stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
+        elif container_type == "quality_changes" or container_type is None:
+            # If the container is an empty container, we need to change the quality_changes.
+            # Quality can never be set to empty.
             stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
             stack.setQualityChanges(container)
-            stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
+            stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
+        self._onQualityNameChanged()
 
     def _askUserToKeepOrClearCurrentSettings(self):
         Application.getInstance().discardOrKeepProfileChanges()
