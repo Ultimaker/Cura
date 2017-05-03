@@ -906,18 +906,15 @@ class MachineManager(QObject):
 
     def _replaceQualityOrQualityChangesInStack(self, stack, container, postpone_emit = False):
         # Disconnect the signal handling from the old container.
-        old_container = stack.findContainer(type=container.getMetaDataEntry("type"))
-        if old_container:
-            old_container.nameChanged.disconnect(self._onQualityNameChanged)
-        else:
-            Logger.log("e", "Could not find container of type %s in stack %s while replacing quality (changes) with container %s", container.getMetaDataEntry("type"), stack.getId(), container.getId())
-            return
-
-        # Swap in the new container into the stack.
-        stack.replaceContainer(stack.getContainerIndex(old_container), container, postpone_emit = postpone_emit)
-
-        # Attach the needed signal handling.
-        container.nameChanged.connect(self._onQualityNameChanged)
+        container_type = container.getMetaDataEntry("type")
+        if container_type == "quality":
+            stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
+            stack.setQuality(container)
+            stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
+        elif container_type == "quality_changes":
+            stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
+            stack.setQualityChanges(container)
+            stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
 
     def _askUserToKeepOrClearCurrentSettings(self):
         Application.getInstance().discardOrKeepProfileChanges()
