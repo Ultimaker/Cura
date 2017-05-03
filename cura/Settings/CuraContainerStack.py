@@ -516,7 +516,7 @@ class CuraContainerStack(ContainerStack):
             # Try to find qualities for a generic version of the material.
             material_search_criteria = {"type": "material", "material": material_container.getMetaDataEntry("material"), "color_name": "Generic"}
             if definition.getMetaDataEntry("has_machine_quality"):
-                if self.material != self._em:
+                if self.material != self._empty_instance_container:
                     material_search_criteria["definition"] = material_container.getDefinition().id
 
                     if definition.getMetaDataEntry("has_variants"):
