@@ -704,8 +704,7 @@ class MachineManager(QObject):
             self.blurSettings.emit()
             old_material.nameChanged.disconnect(self._onMaterialNameChanged)
 
-            material_index = self._active_container_stack.getContainerIndex(old_material)
-            self._active_container_stack.replaceContainer(material_index, material_container)
+            self._active_container_stack.material = material_container
             Logger.log("d", "Active material changed")
 
             material_container.nameChanged.connect(self._onMaterialNameChanged)
