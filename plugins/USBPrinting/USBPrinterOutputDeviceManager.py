@@ -105,7 +105,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
         for key in self._usb_output_devices:
             if key == global_container_stack.getMetaDataEntry("serial_port") or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
-                self._usb_output_devices[key].setSerialSpeed(global_container_stack.getMetaDataEntry("serial_speed", "AUTO"))
+                self._usb_output_devices[key].setSerialSpeed(global_container_stack.getMetaDataEntry("serial_rate", "AUTO"))
                 self._usb_output_devices[key].connectionStateChanged.connect(self._onConnectionStateChanged)
                 if parseBool(global_container_stack.getMetaDataEntry("serial_auto_connect")) or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
                     self._usb_output_devices[key].connect()
