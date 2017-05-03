@@ -342,6 +342,8 @@ Cura.MachineAction
                 {
                     regExp: /[a-zA-Z0-9\.\-\_]*/
                 }
+
+                onAccepted: btnOk.click()
             }
         }
 
@@ -355,6 +357,7 @@ Cura.MachineAction
                 }
             },
             Button {
+                id: btnOk
                 text: catalog.i18nc("@action:button", "Ok")
                 onClicked:
                 {
