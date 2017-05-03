@@ -266,11 +266,11 @@ class MachineManager(QObject):
                 # that did not specify a value in the extruder.
                 global_variant = self._global_container_stack.findContainer(type = "variant")
                 if global_variant != self._empty_variant_container:
-                    self._global_container_stack.replaceContainer(self._global_container_stack.getContainerIndex(global_variant), self._empty_variant_container)
+                    self._global_container_stack.setVariant(self._empty_variant_container)
 
                 global_material = self._global_container_stack.findContainer(type = "material")
                 if global_material != self._empty_material_container:
-                    self._global_container_stack.replaceContainer(self._global_container_stack.getContainerIndex(global_material), self._empty_material_container)
+                    self._global_container_stack.setMaterial(self._empty_material_container)
 
                 for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks(): #Listen for changes on all extruder stacks.
                     extruder_stack.propertyChanged.connect(self._onPropertyChanged)
