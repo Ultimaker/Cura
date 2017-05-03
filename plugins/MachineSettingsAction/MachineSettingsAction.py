@@ -216,7 +216,7 @@ class MachineSettingsAction(MachineAction):
 
             # Make sure the machine stack is active
             if extruder_manager.activeExtruderIndex > -1:
-                extruder_manager.setActiveExtruderIndex(-1);
+                extruder_manager.setActiveExtruderIndex(-1)
 
             # Restore material and variant on global stack
             # MachineManager._onGlobalContainerChanged removes the global material and variant of multiextruder machines
@@ -228,9 +228,9 @@ class MachineSettingsAction(MachineAction):
                 preferences.setValue("cura/choice_on_profile_override", "always_keep")
 
                 if extruder_material_id:
-                    machine_manager.setActiveMaterial(extruder_material_id);
+                    machine_manager.setActiveMaterial(extruder_material_id)
                 if extruder_variant_id:
-                    machine_manager.setActiveVariant(extruder_variant_id);
+                    machine_manager.setActiveVariant(extruder_variant_id)
 
                 preferences.setValue("cura/choice_on_profile_override", choice_on_profile_override)
 
