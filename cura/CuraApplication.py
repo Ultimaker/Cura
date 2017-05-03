@@ -1277,6 +1277,8 @@ class CuraApplication(QtApplication):
         arranger = Arrange.create(scene_root = root)
         min_offset = 8
 
+        self.fileLoaded.emit(filename)
+
         for node in nodes:
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
