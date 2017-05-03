@@ -1054,6 +1054,7 @@
                     "description": "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
                     "type": "bool",
                     "default_value": false,
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
@@ -1462,6 +1463,7 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "min_infill_area":
@@ -1472,6 +1474,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "expand_skins_into_infill":
