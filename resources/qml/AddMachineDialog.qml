@@ -180,7 +180,7 @@ UM.Dialog
         anchors.bottom:parent.bottom
         spacing: UM.Theme.getSize("default_margin").width
 
-        Text
+        Label
         {
             text: catalog.i18nc("@label", "Printer Name:")
             anchors.verticalCenter: machineName.verticalCenter

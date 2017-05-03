@@ -3235,13 +3235,26 @@
                 "support_bottom_stair_step_height":
                 {
                     "label": "Support Stair Step Height",
-                    "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
+                    "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
+                    "enabled": "support_enable",
+                    "settable_per_mesh": true
+                },
+                "support_bottom_stair_step_width":
+                {
+                    "label": "Support Stair Step Maximum Width",
+                    "description": "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5.0,
+                    "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10.0",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },

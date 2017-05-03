@@ -4,6 +4,7 @@
 import numpy
 from string import Formatter
 from enum import IntEnum
+import time
 
 from UM.Job import Job
 from UM.Application import Application
@@ -239,6 +240,13 @@ class StartSliceJob(Job):
         settings["material_bed_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in bed_temperature_settings))
         print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
         settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
+
+        settings["print_bed_temperature"] = settings["material_bed_temperature"]
+        settings["print_temperature"] = settings["material_print_temperature"]
+
+        settings["time"] = time.strftime('%H:%M:%S')
+        settings["date"] = time.strftime('%d-%m-%Y')
+        settings["day"] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
