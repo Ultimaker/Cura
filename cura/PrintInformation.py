@@ -185,7 +185,7 @@ class PrintInformation(QObject):
         if self._active_material_container:
             try:
                 self._active_material_container.metaDataChanged.disconnect(self._onMaterialMetaDataChanged)
-            except TypeError:
+            except TypeError: #pyQtSignal gives a TypeError when disconnecting from something that is already disconnected.
                 pass
 
         active_material_id = Application.getInstance().getMachineManager().activeMaterialId

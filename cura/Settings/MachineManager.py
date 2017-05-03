@@ -236,9 +236,15 @@ class MachineManager(QObject):
         if self._global_container_stack:
             try:
                 self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
+            except TypeError: #pyQtSignal gives a TypeError when disconnecting from something that was already disconnected.
+                pass
+            try:
                 self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+            except TypeError:
+                pass
+            try:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
-            except:
+            except TypeError:
                 pass
             material = self._global_container_stack.material
             material.nameChanged.disconnect(self._onMaterialNameChanged)
