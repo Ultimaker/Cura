@@ -234,14 +234,16 @@ class MachineManager(QObject):
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
-            self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
-            self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
-            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
-
-            material = self._global_container_stack.findContainer({"type": "material"})
+            try:
+                self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
+                self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+                self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
+            except:
+                pass
+            material = self._global_container_stack.material
             material.nameChanged.disconnect(self._onMaterialNameChanged)
 
-            quality = self._global_container_stack.findContainer({"type": "quality"})
+            quality = self._global_container_stack.quality
             quality.nameChanged.disconnect(self._onQualityNameChanged)
 
             if self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
@@ -264,11 +266,11 @@ class MachineManager(QObject):
                 # For multi-extrusion machines, we do not want variant or material profiles in the stack,
                 # because these are extruder specific and may cause wrong values to be used for extruders
                 # that did not specify a value in the extruder.
-                global_variant = self._global_container_stack.findContainer(type = "variant")
+                global_variant = self._global_container_stack.variant
                 if global_variant != self._empty_variant_container:
                     self._global_container_stack.setVariant(self._empty_variant_container)
 
-                global_material = self._global_container_stack.findContainer(type = "material")
+                global_material = self._global_container_stack.material
                 if global_material != self._empty_material_container:
                     self._global_container_stack.setMaterial(self._empty_material_container)
 
@@ -277,10 +279,10 @@ class MachineManager(QObject):
                     extruder_stack.containersChanged.connect(self._onInstanceContainersChanged)
 
             else:
-                material = self._global_container_stack.findContainer({"type": "material"})
+                material = self._global_container_stack.material
                 material.nameChanged.connect(self._onMaterialNameChanged)
 
-                quality = self._global_container_stack.findContainer({"type": "quality"})
+                quality = self._global_container_stack.quality
                 quality.nameChanged.connect(self._onQualityNameChanged)
 
         self._updateStacksHaveErrors()
