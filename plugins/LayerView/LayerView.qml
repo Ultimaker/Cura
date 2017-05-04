@@ -43,7 +43,8 @@ Item
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
-            property bool show_legend: UM.LayerView.compatibilityMode || UM.Preferences.getValue("layerview/layer_view_type") == 1
+            // if we are in compatibility mode, we only show the "line type"
+            property bool show_legend: UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type") == 1
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
             property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
@@ -107,27 +108,23 @@ Item
                 visible: !UM.LayerView.compatibilityMode
                 style: UM.Theme.styles.combobox
 
-                property int layer_view_type: UM.Preferences.getValue("layerview/layer_view_type")
-                currentIndex: layer_view_type  // index matches type_id
-                onActivated: {
-                    // Combobox selection
-                    var type_id = index;
-                    UM.Preferences.setValue("layerview/layer_view_type", type_id);
-                    updateLegend(type_id);
-                }
-                onModelChanged: {
-                    updateLegend(UM.Preferences.getValue("layerview/layer_view_type"));
+                onActivated:
+                {
+                    UM.Preferences.setValue("layerview/layer_view_type", index);
                 }
 
-                // Update visibility of legend.
-                function updateLegend(type_id) {
-                    if (UM.LayerView.compatibilityMode || (type_id == 1)) {
-                        // Line type
-                        view_settings.show_legend = true;
-                    } else {
-                        view_settings.show_legend = false;
-                    }
+                Component.onCompleted:
+                {
+                    currentIndex = UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    updateLegends(currentIndex);
                 }
+
+                function updateLegends(type_id)
+                {
+                    // update visibility of legends
+                    view_settings.show_legend = UM.LayerView.compatibilityMode || (type_id == 1);
+                }
+
             }
 
             Label
@@ -153,7 +150,8 @@ Item
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
-                    layerTypeCombobox.layer_view_type = UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.currentIndex = UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type");
+                    layerTypeCombobox.updateLegends(layerTypeCombobox.currentIndex);
                     view_settings.extruder_opacities = UM.Preferences.getValue("layerview/extruder_opacities").split("|");
                     view_settings.show_travel_moves = UM.Preferences.getValue("layerview/show_travel_moves");
                     view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
@@ -274,19 +272,17 @@ Item
                         typesLegenModelNoCheck.append({
                             label: catalog.i18nc("@label", "Top / Bottom"),
                             colorId: "layerview_skin",
-                            visible: UM.Preferences.getValue("layerview/layer_view_type") != 0
                         });
                         typesLegenModelNoCheck.append({
                             label: catalog.i18nc("@label", "Inner Wall"),
                             colorId: "layerview_inset_x",
-                            visible: UM.Preferences.getValue("layerview/layer_view_type") != 0
                         });
                     }
                 }
 
                 Label {
                     text: label
-                    visible: model.visible && view_settings.show_legend
+                    visible: view_settings.show_legend
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
@@ -295,7 +291,7 @@ Item
                         color: UM.Theme.getColor(model.colorId)
                         border.width: UM.Theme.getSize("default_lining").width
                         border.color: UM.Theme.getColor("lining")
-                        visible: model.visible && view_settings.show_legend
+                        visible: view_settings.show_legend
                     }
                     Layout.fillWidth: true
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
