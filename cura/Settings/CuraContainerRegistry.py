@@ -19,6 +19,8 @@ from UM.Util import parseBool
 
 from . import ExtruderStack
 from . import GlobalStack
+from .ContainerManager import ContainerManager
+from .ExtruderManager import ExtruderManager
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
