@@ -77,7 +77,10 @@ def test_loadLegacyFileRenamed(container_registry):
     def findContainers(container_type = 0, id = None):
         if id == "MachineLegacy":
             return None
-        return [UM.Settings.ContainerRegistry._EmptyInstanceContainer(id)]
+
+        container = UM.Settings.ContainerRegistry._EmptyInstanceContainer(id)
+        container.getNextStack = unittest.mock.MagicMock()
+        return [container]
 
     old_find_containers = container_registry.findContainers
     container_registry.findContainers = findContainers
