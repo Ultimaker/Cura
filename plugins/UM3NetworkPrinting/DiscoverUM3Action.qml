@@ -343,7 +343,7 @@ Cura.MachineAction
                     regExp: /[a-zA-Z0-9\.\-\_]*/
                 }
 
-                onAccepted: btnOk.click()
+                onAccepted: btnOk.clicked()
             }
         }
 
