@@ -1063,6 +1063,7 @@
                     "description": "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints.",
                     "type": "bool",
                     "default_value": false,
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "travel_compensate_overlapping_walls_enabled":
@@ -1106,6 +1107,7 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "xy_offset":
@@ -1483,6 +1485,7 @@
                     "description": "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin.",
                     "type": "bool",
                     "default_value": false,
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1493,6 +1496,7 @@
                             "type": "bool",
                             "default_value": false,
                             "value": "expand_skins_into_infill",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "expand_lower_skins":
@@ -1501,6 +1505,7 @@
                             "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -1515,6 +1520,7 @@
                     "value": "infill_line_distance * 1.4",
                     "minimum_value": "0",
                     "enabled": "expand_upper_skins or expand_lower_skins",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "max_skin_angle_for_expansion":
@@ -1529,6 +1535,7 @@
                     "maximum_value": "90",
                     "default_value": 20,
                     "enabled": "expand_upper_skins or expand_lower_skins",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1542,6 +1549,7 @@
                             "value": "top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
                             "minimum_value": "0",
                             "enabled": "expand_upper_skins or expand_lower_skins",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
