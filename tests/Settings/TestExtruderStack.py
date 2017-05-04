@@ -11,7 +11,7 @@ from UM.Settings.InstanceContainer import InstanceContainer #To check against th
 import cura.Settings.ExtruderStack #The module we're testing.
 from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
 
-from cura.CuraApplication import CuraApplication
+from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -241,7 +241,9 @@ def test_deserializeMoveDefinitionContainer(extruder_stack):
 ##  Tests whether getProperty properly applies the stack-like behaviour on its
 #   containers.
 def test_getPropertyFallThrough(extruder_stack):
-    CuraApplication.getInstance() # To ensure that we have the right Application
+    # ExtruderStack.setNextStack calls registerExtruder for backward compatibility, but we do not need a complete extruder manager
+    ExtruderManager._ExtruderManager__instance = unittest.mock.MagicMock()
+
     #A few instance container mocks to put in the stack.
     mock_layer_heights = {} #For each container type, a mock container that defines layer height to something unique.
     mock_no_settings = {} #For each container type, a mock container that has no settings at all.
