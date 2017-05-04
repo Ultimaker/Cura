@@ -205,6 +205,7 @@ Item
         text: catalog.i18ncp("@action:inmenu menubar:edit", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount);
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-duplicate";
+        shortcut: "Ctrl+M"
     }
 
     Action

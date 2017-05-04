@@ -93,6 +93,11 @@ Menu
             copiesField.focus = true;
         }
 
+        onVisibleChanged:
+        {
+            copiesField.forceActiveFocus();
+        }
+
         standardButtons: StandardButton.Ok | StandardButton.Cancel
 
         Row
@@ -108,6 +113,7 @@ Menu
             SpinBox
             {
                 id: copiesField
+                focus: true
                 minimumValue: 1
                 maximumValue: 99
             }
