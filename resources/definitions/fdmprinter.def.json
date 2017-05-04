@@ -1356,6 +1356,7 @@
                     "minimum_value_warning": "-50",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1385,6 +1386,7 @@
                     "maximum_value_warning": "100",
                     "value": "5 if top_bottom_pattern != 'concentric' else 0",
                     "enabled": "top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
