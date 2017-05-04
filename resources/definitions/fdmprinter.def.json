@@ -4565,7 +4565,17 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "children":
+                    {
+                        "smooth_spiralized_contours":
+                        {
+                            "label": "Smooth Spiralized Contours",
+                            "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
+                            "type": "bool",
+                            "default_value": true
+                        }
+                    }
                 }
             }
         },
