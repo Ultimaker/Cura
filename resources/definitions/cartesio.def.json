@@ -17,9 +17,9 @@
         "has_variants": true,
 
         "variants_name": "Nozzle size",
-        "preferred_variant": "*0.4*",
+        "preferred_variant": "*0.8*",
         "preferred_material": "*pla*",
-        "preferred_quality": "*normal*",
+        "preferred_quality": "*high*",
 
         "machine_extruder_trains":
         {
