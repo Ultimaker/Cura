@@ -227,6 +227,11 @@ class CuraContainerRegistry(ContainerRegistry):
         # If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type or is corrupted.", file_name)}
 
+    @override(ContainerRegistry)
+    def load(self):
+        super().load()
+        self._fixupExtruders()
+
     def _configureProfile(self, profile, id_seed, new_name):
         profile.setReadOnly(False)
         profile.setDirty(True)  # Ensure the profiles are correctly saved
@@ -309,6 +314,8 @@ class CuraContainerRegistry(ContainerRegistry):
             # It is not an extruder or machine, so do nothing with the stack
             return container
 
+        Logger.log("d", "Converting ContainerStack {stack} to {type}", stack = container.getId(), type = container_type)
+
         new_stack = None
         if container_type == "extruder_train":
             new_stack = ExtruderStack.ExtruderStack(container.getId())
@@ -323,3 +330,21 @@ class CuraContainerRegistry(ContainerRegistry):
             os.remove(container.getPath())
 
         return new_stack
+
+    # Fix the extruders that were upgraded to ExtruderStack instances during addContainer.
+    # The stacks are now responsible for setting the next stack on deserialize. However,
+    # due to problems with loading order, some stacks may not have the proper next stack
+    # set after upgrading, because the proper global stack was not yet loaded. This method
+    # makes sure those extruders also get the right stack set.
+    def _fixupExtruders(self):
+        extruder_stacks = self.findContainers(ExtruderStack.ExtruderStack)
+        for extruder_stack in extruder_stacks:
+            if extruder_stack.getNextStack():
+                # Has the right next stack, so ignore it.
+                continue
+
+            machines = ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack.getMetaDataEntry("machine", ""))
+            if machines:
+                extruder_stack.setNextStack(machines[0])
+            else:
+                Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
