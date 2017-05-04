@@ -1368,7 +1368,7 @@
                             "default_value": 0.04,
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "machine_nozzle_size",
-                            "value": "infill_line_width * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
+                            "value": "0.5 * ( infill_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0) ) * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
                             "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
@@ -1397,7 +1397,7 @@
                             "default_value": 0.02,
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "machine_nozzle_size",
-                            "value": "skin_line_width * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
+                            "value": "0.5 * ( skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0) ) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
                             "enabled": "top_bottom_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
