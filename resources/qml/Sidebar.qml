@@ -354,7 +354,6 @@ Rectangle
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        color: UM.Theme.getColor("sidebar")
         visible: !monitoringPrint && !hideSettings
         Component{
             id: wizardDelegate
