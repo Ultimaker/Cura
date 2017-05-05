@@ -152,6 +152,7 @@ Item
                             if (infillListView.activeIndex != index)
                             {
                                 infillDensity.setPropertyValue("value", model.percentage)
+                                infillSteps.setPropertyValue("value", model.steps)
                             }
                         }
                         onEntered:
