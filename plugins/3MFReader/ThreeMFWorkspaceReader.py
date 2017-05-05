@@ -15,6 +15,8 @@ from .WorkspaceDialog import WorkspaceDialog
 import xml.etree.ElementTree as ET
 
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Settings.GlobalStack import GlobalStack
 
 import zipfile
 import io
@@ -35,6 +37,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._material_container_suffix = None # We have to wait until all other plugins are loaded before we can set it
         self._instance_container_suffix = ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix
         self._container_stack_suffix = ContainerRegistry.getMimeTypeForContainer(ContainerStack).preferredSuffix
+        self._extruder_stack_suffix = ContainerRegistry.getMimeTypeForContainer(ExtruderStack).preferredSuffix
+        self._global_stack_suffix = ContainerRegistry.getMimeTypeForContainer(GlobalStack).preferredSuffix
 
         self._resolve_strategies = {}
 
@@ -46,6 +50,35 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if old_id not in self._id_mapping:
             self._id_mapping[old_id] = self._container_registry.uniqueName(old_id)
         return self._id_mapping[old_id]
+
+    ##  Separates the given file list into a list of GlobalStack files and a list of ExtruderStack files.
+    #
+    #   In old versions, extruder stack files have the same suffix as container stack files ".stack.cfg".
+    #
+    def _determineGlobalAndExtruderStackFiles(self, project_file_name, file_list):
+        archive = zipfile.ZipFile(project_file_name, "r")
+
+        global_stack_file_list = [name for name in file_list if name.endswith(self._global_stack_suffix)]
+        extruder_stack_file_list = [name for name in file_list if name.endswith(self._extruder_stack_suffix)]
+
+        # separate container stack files and extruder stack files
+        files_to_determine = [name for name in file_list if name.endswith(self._container_stack_suffix)]
+        for file_name in files_to_determine:
+            container_id = self._stripFileToId(file_name)
+            stack = ContainerStack(container_id)
+            # Deserialize stack by converting read data from bytes to string
+            stack.deserialize(archive.open(file_name).read().decode("utf-8"), connect_signals=False)
+
+            stack_type = stack.getMetaDataEntry("type")
+            if stack_type == "extruder_train":
+                extruder_stack_file_list.append(file_name)
+            elif stack_type == "machine":
+                global_stack_file_list.append(file_name)
+            else:
+                Logger.log("w", "Unknown container stack type '%s' from %s in %s",
+                           stack_type, file_name, project_file_name)
+
+        return global_stack_file_list, extruder_stack_file_list
 
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
@@ -63,23 +96,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Check if there are any conflicts, so we can ask the user.
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
-        container_stack_files = [name for name in cura_file_names if name.endswith(self._container_stack_suffix)]
-        self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
-        machine_conflict = False
-        quality_changes_conflict = False
-        for container_stack_file in container_stack_files:
-            container_id = self._stripFileToId(container_stack_file)
-            serialized = archive.open(container_stack_file).read().decode("utf-8")
-            if machine_name == "":
-                machine_name = self._getMachineNameFromSerializedStack(serialized)
-            stacks = self._container_registry.findContainerStacks(id=container_id)
-            if stacks:
-                # Check if there are any changes at all in any of the container stacks.
-                id_list = self._getContainerIdListFromSerialized(serialized)
-                for index, container_id in enumerate(id_list):
-                    if stacks[0].getContainer(index).getId() != container_id:
-                        machine_conflict = True
-            Job.yieldThread()
+
+        # A few lists of containers in this project files.
+        # When loading the global stack file, it may be associated with those containers, which may or may not be
+        # in Cura already, so we need to provide them as alternative search lists.
+        definition_container_list = []
+        instance_container_list = []
+        material_container_list = []
 
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
@@ -92,6 +115,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             else:
                 definition_container = definitions[0]
+
+            definition_container_list.append(definition_container)
 
             if definition_container.getMetaDataEntry("type") != "extruder":
                 machine_type = definition_container.getName()
@@ -131,6 +156,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             # Deserialize InstanceContainer by converting read data from bytes to string
             instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+
+            instance_container_list.append(instance_container)
+
             container_type = instance_container.getMetaDataEntry("type")
             if container_type == "quality_changes":
                 quality_name = instance_container.getName()
@@ -151,6 +179,27 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 num_user_settings += len(instance_container._instances)
 
             Job.yieldThread()
+
+        # Determine ContainerStack files and ExtruderStack files
+        container_stack_files, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
+            file_name, cura_file_names)
+        self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
+        machine_conflict = False
+        quality_changes_conflict = False
+        for container_stack_file in container_stack_files + extruder_stack_files:
+            container_id = self._stripFileToId(container_stack_file)
+            serialized = archive.open(container_stack_file).read().decode("utf-8")
+            if machine_name == "":
+                machine_name = self._getMachineNameFromSerializedStack(serialized)
+            stacks = self._container_registry.findContainerStacks(id=container_id)
+            if stacks:
+                # Check if there are any changes at all in any of the container stacks.
+                id_list = self._getContainerIdListFromSerialized(serialized)
+                for index, container_id in enumerate(id_list):
+                    if stacks[0].getContainer(index).getId() != container_id:
+                        machine_conflict = True
+            Job.yieldThread()
+
         num_visible_settings = 0
         try:
             temp_preferences = Preferences()
@@ -336,10 +385,54 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Get the stack(s) saved in the workspace.
         Logger.log("d", "Workspace loading is checking stacks containers...")
-        container_stack_files = [name for name in cura_file_names if name.endswith(self._container_stack_suffix)]
+        container_stack_files, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(file_name,
+                                                                                                 cura_file_names)
+
         global_stack = None
         extruder_stacks = []
+        extruder_stacks_added = []
         container_stacks_added = []
+
+        # load extruder stack files
+        try:
+            for extruder_stack_file in extruder_stack_files:
+                container_id = self._stripFileToId(extruder_stack_file)
+
+                container_stacks = self._container_registry.findContainerStacks(id=container_id)
+                if container_stacks:
+                    # this container stack already exists, try to resolve
+                    stack = container_stacks[0]
+                    if self._resolve_strategies["machine"] == "override":
+                        pass  # do nothing
+                    elif self._resolve_strategies["machine"] == "new":
+                        # create a new extruder stack from this one
+                        new_id = self.getNewId(container_id)
+                        stack = ExtruderStack(new_id)
+                        stack.deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
+
+                        # Ensure a unique ID and name
+                        stack._id = new_id
+
+                        self._container_registry.addContainer(stack)
+                        extruder_stacks_added.append(stack)
+                else:
+                    # container not found, create a new one
+                    stack = ExtruderStack(container_id)
+                    stack.deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
+                    self._container_registry.addContainer(stack)
+                    extruder_stacks_added.append(stack)
+
+                extruder_stacks.append(stack)
+
+        except:
+            Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
+            # Something went really wrong. Try to remove any data that we added.
+            for container in extruder_stacks:
+                self._container_registry.removeContainer(container.getId())
+
+            return None
+
+        # load global stack file
         try:
             for container_stack_file in container_stack_files:
                 container_id = self._stripFileToId(container_stack_file)
@@ -350,7 +443,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     stack = container_stacks[0]
                     if self._resolve_strategies["machine"] == "override":
                         # TODO: HACK
-                        # There is a machine, check if it has authenticationd data. If so, keep that data.
+                        # There is a machine, check if it has authentication data. If so, keep that data.
                         network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
                         network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
                         container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
@@ -360,7 +453,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
                     elif self._resolve_strategies["machine"] == "new":
                         new_id = self.getNewId(container_id)
-                        stack = ContainerStack(new_id)
+                        stack = GlobalStack(new_id)
                         stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
 
                         # Ensure a unique ID and name
@@ -371,33 +464,33 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if stack.getMetaDataEntry("machine", None):
                             stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
 
-                        if stack.getMetaDataEntry("type") != "extruder_train":
-                            # Only machines need a new name, stacks may be non-unique
-                            stack.setName(self._container_registry.uniqueName(stack.getName()))
+                        # Only machines need a new name, stacks may be non-unique
+                        stack.setName(self._container_registry.uniqueName(stack.getName()))
                         container_stacks_added.append(stack)
                         self._container_registry.addContainer(stack)
                     else:
                         Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
                 else:
-                    stack = ContainerStack(container_id)
+                    # no existing container stack, so we create a new one
+                    stack = GlobalStack(container_id)
                     # Deserialize stack by converting read data from bytes to string
                     stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
                     container_stacks_added.append(stack)
                     self._container_registry.addContainer(stack)
 
-                if stack.getMetaDataEntry("type") == "extruder_train":
-                    extruder_stacks.append(stack)
-                else:
-                    global_stack = stack
+                global_stack = stack
                 Job.yieldThread()
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added. 
             for container in containers_to_add:
-                self._container_registry.getInstance().removeContainer(container.getId())
+                self._container_registry.removeContainer(container.getId())
 
             for container in container_stacks_added:
-                self._container_registry.getInstance().removeContainer(container.getId())
+                self._container_registry.removeContainer(container.getId())
+
+            for container in extruder_stacks_added:
+                self._container_registry.removeContainer(container.getId())
 
             return None
 
@@ -465,6 +558,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
+
+        # if we are reusing an existing global stack, it can already have extruders associated, so we need to remove
+        # them first
+        if global_stack.extruders:
+            old_extruder_stacks = global_stack.extruders
+            for extruder_stack in old_extruder_stacks:
+                self._container_registry.removeContainer(extruder_stack)
+            global_stack._extruders = []
 
         for stack in extruder_stacks:
             stack.setNextStack(global_stack)
