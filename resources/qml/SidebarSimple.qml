@@ -64,10 +64,11 @@ Item
             id: infillListView
             property int activeIndex:
             {
-                var density = parseInt(infillDensity.properties.value)
+                var density = parseInt(infillDensity.properties.value);
+                var steps = parseInt(infillSteps.properties.value);
                 for(var i = 0; i < infillModel.count; ++i)
                 {
-                    if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
+                    if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax && steps > infillModel.get(i).stepsMin && steps <= infillModel.get(i).stepsMax)
                     {
                         return i;
                     }
@@ -151,6 +152,7 @@ Item
                             if (infillListView.activeIndex != index)
                             {
                                 infillDensity.setPropertyValue("value", model.percentage)
+                                infillSteps.setPropertyValue("value", model.steps)
                             }
                         }
                         onEntered:
@@ -187,6 +189,8 @@ Item
                     steps: 0,
                     percentageMin: -1,
                     percentageMax: 0,
+                    stepsMin: -1,
+                    stepsMax: 0,
                     text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength"),
                     icon: "hollow"
                 })
@@ -196,6 +200,8 @@ Item
                     steps: 0,
                     percentageMin: 0,
                     percentageMax: 30,
+                    stepsMin: -1,
+                    stepsMax: 0,
                     text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
                     icon: "sparse"
                 })
@@ -205,6 +211,8 @@ Item
                     steps: 0,
                     percentageMin: 30,
                     percentageMax: 70,
+                    stepsMin: -1,
+                    stepsMax: 0,
                     text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
                     icon: "dense"
                 })
@@ -213,7 +221,9 @@ Item
                     percentage: 100,
                     steps: 0,
                     percentageMin: 70,
-                    percentageMax: 100,
+                    percentageMax: 9999999999,
+                    stepsMin: -1,
+                    stepsMax: 0,
                     text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
                     icon: "solid"
                 })
@@ -221,8 +231,12 @@ Item
                     name: catalog.i18nc("@label", "Gradual"),
                     percentage: 90,
                     steps: 5,
+                    percentageMin: 0,
+                    percentageMax: 9999999999,
+                    stepsMin: 0,
+                    stepsMax: 9999999999,
                     infill_layer_height: 1.5,
-                    text: catalog.i18nc("@label", "This will gradually fill your model towards the top"),
+                    text: catalog.i18nc("@label", "This will gradually increase the amount of infill towards the top"),
                     icon: "gradual"
                 })
             }
@@ -507,6 +521,16 @@ Item
 
         containerStackId: Cura.MachineManager.activeStackId
         key: "infill_sparse_density"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillSteps
+
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "gradual_infill_steps"
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
