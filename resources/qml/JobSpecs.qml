@@ -174,27 +174,29 @@ Item {
             {
                 id: timeSpecPerFeatureTooltipArea
                 text: {
+                    var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
+                    var visible_names = {
+                        "inset_0": "Outer Wall",
+                        "inset_x": "Inner Walls",
+                        "skin": "Skin",
+                        "infill": "Infill",
+                        "support_infill": "Support",
+                        "support_interface": "Support Interface",
+                        "support": "Helper Structures",
+                        "travel": "Travel",
+                        "retract": "Retractions",
+                        "none": "Other"
+                    };
                     var result = "";
-                    if(base.printDurationPerFeature["inset_0"] && base.printDurationPerFeature["inset_0"].totalSeconds > 0)
-                        result += "Outer Walls: " + base.printDurationPerFeature["inset_0"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["inset_x"] && base.printDurationPerFeature["inset_x"].totalSeconds > 0)
-                        result += "<br/>Inner Walls: " + base.printDurationPerFeature["inset_x"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["skin"] && base.printDurationPerFeature["skin"].totalSeconds > 0)
-                        result += "<br/>Skin: " + base.printDurationPerFeature["skin"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["infill"] && base.printDurationPerFeature["infill"].totalSeconds > 0)
-                        result += "<br/>Infill: " + base.printDurationPerFeature["infill"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["support_infill"] && base.printDurationPerFeature["support_infill"].totalSeconds > 0)
-                        result += "<br/>Support: " + base.printDurationPerFeature["support_infill"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["support_interface"] && base.printDurationPerFeature["support_interface"].totalSeconds > 0)
-                        result += "<br/>Support Interface: " + base.printDurationPerFeature["support_interface"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["support"] && base.printDurationPerFeature["support"].totalSeconds > 0)
-                        result += "<br/>Helper Structures: " + base.printDurationPerFeature["support"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["travel"] && base.printDurationPerFeature["travel"].totalSeconds > 0)
-                        result += "<br/>Travel: " + base.printDurationPerFeature["travel"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["retract"] && base.printDurationPerFeature["retract"].totalSeconds > 0)
-                        result += "<br/>Retractions: " + base.printDurationPerFeature["retract"].getDisplayString(UM.DurationFormat.Short)
-                    if(base.printDurationPerFeature["none"] && base.printDurationPerFeature["none"].totalSeconds > 0)
-                        result += "<br/>Other: " + base.printDurationPerFeature["none"].getDisplayString(UM.DurationFormat.Short)
+                    for(var feature in order)
+                    {
+                        feature = order[feature];
+                        if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
+                        {
+                            result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
+                        }
+                    }
+                    result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
                     return result;
                 }
                 width: childrenRect.width
