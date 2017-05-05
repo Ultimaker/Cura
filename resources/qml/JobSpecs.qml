@@ -176,16 +176,16 @@ Item {
                 text: {
                     var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
                     var visible_names = {
-                        "inset_0": "Outer Wall",
-                        "inset_x": "Inner Walls",
-                        "skin": "Skin",
-                        "infill": "Infill",
-                        "support_infill": "Support",
-                        "support_interface": "Support Interface",
-                        "support": "Helper Structures",
-                        "travel": "Travel",
-                        "retract": "Retractions",
-                        "none": "Other"
+                        "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
+                        "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
+                        "skin": catalog.i18nc("@tooltip", "Skin"),
+                        "infill": catalog.i18nc("@tooltip", "Infill"),
+                        "support_infill": catalog.i18nc("@tooltip", "Support"),
+                        "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
+                        "support": catalog.i18nc("@tooltip", "Helper Structures"),
+                        "travel": catalog.i18nc("@tooltip", "Travel"),
+                        "retract": catalog.i18nc("@tooltip", "Retractions"),
+                        "none": catalog.i18nc("@tooltip", "Other")
                     };
                     var result = "";
                     for(var feature in order)
