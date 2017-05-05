@@ -222,7 +222,7 @@ Item
                     percentage: 90,
                     steps: 5,
                     infill_layer_height: 1.5,
-                    text: catalog.i18nc("@label", "This will gradually fill your model towards the top"),
+                    text: catalog.i18nc("@label", "This will gradually increase the amount of infill towards the top"),
                     icon: "gradual"
                 })
             }
