@@ -808,6 +808,16 @@
                             "maximum_value_warning": "2 * machine_nozzle_size",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
+                        },
+                        "initial_layer_line_width_factor":
+                        {
+                            "label": "Initial Layer Line Width",
+                            "description": "Factor of the line width on the first layer. Only applies to skin and walls.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 100.0,
+                            "minimum_value": "0.001",
+                            "settable_per_mesh": true
                         }
                     }
                 }
