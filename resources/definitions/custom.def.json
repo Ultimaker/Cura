@@ -22,12 +22,5 @@
             "7": "custom_extruder_8"
         },
         "first_start_actions": ["MachineSettingsAction"]
-    },
-    "overrides":
-    {
-        "machine_extruder_count":
-        {
-            "default_value": 1
-        }
     }
 }
