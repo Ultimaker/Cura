@@ -91,9 +91,11 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMaterialId
-    activeIndex: {
+    activeIndex: getIndexById(activeId)
+    function getIndexById(material_id)
+    {
         for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMaterialId) {
+            if (model.getItem(i).id == material_id) {
                 return i;
             }
         }
@@ -149,6 +151,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveMaterial(material_id)
                 }
+                base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
         Button
@@ -169,6 +172,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveMaterial(material_id)
                 }
+                base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
         Button
