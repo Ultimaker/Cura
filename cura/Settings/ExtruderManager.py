@@ -35,7 +35,7 @@ class ExtruderManager(QObject):
     ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self, parent = None):
         super().__init__(parent)
-        self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs.
+        self._extruder_trains = { } #Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
         self._active_extruder_index = 0
         self._selected_object_extruders = []
         Application.getInstance().globalContainerStackChanged.connect(self.__globalContainerStackChanged)
@@ -151,7 +151,8 @@ class ExtruderManager(QObject):
                     object_extruders.add(extruder)
                 else:
                     global_stack = Application.getInstance().getGlobalContainerStack()
-                    object_extruders.add(self._extruder_trains[global_stack.getId()]["0"].getId())
+                    if global_stack.getId() in self._extruder_trains:
+                        object_extruders.add(self._extruder_trains[global_stack.getId()]["0"].getId())
 
             self._selected_object_extruders = list(object_extruders)
 
