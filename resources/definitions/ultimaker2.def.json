@@ -15,7 +15,8 @@
         "platform_texture": "Ultimaker2backplate.png",
         "platform_offset": [9, 0, 0],
         "has_materials": false,
-        "supported_actions":["UpgradeFirmware"]
+        "first_start_actions": ["UM2UpgradeSelection"],
+        "supported_actions":["UM2UpgradeSelection", "UpgradeFirmware"]
     },
     "overrides": {
         "machine_name": { "default_value": "Ultimaker 2" },
