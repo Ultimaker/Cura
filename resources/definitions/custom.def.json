@@ -27,7 +27,7 @@
     {
         "machine_extruder_count":
         {
-            "default_value": 1
+            "default_value": 8
         }
     }
 }
