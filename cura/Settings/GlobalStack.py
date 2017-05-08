@@ -51,7 +51,7 @@ class GlobalStack(CuraContainerStack):
     def addExtruder(self, extruder: ContainerStack) -> None:
         extruder_count = self.getProperty("machine_extruder_count", "value")
         if extruder_count and len(self._extruders) + 1 > extruder_count:
-            Logger.log("w", "Adding extruder [{meta}] to [{id}] but its extruder count is [{count}]".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
+            Logger.log("w", "Adding extruder {meta} to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
 
         self._extruders.append(extruder)
 
