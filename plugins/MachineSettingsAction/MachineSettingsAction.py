@@ -153,7 +153,7 @@ class MachineSettingsAction(MachineAction):
             if machine_manager.hasMaterials:
                 extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
             if machine_manager.hasVariants:
-                extruder_variant_id = machine_manager.activeVariantIds[0]
+                extruder_variant_id = machine_manager.allActiveVariantIds[extruder_manager.extruderIds["0"]]
 
             # Copy any settable_per_extruder setting value from the extruders to the global stack
             extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
