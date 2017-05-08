@@ -672,6 +672,8 @@ class ContainerManager(QObject):
 
         return new_change_instances
 
+    ##  Create a duplicate of a material, which has the same GUID and base_file metadata
+    #   \return \type{str} the id of the newly created container.
     @pyqtSlot(str, result = str)
     def duplicateMaterial(self, material_id: str) -> str:
         containers = self._container_registry.findInstanceContainers(id=material_id)
@@ -694,8 +696,10 @@ class ContainerManager(QObject):
             duplicated_container.deserialize(f.read())
         duplicated_container.setDirty(True)
         self._container_registry.addContainer(duplicated_container)
+        return new_id
 
-    #  Create a new material by cloning Generic PLA and setting the GUID to something unqiue
+    ##  Create a new material by cloning Generic PLA and setting the GUID to something unqiue
+    #   \return \type{str} the id of the newly created container.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
         # Ensure all settings are saved.
@@ -722,6 +726,7 @@ class ContainerManager(QObject):
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
+        return new_id
 
     @pyqtSlot(str, result = "QStringList")
     def getLinkedMaterials(self, material_id: str):
