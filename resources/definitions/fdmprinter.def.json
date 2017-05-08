@@ -1383,8 +1383,8 @@
                     {
                         "expand_upper_skins":
                         {
-                            "label": "Expand Upper Skins",
-                            "description": "Expand upper skin areas (areas with air above) so that they support infill above.",
+                            "label": "Expand Top Skins Into Infill",
+                            "description": "Expand the top skin areas (areas with air above) so that they support infill above.",
                             "type": "bool",
                             "default_value": false,
                             "value": "expand_skins_into_infill",
@@ -1392,8 +1392,8 @@
                         },
                         "expand_lower_skins":
                         {
-                            "label": "Expand Lower Skins",
-                            "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
+                            "label": "Expand Bottom Skins Into Infill",
+                            "description": "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
                             "settable_per_mesh": true
