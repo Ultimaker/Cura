@@ -11,14 +11,18 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from cura.PrinterOutputDevice import ConnectionState
 from UM.Qt.ListModel import ListModel
 from UM.Message import Message
+from UM.Preferences import Preferences
 
 from cura.CuraApplication import CuraApplication
+
+from UM.Util import parseBool
 
 import threading
 import platform
 import glob
 import time
 import os.path
+import serial.tools.list_ports
 from UM.Extension import Extension
 
 from PyQt5.QtQml import QQmlComponent, QQmlContext
@@ -41,11 +45,19 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
         self._check_updates = True
         self._firmware_view = None
 
+        Application.getInstance().globalContainerStackChanged.connect(self.reCheckConnections)
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        self.removeUSBOutputDeviceSignal.connect(self.removeOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+
+        self._preferences = Preferences.getInstance()
+        self._preferences.addPreference("usb_printing/list_all_serial_ports", "False")
+        self._list_all_serial_ports = self._preferences.getValue("usb_printing/list_all_serial_ports")
 
     addUSBOutputDeviceSignal = Signal()
+    removeUSBOutputDeviceSignal = Signal()
     connectionStateChanged = pyqtSignal()
+    serialPortsChanged = pyqtSignal()
 
     progressChanged = pyqtSignal()
     firmwareUpdateChange = pyqtSignal()
@@ -82,9 +94,24 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     def _updateThread(self):
         while self._check_updates:
-            result = self.getSerialPortList(only_list_usb = True)
+            result = self.getSerialPortList(only_list_usb = not self._list_all_serial_ports)
             self._addRemovePorts(result)
             time.sleep(5)
+
+    def reCheckConnections(self):
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return
+
+        for key in self._usb_output_devices:
+            if key == global_container_stack.getMetaDataEntry("serial_port") or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
+                self._usb_output_devices[key].setSerialSpeed(global_container_stack.getMetaDataEntry("serial_rate", "AUTO"))
+                self._usb_output_devices[key].connectionStateChanged.connect(self._onConnectionStateChanged)
+                if parseBool(global_container_stack.getMetaDataEntry("serial_auto_connect")) or global_container_stack.getMetaDataEntry("serial_port") == "AUTO":
+                    self._usb_output_devices[key].connect()
+            else:
+                if self._usb_output_devices[key].isConnected():
+                    self._usb_output_devices[key].close()
 
     ##  Show firmware interface.
     #   This will create the view if its not already created.
@@ -202,30 +229,43 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
 
     ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):
+        ports_changed = False
         # First, find and add all new or changed keys
         for serial_port in list(serial_ports):
             if serial_port not in self._serial_port_list:
+                ports_changed = True
                 self.addUSBOutputDeviceSignal.emit(serial_port)  # Hack to ensure its created in main thread
-                continue
         self._serial_port_list = list(serial_ports)
 
         devices_to_remove = []
         for port, device in self._usb_output_devices.items():
             if port not in self._serial_port_list:
-                device.close()
+                ports_changed = True
+                self.removeUSBOutputDeviceSignal.emit(port)  # Hack to ensure this happens in main thread
                 devices_to_remove.append(port)
 
         for port in devices_to_remove:
             del self._usb_output_devices[port]
 
+        if ports_changed:
+            self.serialPortsChanged.emit()
+
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addOutputDevice(self, serial_port):
         device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
-        device.connectionStateChanged.connect(self._onConnectionStateChanged)
-        device.connect()
         device.progressChanged.connect(self.progressChanged)
         device.firmwareUpdateChange.connect(self.firmwareUpdateChange)
         self._usb_output_devices[serial_port] = device
+
+    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+    def removeOutputDevice(self, serial_port):
+        device = self._usb_output_devices.pop(serial_port, None)
+        if device:
+            if device.isConnected():
+                device.close()
+
+            device.progressChanged.disconnect(self.progressChanged)
+            device.firmwareUpdateChange.disconnect(self.firmwareUpdateChange)
 
     ##  If one of the states of the connected devices change, we might need to add / remove them from the global list.
     def _onConnectionStateChanged(self, serial_port):
@@ -252,24 +292,28 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
     #   \param only_list_usb If true, only usb ports are listed
     def getSerialPortList(self, only_list_usb = False):
         base_list = []
-        if platform.system() == "Windows":
-            import winreg # type: ignore @UnresolvedImport
-            try:
-                key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
-                i = 0
-                while True:
-                    values = winreg.EnumValue(key, i)
-                    if not only_list_usb or "USBSER" in values[0]:
-                        base_list += [values[1]]
-                    i += 1
-            except Exception as e:
-                pass
-        else:
-            if only_list_usb:
-                base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.usb*") + glob.glob("/dev/tty.wchusb*") + glob.glob("/dev/cu.wchusb*")
-                base_list = filter(lambda s: "Bluetooth" not in s, base_list) # Filter because mac sometimes puts them in the list
-            else:
-                base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/tty.wchusb*") + glob.glob("/dev/cu.wchusb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
+        for port in serial.tools.list_ports.comports():
+            if not isinstance(port, tuple):
+                port = (port.device, port.description, port.hwid)
+            if only_list_usb and not port[2].startswith("USB"):
+                continue
+            base_list += [port[0]]
+
         return list(base_list)
 
+    @pyqtProperty("QVariantList", notify = serialPortsChanged)
+    def portList(self):
+        return self._serial_port_list
+
     _instance = None    # type: "USBPrinterOutputDeviceManager"
+
+    @pyqtSlot(bool)
+    def setListAllSerialPorts(self, list_all_serial_ports):
+        if self._list_all_serial_ports == list_all_serial_ports:
+            return
+
+        self._list_all_serial_ports = list_all_serial_ports
+        self._preferences.setValue("usb_printing/list_all_serial_ports", str(list_all_serial_ports))
+
+        result = self.getSerialPortList(only_list_usb = not list_all_serial_ports)
+        self._addRemovePorts(result)
