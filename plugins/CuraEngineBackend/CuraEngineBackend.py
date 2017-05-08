@@ -275,11 +275,14 @@ class CuraEngineBackend(QObject, Backend):
                 error_labels = set()
                 definition_container = self._global_container_stack.getBottom()
                 for key in error_keys:
-                    definitions = definition_container.findDefinitions(key = key)
-                    if definitions:
-                        error_labels.add(definitions[0].label)
-                    else:
+                    for stack in extruders + [self._global_container_stack]: #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
+                        definitions = stack.getBottom().findDefinitions(key = key)
+                        if definitions:
+                            break #Found it! No need to continue search.
+                    else: #No stack has a definition for this setting.
                         Logger.log("w", "When checking settings for errors, unable to find definition for key: {key}".format(key = key))
+                        continue
+                    error_labels.add(definitions[0].label)
 
                 error_labels = ", ".join(error_labels)
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
