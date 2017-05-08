@@ -69,6 +69,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_id = self._stripFileToId(file_name)
             stack = ContainerStack(container_id)
             # Deserialize stack by converting read data from bytes to string
+            #
+            # NOTE: We do not connect the signals here is because all deserialized stacks here are NOT registered
+            # in the ContainerRegistry. So, some stacks from the profile won't be found in the ContainerRegistry,
+            # and thus failing the signal connecting.
+            #
             stack.deserialize(archive.open(file_name).read().decode("utf-8"), connect_signals=False)
 
             stack_type = stack.getMetaDataEntry("type")
