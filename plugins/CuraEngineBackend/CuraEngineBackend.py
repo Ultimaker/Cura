@@ -275,7 +275,11 @@ class CuraEngineBackend(QObject, Backend):
                 error_labels = set()
                 definition_container = self._global_container_stack.getBottom()
                 for key in error_keys:
-                    error_labels.add(definition_container.findDefinitions(key = key)[0].label)
+                    definitions = definition_container.findDefinitions(key = key)
+                    if definitions:
+                        error_labels.add(definitions[0].label)
+                    else:
+                        Logger.log("w", "Unable to find definition for key: {key}".format(key = key))
 
                 error_labels = ", ".join(error_labels)
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
