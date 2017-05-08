@@ -227,6 +227,8 @@ UM.ManagementPage
 
             properties: materialProperties
             containerId: base.currentItem != null ? base.currentItem.id : ""
+
+            property alias pane: base
         }
 
         QtObject

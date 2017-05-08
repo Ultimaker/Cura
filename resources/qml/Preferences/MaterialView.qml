@@ -82,7 +82,11 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.supplier;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: base.setMetaDataEntry("brand", properties.supplier, text)
+                    onEditingFinished:
+                    {
+                        base.setMetaDataEntry("brand", properties.supplier, text);
+                        pane.objectList.currentIndex = pane.getIndexById(base.containerId);
+                    }
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
@@ -91,7 +95,11 @@ TabView
                     width: scrollView.columnWidth;
                     text: properties.material_type;
                     readOnly: !base.editingEnabled;
-                    onEditingFinished: base.setMetaDataEntry("material", properties.material_type, text)
+                    onEditingFinished:
+                    {
+                        base.setMetaDataEntry("material", properties.material_type, text);
+                        pane.objectList.currentIndex = pane.getIndexById(base.containerId)
+                    }
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
@@ -419,6 +427,7 @@ TabView
             Cura.ContainerManager.setContainerName(base.containerId, new_value);
             // update material name label. not so pretty, but it works
             materialProperties.name = new_value;
+            pane.objectList.currentIndex = pane.getIndexById(base.containerId)
         }
     }
 }
