@@ -468,7 +468,7 @@ Rectangle
                 acceptedButtons: Qt.NoButton
             }
 
-            onClicked:
+            onCheckedChanged:
             {
                 var index = 0;
                 if (checked)
