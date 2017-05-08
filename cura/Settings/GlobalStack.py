@@ -3,17 +3,15 @@
 
 from typing import Any
 
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtProperty
 
 from UM.Decorators import override
 
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
-from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
-from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.SettingInstance import InstanceState
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.Interfaces import ContainerInterface
+from UM.Logger import Logger
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -53,7 +51,7 @@ class GlobalStack(CuraContainerStack):
     def addExtruder(self, extruder: ContainerStack) -> None:
         extruder_count = self.getProperty("machine_extruder_count", "value")
         if extruder_count and len(self._extruders) + 1 > extruder_count:
-            raise Exceptions.TooManyExtrudersError("Tried to add extruder to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count))
+            Logger.log("w", "Adding extruder [{meta}] to [{id}] but its extruder count is [{count}]".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
 
         self._extruders.append(extruder)
 
