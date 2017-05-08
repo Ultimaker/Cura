@@ -259,7 +259,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin, Extension):
                 i = 0
                 while True:
                     values = winreg.EnumValue(key, i)
-                    if not only_list_usb or "USBSER" in values[0]:
+                    if not only_list_usb or "USBSER" or "VCP" in values[0]:
                         base_list += [values[1]]
                     i += 1
             except Exception as e:
