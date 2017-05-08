@@ -3292,8 +3292,8 @@
             {
                 "prime_poop_enable":
                 {
-                    "label": "Enable Prime",
-                    "description": "Whether to prime the filament before printing.",
+                    "label": "Enable Prime Blob",
+                    "description": "Whether to prime the filament with a blob before printing.",
                     "type": "bool",
                     "resolve": "any(extruderValues('prime_poop_enable'))",
                     "default_value": true,
