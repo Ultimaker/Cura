@@ -29,7 +29,11 @@ Cura.MachineAction
         repeat: false
         interval: 1
 
-        onTriggered: base.extruderTabsCount = (machineExtruderCountProvider.properties.value > 1) ? parseInt(machineExtruderCountProvider.properties.value) : 0
+        onTriggered:
+        {
+            var extruderCount = parseInt(machineExtruderCountProvider.properties.value);
+            base.extruderTabsCount = (extruderCount > 1) ? extruderCount : 0;
+        }
     }
 
     Connections
@@ -42,6 +46,7 @@ Cura.MachineAction
         onAccepted: manager.onFinishAction()
         onRejected: manager.onFinishAction()
         onClosing: manager.onFinishAction()
+        onVisibilityChanged: extruderTabsCountDelay.start()
     }
 
     anchors.fill: parent;
