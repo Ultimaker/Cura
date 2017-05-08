@@ -187,7 +187,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             Job.yieldThread()
 
-        # Determine ContainerStack files and ExtruderStack files
+        # Load ContainerStack files and ExtruderStack files
         container_stack_files, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
             file_name, cura_file_names)
         self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
@@ -296,7 +296,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
             container_id = self._stripFileToId(definition_container_file)
-            definitions = self._container_registry.findDefinitionContainers(id=container_id)
+            definitions = self._container_registry.findDefinitionContainers(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
                 definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
@@ -313,7 +313,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
-                materials = self._container_registry.findInstanceContainers(id=container_id)
+                materials = self._container_registry.findInstanceContainers(id = container_id)
                 if not materials:
                     material_container = xml_material_profile(container_id)
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
@@ -346,7 +346,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Job.yieldThread()
             if container_type == "user":
                 # Check if quality changes already exists.
-                user_containers = self._container_registry.findInstanceContainers(id=container_id)
+                user_containers = self._container_registry.findInstanceContainers(id = container_id)
                 if not user_containers:
                     containers_to_add.append(instance_container)
                 else:
@@ -405,7 +405,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for extruder_stack_file in extruder_stack_files:
                 container_id = self._stripFileToId(extruder_stack_file)
 
-                container_stacks = self._container_registry.findContainerStacks(id=container_id)
+                container_stacks = self._container_registry.findContainerStacks(id = container_id)
                 if container_stacks:
                     # this container stack already exists, try to resolve
                     stack = container_stacks[0]
@@ -445,7 +445,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 container_id = self._stripFileToId(container_stack_file)
 
                 # Check if a stack by this ID already exists;
-                container_stacks = self._container_registry.findContainerStacks(id=container_id)
+                container_stacks = self._container_registry.findContainerStacks(id = container_id)
                 if container_stacks:
                     stack = container_stacks[0]
                     if self._resolve_strategies["machine"] == "override":
