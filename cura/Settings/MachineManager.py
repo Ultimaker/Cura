@@ -525,6 +525,22 @@ class MachineManager(QObject):
 
         return ""
 
+    @pyqtProperty("QVariantMap", notify = activeVariantChanged)
+    def allActiveVariantIds(self):
+        if not self._global_container_stack:
+            return {}
+
+        result = {}
+
+        for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
+            variant_container = stack.variant
+            if not variant_container:
+                continue
+
+            result[stack.getId()] = variant_container.getId()
+
+        return result
+
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
     def allActiveMaterialIds(self):
         if not self._global_container_stack:
