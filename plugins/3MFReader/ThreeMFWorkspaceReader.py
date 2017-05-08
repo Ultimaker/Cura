@@ -191,7 +191,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = archive.open(container_stack_file).read().decode("utf-8")
             if machine_name == "":
                 machine_name = self._getMachineNameFromSerializedStack(serialized)
-            stacks = self._container_registry.findContainerStacks(id=container_id)
+            stacks = self._container_registry.findContainerStacks(id = container_id)
             if stacks:
                 # Check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized)
