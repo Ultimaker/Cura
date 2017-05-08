@@ -25,7 +25,7 @@
                     "type": "extruder",
                     "default_value": "0",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": false,
+                    "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
