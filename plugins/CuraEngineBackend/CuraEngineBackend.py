@@ -279,7 +279,7 @@ class CuraEngineBackend(QObject, Backend):
                     if definitions:
                         error_labels.add(definitions[0].label)
                     else:
-                        Logger.log("w", "Unable to find definition for key: {key}".format(key = key))
+                        Logger.log("w", "When checking settings for errors, unable to find definition for key: {key}".format(key = key))
 
                 error_labels = ", ".join(error_labels)
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}".format(error_labels)))
