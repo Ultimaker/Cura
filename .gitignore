@@ -35,6 +35,7 @@ plugins/GodMode
 plugins/PostProcessingPlugin
 plugins/X3GWriter
 plugins/FlatProfileExporter
+plugins/ProfileFlattener
 plugins/cura-god-mode-plugin
 
 #Build stuff

@@ -48,35 +48,32 @@ def show(exception_type, value, tb):
     dialog = QDialog()
     dialog.setMinimumWidth(640)
     dialog.setMinimumHeight(640)
-    dialog.setWindowTitle(catalog.i18nc("@title:window", "Oops!"))
+    dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
 
     layout = QVBoxLayout(dialog)
 
-    label = QLabel(dialog)
-    pixmap = QPixmap()
-
-    try:
-        data = urllib.request.urlopen("http://www.randomkittengenerator.com/cats/rotator.php").read()
-        pixmap.loadFromData(data)
-    except:
-        try:
-            from UM.Resources import Resources
-            path = Resources.getPath(Resources.Images, "kitten.jpg")
-            pixmap.load(path)
-        except:
-            pass
-
-    pixmap = pixmap.scaled(150, 150)
-    label.setPixmap(pixmap)
-    label.setAlignment(Qt.AlignCenter)
-    layout.addWidget(label)
+    #label = QLabel(dialog)
+    #pixmap = QPixmap()
+    #try:
+    #    data = urllib.request.urlopen("http://www.randomkittengenerator.com/cats/rotator.php").read()
+    #    pixmap.loadFromData(data)
+    #except:
+    #    try:
+    #        from UM.Resources import Resources
+    #        path = Resources.getPath(Resources.Images, "kitten.jpg")
+    #        pixmap.load(path)
+    #    except:
+    #        pass
+    #pixmap = pixmap.scaled(150, 150)
+    #label.setPixmap(pixmap)
+    #label.setAlignment(Qt.AlignCenter)
+    #layout.addWidget(label)
 
     label = QLabel(dialog)
     layout.addWidget(label)
 
     #label.setScaledContents(True)
     label.setText(catalog.i18nc("@label", """<p>A fatal exception has occurred that we could not recover from!</p>
-        <p>We hope this picture of a kitten helps you recover from the shock.</p>
         <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>
     """))
 

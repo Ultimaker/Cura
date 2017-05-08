@@ -179,9 +179,10 @@ class ProcessSlicedLayersJob(Job):
             # Single extruder via global stack.
             material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
             material = global_container_stack.findContainer({"type": "material"})
-            color_code = material.getMetaDataEntry("color_code")
-            if color_code is None:  # not all stacks have a material color
-                color_code = "#e0e000"
+            color_code = "#e0e000"
+            if material:
+                if material.getMetaDataEntry("color_code") is not None:
+                    color_code = material.getMetaDataEntry("color_code")
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 

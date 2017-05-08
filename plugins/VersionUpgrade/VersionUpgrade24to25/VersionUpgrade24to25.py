@@ -10,6 +10,10 @@ _removed_settings = { #Settings that were removed in 2.5.
     "start_layers_at_same_position"
 }
 
+_split_settings = { #These settings should be copied to all settings it was split into.
+    "support_interface_line_distance": {"support_roof_line_distance", "support_bottom_line_distance"}
+}
+
 ##  A collection of functions that convert the configuration of the user in Cura
 #   2.4 to a configuration for Cura 2.5.
 #
@@ -42,8 +46,16 @@ class VersionUpgrade24to25(VersionUpgrade):
         #Remove settings from the visible_settings.
         if parser.has_section("general") and "visible_settings" in parser["general"]:
             visible_settings = parser["general"]["visible_settings"].split(";")
-            visible_settings = filter(lambda setting: setting not in _removed_settings, visible_settings)
-            parser["general"]["visible_settings"] = ";".join(visible_settings)
+            new_visible_settings = []
+            for setting in visible_settings:
+                if setting in _removed_settings:
+                    continue #Skip.
+                if setting in _split_settings:
+                    for replaced_setting in _split_settings[setting]:
+                        new_visible_settings.append(replaced_setting)
+                    continue #Don't add the original.
+                new_visible_settings.append(setting) #No special handling, so just add the original visible setting back.
+            parser["general"]["visible_settings"] = ";".join(new_visible_settings)
 
         #Change the version number in the file.
         if parser.has_section("general"): #It better have!
@@ -66,6 +78,10 @@ class VersionUpgrade24to25(VersionUpgrade):
         if parser.has_section("values"):
             for removed_setting in (_removed_settings & parser["values"].keys()): #Both in keys that need to be removed and in keys present in the file.
                 del parser["values"][removed_setting]
+            for replaced_setting in (_split_settings.keys() & parser["values"].keys()):
+                for replacement in _split_settings[replaced_setting]:
+                    parser["values"][replacement] = parser["values"][replaced_setting] #Copy to replacement before removing the original!
+                del replaced_setting
 
         #Change the version number in the file.
         if parser.has_section("general"):
