@@ -273,7 +273,6 @@ class CuraEngineBackend(QObject, Backend):
                 if not extruders:
                     error_keys = self._global_container_stack.getErrorKeys()
                 error_labels = set()
-                definition_container = self._global_container_stack.getBottom()
                 for key in error_keys:
                     for stack in extruders + [self._global_container_stack]: #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
                         definitions = stack.getBottom().findDefinitions(key = key)
