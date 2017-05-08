@@ -19,7 +19,7 @@
           "default_value": "\n;start extruder_3\n\nM117 printing\n"
         },
         "machine_extruder_end_code": {
-           "default_value": "\nM104 T3 S160\nG91\nG1 Z0.5 F900\nG90\nG1 X10 Y260 F9000\n;end extruder_3\n"
+           "default_value": "\nM104 T3 S160\nG91\nG1 Z5 F900\nG90\nG1 X1 Y260 F9000\n;end extruder_3\n"
         }
     }
 }
