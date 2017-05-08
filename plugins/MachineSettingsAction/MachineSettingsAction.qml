@@ -380,10 +380,6 @@ Cura.MachineAction
                                         }
                                     }
                                     currentIndex: machineExtruderCountProvider.properties.value - 1
-                                    Component.onCompleted:
-                                    {
-                                        manager.setMachineExtruderCount(1);
-                                    }
                                     onActivated:
                                     {
                                         manager.setMachineExtruderCount(index + 1);
