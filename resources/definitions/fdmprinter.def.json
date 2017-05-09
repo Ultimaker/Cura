@@ -1416,6 +1416,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
                     "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "infill_sparse_thickness":
