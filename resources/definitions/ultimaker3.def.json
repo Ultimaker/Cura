@@ -73,6 +73,8 @@
         "prime_tower_position_y": { "default_value": 178 },
         "prime_tower_wipe_enabled": { "default_value": false },
 
+        "prime_blob_enable": { "enabled": true },
+
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },

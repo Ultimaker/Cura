@@ -3594,7 +3594,8 @@
                     "resolve": "any(extruderValues('prime_blob_enable'))",
                     "default_value": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "enabled": false
                 },
                 "extruder_prime_pos_x":
                 {
