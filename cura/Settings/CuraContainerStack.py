@@ -5,7 +5,8 @@ import os.path
 
 from typing import Any, Optional
 
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from UM.FlameProfiler import pyqtSlot
 
 from UM.Decorators import override
 from UM.Logger import Logger

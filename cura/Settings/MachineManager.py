@@ -45,6 +45,11 @@ class MachineManager(QObject):
         self._active_container_stack = None     # type: ContainerStack
         self._global_container_stack = None     # type: ContainerStack
 
+        self._error_check_timer = QTimer()
+        self._error_check_timer.setInterval(250)
+        self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
+
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -94,10 +99,7 @@ class MachineManager(QObject):
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
                                               "The selected material is incompatible with the selected machine or configuration."))
 
-        self._error_check_timer = QTimer()
-        self._error_check_timer.setInterval(250)
-        self._error_check_timer.setSingleShot(True)
-        self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
+
 
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
@@ -290,8 +292,7 @@ class MachineManager(QObject):
 
                 quality = self._global_container_stack.quality
                 quality.nameChanged.connect(self._onQualityNameChanged)
-
-        self._updateStacksHaveErrors()
+        self._error_check_timer.start()
 
     ##  Update self._stacks_valid according to _checkStacksForErrors and emit if change.
     def _updateStacksHaveErrors(self):
@@ -308,7 +309,7 @@ class MachineManager(QObject):
         if not self._active_container_stack:
             self._active_container_stack = self._global_container_stack
 
-        self._updateStacksHaveErrors()
+        self._error_check_timer.start()
 
         if old_active_container_stack != self._active_container_stack:
             # Many methods and properties related to the active quality actually depend
@@ -330,7 +331,7 @@ class MachineManager(QObject):
             self.activeVariantChanged.emit()
             self.activeMaterialChanged.emit()
 
-        self._updateStacksHaveErrors()
+        self._error_check_timer.start()
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
