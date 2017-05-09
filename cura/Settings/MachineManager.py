@@ -343,7 +343,9 @@ class MachineManager(QObject):
     def addMachine(self, name: str, definition_id: str) -> None:
         new_stack = CuraStackBuilder.createMachine(name, definition_id)
         if new_stack:
-            Application.getInstance().setGlobalContainerStack(new_stack)
+            # only set the global container stack if there was none
+            if self._global_container_stack is None:
+                Application.getInstance().setGlobalContainerStack(new_stack)
         else:
             Logger.log("w", "Failed creating a new machine!")
 
