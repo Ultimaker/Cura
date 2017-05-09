@@ -4473,6 +4473,31 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "infill_mesh_order":
+                {
+                    "label": "Infill Mesh Order",
+                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "default_value": 0,
+                    "value": "1 if infill_mesh else 0",
+                    "minimum_value_warning": "1",
+                    "maximum_value_warning": "50",
+                    "type": "int",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "cutting_mesh":
+                {
+                    "label": "Cutting Mesh",
+                    "description": "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "mold_enabled":
                 {
                     "label": "Mold",
@@ -4506,20 +4531,6 @@
                     "default_value": 40,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
-                },
-                "infill_mesh_order":
-                {
-                    "label": "Infill Mesh Order",
-                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
-                    "default_value": 0,
-                    "value": "1 if infill_mesh else 0",
-                    "minimum_value_warning": "1",
-                    "maximum_value_warning": "50",
-                    "type": "int",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
                 },
                 "support_mesh":
                 {
