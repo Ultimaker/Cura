@@ -18,6 +18,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 
+from configparser import ConfigParser
 import zipfile
 import io
 import configparser
@@ -67,16 +68,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         files_to_determine = [name for name in file_list if name.endswith(self._container_stack_suffix)]
         for file_name in files_to_determine:
             container_id = self._stripFileToId(file_name)
-            stack = ContainerStack(container_id)
-            # Deserialize stack by converting read data from bytes to string
-            #
-            # NOTE: We do not connect the signals here is because all deserialized stacks here are NOT registered
-            # in the ContainerRegistry. So, some stacks from the profile won't be found in the ContainerRegistry,
-            # and thus failing the signal connecting.
-            #
-            stack.deserialize(archive.open(file_name).read().decode("utf-8"), connect_signals=False)
+            # FIXME: HACK!
+            # We need to know the type of the stack file, but we can only know it if we deserialize it.
+            # The default ContainerStack.deserialize() will connect signals, which is not desired in this case.
+            # Since we know that the stack files are INI files, so we directly use the ConfigParser to parse them.
+            serialized = archive.open(file_name).read().decode("utf-8")
+            stack_config = ConfigParser()
+            stack_config.read_string(serialized)
 
-            stack_type = stack.getMetaDataEntry("type")
+            # sanity check
+            if not stack_config.has_option("metadata", "type"):
+                Logger.log("e", "%s in %s doesn't seem to be valid stack file", file_name, project_file_name)
+                continue
+
+            stack_type = stack_config.get("metadata", "type")
             if stack_type == "extruder_train":
                 extruder_stack_file_list.append(file_name)
             elif stack_type == "machine":
