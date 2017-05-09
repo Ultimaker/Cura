@@ -723,6 +723,8 @@ class ContainerManager(QObject):
 
         duplicated_container.setMetaDataEntry("base_file", new_id)
         duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
+        duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
+        duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
