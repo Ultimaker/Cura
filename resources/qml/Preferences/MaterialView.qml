@@ -312,9 +312,10 @@ TabView
                     {
                         id: label
                         width: base.firstColumnWidth;
-                        height: spinBox.height
+                        height: spinBox.height + UM.Theme.getSize("default_lining").height
                         text: model.label
                         elide: Text.ElideRight
+                        verticalAlignment: Qt.AlignVCenter
                     }
                     ReadOnlySpinBox
                     {
