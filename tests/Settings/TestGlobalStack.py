@@ -78,9 +78,10 @@ def test_addExtruder(global_stack):
         global_stack.addExtruder(second_extruder)
     assert len(global_stack.extruders) == 2
     assert global_stack.extruders[1] == second_extruder
-    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
-        with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
-            global_stack.addExtruder(unittest.mock.MagicMock())
+    # Disabled for now for Custom FDM Printer
+    # with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
+    #     with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
+    #         global_stack.addExtruder(unittest.mock.MagicMock())
     assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
 
 #Tests setting user changes profiles to invalid containers.
