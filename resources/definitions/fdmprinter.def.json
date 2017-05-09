@@ -1980,7 +1980,7 @@
                             "default_value": 60,
                             "value": "speed_print",
                             "enabled": "infill_sparse_density > 0",
-                            "limit_to_extruder": "infilll_extruder_nr",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "speed_wall":
