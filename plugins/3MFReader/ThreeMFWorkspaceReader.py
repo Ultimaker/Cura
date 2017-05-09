@@ -87,6 +87,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return global_stack_file_list, extruder_stack_file_list
 
+    ##  read some info so we can make decisions
+    #   \param file_name
+    #   \param show_dialog  In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
         if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
@@ -255,6 +258,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return WorkspaceReader.PreReadResult.accepted
 
+    ##  Read the project file
+    #   Add all the definitions / materials / quality changes that do not exist yet. Then it loads
+    #   all the stacks into the container registry. In some cases it will reuse the container for the global stack.
+    #   It handles old style project files containing .stack.cfg as well as new style project files
+    #   containing global.cfg / extruder.cfg
+    #
+    #   \param file_name
     def read(self, file_name):
         archive = zipfile.ZipFile(file_name, "r")
 
