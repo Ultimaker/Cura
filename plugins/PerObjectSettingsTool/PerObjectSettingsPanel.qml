@@ -141,14 +141,6 @@ Item {
                             storeIndex: 0
                             removeUnusedValue: false
                         }
-
-                        // If the extruder by which the object needs to be printed is changed, ensure that the
-                        // display is also notified of the fact.
-                        Connections
-                        {
-                            target: extruderSelector
-                            onActivated: provider.forcePropertiesChanged()
-                        }
                     }
                 }
             }
