@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 800 * Screen.devicePixelRatio
-    height: 400 * Screen.devicePixelRatio
+    width: 800
+    height: 400
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -71,7 +71,7 @@ UM.Dialog
         TableView
         {
             anchors.fill: parent
-            height: base.height - 150 * Screen.devicePixelRatio
+            height: base.height - 150
             id: tableView
             Component
             {
