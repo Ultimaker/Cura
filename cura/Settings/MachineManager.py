@@ -835,8 +835,8 @@ class MachineManager(QObject):
 
                 name_changed_connect_stacks.append(stack_quality)
                 name_changed_connect_stacks.append(stack_quality_changes)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit=True)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit=True)
 
             # Send emits that are postponed in replaceContainer.
             # Here the stacks are finished replacing and every value can be resolved based on the current state.
@@ -955,13 +955,13 @@ class MachineManager(QObject):
         container_type = container.getMetaDataEntry("type")
         if container_type == "quality":
             stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
-            stack.setQuality(container)
+            stack.setQuality(container, postpone_emit = postpone_emit)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         elif container_type == "quality_changes" or container_type is None:
             # If the container is an empty container, we need to change the quality_changes.
             # Quality can never be set to empty.
             stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
-            stack.setQualityChanges(container)
+            stack.setQualityChanges(container, postpone_emit = postpone_emit)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         self._onQualityNameChanged()
 
