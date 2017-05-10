@@ -89,7 +89,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Logger.log("w", "Unknown container stack type '%s' from %s in %s",
                            stack_type, file_name, project_file_name)
 
-        return global_stack_file_list, extruder_stack_file_list
+        if len(global_stack_file_list) != 1:
+            raise RuntimeError("More than one global stack file found: [%s]" % str(global_stack_file_list))
+
+        return global_stack_file_list[0], extruder_stack_file_list
 
     ##  read some info so we can make decisions
     #   \param file_name
@@ -195,12 +198,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Job.yieldThread()
 
         # Load ContainerStack files and ExtruderStack files
-        container_stack_files, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
+        global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(
             file_name, cura_file_names)
         self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
         machine_conflict = False
         quality_changes_conflict = False
-        for container_stack_file in container_stack_files + extruder_stack_files:
+        for container_stack_file in [global_stack_file] + extruder_stack_files:
             container_id = self._stripFileToId(container_stack_file)
             serialized = archive.open(container_stack_file).read().decode("utf-8")
             if machine_name == "":
@@ -408,7 +411,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Get the stack(s) saved in the workspace.
         Logger.log("d", "Workspace loading is checking stacks containers...")
-        container_stack_files, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(file_name,
+        global_stack_file, extruder_stack_files = self._determineGlobalAndExtruderStackFiles(file_name,
                                                                                                  cura_file_names)
 
         global_stack = None
@@ -457,52 +460,52 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # load global stack file
         try:
-            for container_stack_file in container_stack_files:
-                container_id = self._stripFileToId(container_stack_file)
+            container_id = self._stripFileToId(global_stack_file)
 
-                # Check if a stack by this ID already exists;
-                container_stacks = self._container_registry.findContainerStacks(id = container_id)
-                if container_stacks:
-                    stack = container_stacks[0]
-                    if self._resolve_strategies["machine"] == "override":
-                        # TODO: HACK
-                        # There is a machine, check if it has authentication data. If so, keep that data.
-                        network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
-                        network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
-                        container_stacks[0].deserialize(archive.open(container_stack_file).read().decode("utf-8"))
-                        if network_authentication_id:
-                            container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
-                        if network_authentication_key:
-                            container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
-                    elif self._resolve_strategies["machine"] == "new":
-                        new_id = self.getNewId(container_id)
-                        stack = GlobalStack(new_id)
-                        stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+            # Check if a stack by this ID already exists;
+            container_stacks = self._container_registry.findContainerStacks(id = container_id)
+            if container_stacks:
+                stack = container_stacks[0]
 
-                        # Ensure a unique ID and name
-                        stack._id = new_id
+                if self._resolve_strategies["machine"] == "override":
+                    # TODO: HACK
+                    # There is a machine, check if it has authentication data. If so, keep that data.
+                    network_authentication_id = container_stacks[0].getMetaDataEntry("network_authentication_id")
+                    network_authentication_key = container_stacks[0].getMetaDataEntry("network_authentication_key")
+                    container_stacks[0].deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                    if network_authentication_id:
+                        container_stacks[0].addMetaDataEntry("network_authentication_id", network_authentication_id)
+                    if network_authentication_key:
+                        container_stacks[0].addMetaDataEntry("network_authentication_key", network_authentication_key)
+                elif self._resolve_strategies["machine"] == "new":
+                    new_id = self.getNewId(container_id)
+                    stack = GlobalStack(new_id)
+                    stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
 
-                        # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
-                        # bound machine also needs to change.
-                        if stack.getMetaDataEntry("machine", None):
-                            stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
+                    # Ensure a unique ID and name
+                    stack._id = new_id
 
-                        # Only machines need a new name, stacks may be non-unique
-                        stack.setName(self._container_registry.uniqueName(stack.getName()))
-                        container_stacks_added.append(stack)
-                        self._container_registry.addContainer(stack)
-                    else:
-                        Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
-                else:
-                    # no existing container stack, so we create a new one
-                    stack = GlobalStack(container_id)
-                    # Deserialize stack by converting read data from bytes to string
-                    stack.deserialize(archive.open(container_stack_file).read().decode("utf-8"))
+                    # Extruder stacks are "bound" to a machine. If we add the machine as a new one, the id of the
+                    # bound machine also needs to change.
+                    if stack.getMetaDataEntry("machine", None):
+                        stack.setMetaDataEntry("machine", self.getNewId(stack.getMetaDataEntry("machine")))
+
+                    # Only machines need a new name, stacks may be non-unique
+                    stack.setName(self._container_registry.uniqueName(stack.getName()))
                     container_stacks_added.append(stack)
                     self._container_registry.addContainer(stack)
+                else:
+                    Logger.log("w", "Resolve strategy of %s for machine is not supported", self._resolve_strategies["machine"])
+            else:
+                # no existing container stack, so we create a new one
+                stack = GlobalStack(container_id)
+                # Deserialize stack by converting read data from bytes to string
+                stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
+                container_stacks_added.append(stack)
+                self._container_registry.addContainer(stack)
 
-                global_stack = stack
-                Job.yieldThread()
+            global_stack = stack
+            Job.yieldThread()
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added. 
@@ -585,10 +588,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # if we are reusing an existing global stack, it can already have extruders associated, so we need to remove
         # them first
         if global_stack.extruders:
-            old_extruder_stacks = global_stack.extruders
-            for extruder_stack in old_extruder_stacks:
-                self._container_registry.removeContainer(extruder_stack)
-            global_stack._extruders = []
+            for extruder_stack in global_stack.extruders:
+                if extruder_stack not in extruder_stacks_added:  # skip new ones
+                    self._container_registry.removeContainer(extruder_stack.getId())
 
         for stack in extruder_stacks:
             stack.setNextStack(global_stack)

@@ -251,7 +251,7 @@ class MachineSettingsAction(MachineAction):
         if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
             has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
-            material_container = self._global_container_stack.findContainer({"type": "material"})
+            material_container = self._global_container_stack.material
             material_index = self._global_container_stack.getContainerIndex(material_container)
 
             if has_materials:
@@ -272,7 +272,6 @@ class MachineSettingsAction(MachineAction):
                 if "has_materials" in self._global_container_stack.getMetaData():
                     self._global_container_stack.removeMetaDataEntry("has_materials")
 
-                empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
-                self._global_container_stack.replaceContainer(material_index, empty_material)
+                self._global_container_stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
             Application.getInstance().globalContainerStackChanged.emit()

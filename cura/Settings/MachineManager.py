@@ -20,6 +20,7 @@ from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.Validator import ValidatorState
 from UM.Signal import postponeSignals
+import UM.FlameProfiler
 
 from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
@@ -810,13 +811,13 @@ class MachineManager(QObject):
             # Quality profile come in two flavours: type=quality and type=quality_changes
             # If we found a quality_changes profile then look up its parent quality profile.
             container_type = containers[0].getMetaDataEntry("type")
-            quality_name = containers[0].getName()
-            quality_type = containers[0].getMetaDataEntry("quality_type")
 
             # Get quality container and optionally the quality_changes container.
             if container_type == "quality":
+                quality_type = containers[0].getMetaDataEntry("quality_type")
                 new_quality_settings_list = self.determineQualityAndQualityChangesForQualityType(quality_type)
             elif container_type == "quality_changes":
+                quality_name = containers[0].getName()
                 new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
             else:
                 Logger.log("e", "Tried to set quality to a container that is not of the right type")
@@ -855,6 +856,7 @@ class MachineManager(QObject):
     #
     #   \param quality_name \type{str} the name of the quality.
     #   \return \type{List[Dict]} with keys "stack", "quality" and "quality_changes".
+    @UM.FlameProfiler.profile
     def determineQualityAndQualityChangesForQualityType(self, quality_type):
         quality_manager = QualityManager.getInstance()
         result = []
@@ -952,12 +954,16 @@ class MachineManager(QObject):
         # Disconnect the signal handling from the old container.
         container_type = container.getMetaDataEntry("type")
         if container_type == "quality":
+            if stack.quality == container:
+                return  # Nothing to do
             stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
             stack.setQuality(container)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         elif container_type == "quality_changes" or container_type is None:
             # If the container is an empty container, we need to change the quality_changes.
             # Quality can never be set to empty.
+            if stack.qualityChanges == container:
+                return  # Nothing to do
             stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
             stack.setQualityChanges(container)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
