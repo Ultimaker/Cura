@@ -51,6 +51,11 @@ class MachineManager(QObject):
         self._error_check_timer.setSingleShot(True)
         self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
+        self._instance_container_timer = QTimer()
+        self._instance_container_timer.setInterval(250)
+        self._instance_container_timer.setSingleShot(True)
+        self._instance_container_timer.timeout.connect(self.__onInstanceContainersChanged)
+
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -317,22 +322,14 @@ class MachineManager(QObject):
             # on _active_container_stack. If it changes, then the properties change.
             self.activeQualityChanged.emit()
 
-    def _onInstanceContainersChanged(self, container):
-        container_type = container.getMetaDataEntry("type")
-
-        if container_type == "quality":
-            self.activeQualityChanged.emit()
-        elif container_type == "variant":
-            self.activeVariantChanged.emit()
-        elif container_type == "material":
-            self.activeMaterialChanged.emit()
-        else:
-            # We don't know which one it is, send all the signals
-            self.activeQualityChanged.emit()
-            self.activeVariantChanged.emit()
-            self.activeMaterialChanged.emit()
-
+    def __onInstanceContainersChanged(self):
+        self.activeQualityChanged.emit()
+        self.activeVariantChanged.emit()
+        self.activeMaterialChanged.emit()
         self._error_check_timer.start()
+
+    def _onInstanceContainersChanged(self, container):
+        self._instance_container_timer.start()
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
