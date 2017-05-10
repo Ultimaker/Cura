@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 
 import UM.Qt.ListModel
 from UM.Application import Application
-
+import UM.FlameProfiler
 from cura.Settings.ExtruderManager import ExtruderManager
 
 ##  Model that holds extruders.
@@ -129,6 +129,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     ##  Update the list of extruders.
     #
     #   This should be called whenever the list of extruders changes.
+    @UM.FlameProfiler.profile
     def __updateExtruders(self):
         changed = False
 
