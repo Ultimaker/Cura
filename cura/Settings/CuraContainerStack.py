@@ -66,8 +66,8 @@ class CuraContainerStack(ContainerStack):
     ##  Set the quality changes container.
     #
     #   \param new_quality_changes The new quality changes container. It is expected to have a "type" metadata entry with the value "quality_changes".
-    def setQualityChanges(self, new_quality_changes: InstanceContainer) -> None:
-        self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes)
+    def setQualityChanges(self, new_quality_changes: InstanceContainer, postpone_emit = False) -> None:
+        self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes, postpone_emit = postpone_emit)
 
     ##  Set the quality changes container by an ID.
     #
@@ -93,8 +93,8 @@ class CuraContainerStack(ContainerStack):
     ##  Set the quality container.
     #
     #   \param new_quality The new quality container. It is expected to have a "type" metadata entry with the value "quality".
-    def setQuality(self, new_quality: InstanceContainer) -> None:
-        self.replaceContainer(_ContainerIndexes.Quality, new_quality)
+    def setQuality(self, new_quality: InstanceContainer, postpone_emit = False) -> None:
+        self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit = postpone_emit)
 
     ##  Set the quality container by an ID.
     #
@@ -131,8 +131,8 @@ class CuraContainerStack(ContainerStack):
     ##  Set the material container.
     #
     #   \param new_quality_changes The new material container. It is expected to have a "type" metadata entry with the value "quality_changes".
-    def setMaterial(self, new_material: InstanceContainer) -> None:
-        self.replaceContainer(_ContainerIndexes.Material, new_material)
+    def setMaterial(self, new_material: InstanceContainer, postpone_emit = False) -> None:
+        self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
     ##  Set the material container by an ID.
     #

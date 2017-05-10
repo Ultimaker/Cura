@@ -51,6 +51,11 @@ class MachineManager(QObject):
         self._error_check_timer.setSingleShot(True)
         self._error_check_timer.timeout.connect(self._updateStacksHaveErrors)
 
+        self._instance_container_timer = QTimer()
+        self._instance_container_timer.setInterval(250)
+        self._instance_container_timer.setSingleShot(True)
+        self._instance_container_timer.timeout.connect(self.__onInstanceContainersChanged)
+
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -317,22 +322,14 @@ class MachineManager(QObject):
             # on _active_container_stack. If it changes, then the properties change.
             self.activeQualityChanged.emit()
 
-    def _onInstanceContainersChanged(self, container):
-        container_type = container.getMetaDataEntry("type")
-
-        if container_type == "quality":
-            self.activeQualityChanged.emit()
-        elif container_type == "variant":
-            self.activeVariantChanged.emit()
-        elif container_type == "material":
-            self.activeMaterialChanged.emit()
-        else:
-            # We don't know which one it is, send all the signals
-            self.activeQualityChanged.emit()
-            self.activeVariantChanged.emit()
-            self.activeMaterialChanged.emit()
-
+    def __onInstanceContainersChanged(self):
+        self.activeQualityChanged.emit()
+        self.activeVariantChanged.emit()
+        self.activeMaterialChanged.emit()
         self._error_check_timer.start()
+
+    def _onInstanceContainersChanged(self, container):
+        self._instance_container_timer.start()
 
     def _onPropertyChanged(self, key, property_name):
         if property_name == "value":
@@ -811,13 +808,13 @@ class MachineManager(QObject):
             # Quality profile come in two flavours: type=quality and type=quality_changes
             # If we found a quality_changes profile then look up its parent quality profile.
             container_type = containers[0].getMetaDataEntry("type")
+            quality_name = containers[0].getName()
+            quality_type = containers[0].getMetaDataEntry("quality_type")
 
             # Get quality container and optionally the quality_changes container.
             if container_type == "quality":
-                quality_type = containers[0].getMetaDataEntry("quality_type")
                 new_quality_settings_list = self.determineQualityAndQualityChangesForQualityType(quality_type)
             elif container_type == "quality_changes":
-                quality_name = containers[0].getName()
                 new_quality_settings_list = self._determineQualityAndQualityChangesForQualityChanges(quality_name)
             else:
                 Logger.log("e", "Tried to set quality to a container that is not of the right type")
@@ -835,8 +832,8 @@ class MachineManager(QObject):
 
                 name_changed_connect_stacks.append(stack_quality)
                 name_changed_connect_stacks.append(stack_quality_changes)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality)
-                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality, postpone_emit=True)
+                self._replaceQualityOrQualityChangesInStack(stack, stack_quality_changes, postpone_emit=True)
 
             # Send emits that are postponed in replaceContainer.
             # Here the stacks are finished replacing and every value can be resolved based on the current state.
@@ -954,18 +951,14 @@ class MachineManager(QObject):
         # Disconnect the signal handling from the old container.
         container_type = container.getMetaDataEntry("type")
         if container_type == "quality":
-            if stack.quality == container:
-                return  # Nothing to do
             stack.quality.nameChanged.disconnect(self._onQualityNameChanged)
-            stack.setQuality(container)
+            stack.setQuality(container, postpone_emit = postpone_emit)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         elif container_type == "quality_changes" or container_type is None:
             # If the container is an empty container, we need to change the quality_changes.
             # Quality can never be set to empty.
-            if stack.qualityChanges == container:
-                return  # Nothing to do
             stack.qualityChanges.nameChanged.disconnect(self._onQualityNameChanged)
-            stack.setQualityChanges(container)
+            stack.setQualityChanges(container, postpone_emit = postpone_emit)
             stack.qualityChanges.nameChanged.connect(self._onQualityNameChanged)
         self._onQualityNameChanged()
 
