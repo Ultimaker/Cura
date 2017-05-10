@@ -262,6 +262,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return WorkspaceReader.PreReadResult.cancelled
 
         self._resolve_strategies = self._dialog.getResult()
+        # Default values
+        for k, v in self._resolve_strategies.items():
+            if v is None:
+                self._resolve_strategies[k] = "new"
 
         return WorkspaceReader.PreReadResult.accepted
 
@@ -582,7 +586,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     self._container_registry.addContainer(container)
 
                     # Replace the quality/definition changes container
-                    old_container = global_stack.findContainer({"type": container_type})
+                    if container_type == "quality_changes":
+                        old_container = global_stack.qualityChanges
+                    elif container_type == "definition_changes":
+                        old_container = global_stack.definitionChanges
+                    # old_container = global_stack.findContainer({"type": container_type})
                     if old_container.getId() == old_id:
                         changes_index = global_stack.getContainerIndex(old_container)
                         global_stack.replaceContainer(changes_index, container)
