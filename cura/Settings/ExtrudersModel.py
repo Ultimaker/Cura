@@ -117,9 +117,11 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             self._active_extruder_stack = active_extruder_stack
 
     def _onExtruderStackContainersChanged(self, container):
-        if container.getMetaDataEntry("type") == "material":
+        # Update when there is an empty container or material change
+        if container.getMetaDataEntry("type") == "material" or container.getMetaDataEntry("type") is None:
             # The ExtrudersModel needs to be updated when the material-name or -color changes, because the user identifies extruders by material-name
             self._updateExtruders()
+
 
     modelChanged = pyqtSignal()
 
@@ -137,7 +139,6 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             changed = True
 
         items = []
-
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             if self._add_global:
