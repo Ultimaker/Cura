@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 
 import UM.Qt.ListModel
 from UM.Application import Application
@@ -57,6 +57,11 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self.addRoleName(self.DefinitionRole, "definition")
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.VariantRole, "variant")
+
+        self._update_extruder_timer = QTimer()
+        self._update_extruder_timer.setInterval(250)
+        self._update_extruder_timer.setSingleShot(True)
+        self._update_extruder_timer.timeout.connect(self.__updateExtruders)
 
         self._add_global = False
         self._simple_names = False
@@ -118,10 +123,13 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
     modelChanged = pyqtSignal()
 
+    def _updateExtruders(self):
+        self._update_extruder_timer.start()
+
     ##  Update the list of extruders.
     #
     #   This should be called whenever the list of extruders changes.
-    def _updateExtruders(self):
+    def __updateExtruders(self):
         changed = False
 
         if self.rowCount() != 0:
