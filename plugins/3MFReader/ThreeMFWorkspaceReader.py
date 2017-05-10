@@ -67,7 +67,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # separate container stack files and extruder stack files
         files_to_determine = [name for name in file_list if name.endswith(self._container_stack_suffix)]
         for file_name in files_to_determine:
-            container_id = self._stripFileToId(file_name)
             # FIXME: HACK!
             # We need to know the type of the stack file, but we can only know it if we deserialize it.
             # The default ContainerStack.deserialize() will connect signals, which is not desired in this case.
@@ -398,7 +397,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         pass
                 quality_changes_instance_containers.append(instance_container)
             else:
-                continue
+                existing_container = self._container_registry.findInstanceContainers(id = container_id)
+                if not existing_container:
+                    containers_to_add.append(instance_container)
 
         # Add all the containers right before we try to add / serialize the stack
         for container in containers_to_add:
