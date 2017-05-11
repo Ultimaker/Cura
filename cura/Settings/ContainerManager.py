@@ -721,7 +721,6 @@ class ContainerManager(QObject):
         with open(containers[0].getPath(), encoding="utf-8") as f:
             duplicated_container.deserialize(f.read())
 
-        duplicated_container.setMetaDataEntry("base_file", new_id)
         duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
         duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
         duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
@@ -760,7 +759,6 @@ class ContainerManager(QObject):
             Logger.log("d", "Unable to make the material with id %s unique, because it doesn't exist.", material_id)
             return ""
 
-        containers[0].setMetaDataEntry("base_file", material_id)
         containers[0].setMetaDataEntry("GUID", str(uuid.uuid4()))
 
 
