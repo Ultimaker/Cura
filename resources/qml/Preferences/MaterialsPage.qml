@@ -81,6 +81,7 @@ UM.ManagementPage
             anchors.fill: parent;
             onClicked:
             {
+                forceActiveFocus();
                 if(!parent.ListView.isCurrentItem)
                 {
                     parent.ListView.view.currentIndex = index;
