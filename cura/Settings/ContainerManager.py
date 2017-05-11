@@ -674,6 +674,7 @@ class ContainerManager(QObject):
         return new_change_instances
 
     ##  Create a duplicate of a material, which has the same GUID and base_file metadata
+    #
     #   \return \type{str} the id of the newly created container.
     @pyqtSlot(str, result = str)
     def duplicateMaterial(self, material_id: str) -> str:
@@ -700,6 +701,7 @@ class ContainerManager(QObject):
         return self._getMaterialContainerIdForActiveMachine(new_id)
 
     ##  Create a new material by cloning Generic PLA and setting the GUID to something unqiue
+    #
     #   \return \type{str} the id of the newly created container.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
@@ -730,6 +732,10 @@ class ContainerManager(QObject):
         self._container_registry.addContainer(duplicated_container)
         return self._getMaterialContainerIdForActiveMachine(new_id)
 
+    ##  Find the id of a material container based on the new material
+    #   Utilty function that is shared between duplicateMaterial and createMaterial
+    #
+    #   \param base_file \type{str} the id of the created container.
     def _getMaterialContainerIdForActiveMachine(self, base_file):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
@@ -746,10 +752,16 @@ class ContainerManager(QObject):
 
             if materials:
                 return materials[0].getId()
+
+            Logger.log("w", "Unable to find a suitable container based on %s for the current machine .", base_file)
             return "" # do not activate a new material if a container can not be found
 
         return base_file
 
+    ##  Get a list of materials that have the same GUID as the reference material
+    #
+    #   \param material_id \type{str} the id of the material for which to get the linked materials.
+    #   \return \type{list} a list of names of materials with the same GUID
     @pyqtSlot(str, result = "QStringList")
     def getLinkedMaterials(self, material_id: str):
         containers = self._container_registry.findInstanceContainers(id=material_id)
@@ -773,6 +785,8 @@ class ContainerManager(QObject):
             linked_material_names.append(container.getName())
         return linked_material_names
 
+    ##  Unlink a material from all other materials by creating a new GUID
+    #   \param material_id \type{str} the id of the material to create a new GUID for.
     @pyqtSlot(str)
     def unlinkMaterial(self, material_id: str):
         containers = self._container_registry.findInstanceContainers(id=material_id)
