@@ -1346,7 +1346,7 @@
                     "description": "The height of infill of a given density before switching to half the density.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 5.0,
+                    "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
@@ -1383,8 +1383,8 @@
                     {
                         "expand_upper_skins":
                         {
-                            "label": "Expand Upper Skins",
-                            "description": "Expand upper skin areas (areas with air above) so that they support infill above.",
+                            "label": "Expand Top Skins Into Infill",
+                            "description": "Expand the top skin areas (areas with air above) so that they support infill above.",
                             "type": "bool",
                             "default_value": false,
                             "value": "expand_skins_into_infill",
@@ -1392,8 +1392,8 @@
                         },
                         "expand_lower_skins":
                         {
-                            "label": "Expand Lower Skins",
-                            "description": "Expand lower skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
+                            "label": "Expand Bottom Skins Into Infill",
+                            "description": "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
                             "settable_per_mesh": true
@@ -3235,13 +3235,26 @@
                 "support_bottom_stair_step_height":
                 {
                     "label": "Support Stair Step Height",
-                    "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
+                    "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
+                    "enabled": "support_enable",
+                    "settable_per_mesh": true
+                },
+                "support_bottom_stair_step_width":
+                {
+                    "label": "Support Stair Step Maximum Width",
+                    "description": "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5.0,
+                    "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10.0",
                     "enabled": "support_enable",
                     "settable_per_mesh": true
                 },
@@ -3573,6 +3586,17 @@
             "description": "Adhesion",
             "children":
             {
+                "prime_blob_enable":
+                {
+                    "label": "Enable Prime Blob",
+                    "description": "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time.",
+                    "type": "bool",
+                    "resolve": "any(extruderValues('prime_blob_enable'))",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "enabled": false
+                },
                 "extruder_prime_pos_x":
                 {
                     "label": "Extruder Prime X Position",
@@ -4192,7 +4216,7 @@
                     "type": "float",
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": 15,
+                    "default_value": 20,
                     "resolve": "max(extruderValues('prime_tower_size'))",
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
@@ -4449,6 +4473,31 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "infill_mesh_order":
+                {
+                    "label": "Infill Mesh Order",
+                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "default_value": 0,
+                    "value": "1 if infill_mesh else 0",
+                    "minimum_value_warning": "1",
+                    "maximum_value_warning": "50",
+                    "type": "int",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "cutting_mesh":
+                {
+                    "label": "Cutting Mesh",
+                    "description": "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "mold_enabled":
                 {
                     "label": "Mold",
@@ -4482,20 +4531,6 @@
                     "default_value": 40,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
-                },
-                "infill_mesh_order":
-                {
-                    "label": "Infill Mesh Order",
-                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
-                    "default_value": 0,
-                    "value": "1 if infill_mesh else 0",
-                    "minimum_value_warning": "1",
-                    "maximum_value_warning": "50",
-                    "type": "int",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
                 },
                 "support_mesh":
                 {
@@ -4553,6 +4588,14 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "smooth_spiralized_contours":
+                {
+                    "label": "Smooth Spiralized Contours",
+                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "magic_spiralize"
                 }
             }
         },

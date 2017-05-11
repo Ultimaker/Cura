@@ -430,7 +430,7 @@ class ContainerManager(QObject):
 
         for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
-            quality_changes = stack.findContainer(type = "quality_changes")
+            quality_changes = stack.qualityChanges
             if not quality_changes or quality_changes.isReadOnly():
                 Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
                 continue
@@ -483,8 +483,8 @@ class ContainerManager(QObject):
         # Go through the active stacks and create quality_changes containers from the user containers.
         for stack in ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks():
             user_container = stack.getTop()
-            quality_container = stack.findContainer(type = "quality")
-            quality_changes_container = stack.findContainer(type = "quality_changes")
+            quality_container = stack.quality
+            quality_changes_container = stack.qualityChanges
             if not quality_container or not quality_changes_container:
                 Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
                 continue
@@ -605,7 +605,7 @@ class ContainerManager(QObject):
         machine_definition = global_stack.getBottom()
 
         active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
-        material_containers = [stack.findContainer(type="material") for stack in active_stacks]
+        material_containers = [stack.material for stack in active_stacks]
 
         result = self._duplicateQualityOrQualityChangesForMachineType(quality_name, base_name,
                     QualityManager.getInstance().getParentMachineDefinition(machine_definition),

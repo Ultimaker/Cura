@@ -69,6 +69,8 @@ from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.ExtruderStack import ExtruderStack
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -106,6 +108,7 @@ class CuraApplication(QtApplication):
         UserInstanceContainer = Resources.UserType + 6
         MachineStack = Resources.UserType + 7
         ExtruderStack = Resources.UserType + 8
+        DefinitionChangesContainer = Resources.UserType + 9
 
     Q_ENUMS(ResourceTypes)
 
@@ -151,6 +154,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
         Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+        Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
@@ -158,6 +162,7 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
@@ -326,6 +331,7 @@ class CuraApplication(QtApplication):
             blackmagic
                 print_sequence
                 infill_mesh
+                cutting_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
@@ -413,7 +419,7 @@ class CuraApplication(QtApplication):
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
                 elif instance_type == "definition_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+                    path = Resources.getStoragePath(self.ResourceTypes.DefinitionChangesContainer, file_name)
 
                 if path:
                     instance.setPath(path)
@@ -436,16 +442,18 @@ class CuraApplication(QtApplication):
 
         mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
         file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-        stack_type = stack.getMetaDataEntry("type", None)
+
         path = None
-        if not stack_type or stack_type == "machine":
+        if isinstance(stack, GlobalStack):
             path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-        elif stack_type == "extruder_train":
+        elif isinstance(stack, ExtruderStack):
             path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-        if path:
-            stack.setPath(path)
-            with SaveFile(path, "wt") as f:
-                f.write(data)
+        else:
+            path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
+
+        stack.setPath(path)
+        with SaveFile(path, "wt") as f:
+            f.write(data)
 
 
     @pyqtSlot(str, result = QUrl)
@@ -1273,6 +1281,8 @@ class CuraApplication(QtApplication):
         root = self.getController().getScene().getRoot()
         arranger = Arrange.create(scene_root = root)
         min_offset = 8
+
+        self.fileLoaded.emit(filename)
 
         for node in nodes:
             node.setSelectable(True)

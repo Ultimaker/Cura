@@ -154,7 +154,7 @@ Item
                 id: definitionsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
+                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
@@ -179,7 +179,7 @@ Item
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
-                    if(!ExtruderManager.activeExtruderStackId && ExtruderManager.extruderCount > 0)
+                    if(!ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
                         return model.type == "category"

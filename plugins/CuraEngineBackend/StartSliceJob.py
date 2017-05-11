@@ -4,6 +4,7 @@
 import numpy
 from string import Formatter
 from enum import IntEnum
+import time
 
 from UM.Job import Job
 from UM.Application import Application
@@ -230,25 +231,22 @@ class StartSliceJob(Job):
         keys = stack.getAllKeys()
         settings = {}
         for key in keys:
-            # Use resolvement value if available, or take the value
-            resolved_value = stack.getProperty(key, "resolve")
-            if resolved_value is not None:
-                # There is a resolvement value. Check if we need to use it.
-                user_container = stack.findContainer({"type": "user"})
-                quality_changes_container = stack.findContainer({"type": "quality_changes"})
-                if user_container.hasProperty(key,"value") or quality_changes_container.hasProperty(key,"value"):
-                    # Normal case
-                    settings[key] = stack.getProperty(key, "value")
-                else:
-                    settings[key] = resolved_value
-            else:
-                # Normal case
-                settings[key] = stack.getProperty(key, "value")
+            settings[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
         start_gcode = settings["machine_start_gcode"]
-        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
-        settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
+        #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
+        bed_temperature_settings = {"material_bed_temperature", "material_bed_temperature_layer_0"}
+        settings["material_bed_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in bed_temperature_settings))
+        print_temperature_settings = {"material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"}
+        settings["material_print_temp_prepend"] = all(("{" + setting + "}" not in start_gcode for setting in print_temperature_settings))
+
+        settings["print_bed_temperature"] = settings["material_bed_temperature"]
+        settings["print_temperature"] = settings["material_print_temperature"]
+
+        settings["time"] = time.strftime('%H:%M:%S')
+        settings["date"] = time.strftime('%d-%m-%Y')
+        settings["day"] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
 
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")

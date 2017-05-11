@@ -638,7 +638,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     if self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["id"] == "":
                         Logger.log("e", "No cartridge loaded in slot %s, unable to start print", index + 1)
                         self._error_message = Message(
-                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No PrinterCore loaded in slot {0}".format(index + 1)))
+                            i18n_catalog.i18nc("@info:status", "Unable to start a new print job. No Printcore loaded in slot {0}".format(index + 1)))
                         self._error_message.show()
                         return
                     if self._json_printer_state["heads"][0]["extruders"][index]["active_material"]["guid"] == "":

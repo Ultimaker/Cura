@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
+from PyQt5.QtCore import QUrl, pyqtSignal, QObject, pyqtProperty, QCoreApplication
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.PluginRegistry import PluginRegistry
@@ -29,11 +29,13 @@ class WorkspaceDialog(QObject):
         self._default_strategy = "override"
         self._result = {"machine": self._default_strategy,
                         "quality_changes": self._default_strategy,
+                        "definition_changes": self._default_strategy,
                         "material": self._default_strategy}
         self._visible = False
         self.showDialogSignal.connect(self.__show)
 
         self._has_quality_changes_conflict = False
+        self._has_definition_changes_conflict = False
         self._has_machine_conflict = False
         self._has_material_conflict = False
         self._num_visible_settings = 0
@@ -51,6 +53,7 @@ class WorkspaceDialog(QObject):
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
+    definitionChangesConflictChanged = pyqtSignal()
     materialConflictChanged = pyqtSignal()
     numVisibleSettingsChanged = pyqtSignal()
     activeModeChanged = pyqtSignal()
@@ -185,6 +188,10 @@ class WorkspaceDialog(QObject):
     def qualityChangesConflict(self):
         return self._has_quality_changes_conflict
 
+    @pyqtProperty(bool, notify=definitionChangesConflictChanged)
+    def definitionChangesConflict(self):
+        return self._has_definition_changes_conflict
+
     @pyqtProperty(bool, notify=materialConflictChanged)
     def materialConflict(self):
         return self._has_material_conflict
@@ -214,11 +221,18 @@ class WorkspaceDialog(QObject):
             self._has_quality_changes_conflict = quality_changes_conflict
             self.qualityChangesConflictChanged.emit()
 
+    def setDefinitionChangesConflict(self, definition_changes_conflict):
+        if self._has_definition_changes_conflict != definition_changes_conflict:
+            self._has_definition_changes_conflict = definition_changes_conflict
+            self.definitionChangesConflictChanged.emit()
+
     def getResult(self):
         if "machine" in self._result and not self._has_machine_conflict:
             self._result["machine"] = None
         if "quality_changes" in self._result and not self._has_quality_changes_conflict:
             self._result["quality_changes"] = None
+        if "definition_changes" in self._result and not self._has_definition_changes_conflict:
+            self._result["definition_changes"] = None
         if "material" in self._result and not self._has_material_conflict:
             self._result["material"] = None
         return self._result
@@ -240,6 +254,7 @@ class WorkspaceDialog(QObject):
         # Reset the result
         self._result = {"machine": self._default_strategy,
                         "quality_changes": self._default_strategy,
+                        "definition_changes": self._default_strategy,
                         "material": self._default_strategy}
         self._visible = True
         self.showDialogSignal.emit()
