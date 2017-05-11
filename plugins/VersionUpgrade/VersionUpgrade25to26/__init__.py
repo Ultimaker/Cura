@@ -18,11 +18,11 @@ def getMetaData():
             "api": 3
         },
         "version_upgrade": {
-            # From              To                 Upgrade function
-            ("preferences", 4): ("preferences", 5, upgrade.upgradePreferences),
-            ("quality", 2):     ("quality", 3,     upgrade.upgradeInstanceContainer),
-            ("variant", 2):     ("variant", 3,     upgrade.upgradeInstanceContainer), #We can re-use upgradeContainerStack since there is nothing specific to quality, variant or user profiles being changed.
-            ("user", 2):        ("user", 3,        upgrade.upgradeInstanceContainer)
+            # From                    To                       Upgrade function
+            ("preferences", 4000000): ("preferences", 4000001, upgrade.upgradePreferences),
+            ("quality", 2000000):     ("quality", 2000001,     upgrade.upgradeInstanceContainer),
+            ("variant", 2000000):     ("variant", 2000001,     upgrade.upgradeInstanceContainer), #We can re-use upgradeContainerStack since there is nothing specific to quality, variant or user profiles being changed.
+            ("user", 2000000):        ("user", 2000001,        upgrade.upgradeInstanceContainer)
         },
         "sources": {
             "quality": {

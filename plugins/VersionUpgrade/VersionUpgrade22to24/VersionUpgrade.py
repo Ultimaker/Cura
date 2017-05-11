@@ -144,4 +144,6 @@ class VersionUpgrade22to24(VersionUpgrade):
     def getCfgVersion(self, serialised):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
-        return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        setting_version = int(parser.get("general", "version", fallback = 0))
+        return format_version * 1000000 + setting_version
