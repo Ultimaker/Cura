@@ -6,15 +6,15 @@ from . import VersionUpgrade24to25
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-upgrade = VersionUpgrade24to25.VersionUpgrade24to25()
+upgrade = VersionUpgrade25to26.VersionUpgrade25to26()
 
 def getMetaData():
     return {
         "plugin": {
-            "name": catalog.i18nc("@label", "Version Upgrade 2.4 to 2.5"),
+            "name": catalog.i18nc("@label", "Version Upgrade 2.5 to 2.6"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Upgrades configurations from Cura 2.4 to Cura 2.5."),
+            "description": catalog.i18nc("@info:whatsthis", "Upgrades configurations from Cura 2.5 to Cura 2.6."),
             "api": 3
         },
         "version_upgrade": {
