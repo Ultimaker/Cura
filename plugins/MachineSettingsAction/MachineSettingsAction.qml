@@ -16,23 +16,13 @@ Cura.MachineAction
     property var extrudersModel: Cura.ExtrudersModel{}
     property int extruderTabsCount: 0
 
-    Component.onCompleted:
+    Connections
     {
-        // Populate extruder tabs after a short delay, because otherwise the tabs that are added when
-        // the dialog is created are stuck.
-        extruderTabsCountDelay.start();
-    }
-
-    Timer
-    {
-        id: extruderTabsCountDelay
-        repeat: false
-        interval: 1
-
-        onTriggered:
+        target: base.extrudersModel
+        onModelChanged:
         {
-            var extruderCount = parseInt(machineExtruderCountProvider.properties.value);
-            base.extruderTabsCount = (extruderCount > 1) ? extruderCount : 0;
+            var extruderCount = base.extrudersModel.rowCount();
+            base.extruderTabsCount = extruderCount > 1 ? extruderCount : 0;
         }
     }
 
@@ -46,7 +36,6 @@ Cura.MachineAction
         onAccepted: manager.onFinishAction()
         onRejected: manager.onFinishAction()
         onClosing: manager.onFinishAction()
-        onVisibilityChanged: extruderTabsCountDelay.start()
     }
 
     anchors.fill: parent;
@@ -383,7 +372,6 @@ Cura.MachineAction
                                     onActivated:
                                     {
                                         manager.setMachineExtruderCount(index + 1);
-                                        base.extruderTabsCount = (index > 0) ? index + 1 : 0;
                                     }
                                 }
 
