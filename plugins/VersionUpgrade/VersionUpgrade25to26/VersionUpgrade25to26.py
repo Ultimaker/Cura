@@ -86,7 +86,7 @@ class VersionUpgrade25to26(VersionUpgrade):
 
         #Change the version number in the file.
         if parser.has_section("general"):
-            parser["general"]["version"] = "3"
+            parser["general"]["setting_version"] = "1"
 
         #Re-serialise the file.
         output = io.StringIO()
