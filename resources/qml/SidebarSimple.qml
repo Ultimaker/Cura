@@ -53,7 +53,8 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width * .55
+        width: base.width * .5
+
         spacing: UM.Theme.getSize("default_margin").width
 
         anchors.left: infillCellLeft.right
