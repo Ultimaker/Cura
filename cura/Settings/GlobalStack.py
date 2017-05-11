@@ -71,12 +71,20 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
+        # Handle the "resolve" property.
         if self._shouldResolve(key, property_name):
             self._resolving_settings.add(key)
             resolve = super().getProperty(key, "resolve")
             self._resolving_settings.remove(key)
             if resolve is not None:
                 return resolve
+
+        # Handle the "limit_to_extruder" property.
+        limit_to_extruder = super().getProperty(key, "limit_to_extruder")
+        if limit_to_extruder is not None and limit_to_extruder != "-1":
+            result = self._extruders[int(limit_to_extruder)].getProperty(key, property_name)
+            if result is not None:
+                return result
 
         return super().getProperty(key, property_name)
 
