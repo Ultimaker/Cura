@@ -585,14 +585,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if extruder_id:
                     for extruder in extruder_stacks:
                         if extruder.getId() == extruder_id:
-                            extruder.replaceContainer(0, container)
+                            extruder.userChanges = container
                             continue
 
                 # replacing the container ID for user instance containers for the machine
                 machine_id = container.getMetaDataEntry("machine", None)
                 if machine_id:
                     if global_stack.getId() == machine_id:
-                        global_stack.replaceContainer(0, container)
+                        global_stack.userChanges = container
                         continue
 
         for changes_container_type in ("quality_changes", "definition_changes"):
