@@ -167,6 +167,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_type = ""
         num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
+        quality_changes_conflict = False
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
             instance_container = InstanceContainer(container_id)
@@ -202,7 +203,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             file_name, cura_file_names)
         self._resolve_strategies = {"machine": None, "quality_changes": None, "material": None}
         machine_conflict = False
-        quality_changes_conflict = False
         for container_stack_file in [global_stack_file] + extruder_stack_files:
             container_id = self._stripFileToId(container_stack_file)
             serialized = archive.open(container_stack_file).read().decode("utf-8")
@@ -262,6 +262,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return WorkspaceReader.PreReadResult.cancelled
 
         self._resolve_strategies = self._dialog.getResult()
+        #
+        # There can be 3 resolve strategies coming from the dialog:
+        #  - new:       create a new container
+        #  - override:  override the existing container
+        #  - None:      There is no conflict, which means containers with the same IDs may or may not be there already.
+        #               If they are there, there is no conflict between the them.
+        #               In this case, you can either create a new one, or safely override the existing one.
+        #
         # Default values
         for k, v in self._resolve_strategies.items():
             if v is None:
@@ -325,7 +333,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack_id_new = self.getNewId(global_stack_id_original)
                 global_stack_need_rename = True
 
-
         # TODO: For the moment we use pretty naive existence checking. If the ID is the same, we assume in quite a few
         # TODO: cases that the container loaded is the same (most notable in materials & definitions).
         # TODO: It might be possible that we need to add smarter checking in the future.
@@ -352,21 +359,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
                 materials = self._container_registry.findInstanceContainers(id = container_id)
+
                 if not materials:
                     material_container = xml_material_profile(container_id)
                     material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                     containers_to_add.append(material_container)
                 else:
-                    if not materials[0].isReadOnly():  # Only create new materials if they are not read only.
+                    material_container = materials[0]
+                    if not material_container.isReadOnly():  # Only create new materials if they are not read only.
                         if self._resolve_strategies["material"] == "override":
-                            materials[0].deserialize(archive.open(material_container_file).read().decode("utf-8"))
+                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                         elif self._resolve_strategies["material"] == "new":
                             # Note that we *must* deserialize it with a new ID, as multiple containers will be
                             # auto created & added.
                             material_container = xml_material_profile(self.getNewId(container_id))
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"))
                             containers_to_add.append(material_container)
-                            material_containers.append(material_container)
+
+                material_containers.append(material_container)
                 Job.yieldThread()
 
         Logger.log("d", "Workspace loading is checking instance containers...")
@@ -394,18 +404,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
                         extruder_id = instance_container.getMetaDataEntry("extruder", None)
                         if extruder_id:
-                            new_id = self.getNewId(extruder_id) + "_current_settings"
+                            new_extruder_id = self.getNewId(extruder_id)
+                            new_id = new_extruder_id + "_current_settings"
                             instance_container._id = new_id
                             instance_container.setName(new_id)
-                            instance_container.setMetaDataEntry("extruder", self.getNewId(extruder_id))
+                            instance_container.setMetaDataEntry("extruder", new_extruder_id)
                             containers_to_add.append(instance_container)
 
                         machine_id = instance_container.getMetaDataEntry("machine", None)
                         if machine_id:
-                            new_id = self.getNewId(machine_id) + "_current_settings"
+                            new_machine_id = self.getNewId(machine_id)
+                            new_id = new_machine_id + "_current_settings"
                             instance_container._id = new_id
                             instance_container.setName(new_id)
-                            instance_container.setMetaDataEntry("machine", self.getNewId(machine_id))
+                            instance_container.setMetaDataEntry("machine", new_machine_id)
                             containers_to_add.append(instance_container)
                 user_instance_containers.append(instance_container)
             elif container_type in ("quality_changes", "definition_changes"):
@@ -558,53 +570,88 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             return None
 
+        #
+        # Replacing the old containers if resolve is "new".
+        # When resolve is "new", some containers will get renamed, so all the other containers that reference to those
+        # MUST get updated too.
+        #
         if self._resolve_strategies["machine"] == "new":
             # A new machine was made, but it was serialized with the wrong user container. Fix that now.
             for container in user_instance_containers:
+                # replacing the container ID for user instance containers for the extruders
                 extruder_id = container.getMetaDataEntry("extruder", None)
                 if extruder_id:
                     for extruder in extruder_stacks:
                         if extruder.getId() == extruder_id:
                             extruder.replaceContainer(0, container)
                             continue
+
+                # replacing the container ID for user instance containers for the machine
                 machine_id = container.getMetaDataEntry("machine", None)
                 if machine_id:
                     if global_stack.getId() == machine_id:
                         global_stack.replaceContainer(0, container)
                         continue
 
-        for container_type in ("quality_changes", "definition_changes"):
-            if self._resolve_strategies[container_type] == "new":
+        for changes_container_type in ("quality_changes", "definition_changes"):
+            if self._resolve_strategies[changes_container_type] == "new":
                 # Quality changes needs to get a new ID, added to registry and to the right stacks
-                for container in quality_and_definition_changes_instance_containers:
-                    old_id = container.getId()
-                    container.setName(self._container_registry.uniqueName(container.getName()))
+                for each_changes_container in quality_and_definition_changes_instance_containers:
+                    old_id = each_changes_container.getId()
+                    each_changes_container.setName(self._container_registry.uniqueName(each_changes_container.getName()))
                     # We're not really supposed to change the ID in normal cases, but this is an exception.
-                    container._id = self.getNewId(container.getId())
+                    each_changes_container._id = self.getNewId(each_changes_container.getId())
 
                     # The container was not added yet, as it didn't have an unique ID. It does now, so add it.
-                    self._container_registry.addContainer(container)
+                    self._container_registry.addContainer(each_changes_container)
 
-                    # Replace the quality/definition changes container
-                    if container_type == "quality_changes":
+                    # Find the old (current) changes container in the global stack
+                    if changes_container_type == "quality_changes":
                         old_container = global_stack.qualityChanges
-                    elif container_type == "definition_changes":
+                    elif changes_container_type == "definition_changes":
                         old_container = global_stack.definitionChanges
-                    # old_container = global_stack.findContainer({"type": container_type})
+
+                    # sanity checks
+                    # NOTE: The following cases SHOULD NOT happen!!!!
+                    if not old_container:
+                        Logger.log("e", "We try to get [%s] from the global stack [%s] but we got None instead!",
+                                   changes_container_type, global_stack.getId())
+
+                    # Replace the quality/definition changes container if it's in the GlobalStack
+                    # NOTE: we can get an empty container here, but the IDs will not match,
+                    # so this comparison is fine.
                     if old_container.getId() == old_id:
-                        changes_index = global_stack.getContainerIndex(old_container)
-                        global_stack.replaceContainer(changes_index, container)
+                        if changes_container_type == "quality_changes":
+                            global_stack.qualityChanges = each_changes_container
+                        elif changes_container_type == "definition_changes":
+                            global_stack.definitionChanges = each_changes_container
                         continue
 
-                    for stack in extruder_stacks:
-                        old_container = stack.findContainer({"type": container_type})
-                        if old_container.getId() == old_id:
-                            changes_index = stack.getContainerIndex(old_container)
-                            stack.replaceContainer(changes_index, container)
+                    # Replace the quality/definition changes container if it's in one of the ExtruderStacks
+                    for each_extruder_stack in extruder_stacks:
+                        changes_container = None
+                        if changes_container_type == "quality_changes":
+                            changes_container = each_extruder_stack.qualityChanges
+                        elif changes_container_type == "definition_changes":
+                            changes_container = each_extruder_stack.definitionChanges
+
+                        # sanity checks
+                        # NOTE: The following cases SHOULD NOT happen!!!!
+                        if not changes_container:
+                            Logger.log("e", "We try to get [%s] from the extruder stack [%s] but we got None instead!",
+                                       changes_container_type, each_extruder_stack.getId())
+
+                        # NOTE: we can get an empty container here, but the IDs will not match,
+                        # so this comparison is fine.
+                        if changes_container.getId() == old_id:
+                            if changes_container_type == "quality_changes":
+                                each_extruder_stack.qualityChanges = each_changes_container
+                            elif changes_container_type == "definition_changes":
+                                each_extruder_stack.definitionChanges = each_changes_container
 
         if self._resolve_strategies["material"] == "new":
             for material in material_containers:
-                old_material = global_stack.findContainer({"type": "material"})
+                old_material = global_stack.material
                 if old_material.getId() in self._id_mapping:
                     material_index = global_stack.getContainerIndex(old_material)
                     global_stack.replaceContainer(material_index, material)
