@@ -41,5 +41,4 @@ def getMetaData():
     }
 
 def register(app):
-    return {}
     return { "version_upgrade": upgrade }
