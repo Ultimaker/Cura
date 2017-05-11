@@ -9,6 +9,7 @@ from typing import Dict, Union
 from PyQt5.QtCore import QObject, QUrl, QVariant
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
+from UM.Util import parseBool
 
 from UM.PluginRegistry import PluginRegistry
 from UM.SaveFile import SaveFile
@@ -696,7 +697,7 @@ class ContainerManager(QObject):
             duplicated_container.deserialize(f.read())
         duplicated_container.setDirty(True)
         self._container_registry.addContainer(duplicated_container)
-        return new_id
+        return self._getMaterialContainerIdForActiveMachine(new_id)
 
     ##  Create a new material by cloning Generic PLA and setting the GUID to something unqiue
     #   \return \type{str} the id of the newly created container.
@@ -727,7 +728,27 @@ class ContainerManager(QObject):
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
-        return new_id
+        return self._getMaterialContainerIdForActiveMachine(new_id)
+
+    def _getMaterialContainerIdForActiveMachine(self, base_file):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return base_file
+
+        has_machine_materials = parseBool(global_stack.getMetaDataEntry("has_machine_materials", default = False))
+        has_variant_materials = parseBool(global_stack.getMetaDataEntry("has_variant_materials", default = False))
+        has_variants = parseBool(global_stack.getMetaDataEntry("has_variants", default = False))
+        if has_machine_materials or has_variant_materials:
+            if has_variants:
+                materials = self._container_registry.findInstanceContainers(type = "material", base_file = base_file, definition = global_stack.getBottom().getId(), variant = self._machine_manager.activeVariantId)
+            else:
+                materials = self._container_registry.findInstanceContainers(type = "material", base_file = base_file, definition = global_stack.getBottom().getId())
+
+            if materials:
+                return materials[0].getId()
+            return "" # do not activate a new material if a container can not be found
+
+        return base_file
 
     @pyqtSlot(str, result = "QStringList")
     def getLinkedMaterials(self, material_id: str):
