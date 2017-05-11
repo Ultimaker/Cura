@@ -398,8 +398,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not user_containers:
                     containers_to_add.append(instance_container)
                 else:
+                    instance_container = user_containers[0]
                     if self._resolve_strategies["machine"] == "override" or self._resolve_strategies["machine"] is None:
-                        user_containers[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container.setDirty(True)
                     elif self._resolve_strategies["machine"] == "new":
                         # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
                         extruder_id = instance_container.getMetaDataEntry("extruder", None)
