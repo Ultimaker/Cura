@@ -14,6 +14,12 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Materials");
 
+    Component.onCompleted:
+    {
+        // Workaround to make sure all of the items are visible
+        objectList.positionViewAtBeginning();
+    }
+
     model: UM.InstanceContainersModel
     {
         filter:
