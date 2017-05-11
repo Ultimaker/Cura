@@ -7,7 +7,8 @@ import io #To serialise configparser output to a string.
 from UM.VersionUpgrade import VersionUpgrade
 
 _removed_settings = { #Settings that were removed in 2.5.
-    "start_layers_at_same_position"
+    "start_layers_at_same_position",
+    "sub_div_rad_mult"
 }
 
 _split_settings = { #These settings should be copied to all settings it was split into.
