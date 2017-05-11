@@ -77,6 +77,7 @@ class VersionUpgrade22to24(VersionUpgrade):
         with open(variant_path, "r") as fhandle:
             variant_config.read_file(fhandle)
 
+        config_name = "Unknown Variant"
         if variant_config.has_section("general") and variant_config.has_option("general", "name"):
             config_name = variant_config.get("general", "name")
             if config_name.endswith("_variant"):
