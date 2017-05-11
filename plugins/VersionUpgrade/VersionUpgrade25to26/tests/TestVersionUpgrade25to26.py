@@ -4,7 +4,7 @@
 import configparser #To check whether the appropriate exceptions are raised.
 import pytest #To register tests with.
 
-import VersionUpgrade24to25 #The module we're testing.
+import VersionUpgrade25to26 #The module we're testing.
 
 ##  Creates an instance of the upgrader to test with.
 @pytest.fixture
