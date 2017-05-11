@@ -187,7 +187,19 @@ class CuraEngineBackend(QObject, Backend):
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
             return
 
-        self.printDurationMessage.emit(0, [0])
+        self.printDurationMessage.emit({
+            "none": 0,
+            "inset_0": 0,
+            "inset_x": 0,
+            "skin": 0,
+            "support": 0,
+            "skirt": 0,
+            "infill": 0,
+            "support_infill": 0,
+            "travel": 0,
+            "retract": 0,
+            "support_interface": 0
+        }, [0])
 
         self._stored_layer_data = []
         self._stored_optimized_layer_data = []
@@ -481,13 +493,26 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Called when a print time message is received from the engine.
     #
-    #   \param message The protobuff message containing the print time and
+    #   \param message The protobuf message containing the print time per feature and
     #   material amount per extruder
     def _onPrintTimeMaterialEstimates(self, message):
         material_amounts = []
         for index in range(message.repeatedMessageCount("materialEstimates")):
             material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
-        self.printDurationMessage.emit(message.time, material_amounts)
+        feature_times = {
+            "none": message.time_none,
+            "inset_0": message.time_inset_0,
+            "inset_x": message.time_inset_x,
+            "skin": message.time_skin,
+            "support": message.time_support,
+            "skirt": message.time_skirt,
+            "infill": message.time_infill,
+            "support_infill": message.time_support_infill,
+            "travel": message.time_travel,
+            "retract": message.time_retract,
+            "support_interface": message.time_support_interface
+        }
+        self.printDurationMessage.emit(feature_times, material_amounts)
 
     ##  Creates a new socket connection.
     def _createSocket(self):
