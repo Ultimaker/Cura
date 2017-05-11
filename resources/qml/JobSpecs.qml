@@ -24,6 +24,7 @@ Item {
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property variant printDuration: PrintInformation.currentPrintTime
+    property variant printDurationPerFeature: PrintInformation.printTimesPerFeature
     property variant printMaterialLengths: PrintInformation.materialLengths
     property variant printMaterialWeights: PrintInformation.materialWeights
     property variant printMaterialCosts: PrintInformation.materialCosts
@@ -159,7 +160,7 @@ Item {
             UM.RecolorImage
             {
                 id: timeIcon
-                anchors.right: timeSpec.left
+                anchors.right: timeSpecPerFeatureTooltipArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
                 anchors.verticalCenter: parent.verticalCenter
                 width: UM.Theme.getSize("save_button_specs_icons").width
@@ -169,15 +170,50 @@ Item {
                 color: UM.Theme.getColor("text_subtext")
                 source: UM.Theme.getIcon("print_time")
             }
-            Text
+            UM.TooltipArea
             {
-                id: timeSpec
+                id: timeSpecPerFeatureTooltipArea
+                text: {
+                    var order = ["inset_0", "inset_x", "skin", "infill", "support_infill", "support_interface", "support", "travel", "retract", "none"];
+                    var visible_names = {
+                        "inset_0": catalog.i18nc("@tooltip", "Outer Wall"),
+                        "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
+                        "skin": catalog.i18nc("@tooltip", "Skin"),
+                        "infill": catalog.i18nc("@tooltip", "Infill"),
+                        "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
+                        "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
+                        "support": catalog.i18nc("@tooltip", "Support"),
+                        "travel": catalog.i18nc("@tooltip", "Travel"),
+                        "retract": catalog.i18nc("@tooltip", "Retractions"),
+                        "none": catalog.i18nc("@tooltip", "Other")
+                    };
+                    var result = "";
+                    for(var feature in order)
+                    {
+                        feature = order[feature];
+                        if(base.printDurationPerFeature[feature] && base.printDurationPerFeature[feature].totalSeconds > 0)
+                        {
+                            result += "<br/>" + visible_names[feature] + ": " + base.printDurationPerFeature[feature].getDisplayString(UM.DurationFormat.Short);
+                        }
+                    }
+                    result = result.replace(/^\<br\/\>/, ""); // remove newline before first item
+                    return result;
+                }
+                width: childrenRect.width
+                height: childrenRect.height
                 anchors.right: lengthIcon.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter
-                font: UM.Theme.getFont("small")
-                color: UM.Theme.getColor("text_subtext")
-                text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+
+                Text
+                {
+                    id: timeSpec
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    font: UM.Theme.getFont("small")
+                    color: UM.Theme.getColor("text_subtext")
+                    text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+                }
             }
             UM.RecolorImage
             {
