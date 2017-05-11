@@ -192,7 +192,7 @@ Item
                     percentageMax: 0,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength"),
+                    text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength."),
                     icon: "hollow"
                 })
                 infillModel.append({
@@ -203,7 +203,7 @@ Item
                     percentageMax: 30,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
+                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength."),
                     icon: "sparse"
                 })
                 infillModel.append({
@@ -214,7 +214,7 @@ Item
                     percentageMax: 70,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
+                    text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength."),
                     icon: "dense"
                 })
                 infillModel.append({
@@ -225,7 +225,7 @@ Item
                     percentageMax: 9999999999,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
+                    text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid."),
                     icon: "solid"
                 })
                 infillModel.append({
@@ -237,7 +237,7 @@ Item
                     stepsMin: 0,
                     stepsMax: 9999999999,
                     infill_layer_height: 1.5,
-                    text: catalog.i18nc("@label", "This will gradually increase the amount of infill towards the top"),
+                    text: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."),
                     icon: "gradual"
                 })
             }
