@@ -180,9 +180,9 @@ Item {
                         "inset_x": catalog.i18nc("@tooltip", "Inner Walls"),
                         "skin": catalog.i18nc("@tooltip", "Skin"),
                         "infill": catalog.i18nc("@tooltip", "Infill"),
-                        "support_infill": catalog.i18nc("@tooltip", "Support"),
+                        "support_infill": catalog.i18nc("@tooltip", "Support Infill"),
                         "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
-                        "support": catalog.i18nc("@tooltip", "Helper Structures"),
+                        "support": catalog.i18nc("@tooltip", "Support"),
                         "travel": catalog.i18nc("@tooltip", "Travel"),
                         "retract": catalog.i18nc("@tooltip", "Retractions"),
                         "none": catalog.i18nc("@tooltip", "Other")
