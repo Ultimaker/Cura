@@ -738,6 +738,7 @@ class ContainerManager(QObject):
             return []
 
         material_container = containers[0]
+        material_base_file = material_container.getMetaDataEntry("base_file", "")
         material_guid = material_container.getMetaDataEntry("GUID", "")
         if not material_guid:
             Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't have a GUID.", material_id)
@@ -746,7 +747,7 @@ class ContainerManager(QObject):
         containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_guid)
         linked_material_names = []
         for container in containers:
-            if container.getId() == material_id or container.getMetaDataEntry("base_file") != container.getId():
+            if container.getId() in [material_id, material_base_file] or container.getMetaDataEntry("base_file") != container.getId():
                 continue
 
             linked_material_names.append(container.getName())
