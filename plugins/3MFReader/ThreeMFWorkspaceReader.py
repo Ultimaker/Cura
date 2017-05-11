@@ -650,19 +650,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                 each_extruder_stack.definitionChanges = each_changes_container
 
         if self._resolve_strategies["material"] == "new":
-            for material in material_containers:
+            for each_material in material_containers:
                 old_material = global_stack.material
-                if old_material.getId() in self._id_mapping:
-                    material_index = global_stack.getContainerIndex(old_material)
-                    global_stack.replaceContainer(material_index, material)
+
+                # check if the old material container has been renamed to this material container ID
+                # if the container hasn't been renamed, we do nothing.
+                new_id = self._id_mapping.get(old_material.getId())
+                if new_id is None or new_id != each_material.getId():
                     continue
 
-                for stack in extruder_stacks:
-                    old_material = stack.findContainer({"type": "material"})
-                    if old_material.getId() in self._id_mapping:
-                        material_index = stack.getContainerIndex(old_material)
-                        stack.replaceContainer(material_index, material)
+                if old_material.getId() in self._id_mapping:
+                    global_stack.material = each_material
+
+                for each_extruder_stack in extruder_stacks:
+                    old_material = each_extruder_stack.material
+
+                    # check if the old material container has been renamed to this material container ID
+                    # if the container hasn't been renamed, we do nothing.
+                    new_id = self._id_mapping.get(old_material.getId())
+                    if new_id is None or new_id != each_material.getId():
                         continue
+
+                    if old_material.getId() in self._id_mapping:
+                        each_extruder_stack.material = each_material
 
         if extruder_stacks:
             for stack in extruder_stacks:
