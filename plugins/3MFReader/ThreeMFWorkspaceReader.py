@@ -109,7 +109,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_type = ""
         variant_type_name = i18n_catalog.i18nc("@label", "Nozzle")
 
-        num_extruders = 0
         # Check if there are any conflicts, so we can ask the user.
         archive = zipfile.ZipFile(file_name, "r")
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
@@ -121,31 +120,41 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_list = []
         material_container_list = []
 
+        #
+        # Read definition containers
+        #
+        machine_definition_container_count = 0
+        extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
-        for definition_container_file in definition_container_files:
-            container_id = self._stripFileToId(definition_container_file)
+        for each_definition_container_file in definition_container_files:
+            container_id = self._stripFileToId(each_definition_container_file)
             definitions = self._container_registry.findDefinitionContainers(id=container_id)
 
             if not definitions:
                 definition_container = DefinitionContainer(container_id)
-                definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"))
+                definition_container.deserialize(archive.open(each_definition_container_file).read().decode("utf-8"))
 
             else:
                 definition_container = definitions[0]
-
             definition_container_list.append(definition_container)
 
-            if definition_container.getMetaDataEntry("type") != "extruder":
+            definition_container_type = definition_container.getMetaDataEntry("type")
+            if definition_container_type == "machine":
                 machine_type = definition_container.getName()
                 variant_type_name = definition_container.getMetaDataEntry("variants_name", variant_type_name)
+
+                machine_definition_container_count += 1
+            elif definition_container_type == "extruder":
+                extruder_definition_container_count += 1
             else:
-                num_extruders += 1
+                Logger.log("w", "Unknown definition container type %s for %s",
+                           definition_container_type, each_definition_container_file)
             Job.yieldThread()
-
-        if num_extruders == 0:
-            num_extruders = 1 # No extruder stacks found, which means there is one extruder
-
-        extruders = num_extruders * [""]
+        # sanity check
+        if machine_definition_container_count != 1:
+            msg = "Expecting one machine definition container but got %s" % machine_definition_container_count
+            Logger.log("e", msg)
+            raise RuntimeError(msg)
 
         material_labels = []
         material_conflict = False
@@ -161,20 +170,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if materials and not materials[0].isReadOnly():  # Only non readonly materials can be in conflict
                     material_conflict = True
                 Job.yieldThread()
+
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
         quality_type = ""
         num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
+        num_settings_overriden_by_definition_changes = 0 # How many settings are changed by the definition changes
         num_user_settings = 0
         quality_changes_conflict = False
-        for instance_container_file in instance_container_files:
-            container_id = self._stripFileToId(instance_container_file)
+        definition_changes_conflict = False
+        for each_instance_container_file in instance_container_files:
+            container_id = self._stripFileToId(each_instance_container_file)
             instance_container = InstanceContainer(container_id)
 
             # Deserialize InstanceContainer by converting read data from bytes to string
-            instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
-
+            instance_container.deserialize(archive.open(each_instance_container_file).read().decode("utf-8"))
             instance_container_list.append(instance_container)
 
             container_type = instance_container.getMetaDataEntry("type")
@@ -187,6 +198,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     # Check if there really is a conflict by comparing the values
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
+            elif container_type == "definition_changes":
+                definition_name = instance_container.getName()
+                num_settings_overriden_by_definition_changes += len(instance_container._instances)
+                definition_changes = self._container_registry.findDefinitionContainers(id = container_id)
+                if definition_changes:
+                    if definition_changes[0] != instance_container:
+                        definition_changes_conflict = True
             elif container_type == "quality":
                 # If the quality name is not set (either by quality or changes, set it now)
                 # Quality changes should always override this (as they are "on top")
@@ -237,9 +255,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if not show_dialog:
             return WorkspaceReader.PreReadResult.accepted
 
+        # prepare data for the dialog
+        num_extruders = extruder_definition_container_count
+        if num_extruders == 0:
+            num_extruders = 1  # No extruder stacks found, which means there is one extruder
+
+        extruders = num_extruders * [""]
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setQualityChangesConflict(quality_changes_conflict)
+        self._dialog.setDefinitionChangesConflict(definition_changes_conflict)
         self._dialog.setMaterialConflict(material_conflict)
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
