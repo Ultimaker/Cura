@@ -475,7 +475,6 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["compatible"] = global_compatibility
         self.setMetaData(meta_data)
         self._dirty = False
-        print(self.getMetaData())
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
