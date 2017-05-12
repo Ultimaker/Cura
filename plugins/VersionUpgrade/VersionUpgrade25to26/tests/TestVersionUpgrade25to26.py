@@ -17,7 +17,7 @@ test_cfg_version_good_data = [
         "file_data": """[general]
 version = 1
 """,
-        "version": 1
+        "version": 1000000
     },
     {
         "test_name": "Other Data Around",
@@ -31,14 +31,14 @@ version = 3
 layer_height = 0.12
 infill_sparse_density = 42
 """,
-        "version": 3
+        "version": 3000000
     },
     {
         "test_name": "Negative Version", #Why not?
         "file_data": """[general]
 version = -20
 """,
-        "version": -20
+        "version": -20000000
     }
 ]
 
