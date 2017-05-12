@@ -454,7 +454,6 @@ class XmlMaterialProfile(InstanceContainer):
             property_values[tag_name] = entry.text
 
         meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
-        meta_data["density"] = float(property_values.get("density", 1.3)) # In g/cm3
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
@@ -476,6 +475,7 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["compatible"] = global_compatibility
         self.setMetaData(meta_data)
         self._dirty = False
+        print(self.getMetaData())
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
