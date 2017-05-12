@@ -23,7 +23,6 @@ from cura.QualityManager import QualityManager
 from cura.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.ExtruderManager import ExtruderManager
 
-from .GlobalStack import GlobalStack
 from .CuraStackBuilder import CuraStackBuilder
 
 from UM.i18n import i18nCatalog
@@ -33,8 +32,8 @@ from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
-    from cura.Settings.GlobalStack import GlobalStack
     from cura.Settings.CuraContainerStack import CuraContainerStack
+    from cura.Settings.GlobalStack import GlobalStack
 
 import os
 
@@ -140,7 +139,7 @@ class MachineManager(QObject):
         return self._printer_output_devices
 
     @pyqtProperty(int, constant=True)
-    def totalNumberOfSettings(self):
+    def totalNumberOfSettings(self) -> int:
         return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
 
     def _onHotendIdChanged(self, index: Union[str, int], hotend_id: str) -> None:
@@ -164,7 +163,7 @@ class MachineManager(QObject):
         else:
             Logger.log("w", "No variant found for printer definition %s with id %s" % (self._global_container_stack.getBottom().getId(), hotend_id))
 
-    def _onMaterialIdChanged(self, index, material_id):
+    def _onMaterialIdChanged(self, index: Union[str, int], material_id: str):
         if not self._global_container_stack:
             return
 
@@ -470,7 +469,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty("QObject", notify = globalContainerChanged)
-    def activeMachine(self) -> GlobalStack:
+    def activeMachine(self) -> "GlobalStack":
         return self._global_container_stack
 
     @pyqtProperty(str, notify = activeStackChanged)
@@ -681,7 +680,7 @@ class MachineManager(QObject):
 
     ## Check if a container is read_only
     @pyqtSlot(str, result = bool)
-    def isReadOnly(self, container_id) -> bool:
+    def isReadOnly(self, container_id: str) -> bool:
         containers = ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
         if not containers or not self._active_container_stack:
             return True
@@ -943,7 +942,7 @@ class MachineManager(QObject):
 
         return result
 
-    def _replaceQualityOrQualityChangesInStack(self, stack, container, postpone_emit = False):
+    def _replaceQualityOrQualityChangesInStack(self, stack: "CuraContainerStack", container: "InstanceContainer", postpone_emit = False):
         # Disconnect the signal handling from the old container.
         container_type = container.getMetaDataEntry("type")
         if container_type == "quality":
