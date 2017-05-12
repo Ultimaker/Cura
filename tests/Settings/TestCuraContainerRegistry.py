@@ -30,7 +30,7 @@ def teardown():
     if os.path.isfile(temporary_file):
         os.remove(temporary_file)
 
-##  Tests whether the addContainer function properly converts ContainerStacks.
+##  Tests whether addContainer properly converts to ExtruderStack.
 def test_addContainerExtruderStack(container_registry):
     definition = DefinitionContainer(container_id = "Test Definition") #Need some definition first to be able to register stacks.
     container_registry.addContainer(definition)
@@ -39,13 +39,30 @@ def test_addContainerExtruderStack(container_registry):
     container_stack.addMetaDataEntry("type", "extruder_train") #This is now an extruder train.
     container_stack.insertContainer(0, definition) #Add a definition to it so it doesn't complain.
 
-    mock_super_add_container = unittest.mock.MagicMock()
+    mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
         container_registry.addContainer(container_stack)
 
     assert len(mock_super_add_container.call_args_list) == 1 #Called only once.
     assert len(mock_super_add_container.call_args_list[0][0]) == 1 #Called with one parameter.
     assert type(mock_super_add_container.call_args_list[0][0][0]) == ExtruderStack
+
+##  Tests whether addContainer properly converts to GlobalStack.
+def test_addContainerGlobalStack(container_registry):
+    definition = DefinitionContainer(container_id = "Test Definition") #Need some definition first to be able to register stacks.
+    container_registry.addContainer(definition)
+
+    container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Container Stack") #A container we're going to convert.
+    container_stack.addMetaDataEntry("type", "machine") #This is now a global stack.
+    container_stack.insertContainer(0, definition) #Must have a definition.
+
+    mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
+    with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
+        container_registry.addContainer(container_stack)
+
+    assert len(mock_super_add_container.call_args_list) == 1 #Called only once.
+    assert len(mock_super_add_container.call_args_list[0][0]) == 1 #Called with one parameter.
+    assert type(mock_super_add_container.call_args_list[0][0][0]) == GlobalStack
 
 ##  Tests whether loading gives objects of the correct type.
 @pytest.mark.parametrize("filename,                  output_class", [
