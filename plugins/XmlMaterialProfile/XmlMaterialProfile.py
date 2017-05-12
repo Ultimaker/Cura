@@ -441,8 +441,8 @@ class XmlMaterialProfile(InstanceContainer):
             tag_name = _tag_without_namespace(entry)
             property_values[tag_name] = entry.text
 
-        diameter = float(property_values.get("diameter", 2.85)) # In mm
-        density = float(property_values.get("density", 1.3)) # In g/cm3
+        meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
+        meta_data["density"] = float(property_values.get("density", 1.3)) # In g/cm3
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
@@ -461,7 +461,6 @@ class XmlMaterialProfile(InstanceContainer):
                 Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = global_setting_values
 
-        meta_data["approximate_diameter"] = round(diameter)
         meta_data["compatible"] = global_compatibility
         self.setMetaData(meta_data)
         self._dirty = False
