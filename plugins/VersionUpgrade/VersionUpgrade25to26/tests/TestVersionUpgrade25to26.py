@@ -39,6 +39,13 @@ infill_sparse_density = 42
 version = -20
 """,
         "version": -20000000
+    },
+    {
+        "test_name": "Setting Version",
+        "file_data": """[general]
+version = 1
+[metadata]
+setting_version = 1"""
     }
 ]
 
