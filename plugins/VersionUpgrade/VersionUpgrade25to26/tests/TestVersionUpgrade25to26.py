@@ -45,7 +45,18 @@ version = -20
         "file_data": """[general]
 version = 1
 [metadata]
-setting_version = 1"""
+setting_version = 1
+""",
+        "version": 1000001
+    },
+    {
+        "test_name": "Negative Setting Version",
+        "file_data": """[general]
+version = 1
+[metadata]
+setting_version = -3
+""",
+        "version": 999997
     }
 ]
 
