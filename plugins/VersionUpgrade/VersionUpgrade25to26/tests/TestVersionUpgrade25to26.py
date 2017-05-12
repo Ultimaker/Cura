@@ -97,6 +97,22 @@ true = false
 version = not-a-text-version-number
 """,
         "exception": ValueError
+    },
+    {
+        "test_name": "Setting Value NaN",
+        "file_data": """[general]
+version = 4
+[metadata]
+setting_version = latest_or_something
+""",
+        "exception": ValueError
+    },
+    {
+        "test_name": "Major-Minor",
+        "file_data": """[general]
+version = 1.2
+""",
+        "exception": ValueError
     }
 ]
 
