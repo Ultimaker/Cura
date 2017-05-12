@@ -230,45 +230,40 @@ UM.Dialog
             }
         }
 
-        Row
+
+        CheckBox
         {
-            id: buttonRow
+            id: dontShowAgainCheckbox
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+
+            text: catalog.i18nc("@action:label", "Don't show project summary on save again")
+            checked: dontShowAgain
+        }
+
+        Button
+        {
+            id: cancel_button
+            anchors.bottom: parent.bottom
+            anchors.right: ok_button.left
+            anchors.rightMargin: 2
+
+            text: catalog.i18nc("@action:button","Cancel");
+            enabled: true
+            onClicked: close()
+        }
+
+        Button
+        {
+            id: ok_button
+            anchors.bottom: parent.bottom
             anchors.right: parent.right
-            height: childrenRect.height
 
-            CheckBox
-            {
-                id: dontShowAgainCheckbox
-                anchors.left: parent.left
-
-                text: catalog.i18nc("@action:label", "Don't show project summary on save again")
-                checked: dontShowAgain
-            }
-
-            Button
-            {
-                id: ok_button
-                anchors.right: parent.right
-
-                text: catalog.i18nc("@action:button","Save");
-                enabled: true
-                onClicked: {
-                    close()
-                    yes()
-                }
-            }
-
-            Button
-            {
-                id: cancel_button
-                anchors.right: ok_button.left
-                anchors.rightMargin: 2
-
-                text: catalog.i18nc("@action:button","Cancel");
-                enabled: true
-                onClicked: close()
+            text: catalog.i18nc("@action:button","Save");
+            enabled: true
+            onClicked: {
+                close()
+                yes()
             }
         }
     }
