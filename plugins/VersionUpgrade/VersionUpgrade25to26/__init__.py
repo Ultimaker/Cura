@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from . import VersionUpgrade24to25
+from . import VersionUpgrade25to26
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
