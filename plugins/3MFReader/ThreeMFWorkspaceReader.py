@@ -455,7 +455,32 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_to_add.append(instance_container)
                 else:
                     if self._resolve_strategies[container_type] == "override":
-                        changes_containers[0].deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container = changes_containers[0]
+                        instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+                        instance_container.setDirty(True)
+                    elif self._resolve_strategies[container_type] == "new":
+                        # TODO: how should we handle the case "new" for quality_changes and definition_changes?
+
+                        new_changes_container_id = self.getNewId(instance_container.getId())
+                        instance_container._id = new_changes_container_id
+                        instance_container.setName(new_changes_container_id)
+
+                        # TODO: we don't know the following is correct or not, need to verify
+                        #       AND REFACTOR!!!
+                        if self._resolve_strategies["machine"] == "new":
+                            # The machine is going to get a spiffy new name, so ensure that the id's of user settings match.
+                            extruder_id = instance_container.getMetaDataEntry("extruder", None)
+                            if extruder_id:
+                                new_extruder_id = self.getNewId(extruder_id)
+                                instance_container.setMetaDataEntry("extruder", new_extruder_id)
+
+                            machine_id = instance_container.getMetaDataEntry("machine", None)
+                            if machine_id:
+                                new_machine_id = self.getNewId(machine_id)
+                                instance_container.setMetaDataEntry("machine", new_machine_id)
+
+                        containers_to_add.append(instance_container)
+
                     elif self._resolve_strategies[container_type] is None:
                         # The ID already exists, but nothing in the values changed, so do nothing.
                         pass
