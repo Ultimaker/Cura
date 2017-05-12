@@ -721,7 +721,7 @@ class MachineManager(QObject):
                 Logger.log("w", "While trying to set the active material, no material was found to replace it.")
                 return
 
-            if old_quality_changes and old_quality_changes.getId() == "empty_quality_changes":
+            if old_quality_changes and isinstance(old_quality_changes, type(self._empty_quality_changes_container)):
                 old_quality_changes = None
 
             self.blurSettings.emit()
@@ -754,7 +754,7 @@ class MachineManager(QObject):
                 candidate_quality = quality_manager.findQualityByQualityType(quality_type,
                                         quality_manager.getWholeMachineDefinition(machine_definition),
                                         [material_container])
-            if not candidate_quality or candidate_quality.getId() == "empty_quality":
+            if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
                 # Fall back to a quality (which must be compatible with all other extruders)
                 new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
                     self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
