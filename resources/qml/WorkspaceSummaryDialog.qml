@@ -13,13 +13,10 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Save Project")
 
-    width: 550 * Screen.devicePixelRatio
-    minimumWidth: 550 * Screen.devicePixelRatio
+    width: 500
+    height: 400
 
-    height: 350 * Screen.devicePixelRatio
-    minimumHeight: 350 * Screen.devicePixelRatio
-
-    property int spacerHeight: 10 * Screen.devicePixelRatio
+    property int spacerHeight: 10
 
     property bool dontShowAgain: true
 
@@ -42,7 +39,6 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-        anchors.margins: 20 * Screen.devicePixelRatio
 
         UM.SettingDefinitionsModel
         {
@@ -232,42 +228,48 @@ UM.Dialog
                 height: spacerHeight
                 width: height
             }
+        }
+
+        Row
+        {
+            id: buttonRow
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: childrenRect.height
 
             CheckBox
             {
                 id: dontShowAgainCheckbox
+                anchors.left: parent.left
+
                 text: catalog.i18nc("@action:label", "Don't show project summary on save again")
                 checked: dontShowAgain
             }
-        }
 
+            Button
+            {
+                id: ok_button
+                anchors.right: parent.right
 
-        Button
-        {
-            id: ok_button
-            text: catalog.i18nc("@action:button","Save");
-            enabled: true
-            onClicked: {
-                close()
-                yes()
+                text: catalog.i18nc("@action:button","Save");
+                enabled: true
+                onClicked: {
+                    close()
+                    yes()
+                }
             }
-            anchors.bottomMargin: - 0.5 * height
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-        }
 
-        Button
-        {
-            id: cancel_button
-            text: catalog.i18nc("@action:button","Cancel");
-            enabled: true
-            onClicked: close()
+            Button
+            {
+                id: cancel_button
+                anchors.right: ok_button.left
+                anchors.rightMargin: 2
 
-            anchors.bottom: parent.bottom
-            anchors.right: ok_button.left
-            anchors.bottomMargin: - 0.5 * height
-            anchors.rightMargin:2
-
+                text: catalog.i18nc("@action:button","Cancel");
+                enabled: true
+                onClicked: close()
+            }
         }
     }
 }
