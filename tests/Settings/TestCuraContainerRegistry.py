@@ -79,6 +79,21 @@ def test_addContainerGoodSettingVersion(container_registry):
 
     mock_super_add_container.assert_called_once_with(instance) #The instance must have been registered now.
 
+def test_addContainerNoSettingVersion(container_registry):
+    definition = DefinitionContainer(container_id = "Test Definition")
+    definition.getMetaData()["setting_version"] = 3
+    container_registry.addContainer(definition)
+
+    instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
+    #Don't add setting_version metadata.
+    instance.setDefinition(definition)
+
+    mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting container should not get registered.
+    with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
+        container_registry.addContainer(instance)
+
+    mock_super_add_container.assert_not_called() #Should not get passed on to UM.Settings.ContainerRegistry.addContainer, because the setting_version is interpreted as 0!
+
 ##  Tests whether loading gives objects of the correct type.
 @pytest.mark.parametrize("filename,                  output_class", [
                         ("ExtruderLegacy.stack.cfg", ExtruderStack),
