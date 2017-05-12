@@ -119,7 +119,6 @@ def test_addContainerBadSettingVersion(container_registry, definition_container)
 ])
 def test_loadTypes(filename, output_class, container_registry):
     #Mock some dependencies.
-    UM.Settings.ContainerStack.setContainerRegistry(container_registry)
     Resources.getAllResourcesOfType = unittest.mock.MagicMock(return_value = [os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", filename)]) #Return just this tested file.
 
     def findContainers(container_type = 0, id = None):
