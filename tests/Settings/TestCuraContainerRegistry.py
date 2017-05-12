@@ -24,6 +24,11 @@ def container_registry():
     UM.Settings.ContainerStack.setContainerRegistry(registry)
     return registry
 
+##  Gives an arbitrary definition container.
+@pytest.fixture()
+def definition_container():
+    return DefinitionContainer(container_id = "Test Definition")
+
 def teardown():
     #If the temporary file for the legacy file rename test still exists, remove it.
     temporary_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks", "temporary.stack.cfg")
@@ -31,13 +36,12 @@ def teardown():
         os.remove(temporary_file)
 
 ##  Tests whether addContainer properly converts to ExtruderStack.
-def test_addContainerExtruderStack(container_registry):
-    definition = DefinitionContainer(container_id = "Test Definition") #Need some definition first to be able to register stacks.
-    container_registry.addContainer(definition)
+def test_addContainerExtruderStack(container_registry, definition_container):
+    container_registry.addContainer(definition_container)
 
     container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Container Stack") #A container we're going to convert.
     container_stack.addMetaDataEntry("type", "extruder_train") #This is now an extruder train.
-    container_stack.insertContainer(0, definition) #Add a definition to it so it doesn't complain.
+    container_stack.insertContainer(0, definition_container) #Add a definition to it so it doesn't complain.
 
     mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -48,13 +52,12 @@ def test_addContainerExtruderStack(container_registry):
     assert type(mock_super_add_container.call_args_list[0][0][0]) == ExtruderStack
 
 ##  Tests whether addContainer properly converts to GlobalStack.
-def test_addContainerGlobalStack(container_registry):
-    definition = DefinitionContainer(container_id = "Test Definition") #Need some definition first to be able to register stacks.
-    container_registry.addContainer(definition)
+def test_addContainerGlobalStack(container_registry, definition_container):
+    container_registry.addContainer(definition_container)
 
     container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Container Stack") #A container we're going to convert.
     container_stack.addMetaDataEntry("type", "machine") #This is now a global stack.
-    container_stack.insertContainer(0, definition) #Must have a definition.
+    container_stack.insertContainer(0, definition_container) #Must have a definition.
 
     mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -64,14 +67,13 @@ def test_addContainerGlobalStack(container_registry):
     assert len(mock_super_add_container.call_args_list[0][0]) == 1 #Called with one parameter.
     assert type(mock_super_add_container.call_args_list[0][0][0]) == GlobalStack
 
-def test_addContainerGoodSettingVersion(container_registry):
-    definition = DefinitionContainer(container_id = "Test Definition")
-    definition.getMetaData()["setting_version"] = 3
-    container_registry.addContainer(definition)
+def test_addContainerGoodSettingVersion(container_registry, definition_container):
+    definition_container.getMetaData()["setting_version"] = 3
+    container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
     instance.addMetaDataEntry("setting_version", 3)
-    instance.setDefinition(definition)
+    instance.setDefinition(definition_container)
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -79,14 +81,13 @@ def test_addContainerGoodSettingVersion(container_registry):
 
     mock_super_add_container.assert_called_once_with(instance) #The instance must have been registered now.
 
-def test_addContainerNoSettingVersion(container_registry):
-    definition = DefinitionContainer(container_id = "Test Definition")
-    definition.getMetaData()["setting_version"] = 3
-    container_registry.addContainer(definition)
+def test_addContainerNoSettingVersion(container_registry, definition_container):
+    definition_container.getMetaData()["setting_version"] = 3
+    container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
     #Don't add setting_version metadata.
-    instance.setDefinition(definition)
+    instance.setDefinition(definition_container)
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting container should not get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -94,14 +95,13 @@ def test_addContainerNoSettingVersion(container_registry):
 
     mock_super_add_container.assert_not_called() #Should not get passed on to UM.Settings.ContainerRegistry.addContainer, because the setting_version is interpreted as 0!
 
-def test_addContainerBadSettingVersion(container_registry):
-    definition = DefinitionContainer(container_id = "Test Definition")
-    definition.getMetaData()["setting_version"] = 3
-    container_registry.addContainer(definition)
+def test_addContainerBadSettingVersion(container_registry, definition_container):
+    definition_container.getMetaData()["setting_version"] = 3
+    container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
     instance.addMetaDataEntry("setting_version", 9001) #Wrong version!
-    instance.setDefinition(definition)
+    instance.setDefinition(definition_container)
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting container should not get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
