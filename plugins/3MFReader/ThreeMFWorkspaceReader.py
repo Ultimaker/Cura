@@ -350,6 +350,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         extruder_stacks_added = []
         container_stacks_added = []
 
+        containers_added = []
+
         global_stack_id_original = self._stripFileToId(global_stack_file)
         global_stack_id_new = global_stack_id_original
         global_stack_need_rename = False
@@ -497,73 +499,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for container in containers_to_add:
             self._container_registry.addContainer(container)
             container.setDirty(True)
+            containers_added.append(container)
 
         # Get the stack(s) saved in the workspace.
         Logger.log("d", "Workspace loading is checking stacks containers...")
 
-        # load extruder stack files
-        try:
-            for index, extruder_stack_file in enumerate(extruder_stack_files):
-                container_id = self._stripFileToId(extruder_stack_file)
-
-                container_stacks = self._container_registry.findContainerStacks(id = container_id)
-                if container_stacks:
-                    # this container stack already exists, try to resolve
-                    stack = container_stacks[0]
-                    if self._resolve_strategies["machine"] == "override":
-                        pass  # do nothing
-                    elif self._resolve_strategies["machine"] == "new":
-                        # create a new extruder stack from this one
-                        new_id = self.getNewId(container_id)
-                        stack = ExtruderStack(new_id)
-                        stack.deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
-
-                        # Ensure a unique ID and name
-                        stack._id = new_id
-
-                        self._container_registry.addContainer(stack)
-                        extruder_stacks_added.append(stack)
-                else:
-                    if self._resolve_strategies["machine"] == "override":
-                        global_stacks = self._container_registry.findContainerStacks(id = global_stack_id_original)
-                        # deserialize new extruder stack over the current ones
-                        if global_stacks:
-                            old_extruder_stack_id = global_stacks[0].extruders[index].getId()
-                            # HACK delete file
-                            self._container_registry._deleteFiles(global_stacks[0].extruders[index])
-                            global_stacks[0].extruders[index].deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
-                            # HACK
-                            global_stacks[0]._extruders = global_stacks[0]._extruders[:2]
-                            # HACK update cache
-                            del self._container_registry._id_container_cache[old_extruder_stack_id]
-                            new_extruder_stack_id = global_stacks[0].extruders[index].getId()
-                            self._container_registry._id_container_cache[new_extruder_stack_id] = global_stacks[0].extruders[index]
-
-                            stack = global_stacks[0].extruders[index]
-                        else:
-                            Logger.log("w", "Could not find global stack, while I expected it: %s" % global_stack_id_original)
-                    elif self._resolve_strategies["machine"] == "new":
-                        # container not found, create a new one
-                        stack = ExtruderStack(container_id)
-                        stack.deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
-                        self._container_registry.addContainer(stack)
-                        extruder_stacks_added.append(stack)
-                    else:
-                        Logger.log("w", "Unknown resolve strategy: %s" % str(self._resolve_strategies["machine"]))
-
-                if global_stack_need_rename:
-                    if stack.getMetaDataEntry("machine"):
-                        stack.setMetaDataEntry("machine", global_stack_id_new)
-                extruder_stacks.append(stack)
-
-        except:
-            Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
-            # Something went really wrong. Try to remove any data that we added.
-            for container in extruder_stacks:
-                self._container_registry.removeContainer(container.getId())
-
-            return None
-
+        # --
         # load global stack file
         try:
             # Check if a stack by this ID already exists;
@@ -606,22 +547,80 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack.deserialize(archive.open(global_stack_file).read().decode("utf-8"))
                 container_stacks_added.append(stack)
                 self._container_registry.addContainer(stack)
+                containers_added.append(stack)
 
             global_stack = stack
             Job.yieldThread()
         except:
             Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
+            # Something went really wrong. Try to remove any data that we added.
+            for container in containers_added:
+                self._container_registry.removeContainer(container.getId())
+            return
+
+        # --
+        # load extruder stack files
+        try:
+            for index, extruder_stack_file in enumerate(extruder_stack_files):
+                container_id = self._stripFileToId(extruder_stack_file)
+
+                container_stacks = self._container_registry.findContainerStacks(id = container_id)
+                if container_stacks:
+                    # this container stack already exists, try to resolve
+                    stack = container_stacks[0]
+                    if self._resolve_strategies["machine"] == "override":
+                        pass  # do nothing
+                    elif self._resolve_strategies["machine"] == "new":
+                        # create a new extruder stack from this one
+                        new_id = self.getNewId(container_id)
+                        stack = ExtruderStack(new_id)
+                        stack.deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
+
+                        # Ensure a unique ID and name
+                        stack._id = new_id
+
+                        self._container_registry.addContainer(stack)
+                        extruder_stacks_added.append(stack)
+                        containers_added.append(stack)
+                else:
+                    if self._resolve_strategies["machine"] == "override":
+                        global_stacks = self._container_registry.findContainerStacks(id = global_stack_id_original)
+                        # deserialize new extruder stack over the current ones
+                        if global_stacks:
+                            old_extruder_stack_id = global_stacks[0].extruders[index].getId()
+                            # HACK delete file
+                            self._container_registry._deleteFiles(global_stacks[0].extruders[index])
+                            global_stacks[0].extruders[index].deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
+                            # HACK
+                            global_stacks[0]._extruders = global_stacks[0]._extruders[:2]
+                            # HACK update cache
+                            del self._container_registry._id_container_cache[old_extruder_stack_id]
+                            new_extruder_stack_id = global_stacks[0].extruders[index].getId()
+                            self._container_registry._id_container_cache[new_extruder_stack_id] = global_stacks[0].extruders[index]
+
+                            stack = global_stacks[0].extruders[index]
+                        else:
+                            Logger.log("w", "Could not find global stack, while I expected it: %s" % global_stack_id_original)
+                    elif self._resolve_strategies["machine"] == "new":
+                        # container not found, create a new one
+                        stack = ExtruderStack(container_id)
+                        stack.deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
+                        self._container_registry.addContainer(stack)
+                        extruder_stacks_added.append(stack)
+                        containers_added.append(stack)
+                    else:
+                        Logger.log("w", "Unknown resolve strategy: %s" % str(self._resolve_strategies["machine"]))
+
+                if global_stack_need_rename:
+                    if stack.getMetaDataEntry("machine"):
+                        stack.setMetaDataEntry("machine", global_stack_id_new)
+                extruder_stacks.append(stack)
+        except:
+            Logger.logException("w", "We failed to serialize the stack. Trying to clean up.")
             # Something went really wrong. Try to remove any data that we added. 
-            for container in containers_to_add:
+            for container in containers_added:
                 self._container_registry.removeContainer(container.getId())
-
-            for container in container_stacks_added:
-                self._container_registry.removeContainer(container.getId())
-
-            for container in extruder_stacks_added:
-                self._container_registry.removeContainer(container.getId())
-
-            return None
+            return
 
         #
         # Replacing the old containers if resolve is "new".
