@@ -11,14 +11,11 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Decorators import deprecated
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.Validator import ValidatorState
 from UM.Signal import postponeSignals
 import UM.FlameProfiler
 
@@ -38,6 +35,7 @@ if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
 
 import os
+
 
 class MachineManager(QObject):
     def __init__(self, parent = None):
@@ -104,8 +102,6 @@ class MachineManager(QObject):
 
         self._material_incompatible_message = Message(catalog.i18nc("@info:status",
                                               "The selected material is incompatible with the selected machine or configuration."))
-
-
 
     globalContainerChanged = pyqtSignal() # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
