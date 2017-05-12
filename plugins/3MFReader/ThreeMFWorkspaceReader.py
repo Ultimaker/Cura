@@ -426,8 +426,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not user_containers:
                     containers_to_add.append(instance_container)
                 else:
-                    instance_container = user_containers[0]
                     if self._resolve_strategies["machine"] == "override" or self._resolve_strategies["machine"] is None:
+                        instance_container = user_containers[0]
                         instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
                         instance_container.setDirty(True)
                     elif self._resolve_strategies["machine"] == "new":
