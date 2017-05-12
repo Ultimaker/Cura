@@ -7,6 +7,7 @@
         "type": "extruder",
         "author": "Ultimaker B.V.",
         "manufacturer": "Ultimaker",
+        "setting_version": 1,
         "visible": false
     },
     "settings":
