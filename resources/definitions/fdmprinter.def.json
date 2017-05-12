@@ -8,6 +8,7 @@
         "author": "Ultimaker B.V.",
         "category": "Ultimaker",
         "manufacturer": "Ultimaker",
+        "setting_version": 1,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
