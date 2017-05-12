@@ -18,10 +18,10 @@ def getMetaData():
             "api": 3
         },
         "version_upgrade": {
-            # From                     To                 Upgrade function
-            ("profile", 1):          ("quality", 2,       upgrade.upgradeProfile),
-            ("machine_instance", 1): ("machine_stack", 2, upgrade.upgradeMachineInstance),
-            ("preferences", 2):      ("preferences", 3,   upgrade.upgradePreferences)
+            # From                         To                         Upgrade function
+            ("profile", 1000000):          ("quality", 2000000,       upgrade.upgradeProfile),
+            ("machine_instance", 1000000): ("machine_stack", 2000000, upgrade.upgradeMachineInstance),
+            ("preferences", 2000000):      ("preferences", 3000000,   upgrade.upgradePreferences)
         },
         "sources": {
             "profile": {
