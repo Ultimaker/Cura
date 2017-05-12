@@ -423,7 +423,10 @@ class XmlMaterialProfile(InstanceContainer):
             inherited = self._resolveInheritance(inherits.text)
             data = self._mergeXML(inherited, data)
 
-        meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
+        if "version" in data.attrib:
+            meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            meta_data["setting_version"] = self.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
