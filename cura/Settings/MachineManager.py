@@ -33,6 +33,7 @@ from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
+    from cura.Settings.GlobalStack import GlobalStack
 
 import os
 
@@ -42,7 +43,7 @@ class MachineManager(QObject):
         super().__init__(parent)
 
         self._active_container_stack = None     # type: ContainerStack
-        self._global_container_stack = None     # type: ContainerStack
+        self._global_container_stack = None     # type: GlobalStack
 
         self._error_check_timer = QTimer()
         self._error_check_timer.setInterval(250)
