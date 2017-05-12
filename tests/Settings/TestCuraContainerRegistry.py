@@ -64,6 +64,21 @@ def test_addContainerGlobalStack(container_registry):
     assert len(mock_super_add_container.call_args_list[0][0]) == 1 #Called with one parameter.
     assert type(mock_super_add_container.call_args_list[0][0][0]) == GlobalStack
 
+def test_addContainerGoodSettingVersion(container_registry):
+    definition = DefinitionContainer(container_id = "Test Definition")
+    definition.getMetaData()["setting_version"] = 3
+    container_registry.addContainer(definition)
+
+    instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
+    instance.addMetaDataEntry("setting_version", 3)
+    instance.setDefinition(definition)
+
+    mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting containers get registered.
+    with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
+        container_registry.addContainer(instance)
+
+    mock_super_add_container.assert_called_once_with(instance) #The instance must have been registered now.
+
 ##  Tests whether loading gives objects of the correct type.
 @pytest.mark.parametrize("filename,                  output_class", [
                         ("ExtruderLegacy.stack.cfg", ExtruderStack),
