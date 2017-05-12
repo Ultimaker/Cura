@@ -27,10 +27,13 @@ class XmlMaterialProfile(InstanceContainer):
     #   Since the two may increment independently we need a way to say which
     #   versions of the XML specification are compatible with our setting data
     #   version numbers.
-    def xmlVersionToSettingVersion(self, xml_version):
-        if xml_version == 1: #Only one known version and it happens to be the same as our current setting_version.
+    #
+    #   \param xml_version: The version number found in an XML file.
+    #   \return The corresponding setting_version.
+    def xmlVersionToSettingVersion(self, xml_version: str) -> int:
+        if xml_version == "1.3":
             return 1
-        return 0
+        return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
         return self._inherited_files
@@ -414,13 +417,13 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["type"] = "material"
         meta_data["base_file"] = self.id
         meta_data["status"] = "unknown"  # TODO: Add material verfication
-        meta_data["setting_version"] = self.getVersionFromSerialized(serialized)
 
         inherits = data.find("./um:inherits", self.__namespaces)
         if inherits is not None:
             inherited = self._resolveInheritance(inherits.text)
             data = self._mergeXML(inherited, data)
 
+        meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
