@@ -125,7 +125,7 @@ Item
                     {
                         id: infillIcon
                         anchors.fill: parent;
-                        anchors.margins: UM.Theme.getSize("infill_button_margin").width
+                        anchors.margins: 2
 
                         sourceSize.width: width
                         sourceSize.height: width
@@ -185,7 +185,7 @@ Item
             Component.onCompleted:
             {
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Empty"),
+                    name: catalog.i18nc("@label", "0%"),
                     percentage: 0,
                     steps: 0,
                     percentageMin: -1,
@@ -196,7 +196,7 @@ Item
                     icon: "hollow"
                 })
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Light"),
+                    name: catalog.i18nc("@label", "20%"),
                     percentage: 20,
                     steps: 0,
                     percentageMin: 0,
@@ -207,7 +207,7 @@ Item
                     icon: "sparse"
                 })
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Dense"),
+                    name: catalog.i18nc("@label", "50%"),
                     percentage: 50,
                     steps: 0,
                     percentageMin: 30,
@@ -218,7 +218,7 @@ Item
                     icon: "dense"
                 })
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Solid"),
+                    name: catalog.i18nc("@label", "100%"),
                     percentage: 100,
                     steps: 0,
                     percentageMin: 70,

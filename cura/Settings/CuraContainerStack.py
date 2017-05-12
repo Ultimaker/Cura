@@ -254,6 +254,10 @@ class CuraContainerStack(ContainerStack):
     def definition(self) -> DefinitionContainer:
         return self._containers[_ContainerIndexes.Definition]
 
+    @override(ContainerStack)
+    def getBottom(self) -> "DefinitionContainer":
+        return self.definition
+
     ##  Check whether the specified setting has a 'user' value.
     #
     #   A user value here is defined as the setting having a value in either
