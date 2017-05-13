@@ -11,6 +11,10 @@ resources/firmware
 resources/materials
 LC_MESSAGES
 .cache
+*.qmlc
+
+#MacOS
+.DS_Store
 
 # Editors and IDEs.
 *kdev*
@@ -37,6 +41,7 @@ plugins/X3GWriter
 plugins/FlatProfileExporter
 plugins/ProfileFlattener
 plugins/cura-god-mode-plugin
+plugins/cura-big-flame-graph
 
 #Build stuff
 CMakeCache.txt

@@ -63,17 +63,20 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
                     stack_nr = -1
                     stack = None
                     # Check from what stack we should copy the raw property of the setting from.
-                    if definition.limit_to_extruder != "-1" and self._stack.getProperty("machine_extruder_count", "value") > 1:
-                        # A limit to extruder function was set and it's a multi extrusion machine. Check what stack we do need to use.
-                        stack_nr = str(int(round(float(self._stack.getProperty(item, "limit_to_extruder")))))
+                    if self._stack.getProperty("machine_extruder_count", "value") > 1:
+                        if definition.limit_to_extruder != "-1":
+                            # A limit to extruder function was set and it's a multi extrusion machine. Check what stack we do need to use.
+                            stack_nr = str(int(round(float(self._stack.getProperty(item, "limit_to_extruder")))))
 
-                    # Check if the found stack_number is in the extruder list of extruders.
-                    if stack_nr not in ExtruderManager.getInstance().extruderIds and self._stack.getProperty("extruder_nr", "value") is not None:
-                        stack_nr = -1
+                        # Check if the found stack_number is in the extruder list of extruders.
+                        if stack_nr not in ExtruderManager.getInstance().extruderIds and self._stack.getProperty("extruder_nr", "value") is not None:
+                            stack_nr = -1
 
-                    # Use the found stack number to get the right stack to copy the value from.
-                    if stack_nr in ExtruderManager.getInstance().extruderIds:
-                        stack = ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                        # Use the found stack number to get the right stack to copy the value from.
+                        if stack_nr in ExtruderManager.getInstance().extruderIds:
+                            stack = ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                    else:
+                        stack = self._stack
 
                     # Use the raw property to set the value (so the inheritance doesn't break)
                     if stack is not None:

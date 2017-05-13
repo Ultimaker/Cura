@@ -16,7 +16,11 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING, Union
+
+if TYPE_CHECKING:
+    from cura.Settings.ExtruderStack import ExtruderStack
+
 
 ##  Manages all existing extruder stacks.
 #
@@ -166,7 +170,7 @@ class ExtruderManager(QObject):
         self._selected_object_extruders = []
         self.selectedObjectExtrudersChanged.emit()
 
-    def getActiveExtruderStack(self) -> ContainerStack:
+    def getActiveExtruderStack(self) -> Optional["ExtruderStack"]:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if global_container_stack:
@@ -176,7 +180,7 @@ class ExtruderManager(QObject):
         return None
 
     ##  Get an extruder stack by index
-    def getExtruderStack(self, index):
+    def getExtruderStack(self, index) -> Optional["ExtruderStack"]:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             if global_container_stack.getId() in self._extruder_trains:
@@ -185,7 +189,7 @@ class ExtruderManager(QObject):
         return None
 
     ##  Get all extruder stacks
-    def getExtruderStacks(self):
+    def getExtruderStacks(self) -> List["ExtruderStack"]:
         result = []
         for i in range(self.extruderCount):
             result.append(self.getExtruderStack(i))
@@ -397,7 +401,7 @@ class ExtruderManager(QObject):
     #   list.
     #
     #   \return A list of extruder stacks.
-    def getUsedExtruderStacks(self):
+    def getUsedExtruderStacks(self) -> List["ContainerStack"]:
         global_stack = Application.getInstance().getGlobalContainerStack()
         container_registry = ContainerRegistry.getInstance()
 
@@ -451,7 +455,7 @@ class ExtruderManager(QObject):
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #
     #   \param machine_id The machine to remove the extruders for.
-    def removeMachineExtruders(self, machine_id):
+    def removeMachineExtruders(self, machine_id: str):
         for extruder in self.getMachineExtruders(machine_id):
             containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", extruder = extruder.getId())
             for container in containers:
@@ -461,7 +465,7 @@ class ExtruderManager(QObject):
     ##  Returns extruders for a specific machine.
     #
     #   \param machine_id The machine to get the extruders of.
-    def getMachineExtruders(self, machine_id):
+    def getMachineExtruders(self, machine_id: str):
         if machine_id not in self._extruder_trains:
             return []
         return [self._extruder_trains[machine_id][name] for name in self._extruder_trains[machine_id]]
@@ -470,7 +474,7 @@ class ExtruderManager(QObject):
     #
     #   The first element is the global container stack, followed by any extruder stacks.
     #   \return \type{List[ContainerStack]}
-    def getActiveGlobalAndExtruderStacks(self):
+    def getActiveGlobalAndExtruderStacks(self) -> Optional[List[Union["ExtruderStack", "GlobalStack"]]]:
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return None
@@ -482,7 +486,7 @@ class ExtruderManager(QObject):
     ##  Returns the list of active extruder stacks.
     #
     #   \return \type{List[ContainerStack]} a list of
-    def getActiveExtruderStacks(self):
+    def getActiveExtruderStacks(self) -> List["ExtruderStack"]:
         global_stack = Application.getInstance().getGlobalContainerStack()
 
         result = []

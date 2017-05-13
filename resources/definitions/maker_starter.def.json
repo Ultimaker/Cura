@@ -4,6 +4,7 @@
     "name": "3DMaker Starter",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
         "category": "Other",

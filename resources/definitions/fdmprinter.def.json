@@ -8,6 +8,7 @@
         "author": "Ultimaker B.V.",
         "category": "Ultimaker",
         "manufacturer": "Ultimaker",
+        "setting_version": 1,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1217,19 +1218,6 @@
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
                     "settable_per_mesh": true
                 },
-                "sub_div_rad_mult":
-                {
-                    "label": "Cubic Subdivision Radius",
-                    "description": "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 100,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "100",
-                    "maximum_value_warning": "200",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
-                    "settable_per_mesh": true
-                },
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
@@ -1346,7 +1334,7 @@
                     "description": "The height of infill of a given density before switching to half the density.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 5.0,
+                    "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
@@ -2989,7 +2977,7 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "enabled": "machine_extruder_count > 1",
+                    "enabled": "support_enable and machine_extruder_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children": {
@@ -3000,7 +2988,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "machine_extruder_count > 1",
+                            "enabled": "support_enable and machine_extruder_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -3011,7 +2999,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "machine_extruder_count > 1",
+                            "enabled": "support_enable and machine_extruder_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -3022,7 +3010,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "machine_extruder_count > 1",
+                            "enabled": "support_enable and machine_extruder_count > 1",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
@@ -3034,7 +3022,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "machine_extruder_count > 1",
+                                    "enabled": "support_enable and machine_extruder_count > 1",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 },
@@ -3045,7 +3033,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "machine_extruder_count > 1",
+                                    "enabled": "support_enable and machine_extruder_count > 1",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -3098,7 +3086,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "zigzag",
-                    "enabled": true,
+                    "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -3109,7 +3097,7 @@
                     "description": "Connect the ZigZags. This will increase the strength of the zig zag support structure.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "support_pattern == 'zigzag'",
+                    "enabled": "support_enable and (support_pattern == 'zigzag')",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -3123,7 +3111,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 15,
-                    "enabled": true,
+                    "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -3138,7 +3126,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "support_line_width",
                             "default_value": 2.66,
-                            "enabled": true,
+                            "enabled": "support_enable",
                             "value": "(support_line_width * 100) / support_infill_rate * (2 if support_pattern == 'grid' else (3 if support_pattern == 'triangles' else 1))",
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
@@ -3291,7 +3279,7 @@
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": true,
+                    "enabled": "support_enable",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -3303,7 +3291,7 @@
                             "default_value": false,
                             "value": "support_interface_enable",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": true,
+                            "enabled": "support_enable",
                             "settable_per_mesh": true
                         },
                         "support_bottom_enable":
@@ -3314,7 +3302,7 @@
                             "default_value": false,
                             "value": "support_interface_enable",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": true,
+                            "enabled": "support_enable",
                             "settable_per_mesh": true
                         }
                     }
@@ -3330,7 +3318,7 @@
                     "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
                     "maximum_value_warning": "10",
                     "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable')",
+                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -3346,7 +3334,7 @@
                             "maximum_value_warning": "10",
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable')",
+                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable') and support_enable",
                             "settable_per_mesh": true
                         },
                         "support_bottom_height":
@@ -3361,7 +3349,7 @@
                             "minimum_value_warning": "min(0.2 + resolveOrValue('layer_height'), extruderValue(support_bottom_extruder_nr, 'support_bottom_stair_step_height'))",
                             "maximum_value_warning": "10",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable')",
+                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable') and support_enable",
                             "settable_per_mesh": true
                         }
                     }
@@ -3375,7 +3363,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "support_interface_height",
                     "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable')",
+                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": true
                 },
                 "support_interface_density":
@@ -3388,7 +3376,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable')",
+                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
@@ -3403,7 +3391,7 @@
                             "minimum_value": "0",
                             "maximum_value": "100",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable')",
+                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
@@ -3419,7 +3407,7 @@
                                     "minimum_value_warning": "support_roof_line_width - 0.0001",
                                     "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == 'grid' else (3 if support_roof_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_roof_extruder_nr",
-                                    "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable')",
+                                    "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable') and support_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
@@ -3435,7 +3423,7 @@
                             "minimum_value": "0",
                             "maximum_value": "100",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable')",
+                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
@@ -3451,7 +3439,7 @@
                                     "minimum_value_warning": "support_bottom_line_width - 0.0001",
                                     "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_bottom_pattern == 'grid' else (3 if support_bottom_pattern == 'triangles' else 1))",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
-                                    "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable')",
+                                    "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable') and support_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
@@ -3475,7 +3463,7 @@
                     },
                     "default_value": "concentric",
                     "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable')",
+                    "enabled": "extruderValue(support_interface_extruder_nr, 'support_interface_enable') and support_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
@@ -3497,7 +3485,7 @@
                             "default_value": "concentric",
                             "value": "support_interface_pattern",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable')",
+                            "enabled": "extruderValue(support_roof_extruder_nr, 'support_roof_enable') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -3518,7 +3506,7 @@
                             "default_value": "concentric",
                             "value": "support_interface_pattern",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable')",
+                            "enabled": "extruderValue(support_bottom_extruder_nr, 'support_bottom_enable') and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -3594,7 +3582,8 @@
                     "resolve": "any(extruderValues('prime_blob_enable'))",
                     "default_value": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "enabled": false
                 },
                 "extruder_prime_pos_x":
                 {
@@ -3635,7 +3624,7 @@
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "resolve": "'raft' if 'raft' in extruderValues('adhesion_type') else ('brim' if 'brim' in extruderValues('adhesion_type') else 'skirt')",
+                    "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -4215,7 +4204,7 @@
                     "type": "float",
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": 15,
+                    "default_value": 20,
                     "resolve": "max(extruderValues('prime_tower_size'))",
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
@@ -4472,6 +4461,31 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "infill_mesh_order":
+                {
+                    "label": "Infill Mesh Order",
+                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "default_value": 0,
+                    "value": "1 if infill_mesh else 0",
+                    "minimum_value_warning": "1",
+                    "maximum_value_warning": "50",
+                    "type": "int",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
+                "cutting_mesh":
+                {
+                    "label": "Cutting Mesh",
+                    "description": "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+                },
                 "mold_enabled":
                 {
                     "label": "Mold",
@@ -4505,20 +4519,6 @@
                     "default_value": 40,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
-                },
-                "infill_mesh_order":
-                {
-                    "label": "Infill Mesh Order",
-                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
-                    "default_value": 0,
-                    "value": "1 if infill_mesh else 0",
-                    "minimum_value_warning": "1",
-                    "maximum_value_warning": "50",
-                    "type": "int",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
                 },
                 "support_mesh":
                 {
@@ -4574,6 +4574,16 @@
                     "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature used to be called Joris in older versions.",
                     "type": "bool",
                     "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "smooth_spiralized_contours":
+                {
+                    "label": "Smooth Spiralized Contours",
+                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "magic_spiralize",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }

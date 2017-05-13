@@ -7,7 +7,8 @@ import io #To serialise configparser output to a string.
 from UM.VersionUpgrade import VersionUpgrade
 
 _removed_settings = { #Settings that were removed in 2.5.
-    "start_layers_at_same_position"
+    "start_layers_at_same_position",
+    "sub_div_rad_mult"
 }
 
 _split_settings = { #These settings should be copied to all settings it was split into.
@@ -15,13 +16,13 @@ _split_settings = { #These settings should be copied to all settings it was spli
 }
 
 ##  A collection of functions that convert the configuration of the user in Cura
-#   2.4 to a configuration for Cura 2.5.
+#   2.5 to a configuration for Cura 2.6.
 #
 #   All of these methods are essentially stateless.
-class VersionUpgrade24to25(VersionUpgrade):
-    ##  Gets the version number from a CFG file in Uranium's 2.4 format.
+class VersionUpgrade25to26(VersionUpgrade):
+    ##  Gets the version number from a CFG file in Uranium's 2.5 format.
     #
-    #   Since the format may change, this is implemented for the 2.4 format only
+    #   Since the format may change, this is implemented for the 2.5 format only
     #   and needs to be included in the version upgrade system rather than
     #   globally in Uranium.
     #
@@ -33,9 +34,11 @@ class VersionUpgrade24to25(VersionUpgrade):
     def getCfgVersion(self, serialised):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
-        return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        return format_version * 1000000 + setting_version
 
-    ##  Upgrades the preferences file from version 2.4 to 2.5.
+    ##  Upgrades the preferences file from version 2.5 to 2.6.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
@@ -66,7 +69,7 @@ class VersionUpgrade24to25(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades an instance container from version 2.4 to 2.5.
+    ##  Upgrades an instance container from version 2.5 to 2.6.
     #
     #   \param serialised The serialised form of a quality profile.
     #   \param filename The name of the file to upgrade.
@@ -85,7 +88,7 @@ class VersionUpgrade24to25(VersionUpgrade):
 
         #Change the version number in the file.
         if parser.has_section("general"):
-            parser["general"]["version"] = "3"
+            parser["general"]["setting_version"] = "1"
 
         #Re-serialise the file.
         output = io.StringIO()

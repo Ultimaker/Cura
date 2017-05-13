@@ -18,10 +18,10 @@ def getMetaData():
             "api": 3
         },
         "version_upgrade": {
-            # From                     To                 Upgrade function
-            ("machine_instance", 2): ("machine_stack", 3, upgrade.upgradeMachineInstance),
-            ("extruder_train", 2): ("extruder_train", 3, upgrade.upgradeExtruderTrain),
-            ("preferences", 3):      ("preferences", 4, upgrade.upgradePreferences)
+            # From                         To                 Upgrade function
+            ("machine_instance", 2000000): ("machine_stack",  3000000, upgrade.upgradeMachineInstance),
+            ("extruder_train", 2000000):   ("extruder_train", 3000000, upgrade.upgradeExtruderTrain),
+            ("preferences", 3000000):      ("preferences",    4000000, upgrade.upgradePreferences)
 
     },
         "sources": {

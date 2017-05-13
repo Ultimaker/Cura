@@ -34,7 +34,7 @@ Cura.MachineAction
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label","Please select any upgrades made to this Ultimaker 2");
+            text: catalog.i18nc("@label","Please select any upgrades made to this Ultimaker 2.");
         }
 
         CheckBox

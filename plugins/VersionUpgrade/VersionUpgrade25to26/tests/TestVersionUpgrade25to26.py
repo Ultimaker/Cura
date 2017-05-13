@@ -4,12 +4,12 @@
 import configparser #To check whether the appropriate exceptions are raised.
 import pytest #To register tests with.
 
-import VersionUpgrade24to25 #The module we're testing.
+import VersionUpgrade25to26 #The module we're testing.
 
 ##  Creates an instance of the upgrader to test with.
 @pytest.fixture
 def upgrader():
-    return VersionUpgrade24to25.VersionUpgrade24to25()
+    return VersionUpgrade25to26.VersionUpgrade25to26()
 
 test_cfg_version_good_data = [
     {
@@ -17,7 +17,7 @@ test_cfg_version_good_data = [
         "file_data": """[general]
 version = 1
 """,
-        "version": 1
+        "version": 1000000
     },
     {
         "test_name": "Other Data Around",
@@ -31,14 +31,32 @@ version = 3
 layer_height = 0.12
 infill_sparse_density = 42
 """,
-        "version": 3
+        "version": 3000000
     },
     {
         "test_name": "Negative Version", #Why not?
         "file_data": """[general]
 version = -20
 """,
-        "version": -20
+        "version": -20000000
+    },
+    {
+        "test_name": "Setting Version",
+        "file_data": """[general]
+version = 1
+[metadata]
+setting_version = 1
+""",
+        "version": 1000001
+    },
+    {
+        "test_name": "Negative Setting Version",
+        "file_data": """[general]
+version = 1
+[metadata]
+setting_version = -3
+""",
+        "version": 999997
     }
 ]
 
@@ -77,6 +95,22 @@ true = false
         "test_name": "Not a Number",
         "file_data": """[general]
 version = not-a-text-version-number
+""",
+        "exception": ValueError
+    },
+    {
+        "test_name": "Setting Value NaN",
+        "file_data": """[general]
+version = 4
+[metadata]
+setting_version = latest_or_something
+""",
+        "exception": ValueError
+    },
+    {
+        "test_name": "Major-Minor",
+        "file_data": """[general]
+version = 1.2
 """,
         "exception": ValueError
     }
@@ -121,7 +155,7 @@ foo = bar
     }
 ]
 
-##  Tests whether the settings that should be removed are removed for the 2.5
+##  Tests whether the settings that should be removed are removed for the 2.6
 #   version of preferences.
 @pytest.mark.parametrize("data", test_upgrade_preferences_removed_settings_data)
 def test_upgradePreferencesRemovedSettings(data, upgrader):
@@ -137,7 +171,7 @@ def test_upgradePreferencesRemovedSettings(data, upgrader):
     upgraded_preferences = upgraded_preferences[0]
 
     #Find whether the removed setting is removed from the file now.
-    settings -= VersionUpgrade24to25._removed_settings
+    settings -= VersionUpgrade25to26._removed_settings
     parser = configparser.ConfigParser(interpolation = None)
     parser.read_string(upgraded_preferences)
     assert (parser.has_section("general") and "visible_settings" in parser["general"]) == (len(settings) > 0) #If there are settings, there must also be a preference.
@@ -166,7 +200,7 @@ type = instance_container
     }
 ]
 
-##  Tests whether the settings that should be removed are removed for the 2.5
+##  Tests whether the settings that should be removed are removed for the 2.6
 #   version of instance containers.
 @pytest.mark.parametrize("data", test_upgrade_instance_container_removed_settings_data)
 def test_upgradeInstanceContainerRemovedSettings(data, upgrader):
@@ -182,7 +216,7 @@ def test_upgradeInstanceContainerRemovedSettings(data, upgrader):
     upgraded_container = upgraded_container[0]
 
     #Find whether the forbidden setting is still in the container.
-    settings -= VersionUpgrade24to25._removed_settings
+    settings -= VersionUpgrade25to26._removed_settings
     parser = configparser.ConfigParser(interpolation = None)
     parser.read_string(upgraded_container)
     assert parser.has_section("values") == (len(settings) > 0) #If there are settings, there must also be the values category.
