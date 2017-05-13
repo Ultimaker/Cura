@@ -562,7 +562,7 @@ class BuildVolume(SceneNode):
                 used_extruders = [self._global_container_stack]
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
-        prime_areas = self._computeDisallowedAreasPrime(disallowed_border_size, used_extruders)
+        prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
         prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
 
         #Check if prime positions intersect with disallowed areas.
@@ -658,7 +658,7 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Computes the disallowed areas for the prime locations.
+    ##  Computes the disallowed areas for the prime blobs.
     #
     #   These are special because they are not subject to things like brim or
     #   travel avoidance. They do get a dilute with the border size though
@@ -669,7 +669,7 @@ class BuildVolume(SceneNode):
     #   \param used_extruders The extruder stacks to generate disallowed areas
     #   for.
     #   \return A dictionary with for each used extruder ID the prime areas.
-    def _computeDisallowedAreasPrime(self, border_size, used_extruders):
+    def _computeDisallowedAreasPrimeBlob(self, border_size, used_extruders):
         result = {}
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
@@ -679,7 +679,7 @@ class BuildVolume(SceneNode):
             prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
             prime_y = - extruder.getProperty("extruder_prime_pos_y", "value")
 
-            #Ignore extruder prime position if it is not set
+            #Ignore extruder prime position if it is not set or if blob is disabled
             if (prime_x == 0 and prime_y == 0) or not prime_blob_enabled:
                 result[extruder.getId()] = []
                 continue
