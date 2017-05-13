@@ -675,11 +675,12 @@ class BuildVolume(SceneNode):
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         for extruder in used_extruders:
+            prime_blob_enabled = extruder.getProperty("prime_blob_enable", "value")
             prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
             prime_y = - extruder.getProperty("extruder_prime_pos_y", "value")
 
             #Ignore extruder prime position if it is not set
-            if prime_x == 0 and prime_y == 0:
+            if (prime_x == 0 and prime_y == 0) or not prime_blob_enabled:
                 result[extruder.getId()] = []
                 continue
 
@@ -952,7 +953,7 @@ class BuildVolume(SceneNode):
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
-    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
+    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]
