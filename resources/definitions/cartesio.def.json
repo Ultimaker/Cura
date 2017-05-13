@@ -19,7 +19,7 @@
         "variants_name": "Nozzle size",
         "preferred_variant": "*0.8*",
         "preferred_material": "*pla*",
-        "preferred_quality": "*high*",
+        "preferred_quality": "*normal*",
 
         "machine_extruder_trains":
         {
@@ -29,7 +29,7 @@
             "3": "cartesio_extruder_3"
         },
         "platform": "cartesio_platform.stl",
-        "platform_offset": [ -120, -1.5, 130],
+        "platform_offset": [ -220, -5, 150],
         "first_start_actions": ["MachineSettingsAction"],
         "supported_actions": ["MachineSettingsAction"]
     },
