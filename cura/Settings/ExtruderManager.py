@@ -85,7 +85,7 @@ class ExtruderManager(QObject):
         for position in self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()]:
             extruder = self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()][position]
             if extruder.getId() == id:
-                return extruder.findContainer(type = "quality_changes").getId()
+                return extruder.qualityChanges.getId()
 
     ##  The instance of the singleton pattern.
     #
