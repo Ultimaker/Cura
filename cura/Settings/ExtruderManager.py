@@ -458,9 +458,7 @@ class ExtruderManager(QObject):
     #   \param machine_id The machine to remove the extruders for.
     def removeMachineExtruders(self, machine_id: str):
         for extruder in self.getMachineExtruders(machine_id):
-            containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", extruder = extruder.getId())
-            for container in containers:
-                ContainerRegistry.getInstance().removeContainer(container.getId())
+            ContainerRegistry.getInstance().removeContainer(extruder.user.getId())
             ContainerRegistry.getInstance().removeContainer(extruder.getId())
 
     ##  Returns extruders for a specific machine.
