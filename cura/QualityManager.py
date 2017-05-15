@@ -205,7 +205,7 @@ class QualityManager:
         if material_containers is None:
             active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
             if active_stacks:
-                material_containers = [stack.findContainer(type="material") for stack in active_stacks]
+                material_containers = [stack.material for stack in active_stacks]
 
         criteria = kwargs
         filter_by_material = False
