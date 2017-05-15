@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any
+from typing import Any, TYPE_CHECKING, Optional
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 
@@ -16,6 +16,9 @@ from UM.Settings.Interfaces import ContainerInterface
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
 from .ExtruderManager import ExtruderManager
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
 
 ##  Represents an Extruder and its related containers.
 #
@@ -37,6 +40,10 @@ class ExtruderStack(CuraContainerStack):
 
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
+
+    @override(ContainerStack)
+    def getNextStack(self) -> Optional["GlobalStack"]:
+        return super().getNextStack()
 
     @classmethod
     def getLoadingPriority(cls) -> int:
