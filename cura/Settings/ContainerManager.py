@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os.path
@@ -815,6 +815,7 @@ class ContainerManager(QObject):
             quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
+        quality_changes.addMetaDataEntry("setting_version", quality_changes.getDefinition().getMetaDataEntry("setting_version", default = 0))
         return quality_changes
 
 

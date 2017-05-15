@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 

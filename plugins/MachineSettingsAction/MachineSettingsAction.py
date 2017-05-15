@@ -99,6 +99,7 @@ class MachineSettingsAction(MachineAction):
         definition = container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", definition.getMetaDataEntry("setting_version", default = 0))
 
         self._container_registry.addContainer(definition_changes_container)
         container_stack.definitionChanges = definition_changes_container

@@ -43,7 +43,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         if isinstance(container, InstanceContainer) and type(container) != type(self.getEmptyInstanceContainer()):
             #Check against setting version of the definition.
-            required_setting_version = int(container.getDefinition().getMetaDataEntry("setting_version"))
+            required_setting_version = int(container.getDefinition().getMetaDataEntry("setting_version", default = 0))
             actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
             if required_setting_version != actual_setting_version:
                 Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id = container.getId(), actual_setting_version = actual_setting_version, required_setting_version = required_setting_version))

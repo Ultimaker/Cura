@@ -49,6 +49,7 @@ class UMOUpgradeSelection(MachineAction):
         definition = global_container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", definition.getMetaDataEntry("setting_version", default = 0))
 
         UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().addContainer(definition_changes_container)
         # Insert definition_changes between the definition and the variant

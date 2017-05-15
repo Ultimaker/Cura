@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant #For communicating data and events to Qt.
@@ -362,6 +362,7 @@ class ExtruderManager(QObject):
             user_profile = InstanceContainer(extruder_stack_id + "_current_settings")  # Add an empty user profile.
             user_profile.addMetaDataEntry("type", "user")
             user_profile.addMetaDataEntry("extruder", extruder_stack_id)
+            user_profile.addMetaDataEntry("setting_version", machine_definition.getMetaDataEntry("setting_version", default = 0))
             user_profile.setDefinition(machine_definition)
             container_registry.addContainer(user_profile)
         container_stack.addContainer(user_profile)
