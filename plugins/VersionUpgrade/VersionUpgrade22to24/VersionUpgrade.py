@@ -142,6 +142,16 @@ class VersionUpgrade22to24(VersionUpgrade):
         config.write(output)
         return [filename], [output.getvalue()]
 
+    def upgradeQuality(self, serialised, filename):
+        config = configparser.ConfigParser(interpolation = None)
+        config.read_string(serialised) # Read the input string as config file.
+        config.set("metadata", "type", "quality_changes")   # Update metadata/type to quality_changes
+        config.set("general", "version", "2")   # Just bump the version number. That is all we need for now.
+
+        output = io.StringIO()
+        config.write(output)
+        return [filename], [output.getvalue()]
+
     def getCfgVersion(self, serialised):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)

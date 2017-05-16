@@ -9,9 +9,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
-from .CuraContainerStack import CuraContainerStack
 from typing import Optional
 
+import cura.CuraApplication
 
 ##  Contains helper functions to create new machines.
 class CuraStackBuilder:
@@ -76,7 +76,7 @@ class CuraStackBuilder:
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("extruder", new_stack_id)
-        user_container.addMetaDataEntry("setting_version", machine_definition.getMetaDataEntry("setting_version", default = 0))
+        user_container.addMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
         user_container.setDefinition(machine_definition)
 
         stack.setUserChanges(user_container)
@@ -125,7 +125,7 @@ class CuraStackBuilder:
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", new_stack_id)
-        user_container.addMetaDataEntry("setting_version", definition.getMetaDataEntry("setting_version", default = 0))
+        user_container.addMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
         user_container.setDefinition(definition)
 
         stack.setUserChanges(user_container)
