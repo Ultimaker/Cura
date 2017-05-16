@@ -21,6 +21,20 @@ class XmlMaterialProfile(InstanceContainer):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
 
+    ##  Translates the version number in the XML files to the setting_version
+    #   metadata entry.
+    #
+    #   Since the two may increment independently we need a way to say which
+    #   versions of the XML specification are compatible with our setting data
+    #   version numbers.
+    #
+    #   \param xml_version: The version number found in an XML file.
+    #   \return The corresponding setting_version.
+    def xmlVersionToSettingVersion(self, xml_version: str) -> int:
+        if xml_version == "1.3":
+            return 1
+        return 0 #Older than 1.3.
+
     def getInheritedFiles(self):
         return self._inherited_files
 
@@ -145,10 +159,10 @@ class XmlMaterialProfile(InstanceContainer):
 
         for key, value in metadata.items():
             builder.start(key)
-            # Normally value is a string.
-            # Nones get handled well.
-            if isinstance(value, bool):
-                value = str(value)  # parseBool in deserialize expects 'True'.
+            if value is not None: #Nones get handled well by the builder.
+                #Otherwise the builder always expects a string.
+                #Deserialize expects the stringified version.
+                value = str(value)
             builder.data(value)
             builder.end(key)
 
@@ -409,6 +423,10 @@ class XmlMaterialProfile(InstanceContainer):
             inherited = self._resolveInheritance(inherits.text)
             data = self._mergeXML(inherited, data)
 
+        if "version" in data.attrib:
+            meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            meta_data["setting_version"] = self.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
@@ -441,8 +459,7 @@ class XmlMaterialProfile(InstanceContainer):
             tag_name = _tag_without_namespace(entry)
             property_values[tag_name] = entry.text
 
-        diameter = float(property_values.get("diameter", 2.85)) # In mm
-        density = float(property_values.get("density", 1.3)) # In g/cm3
+        meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
@@ -461,7 +478,6 @@ class XmlMaterialProfile(InstanceContainer):
                 Logger.log("d", "Unsupported material setting %s", key)
         self._cached_values = global_setting_values
 
-        meta_data["approximate_diameter"] = round(diameter)
         meta_data["compatible"] = global_compatibility
         self.setMetaData(meta_data)
         self._dirty = False

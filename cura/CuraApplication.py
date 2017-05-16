@@ -294,6 +294,7 @@ class CuraApplication(QtApplication):
                 z_seam_y
             infill
                 infill_sparse_density
+                gradual_infill_steps
             material
                 material_print_temperature
                 material_bed_temperature

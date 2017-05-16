@@ -53,7 +53,8 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width * .55
+        width: base.width * .5
+
         spacing: UM.Theme.getSize("default_margin").width
 
         anchors.left: infillCellLeft.right
@@ -124,7 +125,7 @@ Item
                     {
                         id: infillIcon
                         anchors.fill: parent;
-                        anchors.margins: UM.Theme.getSize("infill_button_margin").width
+                        anchors.margins: 2
 
                         sourceSize.width: width
                         sourceSize.height: width
@@ -184,47 +185,47 @@ Item
             Component.onCompleted:
             {
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Empty"),
+                    name: catalog.i18nc("@label", "0%"),
                     percentage: 0,
                     steps: 0,
                     percentageMin: -1,
                     percentageMax: 0,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength"),
+                    text: catalog.i18nc("@label", "Empty infill will leave your model hollow with low strength."),
                     icon: "hollow"
                 })
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Light"),
+                    name: catalog.i18nc("@label", "20%"),
                     percentage: 20,
                     steps: 0,
                     percentageMin: 0,
                     percentageMax: 30,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
+                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength."),
                     icon: "sparse"
                 })
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Dense"),
+                    name: catalog.i18nc("@label", "50%"),
                     percentage: 50,
                     steps: 0,
                     percentageMin: 30,
                     percentageMax: 70,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
+                    text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength."),
                     icon: "dense"
                 })
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Solid"),
+                    name: catalog.i18nc("@label", "100%"),
                     percentage: 100,
                     steps: 0,
                     percentageMin: 70,
                     percentageMax: 9999999999,
                     stepsMin: -1,
                     stepsMax: 0,
-                    text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
+                    text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid."),
                     icon: "solid"
                 })
                 infillModel.append({
@@ -236,7 +237,7 @@ Item
                     stepsMin: 0,
                     stepsMax: 9999999999,
                     infill_layer_height: 1.5,
-                    text: catalog.i18nc("@label", "This will gradually increase the amount of infill towards the top"),
+                    text: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top."),
                     icon: "gradual"
                 })
             }

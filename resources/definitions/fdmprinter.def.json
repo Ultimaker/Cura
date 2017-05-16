@@ -8,6 +8,7 @@
         "author": "Ultimaker B.V.",
         "category": "Ultimaker",
         "manufacturer": "Ultimaker",
+        "setting_version": 1,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1217,19 +1218,6 @@
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
                     "settable_per_mesh": true
                 },
-                "sub_div_rad_mult":
-                {
-                    "label": "Cubic Subdivision Radius",
-                    "description": "A multiplier on the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to more subdivisions, i.e. more small cubes.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 100,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "100",
-                    "maximum_value_warning": "200",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
-                    "settable_per_mesh": true
-                },
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
@@ -1335,7 +1323,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "4",
+                    "maximum_value_warning": "5",
                     "maximum_value": "0 if spaghetti_infill_enabled else (999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2)))",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv' and not spaghetti_infill_enabled",
                     "settable_per_mesh": true
@@ -3636,7 +3624,7 @@
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "resolve": "'raft' if 'raft' in extruderValues('adhesion_type') else ('brim' if 'brim' in extruderValues('adhesion_type') else 'skirt')",
+                    "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -4583,7 +4571,7 @@
                 "magic_spiralize":
                 {
                     "label": "Spiralize Outer Contour",
-                    "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature used to be called Joris in older versions.",
+                    "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature should only be enabled when each layer only contains a single part.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
@@ -4595,7 +4583,9 @@
                     "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "magic_spiralize"
+                    "enabled": "magic_spiralize",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
