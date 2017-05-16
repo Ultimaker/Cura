@@ -14,6 +14,12 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Materials");
 
+    Component.onCompleted:
+    {
+        // Workaround to make sure all of the items are visible
+        objectList.positionViewAtBeginning();
+    }
+
     model: UM.InstanceContainersModel
     {
         filter:
@@ -81,6 +87,7 @@ UM.ManagementPage
             anchors.fill: parent;
             onClicked:
             {
+                forceActiveFocus();
                 if(!parent.ListView.isCurrentItem)
                 {
                     parent.ListView.view.currentIndex = index;
@@ -91,9 +98,11 @@ UM.ManagementPage
     }
 
     activeId: Cura.MachineManager.activeMaterialId
-    activeIndex: {
+    activeIndex: getIndexById(activeId)
+    function getIndexById(material_id)
+    {
         for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMaterialId) {
+            if (model.getItem(i).id == material_id) {
                 return i;
             }
         }
@@ -136,6 +145,24 @@ UM.ManagementPage
         },
         Button
         {
+            text: catalog.i18nc("@action:button", "Create")
+            iconName: "list-add"
+            onClicked:
+            {
+                var material_id = Cura.ContainerManager.createMaterial()
+                if(material_id == "")
+                {
+                    return
+                }
+                if(Cura.MachineManager.hasMaterials)
+                {
+                    Cura.MachineManager.setActiveMaterial(material_id)
+                }
+                base.objectList.currentIndex = base.getIndexById(material_id);
+            }
+        },
+        Button
+        {
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add";
             enabled: base.currentItem != null
@@ -152,6 +179,7 @@ UM.ManagementPage
                 {
                     Cura.MachineManager.setActiveMaterial(material_id)
                 }
+                base.objectList.currentIndex = base.getIndexById(material_id);
             }
         },
         Button
@@ -206,6 +234,8 @@ UM.ManagementPage
 
             properties: materialProperties
             containerId: base.currentItem != null ? base.currentItem.id : ""
+
+            property alias pane: base
         }
 
         QtObject
@@ -250,6 +280,10 @@ UM.ManagementPage
                 for(var i in containers)
                 {
                     Cura.ContainerManager.removeContainer(containers[i])
+                }
+                if(base.objectList.currentIndex > 0)
+                {
+                    base.objectList.currentIndex--;
                 }
                 currentItem = base.model.getItem(base.objectList.currentIndex) // Refresh the current item.
             }

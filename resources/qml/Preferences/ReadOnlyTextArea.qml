@@ -45,17 +45,4 @@ Item
             }
         }
     }
-
-    Label
-    {
-        visible: base.readOnly
-        text: textArea.text
-
-        anchors.fill: parent
-        anchors.margins: textArea.__style ? textArea.__style.textMargin : 4
-
-        color: palette.buttonText
-    }
-
-    SystemPalette { id: palette }
 }
