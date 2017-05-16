@@ -82,9 +82,12 @@ class GlobalStack(CuraContainerStack):
         # Handle the "limit_to_extruder" property.
         limit_to_extruder = super().getProperty(key, "limit_to_extruder")
         if limit_to_extruder is not None and limit_to_extruder != "-1":
-            result = self._extruders[int(limit_to_extruder)].getProperty(key, property_name)
-            if result is not None:
-                return result
+            if super().getProperty(key, "settable_per_extruder"):
+                result = self._extruders[int(limit_to_extruder)].getProperty(key, property_name)
+                if result is not None:
+                    return result
+            else:
+                Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
         return super().getProperty(key, property_name)
 
