@@ -3624,7 +3624,7 @@
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "limit_to_extruder": "adhesion_extruder_nr",
+                    "resolve": "extruderValue(adhesion_extruder_nr, 'adhesion_type')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
