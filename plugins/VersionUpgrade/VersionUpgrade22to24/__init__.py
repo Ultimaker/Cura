@@ -21,9 +21,9 @@ def getMetaData():
             # From                         To                 Upgrade function
             ("machine_instance", 2000000): ("machine_stack",  3000000, upgrade.upgradeMachineInstance),
             ("extruder_train", 2000000):   ("extruder_train", 3000000, upgrade.upgradeExtruderTrain),
-            ("preferences", 3000000):      ("preferences",    4000000, upgrade.upgradePreferences)
-
-    },
+            ("preferences", 3000000):      ("preferences",    4000000, upgrade.upgradePreferences),
+            ("quality", 2000000):          ("quality_changes", 2000000, upgrade.upgradeQuality),
+        },
         "sources": {
             "machine_stack": {
                 "get_version": upgrade.getCfgVersion,
