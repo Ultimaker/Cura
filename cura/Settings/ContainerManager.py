@@ -28,7 +28,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
-import cura.CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 
 catalog = i18nCatalog("cura")
@@ -919,7 +918,8 @@ class ContainerManager(QObject):
             quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
-        quality_changes.addMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
+        from cura.CuraApplication import CuraApplication
+        quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         return quality_changes
 
 
