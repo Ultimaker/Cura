@@ -20,6 +20,7 @@ from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
+    from cura.Settings.GlobalStack import GlobalStack
 
 
 ##  Manages all existing extruder stacks.
