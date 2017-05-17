@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any
+from typing import Any, Dict
 
 from PyQt5.QtCore import pyqtProperty
 
@@ -24,7 +24,7 @@ class GlobalStack(CuraContainerStack):
 
         self.addMetaDataEntry("type", "machine") # For backward compatibility
 
-        self._extruders = []
+        self._extruders = {}
 
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
@@ -34,8 +34,8 @@ class GlobalStack(CuraContainerStack):
     ##  Get the list of extruders of this stack.
     #
     #   \return The extruders registered with this stack.
-    @pyqtProperty("QVariantList")
-    def extruders(self) -> list:
+    @pyqtProperty("QVariantMap")
+    def extruders(self) -> Dict[str, "ExtruderStack"]:
         return self._extruders
 
     @classmethod
@@ -53,7 +53,7 @@ class GlobalStack(CuraContainerStack):
         if extruder_count and len(self._extruders) + 1 > extruder_count:
             Logger.log("w", "Adding extruder {meta} to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
 
-        self._extruders.append(extruder)
+        self._extruders[extruder.getMetaDataEntry("position", "0")] = extruder
 
     ##  Overridden from ContainerStack
     #
@@ -83,7 +83,7 @@ class GlobalStack(CuraContainerStack):
         limit_to_extruder = super().getProperty(key, "limit_to_extruder")
         if limit_to_extruder is not None and limit_to_extruder != "-1":
             if super().getProperty(key, "settable_per_extruder"):
-                result = self._extruders[int(limit_to_extruder)].getProperty(key, property_name)
+                result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name)
                 if result is not None:
                     return result
             else:
