@@ -70,8 +70,8 @@ _printer_translations_profiles = {
 #   as a set for which profiles were built-in.
 _profile_translations = {
     "Low Quality": "low",
-    "Fine": "normal",
-    "Extra Fine": "high",
+    "Normal Quality": "normal",
+    "High Quality": "high",
     "Ulti Quality": "high", #This one doesn't have an equivalent. Map it to high.
     "abs_0.25_normal": "um2p_abs_0.25_normal",
     "abs_0.4_fast": "um2p_abs_0.4_fast",
