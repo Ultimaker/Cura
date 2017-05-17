@@ -313,30 +313,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
     def _overrideExtruderStack(self, global_stack, extruder_index, extruder_file_content):
-        extruder_stack = global_stack.extruders[extruder_index]
-        machine_extruder_count = len(global_stack.extruders)
+        extruder_index_str = str(extruder_index)
 
+        extruder_stack = global_stack.extruders[extruder_index_str]
         old_extruder_stack_id = extruder_stack.getId()
-
-        # HACK: There are two cases:
-        #        - the new ExtruderStack has the same ID as the one we are overriding
-        #        - they don't have the same ID
-        # In the second case, directly overriding the existing ExtruderStack will leave the old stack file
-        # in the Cura directory, and this will cause a problem when we restart Cura. So, we always delete
-        # the existing file first.
-        self._container_registry._deleteFiles(extruder_stack)
 
         # override the given extruder stack
         extruder_stack.deserialize(extruder_file_content)
-        # HACK: The deserialize() of ExtruderStack will add itself to the GlobalStack, which is redundant here.
-        #       So we need to remove the new entries in the GlobalStack.
-        global_stack._extruders = global_stack._extruders[:machine_extruder_count]
-
-        # HACK: clean and fill the container query cache again
-        if old_extruder_stack_id in self._container_registry._id_container_cache:
-            del self._container_registry._id_container_cache[old_extruder_stack_id]
-        new_extruder_stack_id = extruder_stack.getId()
-        self._container_registry._id_container_cache[new_extruder_stack_id] = extruder_stack
 
         # return the new ExtruderStack
         return extruder_stack
