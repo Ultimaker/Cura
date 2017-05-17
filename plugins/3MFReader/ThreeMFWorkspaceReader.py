@@ -527,9 +527,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     elif self._resolve_strategies[container_type] == "new":
                         # TODO: how should we handle the case "new" for quality_changes and definition_changes?
 
+                        instance_container.setName(self._container_registry.uniqueName(instance_container.getName()))
                         new_changes_container_id = self.getNewId(instance_container.getId())
                         instance_container._id = new_changes_container_id
-                        instance_container.setName(new_changes_container_id)
 
                         # TODO: we don't know the following is correct or not, need to verify
                         #       AND REFACTOR!!!
@@ -708,13 +708,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 for each_changes_container in quality_and_definition_changes_instance_containers:
                     # NOTE: The renaming and giving new IDs are possibly redundant because they are done in the
                     #       instance container loading part.
-                    old_id = each_changes_container.getId()
-                    each_changes_container.setName(self._container_registry.uniqueName(each_changes_container.getName()))
-                    # We're not really supposed to change the ID in normal cases, but this is an exception.
-                    each_changes_container._id = self.getNewId(each_changes_container.getId())
-
-                    # The container was not added yet, as it didn't have an unique ID. It does now, so add it.
-                    self._container_registry.addContainer(each_changes_container)
+                    new_id = each_changes_container.getId()
 
                     # Find the old (current) changes container in the global stack
                     if changes_container_type == "quality_changes":
@@ -731,7 +725,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     # Replace the quality/definition changes container if it's in the GlobalStack
                     # NOTE: we can get an empty container here, but the IDs will not match,
                     # so this comparison is fine.
-                    if old_container.getId() == old_id:
+                    if self._id_mapping.get(old_container.getId()) == new_id:
                         if changes_container_type == "quality_changes":
                             global_stack.qualityChanges = each_changes_container
                         elif changes_container_type == "definition_changes":
@@ -754,7 +748,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                         # NOTE: we can get an empty container here, but the IDs will not match,
                         # so this comparison is fine.
-                        if changes_container.getId() == old_id:
+                        if self._id_mapping.get(changes_container.getId()) == new_id:
                             if changes_container_type == "quality_changes":
                                 each_extruder_stack.qualityChanges = each_changes_container
                             elif changes_container_type == "definition_changes":
