@@ -700,7 +700,7 @@ class ContainerManager(QObject):
         self._container_registry.addContainer(duplicated_container)
         return self._getMaterialContainerIdForActiveMachine(new_id)
 
-    ##  Create a new material by cloning Generic PLA and setting the GUID to something unqiue
+    ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
     #
     #   \return \type{str} the id of the newly created container.
     @pyqtSlot(result = str)
@@ -712,14 +712,21 @@ class ContainerManager(QObject):
         if not global_stack:
             return ""
 
-        containers = self._container_registry.findInstanceContainers(id="generic_pla")
+        approximate_diameter = round(global_stack.getProperty("material_diameter","value"))
+        containers = self._container_registry.findInstanceContainers(id="generic_pla*", approximate_diameter=approximate_diameter)
         if not containers:
-            Logger.log("d", "Unable to create a new material by cloning generic_pla, because it doesn't exist.")
+            Logger.log("d", "Unable to create a new material by cloning Generic PLA, because it cannot be found for the material diameter for this machine.")
+            return ""
+
+        base_file = containers[0].getMetaDataEntry("base_file")
+        containers = self._container_registry.findInstanceContainers(id=base_file)
+        if not containers:
+            Logger.log("d", "Unable to create a new material by cloning Generic PLA, because the base file for Generic PLA for this machine can not be found.")
             return ""
 
         # Create a new ID & container to hold the data.
         new_id = self._container_registry.uniqueName("custom_material")
-        container_type = type(containers[0])  # Could be either a XMLMaterialProfile or a InstanceContainer
+        container_type = type(containers[0])  # Always XMLMaterialProfile, since we specifically clone the base_file
         duplicated_container = container_type(new_id)
 
         # Instead of duplicating we load the data from the basefile again.
@@ -732,13 +739,6 @@ class ContainerManager(QObject):
         duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
         duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
-
-        # Set new material diameter to match the current machine, or it will not be listed
-        material_diameter = global_stack.getProperty("material_diameter", "value")
-        properties = duplicated_container.getMetaDataEntry("properties", {})
-        properties["diameter"] = str(material_diameter)
-        duplicated_container.setMetaDataEntry("properties", properties)
-        duplicated_container.setMetaDataEntry("approximate_diameter", round(material_diameter))
 
         self._container_registry.addContainer(duplicated_container)
         return self._getMaterialContainerIdForActiveMachine(new_id)
