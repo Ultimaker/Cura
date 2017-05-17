@@ -1061,18 +1061,18 @@ class MachineManager(QObject):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine.
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
 
-        ExtruderManager.getInstance().removeMachineExtruders(machine_id)
+        # activate a new machine before removing a machine because this is safer
+        if activate_new_machine:
+            machine_stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+            other_machine_stacks = [s for s in machine_stacks if s.getId() != machine_id]
+            if other_machine_stacks:
+                Application.getInstance().setGlobalContainerStack(other_machine_stacks[0])
 
+        ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", machine = machine_id)
         for container in containers:
             ContainerRegistry.getInstance().removeContainer(container.getId())
         ContainerRegistry.getInstance().removeContainer(machine_id)
-
-        if activate_new_machine:
-            stacks = ContainerRegistry.getInstance().findContainerStacks(type = "machine")
-            if stacks:
-                Application.getInstance().setGlobalContainerStack(stacks[0])
-
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self) -> bool:
