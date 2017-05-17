@@ -237,6 +237,13 @@ class ExtruderManager(QObject):
         if machine_id not in self._extruder_trains:
             self._extruder_trains[machine_id] = {}
             changed = True
+
+        # do not register if an extruder has already been registered at the position on this machine
+        if any(item.getId() == extruder_train.getId() for item in self._extruder_trains[machine_id].values()):
+            Logger.log("w", "Extruder [%s] has already been registered on machine [%s], not doing anything",
+                       extruder_train.getId(), machine_id)
+            return
+
         if extruder_train:
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
             changed = True
