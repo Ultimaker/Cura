@@ -350,7 +350,7 @@ def test_getPropertyResolveInInstance(global_stack):
     instance_containers = {}
     for container_type in container_indices.IndexTypeMap:
         instance_containers[container_type] = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
-        instance_containers[container_type].getProperty = lambda key, property: (7.5 if property == "resolve" else (InstanceState.User if property == "state" else 5)) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
+        instance_containers[container_type].getProperty = lambda key, property: (7.5 if property == "resolve" else (InstanceState.User if property == "state" else (5 if property != "limit_to_extruder" else "-1"))) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
         instance_containers[container_type].getMetaDataEntry = unittest.mock.MagicMock(return_value = container_indices.IndexTypeMap[container_type]) #Make queries for the type return the desired type.
     instance_containers[container_indices.Definition].getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None #Definition only has value.
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
@@ -374,7 +374,7 @@ def test_getPropertyResolveInInstance(global_stack):
 #   definitions.
 def test_getPropertyInstancesBeforeResolve(global_stack):
     value = unittest.mock.MagicMock() #Sets just the value.
-    value.getProperty = lambda key, property: (10 if property == "value" else InstanceState.User) if key == "material_bed_temperature" else None
+    value.getProperty = lambda key, property: (10 if property == "value" else (InstanceState.User if property != "limit_to_extruder" else "-1")) if key == "material_bed_temperature" else None
     value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
     resolve = unittest.mock.MagicMock() #Sets just the resolve.
     resolve.getProperty = lambda key, property: 7.5 if (key == "material_bed_temperature" and property == "resolve") else None

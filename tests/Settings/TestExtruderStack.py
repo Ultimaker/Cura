@@ -250,7 +250,8 @@ def test_getPropertyFallThrough(extruder_stack):
     container_indices = cura.Settings.CuraContainerStack._ContainerIndexes #Cache.
     for type_id, type_name in container_indices.IndexTypeMap.items():
         container = unittest.mock.MagicMock()
-        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else None #Returns the container type ID as layer height, in order to identify it.
+        # Return type_id when asking for value and -1 when asking for limit_to_extruder
+        container.getProperty = lambda key, property, type_id = type_id: type_id if (key == "layer_height" and property == "value") else (None if property != "limit_to_extruder" else "-1") #Returns the container type ID as layer height, in order to identify it.
         container.hasProperty = lambda key, property: key == "layer_height"
         container.getMetaDataEntry = unittest.mock.MagicMock(return_value = type_name)
         mock_layer_heights[type_id] = container
