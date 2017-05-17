@@ -712,14 +712,14 @@ class ContainerManager(QObject):
         if not global_stack:
             return ""
 
-        approximate_diameter = round(global_stack.getProperty("material_diameter","value"))
-        containers = self._container_registry.findInstanceContainers(id="generic_pla*", approximate_diameter=approximate_diameter)
+        approximate_diameter = round(global_stack.getProperty("material_diameter", "value"))
+        containers = self._container_registry.findInstanceContainers(id = "generic_pla*", approximate_diameter = approximate_diameter)
         if not containers:
             Logger.log("d", "Unable to create a new material by cloning Generic PLA, because it cannot be found for the material diameter for this machine.")
             return ""
 
         base_file = containers[0].getMetaDataEntry("base_file")
-        containers = self._container_registry.findInstanceContainers(id=base_file)
+        containers = self._container_registry.findInstanceContainers(id = base_file)
         if not containers:
             Logger.log("d", "Unable to create a new material by cloning Generic PLA, because the base file for Generic PLA for this machine can not be found.")
             return ""
