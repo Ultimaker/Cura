@@ -15,22 +15,19 @@ SettingItem
     contents: ComboBox
     {
         id: control
+        anchors.fill: parent
 
-        model: Cura.ExtrudersModel
-        {
-            id: extruders_model
-            onModelChanged: control.color = extruders_model.getItem(control.currentIndex).color
-        }
-        property string color:
-        {
-            var model_color = extruders_model.getItem(control.currentIndex).color;
-            return (model_color) ? model_color : "";
-        }
+        model: Cura.ExtrudersModel { }
 
         textRole: "name"
 
-        anchors.fill: parent
-        onCurrentIndexChanged: updateCurrentColor();
+        onActivated:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", model.getItem(index).index);
+        }
+
+        currentIndex: propertyProvider.properties.value
 
         MouseArea
         {
@@ -59,7 +56,19 @@ SettingItem
                     }
                 }
                 border.width: UM.Theme.getSize("default_lining").width
-                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+                border.color:
+                {
+                    if(!enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border");
+                    }
+                    if(control.hovered || base.activeFocus)
+                    {
+                        UM.Theme.getColor("setting_control_border_highlight")
+                    }
+
+                    return UM.Theme.getColor("setting_control_border")
+                }
             }
             label: Item
             {
@@ -68,35 +77,36 @@ SettingItem
                     id: swatch
                     height: UM.Theme.getSize("setting_control").height / 2
                     width: height
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
+
                     anchors.verticalCenter: parent.verticalCenter
 
-                    color: control.color
                     border.width: UM.Theme.getSize("default_lining").width
-                    border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : UM.Theme.getColor("setting_control_border")
+                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
+
+                    color: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
                 }
                 Label
                 {
-                    anchors.left: swatch.right
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.right: downArrow.left
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors
+                    {
+                        left: swatch.right;
+                        right: arrow.left;
+                        verticalCenter: parent.verticalCenter
+                        margins: UM.Theme.getSize("default_lining").width
+                    }
+                    width: parent.width - swatch.width;
 
                     text: control.currentText
                     font: UM.Theme.getFont("default")
-                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+                    color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
 
                     elide: Text.ElideRight
                     verticalAlignment: Text.AlignVCenter
                 }
-
                 UM.RecolorImage
                 {
-                    id: downArrow
+                    id: arrow
                     anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
                     anchors.verticalCenter: parent.verticalCenter
 
                     source: UM.Theme.getIcon("arrow_bottom")
@@ -108,58 +118,6 @@ SettingItem
                     color: UM.Theme.getColor("setting_control_text")
                 }
             }
-        }
-
-        onActivated:
-        {
-            forceActiveFocus();
-            propertyProvider.setPropertyValue("value", extruders_model.getItem(index).index);
-            control.color = extruders_model.getItem(index).color;
-        }
-
-        onModelChanged: updateCurrentIndex();
-
-        Binding
-        {
-            target: control
-            property: "currentIndex"
-            value:
-            {
-                for(var i = 0; i < extruders_model.rowCount(); ++i)
-                {
-                    if(extruders_model.getItem(i).index == propertyProvider.properties.value)
-                    {
-                        return i;
-                    }
-                }
-                return -1;
-            }
-        }
-
-        // In some cases we want to update the current color without updating the currentIndex, so it's a seperate function.
-        function updateCurrentColor()
-        {
-            for(var i = 0; i < extruders_model.rowCount(); ++i)
-            {
-                if(extruders_model.getItem(i).index == currentIndex)
-                {
-                    control.color = extruders_model.getItem(i).color;
-                    return;
-                }
-            }
-        }
-
-        function updateCurrentIndex()
-        {
-            for(var i = 0; i < extruders_model.rowCount(); ++i)
-            {
-                if(extruders_model.getItem(i).index == propertyProvider.properties.value)
-                {
-                    control.currentIndex = i;
-                    return;
-                }
-            }
-            currentIndex = -1;
         }
     }
 }

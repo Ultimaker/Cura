@@ -82,7 +82,7 @@ def test_checkShape():
     assert points3 > points
 
 
-##  After placing an object on a location that location should give more penalty points
+## Check that placing an object on occupied place returns None.
 def test_checkShape_place():
     ar = Arrange(30, 30, 15, 15)
     ar.centerFirst()
@@ -92,7 +92,7 @@ def test_checkShape_place():
     ar.place(3, 6, shape_arr)
     points2 = ar.checkShape(3, 6, shape_arr)
 
-    assert points2 > points
+    assert points2 is None
 
 
 ##  Test the whole sequence
@@ -100,16 +100,10 @@ def test_smoke_place_objects():
     ar = Arrange(20, 20, 10, 10)
     ar.centerFirst()
     shape_arr = gimmeShapeArray()
-    print(shape_arr)
 
-    now = time.time()
     for i in range(5):
         best_spot_x, best_spot_y, score, prio = ar.bestSpot(shape_arr)
-        print(best_spot_x, best_spot_y, score)
         ar.place(best_spot_x, best_spot_y, shape_arr)
-        print(ar._occupied)
-
-    print(time.time() - now)
 
 
 ##  Polygon -> array

@@ -24,9 +24,9 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 
 
 class MultiplyObjectsJob(Job):
-    def __init__(self, object_id, count, min_offset = 8):
+    def __init__(self, objects, count, min_offset = 8):
         super().__init__()
-        self._object_id = object_id
+        self._objects = objects
         self._count = count
         self._min_offset = min_offset
 
@@ -35,33 +35,42 @@ class MultiplyObjectsJob(Job):
                                  dismissable=False, progress=0)
         status_message.show()
         scene = Application.getInstance().getController().getScene()
-        node = scene.findObject(self._object_id)
 
-        if not node and self._object_id != 0:  # Workaround for tool handles overlapping the selected object
-            node = Selection.getSelectedObject(0)
-
-        # If object is part of a group, multiply group
-        current_node = node
-        while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
-            current_node = current_node.getParent()
+        total_progress = len(self._objects) * self._count
+        current_progress = 0
 
         root = scene.getRoot()
         arranger = Arrange.create(scene_root=root)
-        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset=self._min_offset)
         nodes = []
-        found_solution_for_all = True
-        for i in range(self._count):
-            # We do place the nodes one by one, as we want to yield in between.
-            node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
-            if not solution_found:
-                found_solution_for_all = False
-                new_location = node.getPosition()
-                new_location = new_location.set(z = 100 - i * 20)
-                node.setPosition(new_location)
+        for node in self._objects:
+            # If object is part of a group, multiply group
+            current_node = node
+            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
+                current_node = current_node.getParent()
 
-            nodes.append(node)
+            node_too_big = False
+            if node.getBoundingBox().width < 300 or node.getBoundingBox().depth < 300:
+                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset=self._min_offset)
+            else:
+                node_too_big = True
+
+            found_solution_for_all = True
+            for i in range(self._count):
+                # We do place the nodes one by one, as we want to yield in between.
+                if not node_too_big:
+                    node, solution_found = arranger.findNodePlacement(current_node, offset_shape_arr, hull_shape_arr)
+                if node_too_big or not solution_found:
+                    found_solution_for_all = False
+                    new_location = node.getPosition()
+                    new_location = new_location.set(z = 100 - i * 20)
+                    node.setPosition(new_location)
+
+                nodes.append(node)
+                current_progress += 1
+                status_message.setProgress((current_progress / total_progress) * 100)
+                Job.yieldThread()
+
             Job.yieldThread()
-            status_message.setProgress((i + 1) / self._count * 100)
 
         if nodes:
             op = GroupedOperation()

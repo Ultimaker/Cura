@@ -109,10 +109,13 @@ class SettingInheritanceManager(QObject):
                 self._settings_with_inheritance_warning.remove(key)
                 settings_with_inheritance_warning_changed = True
 
-            # Find the topmost parent (Assumed to be a category)
             parent = definitions[0].parent
-            while parent.parent is not None:
-                parent = parent.parent
+            # Find the topmost parent (Assumed to be a category)
+            if parent is not None:
+                while parent.parent is not None:
+                    parent = parent.parent
+            else:
+                parent = definitions[0]  # Already at a category
 
             if parent.key not in self._settings_with_inheritance_warning and has_overwritten_inheritance:
                 # Category was not in the list yet, so needs to be added now.

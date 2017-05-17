@@ -100,7 +100,7 @@ class GCodeWriter(MeshWriter):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        container_with_profile = stack.findContainer({"type": "quality_changes"})
+        container_with_profile = stack.qualityChanges
         if not container_with_profile:
             Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
             return ""
@@ -115,7 +115,7 @@ class GCodeWriter(MeshWriter):
         data = {"global_quality": serialized}
 
         for extruder in sorted(ExtruderManager.getInstance().getMachineExtruders(stack.getId()), key = lambda k: k.getMetaDataEntry("position")):
-            extruder_quality = extruder.findContainer({"type": "quality_changes"})
+            extruder_quality = extruder.qualityChanges
             if not extruder_quality:
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue

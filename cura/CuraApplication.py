@@ -26,6 +26,7 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Platform import Platform
+from UM.Decorators import deprecated
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -68,6 +69,8 @@ from cura.Settings.ContainerSettingsModel import ContainerSettingsModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.QualitySettingsModel import QualitySettingsModel
 from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.ExtruderStack import ExtruderStack
 
 from PyQt5.QtCore import QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from UM.FlameProfiler import pyqtSlot
@@ -96,6 +99,11 @@ if not MYPY:
 
 
 class CuraApplication(QtApplication):
+    # SettingVersion represents the set of settings available in the machine/extruder definitions.
+    # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
+    # changes of the settings.
+    SettingVersion = 1
+
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
@@ -105,10 +113,15 @@ class CuraApplication(QtApplication):
         UserInstanceContainer = Resources.UserType + 6
         MachineStack = Resources.UserType + 7
         ExtruderStack = Resources.UserType + 8
+        DefinitionChangesContainer = Resources.UserType + 9
 
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
+        # this list of dir names will be used by UM to detect an old cura directory
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "user", "variants"]:
+            Resources.addExpectedDirNameInData(dir_name)
+
         Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
@@ -146,6 +159,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
         Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+        Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
@@ -153,17 +167,18 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.DefinitionChangesContainer)
 
         ##  Initialise the version upgrade manager with Cura's storage paths.
         import UM.VersionUpgradeManager #Needs to be here to prevent circular dependencies.
 
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
-                ("quality", InstanceContainer.Version):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
                 ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", InstanceContainer.Version):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
             }
         )
 
@@ -214,6 +229,7 @@ class CuraApplication(QtApplication):
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
+        self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -283,6 +299,7 @@ class CuraApplication(QtApplication):
                 z_seam_y
             infill
                 infill_sparse_density
+                gradual_infill_steps
             material
                 material_print_temperature
                 material_bed_temperature
@@ -320,6 +337,7 @@ class CuraApplication(QtApplication):
             blackmagic
                 print_sequence
                 infill_mesh
+                cutting_mesh
             experimental
         """.replace("\n", ";").replace(" ", ""))
 
@@ -407,7 +425,7 @@ class CuraApplication(QtApplication):
                 elif instance_type == "variant":
                     path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
                 elif instance_type == "definition_changes":
-                    path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+                    path = Resources.getStoragePath(self.ResourceTypes.DefinitionChangesContainer, file_name)
 
                 if path:
                     instance.setPath(path)
@@ -430,16 +448,18 @@ class CuraApplication(QtApplication):
 
         mime_type = ContainerRegistry.getMimeTypeForContainer(type(stack))
         file_name = urllib.parse.quote_plus(stack.getId()) + "." + mime_type.preferredSuffix
-        stack_type = stack.getMetaDataEntry("type", None)
+
         path = None
-        if not stack_type or stack_type == "machine":
+        if isinstance(stack, GlobalStack):
             path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-        elif stack_type == "extruder_train":
+        elif isinstance(stack, ExtruderStack):
             path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
-        if path:
-            stack.setPath(path)
-            with SaveFile(path, "wt") as f:
-                f.write(data)
+        else:
+            path = Resources.getStoragePath(Resources.ContainerStacks, file_name)
+
+        stack.setPath(path)
+        with SaveFile(path, "wt") as f:
+            f.write(data)
 
 
     @pyqtSlot(str, result = QUrl)
@@ -803,6 +823,7 @@ class CuraApplication(QtApplication):
 
     # Remove all selected objects from the scene.
     @pyqtSlot()
+    @deprecated("Moved to CuraActions", "2.6")
     def deleteSelection(self):
         if not self.getController().getToolsEnabled():
             return
@@ -823,6 +844,7 @@ class CuraApplication(QtApplication):
     ##  Remove an object from the scene.
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
+    @deprecated("Use deleteSelection instead", "2.6")
     def deleteObject(self, object_id):
         if not self.getController().getToolsEnabled():
             return
@@ -850,13 +872,22 @@ class CuraApplication(QtApplication):
     #   \param count number of copies
     #   \param min_offset minimum offset to other objects.
     @pyqtSlot("quint64", int)
+    @deprecated("Use CuraActions::multiplySelection", "2.6")
     def multiplyObject(self, object_id, count, min_offset = 8):
-        job = MultiplyObjectsJob(object_id, count, min_offset)
+        node = self.getController().getScene().findObject(object_id)
+        if not node:
+            node = Selection.getSelectedObject(0)
+
+        while node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
+
+        job = MultiplyObjectsJob([node], count, min_offset)
         job.start()
         return
 
     ##  Center object on platform.
     @pyqtSlot("quint64")
+    @deprecated("Use CuraActions::centerSelection", "2.6")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
         if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
@@ -984,7 +1015,9 @@ class CuraApplication(QtApplication):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
-            nodes.append(node)
+            # Skip nodes that are too big
+            if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                nodes.append(node)
         self.arrange(nodes, fixed_nodes = [])
 
     ##  Arrange Selection
@@ -1255,6 +1288,8 @@ class CuraApplication(QtApplication):
         arranger = Arrange.create(scene_root = root)
         min_offset = 8
 
+        self.fileLoaded.emit(filename)
+
         for node in nodes:
             node.setSelectable(True)
             node.setName(os.path.basename(filename))
@@ -1278,13 +1313,18 @@ class CuraApplication(QtApplication):
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
+            for child in node.getAllChildren():
+                if not child.getDecorator(ConvexHullDecorator):
+                    child.addDecorator(ConvexHullDecorator())
 
             if node.callDecoration("isSliceable"):
-                # Find node location
-                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+                # Only check position if it's not already blatantly obvious that it won't fit.
+                if node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
+                    # Find node location
+                    offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
 
-                # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                node,_ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                    # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
+                    node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
             op = AddSceneNodeOperation(node, scene.getRoot())
             op.push()
@@ -1309,3 +1349,13 @@ class CuraApplication(QtApplication):
         except Exception as e:
             Logger.log("e", "Could not check file %s: %s", file_url, e)
             return False
+
+    def _onContextMenuRequested(self, x: float, y: float) -> None:
+        # Ensure we select the object if we request a context menu over an object without having a selection.
+        if not Selection.hasSelection():
+            node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
+            if node:
+                while(node.getParent() and node.getParent().callDecoration("isGroup")):
+                    node = node.getParent()
+
+                Selection.add(node)

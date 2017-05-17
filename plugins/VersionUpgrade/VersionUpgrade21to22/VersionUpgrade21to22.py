@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import configparser #To get version numbers from config files.
@@ -70,8 +70,8 @@ _printer_translations_profiles = {
 #   as a set for which profiles were built-in.
 _profile_translations = {
     "Low Quality": "low",
-    "Normal Quality": "normal",
-    "High Quality": "high",
+    "Fine": "normal",
+    "Extra Fine": "high",
     "Ulti Quality": "high", #This one doesn't have an equivalent. Map it to high.
     "abs_0.25_normal": "um2p_abs_0.25_normal",
     "abs_0.4_fast": "um2p_abs_0.4_fast",
@@ -249,7 +249,9 @@ class VersionUpgrade21to22(VersionUpgrade):
     def getCfgVersion(self, serialised):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
-        return int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        return format_version * 1000000 + setting_version
 
     ##  Gets the fallback quality to use for a specific machine-variant-material
     #   combination.

@@ -114,7 +114,7 @@ class Arrange:
         self._priority_unique_values.sort()
 
     ##  Return the amount of "penalty points" for polygon, which is the sum of priority
-    #   999999 if occupied
+    #   None if occupied
     #   \param x x-coordinate to check shape
     #   \param y y-coordinate
     #   \param shape_arr the ShapeArray object to place
@@ -128,9 +128,9 @@ class Arrange:
             offset_x:offset_x + shape_arr.arr.shape[1]]
         try:
             if numpy.any(occupied_slice[numpy.where(shape_arr.arr == 1)]):
-                return 999999
+                return None
         except IndexError:  # out of bounds if you try to place an object outside
-            return 999999
+            return None
         prio_slice = self._priority[
             offset_y:offset_y + shape_arr.arr.shape[0],
             offset_x:offset_x + shape_arr.arr.shape[1]]
@@ -157,7 +157,7 @@ class Arrange:
 
                 # array to "world" coordinates
                 penalty_points = self.checkShape(projected_x, projected_y, shape_arr)
-                if penalty_points != 999999:
+                if penalty_points is not None:
                     return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = priority)
         return LocationSuggestion(x = None, y = None, penalty_points = None, priority = priority)  # No suitable location found :-(
 

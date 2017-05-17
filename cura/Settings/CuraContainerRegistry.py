@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os
@@ -6,6 +6,7 @@ import os.path
 import re
 from PyQt5.QtWidgets import QMessageBox
 
+from UM.Decorators import override
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -16,8 +17,12 @@ from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry #For getting the possible profile writers to write with.
 from UM.Util import parseBool
 
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ContainerManager import ContainerManager
+from . import ExtruderStack
+from . import GlobalStack
+from .ContainerManager import ContainerManager
+from .ExtruderManager import ExtruderManager
+
+from cura.CuraApplication import CuraApplication
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -25,6 +30,28 @@ catalog = i18nCatalog("cura")
 class CuraContainerRegistry(ContainerRegistry):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    ##  Overridden from ContainerRegistry
+    #
+    #   Adds a container to the registry.
+    #
+    #   This will also try to convert a ContainerStack to either Extruder or
+    #   Global stack based on metadata information.
+    @override(ContainerRegistry)
+    def addContainer(self, container):
+        # Note: Intentional check with type() because we want to ignore subclasses
+        if type(container) == ContainerStack:
+            container = self._convertContainerStack(container)
+
+        if isinstance(container, InstanceContainer) and type(container) != type(self.getEmptyInstanceContainer()):
+            #Check against setting version of the definition.
+            required_setting_version = CuraApplication.SettingVersion
+            actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
+            if required_setting_version != actual_setting_version:
+                Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id = container.getId(), actual_setting_version = actual_setting_version, required_setting_version = required_setting_version))
+                return #Don't add.
+
+        super().addContainer(container)
 
     ##  Create a name that is not empty and unique
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
@@ -212,6 +239,11 @@ class CuraContainerRegistry(ContainerRegistry):
         # If it hasn't returned by now, none of the plugins loaded the profile successfully.
         return {"status": "error", "message": catalog.i18nc("@info:status", "Profile {0} has an unknown file type or is corrupted.", file_name)}
 
+    @override(ContainerRegistry)
+    def load(self):
+        super().load()
+        self._fixupExtruders()
+
     def _configureProfile(self, profile, id_seed, new_name):
         profile.setReadOnly(False)
         profile.setDirty(True)  # Ensure the profiles are correctly saved
@@ -284,3 +316,47 @@ class CuraContainerRegistry(ContainerRegistry):
         if global_container_stack:
             return parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", False))
         return False
+
+    ##  Convert an "old-style" pure ContainerStack to either an Extruder or Global stack.
+    def _convertContainerStack(self, container):
+        assert type(container) == ContainerStack
+
+        container_type = container.getMetaDataEntry("type")
+        if container_type not in ("extruder_train", "machine"):
+            # It is not an extruder or machine, so do nothing with the stack
+            return container
+
+        Logger.log("d", "Converting ContainerStack {stack} to {type}", stack = container.getId(), type = container_type)
+
+        new_stack = None
+        if container_type == "extruder_train":
+            new_stack = ExtruderStack.ExtruderStack(container.getId())
+        else:
+            new_stack = GlobalStack.GlobalStack(container.getId())
+
+        container_contents = container.serialize()
+        new_stack.deserialize(container_contents)
+
+        # Delete the old configuration file so we do not get double stacks
+        if os.path.isfile(container.getPath()):
+            os.remove(container.getPath())
+
+        return new_stack
+
+    # Fix the extruders that were upgraded to ExtruderStack instances during addContainer.
+    # The stacks are now responsible for setting the next stack on deserialize. However,
+    # due to problems with loading order, some stacks may not have the proper next stack
+    # set after upgrading, because the proper global stack was not yet loaded. This method
+    # makes sure those extruders also get the right stack set.
+    def _fixupExtruders(self):
+        extruder_stacks = self.findContainers(ExtruderStack.ExtruderStack)
+        for extruder_stack in extruder_stacks:
+            if extruder_stack.getNextStack():
+                # Has the right next stack, so ignore it.
+                continue
+
+            machines = ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack.getMetaDataEntry("machine", ""))
+            if machines:
+                extruder_stack.setNextStack(machines[0])
+            else:
+                Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
