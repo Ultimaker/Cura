@@ -17,7 +17,7 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel { }
+        model: Cura.ExtrudersModel { onModelChanged: control.color = getItem(control.currentIndex).color }
 
         textRole: "name"
 
@@ -34,6 +34,17 @@ SettingItem
             anchors.fill: parent
             acceptedButtons: Qt.NoButton
             onWheel: wheel.accepted = true;
+        }
+
+        property string color: "#fff"
+
+        Binding
+        {
+            // We override the color property's value when the ExtruderModel changes. So we need to use an
+            // explicit binding here otherwise we do not handle value changes after the model changes.
+            target: control
+            property: "color"
+            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
         }
 
         style: ComboBoxStyle
@@ -83,7 +94,7 @@ SettingItem
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
 
-                    color: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
+                    color: control.color
                 }
                 Label
                 {
