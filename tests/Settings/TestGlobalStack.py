@@ -69,11 +69,13 @@ def test_addExtruder(global_stack):
 
     assert len(global_stack.extruders) == 0
     first_extruder = unittest.mock.MagicMock()
+    first_extruder.getMetaDataEntry = lambda key: 0 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(first_extruder)
     assert len(global_stack.extruders) == 1
     assert global_stack.extruders[0] == first_extruder
     second_extruder = unittest.mock.MagicMock()
+    second_extruder.getMetaDataEntry = lambda key: 1 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(second_extruder)
     assert len(global_stack.extruders) == 2
