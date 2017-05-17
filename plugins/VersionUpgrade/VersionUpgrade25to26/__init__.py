@@ -18,14 +18,16 @@ def getMetaData():
             "api": 3
         },
         "version_upgrade": {
-            # From                    To                       Upgrade function
-            ("preferences", 4000000): ("preferences", 4000001, upgrade.upgradePreferences),
-            ("quality", 2000000):     ("quality", 2000001,     upgrade.upgradeInstanceContainer),
-            ("variant", 2000000):     ("variant", 2000001,     upgrade.upgradeInstanceContainer), #We can re-use upgradeContainerStack since there is nothing specific to quality, variant or user profiles being changed.
-            ("user", 2000000):        ("user", 2000001,        upgrade.upgradeInstanceContainer)
+            # From                          To                          Upgrade function
+            ("preferences", 4000000):     ("preferences", 4000001,     upgrade.upgradePreferences),
+            # NOTE: All the instance containers share the same general/version, so we have to update all of them
+            #       if any is updated.
+            ("quality_changes", 2000000): ("quality_changes", 2000001, upgrade.upgradeInstanceContainer),
+            ("user", 2000000):            ("user", 2000001,            upgrade.upgradeInstanceContainer),
+            ("quality", 2000000):         ("quality", 2000001,         upgrade.upgradeInstanceContainer),
         },
         "sources": {
-            "quality": {
+            "quality_changes": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./quality"}
             },
@@ -36,7 +38,7 @@ def getMetaData():
             "user": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./user"}
-            }
+            },
         }
     }
 

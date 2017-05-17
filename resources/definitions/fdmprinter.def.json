@@ -2555,7 +2555,6 @@
                                             "default_value": 20,
                                             "value": "jerk_support_interface",
                                             "minimum_value": "0.1",
-                                            "minimum_value_warning": "5",
                                             "maximum_value_warning": "50",
                                             "enabled": "resolveOrValue('jerk_enabled') and extruderValue(support_roof_extruder_nr, 'support_roof_enable') and support_enable",
                                             "limit_to_extruder": "support_roof_extruder_nr",
@@ -2571,7 +2570,6 @@
                                             "default_value": 20,
                                             "value": "jerk_support_interface",
                                             "minimum_value": "0.1",
-                                            "minimum_value_warning": "5",
                                             "maximum_value_warning": "50",
                                             "enabled": "resolveOrValue('jerk_enabled') and extruderValue(support_bottom_extruder_nr, 'support_bottom_enable') and support_enable",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
@@ -3624,7 +3622,7 @@
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "limit_to_extruder": "adhesion_extruder_nr",
+                    "resolve": "extruderValue(adhesion_extruder_nr, 'adhesion_type')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },

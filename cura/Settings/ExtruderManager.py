@@ -20,6 +20,7 @@ from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
+    from cura.Settings.GlobalStack import GlobalStack
 
 
 ##  Manages all existing extruder stacks.
@@ -362,7 +363,8 @@ class ExtruderManager(QObject):
             user_profile = InstanceContainer(extruder_stack_id + "_current_settings")  # Add an empty user profile.
             user_profile.addMetaDataEntry("type", "user")
             user_profile.addMetaDataEntry("extruder", extruder_stack_id)
-            user_profile.addMetaDataEntry("setting_version", machine_definition.getMetaDataEntry("setting_version", default = 0))
+            from cura.CuraApplication import CuraApplication
+            user_profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
             user_profile.setDefinition(machine_definition)
             container_registry.addContainer(user_profile)
         container_stack.addContainer(user_profile)
@@ -458,7 +460,7 @@ class ExtruderManager(QObject):
     #   \param machine_id The machine to remove the extruders for.
     def removeMachineExtruders(self, machine_id: str):
         for extruder in self.getMachineExtruders(machine_id):
-            ContainerRegistry.getInstance().removeContainer(extruder.user.getId())
+            ContainerRegistry.getInstance().removeContainer(extruder.userChanges.getId())
             ContainerRegistry.getInstance().removeContainer(extruder.getId())
 
     ##  Returns extruders for a specific machine.

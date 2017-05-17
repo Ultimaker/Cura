@@ -46,6 +46,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._extruder_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(ExtruderStack).preferredSuffix
         self._global_stack_suffix = "." + ContainerRegistry.getMimeTypeForContainer(GlobalStack).preferredSuffix
 
+        # Certain instance container types are ignored because we make the assumption that only we make those types
+        # of containers. They are:
+        #  - quality
+        #  - variant
+        self._ignored_instance_container_types = {"quality", "variant"}
+
         self._resolve_strategies = {}
 
         self._id_mapping = {}
@@ -183,6 +189,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         num_user_settings = 0
         quality_changes_conflict = False
         definition_changes_conflict = False
+
         for each_instance_container_file in instance_container_files:
             container_id = self._stripFileToId(each_instance_container_file)
             instance_container = InstanceContainer(container_id)
@@ -208,14 +215,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if definition_changes:
                     if definition_changes[0] != instance_container:
                         definition_changes_conflict = True
-            elif container_type == "quality":
-                # If the quality name is not set (either by quality or changes, set it now)
-                # Quality changes should always override this (as they are "on top")
-                if quality_name == "":
-                    quality_name = instance_container.getName()
-                quality_type = instance_container.getName()
             elif container_type == "user":
                 num_user_settings += len(instance_container._instances)
+            elif container_type in self._ignored_instance_container_types:
+                # Ignore certain instance container types
+                Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
+                continue
 
             Job.yieldThread()
 
@@ -417,13 +422,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_and_definition_changes_instance_containers = []
         for instance_container_file in instance_container_files:
             container_id = self._stripFileToId(instance_container_file)
+            serialized = archive.open(instance_container_file).read().decode("utf-8")
+
+            # HACK! we ignore the "metadata/type = quality" instance containers!
+            parser = configparser.ConfigParser()
+            parser.read_string(serialized)
+            if not parser.has_option("metadata", "type"):
+                Logger.log("w", "Cannot find metadata/type in %s, ignoring it", instance_container_file)
+                continue
+            if parser.get("metadata", "type") == "quality":
+                continue
+
             instance_container = InstanceContainer(container_id)
 
             # Deserialize InstanceContainer by converting read data from bytes to string
-            instance_container.deserialize(archive.open(instance_container_file).read().decode("utf-8"))
+            instance_container.deserialize(serialized)
             container_type = instance_container.getMetaDataEntry("type")
             Job.yieldThread()
-            if container_type == "user":
+
+            if container_type in self._ignored_instance_container_types:
+                # Ignore certain instance container types
+                Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
+                continue
+            elif container_type == "user":
                 # Check if quality changes already exists.
                 user_containers = self._container_registry.findInstanceContainers(id = container_id)
                 if not user_containers:
@@ -571,8 +592,27 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if container_stacks:
                     # this container stack already exists, try to resolve
                     stack = container_stacks[0]
+
                     if self._resolve_strategies["machine"] == "override":
-                        pass  # do nothing
+                        # NOTE: This is the same code as those in the lower part
+                        global_stacks = self._container_registry.findContainerStacks(id = global_stack_id_original)
+                        # deserialize new extruder stack over the current ones
+                        if global_stacks:
+                            old_extruder_stack_id = global_stacks[0].extruders[index].getId()
+                            # HACK delete file
+                            self._container_registry._deleteFiles(global_stacks[0].extruders[index])
+                            global_stacks[0].extruders[index].deserialize(archive.open(extruder_stack_file).read().decode("utf-8"))
+                            # HACK
+                            global_stacks[0]._extruders = global_stacks[0]._extruders[:2]
+                            # HACK update cache
+                            del self._container_registry._id_container_cache[old_extruder_stack_id]
+                            new_extruder_stack_id = global_stacks[0].extruders[index].getId()
+                            self._container_registry._id_container_cache[new_extruder_stack_id] = global_stacks[0].extruders[index]
+
+                            stack = global_stacks[0].extruders[index]
+                        else:
+                            Logger.log("w", "Could not find global stack, while I expected it: %s" % global_stack_id_original)
+
                     elif self._resolve_strategies["machine"] == "new":
                         # create a new extruder stack from this one
                         new_id = self.getNewId(container_id)

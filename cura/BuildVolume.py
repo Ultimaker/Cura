@@ -433,7 +433,8 @@ class BuildVolume(SceneNode):
                 self._global_container_stack.getProperty("raft_interface_thickness", "value") +
                 self._global_container_stack.getProperty("raft_surface_layers", "value") *
                     self._global_container_stack.getProperty("raft_surface_thickness", "value") +
-                self._global_container_stack.getProperty("raft_airgap", "value"))
+                self._global_container_stack.getProperty("raft_airgap", "value") -
+                self._global_container_stack.getProperty("layer_0_z_overlap", "value"))
 
         # Rounding errors do not matter, we check if raft_thickness has changed at all
         if old_raft_thickness != self._raft_thickness:
@@ -951,7 +952,7 @@ class BuildVolume(SceneNode):
         return max(min(value, max_value), min_value)
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
-    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
+    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
