@@ -708,6 +708,10 @@ class ContainerManager(QObject):
         # Ensure all settings are saved.
         Application.getInstance().saveSettings()
 
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return ""
+
         containers = self._container_registry.findInstanceContainers(id="generic_pla")
         if not containers:
             Logger.log("d", "Unable to create a new material by cloning generic_pla, because it doesn't exist.")
@@ -728,6 +732,13 @@ class ContainerManager(QObject):
         duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
         duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
+
+        # Set new material diameter to match the current machine, or it will not be listed
+        material_diameter = global_stack.getProperty("material_diameter", "value")
+        properties = duplicated_container.getMetaDataEntry("properties", {})
+        properties["diameter"] = str(material_diameter)
+        duplicated_container.setMetaDataEntry("properties", properties)
+        duplicated_container.setMetaDataEntry("approximate_diameter", round(material_diameter))
 
         self._container_registry.addContainer(duplicated_container)
         return self._getMaterialContainerIdForActiveMachine(new_id)
