@@ -463,6 +463,7 @@ class ExtruderManager(QObject):
         for extruder in self.getMachineExtruders(machine_id):
             ContainerRegistry.getInstance().removeContainer(extruder.userChanges.getId())
             ContainerRegistry.getInstance().removeContainer(extruder.getId())
+        del self._extruder_trains[machine_id]
 
     ##  Returns extruders for a specific machine.
     #
