@@ -470,6 +470,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_type = instance_container.getMetaDataEntry("type")
             Job.yieldThread()
 
+            #
+            # IMPORTANT:
+            # If an instance container (or maybe other type of container) exists, and user chooses "Create New",
+            # we need to rename this container and all references to it, and changing those references are VERY
+            # HARD.
+            #
             if container_type in self._ignored_instance_container_types:
                 # Ignore certain instance container types
                 Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
@@ -700,6 +706,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if self._resolve_strategies[changes_container_type] == "new":
                 # Quality changes needs to get a new ID, added to registry and to the right stacks
                 for each_changes_container in quality_and_definition_changes_instance_containers:
+                    # NOTE: The renaming and giving new IDs are possibly redundant because they are done in the
+                    #       instance container loading part.
                     old_id = each_changes_container.getId()
                     each_changes_container.setName(self._container_registry.uniqueName(each_changes_container.getName()))
                     # We're not really supposed to change the ID in normal cases, but this is an exception.
