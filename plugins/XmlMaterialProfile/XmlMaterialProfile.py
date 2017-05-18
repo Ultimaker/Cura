@@ -159,10 +159,10 @@ class XmlMaterialProfile(InstanceContainer):
 
         for key, value in metadata.items():
             builder.start(key)
-            # Normally value is a string.
-            # Nones get handled well.
-            if isinstance(value, bool):
-                value = str(value)  # parseBool in deserialize expects 'True'.
+            if value is not None: #Nones get handled well by the builder.
+                #Otherwise the builder always expects a string.
+                #Deserialize expects the stringified version.
+                value = str(value)
             builder.data(value)
             builder.end(key)
 

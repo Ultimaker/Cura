@@ -9,7 +9,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
-from .CuraContainerStack import CuraContainerStack
 from typing import Optional
 
 
@@ -76,6 +75,8 @@ class CuraStackBuilder:
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("extruder", new_stack_id)
+        from cura.CuraApplication import CuraApplication
+        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(machine_definition)
 
         stack.setUserChanges(user_container)
@@ -124,6 +125,8 @@ class CuraStackBuilder:
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", new_stack_id)
+        from cura.CuraApplication import CuraApplication
+        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(definition)
 
         stack.setUserChanges(user_container)

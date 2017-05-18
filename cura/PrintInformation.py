@@ -31,8 +31,8 @@ catalog = i18nCatalog("cura")
 #   - This triggers a new slice with the current settings - this is the "current settings pass".
 #   - When the slice is done, we update the current print time and material amount.
 #   - If the source of the slice was not a Setting change, we start the second slice pass, the "low quality settings pass". Otherwise we stop here.
-#   - When that is done, we update the minimum print time and start the final slice pass, the "high quality settings pass".
-#   - When the high quality pass is done, we update the maximum print time.
+#   - When that is done, we update the minimum print time and start the final slice pass, the "Extra Fine settings pass".
+#   - When the Extra Fine pass is done, we update the maximum print time.
 #
 #   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
 #   This job name is requested by the JobSpecs qml file.

@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant #For communicating data and events to Qt.
@@ -20,6 +20,7 @@ from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
+    from cura.Settings.GlobalStack import GlobalStack
 
 
 ##  Manages all existing extruder stacks.
@@ -76,8 +77,9 @@ class ExtruderManager(QObject):
     @pyqtProperty("QVariantMap", notify=extrudersChanged)
     def extruderIds(self):
         map = {}
-        for position in self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()]:
-            map[position] = self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()][position].getId()
+        global_stack_id = Application.getInstance().getGlobalContainerStack().getId()
+        for position in self._extruder_trains[global_stack_id]:
+            map[position] = self._extruder_trains[global_stack_id][position].getId()
         return map
 
     @pyqtSlot(str, result = str)
@@ -85,7 +87,7 @@ class ExtruderManager(QObject):
         for position in self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()]:
             extruder = self._extruder_trains[Application.getInstance().getGlobalContainerStack().getId()][position]
             if extruder.getId() == id:
-                return extruder.findContainer(type = "quality_changes").getId()
+                return extruder.qualityChanges.getId()
 
     ##  The instance of the singleton pattern.
     #
@@ -235,6 +237,13 @@ class ExtruderManager(QObject):
         if machine_id not in self._extruder_trains:
             self._extruder_trains[machine_id] = {}
             changed = True
+
+        # do not register if an extruder has already been registered at the position on this machine
+        if any(item.getId() == extruder_train.getId() for item in self._extruder_trains[machine_id].values()):
+            Logger.log("w", "Extruder [%s] has already been registered on machine [%s], not doing anything",
+                       extruder_train.getId(), machine_id)
+            return
+
         if extruder_train:
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
             changed = True
@@ -362,6 +371,8 @@ class ExtruderManager(QObject):
             user_profile = InstanceContainer(extruder_stack_id + "_current_settings")  # Add an empty user profile.
             user_profile.addMetaDataEntry("type", "user")
             user_profile.addMetaDataEntry("extruder", extruder_stack_id)
+            from cura.CuraApplication import CuraApplication
+            user_profile.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
             user_profile.setDefinition(machine_definition)
             container_registry.addContainer(user_profile)
         container_stack.addContainer(user_profile)
@@ -457,10 +468,9 @@ class ExtruderManager(QObject):
     #   \param machine_id The machine to remove the extruders for.
     def removeMachineExtruders(self, machine_id: str):
         for extruder in self.getMachineExtruders(machine_id):
-            containers = ContainerRegistry.getInstance().findInstanceContainers(type = "user", extruder = extruder.getId())
-            for container in containers:
-                ContainerRegistry.getInstance().removeContainer(container.getId())
+            ContainerRegistry.getInstance().removeContainer(extruder.userChanges.getId())
             ContainerRegistry.getInstance().removeContainer(extruder.getId())
+        del self._extruder_trains[machine_id]
 
     ##  Returns extruders for a specific machine.
     #
