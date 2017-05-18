@@ -312,11 +312,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return WorkspaceReader.PreReadResult.accepted
 
     ## Overrides an ExtruderStack in the given GlobalStack and returns the new ExtruderStack.
-    def _overrideExtruderStack(self, global_stack, extruder_index, extruder_file_content):
-        extruder_index_str = str(extruder_index)
+    def _overrideExtruderStack(self, global_stack, extruder_file_content):
+        # get extruder position first
+        extruder_config = configparser.ConfigParser()
+        extruder_config.read_string(extruder_file_content)
+        if not extruder_config.has_option("metadata", "position"):
+            msg = "Could not find 'metadata/position' in extruder stack file"
+            Logger.log("e", "Could not find 'metadata/position' in extruder stack file")
+            raise RuntimeError(msg)
+        extruder_position = extruder_config.get("metadata", "position")
 
-        extruder_stack = global_stack.extruders[extruder_index_str]
-        old_extruder_stack_id = extruder_stack.getId()
+        extruder_stack = global_stack.extruders[extruder_position]
 
         # override the given extruder stack
         extruder_stack.deserialize(extruder_file_content)
@@ -631,7 +637,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if self._resolve_strategies["machine"] == "override":
                         # NOTE: This is the same code as those in the lower part
                         # deserialize new extruder stack over the current ones
-                        stack = self._overrideExtruderStack(global_stack, index, extruder_file_content)
+                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
 
                     elif self._resolve_strategies["machine"] == "new":
                         # create a new extruder stack from this one
@@ -662,7 +668,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     # No extruder stack with the same ID can be found
                     if self._resolve_strategies["machine"] == "override":
                         # deserialize new extruder stack over the current ones
-                        stack = self._overrideExtruderStack(global_stack, index, extruder_file_content)
+                        stack = self._overrideExtruderStack(global_stack, extruder_file_content)
 
                     elif self._resolve_strategies["machine"] == "new":
                         # container not found, create a new one
