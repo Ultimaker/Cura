@@ -307,7 +307,7 @@ UM.MainWindow
             Button
             {
                 id: openMMFButton;
-                text: catalog.i18nc("@action:button","Import from MMF");
+                text: catalog.i18nc("@action:button","Import object from MMF");
                 iconSource: UM.Theme.getIcon("mmf_icon")
                 style: UM.Theme.styles.tool_button
                 tooltip: '';
