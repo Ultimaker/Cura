@@ -448,13 +448,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             container_id = self._stripFileToId(instance_container_file)
             serialized = archive.open(instance_container_file).read().decode("utf-8")
 
-            # HACK! we ignore the "metadata/type = quality" instance containers!
+            # HACK! we ignore "quality" and "variant" instance containers!
             parser = configparser.ConfigParser()
             parser.read_string(serialized)
             if not parser.has_option("metadata", "type"):
                 Logger.log("w", "Cannot find metadata/type in %s, ignoring it", instance_container_file)
                 continue
-            if parser.get("metadata", "type") == "quality":
+            if parser.get("metadata", "type") in self._ignored_instance_container_types:
                 continue
 
             instance_container = InstanceContainer(container_id)
