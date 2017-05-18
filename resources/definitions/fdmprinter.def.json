@@ -4506,6 +4506,18 @@
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
                 },
+                "mold_roof_height":
+                {
+                    "label": "Mold Roof Height",
+                    "description": "The height above horizontal parts in your model which to print mold.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "5",
+                    "default_value": 0.5,
+                    "settable_per_mesh": true,
+                    "enabled": "mold_enabled"
+                },
                 "mold_angle":
                 {
                     "label": "Mold Angle",
