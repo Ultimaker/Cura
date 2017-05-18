@@ -3156,7 +3156,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable",
-                            "value": "support_z_distance",
+                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3168,7 +3168,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
                             "default_value": 0.1,
-                            "value": "support_z_distance if support_type == 'everywhere' else 0",
+                            "value": "extruderValue(support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
                             "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                             "type": "float",
                             "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
@@ -3287,7 +3287,7 @@
                             "description": "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
-                            "value": "support_interface_enable",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_enable",
                             "settable_per_mesh": true
@@ -3298,7 +3298,7 @@
                             "description": "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
-                            "value": "support_interface_enable",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_enable",
                             "settable_per_mesh": true
@@ -3330,7 +3330,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "0.2 + layer_height",
                             "maximum_value_warning": "10",
-                            "value": "support_interface_height",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": true
@@ -3342,7 +3342,7 @@
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1,
-                            "value": "support_interface_height",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_height')",
                             "minimum_value": "0",
                             "minimum_value_warning": "min(0.2 + layer_height, support_bottom_stair_step_height)",
                             "maximum_value_warning": "10",
@@ -3390,6 +3390,7 @@
                             "maximum_value": "100",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_density')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
@@ -3422,6 +3423,7 @@
                             "maximum_value": "100",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and support_enable",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_density')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
@@ -3481,7 +3483,7 @@
                                 "zigzag": "Zig Zag"
                             },
                             "default_value": "concentric",
-                            "value": "support_interface_pattern",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_pattern')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": false,
@@ -3502,7 +3504,7 @@
                                 "zigzag": "Zig Zag"
                             },
                             "default_value": "concentric",
-                            "value": "support_interface_pattern",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_pattern')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and support_enable",
                             "settable_per_mesh": false,
