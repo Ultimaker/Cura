@@ -151,14 +151,14 @@ class ExtruderManager(QObject):
                     selected_nodes.append(node)
 
             # Then, figure out which nodes are used by those selected nodes.
+            global_stack = Application.getInstance().getGlobalContainerStack()
+            current_extruder_trains = self._extruder_trains.get(global_stack.getId())
             for node in selected_nodes:
                 extruder = node.callDecoration("getActiveExtruder")
                 if extruder:
                     object_extruders.add(extruder)
-                else:
-                    global_stack = Application.getInstance().getGlobalContainerStack()
-                    if global_stack.getId() in self._extruder_trains:
-                        object_extruders.add(self._extruder_trains[global_stack.getId()]["0"].getId())
+                elif current_extruder_trains:
+                    object_extruders.add(current_extruder_trains["0"].getId())
 
             self._selected_object_extruders = list(object_extruders)
 
