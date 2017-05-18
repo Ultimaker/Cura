@@ -1,21 +1,20 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any
-
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
+from typing import Any, TYPE_CHECKING, Optional
 
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
-from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
+from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.Interfaces import ContainerInterface
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
 from .ExtruderManager import ExtruderManager
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
 
 ##  Represents an Extruder and its related containers.
 #
@@ -38,6 +37,10 @@ class ExtruderStack(CuraContainerStack):
         # For backward compatibility: Register the extruder with the Extruder Manager
         ExtruderManager.getInstance().registerExtruder(self, stack.id)
 
+    @override(ContainerStack)
+    def getNextStack(self) -> Optional["GlobalStack"]:
+        return super().getNextStack()
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 3
@@ -58,6 +61,12 @@ class ExtruderStack(CuraContainerStack):
 
         if not super().getProperty(key, "settable_per_extruder"):
             return self.getNextStack().getProperty(key, property_name)
+
+        limit_to_extruder = super().getProperty(key, "limit_to_extruder")
+        if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
+            result = self.getNextStack().extruders[str(limit_to_extruder)].getProperty(key, property_name)
+            if result is not None:
+                return result
 
         return super().getProperty(key, property_name)
 

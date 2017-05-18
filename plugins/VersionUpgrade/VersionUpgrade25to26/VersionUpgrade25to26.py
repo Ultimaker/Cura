@@ -5,6 +5,7 @@ import configparser #To parse the files we need to upgrade and write the new fil
 import io #To serialise configparser output to a string.
 
 from UM.VersionUpgrade import VersionUpgrade
+from cura.CuraApplication import CuraApplication
 
 _removed_settings = { #Settings that were removed in 2.5.
     "start_layers_at_same_position",
@@ -86,9 +87,15 @@ class VersionUpgrade25to26(VersionUpgrade):
                     parser["values"][replacement] = parser["values"][replaced_setting] #Copy to replacement before removing the original!
                 del replaced_setting
 
-        #Change the version number in the file.
-        if parser.has_section("general"):
-            parser["general"]["setting_version"] = "1"
+        for each_section in ("general", "metadata"):
+            if not parser.has_section(each_section):
+                parser.add_section(each_section)
+
+        # Change the version number in the file.
+        parser["metadata"]["setting_version"] = str(CuraApplication.SettingVersion)
+
+        # Update version
+        parser["general"]["version"] = "2"
 
         #Re-serialise the file.
         output = io.StringIO()

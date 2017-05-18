@@ -433,7 +433,8 @@ class BuildVolume(SceneNode):
                 self._global_container_stack.getProperty("raft_interface_thickness", "value") +
                 self._global_container_stack.getProperty("raft_surface_layers", "value") *
                     self._global_container_stack.getProperty("raft_surface_thickness", "value") +
-                self._global_container_stack.getProperty("raft_airgap", "value"))
+                self._global_container_stack.getProperty("raft_airgap", "value") -
+                self._global_container_stack.getProperty("layer_0_z_overlap", "value"))
 
         # Rounding errors do not matter, we check if raft_thickness has changed at all
         if old_raft_thickness != self._raft_thickness:
@@ -562,7 +563,7 @@ class BuildVolume(SceneNode):
                 used_extruders = [self._global_container_stack]
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
-        prime_areas = self._computeDisallowedAreasPrime(disallowed_border_size, used_extruders)
+        prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
         prime_disallowed_areas = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
 
         #Check if prime positions intersect with disallowed areas.
@@ -658,7 +659,7 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Computes the disallowed areas for the prime locations.
+    ##  Computes the disallowed areas for the prime blobs.
     #
     #   These are special because they are not subject to things like brim or
     #   travel avoidance. They do get a dilute with the border size though
@@ -669,17 +670,18 @@ class BuildVolume(SceneNode):
     #   \param used_extruders The extruder stacks to generate disallowed areas
     #   for.
     #   \return A dictionary with for each used extruder ID the prime areas.
-    def _computeDisallowedAreasPrime(self, border_size, used_extruders):
+    def _computeDisallowedAreasPrimeBlob(self, border_size, used_extruders):
         result = {}
 
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         for extruder in used_extruders:
+            prime_blob_enabled = extruder.getProperty("prime_blob_enable", "value")
             prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
             prime_y = - extruder.getProperty("extruder_prime_pos_y", "value")
 
-            #Ignore extruder prime position if it is not set
-            if prime_x == 0 and prime_y == 0:
+            #Ignore extruder prime position if it is not set or if blob is disabled
+            if (prime_x == 0 and prime_y == 0) or not prime_blob_enabled:
                 result[extruder.getId()] = []
                 continue
 
@@ -950,9 +952,9 @@ class BuildVolume(SceneNode):
         return max(min(value, max_value), min_value)
 
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
-    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap"]
+    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
-    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z"]
+    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts"]

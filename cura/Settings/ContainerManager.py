@@ -1,13 +1,15 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os.path
 import urllib
+import uuid
 from typing import Dict, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
 from UM.FlameProfiler import pyqtSlot
 from PyQt5.QtWidgets import QMessageBox
+from UM.Util import parseBool
 
 from UM.PluginRegistry import PluginRegistry
 from UM.SaveFile import SaveFile
@@ -671,6 +673,9 @@ class ContainerManager(QObject):
 
         return new_change_instances
 
+    ##  Create a duplicate of a material, which has the same GUID and base_file metadata
+    #
+    #   \return \type{str} the id of the newly created container.
     @pyqtSlot(str, result = str)
     def duplicateMaterial(self, material_id: str) -> str:
         containers = self._container_registry.findInstanceContainers(id=material_id)
@@ -693,6 +698,115 @@ class ContainerManager(QObject):
             duplicated_container.deserialize(f.read())
         duplicated_container.setDirty(True)
         self._container_registry.addContainer(duplicated_container)
+        return self._getMaterialContainerIdForActiveMachine(new_id)
+
+    ##  Create a new material by cloning Generic PLA for the current material diameter and setting the GUID to something unqiue
+    #
+    #   \return \type{str} the id of the newly created container.
+    @pyqtSlot(result = str)
+    def createMaterial(self) -> str:
+        # Ensure all settings are saved.
+        Application.getInstance().saveSettings()
+
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return ""
+
+        approximate_diameter = round(global_stack.getProperty("material_diameter", "value"))
+        containers = self._container_registry.findInstanceContainers(id = "generic_pla*", approximate_diameter = approximate_diameter)
+        if not containers:
+            Logger.log("d", "Unable to create a new material by cloning Generic PLA, because it cannot be found for the material diameter for this machine.")
+            return ""
+
+        base_file = containers[0].getMetaDataEntry("base_file")
+        containers = self._container_registry.findInstanceContainers(id = base_file)
+        if not containers:
+            Logger.log("d", "Unable to create a new material by cloning Generic PLA, because the base file for Generic PLA for this machine can not be found.")
+            return ""
+
+        # Create a new ID & container to hold the data.
+        new_id = self._container_registry.uniqueName("custom_material")
+        container_type = type(containers[0])  # Always XMLMaterialProfile, since we specifically clone the base_file
+        duplicated_container = container_type(new_id)
+
+        # Instead of duplicating we load the data from the basefile again.
+        # This ensures that the inheritance goes well and all "cut up" subclasses of the xmlMaterial profile
+        # are also correctly created.
+        with open(containers[0].getPath(), encoding="utf-8") as f:
+            duplicated_container.deserialize(f.read())
+
+        duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
+        duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
+        duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
+        duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
+
+        self._container_registry.addContainer(duplicated_container)
+        return self._getMaterialContainerIdForActiveMachine(new_id)
+
+    ##  Find the id of a material container based on the new material
+    #   Utilty function that is shared between duplicateMaterial and createMaterial
+    #
+    #   \param base_file \type{str} the id of the created container.
+    def _getMaterialContainerIdForActiveMachine(self, base_file):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return base_file
+
+        has_machine_materials = parseBool(global_stack.getMetaDataEntry("has_machine_materials", default = False))
+        has_variant_materials = parseBool(global_stack.getMetaDataEntry("has_variant_materials", default = False))
+        has_variants = parseBool(global_stack.getMetaDataEntry("has_variants", default = False))
+        if has_machine_materials or has_variant_materials:
+            if has_variants:
+                materials = self._container_registry.findInstanceContainers(type = "material", base_file = base_file, definition = global_stack.getBottom().getId(), variant = self._machine_manager.activeVariantId)
+            else:
+                materials = self._container_registry.findInstanceContainers(type = "material", base_file = base_file, definition = global_stack.getBottom().getId())
+
+            if materials:
+                return materials[0].getId()
+
+            Logger.log("w", "Unable to find a suitable container based on %s for the current machine .", base_file)
+            return "" # do not activate a new material if a container can not be found
+
+        return base_file
+
+    ##  Get a list of materials that have the same GUID as the reference material
+    #
+    #   \param material_id \type{str} the id of the material for which to get the linked materials.
+    #   \return \type{list} a list of names of materials with the same GUID
+    @pyqtSlot(str, result = "QStringList")
+    def getLinkedMaterials(self, material_id: str):
+        containers = self._container_registry.findInstanceContainers(id=material_id)
+        if not containers:
+            Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't exist.", material_id)
+            return []
+
+        material_container = containers[0]
+        material_base_file = material_container.getMetaDataEntry("base_file", "")
+        material_guid = material_container.getMetaDataEntry("GUID", "")
+        if not material_guid:
+            Logger.log("d", "Unable to find materials linked to material with id %s, because it doesn't have a GUID.", material_id)
+            return []
+
+        containers = self._container_registry.findInstanceContainers(type = "material", GUID = material_guid)
+        linked_material_names = []
+        for container in containers:
+            if container.getId() in [material_id, material_base_file] or container.getMetaDataEntry("base_file") != container.getId():
+                continue
+
+            linked_material_names.append(container.getName())
+        return linked_material_names
+
+    ##  Unlink a material from all other materials by creating a new GUID
+    #   \param material_id \type{str} the id of the material to create a new GUID for.
+    @pyqtSlot(str)
+    def unlinkMaterial(self, material_id: str):
+        containers = self._container_registry.findInstanceContainers(id=material_id)
+        if not containers:
+            Logger.log("d", "Unable to make the material with id %s unique, because it doesn't exist.", material_id)
+            return ""
+
+        containers[0].setMetaDataEntry("GUID", str(uuid.uuid4()))
+
 
     ##  Get the singleton instance for this class.
     @classmethod
@@ -815,6 +929,8 @@ class ContainerManager(QObject):
             quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
+        from cura.CuraApplication import CuraApplication
+        quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         return quality_changes
 
 

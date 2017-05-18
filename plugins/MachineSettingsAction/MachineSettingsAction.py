@@ -14,7 +14,7 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 
-from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 
 import UM.i18n
@@ -99,6 +99,7 @@ class MachineSettingsAction(MachineAction):
         definition = container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
         self._container_registry.addContainer(definition_changes_container)
         container_stack.definitionChanges = definition_changes_container

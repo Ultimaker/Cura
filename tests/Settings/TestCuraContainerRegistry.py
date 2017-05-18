@@ -68,11 +68,12 @@ def test_addContainerGlobalStack(container_registry, definition_container):
     assert type(mock_super_add_container.call_args_list[0][0][0]) == GlobalStack
 
 def test_addContainerGoodSettingVersion(container_registry, definition_container):
-    definition_container.getMetaData()["setting_version"] = 3
+    from cura.CuraApplication import CuraApplication
+    definition_container.getMetaData()["setting_version"] = CuraApplication.SettingVersion
     container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
-    instance.addMetaDataEntry("setting_version", 3)
+    instance.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
     instance.setDefinition(definition_container)
 
     mock_super_add_container = unittest.mock.MagicMock() #Take the role of the Uranium-ContainerRegistry where the resulting containers get registered.
@@ -82,7 +83,8 @@ def test_addContainerGoodSettingVersion(container_registry, definition_container
     mock_super_add_container.assert_called_once_with(instance) #The instance must have been registered now.
 
 def test_addContainerNoSettingVersion(container_registry, definition_container):
-    definition_container.getMetaData()["setting_version"] = 3
+    from cura.CuraApplication import CuraApplication
+    definition_container.getMetaData()["setting_version"] = CuraApplication.SettingVersion
     container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")
@@ -96,7 +98,8 @@ def test_addContainerNoSettingVersion(container_registry, definition_container):
     mock_super_add_container.assert_not_called() #Should not get passed on to UM.Settings.ContainerRegistry.addContainer, because the setting_version is interpreted as 0!
 
 def test_addContainerBadSettingVersion(container_registry, definition_container):
-    definition_container.getMetaData()["setting_version"] = 3
+    from cura.CuraApplication import CuraApplication
+    definition_container.getMetaData()["setting_version"] = CuraApplication.SettingVersion
     container_registry.addContainer(definition_container)
 
     instance = UM.Settings.InstanceContainer.InstanceContainer(container_id = "Test Instance")

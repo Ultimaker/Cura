@@ -11,7 +11,7 @@ from UM.Application import Application
 catalog = i18nCatalog("cura")
 
 import UM.Settings.InstanceContainer
-
+from cura.CuraApplication import CuraApplication
 
 ##  The Ultimaker Original can have a few revisions & upgrades. This action helps with selecting them, so they are added
 #   as a variant.
@@ -49,6 +49,7 @@ class UMOUpgradeSelection(MachineAction):
         definition = global_container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
         UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().addContainer(definition_changes_container)
         # Insert definition_changes between the definition and the variant

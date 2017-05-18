@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any
+from typing import Any, Dict
 
 from PyQt5.QtCore import pyqtProperty
 
@@ -24,7 +24,7 @@ class GlobalStack(CuraContainerStack):
 
         self.addMetaDataEntry("type", "machine") # For backward compatibility
 
-        self._extruders = []
+        self._extruders = {}
 
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
@@ -34,8 +34,8 @@ class GlobalStack(CuraContainerStack):
     ##  Get the list of extruders of this stack.
     #
     #   \return The extruders registered with this stack.
-    @pyqtProperty("QVariantList")
-    def extruders(self) -> list:
+    @pyqtProperty("QVariantMap")
+    def extruders(self) -> Dict[str, "ExtruderStack"]:
         return self._extruders
 
     @classmethod
@@ -52,8 +52,17 @@ class GlobalStack(CuraContainerStack):
         extruder_count = self.getProperty("machine_extruder_count", "value")
         if extruder_count and len(self._extruders) + 1 > extruder_count:
             Logger.log("w", "Adding extruder {meta} to {id} but its extruder count is {count}".format(id = self.id, count = extruder_count, meta = str(extruder.getMetaData())))
+            return
 
-        self._extruders.append(extruder)
+        position = extruder.getMetaDataEntry("position")
+        if position is None:
+            Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder = extruder.id, stack = self.id)
+            return
+
+        if any(item.getId() == extruder.id for item in self._extruders.values()):
+            Logger.log("w", "Extruder [%s] has already been added to this stack [%s]", extruder.id, self._id)
+            return
+        self._extruders[position] = extruder
 
     ##  Overridden from ContainerStack
     #
@@ -71,12 +80,23 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
+        # Handle the "resolve" property.
         if self._shouldResolve(key, property_name):
             self._resolving_settings.add(key)
             resolve = super().getProperty(key, "resolve")
             self._resolving_settings.remove(key)
             if resolve is not None:
                 return resolve
+
+        # Handle the "limit_to_extruder" property.
+        limit_to_extruder = super().getProperty(key, "limit_to_extruder")
+        if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in self._extruders:
+            if super().getProperty(key, "settable_per_extruder"):
+                result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name)
+                if result is not None:
+                    return result
+            else:
+                Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
         return super().getProperty(key, property_name)
 
