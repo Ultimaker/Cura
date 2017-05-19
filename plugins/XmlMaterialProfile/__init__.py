@@ -2,14 +2,14 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from . import XmlMaterialProfile
-from . import Upgrader
+from . import XmlMaterialUpgrader
 
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.i18n import i18nCatalog
 
 
 catalog = i18nCatalog("cura")
-upgrader = Upgrader.Upgrader()
+upgrader = XmlMaterialUpgrader.XmlMaterialUpgrader()
 
 
 def getMetaData():
@@ -49,7 +49,7 @@ def register(app):
     # add upgrade version
     from cura.CuraApplication import CuraApplication
     from UM.VersionUpgradeManager import VersionUpgradeManager
-    VersionUpgradeManager.getInstance().setCurrentVersion(
+    VersionUpgradeManager.getInstance().registerCurrentVersion(
         ("materials", XmlMaterialProfile.XmlMaterialProfile.Version * 1000000 + CuraApplication.SettingVersion),
         (CuraApplication.ResourceTypes.MaterialInstanceContainer, "application/x-uranium-instancecontainer")
     )

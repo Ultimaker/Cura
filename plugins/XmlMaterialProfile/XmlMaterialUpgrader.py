@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from UM.VersionUpgrade import VersionUpgrade
 
 
-class Upgrader(VersionUpgrade):
+class XmlMaterialUpgrader(VersionUpgrade):
     def getXmlVersion(self, serialized):
         data = ET.fromstring(serialized)
 
