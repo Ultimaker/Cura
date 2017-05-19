@@ -489,7 +489,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.loadPlugins()
 
-        if self.getBackend() == None:
+        if self.getBackend() is None:
             raise RuntimeError("Could not load the backend plugin!")
 
         self._plugins_loaded = True
