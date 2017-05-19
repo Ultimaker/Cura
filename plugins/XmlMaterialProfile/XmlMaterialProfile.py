@@ -14,9 +14,13 @@ from cura.CuraApplication import CuraApplication
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
+    Version = 1
+
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
@@ -386,11 +390,13 @@ class XmlMaterialProfile(InstanceContainer):
         self._path = ""
 
     def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
-        return "material"
+        return "materials"
 
     def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
-        version = None
         data = ET.fromstring(serialized)
+
+        # get format version
+        version = None
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
@@ -402,7 +408,17 @@ class XmlMaterialProfile(InstanceContainer):
                 break
         if version is None:
             raise InvalidInstanceError("Missing version in metadata")
-        return version
+
+        # get setting version
+        if "version" in data.attrib:
+            setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            setting_version = self.xmlVersionToSettingVersion("1.2")
+
+        if version is None:
+            raise InvalidInstanceError("Missing version in metadata")
+
+        return version * 1000000 + setting_version
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
