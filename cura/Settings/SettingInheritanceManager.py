@@ -198,6 +198,10 @@ class SettingInheritanceManager(QObject):
     def _update(self):
         self._settings_with_inheritance_warning = []  # Reset previous data.
 
+        # Make sure that the GlobalStack is not None. sometimes the globalContainerChanged signal gets here late.
+        if self._global_container_stack is None:
+            return
+
         # Check all setting keys that we know of and see if they are overridden.
         for setting_key in self._global_container_stack.getAllKeys():
             override = self._settingIsOverwritingInheritance(setting_key)
