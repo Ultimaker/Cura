@@ -7,7 +7,7 @@ from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from UM.Application import Application
 from UM.Preferences import Preferences
-from UM.View.Renderer import Renderer
+from UM.View.RenderBatch import RenderBatch
 from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
@@ -118,7 +118,7 @@ class SolidView(View):
                     else:
                         renderer.queueNode(node, material = self._enabled_shader, uniforms = uniforms)
                 if node.callDecoration("isGroup") and Selection.isSelected(node):
-                    renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = Renderer.RenderLines)
+                    renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
     def endRendering(self):
         pass
