@@ -425,7 +425,12 @@ class XmlMaterialProfile(InstanceContainer):
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
         serialized = ContainerInterface.deserialize(self, serialized)
-        data = ET.fromstring(serialized)
+
+        try:
+            data = ET.fromstring(serialized)
+        except:
+            Logger.logException("e", "An exception occured while parsing the material profile")
+            return
 
         # Reset previous metadata
         self.clearData() # Ensure any previous data is gone.
