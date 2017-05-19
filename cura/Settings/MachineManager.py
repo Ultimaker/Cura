@@ -220,6 +220,7 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
+        self._auto_materials_changed = {} #Processed all of them now.
 
     def _autoUpdateHotends(self):
         extruder_manager = ExtruderManager.getInstance()
@@ -236,6 +237,7 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
+        self._auto_hotends_changed = {} #Processed all of them now.
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
