@@ -40,7 +40,7 @@ geometry41core =
     uniform highp mat4 u_model_view_projection_matrix;
     uniform lowp float u_overhang_angle;
     uniform lowp vec4 u_color;
-    uniform lowp vec4 u_color_error;
+    uniform lowp vec4 u_color_overhang;
 
     layout(triangles_adjacency) in;
     layout(line_strip, max_vertices = 12) out;
@@ -52,7 +52,7 @@ geometry41core =
     void makeEdge(vec4 from, vec4 to, vec3 n1, vec3 n2)
     {
         vec3 edge_normal = normalize(n1 + n2);
-        edge_color = (-edge_normal.y > u_overhang_angle)? u_color_error : u_color;
+        edge_color = (-edge_normal.y > u_overhang_angle)? u_color_overhang : u_color;
         gl_Position = from;
         EmitVertex();
         gl_Position = to;
@@ -80,7 +80,7 @@ fragment41core =
 
 [defaults]
 u_color = [0.02, 0.02, 0.02, 1.0]
-u_color_error = [1.0, 0.0, 0.0, 1.0]
+u_color_overhang = [1.0, 0.0, 0.0, 1.0]
 
 [bindings]
 u_model_view_projection_matrix = model_view_projection_matrix
