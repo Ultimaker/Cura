@@ -51,12 +51,12 @@ geometry41core =
 
     void makeEdge(vec4 from, vec4 to, vec3 n1, vec3 n2)
     {
+        vec3 edge_normal = normalize(n1 + n2);
+        e_color = (-edge_normal.y > u_overhangAngle)? u_color_error : u_color;
         gl_Position = from;
         EmitVertex();
         gl_Position = to;
         EmitVertex();
-        vec3 edge_normal = normalize(n1 + n2);
-        e_color = (-edge_normal.y > u_overhangAngle)? u_color_error : u_color;
         EndPrimitive();
     }
     
