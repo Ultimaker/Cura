@@ -71,7 +71,7 @@ class WireframeView(View):
                                        sort = -10,
                                        state_setup_callback = lambda gl: gl.glDepthFunc(gl.GL_ALWAYS),
                                        state_teardown_callback = lambda gl: gl.glDepthFunc(gl.GL_LESS),
-                                       mode = RenderBatch.RenderMode.TrianglesAdjacency
+                                       mode = RenderBatch.RenderMode.Triangles
                     )
 
     def endRendering(self):
