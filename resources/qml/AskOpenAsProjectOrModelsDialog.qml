@@ -18,8 +18,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 450 * Screen.devicePixelRatio
-    height: 150 * Screen.devicePixelRatio
+    width: 450
+    height: 150
 
     maximumHeight: height
     maximumWidth: width
@@ -61,10 +61,10 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20 * Screen.devicePixelRatio
-        anchors.rightMargin: 20 * Screen.devicePixelRatio
-        anchors.bottomMargin: 20 * Screen.devicePixelRatio
-        spacing: 10 * Screen.devicePixelRatio
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
+        anchors.bottomMargin: 20
+        spacing: 10
 
         Label
         {
@@ -94,7 +94,7 @@ UM.Dialog
                 id: openAsProjectButton
                 text: catalog.i18nc("@action:button", "Open as project");
                 anchors.right: importModelsButton.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width * Screen.devicePixelRatio
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 isDefault: true
                 onClicked:
                 {
