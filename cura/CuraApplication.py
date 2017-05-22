@@ -145,6 +145,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
+        SettingDefinition.addSettingType("optional_extruder", None, str, None)
 
         SettingDefinition.addSettingType("[int]", None, str, None)
 
