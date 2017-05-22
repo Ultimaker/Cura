@@ -214,7 +214,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             # This way we can simply intrepret the -1 of the index as the last item (which it now always is)
             if self._add_optional_extruder:
                 item = {
-                    "id": "zomg",
+                    "id": "",
                     "name": "Not overridden",
                     "color": "#ffffff",
                     "index": -1,
