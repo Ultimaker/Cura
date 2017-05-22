@@ -203,7 +203,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 item = {
                     "id": "zomg",
                     "name": "Not overridden",
-                    "color": self.defaultColors[0],
+                    "color": "#ffffff",
                     "index": -1,
                     "definition": ""
                 }
