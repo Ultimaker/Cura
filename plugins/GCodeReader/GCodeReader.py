@@ -38,7 +38,6 @@ class GCodeReader(MeshReader):
         self._message = None
         self._layer_number = 0
         self._extruder_number = 0
-
         self._clearValues()
         self._scene_node = None
         self._position = namedtuple('Position', ['x', 'y', 'z', 'e'])
@@ -156,6 +155,10 @@ class GCodeReader(MeshReader):
             path.append([x, y, z, LayerPolygon.MoveCombingType])
         return self._position(x, y, z, e)
 
+    # G0 and G1 should be handled exactly the same.
+    _gCode1 = _gCode0
+
+    ##  Home the head.
     def _gCode28(self, position, params, path):
         return self._position(
             params.x if params.x is not None else position.x,
@@ -163,6 +166,8 @@ class GCodeReader(MeshReader):
             0,
             position.e)
 
+    ##  Reset the current position to the values specified.
+    #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position, params, path):
         if params.e is not None:
             position.e[self._extruder_number] = params.e
@@ -172,10 +177,9 @@ class GCodeReader(MeshReader):
             params.z if params.z is not None else position.z,
             position.e)
 
-    _gCode1 = _gCode0
-
     def _processGCode(self, G, line, position, path):
         func = getattr(self, "_gCode%s" % G, None)
+        line = line.split(";", 1)[0]  # Remove comments (if any)
         if func is not None:
             s = line.upper().split(" ")
             x, y, z, e = None, None, None, None
@@ -268,6 +272,7 @@ class GCodeReader(MeshReader):
                     Job.yieldThread()
                 if len(line) == 0:
                     continue
+
                 if line.find(self._type_keyword) == 0:
                     type = line[len(self._type_keyword):].strip()
                     if type == "WALL-INNER":
@@ -282,6 +287,8 @@ class GCodeReader(MeshReader):
                         self._layer_type = LayerPolygon.SupportType
                     elif type == "FILL":
                         self._layer_type = LayerPolygon.InfillType
+                    else:
+                        Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
                 if self._is_layers_in_file and line[:len(self._layer_keyword)] == self._layer_keyword:
                     try:
@@ -304,7 +311,6 @@ class GCodeReader(MeshReader):
                     if current_position.z > last_z and abs(current_position.z - last_z) < 2:
                         if self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0])):
                             current_path.clear()
-
                             if not self._is_layers_in_file:
                                 self._layer_number += 1
 

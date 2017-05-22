@@ -16,10 +16,10 @@
         "machine_nozzle_offset_x": { "default_value": 24.0 },
         "machine_nozzle_offset_y": { "default_value": 60.0 },
         "machine_extruder_start_code": {
-          "default_value": "\n;start extruder_3\nM117 Heating nozzles....\nM104 S190 T3\nG1 X70 Y20 F9000\nM109 S190 T3\n\nM117 purging nozzle\nG92 E0\nG1 E6 F90\nG92 E0\nG1 E-2 F300\nG92 E0\n\nM117 wiping nozzle\nG1 X1 Y28 F3000\nG1 X70 F6000\n\nM117 printing\n"
+          "default_value": "\n;start extruder_3\n\nM117 printing\n"
         },
         "machine_extruder_end_code": {
-           "default_value": "\nM104 T3 S155\n;end extruder_3\n"
+           "default_value": "\nM104 T3 S160\nG91\nG1 Z5 F900\nG90\nG1 X1 Y260 F9000\n;end extruder_3\n"
         }
     }
 }

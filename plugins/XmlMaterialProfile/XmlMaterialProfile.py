@@ -3,6 +3,7 @@
 
 import copy
 import io
+from typing import Optional
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -11,14 +12,32 @@ from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
-from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
+    Version = 1
+
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
+
+    ##  Translates the version number in the XML files to the setting_version
+    #   metadata entry.
+    #
+    #   Since the two may increment independently we need a way to say which
+    #   versions of the XML specification are compatible with our setting data
+    #   version numbers.
+    #
+    #   \param xml_version: The version number found in an XML file.
+    #   \return The corresponding setting_version.
+    def xmlVersionToSettingVersion(self, xml_version: str) -> int:
+        if xml_version == "1.3":
+            return 1
+        return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
         return self._inherited_files
@@ -118,6 +137,7 @@ class XmlMaterialProfile(InstanceContainer):
         metadata.pop("variant", "")
         metadata.pop("type", "")
         metadata.pop("base_file", "")
+        metadata.pop("approximate_diameter", "")
 
         ## Begin Name Block
         builder.start("name")
@@ -143,10 +163,10 @@ class XmlMaterialProfile(InstanceContainer):
 
         for key, value in metadata.items():
             builder.start(key)
-            # Normally value is a string.
-            # Nones get handled well.
-            if isinstance(value, bool):
-                value = str(value)  # parseBool in deserialize expects 'True'.
+            if value is not None: #Nones get handled well by the builder.
+                #Otherwise the builder always expects a string.
+                #Deserialize expects the stringified version.
+                value = str(value)
             builder.data(value)
             builder.end(key)
 
@@ -369,9 +389,48 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
         self._path = ""
 
+    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
+        return "materials"
+
+    def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
+        data = ET.fromstring(serialized)
+
+        # get format version
+        version = None
+        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
+        for entry in metadata:
+            tag_name = _tag_without_namespace(entry)
+            if tag_name == "version":
+                try:
+                    version = int(entry.text)
+                except Exception as e:
+                    raise InvalidInstanceError("Invalid version string '%s': %s" % (entry.text, e))
+                break
+        if version is None:
+            raise InvalidInstanceError("Missing version in metadata")
+
+        # get setting version
+        if "version" in data.attrib:
+            setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            setting_version = self.xmlVersionToSettingVersion("1.2")
+
+        if version is None:
+            raise InvalidInstanceError("Missing version in metadata")
+
+        return version * 1000000 + setting_version
+
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
-        data = ET.fromstring(serialized)
+        # update the serialized data first
+        from UM.Settings.Interfaces import ContainerInterface
+        serialized = ContainerInterface.deserialize(self, serialized)
+
+        try:
+            data = ET.fromstring(serialized)
+        except:
+            Logger.logException("e", "An exception occured while parsing the material profile")
+            return
 
         # Reset previous metadata
         self.clearData() # Ensure any previous data is gone.
@@ -385,6 +444,10 @@ class XmlMaterialProfile(InstanceContainer):
             inherited = self._resolveInheritance(inherits.text)
             data = self._mergeXML(inherited, data)
 
+        if "version" in data.attrib:
+            meta_data["setting_version"] = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            meta_data["setting_version"] = self.xmlVersionToSettingVersion("1.2") #1.2 and lower didn't have that version number there yet.
         metadata = data.iterfind("./um:metadata/*", self.__namespaces)
         for entry in metadata:
             tag_name = _tag_without_namespace(entry)
@@ -405,10 +468,10 @@ class XmlMaterialProfile(InstanceContainer):
                 continue
             meta_data[tag_name] = entry.text
 
-        if not "description" in meta_data:
+        if "description" not in meta_data:
             meta_data["description"] = ""
 
-        if not "adhesion_info" in meta_data:
+        if "adhesion_info" not in meta_data:
             meta_data["adhesion_info"] = ""
 
         property_values = {}
@@ -417,8 +480,7 @@ class XmlMaterialProfile(InstanceContainer):
             tag_name = _tag_without_namespace(entry)
             property_values[tag_name] = entry.text
 
-        diameter = float(property_values.get("diameter", 2.85)) # In mm
-        density = float(property_values.get("density", 1.3)) # In g/cm3
+        meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
@@ -503,7 +565,7 @@ class XmlMaterialProfile(InstanceContainer):
                         variant_containers = ContainerRegistry.getInstance().findInstanceContainers(definition = definition.id, name = hotend_id)
 
                     if not variant_containers:
-                        Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
+                        #Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
                         continue
 
                     hotend_compatibility = machine_compatibility
@@ -581,7 +643,8 @@ class XmlMaterialProfile(InstanceContainer):
         "Ultimaker 2 Extended": "ultimaker2_extended",
         "Ultimaker 2 Extended+": "ultimaker2_extended_plus",
         "Ultimaker Original": "ultimaker_original",
-        "Ultimaker Original+": "ultimaker_original_plus"
+        "Ultimaker Original+": "ultimaker_original_plus",
+        "IMADE3D JellyBOX": "imade3d_jellybox"
     }
 
     # Map of recognised namespaces with a proper prefix.
