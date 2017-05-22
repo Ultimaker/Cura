@@ -81,8 +81,6 @@ Menu
 
         title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 
-        width: 400 * Screen.devicePixelRatio
-        height: 80 * Screen.devicePixelRatio
 
         onAccepted: CuraActions.multiplySelection(copiesField.value)
 
