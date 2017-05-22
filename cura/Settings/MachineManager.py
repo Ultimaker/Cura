@@ -781,7 +781,7 @@ class MachineManager(QObject):
                 self.blurSettings.emit()
                 self._active_container_stack.variant = containers[0]
                 Logger.log("d", "Active variant changed to {active_variant_id}".format(active_variant_id = containers[0].getId()))
-                preferred_material = None
+                preferred_material_name = None
                 if old_material:
                     preferred_material_name = old_material.getName()
 
