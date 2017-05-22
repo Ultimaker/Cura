@@ -79,7 +79,7 @@ The initial and final printing temperatures reduce the amount of oozing during P
 Initial and final printing temperature settings have been tuned for higher quality results. For all materials the initial print temperature is 5 degrees above the default value.
 
 *Printing temperature of the materials
-The printing temperature of the materials in the material profiles is now the same as the printing temperature for the Normal Quality profile.
+The printing temperature of the materials in the material profiles is now the same as the printing temperature for the Fine profile.
 
 *Improved PLA-PVA layer adhesion
 The PVA jerk and acceleration have been optimized to improve the layer adhesion between PVA and PLA.

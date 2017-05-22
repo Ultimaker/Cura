@@ -109,6 +109,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def setActiveExtruder(self, extruder_stack_id):
         self._extruder_stack = extruder_stack_id
         self._updateNextStack()
+        ExtruderManager.getInstance().resetSelectedObjectExtruders()
         self.activeExtruderChanged.emit()
 
     def getStack(self):

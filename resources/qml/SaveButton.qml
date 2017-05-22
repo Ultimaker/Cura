@@ -16,7 +16,7 @@ Item {
     property int backendState: UM.Backend.state;
 
     property var backend: CuraApplication.getBackend();
-    property bool activity: Printer.platformActivity;
+    property bool activity: CuraApplication.platformActivity;
 
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
@@ -44,7 +44,7 @@ Item {
         }
     }
 
-    Label {
+    Text {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("default_margin").width
         anchors.top: parent.top
@@ -76,6 +76,18 @@ Item {
         }
     }
 
+    // Shortcut for "save as/print/..."
+    Action {
+        shortcut: "Ctrl+P"
+        onTriggered:
+        {
+            // only work when the button is enabled
+            if (saveToButton.enabled) {
+                saveToButton.clicked();
+            }
+        }
+    }
+
     Item {
         id: saveRow
         width: base.width
@@ -98,8 +110,8 @@ Item {
             onAdditionalComponentsChanged:
             {
                 if(areaId == "saveButton") {
-                    for (var component in Printer.additionalComponents["saveButton"]) {
-                        Printer.additionalComponents["saveButton"][component].parent = additionalComponentsRow
+                    for (var component in CuraApplication.additionalComponents["saveButton"]) {
+                        CuraApplication.additionalComponents["saveButton"][component].parent = additionalComponentsRow
                     }
                 }
             }
@@ -215,7 +227,7 @@ Item {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true })
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, PrintInformation.jobName, { "filter_by_machine": true, "preferred_mimetype":Printer.preferredOutputMimetype })
             }
 
             style: ButtonStyle {

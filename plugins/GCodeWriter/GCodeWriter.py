@@ -85,6 +85,7 @@ class GCodeWriter(MeshWriter):
 
         for key in instance_container1.getAllKeys():
             flat_container.setProperty(key, "value", instance_container1.getProperty(key, "value"))
+
         return flat_container
 
 
@@ -100,12 +101,15 @@ class GCodeWriter(MeshWriter):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        container_with_profile = stack.findContainer({"type": "quality_changes"})
+        container_with_profile = stack.qualityChanges
         if not container_with_profile:
             Logger.log("e", "No valid quality profile found, not writing settings to GCode!")
             return ""
 
         flat_global_container = self._createFlattenedContainerInstance(stack.getTop(), container_with_profile)
+        # If the quality changes is not set, we need to set type manually
+        if flat_global_container.getMetaDataEntry("type", None) is None:
+            flat_global_container.addMetaDataEntry("type", "quality_changes")
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
@@ -115,11 +119,14 @@ class GCodeWriter(MeshWriter):
         data = {"global_quality": serialized}
 
         for extruder in sorted(ExtruderManager.getInstance().getMachineExtruders(stack.getId()), key = lambda k: k.getMetaDataEntry("position")):
-            extruder_quality = extruder.findContainer({"type": "quality_changes"})
+            extruder_quality = extruder.qualityChanges
             if not extruder_quality:
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)
+            # If the quality changes is not set, we need to set type manually
+            if flat_extruder_quality.getMetaDataEntry("type", None) is None:
+                flat_extruder_quality.addMetaDataEntry("type", "quality_changes")
 
             # Ensure that extruder is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("extruder", None) is None:
