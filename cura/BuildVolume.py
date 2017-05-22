@@ -871,7 +871,7 @@ class BuildVolume(SceneNode):
         else:
             extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
 
-            if extruder_index == "-1":  # If extruder index is -1 use global instead
+            if str(extruder_index) == "-1":  # If extruder index is -1 use global instead
                 stack = self._global_container_stack
             else:
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]

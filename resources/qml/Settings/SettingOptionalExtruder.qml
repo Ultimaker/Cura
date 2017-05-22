@@ -17,7 +17,11 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel { onModelChanged: control.color = getItem(control.currentIndex).color }
+        model: Cura.ExtrudersModel
+        {
+            onModelChanged: control.color = getItem(control.currentIndex).color
+            useOptionalExtruder: true
+        }
 
         textRole: "name"
 
@@ -27,7 +31,22 @@ SettingItem
             propertyProvider.setPropertyValue("value", model.getItem(index).index);
         }
 
-        currentIndex: propertyProvider.properties.value
+        Binding
+        {
+            target: control
+            property: "currentIndex"
+            value:
+            {
+                if(propertyProvider.properties.value == -1)
+                {
+                    return control.model.items.length - 1
+                }
+                return propertyProvider.properties.value
+            }
+            // Sometimes when the value is already changed, the model is still being built.
+            // The when clause ensures that the current index is not updated when this happens.
+            when: control.model.items.length > 0
+        }
 
         MouseArea
         {

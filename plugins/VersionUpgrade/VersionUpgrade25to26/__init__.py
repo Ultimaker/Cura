@@ -22,9 +22,10 @@ def getMetaData():
             ("preferences", 4000000):     ("preferences", 4000001,     upgrade.upgradePreferences),
             # NOTE: All the instance containers share the same general/version, so we have to update all of them
             #       if any is updated.
-            ("quality_changes", 2000000): ("quality_changes", 2000001, upgrade.upgradeInstanceContainer),
-            ("user", 2000000):            ("user", 2000001,            upgrade.upgradeInstanceContainer),
-            ("quality", 2000000):         ("quality", 2000001,         upgrade.upgradeInstanceContainer),
+            ("quality_changes", 2000000):       ("quality_changes", 2000001,    upgrade.upgradeInstanceContainer),
+            ("user", 2000000):                  ("user", 2000001,               upgrade.upgradeInstanceContainer),
+            ("quality", 2000000):               ("quality", 2000001,            upgrade.upgradeInstanceContainer),
+            ("definition_changes", 2000000):    ("definition_changes", 2000001, upgrade.upgradeInstanceContainer),
         },
         "sources": {
             "quality_changes": {
@@ -39,6 +40,10 @@ def getMetaData():
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./user"}
             },
+            "definition_changes": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./machine_instances"}
+            }
         }
     }
 

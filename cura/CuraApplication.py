@@ -138,13 +138,14 @@ class CuraApplication(QtApplication):
         # From which stack the setting would inherit if not defined per object (handled in the engine)
         # AND for settings which are not settable_per_mesh:
         # which extruder is the only extruder this setting is obtained from
-        SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1")
+        SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1", depends_on = "value")
 
         # For settings which are not settable_per_mesh and not settable_per_extruder:
         # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
+        SettingDefinition.addSettingType("optional_extruder", None, str, None)
 
         SettingDefinition.addSettingType("[int]", None, str, None)
 
@@ -178,7 +179,8 @@ class CuraApplication(QtApplication):
                 ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
                 ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
@@ -488,7 +490,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.loadPlugins()
 
-        if self.getBackend() == None:
+        if self.getBackend() is None:
             raise RuntimeError("Could not load the backend plugin!")
 
         self._plugins_loaded = True
@@ -625,7 +627,9 @@ class CuraApplication(QtApplication):
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
-        self.getController().getTool("CameraTool").setOrigin(Vector(0, 100, 0))
+        camera_tool = self.getController().getTool("CameraTool")
+        camera_tool.setOrigin(Vector(0, 100, 0))
+        camera_tool.setZoomRange(0.1, 200000)
 
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
