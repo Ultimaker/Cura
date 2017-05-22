@@ -831,7 +831,7 @@
                 {
                     "label": "Wall Extruder",
                     "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
-                    "type": "extruder",
+                    "type": "optional_extruder",
                     "default_value": "0",
                     "value": "-1",
                     "settable_per_mesh": true,
@@ -844,7 +844,7 @@
                         {
                             "label": "Outer Wall Extruder",
                             "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
-                            "type": "extruder",
+                            "type": "optional_extruder",
                             "default_value": "0",
                             "value": "wall_extruder_nr",
                             "settable_per_mesh": true,
@@ -856,7 +856,7 @@
                         {
                             "label": "Inner Walls Extruder",
                             "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
-                            "type": "extruder",
+                            "type": "optional_extruder",
                             "default_value": "0",
                             "value": "wall_extruder_nr",
                             "settable_per_mesh": true,
@@ -912,7 +912,7 @@
                 {
                     "label": "Top/Bottom Extruder",
                     "description": "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion.",
-                    "type": "extruder",
+                    "type": "optional_extruder",
                     "default_value": "0",
                     "value": "-1",
                     "settable_per_mesh": true,
@@ -1185,7 +1185,7 @@
                 {
                     "label": "Infill Extruder",
                     "description": "The extruder train used for printing infill. This is used in multi-extrusion.",
-                    "type": "extruder",
+                    "type": "optional_extruder",
                     "default_value": "0",
                     "value": "-1",
                     "settable_per_mesh": true,
