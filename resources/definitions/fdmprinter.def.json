@@ -773,7 +773,7 @@
                                     "type": "float",
                                     "enabled": "support_enable and support_roof_enable",
                                     "limit_to_extruder": "support_roof_extruder_nr",
-                                    "value": "support_interface_line_width",
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_line_width')",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
@@ -789,7 +789,7 @@
                                     "type": "float",
                                     "enabled": "support_enable and support_bottom_enable",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
-                                    "value": "support_interface_line_width",
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_line_width')",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
@@ -1972,7 +1972,7 @@
                                             "maximum_value_warning": "150",
                                             "enabled": "support_roof_enable and support_enable",
                                             "limit_to_extruder": "support_roof_extruder_nr",
-                                            "value": "speed_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'speed_support_interface')",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
                                         },
@@ -1988,7 +1988,7 @@
                                             "maximum_value_warning": "150",
                                             "enabled": "support_bottom_enable and support_enable",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
-                                            "value": "speed_support_interface",
+                                            "value": "extruderValue(support_bottom_extruder_nr, 'speed_support_interface')",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
                                         }
@@ -2288,11 +2288,11 @@
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
-                                            "value": "acceleration_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'acceleration_support_interface')",
                                             "minimum_value": "0.1",
                                             "minimum_value_warning": "100",
                                             "maximum_value_warning": "10000",
-                                            "enabled": "resolveOrValue('acceleration_enabled') and support_roof_enable and support_enable",
+                                            "enabled": "acceleration_enabled and support_roof_enable and support_enable",
                                             "limit_to_extruder": "support_roof_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -2304,11 +2304,11 @@
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
-                                            "value": "acceleration_support_interface",
+                                            "value": "extruderValue(support_bottom_extruder_nr, 'acceleration_support_interface')",
                                             "minimum_value": "0.1",
                                             "minimum_value_warning": "100",
                                             "maximum_value_warning": "10000",
-                                            "enabled": "resolveOrValue('acceleration_enabled') and support_bottom_enable and support_enable",
+                                            "enabled": "acceleration_enabled and support_bottom_enable and support_enable",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -2553,7 +2553,7 @@
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 20,
-                                            "value": "jerk_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
                                             "minimum_value": "0.1",
                                             "maximum_value_warning": "50",
                                             "enabled": "resolveOrValue('jerk_enabled') and support_roof_enable and support_enable",
@@ -2568,7 +2568,7 @@
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 20,
-                                            "value": "jerk_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
                                             "minimum_value": "0.1",
                                             "maximum_value_warning": "50",
                                             "enabled": "resolveOrValue('jerk_enabled') and support_bottom_enable and support_enable",
