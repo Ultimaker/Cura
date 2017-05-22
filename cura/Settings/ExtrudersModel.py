@@ -67,7 +67,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
         self._simple_names = False
 
         self._active_extruder_stack = None
-        self._use_optional_extruder = False
+        self._add_optional_extruder = False
 
         #Listen to changes.
         Application.getInstance().globalContainerStackChanged.connect(self._updateExtruders)
@@ -90,17 +90,17 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def addGlobal(self):
         return self._add_global
 
-    useOptionalExtruderChanged = pyqtSignal()
+    addOptionalExtruderChanged = pyqtSignal()
 
-    def setUseOptionalExtruder(self, use_optional_extruder):
-        if use_optional_extruder != self._use_optional_extruder:
-            self._use_optional_extruder = use_optional_extruder
-            self.useOptionalExtruderChanged.emit()
+    def setAddOptionalExtruder(self, add_optional_extruder):
+        if add_optional_extruder != self._add_optional_extruder:
+            self._add_optional_extruder = add_optional_extruder
+            self.addOptionalExtruderChanged.emit()
             self._updateExtruders()
 
-    @pyqtProperty(bool, fset = setUseOptionalExtruder, notify = useOptionalExtruderChanged)
-    def useOptionalExtruder(self):
-        return self._use_optional_extruder
+    @pyqtProperty(bool, fset = setAddOptionalExtruder, notify = addOptionalExtruderChanged)
+    def addOptionalExtruder(self):
+        return self._add_optional_extruder
 
     ##  Set the simpleNames property.
     def setSimpleNames(self, simple_names):
@@ -199,7 +199,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
             items.sort(key = lambda i: i["index"])
             # We need optional extruder to be last, so add it after we do sorting.
             # This way we can simply intrepret the -1 of the index as the last item (which it now always is)
-            if self._use_optional_extruder:
+            if self._add_optional_extruder:
                 item = {
                     "id": "zomg",
                     "name": "Not overridden",
