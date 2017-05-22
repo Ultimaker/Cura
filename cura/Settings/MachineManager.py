@@ -705,7 +705,7 @@ class MachineManager(QObject):
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals()):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
                 return
@@ -770,7 +770,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals()):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
                 return

@@ -15,7 +15,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers 
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Settings.Interfaces import DefinitionContainerInterface
 from typing import Optional, List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
@@ -74,7 +74,7 @@ class ExtruderManager(QObject):
         except KeyError:
             return 0
 
-    @pyqtProperty("QVariantMap", notify=extrudersChanged)
+    @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self):
         map = {}
         global_stack_id = Application.getInstance().getGlobalContainerStack().getId()
@@ -203,7 +203,7 @@ class ExtruderManager(QObject):
     #   \param machine_definition   The machine definition to add the extruders for.
     #   \param machine_id           The machine_id to add the extruders for.
     @deprecated("Use CuraStackBuilder", "2.6")
-    def addMachineExtruders(self, machine_definition: DefinitionContainer, machine_id: str) -> None:
+    def addMachineExtruders(self, machine_definition: DefinitionContainerInterface, machine_id: str) -> None:
         changed = False
         machine_definition_id = machine_definition.getId()
         if machine_id not in self._extruder_trains:
@@ -263,7 +263,7 @@ class ExtruderManager(QObject):
     #   \param position             The position of this extruder train in the extruder slots of the machine.
     #   \param machine_id           The id of the "global" stack this extruder is linked to.
     @deprecated("Use CuraStackBuilder::createExtruderStack", "2.6")
-    def createExtruderTrain(self, extruder_definition: DefinitionContainer, machine_definition: DefinitionContainer,
+    def createExtruderTrain(self, extruder_definition: DefinitionContainerInterface, machine_definition: DefinitionContainerInterface,
                             position, machine_id: str) -> None:
         # Cache some things.
         container_registry = ContainerRegistry.getInstance()
@@ -525,7 +525,7 @@ class ExtruderManager(QObject):
     #
     #   This is exposed to SettingFunction so it can be used in value functions.
     #
-    #   \param key The key of the setting to retieve values for.
+    #   \param key The key of the setting to retrieve values for.
     #
     #   \return A list of values for all extruders. If an extruder does not have a value, it will not be in the list.
     #           If no extruder has the value, the list will contain the global value.
