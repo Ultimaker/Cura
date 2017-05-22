@@ -20,7 +20,7 @@ SettingItem
         model: Cura.ExtrudersModel
         {
             onModelChanged: control.color = getItem(control.currentIndex).color
-            useOptionalExtruder: true
+            addOptionalExtruder: true
         }
 
         textRole: "name"
