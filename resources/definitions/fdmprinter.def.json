@@ -1157,7 +1157,6 @@
                     "type": "[int]",
                     "default_value": "[ ]",
                     "enabled": "infill_pattern != 'concentric' and infill_pattern != 'concentric_3d' and infill_pattern != 'cubicsubdiv'",
-                    "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true
                 },
                 "spaghetti_infill_enabled":
