@@ -395,28 +395,12 @@ class XmlMaterialProfile(InstanceContainer):
     def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
         data = ET.fromstring(serialized)
 
-        # get format version
-        version = None
-        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
-        for entry in metadata:
-            tag_name = _tag_without_namespace(entry)
-            if tag_name == "version":
-                try:
-                    version = int(entry.text)
-                except Exception as e:
-                    raise InvalidInstanceError("Invalid version string '%s': %s" % (entry.text, e))
-                break
-        if version is None:
-            raise InvalidInstanceError("Missing version in metadata")
-
+        version = 1
         # get setting version
         if "version" in data.attrib:
             setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
         else:
             setting_version = self.xmlVersionToSettingVersion("1.2")
-
-        if version is None:
-            raise InvalidInstanceError("Missing version in metadata")
 
         return version * 1000000 + setting_version
 
