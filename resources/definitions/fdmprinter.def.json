@@ -989,6 +989,14 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
+                "group_walls":
+                {
+                    "label": "Group Walls",
+                    "description": "Print all the walls for a single outline or hole before moving on to the next outline or hole.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "alternate_extra_perimeter":
                 {
                     "label": "Alternate Extra Wall",
