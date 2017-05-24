@@ -53,7 +53,7 @@ import Arcus #@UnusedImport
 import cura.CuraApplication
 import cura.Settings.CuraContainerRegistry
 
-if Platform.isWindows() and hasattr(sys, "frozen"):
+if hasattr(sys, "frozen"):
     dirpath = os.path.expanduser("~/AppData/Local/cura/")
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
