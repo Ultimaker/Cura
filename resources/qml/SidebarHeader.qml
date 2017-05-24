@@ -196,16 +196,60 @@ Column
             }
 
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.30
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
+        }
+
+        Text
+        {
+            width: parent.width * 0.05
+        }
+
+        Button
+        {
+            id: materialInfoButton
+            height: parent.height * 0.70
+            width: height
+            anchors.margins: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+
+            text: "i"
+            style: UM.Theme.styles.info_button
+
+            onClicked:
+            {
+                // open the material URL with web browser
+                var url = "https://ultimaker.com/en/resources/23121-materials";
+                Qt.openUrlExternally(url);
+            }
+
+            onHoveredChanged:
+            {
+                if (hovered)
+                {
+                    var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
+                    base.showTooltip(
+                        variantRow, Qt.point(0, variantRow.height / 2), catalog.i18nc("@tooltip", content)
+                    );
+                }
+                else
+                {
+                    base.hideTooltip();
+                }
+            }
+        }
+
+        Text
+        {
+            width: parent.width * 0.10 - materialInfoButton.width - UM.Theme.getSize("default_margin").width
         }
 
         Item
         {
             anchors.verticalCenter: parent.verticalCenter
 
-            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.50 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
 
             ToolButton {
