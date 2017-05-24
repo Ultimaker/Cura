@@ -94,6 +94,8 @@ Item {
                                         return settingComboBox
                                     case "extruder":
                                         return settingExtruder
+                                    case "optional_extruder":
+                                        return settingOptionalExtruder
                                     case "bool":
                                         return settingCheckBox
                                     case "str":
@@ -340,6 +342,13 @@ Item {
         id: settingExtruder;
 
         Cura.SettingExtruder { }
+    }
+
+    Component
+    {
+        id: settingOptionalExtruder
+
+        Cura.SettingOptionalExtruder { }
     }
 
     Component
