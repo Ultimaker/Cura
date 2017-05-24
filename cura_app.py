@@ -5,6 +5,7 @@
 import os
 import sys
 import platform
+import faulthandler
 
 from UM.Platform import Platform
 
@@ -58,6 +59,8 @@ if hasattr(sys, "frozen"):
     os.makedirs(dirpath, exist_ok = True)
     sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
     sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
+
+faulthandler.enable()
 
 # Force an instance of CuraContainerRegistry to be created and reused later.
 cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance()
