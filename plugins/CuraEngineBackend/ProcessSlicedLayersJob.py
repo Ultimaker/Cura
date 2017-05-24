@@ -175,7 +175,7 @@ class ProcessSlicedLayersJob(Job):
             for extruder in extruders:
                 material = extruder.findContainer({"type": "material"})
                 position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
-                color_code = material.getMetaDataEntry("color_code")
+                color_code = material.getMetaDataEntry("color_code", default="#e0e000")
                 color = colorCodeToRGBA(color_code)
                 material_color_map[position, :] = color
         else:
