@@ -30,6 +30,11 @@ class CuraStackBuilder:
 
         machine_definition = definitions[0]
         name = registry.createUniqueName("machine", "", name, machine_definition.name)
+        # Make sure the new name does not collide with any definition or (quality) profile
+        # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
+        # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
+        if registry.findContainers(id = name):
+            name = registry.uniqueName(name)
 
         new_global_stack = cls.createGlobalStack(
             new_stack_id = name,
