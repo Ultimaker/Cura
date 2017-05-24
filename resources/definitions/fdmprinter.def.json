@@ -989,10 +989,10 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "group_walls":
+                "optimize_wall_printing_order":
                 {
-                    "label": "Group Walls",
-                    "description": "Print all the walls for a single outline or hole before moving on to the next outline or hole.",
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
