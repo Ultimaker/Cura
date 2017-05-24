@@ -31,6 +31,9 @@ catalog = i18nCatalog("cura")
 #
 #   \param color_code html color code, i.e. "#FF0000" -> red
 def colorCodeToRGBA(color_code):
+    if color_code is None:
+        Logger.log("w", "Unable to convert color code, returning default")
+        return [0, 0, 0, 1]
     return [
         int(color_code[1:3], 16) / 255,
         int(color_code[3:5], 16) / 255,
