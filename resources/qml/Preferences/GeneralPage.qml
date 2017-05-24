@@ -218,7 +218,11 @@ UM.PreferencesPage
                         id: themeList
 
                         Component.onCompleted: {
-                            append({ text: catalog.i18nc("@item:inlistbox", "Ultimaker"), code: "cura" })
+                            var themes = UM.Theme.getThemes()
+                            for (var i = 0; i < themes.length; i++)
+                            {
+                                append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
+                            }
                         }
                     }
 
