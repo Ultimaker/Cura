@@ -10,28 +10,12 @@ class XmlMaterialUpgrader(VersionUpgrade):
     def getXmlVersion(self, serialized):
         data = ET.fromstring(serialized)
 
-        # get format version
-        version = None
-        metadata = data.iterfind("./um:metadata/*")
-        for entry in metadata:
-            tag_name = entry.tag
-            if tag_name == "version":
-                try:
-                    version = int(entry.text)
-                except Exception as e:
-                    raise ValueError("Invalid version string '%s': %s" % (entry.text, e))
-                break
-        if version is None:
-            raise RuntimeError("Missing version in metadata")
-
+        version = 1
         # get setting version
         if "version" in data.attrib:
             setting_version = self._xmlVersionToSettingVersion(data.attrib["version"])
         else:
             setting_version = self._xmlVersionToSettingVersion("1.2")
-
-        if version is None:
-            raise RuntimeError("Missing version in metadata")
 
         return version * 1000000 + setting_version
 
