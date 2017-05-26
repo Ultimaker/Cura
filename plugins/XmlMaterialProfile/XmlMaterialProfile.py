@@ -439,6 +439,8 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["base_file"] = self.id
         meta_data["status"] = "unknown"  # TODO: Add material verfication
 
+        global_setting_values = {}
+
         inherits = data.find("./um:inherits", self.__namespaces)
         if inherits is not None:
             inherited = self._resolveInheritance(inherits.text)
@@ -468,6 +470,9 @@ class XmlMaterialProfile(InstanceContainer):
                 continue
             meta_data[tag_name] = entry.text
 
+            if tag_name in self.__material_metadata_setting_map:
+                global_setting_values[self.__material_metadata_setting_map[tag_name]] = entry.text
+
         if "description" not in meta_data:
             meta_data["description"] = ""
 
@@ -480,18 +485,20 @@ class XmlMaterialProfile(InstanceContainer):
             tag_name = _tag_without_namespace(entry)
             property_values[tag_name] = entry.text
 
+            if tag_name in self.__material_properties_setting_map:
+                global_setting_values[self.__material_properties_setting_map[tag_name]] = entry.text
+
         meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
 
         global_compatibility = True
-        global_setting_values = {}
         settings = data.iterfind("./um:settings/um:setting", self.__namespaces)
         for entry in settings:
             key = entry.get("key")
-            if key in self.__material_property_setting_map:
-                global_setting_values[self.__material_property_setting_map[key]] = entry.text
+            if key in self.__material_settings_setting_map:
+                global_setting_values[self.__material_settings_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     global_compatibility = parseBool(entry.text)
@@ -510,8 +517,8 @@ class XmlMaterialProfile(InstanceContainer):
             settings = machine.iterfind("./um:setting", self.__namespaces)
             for entry in settings:
                 key = entry.get("key")
-                if key in self.__material_property_setting_map:
-                    machine_setting_values[self.__material_property_setting_map[key]] = entry.text
+                if key in self.__material_settings_setting_map:
+                    machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
                         machine_compatibility = parseBool(entry.text)
@@ -573,8 +580,8 @@ class XmlMaterialProfile(InstanceContainer):
                     settings = hotend.iterfind("./um:setting", self.__namespaces)
                     for entry in settings:
                         key = entry.get("key")
-                        if key in self.__material_property_setting_map:
-                            hotend_setting_values[self.__material_property_setting_map[key]] = entry.text
+                        if key in self.__material_settings_setting_map:
+                            hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
                         elif key in self.__unmapped_settings:
                             if key == "hardware compatible":
                                 hotend_compatibility = parseBool(entry.text)
@@ -604,7 +611,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     def _addSettingElement(self, builder, instance):
         try:
-            key = UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key)
+            key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
         except ValueError:
             return
 
@@ -619,7 +626,7 @@ class XmlMaterialProfile(InstanceContainer):
             return material_name
 
     # Map XML file setting names to internal names
-    __material_property_setting_map = {
+    __material_settings_setting_map = {
         "print temperature": "default_material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
@@ -631,6 +638,12 @@ class XmlMaterialProfile(InstanceContainer):
     __unmapped_settings = [
         "hardware compatible"
     ]
+    __material_properties_setting_map = {
+        "diameter": "material_diameter"
+    }
+    __material_metadata_setting_map = {
+        "GUID": "material_guid"
+    }
 
     # Map XML file product names to internal ids
     # TODO: Move this to definition's metadata
