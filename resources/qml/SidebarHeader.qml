@@ -220,7 +220,10 @@ Column
             onClicked:
             {
                 // open the material URL with web browser
-                var url = "https://ultimaker.com/en/resources/23121-materials";
+                var version = CuraApplication.getCuraVersion();
+                var machineName = Cura.MachineManager.activeMachineDefinitionId;
+
+                var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
                 Qt.openUrlExternally(url);
             }
 

@@ -1362,3 +1362,7 @@ class CuraApplication(QtApplication):
                     node = node.getParent()
 
                 Selection.add(node)
+
+    @pyqtSlot(result=str)
+    def getCuraVersion(self):
+        return CuraVersion
