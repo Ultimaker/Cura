@@ -50,12 +50,6 @@
         "bottom_thickness": {
             "default_value": 1
         },
-        "material_print_temperature": {
-            "default_value": 200
-        },
-        "material_bed_temperature": {
-            "default_value": 0
-        },
         "material_diameter": {
             "default_value": 1.75
         },
