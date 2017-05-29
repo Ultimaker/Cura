@@ -4867,7 +4867,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "type": "int",
-                    "limit_to_extruder": "wall_x_extruder_nr",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_alternate_rotation":
