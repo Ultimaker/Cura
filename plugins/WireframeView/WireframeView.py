@@ -31,8 +31,8 @@ class WireframeView(View):
 
         if not self._wireframe_shader:
             self._wireframe_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("WireframeView"), "wireframe.shader"))
-            self._wireframe_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgbF()))
-            self._wireframe_shader.setUniformValue("u_color_overhang", Color(*Application.getInstance().getTheme().getColor("model_overhang").getRgbF()))
+            self._wireframe_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("wireframeview_edge").getRgbF()))
+            self._wireframe_shader.setUniformValue("u_color_overhang", Color(*Application.getInstance().getTheme().getColor("wireframeview_overhang_edge").getRgbF()))
 
         # set u_overhang_angle of shader
         global_container_stack = Application.getInstance().getGlobalContainerStack()

@@ -74,11 +74,11 @@ Item
                     {
                         typesLegendModel.append({
                             label: catalog.i18nc("@label", "Edges"),
-                            colorId: "xray"
+                            colorId: "wireframeview_edge"
                         });
                         typesLegendModel.append({
                             label: catalog.i18nc("@label", "Overhang Edges"),
-                            colorId: "model_overhang"
+                            colorId: "wireframeview_overhang_edge"
                         });
                     }
                 }

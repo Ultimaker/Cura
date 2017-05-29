@@ -243,7 +243,10 @@
         "layerview_support_infill": [0,  255,  255, 255],
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
-        "layerview_support_interface": [64, 192, 255, 255]
+        "layerview_support_interface": [64, 192, 255, 255],
+
+        "wireframeview_edge": [26,  26,  62, 255],
+        "wireframeview_overhang_edge": [255, 0, 0, 255]
     },
 
     "sizes": {
