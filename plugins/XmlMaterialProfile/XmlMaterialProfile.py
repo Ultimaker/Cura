@@ -19,6 +19,7 @@ from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
+    CurrentFdmMaterialVersion = "1.3"
     Version = 1
 
     def __init__(self, container_id, *args, **kwargs):
@@ -124,7 +125,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         builder = ET.TreeBuilder()
 
-        root = builder.start("fdmmaterial", { "xmlns": "http://www.ultimaker.com/material"})
+        root = builder.start("fdmmaterial",
+                             {"xmlns": "http://www.ultimaker.com/material",
+                              "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
         builder.start("metadata")
