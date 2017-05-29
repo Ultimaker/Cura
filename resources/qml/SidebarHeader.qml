@@ -213,6 +213,7 @@ Column
             width: height
             anchors.margins: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
+            visible: extrudersList.visible
 
             text: "i"
             style: UM.Theme.styles.info_button
@@ -220,7 +221,7 @@ Column
             onClicked:
             {
                 // open the material URL with web browser
-                var version = CuraApplication.getCuraVersion();
+                var version = UM.Application.version;
                 var machineName = Cura.MachineManager.activeMachineDefinitionId;
 
                 var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
@@ -241,6 +242,13 @@ Column
                     base.hideTooltip();
                 }
             }
+        }
+
+        Text  // to take the space of the material info button when the active machine doesn't have multiple extruders
+        {
+            height: parent.height * 0.70
+            width: height
+            visible: !extrudersList.visible
         }
 
         Text
