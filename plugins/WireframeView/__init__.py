@@ -17,6 +17,7 @@ def getMetaData():
         },
         "view": {
             "name": catalog.i18nc("@item:inlistbox", "Wireframe"),
+            "view_panel": "WireframeView.qml",
             "weight": 1
         }
     }

@@ -1,15 +1,14 @@
 # Copyright (c) 2017 Tim Kuipers
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import math
 import os.path
 
 from UM.Application import Application
 from UM.Math.Color import Color
 from UM.PluginRegistry import PluginRegistry
 from UM.Preferences import Preferences
-from UM.Event import Event
 from UM.View.View import View
-from UM.View.RenderBatch import RenderBatch
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 
 from UM.View.RenderBatch import RenderBatch
@@ -17,9 +16,6 @@ from UM.View.GL.OpenGL import OpenGL
 
 from UM.Settings.Validator import ValidatorState
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ExtrudersModel import ExtrudersModel
-
-import math
 
 
 ## View used to display the edges of objects.
@@ -35,8 +31,8 @@ class WireframeView(View):
 
         if not self._wireframe_shader:
             self._wireframe_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("WireframeView"), "wireframe.shader"))
-            self._wireframe_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
-            self._wireframe_shader.setUniformValue("u_color_overhang", Color(*Application.getInstance().getTheme().getColor("model_overhang").getRgb()))
+            self._wireframe_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgbF()))
+            self._wireframe_shader.setUniformValue("u_color_overhang", Color(*Application.getInstance().getTheme().getColor("model_overhang").getRgbF()))
 
         # set u_overhang_angle of shader
         global_container_stack = Application.getInstance().getGlobalContainerStack()
