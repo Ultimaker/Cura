@@ -281,8 +281,10 @@ class CuraContainerRegistry(ContainerRegistry):
         if self._machineHasOwnQualities():
             profile.setDefinition(self._activeQualityDefinition())
             if self._machineHasOwnMaterials():
-                profile.addMetaDataEntry("material", self._activeMaterialId())
-                quality_type_criteria["material"] = self._activeMaterialId()
+                active_material_id = self._activeMaterialId()
+                if active_material_id:  # only update if there is an active material
+                    profile.addMetaDataEntry("material", active_material_id)
+                    quality_type_criteria["material"] = active_material_id
 
             quality_type_criteria["definition"] = profile.getDefinition().getId()
 
