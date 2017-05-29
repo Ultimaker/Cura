@@ -994,7 +994,7 @@
                     "label": "Optimize Wall Printing Order",
                     "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
