@@ -15,7 +15,7 @@ QtObject {
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 font: UM.Theme.getFont("small")
-                color: UM.Theme.getColor("info_button_text")
+                color: UM.Theme.getColor("button_text")
                 text: control.text
             }
 
@@ -27,11 +27,11 @@ QtObject {
 
                 color: {
                     if (control.pressed) {
-                        return UM.Theme.getColor("info_button_background_active");
+                        return UM.Theme.getColor("button_active");
                     } else if (control.hovered) {
-                        return UM.Theme.getColor("info_button_background_hover");
+                        return UM.Theme.getColor("button_hover");
                     } else {
-                        return UM.Theme.getColor("info_button_background");
+                        return UM.Theme.getColor("button");
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }

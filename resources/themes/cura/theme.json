@@ -243,12 +243,7 @@
         "layerview_support_infill": [0,  255,  255, 255],
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
-        "layerview_support_interface": [64, 192, 255, 255],
-
-        "info_button_text": [255, 255, 255, 255],
-        "info_button_background": [127, 127, 127, 255],
-        "info_button_background_hover": [24, 41, 77, 255],
-        "info_button_background_active": [70, 84, 113, 255]
+        "layerview_support_interface": [64, 192, 255, 255]
     },
 
     "sizes": {
