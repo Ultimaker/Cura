@@ -264,7 +264,6 @@ class ContainerManager(QObject):
 
         basefile = container.getMetaDataEntry("base_file", container_id)
         for sibbling_container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            print(sibbling_container.getId())
             if sibbling_container != container:
                 sibbling_container.setProperty(setting_key, property_name, property_value)
 
