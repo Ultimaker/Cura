@@ -168,8 +168,9 @@ TabView
                     {
                         // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                         // which derive from the same base_file
-                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value)
-                        base.setMetaDataEntry("properties/diameter", properties.diameter, value)
+                        base.setMetaDataEntry("approximate_diameter", properties.approximate_diameter, Math.round(value).toString());
+                        base.setMetaDataEntry("properties/diameter", properties.diameter, value);
+                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                     }
                     onValueChanged: updateCostPerMeter()
                 }

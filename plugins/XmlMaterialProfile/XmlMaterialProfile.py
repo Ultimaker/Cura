@@ -486,7 +486,7 @@ class XmlMaterialProfile(InstanceContainer):
             if tag_name in self.__material_properties_setting_map:
                 common_setting_values[self.__material_properties_setting_map[tag_name]] = entry.text
 
-        meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
+        meta_data["approximate_diameter"] = str(round(float(property_values.get("diameter", 2.85)))) # In mm
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
