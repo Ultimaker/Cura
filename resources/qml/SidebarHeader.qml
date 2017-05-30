@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -159,7 +159,7 @@ Column
         visible: !extruderSelectionRow.visible
     }
 
-    Row
+    Item
     {
         id: variantRow
 
@@ -196,16 +196,59 @@ Column
             }
 
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            anchors.left: variantRow.left
+            width: parent.width * 0.30
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
+        }
+
+        Button
+        {
+            id: materialInfoButton
+            height: parent.height * 0.70
+            width: height
+
+            anchors.left: variantLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+            anchors.verticalCenter: parent.verticalCenter
+
+            visible: extrudersList.visible
+
+            text: "i"
+            style: UM.Theme.styles.info_button
+
+            onClicked:
+            {
+                // open the material URL with web browser
+                var version = UM.Application.version;
+                var machineName = Cura.MachineManager.activeMachine.definition.id;
+
+                var url = "https://ultimaker.com/materialcompatibility/" + version + "/" + machineName;
+                Qt.openUrlExternally(url);
+            }
+
+            onHoveredChanged:
+            {
+                if (hovered)
+                {
+                    var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
+                    base.showTooltip(
+                        extruderSelectionRow, Qt.point(0, extruderSelectionRow.height + variantRow.height / 2), catalog.i18nc("@tooltip", content)
+                    );
+                }
+                else
+                {
+                    base.hideTooltip();
+                }
+            }
         }
 
         Item
         {
             anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
 
-            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.50 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
 
             ToolButton {
