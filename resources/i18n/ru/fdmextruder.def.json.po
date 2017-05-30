@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2017-03-27 17:27+0000\n"
+"POT-Creation-Date: 2017-05-30 15:32+0000\n"
 "PO-Revision-Date: 2017-01-08 04:33+0300\n"
 "Last-Translator: Ruslan Popov <ruslan.popov@gmail.com>\n"
 "Language-Team: \n"
@@ -32,6 +32,16 @@ msgstr "Экструдер"
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Экструдер, который используется для печати. Имеет значение при использовании нескольких экструдеров."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Диаметр сопла"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Внутренний диаметр сопла. Измените эту настройку при использовании сопла нестандартного размера."
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x label"
@@ -172,14 +182,6 @@ msgstr "Начальная Y позиция экструдера"
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Y координата позиции, в которой сопло начинает печать."
-
-#~ msgctxt "machine_nozzle_size label"
-#~ msgid "Nozzle Diameter"
-#~ msgstr "Диаметр сопла"
-
-#~ msgctxt "machine_nozzle_size description"
-#~ msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-#~ msgstr "Внутренний диаметр сопла. Измените эту настройку при использовании сопла нестандартного размера."
 
 #~ msgctxt "resolution label"
 #~ msgid "Quality"
