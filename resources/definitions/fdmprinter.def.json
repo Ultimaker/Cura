@@ -1254,11 +1254,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "limit_to_extruder": "infill_extruder_nr",
                 "sub_div_rad_add":
                 {
                     "label": "Cubic Subdivision Shell",
@@ -4828,6 +4823,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "spaghetti_max_infill_angle":
@@ -4841,6 +4837,7 @@
                     "maximum_value": "90",
                     "maximum_value_warning": "45",
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "spaghetti_max_height":
@@ -4853,6 +4850,7 @@
                     "minimum_value": "layer_height",
                     "maximum_value_warning": "10.0",
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "spaghetti_inset":
@@ -4865,6 +4863,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "5.0",
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "spaghetti_flow":
@@ -4877,6 +4876,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "support_conical_enabled":
