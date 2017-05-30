@@ -1125,7 +1125,7 @@ class MachineManager(QObject):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
-        approximate_material_diameter = round(stack.getProperty("material_diameter", "value"))
+        approximate_material_diameter = str(round(stack.getProperty("material_diameter", "value")))
         search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
 
         if definition.getMetaDataEntry("has_machine_materials"):
