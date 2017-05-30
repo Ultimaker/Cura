@@ -243,7 +243,10 @@
         "layerview_support_infill": [0,  255,  255, 255],
         "layerview_move_combing": [0,  0,  255, 255],
         "layerview_move_retraction": [128,  128,  255, 255],
-        "layerview_support_interface": [64, 192, 255, 255]
+        "layerview_support_interface": [64, 192, 255, 255],
+
+        "wireframeview_edge": [26,  26,  62, 255],
+        "wireframeview_overhang_edge": [255, 0, 0, 255]
     },
 
     "sizes": {
@@ -329,6 +332,12 @@
 
         "infill_button_margin": [0.5, 0.5],
 
-        "jobspecs_line": [2.0, 2.0]
+        "jobspecs_line": [2.0, 2.0],
+
+        "wireframeview_menu_size": [14.0, 9.0],
+        "wireframeview_menu_size_compatibility": [14.0, 9.0],
+        "wireframeview_legend_size": [1.0, 1.0],
+        "wireframeview_row": [11.0, 1.5],
+        "wireframeview_row_spacing": [0.0, 0.5]
     }
 }
