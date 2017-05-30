@@ -233,7 +233,7 @@ Column
                 {
                     var content = catalog.i18nc("@tooltip", "Click to check the material compatibility on Ultimaker.com.");
                     base.showTooltip(
-                        variantRow, Qt.point(0, variantRow.height / 2), catalog.i18nc("@tooltip", content)
+                        extruderSelectionRow, Qt.point(0, extruderSelectionRow.height + variantRow.height / 2), catalog.i18nc("@tooltip", content)
                     );
                 }
                 else
