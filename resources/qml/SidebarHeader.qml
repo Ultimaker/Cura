@@ -159,7 +159,7 @@ Column
         visible: !extruderSelectionRow.visible
     }
 
-    Row
+    Item
     {
         id: variantRow
 
@@ -196,14 +196,10 @@ Column
             }
 
             anchors.verticalCenter: parent.verticalCenter
+            anchors.left: variantRow.left
             width: parent.width * 0.30
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
-        }
-
-        Text
-        {
-            width: parent.width * 0.05
         }
 
         Button
@@ -211,8 +207,11 @@ Column
             id: materialInfoButton
             height: parent.height * 0.70
             width: height
-            anchors.margins: UM.Theme.getSize("default_margin").width
+
+            anchors.left: variantLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
             anchors.verticalCenter: parent.verticalCenter
+
             visible: extrudersList.visible
 
             text: "i"
@@ -244,21 +243,10 @@ Column
             }
         }
 
-        Text  // to take the space of the material info button when the active machine doesn't have multiple extruders
-        {
-            height: parent.height * 0.70
-            width: height
-            visible: !extrudersList.visible
-        }
-
-        Text
-        {
-            width: parent.width * 0.10 - materialInfoButton.width - UM.Theme.getSize("default_margin").width
-        }
-
         Item
         {
             anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
 
             width: parent.width * 0.50 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
