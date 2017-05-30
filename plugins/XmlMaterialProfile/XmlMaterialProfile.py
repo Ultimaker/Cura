@@ -56,16 +56,14 @@ class XmlMaterialProfile(InstanceContainer):
     def setMetaDataEntry(self, key, value):
         if self.isReadOnly():
             return
-        if self.getMetaDataEntry(key, None) == value:
-            # Prevent recursion caused by for loop.
-            return
 
         super().setMetaDataEntry(key, value)
 
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
-        # Update all containers that share GUID and basefile
+        # Update all containers that share basefile
         for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container.setMetaDataEntry(key, value)
+            if container.getMetaDataEntry(key, None) != value: # Prevent recursion
+                container.setMetaDataEntry(key, value)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
