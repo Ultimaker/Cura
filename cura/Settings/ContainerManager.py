@@ -235,7 +235,7 @@ class ContainerManager(QObject):
 
         return True
 
-    ##  Set a metadata entry of the specified container.
+    ##  Set a setting property value of the specified container.
     #
     #   This will set the specified property of the specified setting of the container
     #   and all containers that share the same base_file (if any). The latter only
