@@ -235,6 +235,31 @@ class ContainerManager(QObject):
 
         return True
 
+    ##  Set a metadata entry of the specified container.
+    #
+    #   \param container_id \type{str} The ID of the container to change.
+    #   \param setting_key \type{str} The key of the setting.
+    #   \param property_name \type{str} The name of the property, eg "value".
+    #   \param property_value \type{str} The new value of the property.
+    #
+    #   \return True if successful, False if not.
+    @pyqtSlot(str, str, str, str, result = bool)
+    def setContainerProperty(self, container_id, setting_key, property_name, value_value):
+        containers = self._container_registry.findContainers(None, id = container_id)
+        if not containers:
+            Logger.log("w", "Could not set properties of container %s because it was not found.", container_id)
+            return False
+
+        container = containers[0]
+
+        if container.isReadOnly():
+            Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
+            return False
+
+        container.setProperty(setting_key, property_name, value_value)
+
+        return True
+
     ##  Set the name of the specified container.
     @pyqtSlot(str, str, result = bool)
     def setContainerName(self, container_id, new_name):
