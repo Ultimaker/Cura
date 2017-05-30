@@ -5,7 +5,7 @@ import os.path
 
 from typing import Any, Optional
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 from UM.FlameProfiler import pyqtSlot
 
 from UM.Decorators import override
@@ -250,7 +250,7 @@ class CuraContainerStack(ContainerStack):
     ##  Get the definition container.
     #
     #   \return The definition container. Should always be a valid container, but can be equal to the empty InstanceContainer.
-    @pyqtProperty(DefinitionContainer, fset = setDefinition, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setDefinition, notify = pyqtContainersChanged)
     def definition(self) -> DefinitionContainer:
         return self._containers[_ContainerIndexes.Definition]
 
