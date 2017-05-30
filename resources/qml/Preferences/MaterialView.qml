@@ -166,6 +166,8 @@ TabView
 
                     onEditingFinished:
                     {
+                        // This does not use a SettingPropertyProvider, because we need to make the change to all containers
+                        // which derive from the same base_file
                         Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value)
                         base.setMetaDataEntry("properties/diameter", properties.diameter, value)
                     }
