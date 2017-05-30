@@ -164,7 +164,11 @@ TabView
                     stepSize: 0.01
                     readOnly: !base.editingEnabled
 
-                    onEditingFinished: base.setMetaDataEntry("properties/diameter", properties.diameter, value)
+                    onEditingFinished:
+                    {
+                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value)
+                        base.setMetaDataEntry("properties/diameter", properties.diameter, value)
+                    }
                     onValueChanged: updateCostPerMeter()
                 }
 
