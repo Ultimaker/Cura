@@ -237,6 +237,10 @@ class ContainerManager(QObject):
 
     ##  Set a metadata entry of the specified container.
     #
+    #   This will set the specified property of the specified setting of the container
+    #   and all containers that share the same base_file (if any). The latter only
+    #   happens for material containers.
+    #
     #   \param container_id \type{str} The ID of the container to change.
     #   \param setting_key \type{str} The key of the setting.
     #   \param property_name \type{str} The name of the property, eg "value".
@@ -244,7 +248,7 @@ class ContainerManager(QObject):
     #
     #   \return True if successful, False if not.
     @pyqtSlot(str, str, str, str, result = bool)
-    def setContainerProperty(self, container_id, setting_key, property_name, value_value):
+    def setContainerProperty(self, container_id, setting_key, property_name, property_value):
         containers = self._container_registry.findContainers(None, id = container_id)
         if not containers:
             Logger.log("w", "Could not set properties of container %s because it was not found.", container_id)
@@ -256,7 +260,13 @@ class ContainerManager(QObject):
             Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
             return False
 
-        container.setProperty(setting_key, property_name, value_value)
+        container.setProperty(setting_key, property_name, property_value)
+
+        basefile = container.getMetaDataEntry("base_file", container_id)
+        for sibbling_container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+            print(sibbling_container.getId())
+            if sibbling_container != container:
+                sibbling_container.setProperty(setting_key, property_name, property_value)
 
         return True
 
