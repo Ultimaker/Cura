@@ -992,7 +992,7 @@
                 "optimize_wall_printing_order":
                 {
                     "label": "Optimize Wall Printing Order",
-                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled.",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
