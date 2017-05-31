@@ -4414,26 +4414,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "prime_tower_purge_enabled":
-                {
-                    "label": "Purge Extruder on Prime Tower Wipe.",
-                    "description": "Should an extra amount be extruded before wiping the nozzle on the prime tower.",
-                    "enabled": "prime_tower_wipe_enabled",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "prime_tower_purge_volume":
                 {
                       "label": "Wipe Tower Purge Volume",
-                      "description": "Amount of filament to be purged when wiping on prime tower.",
+                      "description": "Amount of filament to be purged when wiping on prime tower. This is usefull for compensating the filament lost by oozing during the inactivity of the nozzle.",
                       "type": "float",
-                      "enabled": "prime_tower_purge_enabled",
+                      "enabled": "prime_tower_enable",
                       "unit": "mm³",
-                      "default_value": 1,
+                      "default_value": 0,
                       "minimum_value": "0",
-                      "maximum_value_warning": "20",
+                      "maximum_value_warning": "5",
                       "settable_per_mesh": false,
                       "settable_per_extruder": true
                 },
