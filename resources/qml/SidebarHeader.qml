@@ -177,6 +177,14 @@ Column
         Text
         {
             id: variantLabel
+            width: parent.width * 0.30
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: variantRow.left
+
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+
             text:
             {
                 var label;
@@ -194,12 +202,6 @@ Column
                 }
                 return "%1:".arg(label);
             }
-
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: variantRow.left
-            width: parent.width * 0.30
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
         }
 
         Button
@@ -208,8 +210,8 @@ Column
             height: parent.height * 0.60
             width: height
 
-            anchors.left: variantLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: materialVariantContainer.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
             visible: extrudersList.visible
@@ -245,6 +247,8 @@ Column
 
         Item
         {
+            id: materialVariantContainer
+
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
 

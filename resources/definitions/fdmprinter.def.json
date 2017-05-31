@@ -838,6 +838,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1",
                     "children":
                     {
                         "wall_0_extruder_nr":
@@ -850,7 +851,8 @@
                             "settable_per_mesh": true,
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": true,
-                            "settable_globally": true
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
                         },
                         "wall_x_extruder_nr":
                         {
@@ -862,7 +864,8 @@
                             "settable_per_mesh": true,
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": true,
-                            "settable_globally": true
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
                         }
                     }
                 },
@@ -918,7 +921,8 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
-                    "settable_globally": true
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1"
                 },
                 "top_bottom_thickness":
                 {
@@ -1191,7 +1195,8 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": true,
-                    "settable_globally": true
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1"
                 },
                 "infill_sparse_density":
                 {
