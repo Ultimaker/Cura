@@ -209,7 +209,7 @@ Column
             width: height
 
             anchors.left: variantLabel.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width * 2
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
             visible: extrudersList.visible
@@ -248,7 +248,7 @@ Column
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
 
-            width: parent.width * 0.50 + UM.Theme.getSize("default_margin").width
+            width: parent.width * 0.55 + UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
 
             ToolButton {
