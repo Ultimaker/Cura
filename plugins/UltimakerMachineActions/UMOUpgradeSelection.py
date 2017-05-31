@@ -52,7 +52,6 @@ class UMOUpgradeSelection(MachineAction):
         definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
         UM.Settings.ContainerRegistry.ContainerRegistry.getInstance().addContainer(definition_changes_container)
-        # Insert definition_changes between the definition and the variant
-        global_container_stack.insertContainer(-1, definition_changes_container)
+        global_container_stack.definitionChanges = definition_changes_container
 
         return definition_changes_container
