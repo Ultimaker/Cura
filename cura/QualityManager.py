@@ -100,14 +100,25 @@ class QualityManager:
         criteria["type"] = "quality"
         if quality_type:
             criteria["quality_type"] = quality_type
-        result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
+        results = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
 
         # Fall back to using generic materials and qualities if nothing could be found.
-        if not result and material_containers and len(material_containers) == 1:
+        if not results and material_containers and len(material_containers) == 1:
             basic_materials = self._getBasicMaterials(material_containers[0])
-            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
+            results = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
-        return result[0] if result else None
+        # we order results based on whether it's "Not Supported" or not.
+        # we put the supported results first and the "Not Supported" ones later.
+        supported_result_list = []
+        not_supported_result_list = []
+        for result in results:
+            if "not_supported" in result.getId().lower():
+                not_supported_result_list.append(result)
+            else:
+                supported_result_list.append(result)
+        results = supported_result_list + not_supported_result_list
+
+        return results[0] if results else None
 
     ##  Find all suitable qualities for a combination of machine and material.
     #
