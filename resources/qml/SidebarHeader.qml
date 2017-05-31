@@ -205,7 +205,7 @@ Column
         Button
         {
             id: materialInfoButton
-            height: parent.height * 0.70
+            height: parent.height * 0.60
             width: height
 
             anchors.left: variantLabel.right
