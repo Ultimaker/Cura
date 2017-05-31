@@ -162,7 +162,7 @@ Column
     Item
     {
         id: variantRow
-        
+
         height: UM.Theme.getSize("sidebar_setup").height
         visible: (Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials) && !sidebar.monitoringPrint && !sidebar.hideSettings
 
