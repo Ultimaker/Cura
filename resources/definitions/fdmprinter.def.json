@@ -869,7 +869,7 @@
                 "wall_thickness":
                 {
                     "label": "Wall Thickness",
-                    "description": "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
+                    "description": "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
                     "default_value": 0.8,
                     "minimum_value": "0",
