@@ -5340,6 +5340,14 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "sanding_enabled":
+                {
+                    "label": "Enable Sanding",
+                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
                 }
             }
         },
