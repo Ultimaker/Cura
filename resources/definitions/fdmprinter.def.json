@@ -5348,6 +5348,21 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
+                },
+                "sanding_pattern":
+                {
+                    "label": "Sanding Pattern",
+                    "description": "The pattern to use for sanding top surfaces.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "enabled": "sanding_enabled",
+                    "settable_per_mesh": true
                 }
             }
         },
