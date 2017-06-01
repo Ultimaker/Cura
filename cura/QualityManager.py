@@ -202,7 +202,11 @@ class QualityManager:
             if quality_definition_id is not None:
                 machine_definition = ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition_id)[0]
 
+        # for convenience
         if material_containers is None:
+            material_containers = []
+
+        if not material_containers:
             active_stacks = ExtruderManager.getInstance().getActiveGlobalAndExtruderStacks()
             if active_stacks:
                 material_containers = [stack.material for stack in active_stacks]
@@ -219,24 +223,22 @@ class QualityManager:
             filter_by_material = whole_machine_definition.getMetaDataEntry("has_materials")
         else:
             criteria["definition"] = "fdmprinter"
-        material_ids = set()
+
         # Stick the material IDs in a set
-        if material_containers is None or len(material_containers) == 0:
-            filter_by_material = False
-        else:
-            for material_instance in material_containers:
-                if material_instance is not None:
-                    # Add the parent material too.
-                    for basic_material in self._getBasicMaterials(material_instance):
-                        material_ids.add(basic_material.getId())
-                    material_ids.add(material_instance.getId())
+        material_ids = set()
+        for material_instance in material_containers:
+            if material_instance is not None:
+                # Add the parent material too.
+                for basic_material in self._getBasicMaterials(material_instance):
+                    material_ids.add(basic_material.getId())
+                material_ids.add(material_instance.getId())
 
         containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         result = []
         for container in containers:
             # If the machine specifies we should filter by material, exclude containers that do not match any active material.
-            if filter_by_material and container.getMetaDataEntry("material") not in material_ids and not "global_quality" in kwargs:
+            if filter_by_material and container.getMetaDataEntry("material") not in material_ids and "global_quality" not in kwargs:
                 continue
             result.append(container)
         return result
