@@ -5385,6 +5385,19 @@
                     "maximum_value_warning": "50",
                     "enabled": "sanding_enabled",
                     "settable_per_mesh": true
+                },
+                "speed_sanding":
+                {
+                    "label": "Sanding Speed",
+                    "description": "The speed at which to pass over the top surface.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 20.0,
+                    "minimum_value": "0.001",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "100",
+                    "enabled": "sanding_enabled",
+                    "settable_per_mesh": true
                 }
             }
         },
