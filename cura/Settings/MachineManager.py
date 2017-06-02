@@ -16,7 +16,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Signal import postponeSignals
+from UM.Signal import postponeSignals, CompressTechnique
 import UM.FlameProfiler
 
 from cura.QualityManager import QualityManager
@@ -220,6 +220,7 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
+        self._auto_materials_changed = {} #Processed all of them now.
 
     def _autoUpdateHotends(self):
         extruder_manager = ExtruderManager.getInstance()
@@ -236,6 +237,7 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
+        self._auto_hotends_changed = {} #Processed all of them now.
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
@@ -468,7 +470,7 @@ class MachineManager(QObject):
 
         return ""
 
-    @pyqtProperty("QObject", notify = globalContainerChanged)
+    @pyqtProperty(QObject, notify = globalContainerChanged)
     def activeMachine(self) -> "GlobalStack":
         return self._global_container_stack
 
@@ -703,7 +705,7 @@ class MachineManager(QObject):
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
                 return
@@ -768,7 +770,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
                 return
@@ -779,7 +781,7 @@ class MachineManager(QObject):
                 self.blurSettings.emit()
                 self._active_container_stack.variant = containers[0]
                 Logger.log("d", "Active variant changed to {active_variant_id}".format(active_variant_id = containers[0].getId()))
-                preferred_material = None
+                preferred_material_name = None
                 if old_material:
                     preferred_material_name = old_material.getName()
 
@@ -791,7 +793,7 @@ class MachineManager(QObject):
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.blurSettings.emit()
 
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)

@@ -1,3 +1,82 @@
+[2.6.0]
+*Cura versions
+Cura 2.6 beta has local version folders, which means the new version won’t overwrite the existing configuration and profiles from older versions, but can create a new folder instead. You can now safely check out new beta versions and, if necessary, start up an older version without the danger of losing your profiles.
+
+*Better support adhesion
+We’ve added extra support settings to allow the creation of improved support profiles with better PVA/PLA adhesion. The Support Interface settings, such as speed and density, are now split up into Support Roof and Support Floor settings.
+
+*Multi-extrusion support for custom FDM printers
+Custom third-party printers and Ultimaker modifications now have multi-extrusion support. Thanks to Aldo Hoeben for this feature.
+
+*Model auto-arrange
+We’ve improved placing multiple models or multiplying the same ones, making it easier to arrange your build plate. If there’s not enough build plate space or the model is placed beyond the build plate, you can rectify this by selecting ‘Arrange all models’ in the context menu or by pressing Command+R (MacOS) or Ctrl+R (Windows and Linux). Cura 2.6 beta will then find a better solution for model positioning.
+
+*Gradual infill
+You can now find the Gradual Infill button in Recommended mode. This setting makes the infill concentrated near the top of the model – so that we can save time and material for the lower parts of the model. This functionality is especially useful when printing with flexible materials.
+
+*Support meshes
+It’s now possible to load an extra model that will be used as a support structure.
+
+*Mold
+This is a bit of an experimental improvement. Users can use it to print a mold from a 3D model, which can be cast afterwards with the material that you would like your model to have.
+
+*Towers for tiny overhangs
+We’ve added a new support option allowing users to achieve more reliable results by creating towers to support even the smallest overhangs.
+
+*Cutting meshes
+Easily transform any model into a dual-extrusion print by applying a pattern for the second extruder. All areas of the original model, which also fall inside the pattern model, will be printed by the extruder selected for the pattern.
+
+*Extruder per model selection via the context menu or extruder buttons
+You can now select the necessary extruder in the right-click menu or extruder buttons. This is a quicker and more user-friendly process. The material color for each extruder will also be represented in the extruder icons.
+
+*Custom toggle
+We have made the interface a little bit cleaner and more user-friendly for switching from Recommended to Custom mode.
+
+*Plugin installer
+It used to be fairly tricky to install new plugins. We have now added a button to select and install new plugins with ease – you will find it in Preferences.
+
+*Project-based menu
+It’s a lot simpler to save and open files, and Cura will know if it’s a project, model, or gcode.
+
+*Theme picker
+If you have a custom theme, you can now apply it more easily in the preferences screen.
+
+*Time estimates per feature
+<<<<<<< HEAD
+You can hover over the print time estimate in the lower right corner to see how the printing time is divided over the printing features (walls, infill, etc.).
+=======
+You can hover over the print time estimate in the lower right corner to see how the printing time is divided over the printing features (walls, infill, etc.). Thanks to 14bitVoid for this feature.
+>>>>>>> 2.6
+
+*Invert the direction of camera zoom
+We’ve added an option to invert mouse direction for a better user experience.
+
+*Olsson block upgrade
+<<<<<<< HEAD
+Ultimaker 2 users can now specify if they have the Olsson block installed on their machine.
+
+*OctoPrint plugin
+Cura 2.6 beta allows users to send prints to OctoPrint.
+=======
+Ultimaker 2 users can now specify if they have the Olsson block installed on their machine. Thanks to Aldo Hoeben for this feature.
+
+*OctoPrint plugin
+Cura 2.6 beta allows users to send prints to OctoPrint. Thanks to Aldo Hoeben for this feature.
+>>>>>>> 2.6
+
+*Bug fixes
+- Post Processing plugin
+- Font rendering
+- Progress bar
+- Support Bottom Distance issues
+
+*3rd party printers
+- MAKEIT
+- Alya
+- Peopoly Moai
+- Rigid3D Zero
+- 3D maker
+
 [2.5.0]
 *Improved speed
 We’ve made changing printers, profiles, materials, and print cores even faster. 3MF processing is also much faster now. Opening a 3MF file now takes one tenth of the time.

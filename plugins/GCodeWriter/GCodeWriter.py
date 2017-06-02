@@ -85,6 +85,7 @@ class GCodeWriter(MeshWriter):
 
         for key in instance_container1.getAllKeys():
             flat_container.setProperty(key, "value", instance_container1.getProperty(key, "value"))
+
         return flat_container
 
 
@@ -106,6 +107,9 @@ class GCodeWriter(MeshWriter):
             return ""
 
         flat_global_container = self._createFlattenedContainerInstance(stack.getTop(), container_with_profile)
+        # If the quality changes is not set, we need to set type manually
+        if flat_global_container.getMetaDataEntry("type", None) is None:
+            flat_global_container.addMetaDataEntry("type", "quality_changes")
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
         if flat_global_container.getMetaDataEntry("quality_type", None) is None:
@@ -120,6 +124,9 @@ class GCodeWriter(MeshWriter):
                 Logger.log("w", "No extruder quality profile found, not writing quality for extruder %s to file!", extruder.getId())
                 continue
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.getTop(), extruder_quality)
+            # If the quality changes is not set, we need to set type manually
+            if flat_extruder_quality.getMetaDataEntry("type", None) is None:
+                flat_extruder_quality.addMetaDataEntry("type", "quality_changes")
 
             # Ensure that extruder is set. (Can happen if we have empty quality changes).
             if flat_extruder_quality.getMetaDataEntry("extruder", None) is None:

@@ -14,9 +14,14 @@ from cura.CuraApplication import CuraApplication
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
+    CurrentFdmMaterialVersion = "1.3"
+    Version = 1
+
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
@@ -120,7 +125,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         builder = ET.TreeBuilder()
 
-        root = builder.start("fdmmaterial", { "xmlns": "http://www.ultimaker.com/material"})
+        root = builder.start("fdmmaterial",
+                             {"xmlns": "http://www.ultimaker.com/material",
+                              "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
         builder.start("metadata")
@@ -386,30 +393,31 @@ class XmlMaterialProfile(InstanceContainer):
         self._path = ""
 
     def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
-        return "material"
+        return "materials"
 
     def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
-        version = None
         data = ET.fromstring(serialized)
-        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
-        for entry in metadata:
-            tag_name = _tag_without_namespace(entry)
-            if tag_name == "version":
-                try:
-                    version = int(entry.text)
-                except Exception as e:
-                    raise InvalidInstanceError("Invalid version string '%s': %s" % (entry.text, e))
-                break
-        if version is None:
-            raise InvalidInstanceError("Missing version in metadata")
-        return version
+
+        version = 1
+        # get setting version
+        if "version" in data.attrib:
+            setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            setting_version = self.xmlVersionToSettingVersion("1.2")
+
+        return version * 1000000 + setting_version
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
         serialized = ContainerInterface.deserialize(self, serialized)
-        data = ET.fromstring(serialized)
+
+        try:
+            data = ET.fromstring(serialized)
+        except:
+            Logger.logException("e", "An exception occured while parsing the material profile")
+            return
 
         # Reset previous metadata
         self.clearData() # Ensure any previous data is gone.
@@ -544,7 +552,7 @@ class XmlMaterialProfile(InstanceContainer):
                         variant_containers = ContainerRegistry.getInstance().findInstanceContainers(definition = definition.id, name = hotend_id)
 
                     if not variant_containers:
-                        Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
+                        #Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
                         continue
 
                     hotend_compatibility = machine_compatibility

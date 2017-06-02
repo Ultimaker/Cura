@@ -655,6 +655,7 @@
                             "value": "line_width",
                             "default_value": 0.4,
                             "type": "float",
+                            "limit_to_extruder": "wall_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -669,6 +670,7 @@
                                     "default_value": 0.4,
                                     "value": "wall_line_width",
                                     "type": "float",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
                                 "wall_line_width_x":
@@ -682,6 +684,7 @@
                                     "default_value": 0.4,
                                     "value": "wall_line_width",
                                     "type": "float",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -697,6 +700,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "infill_line_width":
@@ -711,6 +715,7 @@
                             "type": "float",
                             "value": "line_width",
                             "enabled": "infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "skirt_brim_line_width":
@@ -773,7 +778,7 @@
                                     "type": "float",
                                     "enabled": "support_enable and support_roof_enable",
                                     "limit_to_extruder": "support_roof_extruder_nr",
-                                    "value": "support_interface_line_width",
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_line_width')",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 },
@@ -789,7 +794,7 @@
                                     "type": "float",
                                     "enabled": "support_enable and support_bottom_enable",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
-                                    "value": "support_interface_line_width",
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_line_width')",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
@@ -822,16 +827,59 @@
             "type": "category",
             "children":
             {
+                "wall_extruder_nr":
+                {
+                    "label": "Wall Extruder",
+                    "description": "The extruder train used for printing the walls. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1",
+                    "children":
+                    {
+                        "wall_0_extruder_nr":
+                        {
+                            "label": "Outer Wall Extruder",
+                            "description": "The extruder train used for printing the outer wall. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "default_value": "-1",
+                            "value": "wall_extruder_nr",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        },
+                        "wall_x_extruder_nr":
+                        {
+                            "label": "Inner Walls Extruder",
+                            "description": "The extruder train used for printing the inner walls. This is used in multi-extrusion.",
+                            "type": "optional_extruder",
+                            "default_value": "-1",
+                            "value": "wall_extruder_nr",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true,
+                            "settable_globally": true,
+                            "enabled": "machine_extruder_count > 1"
+                        }
+                    }
+                },
                 "wall_thickness":
                 {
                     "label": "Wall Thickness",
-                    "description": "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
+                    "description": "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
                     "default_value": 0.8,
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
                     "maximum_value_warning": "10 * line_width",
                     "type": "float",
+                    "limit_to_extruder": "wall_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -845,6 +893,7 @@
                             "maximum_value_warning": "10",
                             "type": "int",
                             "value": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1) if wall_thickness != 0 else 0",
+                            "limit_to_extruder": "wall_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -859,7 +908,21 @@
                     "value": "machine_nozzle_size / 2",
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_size",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "top_bottom_extruder_nr":
+                {
+                    "label": "Top/Bottom Extruder",
+                    "description": "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1"
                 },
                 "top_bottom_thickness":
                 {
@@ -871,6 +934,7 @@
                     "minimum_value_warning": "0.6",
                     "maximum_value": "machine_height",
                     "type": "float",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -885,6 +949,7 @@
                             "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -898,6 +963,7 @@
                                     "type": "int",
                                     "minimum_value_warning": "2",
                                     "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -913,6 +979,7 @@
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "maximum_value": "machine_height",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -925,6 +992,7 @@
                                     "default_value": 6,
                                     "type": "int",
                                     "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -943,6 +1011,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "top_bottom_pattern_0":
@@ -958,6 +1027,7 @@
                     },
                     "default_value": "lines",
                     "value": "top_bottom_pattern",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_angles":
@@ -967,6 +1037,7 @@
                     "type": "[int]",
                     "default_value": "[ ]",
                     "enabled": "top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "wall_0_inset":
@@ -979,6 +1050,7 @@
                     "value": "(machine_nozzle_size - wall_line_width_0) / 2 if (wall_line_width_0 < machine_nozzle_size and not outer_inset_first) else 0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "outer_inset_first":
@@ -987,6 +1059,7 @@
                     "description": "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
                     "type": "bool",
                     "default_value": false,
+                    "enabled": "wall_0_extruder_nr == wall_x_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "optimize_wall_printing_order":
@@ -1003,6 +1076,7 @@
                     "description": "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints.",
                     "type": "bool",
                     "default_value": false,
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "travel_compensate_overlapping_walls_enabled":
@@ -1011,6 +1085,7 @@
                     "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
                     "type": "bool",
                     "default_value": true,
+                    "limit_to_extruder": "wall_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1021,6 +1096,7 @@
                             "type": "bool",
                             "default_value": true,
                             "value": "travel_compensate_overlapping_walls_enabled",
+                            "limit_to_extruder": "wall_0_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "travel_compensate_overlapping_walls_x_enabled":
@@ -1030,6 +1106,7 @@
                             "type": "bool",
                             "default_value": true,
                             "value": "travel_compensate_overlapping_walls_enabled",
+                            "limit_to_extruder": "wall_x_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -1043,6 +1120,7 @@
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "xy_offset":
@@ -1054,6 +1132,7 @@
                     "minimum_value_warning": "-1",
                     "maximum_value_warning": "1",
                     "default_value": 0,
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "z_seam_type":
@@ -1068,6 +1147,7 @@
                         "random": "Random"
                     },
                     "default_value": "shortest",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "z_seam_x":
@@ -1079,6 +1159,7 @@
                     "default_value": 100.0,
                     "value": "machine_width / 2",
                     "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "z_seam_y":
@@ -1090,6 +1171,7 @@
                     "default_value": 100.0,
                     "value": "machine_depth * 3",
                     "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
@@ -1098,6 +1180,7 @@
                     "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
                     "type": "bool",
                     "default_value": true,
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 }
             }
@@ -1110,6 +1193,19 @@
             "type": "category",
             "children":
             {
+                "infill_extruder_nr":
+                {
+                    "label": "Infill Extruder",
+                    "description": "The extruder train used for printing infill. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1"
+                },
                 "infill_sparse_density":
                 {
                     "label": "Infill Density",
@@ -1119,6 +1215,7 @@
                     "default_value": 20,
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1132,6 +1229,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
                             "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' else 1)))",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -1156,6 +1254,7 @@
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "infill_angles":
@@ -1164,66 +1263,8 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'concentric_3d' and infill_pattern != 'cubicsubdiv'",
-                    "enabled": "infill_sparse_density > 0",
-                    "settable_per_mesh": true
-                },
-                "spaghetti_infill_enabled":
-                {
-                    "label": "Spaghetti Infill",
-                    "description": "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "infill_sparse_density > 0",
-                    "settable_per_mesh": true
-                },
-                "spaghetti_max_infill_angle":
-                {
-                    "label": "Spaghetti Maximum Infill Angle",
-                    "description": "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer.",
-                    "unit": "°",
-                    "type": "float",
-                    "default_value": 10,
-                    "minimum_value": "0",
-                    "maximum_value": "90",
-                    "maximum_value_warning": "45",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
-                    "settable_per_mesh": true
-                },
-                "spaghetti_max_height":
-                {
-                    "label": "Spaghetti Infill Maximum Height",
-                    "description": "The maximum height of inside space which can be combined and filled from the top.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 2.0,
-                    "minimum_value": "layer_height",
-                    "maximum_value_warning": "10.0",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
-                    "settable_per_mesh": true
-                },
-                "spaghetti_inset":
-                {
-                    "label": "Spaghetti Inset",
-                    "description": "The offset from the walls from where the spaghetti infill will be printed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.2,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "5.0",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
-                    "settable_per_mesh": true
-                },
-                "spaghetti_flow":
-                {
-                    "label": "Spaghetti Flow",
-                    "description": "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 20,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "100",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'concentric_3d' and infill_pattern != 'cubicsubdiv' and infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "sub_div_rad_add":
@@ -1237,6 +1278,7 @@
                     "minimum_value_warning": "-1 * infill_line_distance",
                     "maximum_value_warning": "5 * infill_line_distance",
                     "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "infill_overlap":
@@ -1250,6 +1292,7 @@
                     "minimum_value_warning": "-50",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1262,7 +1305,7 @@
                             "default_value": 0.04,
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "machine_nozzle_size",
-                            "value": "infill_line_width * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
+                            "value": "0.5 * ( infill_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0) ) * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
                             "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
@@ -1279,6 +1322,7 @@
                     "maximum_value_warning": "100",
                     "value": "5 if top_bottom_pattern != 'concentric' else 0",
                     "enabled": "top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1291,7 +1335,7 @@
                             "default_value": 0.02,
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "machine_nozzle_size",
-                            "value": "skin_line_width * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
+                            "value": "0.5 * ( skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0) ) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
                             "enabled": "top_bottom_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
@@ -1308,6 +1352,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
                     "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "infill_sparse_thickness":
@@ -1322,6 +1367,7 @@
                     "maximum_value": "resolveOrValue('layer_height') * (1.45 if spaghetti_infill_enabled else 8)",
                     "value": "resolveOrValue('layer_height')",
                     "enabled": "infill_sparse_density > 0 and not spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_steps":
@@ -1334,6 +1380,7 @@
                     "maximum_value_warning": "5",
                     "maximum_value": "0 if spaghetti_infill_enabled else (999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2)))",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv' and not spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "gradual_infill_step_height":
@@ -1347,6 +1394,7 @@
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "infill_before_walls":
@@ -1355,7 +1403,7 @@
                     "description": "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and wall_extruder_nr == infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "min_infill_area":
@@ -1366,6 +1414,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "expand_skins_into_infill":
@@ -1374,6 +1423,7 @@
                     "description": "Expand skin areas of top and/or bottom skin of flat surfaces. By default, skins stop under the wall lines that surround infill but this can lead to holes appearing when the infill density is low. This setting extends the skins beyond the wall lines so that the infill on the next layer rests on skin.",
                     "type": "bool",
                     "default_value": false,
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1384,6 +1434,7 @@
                             "type": "bool",
                             "default_value": false,
                             "value": "expand_skins_into_infill",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "expand_lower_skins":
@@ -1392,6 +1443,7 @@
                             "description": "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -1406,6 +1458,7 @@
                     "value": "infill_line_distance * 1.4",
                     "minimum_value": "0",
                     "enabled": "expand_upper_skins or expand_lower_skins",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "max_skin_angle_for_expansion":
@@ -1420,6 +1473,7 @@
                     "maximum_value": "90",
                     "default_value": 20,
                     "enabled": "expand_upper_skins or expand_lower_skins",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -1433,6 +1487,7 @@
                             "value": "top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
                             "minimum_value": "0",
                             "enabled": "expand_upper_skins or expand_lower_skins",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -1861,6 +1916,7 @@
                             "default_value": 60,
                             "value": "speed_print",
                             "enabled": "infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "speed_wall":
@@ -1874,6 +1930,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 30,
                             "value": "speed_print / 2",
+                            "limit_to_extruder": "wall_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -1888,6 +1945,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 30,
                                     "value": "speed_wall",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
                                 "speed_wall_x":
@@ -1901,6 +1959,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
                                     "value": "speed_wall * 2",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -1916,6 +1975,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 30,
                             "value": "speed_print / 2",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "speed_support":
@@ -1980,7 +2040,7 @@
                                             "maximum_value_warning": "150",
                                             "enabled": "support_roof_enable and support_enable",
                                             "limit_to_extruder": "support_roof_extruder_nr",
-                                            "value": "speed_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'speed_support_interface')",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
                                         },
@@ -1996,7 +2056,7 @@
                                             "maximum_value_warning": "150",
                                             "enabled": "support_bottom_enable and support_enable",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
-                                            "value": "speed_support_interface",
+                                            "value": "extruderValue(support_bottom_extruder_nr, 'speed_support_interface')",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
                                         }
@@ -2178,6 +2238,7 @@
                             "default_value": 3000,
                             "value": "acceleration_print",
                             "enabled": "resolveOrValue('acceleration_enabled') and infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "acceleration_wall":
@@ -2192,6 +2253,7 @@
                             "default_value": 3000,
                             "value": "acceleration_print",
                             "enabled": "resolveOrValue('acceleration_enabled')",
+                            "limit_to_extruder": "wall_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -2207,6 +2269,7 @@
                                     "default_value": 3000,
                                     "value": "acceleration_wall",
                                     "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
                                 "acceleration_wall_x":
@@ -2221,6 +2284,7 @@
                                     "default_value": 3000,
                                     "value": "acceleration_wall",
                                     "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -2237,6 +2301,7 @@
                             "default_value": 3000,
                             "value": "acceleration_print",
                             "enabled": "resolveOrValue('acceleration_enabled')",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "acceleration_support":
@@ -2296,11 +2361,11 @@
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
-                                            "value": "acceleration_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'acceleration_support_interface')",
                                             "minimum_value": "0.1",
                                             "minimum_value_warning": "100",
                                             "maximum_value_warning": "10000",
-                                            "enabled": "resolveOrValue('acceleration_enabled') and support_roof_enable and support_enable",
+                                            "enabled": "acceleration_enabled and support_roof_enable and support_enable",
                                             "limit_to_extruder": "support_roof_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -2312,11 +2377,11 @@
                                             "unit": "mm/s²",
                                             "type": "float",
                                             "default_value": 3000,
-                                            "value": "acceleration_support_interface",
+                                            "value": "extruderValue(support_bottom_extruder_nr, 'acceleration_support_interface')",
                                             "minimum_value": "0.1",
                                             "minimum_value_warning": "100",
                                             "maximum_value_warning": "10000",
-                                            "enabled": "resolveOrValue('acceleration_enabled') and support_bottom_enable and support_enable",
+                                            "enabled": "acceleration_enabled and support_bottom_enable and support_enable",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -2450,6 +2515,7 @@
                             "default_value": 20,
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled') and infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "jerk_wall":
@@ -2463,6 +2529,7 @@
                             "default_value": 20,
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled')",
+                            "limit_to_extruder": "wall_extruder_nr",
                             "settable_per_mesh": true,
                             "children":
                             {
@@ -2477,6 +2544,7 @@
                                     "default_value": 20,
                                     "value": "jerk_wall",
                                     "enabled": "resolveOrValue('jerk_enabled')",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
                                 "jerk_wall_x":
@@ -2490,6 +2558,7 @@
                                     "default_value": 20,
                                     "value": "jerk_wall",
                                     "enabled": "resolveOrValue('jerk_enabled')",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
                             }
@@ -2505,6 +2574,7 @@
                             "default_value": 20,
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled')",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "jerk_support":
@@ -2561,7 +2631,7 @@
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 20,
-                                            "value": "jerk_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
                                             "minimum_value": "0.1",
                                             "maximum_value_warning": "50",
                                             "enabled": "resolveOrValue('jerk_enabled') and support_roof_enable and support_enable",
@@ -2576,7 +2646,7 @@
                                             "unit": "mm/s",
                                             "type": "float",
                                             "default_value": 20,
-                                            "value": "jerk_support_interface",
+                                            "value": "extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
                                             "minimum_value": "0.1",
                                             "maximum_value_warning": "50",
                                             "enabled": "resolveOrValue('jerk_enabled') and support_bottom_enable and support_enable",
@@ -3164,7 +3234,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable",
-                            "value": "support_z_distance",
+                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3176,7 +3246,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
                             "default_value": 0.1,
-                            "value": "support_z_distance if support_type == 'everywhere' else 0",
+                            "value": "extruderValue(support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
                             "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                             "type": "float",
                             "enabled": "support_enable and resolveOrValue('support_type') == 'everywhere'",
@@ -3295,7 +3365,7 @@
                             "description": "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
-                            "value": "support_interface_enable",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_enable",
                             "settable_per_mesh": true
@@ -3306,7 +3376,7 @@
                             "description": "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support.",
                             "type": "bool",
                             "default_value": false,
-                            "value": "support_interface_enable",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_enable",
                             "settable_per_mesh": true
@@ -3338,7 +3408,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "0.2 + layer_height",
                             "maximum_value_warning": "10",
-                            "value": "support_interface_height",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": true
@@ -3350,7 +3420,7 @@
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1,
-                            "value": "support_interface_height",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_height')",
                             "minimum_value": "0",
                             "minimum_value_warning": "min(0.2 + layer_height, support_bottom_stair_step_height)",
                             "maximum_value_warning": "10",
@@ -3398,6 +3468,7 @@
                             "maximum_value": "100",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_density')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
@@ -3430,6 +3501,7 @@
                             "maximum_value": "100",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and support_enable",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_density')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
@@ -3489,7 +3561,7 @@
                                 "zigzag": "Zig Zag"
                             },
                             "default_value": "concentric",
-                            "value": "support_interface_pattern",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_pattern')",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_enable",
                             "settable_per_mesh": false,
@@ -3510,7 +3582,7 @@
                                 "zigzag": "Zig Zag"
                             },
                             "default_value": "concentric",
-                            "value": "support_interface_pattern",
+                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_pattern')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and support_enable",
                             "settable_per_mesh": false,
@@ -4406,6 +4478,7 @@
                     "default_value": 0.15,
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "carve_multiple_volumes":
@@ -4509,6 +4582,18 @@
                     "minimum_value_warning": "wall_line_width_0 * 2",
                     "maximum_value_warning": "100",
                     "default_value": 5,
+                    "settable_per_mesh": true,
+                    "enabled": "mold_enabled"
+                },
+                "mold_roof_height":
+                {
+                    "label": "Mold Roof Height",
+                    "description": "The height above horizontal parts in your model which to print mold.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "5",
+                    "default_value": 0.5,
                     "settable_per_mesh": true,
                     "enabled": "mold_enabled"
                 },
@@ -4731,6 +4816,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "type": "int",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_alternate_rotation":
@@ -4740,6 +4826,70 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_infill_enabled":
+                {
+                    "label": "Spaghetti Infill",
+                    "description": "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_max_infill_angle":
+                {
+                    "label": "Spaghetti Maximum Infill Angle",
+                    "description": "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer.",
+                    "unit": "°",
+                    "type": "float",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "45",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_max_height":
+                {
+                    "label": "Spaghetti Infill Maximum Height",
+                    "description": "The maximum height of inside space which can be combined and filled from the top.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.0,
+                    "minimum_value": "layer_height",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_inset":
+                {
+                    "label": "Spaghetti Inset",
+                    "description": "The offset from the walls from where the spaghetti infill will be printed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.2,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "5.0",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_flow":
+                {
+                    "label": "Spaghetti Flow",
+                    "description": "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "support_conical_enabled":
@@ -4795,6 +4945,7 @@
                     "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
                     "type": "bool",
                     "default_value": false,
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "magic_fuzzy_skin_thickness":
@@ -4807,6 +4958,7 @@
                     "minimum_value": "0.001",
                     "maximum_value_warning": "wall_line_width_0",
                     "enabled": "magic_fuzzy_skin_enabled",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "magic_fuzzy_skin_point_density":
@@ -4821,6 +4973,7 @@
                     "maximum_value_warning": "10",
                     "maximum_value": "2 / magic_fuzzy_skin_thickness",
                     "enabled": "magic_fuzzy_skin_enabled",
+                    "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -4836,6 +4989,7 @@
                             "maximum_value_warning": "10",
                             "value": "10000 if magic_fuzzy_skin_point_density == 0 else 1 / magic_fuzzy_skin_point_density",
                             "enabled": "magic_fuzzy_skin_enabled",
+                            "limit_to_extruder": "wall_0_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }

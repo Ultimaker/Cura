@@ -195,7 +195,7 @@ Item
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                 //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum" && model.type != "extruder"
+                asynchronous: model.type != "enum" && model.type != "extruder" && model.type != "optional_extruder"
                 active: model.type != undefined
 
                 source:
@@ -218,6 +218,8 @@ Item
                             return "SettingTextField.qml"
                         case "category":
                             return "SettingCategory.qml"
+                        case "optional_extruder":
+                            return "SettingOptionalExtruder.qml"
                         default:
                             return "SettingUnknown.qml"
                     }

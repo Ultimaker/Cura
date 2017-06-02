@@ -260,6 +260,32 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
+                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
+                        if(drop.urls.length == 1)
+                        {
+                            if(PluginRegistry.isPluginFile(drop.urls[0]))
+                            {
+                                // Try to install plugin & close.
+                                var result = PluginRegistry.installPlugin(drop.urls[0]);
+                                pluginInstallDialog.text = result.message
+                                if(result.status == "ok")
+                                {
+                                    pluginInstallDialog.icon = StandardIcon.Information
+                                }
+                                else if(result.status == "duplicate")
+                                {
+                                    pluginInstallDialog.icon = StandardIcon.Warning
+                                }
+                                else
+                                {
+                                    pluginInstallDialog.icon = StandardIcon.Critical
+                                }
+                                pluginInstallDialog.open();
+                                return;
+                            }
+
+                        }
+
                         openDialog.handleOpenFileUrls(drop.urls);
                     }
                 }
@@ -400,41 +426,15 @@ UM.MainWindow
                 }
             }
 
-            Image
+            Loader
             {
-                id: cameraImage
-                width: Math.min(viewportOverlay.width, sourceSize.width)
-                height: sourceSize.height * width / sourceSize.width
+                sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
+                visible: base.monitoringPrint
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-                visible: base.monitoringPrint
-                onVisibleChanged:
-                {
-                    if(Cura.MachineManager.printerOutputDevices.length == 0 )
-                    {
-                        return;
-                    }
-                    if(visible)
-                    {
-                        Cura.MachineManager.printerOutputDevices[0].startCamera()
-                    } else
-                    {
-                        Cura.MachineManager.printerOutputDevices[0].stopCamera()
-                    }
-                }
-                source:
-                {
-                    if(!base.monitoringPrint)
-                    {
-                        return "";
-                    }
-                    if(Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage)
-                    {
-                        return Cura.MachineManager.printerOutputDevices[0].cameraImage;
-                    }
-                    return "";
-                }
+
+
             }
 
             UM.MessageStack
@@ -711,6 +711,14 @@ UM.MainWindow
                 openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
             }
         }
+    }
+
+    MessageDialog
+    {
+        id: pluginInstallDialog
+        title: catalog.i18nc("@window:title", "Install Plugin");
+        standardButtons: StandardButton.Ok
+        modality: Qt.ApplicationModal
     }
 
     MessageDialog {

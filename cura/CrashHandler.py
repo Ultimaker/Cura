@@ -2,6 +2,9 @@ import sys
 import platform
 import traceback
 import webbrowser
+import faulthandler
+import tempfile
+import os
 import urllib
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QCoreApplication
@@ -90,6 +93,17 @@ def show(exception_type, value, tb):
 
     crash_info = "Version: {0}\nPlatform: {1}\nQt: {2}\nPyQt: {3}\n\nException:\n{4}"
     crash_info = crash_info.format(version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, trace)
+
+    tmp_file_fd, tmp_file_path = tempfile.mkstemp(prefix = "cura-crash", text = True)
+    os.close(tmp_file_fd)
+    with open(tmp_file_path, "w") as f:
+        faulthandler.dump_traceback(f, all_threads=True)
+    with open(tmp_file_path, "r") as f:
+        data = f.read()
+
+    msg = "-------------------------\n"
+    msg += data
+    crash_info += "\n\n" + msg
 
     textarea.setText(crash_info)
 
