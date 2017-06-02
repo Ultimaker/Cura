@@ -5363,6 +5363,18 @@
                     "default_value": "lines",
                     "enabled": "sanding_enabled",
                     "settable_per_mesh": true
+                },
+                "sanding_flow":
+                {
+                    "label": "Sanding Flow",
+                    "description": "The amount of material, relative to a normal skin line, to extrude during sanding. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
+                    "type": "float",
+                    "unit": "%",
+                    "default_value": 30.0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "50",
+                    "enabled": "sanding_enabled",
+                    "settable_per_mesh": true
                 }
             }
         },
