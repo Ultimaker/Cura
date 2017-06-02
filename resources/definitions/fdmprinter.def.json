@@ -5363,6 +5363,17 @@
                     "enabled": "sanding_enabled",
                     "settable_per_mesh": true
                 },
+                "sanding_line_spacing":
+                {
+                    "label": "Sanding Line Spacing",
+                    "description": "The distance between the lines of sanding.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "minimum_value": "0.001",
+                    "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
+                    "settable_per_mesh": true
+                },
                 "sanding_flow":
                 {
                     "label": "Sanding Flow",
