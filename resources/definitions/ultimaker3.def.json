@@ -70,7 +70,7 @@
         "machine_start_gcode": { "default_value": "" },
         "machine_end_gcode": { "default_value": "" },
         "prime_tower_position_x": { "default_value": 175 },
-        "prime_tower_position_y": { "default_value": 178 },
+        "prime_tower_position_y": { "default_value": 177 },
         "prime_tower_wipe_enabled": { "default_value": false },
 
         "prime_blob_enable": { "enabled": true },
