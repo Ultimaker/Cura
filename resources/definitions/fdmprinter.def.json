@@ -1483,6 +1483,15 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "only_grow_skin":
+                {
+                    "label": "Only Grow Skin",
+                    "description": "When enabled, skin areas never become smaller than their original size. When disabled, skin areas may become smaller than their original size and may be removed completely.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "expand_upper_skins or expand_lower_skins",
+                    "settable_per_mesh": true
                 }
             }
         },
