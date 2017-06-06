@@ -5418,6 +5418,7 @@
                     "default_value": 0.1,
                     "minimum_value": "0.001",
                     "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
+                    "enabled": "sanding_enabled",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
