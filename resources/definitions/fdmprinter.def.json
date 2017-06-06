@@ -5402,7 +5402,7 @@
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
                     },
-                    "default_value": "lines",
+                    "default_value": "zigzag",
                     "enabled": "sanding_enabled",
                     "settable_per_mesh": true
                 },
