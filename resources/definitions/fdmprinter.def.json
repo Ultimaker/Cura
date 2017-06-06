@@ -1977,6 +1977,7 @@
                             "type": "float",
                             "unit": "mm/s",
                             "default_value": 20.0,
+                            "value": "speed_topbottom * 20 / 30",
                             "minimum_value": "0.001",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "100",
