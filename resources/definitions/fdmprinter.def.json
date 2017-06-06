@@ -5428,6 +5428,19 @@
                     "maximum_value_warning": "50",
                     "enabled": "sanding_enabled",
                     "settable_per_mesh": true
+                },
+                "sanding_inset":
+                {
+                    "label": "Sanding Inset",
+                    "description": "A distance to keep from the edges of the model. Sanding all the way to the edge of the mesh may result in a jagged edge on your print.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.35,
+                    "value": "skin_line_width",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "wall_line_width_0",
+                    "enabled": "sanding_enabled",
+                    "settable_per_mesh": true
                 }
             }
         },
