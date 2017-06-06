@@ -69,8 +69,9 @@ class MachineSettingsAction(MachineAction):
             self._container_index = container_index
             self.containerIndexChanged.emit()
 
-        # Disable autoslicing while the machineaction is showing
-        self._backend.disableTimer()
+        # Disable auto-slicing while the MachineAction is showing
+        if self._backend:  # This sometimes triggers before backend is loaded.
+            self._backend.disableTimer()
 
     @pyqtSlot()
     def onFinishAction(self):
