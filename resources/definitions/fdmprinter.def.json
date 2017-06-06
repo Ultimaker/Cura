@@ -2310,6 +2310,21 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
+                        "acceleration_sanding":
+                        {
+                            "label": "Sanding Acceleration",
+                            "description": "The acceleration with which sanding is performed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "default_value": 3000,
+                            "value": "acceleration_topbottom",
+                            "enabled": "resolveOrValue('acceleration_enabled') and sanding_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "acceleration_support":
                         {
                             "label": "Support Acceleration",
@@ -2580,6 +2595,20 @@
                             "default_value": 20,
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled')",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "jerk_sanding":
+                        {
+                            "label": "Sanding Jerk",
+                            "description": "The maximum instantaneous velocity change while performing sanding.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "50",
+                            "default_value": 20,
+                            "value": "jerk_topbottom",
+                            "enabled": "resolveOrValue('jerk_enabled') and sanding_enabled",
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
