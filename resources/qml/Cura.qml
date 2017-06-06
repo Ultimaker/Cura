@@ -326,9 +326,23 @@ UM.MainWindow
                 anchors
                 {
                     top: parent.top;
-                    left: parent.left;
                 }
                 action: Cura.Actions.open;
+            }
+
+            Button
+            {
+                id: openMMFButton;
+                text: catalog.i18nc("@action:button","Import object from MMF");
+                iconSource: UM.Theme.getIcon("mmf_icon")
+                style: UM.Theme.styles.tool_button
+                tooltip: '';
+                anchors
+                {
+                    top: openFileButton.bottom;
+                    left: parent.left;
+                }
+                onClicked: Qt.openUrlExternally("https://www.myminifactory.com");
             }
 
             Image
@@ -361,7 +375,7 @@ UM.MainWindow
                 property int mouseY: base.mouseY
 
                 anchors {
-                    top: openFileButton.bottom;
+                    top: openMMFButton.bottom;
                     topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
