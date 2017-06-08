@@ -112,8 +112,8 @@ UM.ManagementPage
         {
             id: actionDialog
             property var content
-            minimumWidth: 350 * Screen.devicePixelRatio;
-            minimumHeight: 350 * Screen.devicePixelRatio;
+            minimumWidth: 350
+            minimumHeight: 350
             onContentChanged:
             {
                 contents = content;
@@ -257,6 +257,8 @@ UM.ManagementPage
         UM.RenameDialog
         {
             id: renameDialog;
+            width: 300
+            height: 150
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
             property var machine_name_validator: Cura.MachineNameValidator { }
             validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null;
