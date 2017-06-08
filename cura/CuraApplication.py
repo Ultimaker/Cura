@@ -322,7 +322,6 @@ class CuraApplication(QtApplication):
                 support_enable
                 support_extruder_nr
                 support_type
-                support_interface_density
             platform_adhesion
                 adhesion_type
                 adhesion_extruder_nr
