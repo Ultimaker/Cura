@@ -53,7 +53,7 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width * .5
+        width: base.width * .55
 
         spacing: UM.Theme.getSize("default_margin").width
 
@@ -169,6 +169,10 @@ Item
                 Text
                 {
                     id: infillLabel
+                    width: (infillCellRight.width - ((infillModel.count - 1)  * UM.Theme.getSize("default_margin").width)) / (infillModel.count);
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    wrapMode: Text.WordWrap
                     font: UM.Theme.getFont("default")
                     anchors.top: infillIconLining.bottom
                     anchors.horizontalCenter: infillIconLining.horizontalCenter
