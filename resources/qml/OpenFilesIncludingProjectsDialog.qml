@@ -17,8 +17,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open file(s)")
-    width: 420 * Screen.devicePixelRatio
-    height: 170 * Screen.devicePixelRatio
+    width: 420
+    height: 170
 
     maximumHeight: height
     maximumWidth: width
@@ -52,12 +52,12 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20 * Screen.devicePixelRatio
-        anchors.rightMargin: 20 * Screen.devicePixelRatio
-        anchors.bottomMargin: 20 * Screen.devicePixelRatio
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
+        anchors.bottomMargin: 20
         anchors.left: parent.left
         anchors.right: parent.right
-        spacing: 10 * Screen.devicePixelRatio
+        spacing: 10
 
         Text
         {
