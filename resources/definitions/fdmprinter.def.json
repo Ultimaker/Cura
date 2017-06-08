@@ -4245,6 +4245,53 @@
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
                     }
+                },
+                "slow_start_walls":
+                {
+                    "label": "Start Bottom Layer Walls Slowly",
+                    "description": "Whether to print the start of a bottom layer wall slowly to help adhesion.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "slow_start_wall_length":
+                {
+                    "label": "Reduced Speed Length",
+                    "description": "The distance printed at a reduced speed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 3,
+                    "enabled": "slow_start_walls",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "slow_start_wall_speed_percentage":
+                {
+                    "label": "Reduced Speed Percentage Speed",
+                    "description": "The percentage of the normal speed to use when printing the start of the wall.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "100",
+                    "default_value": 50,
+                    "enabled": "slow_start_walls",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "slow_start_wall_flow_percentage":
+                {
+                    "label": "Reduced Speed Percentage Flow",
+                    "description": "The percentage of the normal extrusion rate to use when printing the start of the wall.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "enabled": "slow_start_walls",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
