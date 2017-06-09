@@ -42,7 +42,7 @@
                 },
                 "machine_show_variants":
                 {
-                    "label": "Show machine variants",
+                    "label": "Show Machine Variants",
                     "description": "Whether to show the different variants of this machine, which are described in separate json files.",
                     "default_value": false,
                     "type": "bool",
@@ -80,7 +80,7 @@
                 },
                 "material_bed_temp_wait":
                 {
-                    "label": "Wait for build plate heatup",
+                    "label": "Wait for Build Plate Heatup",
                     "description": "Whether to insert a command to wait until the build plate temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
@@ -90,7 +90,7 @@
                 },
                 "material_print_temp_wait":
                 {
-                    "label": "Wait for nozzle heatup",
+                    "label": "Wait for Nozzle Heatup",
                     "description": "Whether to wait until the nozzle temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
@@ -101,7 +101,7 @@
                 },
                 "material_print_temp_prepend":
                 {
-                    "label": "Include material temperatures",
+                    "label": "Include Material Temperatures",
                     "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
@@ -112,7 +112,7 @@
                 },
                 "material_bed_temp_prepend":
                 {
-                    "label": "Include build plate temperature",
+                    "label": "Include Build Plate Temperature",
                     "description": "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
@@ -122,7 +122,7 @@
                 },
                 "machine_width":
                 {
-                    "label": "Machine width",
+                    "label": "Machine Width",
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
@@ -132,7 +132,7 @@
                 },
                 "machine_depth":
                 {
-                    "label": "Machine depth",
+                    "label": "Machine Depth",
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
@@ -142,7 +142,7 @@
                 },
                 "machine_shape":
                 {
-                    "label": "Build plate shape",
+                    "label": "Build Plate Shape",
                     "description": "The shape of the build plate without taking unprintable areas into account.",
                     "default_value": "rectangular",
                     "type": "enum",
@@ -157,7 +157,7 @@
                 },
                 "machine_height":
                 {
-                    "label": "Machine height",
+                    "label": "Machine Height",
                     "description": "The height (Z-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
@@ -167,7 +167,7 @@
                 },
                 "machine_heated_bed":
                 {
-                    "label": "Has heated build plate",
+                    "label": "Has Heated Build Plate",
                     "description": "Whether the machine has a heated build plate present.",
                     "default_value": false,
                     "type": "bool",
@@ -177,7 +177,7 @@
                 },
                 "machine_center_is_zero":
                 {
-                    "label": "Is center origin",
+                    "label": "Is Center Origin",
                     "description": "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area.",
                     "default_value": false,
                     "type": "bool",
