@@ -4245,6 +4245,53 @@
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
                     }
+                },
+                "modify_wall_starts":
+                {
+                    "label": "Modify Start Of Walls",
+                    "description": "Whether to modify the print speed or filament flow rate at the start of bottom layer walls. Using a slower print speed or higher flow rate may help adhesion.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "modify_wall_starts_distance":
+                {
+                    "label": "Distance Walls Are Modified",
+                    "description": "The distance bottom layer walls are modified.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 3,
+                    "enabled": "modify_wall_starts",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "modify_wall_starts_speed_percentage":
+                {
+                    "label": "Wall Start Percentage Speed",
+                    "description": "The percentage of the normal speed to use when printing the start of the bottom layer walls.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "5",
+                    "maximum_value": "500",
+                    "default_value": 100,
+                    "enabled": "modify_wall_starts",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "modify_wall_starts_flow_percentage":
+                {
+                    "label": "Wall Start Percentage Flow",
+                    "description": "The percentage of the normal extrusion rate to use when printing the start of the bottom layer walls.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "1",
+                    "maximum_value": "500",
+                    "default_value": 100,
+                    "enabled": "modify_wall_starts",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
