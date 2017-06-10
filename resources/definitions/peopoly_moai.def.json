@@ -14,6 +14,9 @@
     },
 
     "overrides": {
+        "small_poly_threshold": {
+            "default_value": "50"
+        },
         "machine_name": {
             "default_value": "Moai"
         },

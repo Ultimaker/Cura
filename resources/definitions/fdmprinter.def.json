@@ -3035,7 +3035,7 @@
                     "label": "Generate Support",
                     "description": "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
@@ -4680,6 +4680,13 @@
             "description": "experimental!",
             "children":
             {
+                "small_poly_threshold": {
+                    "label" : "Small Polygon Threshold",
+                    "description": "Threshold for deletion of small polygons",
+                    "type":"int",
+                    "default_value": "1000",
+                    "settable_per_mesh": true
+                },
                 "draft_shield_enabled":
                 {
                     "label": "Enable Draft Shield",
