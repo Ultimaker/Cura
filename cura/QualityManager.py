@@ -118,7 +118,8 @@ class QualityManager:
         result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
         if not result:
             basic_materials = self._getBasicMaterials(material_container)
-            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
+            if basic_materials:
+                result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
         return result
 

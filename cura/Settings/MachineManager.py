@@ -759,7 +759,6 @@ class MachineManager(QObject):
                 # Fall back to a quality (which must be compatible with all other extruders)
                 new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
                     self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
-
                 if new_qualities:
                     new_quality_id = new_qualities[0].getId()  # Just pick the first available one
                 else:
