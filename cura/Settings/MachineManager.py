@@ -753,7 +753,9 @@ class MachineManager(QObject):
                 candidate_quality = quality_manager.findQualityByQualityType(quality_type,
                                         quality_manager.getWholeMachineDefinition(machine_definition),
                                         [material_container])
+
             if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
+                Logger.log("d", "Attempting to find fallback quality")
                 # Fall back to a quality (which must be compatible with all other extruders)
                 new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
                     self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
