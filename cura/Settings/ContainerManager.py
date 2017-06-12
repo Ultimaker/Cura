@@ -929,6 +929,11 @@ class ContainerManager(QObject):
             quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
+            whole_machine_definition = QualityManager.getInstance().getWholeMachineDefinition(machine_definition)
+
+            if whole_machine_definition.getMetaDataEntry("has_materials"):
+                quality_changes.addMetaDataEntry("material", quality_container.getMetaDataEntry("material"))
+
         from cura.CuraApplication import CuraApplication
         quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         return quality_changes
