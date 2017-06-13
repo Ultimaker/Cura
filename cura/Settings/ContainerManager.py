@@ -737,7 +737,9 @@ class ContainerManager(QObject):
 
         duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
         duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
-        duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
+        # We're defaulting to PLA, as machines with material profiles don't like material types they don't know.
+        # TODO: This is a hack, the only reason this is in now is to bandaid the problem as we're close to a release!
+        duplicated_container.setMetaDataEntry("material", "PLA")
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
