@@ -55,7 +55,9 @@ class QualityManager:
     #   \return the matching quality changes containers \type{List[InstanceContainer]}
     def findQualityChangesByName(self, quality_changes_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None):
         criteria = {"type": "quality_changes", "name": quality_changes_name}
-        result = self._getFilteredContainersForStack(machine_definition, [], **criteria)
+
+        result = self.findAllQualityChangesForMachine(machine_definition)
+        result = [quality_change for quality_change in result if quality_change.getName() == quality_changes_name]
 
         return result
 

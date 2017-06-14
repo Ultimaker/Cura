@@ -310,9 +310,9 @@ class ExtruderManager(QObject):
             if preferred_material_id:
                 global_stack = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
                 if global_stack:
-                    approximate_material_diameter = round(global_stack[0].getProperty("material_diameter", "value"))
+                    approximate_material_diameter = str(round(global_stack[0].getProperty("material_diameter", "value")))
                 else:
-                    approximate_material_diameter = round(machine_definition.getProperty("material_diameter", "value"))
+                    approximate_material_diameter = str(round(machine_definition.getProperty("material_diameter", "value")))
 
                 search_criteria = { "type": "material",  "id": preferred_material_id, "approximate_diameter": approximate_material_diameter}
                 if machine_definition.getMetaDataEntry("has_machine_materials"):
