@@ -1972,7 +1972,7 @@
                         },
                         "speed_sanding":
                         {
-                            "label": "Sanding Speed",
+                            "label": "Ironing Speed",
                             "description": "The speed at which to pass over the top surface.",
                             "type": "float",
                             "unit": "mm/s",
@@ -2313,8 +2313,8 @@
                         },
                         "acceleration_sanding":
                         {
-                            "label": "Sanding Acceleration",
-                            "description": "The acceleration with which sanding is performed.",
+                            "label": "Ironing Acceleration",
+                            "description": "The acceleration with which ironing is performed.",
                             "unit": "mm/s²",
                             "type": "float",
                             "minimum_value": "0.1",
@@ -2601,8 +2601,8 @@
                         },
                         "jerk_sanding":
                         {
-                            "label": "Sanding Jerk",
-                            "description": "The maximum instantaneous velocity change while performing sanding.",
+                            "label": "Ironing Jerk",
+                            "description": "The maximum instantaneous velocity change while performing ironing.",
                             "unit": "mm/s",
                             "type": "float",
                             "minimum_value": "0.1",
