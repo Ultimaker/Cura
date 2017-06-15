@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-05-30 15:32+0000\n"
-"PO-Revision-Date: 2017-04-10 19:00-0300\n"
+"PO-Revision-Date: 2017-06-13 14:00-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br> and CoderSquirrel <jasaneschio@gmail.com>\n"
 "Language: Brazillian Portuguese\n"
@@ -686,27 +686,27 @@ msgstr "Largura de Extrusão da Interface do Suporte"
 #: fdmprinter.def.json
 msgctxt "support_interface_line_width description"
 msgid "Width of a single line of support roof or floor."
-msgstr ""
+msgstr "Largura de um filete usado no teto ou base do suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_line_width label"
 msgid "Support Roof Line Width"
-msgstr ""
+msgstr "Largura de Extrusão do Teto do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_line_width description"
 msgid "Width of a single support roof line."
-msgstr ""
+msgstr "Largura de um filete usado no teto do suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_line_width label"
 msgid "Support Floor Line Width"
-msgstr ""
+msgstr "Largura de Extrusão da Base do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_line_width description"
 msgid "Width of a single support floor line."
-msgstr ""
+msgstr "Largura de um filete usado na base do suporte."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
@@ -716,7 +716,7 @@ msgstr "Largura de Extrusão da Torre de Purga"
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
 msgid "Width of a single prime tower line."
-msgstr "Largura de extrusão de um filete usado na torre de purga."
+msgstr "Largura de um filete usado na torre de purga."
 
 #: fdmprinter.def.json
 msgctxt "shell label"
@@ -756,7 +756,7 @@ msgstr "Distância de Varredura da Parede Externa"
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
-msgstr "Distância de um movimento de viagem inserido após a parede externa para esconder melhor a costura em Z."
+msgstr "Distância do percurso inserido após a parede externa para esconder melhor a costura em Z."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -1101,62 +1101,62 @@ msgstr "Ziguezague"
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
 msgid "Infill Line Directions"
-msgstr ""
+msgstr "Direções de Filetes de Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns)."
-msgstr ""
+msgstr "Uma lista de direções de filetes em números inteiros a usar. Elementos da lista são usados sequencialmente de acordo com o progresso das camadas e quando o fim da lista é alcançado, ela volta ao começo. Os itens da lista são separados por vírgula e a lista inteira é contida em colchetes. O default é uma lista vazia que implica em usar os ângulos default tradicionais (45 e 135 graus para os padrões linha e ziguezague e 45 graus para todos os outros padrões)."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
 msgid "Spaghetti Infill"
-msgstr ""
+msgstr "Preenchimento em Espaguete"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled description"
 msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-msgstr ""
+msgstr "Imprime o preenchimento intermitentemente de modo que o filamento se enrole caoticamente dentro do objeto. Isto reduz o tempo de impressão, mas tem comportamento bem imprevisível."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle label"
 msgid "Spaghetti Maximum Infill Angle"
-msgstr ""
+msgstr "Ângulo de Preenchimento Máximo do Espaguete"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle description"
 msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-msgstr ""
+msgstr "O ângulo máximo em relação ao Z do interior da impressão para áreas que serão preenchidas com espaguete no final. Abaixar este valor faz com que mais partes anguladas do seu modelo sejam preenchidas a cada camada."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_height label"
 msgid "Spaghetti Infill Maximum Height"
-msgstr ""
+msgstr "Altura Máxima do Preenchimento Espaguete"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_height description"
 msgid "The maximum height of inside space which can be combined and filled from the top."
-msgstr ""
+msgstr "A altura máxima do espaço interior que pode ser combinado e preenchido a partir do topo."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_inset label"
 msgid "Spaghetti Inset"
-msgstr ""
+msgstr "Penetração do Espaguete"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_inset description"
 msgid "The offset from the walls from where the spaghetti infill will be printed."
-msgstr ""
+msgstr "O deslocamento a partir das paredes de onde o preenchimento espaguete será impresso."
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_flow label"
 msgid "Spaghetti Flow"
-msgstr ""
+msgstr "Fluxo de Espaguete"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_flow description"
 msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-msgstr ""
+msgstr "Ajusta a densidade do preenchimento espaguete. Note que a Densidade de Preenchimento controla somente o espaçamento entre linhas do padrão de preenchimento, não a quantidade de extrusão para o preenchimento espaguete."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1216,7 +1216,7 @@ msgstr "Distância de Varredura do Preenchimento"
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
-msgstr "Distância de um movimento de viagem inserido após cada linha de preenchimento, para fazer o preenchimento aderir melhor às paredes. Esta opção é similar à sobreposição de preenchimento mas sem extrusão e somente em uma extremidade do filete de preenchimento."
+msgstr "Distância do percurso inserido após cada linha de preenchimento, para fazer o preenchimento aderir melhor às paredes. Esta opção é similar à sobreposição de preenchimento mas sem extrusão e somente em uma extremidade do filete de preenchimento."
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_thickness label"
@@ -1281,22 +1281,22 @@ msgstr "Expandir áreas de perímetro das partes superiores e inferiores de supe
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins label"
 msgid "Expand Top Skins Into Infill"
-msgstr ""
+msgstr "Expandir Contorno do Topo Para Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "expand_upper_skins description"
 msgid "Expand the top skin areas (areas with air above) so that they support infill above."
-msgstr ""
+msgstr "Expande as áreas de perímetro do topo (áreas com ar acima delas) de modo que suportem o preenchimento de cima."
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins label"
 msgid "Expand Bottom Skins Into Infill"
-msgstr ""
+msgstr "Expande Contorno da Base Para Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "expand_lower_skins description"
 msgid "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below."
-msgstr ""
+msgstr "Expande as áreas de perímetro da base (áreas com ar abaixo delas) de modo que se ancorem nas camadas de preenchimento embaixo e acima."
 
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance label"
@@ -1526,17 +1526,17 @@ msgstr "Quantidade Adicional de Avanço da Retração"
 #: fdmprinter.def.json
 msgctxt "retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a travel move, which can be compensated for here."
-msgstr "Alguns materiais podem escorrer um pouco durante um movimento de viagem, o que pode ser compensando neste ajuste."
+msgstr "Alguns materiais podem escorrer um pouco durante o percurso, o que pode ser compensando neste ajuste."
 
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel label"
 msgid "Retraction Minimum Travel"
-msgstr "Viagem Mínima para Retração"
+msgstr "Percurso Mínimo para Retração"
 
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel description"
 msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "A distância mínima de viagem necessária para que uma retração aconteça. Isto ajuda a ter menos retrações em uma área pequena."
+msgstr "A distância mínima de percurso necessária para que uma retração aconteça. Isto ajuda a ter menos retrações em uma área pequena."
 
 #: fdmprinter.def.json
 msgctxt "retraction_count_max label"
@@ -1706,27 +1706,27 @@ msgstr "Velocidade da Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "speed_support_interface description"
 msgid "The speed at which the roofs and floors of support are printed. Printing them at lower speeds can improve overhang quality."
-msgstr ""
+msgstr "A velocidade com que os tetos e bases do suporte são impressos. Imprimi-los em velocidades mais baixas pode melhorar a qualidade de seções pendentes."
 
 #: fdmprinter.def.json
 msgctxt "speed_support_roof label"
 msgid "Support Roof Speed"
-msgstr ""
+msgstr "Velocidade do Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_roof description"
 msgid "The speed at which the roofs of support are printed. Printing them at lower speeds can improve overhang quality."
-msgstr ""
+msgstr "A velocidade em que os tetos dos suportes são impressos. Imprimi-los em velocidade mais baixas pode melhorar a qualidade de seções pendentes."
 
 #: fdmprinter.def.json
 msgctxt "speed_support_bottom label"
 msgid "Support Floor Speed"
-msgstr ""
+msgstr "Velocidade de Base do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_bottom description"
 msgid "The speed at which the floor of support is printed. Printing it at lower speed can improve adhesion of support on top of your model."
-msgstr ""
+msgstr "A velocidade em que a base do suporte é impressa. Imprimi-la em velocidade mais baixa pode melhorar a aderência do suporte no topo da superfície."
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
@@ -1741,12 +1741,12 @@ msgstr "A velocidade em que a torre de purga é impressa. Imprimir a torre de pu
 #: fdmprinter.def.json
 msgctxt "speed_travel label"
 msgid "Travel Speed"
-msgstr "Velocidade de Viagem"
+msgstr "Velocidade de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "speed_travel description"
 msgid "The speed at which travel moves are made."
-msgstr "Velocidade em que ocorrem os movimentos de viagem (movimentação do extrusor sem extrudar)."
+msgstr "Velocidade em que ocorrem os movimentos de percurso."
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 label"
@@ -1771,12 +1771,12 @@ msgstr "A velocidade de impressão para a camada inicial. Um valor menor é acon
 #: fdmprinter.def.json
 msgctxt "speed_travel_layer_0 label"
 msgid "Initial Layer Travel Speed"
-msgstr "Velocidade de Viagem da Camada Inicial"
+msgstr "Velocidade de Percurso da Camada Inicial"
 
 #: fdmprinter.def.json
 msgctxt "speed_travel_layer_0 description"
 msgid "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed."
-msgstr "A velocidade dos movimentos de viagem da camada inicial. Um valor mais baixo que o normal é aconselhado para prevenir o puxão de partes impressas da mesa de impressão. O valor deste ajuste pode ser automaticamente calculado do raio entre a Velocidade de Viagem e a Velocidade de Impressão."
+msgstr "A velocidade dos percursos da camada inicial. Um valor mais baixo que o normal é aconselhado para prevenir o puxão de partes impressas da mesa de impressão. O valor deste ajuste pode ser automaticamente calculado do raio entre a Velocidade de Percurso e a Velocidade de Impressão."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed label"
@@ -1926,27 +1926,27 @@ msgstr "Aceleração da Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "acceleration_support_interface description"
 msgid "The acceleration with which the roofs and floors of support are printed. Printing them at lower acceleration can improve overhang quality."
-msgstr ""
+msgstr "A aceleração com que os tetos e bases de suporte são impressos. Imprimi-los em aceleração menor pode melhorar a qualidade das seções pendentes."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_roof label"
 msgid "Support Roof Acceleration"
-msgstr ""
+msgstr "Aceleração do Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_roof description"
 msgid "The acceleration with which the roofs of support are printed. Printing them at lower acceleration can improve overhang quality."
-msgstr ""
+msgstr "A aceleração com que os tetos de suporte são impressos. Imprimi-los em aceleração menor pode melhorar a qualidade das seções pendentes."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_bottom label"
 msgid "Support Floor Acceleration"
-msgstr ""
+msgstr "Aceleração da Base do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_support_bottom description"
 msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
-msgstr ""
+msgstr "A aceleração com que as bases do suporte são impressas. Imprimi-las em aceleração menor pode melhorar aderência dos suportes no topo da superfície."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower label"
@@ -1961,12 +1961,12 @@ msgstr "Aceleração com que a torre de purga é impressa."
 #: fdmprinter.def.json
 msgctxt "acceleration_travel label"
 msgid "Travel Acceleration"
-msgstr "Aceleração de Viagem"
+msgstr "Aceleração de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel description"
 msgid "The acceleration with which travel moves are made."
-msgstr "Aceleração com que se realizam os movimentos de viagem."
+msgstr "Aceleração com que se realizam os percursos."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_layer_0 label"
@@ -1991,12 +1991,12 @@ msgstr "Aceleração durante a impressão da camada inicial."
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 label"
 msgid "Initial Layer Travel Acceleration"
-msgstr "Aceleração de Viagem da Camada Inicial"
+msgstr "Aceleração de Percurso da Camada Inicial"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_layer_0 description"
 msgid "The acceleration for travel moves in the initial layer."
-msgstr "Aceleração para movimentos de viagem na camada inicial."
+msgstr "Aceleração para percursos na camada inicial."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim label"
@@ -2046,7 +2046,7 @@ msgstr "Jerk da Parede"
 #: fdmprinter.def.json
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que as paredes são impressas."
+msgstr "A máxima mudança de velocidade instantânea em uma direção com que as paredes são impressas."
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 label"
@@ -2056,7 +2056,7 @@ msgstr "Jerk da Parede Exterior"
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 description"
 msgid "The maximum instantaneous velocity change with which the outermost walls are printed."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que a parede externa é impressa."
+msgstr "A máxima mudança de velocidade instantânea em uma direção com que a parede externa é impressa."
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x label"
@@ -2066,7 +2066,7 @@ msgstr "Jerk das Paredes Internas"
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que as paredes internas são impressas."
+msgstr "A máxima mudança de velocidade instantânea em uma direção com que as paredes internas são impressas."
 
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom label"
@@ -2076,7 +2076,7 @@ msgstr "Jerk Superior/Inferior"
 #: fdmprinter.def.json
 msgctxt "jerk_topbottom description"
 msgid "The maximum instantaneous velocity change with which top/bottom layers are printed."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que as camadas superiores e inferiores são impressas."
+msgstr "A máxima mudança de velocidade instantânea em uma direção com que as camadas superiores e inferiores são impressas."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -2086,7 +2086,7 @@ msgstr "Jerk do Suporte"
 #: fdmprinter.def.json
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que as estruturas de suporte são impressas."
+msgstr "A máxima mudança de velocidade instantânea em uma direção com que as estruturas de suporte são impressas."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_infill label"
@@ -2096,7 +2096,7 @@ msgstr "Jerk de Preenchimento de Suporte"
 #: fdmprinter.def.json
 msgctxt "jerk_support_infill description"
 msgid "The maximum instantaneous velocity change with which the infill of support is printed."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que o preenchimento do suporte é impresso."
+msgstr "A máxima mudança de velocidade instantânea em uma direção com que o preenchimento do suporte é impresso."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface label"
@@ -2106,27 +2106,27 @@ msgstr "Jerk da Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "jerk_support_interface description"
 msgid "The maximum instantaneous velocity change with which the roofs and floors of support are printed."
-msgstr ""
+msgstr "A máxima mudança de velocidade instantânea com a qual os tetos e bases dos suportes são impressos."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_roof label"
 msgid "Support Roof Jerk"
-msgstr ""
+msgstr "Jerk do Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_roof description"
 msgid "The maximum instantaneous velocity change with which the roofs of support are printed."
-msgstr ""
+msgstr "A máxima mudança de velocidade instantânea com que os tetos dos suportes são impressos."
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_bottom label"
 msgid "Support Floor Jerk"
-msgstr ""
+msgstr "Jerk da Base do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support_bottom description"
 msgid "The maximum instantaneous velocity change with which the floors of support are printed."
-msgstr ""
+msgstr "A máxima mudança de velocidade instantânea com que as bases dos suportes são impressas."
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
@@ -2141,12 +2141,12 @@ msgstr "A mudança instantânea máxima de velocidade em uma direção com que a
 #: fdmprinter.def.json
 msgctxt "jerk_travel label"
 msgid "Travel Jerk"
-msgstr "Jerk de Viagem"
+msgstr "Jerk de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
-msgstr "A mudança instantânea máxima de velocidade em uma direção com que os movimentos de viagem são feitos."
+msgstr "A mudança instantânea máxima de velocidade em uma direção com que os percursos são feitos."
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 label"
@@ -2171,12 +2171,12 @@ msgstr "A mudança instantânea máxima de velocidade em uma direção durante a
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 label"
 msgid "Initial Layer Travel Jerk"
-msgstr "Jerk de Viagem da Camada Inicial"
+msgstr "Jerk de Percurso da Camada Inicial"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_layer_0 description"
 msgid "The acceleration for travel moves in the initial layer."
-msgstr "A mudança instantânea máxima de velocidade em uma direção nos movimentos de viagem da camada inicial."
+msgstr "A mudança instantânea máxima de velocidade em uma direção nos percursos da camada inicial."
 
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
@@ -2191,12 +2191,12 @@ msgstr "A mudança instantânea máxima de velocidade em uma direção com que o
 #: fdmprinter.def.json
 msgctxt "travel label"
 msgid "Travel"
-msgstr "Viagem"
+msgstr "Percurso"
 
 #: fdmprinter.def.json
 msgctxt "travel description"
 msgid "travel"
-msgstr "viagem"
+msgstr "percurso"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -2206,7 +2206,7 @@ msgstr "Modo de Combing"
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
-msgstr "O Combing, ou penteamento, mantém o bico dentro de áreas já impressas quando viaja. Isso resulta em movimentos de viagem ligeiramente mais longos mas reduz a necessidade de retrações. Se o penteamento estiver desligado, o material sofrerá retração e o bico se moverá em linha reta para o próximo ponto. É também possível evitar o penteamento em área de contornos superiores e inferiores habilitando o penteamento no preenchimento somente."
+msgstr "O Combing, ou penteamento, mantém o bico dentro de áreas já impressas quando se movimenta. Isso resulta em percursos ligeiramente mais longos mas reduz a necessidade de retrações. Se o penteamento estiver desligado, o material sofrerá retração e o bico se moverá em linha reta para o próximo ponto. É também possível evitar o penteamento em área de contornos superiores e inferiores habilitando o penteamento no preenchimento somente."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2241,17 +2241,17 @@ msgstr "Evitar Partes Impressas nas Viagens"
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts description"
 msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
-msgstr "O bico evita partes já impressas quando está em uma viagem. Esta opção está disponível somente quando combing (penteamento) está habilitado."
+msgstr "O bico evita partes já impressas quando está em uma percurso. Esta opção está disponível somente quando combing (penteamento) está habilitado."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
 msgid "Travel Avoid Distance"
-msgstr "Distância de Desvio na Viagem"
+msgstr "Distância de Desvio de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
-msgstr "A distância entre o bico e as partes já impressas quando evitadas durante movimentos de viagem."
+msgstr "A distância entre o bico e as partes já impressas quando evitadas durante o percurso."
 
 #: fdmprinter.def.json
 msgctxt "start_layers_at_same_position label"
@@ -2291,7 +2291,7 @@ msgstr "Salto Z Ao Retrair"
 #: fdmprinter.def.json
 msgctxt "retraction_hop_enabled description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "Sempre que uma retração é feita, sobe-se um pouco em Z para criar um espaço entre o bico e a impressão. Isso evita que o bico fique batendo nas impressões durante os movimentos de viagem, reduzindo a chance de chutar a peça para fora da mesa."
+msgstr "Sempre que uma retração é feita, sobe-se um pouco em Z para criar um espaço entre o bico e a impressão. Isso evita que o bico fique batendo nas impressões durante o percurso, reduzindo a chance de chutar a peça para fora da mesa."
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_only_when_collides label"
@@ -2456,12 +2456,12 @@ msgstr "Suporte"
 #: fdmprinter.def.json
 msgctxt "support_enable label"
 msgid "Generate Support"
-msgstr ""
+msgstr "Gerar Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_enable description"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
-msgstr ""
+msgstr "Gerar estrutura que suportem partes do modelo que tenham seções pendentes. Sem estas estruturas, tais partes desabariam durante a impressão."
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr label"
@@ -2471,7 +2471,7 @@ msgstr "Extrusor do Suporte"
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr description"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr "O extrusor a usar para imprimir os suportes. Este ajuste é usado quando se tem multi-extrusão."
+msgstr "O extrusor a usar para imprimir os suportes. Isto é utilizado em multi-extrusão."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_extruder_nr label"
@@ -2481,7 +2481,7 @@ msgstr "Extrusor do Preenchimento do Suporte"
 #: fdmprinter.def.json
 msgctxt "support_infill_extruder_nr description"
 msgid "The extruder train to use for printing the infill of the support. This is used in multi-extrusion."
-msgstr "O extrusor a usar para imprimir o preenchimento do suporte. Este ajuste é usado quando se tem multi-extrusão."
+msgstr "O extrusor a usar para imprimir o preenchimento do suporte. Isto é utilizado em multi-extrusão."
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr_layer_0 label"
@@ -2491,7 +2491,7 @@ msgstr "Extrusor de Suporte da Primeira Camada"
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr_layer_0 description"
 msgid "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion."
-msgstr "O extrusor a usar para imprimir a primeira camada de preenchimento de suporte. Isto é usado em multi-extrusão."
+msgstr "O extrusor a usar para imprimir a primeira camada de preenchimento de suporte. Isto é utilizado em multi-extrusão."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr label"
@@ -2501,27 +2501,27 @@ msgstr "Extrusor da Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr description"
 msgid "The extruder train to use for printing the roofs and floors of the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "O extrusor a usar para imprimir os tetos e bases dos suportes. Isto é utilizado em multi-extrusão."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_extruder_nr label"
 msgid "Support Roof Extruder"
-msgstr ""
+msgstr "Extrusor do Teto do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_extruder_nr description"
 msgid "The extruder train to use for printing the roofs of the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "O extrusor a usar para imprimir o teto do suporte. Isto é utilizado em multi-extrusão."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_extruder_nr label"
 msgid "Support Floor Extruder"
-msgstr ""
+msgstr "Extrusor da Base do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_extruder_nr description"
 msgid "The extruder train to use for printing the floors of the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "O extrusor a usar para imprimir as bases dos suportes. Isto é utilizado em multi-extrusão."
 
 #: fdmprinter.def.json
 msgctxt "support_type label"
@@ -2701,17 +2701,17 @@ msgstr "Altura do Passo de Escada de Suporte"
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
-msgstr ""
+msgstr "A altura dos degraus da base estilo escada do suporte em cima do modelo. Um valor baixo faz o suporte mais difícil de remover, mas valores muito altos podem levar a estruturas de suporte instáveis. Deixe em zero para desligar o comportamento de escada."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_width label"
 msgid "Support Stair Step Maximum Width"
-msgstr ""
+msgstr "Largura Máxima do Passo de Escada de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
-msgstr ""
+msgstr "A largura máxima dos passos da base estilo escada do suporte em cima do modelo. Um valor baixo faz o suporte mais difícil de remover, mas valores muito altos podem levar a estruturas de suporte instáveis."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -2746,22 +2746,22 @@ msgstr "Gera uma interface densa entre o modelo e o suporte. Isto criará um con
 #: fdmprinter.def.json
 msgctxt "support_roof_enable label"
 msgid "Enable Support Roof"
-msgstr ""
+msgstr "Habilitar Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_enable description"
 msgid "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support."
-msgstr ""
+msgstr "Gera um bloco denso de material entre o topo do suporte e o modelo. Isto criará uma divisória entre o modelo e o suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_enable label"
 msgid "Enable Support Floor"
-msgstr ""
+msgstr "Habilitar Base de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_enable description"
 msgid "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support."
-msgstr ""
+msgstr "Gera um bloco denso de material entre a base do suporte e o modelo. Isto criará uma divisória entre o modelo e o suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_height label"
@@ -2786,12 +2786,12 @@ msgstr "A espessura do topo do suporte. Isto controla a quantidade de camadas de
 #: fdmprinter.def.json
 msgctxt "support_bottom_height label"
 msgid "Support Floor Thickness"
-msgstr ""
+msgstr "Espessura da Base de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
-msgstr ""
+msgstr "A espessura das bases de suporte. Isto controla o número de camadas densas que são impressas no topo dos pontos do modelo em que o suporte se assenta."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
@@ -2801,7 +2801,7 @@ msgstr "Resolução da Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr ""
+msgstr "Quando verificar se há partes do modelo abaixo e acima do suporte, usar passos de dada altura. Valores baixos fatiarão mais lentamente, enquanto que valores altos farão com que suporte convencional seja impresso em lugares em que deveria haver interface de suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_density label"
@@ -2811,47 +2811,47 @@ msgstr "Densidade da Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
-msgstr ""
+msgstr "Ajusta a densidade dos topos e bases da estrutura de suporte. Um valor maior resulta em seções pendentes melhores, mas os suportes são mais difíceis de remover."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_density label"
 msgid "Support Roof Density"
-msgstr ""
+msgstr "Densidade do Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_density description"
 msgid "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
-msgstr ""
+msgstr "A densidade dos tetos da estrutura de suporte. Um valor maior resulta em seções pendentes melhores, mas os suportes são mais difíceis de remover."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_line_distance label"
 msgid "Support Roof Line Distance"
-msgstr ""
+msgstr "Distância de Filetes do Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_line_distance description"
 msgid "Distance between the printed support roof lines. This setting is calculated by the Support Roof Density, but can be adjusted separately."
-msgstr ""
+msgstr "Distância entre os filetes de impressão do teto de suporte. Este ajuste é calculado pela Densidade do Teto de Suporte mas pode ser ajustado separadamente."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_density label"
 msgid "Support Floor Density"
-msgstr ""
+msgstr "Densidade da Base do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_density description"
 msgid "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model."
-msgstr ""
+msgstr "A densidade das bases da estrutura de suporte. Um valor maior resulta em melhor aderência do suporte no topo da superfície"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_line_distance label"
 msgid "Support Floor Line Distance"
-msgstr ""
+msgstr "Distância de Filetes da Base de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_line_distance description"
 msgid "Distance between the printed support floor lines. This setting is calculated by the Support Floor Density, but can be adjusted separately."
-msgstr ""
+msgstr "Distância entre os filetes de impressão da base de suporte. Este ajuste é calculado pela densidade da Base de Suporte, mas pode ser ajustado separadamente."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_pattern label"
@@ -2896,82 +2896,82 @@ msgstr "Ziguezague"
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern label"
 msgid "Support Roof Pattern"
-msgstr ""
+msgstr "Padrão de Teto de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern description"
 msgid "The pattern with which the roofs of the support are printed."
-msgstr ""
+msgstr "O padrão com o qual o teto do suporte é impresso."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "Linhas"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option grid"
 msgid "Grid"
-msgstr ""
+msgstr "Grade"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
-msgstr ""
+msgstr "Triângulos"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "Concêntrico"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric_3d"
 msgid "Concentric 3D"
-msgstr ""
+msgstr "Concêntrico 3D"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Ziguezague"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern label"
 msgid "Support Floor Pattern"
-msgstr ""
+msgstr "Padrão de Base de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern description"
 msgid "The pattern with which the floors of the support are printed."
-msgstr ""
+msgstr "O padrão com o qual as bases do suporte são impressas."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "Linhas"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option grid"
 msgid "Grid"
-msgstr ""
+msgstr "Grade"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option triangles"
 msgid "Triangles"
-msgstr ""
+msgstr "Triângulo"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "Concêntrico"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option concentric_3d"
 msgid "Concentric 3D"
-msgstr ""
+msgstr "Concêntrico 3D"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Ziguezague"
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
@@ -3026,12 +3026,12 @@ msgstr "Aderência"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
-msgstr ""
+msgstr "Habilitar Massa de Purga"
 
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
-msgstr ""
+msgstr "Indica se é preciso descarregar o filamento com uma massa de purga antes de imprimir. Ligar este ajuste assegurará que o extrusor tenha material pronto no bico antes de imprimir. Imprimir um Brim ou Skirt pode funcionar como purga também, em cujo caso desligar esse ajuste faz ganhar algum tempo."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
@@ -3135,7 +3135,7 @@ msgstr "Largura do Brim"
 #: fdmprinter.def.json
 msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr "A distância do modelo à linha mais externa do brim. Um brim mais largo aumenta a adesão à mesa, mas também reduz a área efetiva de impressão."
+msgstr "A distância do modelo à linha mais externa do brim. Um brim mais largo aumenta a aderência à mesa, mas também reduz a área efetiva de impressão."
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -3145,7 +3145,7 @@ msgstr "Contagem de Linhas do Brim"
 #: fdmprinter.def.json
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
-msgstr "O número de linhas usada para o brim. Mais linhas de brim melhoram a adesão à mesa, mas também reduzem a área efetiva de impressão."
+msgstr "O número de linhas usada para o brim. Mais linhas de brim melhoram a aderência à mesa, mas também reduzem a área efetiva de impressão."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -3155,7 +3155,7 @@ msgstr "Brim Somente Para Fora"
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"
 msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "Imprimir o Brim somente no lado de fora do modelo. Isto reduz a quantidade de brim a ser removida no final, e não reduz tanto a adesão à mesa."
+msgstr "Imprimir o Brim somente no lado de fora do modelo. Isto reduz a quantidade de brim a ser removida no final, e não reduz tanto a aderência à mesa."
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -3275,7 +3275,7 @@ msgstr "Largura de Linha da Base do Raft"
 #: fdmprinter.def.json
 msgctxt "raft_base_line_width description"
 msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
-msgstr "Largura das linhas na camada de base do raft. Devem ser grossas para auxiliar na adesão à mesa."
+msgstr "Largura das linhas na camada de base do raft. Devem ser grossas para auxiliar na aderência à mesa."
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
@@ -3710,52 +3710,52 @@ msgstr "Determina que malha de preenchimento está dentro do preenchimento de ou
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
 msgid "Cutting Mesh"
-msgstr ""
+msgstr "Malha de Corte"
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
-msgstr ""
+msgstr "Limitar o volume desta malha para dentro de outras malhas. Você pode usar isto para fazer certas áreas de uma malha imprimirem com ajustes diferentes, incluindo extrusor diferente."
 
 #: fdmprinter.def.json
 msgctxt "mold_enabled label"
 msgid "Mold"
-msgstr ""
+msgstr "Molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
-msgstr ""
+msgstr "Imprimir modelos como moldes com o negativo das peças de modo que se possa encher de resina para as gerar."
 
 #: fdmprinter.def.json
 msgctxt "mold_width label"
 msgid "Minimal Mold Width"
-msgstr ""
+msgstr "Largura Mínima do Molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr ""
+msgstr "A distância mínima entre o exterior do molde e do modelo."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
 msgid "Mold Roof Height"
-msgstr ""
+msgstr "Altura de Teto do Molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height description"
 msgid "The height above horizontal parts in your model which to print mold."
-msgstr ""
+msgstr "A altura acima das partes horizontais do modelo onde criar o molde."
 
 #: fdmprinter.def.json
 msgctxt "mold_angle label"
 msgid "Mold Angle"
-msgstr ""
+msgstr "Ângulo do Molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_angle description"
 msgid "The angle of overhang of the outer walls created for the mold. 0° will make the outer shell of the mold vertical, while 90° will make the outside of the model follow the contour of the model."
-msgstr ""
+msgstr "O ângulo de seção pendente das paredes externas criadas para o molde. 0° fará a superfície externa do molde vertical, enquanto 90° fará a superfície externa do molde seguir o contorno do modelo."
 
 #: fdmprinter.def.json
 msgctxt "support_mesh label"
@@ -3770,12 +3770,12 @@ msgstr "Use esta malha para especificar áreas obrigatoriamente suportadas. Isto
 #: fdmprinter.def.json
 msgctxt "support_mesh_drop_down label"
 msgid "Drop Down Support Mesh"
-msgstr ""
+msgstr "Malha de Suporte Abaixo"
 
 #: fdmprinter.def.json
 msgctxt "support_mesh_drop_down description"
 msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
-msgstr ""
+msgstr "Cria suport em todo lugar abaixo da malha de suporte de modo que não haja seções pendentes nela."
 
 #: fdmprinter.def.json
 msgctxt "anti_overhang_mesh label"
@@ -3820,17 +3820,17 @@ msgstr "Espiralizar o Contorno Externo"
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
 msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature should only be enabled when each layer only contains a single part."
-msgstr ""
+msgstr "'Espiralizar' faz com que o movimento vertical (em Z) seja contínuo e gradual seguindo o contorno da peça. Este recurso transforma um modelo sólido em uma simples linha contínua em espiral partindo de uma base sólida. O recurso só deve ser habilitado quando cada camada horizontal contiver somente um contorno."
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours label"
 msgid "Smooth Spiralized Contours"
-msgstr ""
+msgstr "Suavizar Contornos Espiralizados"
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
 msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
-msgstr ""
+msgstr "Suaviza os contornos espiralizados para reduzir a visibilidade da costura em Z (esta costura será quase invisível na impressão mas ainda pode ser vista na visão de camadas). Note que suavizar tenderá a remover detalhes finos de superfície."
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -4421,7 +4421,7 @@ msgstr "Matriz de transformação a ser aplicada ao modelo após o carregamento 
 
 #~ msgctxt "support_interface_extruder_nr description"
 #~ msgid "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion."
-#~ msgstr "O extrusor a usar para imprimir o topo e base dos suportes. Isto é usado em multi-extrusão."
+#~ msgstr "O extrusor a usar para imprimir o topo e base dos suportes. Isto é utilizado em multi-extrusão."
 
 #~ msgctxt "support_bottom_stair_step_height description"
 #~ msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
