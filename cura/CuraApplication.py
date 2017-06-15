@@ -268,7 +268,7 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("cura/jobname_prefix", True)
-        Preferences.getInstance().addPreference("view/center_on_select", False)
+        Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", False)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
@@ -751,8 +751,7 @@ class CuraApplication(QtApplication):
                     # Default
                     self.getController().setActiveTool("TranslateTool")
 
-            # Hack: QVector bindings are broken on PyQt 5.7.1 on Windows. This disables it being called at all.
-            if Preferences.getInstance().getValue("view/center_on_select") and not Platform.isWindows():
+            if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
         else:
             if self.getController().getActiveTool():
