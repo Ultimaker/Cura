@@ -561,7 +561,7 @@ class ContainerManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack or not quality_name:
             return ""
-        machine_definition = global_stack.getBottom()
+        machine_definition = QualityManager.getInstance().getParentMachineDefinition(global_stack.getBottom())
 
         for container in QualityManager.getInstance().findQualityChangesByName(quality_name, machine_definition):
             containers_found = True

@@ -54,11 +54,16 @@ class QualityManager:
     #                               specified then the currently selected machine definition is used..
     #   \return the matching quality changes containers \type{List[InstanceContainer]}
     def findQualityChangesByName(self, quality_changes_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None):
-        criteria = {"type": "quality_changes", "name": quality_changes_name}
+        if not machine_definition:
+            global_stack = Application.getGlobalContainerStack()
+            if not global_stack:
+                return [] #No stack, so no current definition could be found, so there are no quality changes either.
+            machine_definition = global_stack.definition
 
         result = self.findAllQualityChangesForMachine(machine_definition)
+        for extruder in self.findAllExtruderDefinitionsForMachine(machine_definition):
+            result.extend(self.findAllQualityChangesForExtruder(extruder))
         result = [quality_change for quality_change in result if quality_change.getName() == quality_changes_name]
-
         return result
 
     ##  Fetch the list of available quality types for this combination of machine definition and materials.
@@ -138,6 +143,18 @@ class QualityManager:
         filter_dict = { "type": "quality_changes", "extruder": None, "definition": definition_id }
         quality_changes_list = ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
         return quality_changes_list
+
+    def findAllExtruderDefinitionsForMachine(self, machine_definition: "DefinitionContainerInterface") -> List["DefinitionContainerInterface"]:
+        filter_dict = { "machine": machine_definition.getId() }
+        return ContainerRegistry.getInstance().findDefinitionContainers(**filter_dict)
+
+    ##  Find all quality changes for a given extruder.
+    #
+    #   \param extruder_definition The extruder to find the quality changes for.
+    #   \return The list of quality changes for the given extruder.
+    def findAllQualityChangesForExtruder(self, extruder_definition: "DefinitionContainerInterface") -> List[InstanceContainer]:
+        filter_dict = {"type": "quality_changes", "extruder": extruder_definition.getId()}
+        return ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
 
     ##  Find all usable qualities for a machine and extruders.
     #
