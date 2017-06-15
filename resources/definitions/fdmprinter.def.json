@@ -5387,7 +5387,7 @@
                 },
                 "sanding_enabled":
                 {
-                    "label": "Enable Sanding",
+                    "label": "Enable Ironing",
                     "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
                     "type": "bool",
                     "default_value": false,
@@ -5396,8 +5396,8 @@
                 },
                 "sanding_pattern":
                 {
-                    "label": "Sanding Pattern",
-                    "description": "The pattern to use for sanding top surfaces.",
+                    "label": "Ironing Pattern",
+                    "description": "The pattern to use for ironing top surfaces.",
                     "type": "enum",
                     "options":
                     {
@@ -5411,8 +5411,8 @@
                 },
                 "sanding_line_spacing":
                 {
-                    "label": "Sanding Line Spacing",
-                    "description": "The distance between the lines of sanding.",
+                    "label": "Ironing Line Spacing",
+                    "description": "The distance between the lines of ironing.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.1,
@@ -5424,8 +5424,8 @@
                 },
                 "sanding_flow":
                 {
-                    "label": "Sanding Flow",
-                    "description": "The amount of material, relative to a normal skin line, to extrude during sanding. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
+                    "label": "Ironing Flow",
+                    "description": "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
                     "type": "float",
                     "unit": "%",
                     "default_value": 10.0,
@@ -5437,8 +5437,8 @@
                 },
                 "sanding_inset":
                 {
-                    "label": "Sanding Inset",
-                    "description": "A distance to keep from the edges of the model. Sanding all the way to the edge of the mesh may result in a jagged edge on your print.",
+                    "label": "Ironing Inset",
+                    "description": "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print.",
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.35,
