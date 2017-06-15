@@ -24,7 +24,7 @@ UM.ManagementPage
     {
         filter:
         {
-            var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value) }
+            var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value).toString() }
             if(Cura.MachineManager.filterMaterialsByMachine)
             {
                 result.definition = Cura.MachineManager.activeQualityDefinitionId;
@@ -253,6 +253,7 @@ UM.ManagementPage
 
             property real density: 0.0;
             property real diameter: 0.0;
+            property string approximate_diameter: "0";
 
             property real spool_cost: 0.0;
             property real spool_weight: 0.0;
@@ -397,11 +398,13 @@ UM.ManagementPage
             {
                 materialProperties.density = currentItem.metadata.properties.density ? currentItem.metadata.properties.density : 0.0;
                 materialProperties.diameter = currentItem.metadata.properties.diameter ? currentItem.metadata.properties.diameter : 0.0;
+                materialProperties.approximate_diameter = currentItem.metadata.approximate_diameter ? currentItem.metadata.approximate_diameter : "0";
             }
             else
             {
                 materialProperties.density = 0.0;
                 materialProperties.diameter = 0.0;
+                materialProperties.approximate_diameter = "0";
             }
 
         }

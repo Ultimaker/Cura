@@ -23,8 +23,8 @@ class PlatformPhysicsOperation(Operation):
     def mergeWith(self, other):
         group = GroupedOperation()
 
-        group.addOperation(self)
         group.addOperation(other)
+        group.addOperation(self)
 
         return group
 

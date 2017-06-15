@@ -152,9 +152,10 @@ UM.PreferencesPage
                             append({ text: "Suomi", code: "fi" })
                             append({ text: "Français", code: "fr" })
                             append({ text: "Italiano", code: "it" })
-                            append({ text: "日本語", code: "jp" })
+                            //append({ text: "日本語", code: "jp" })
+                            //append({ text: "한국어", code: "ko" })
                             append({ text: "Nederlands", code: "nl" })
-                            append({ text: "Português do Brasil", code: "ptbr" })
+                            //append({ text: "Português do Brasil", code: "ptbr" })
                             append({ text: "Русский", code: "ru" })
                             append({ text: "Türkçe", code: "tr" })
                         }
