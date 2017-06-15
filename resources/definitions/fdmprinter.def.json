@@ -1970,7 +1970,7 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
-                        "speed_sanding":
+                        "speed_ironing":
                         {
                             "label": "Ironing Speed",
                             "description": "The speed at which to pass over the top surface.",
@@ -1981,7 +1981,7 @@
                             "minimum_value": "0.001",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "100",
-                            "enabled": "sanding_enabled",
+                            "enabled": "ironing_enabled",
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -2311,7 +2311,7 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
-                        "acceleration_sanding":
+                        "acceleration_ironing":
                         {
                             "label": "Ironing Acceleration",
                             "description": "The acceleration with which ironing is performed.",
@@ -2322,7 +2322,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_topbottom",
-                            "enabled": "resolveOrValue('acceleration_enabled') and sanding_enabled",
+                            "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
