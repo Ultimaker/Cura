@@ -1,0 +1,100 @@
+Release process for Cura
+------------------------
+
+It is highly recommended to use git-buildpackage (gbp) to prepare updated
+packages. This tool will automatically verify the Debian tree against
+the upstream sources and generate separate source and debian tarballs.
+
+Packaging instructions:
+
+1.  Obtain the sources:
+
+  $ git clone ssh://git.debian.org/git/3dprinter/packages/cura.git
+  $ cd cura
+
+2.  Add the upstream repository and fetch the tree:
+
+  $ git remote add upstream https://github.com/Ultimaker/Cura.git
+  $ git fetch --all
+
+3.  Verify that you have a new release tag:
+
+  $ dpkg-parsechangelog | grep ^Version:
+
+  Version: 2.5.0-1
+  Version: 2.4.0-1
+  ...
+
+  $ git tag
+  ...
+  2.4.0
+  2.5.0
+  2.6.0
+
+  (in this case, upstream released 2.6.0, which is not packaged yet)
+
+4.  Create a release branch and merge the upstream release:
+
+  $ git checkout debian
+  $ git checkout -b debian-2.6.0
+  $ git merge 2.6.0
+
+5.  Update the changelog:
+
+  $ dch -a -v 2.6.0-1
+
+  (this will open a text editor where you can edit the changelog entry)
+  (include a "Closes #..." entry if this release fixes a Debian bug)
+
+6.  Refresh and verify the patches:
+
+  $ quilt push
+
+  (verify that the next patch applies; if it does:)
+
+  $ quilt refresh
+
+  (if it doesn't, check if the patch is still needed and fix or remove it)
+
+  (repeat until all patches are applied)
+
+7.  Clean the tree:
+
+  $ debian/rules clean; quilt pop -a; rm -rf .pc
+
+8.  Commit your changes:
+
+  $ git status
+
+  (verify that you are satisfied with the result)
+
+  $ git add .
+  $ git commit -m "New upstream release 2.6.0"
+
+9.  Build against the upstream tree:
+
+  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream --git-debian-branch=debian-2.6.0 -us -uc
+
+10. Verify that the build succeeds, and add more commits to fix problems.
+
+11. Clean and build again:
+
+  $ debian/rules clean; quilt pop -a; rm -rf .pc
+  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream --git-debian-branch=debian-2.6.0
+
+  (this may prompt you for your GPG passphrase)
+
+12. Verify that you don't have any lintian warnings:
+
+  $ linitian -I
+
+13. Merge your changes back into the debian tree, tag and push everything:
+
+  $ git tag debian-2.6.0-1
+  $ git push -u origin debian-2.6.0
+  $ git push --tags
+  $ git checkout debian
+  $ git merge debian-2.6.0
+  $ git push
+
+14. Release the package using dput or whichever method you prefer.
