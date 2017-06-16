@@ -51,7 +51,7 @@ def register(app):
     from UM.VersionUpgradeManager import VersionUpgradeManager
     VersionUpgradeManager.getInstance().registerCurrentVersion(
         ("materials", XmlMaterialProfile.XmlMaterialProfile.Version * 1000000 + CuraApplication.SettingVersion),
-        (CuraApplication.ResourceTypes.MaterialInstanceContainer, "application/x-uranium-instancecontainer")
+        (CuraApplication.ResourceTypes.MaterialInstanceContainer, "application/x-ultimaker-material-profile")
     )
 
     return {"version_upgrade": upgrader,
