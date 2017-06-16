@@ -1,6 +1,5 @@
 [shaders]
 vertex =
-    #version 120
     uniform highp mat4 u_modelViewProjectionMatrix;
     uniform lowp float u_active_extruder;
     uniform lowp float u_shade_factor;
@@ -29,7 +28,6 @@ vertex =
     }
 
 fragment =
-    #version 120
     varying lowp vec4 v_color;
     varying float v_line_type;
 
