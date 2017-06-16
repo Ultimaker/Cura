@@ -235,6 +235,40 @@ class ContainerManager(QObject):
 
         return True
 
+    ##  Set a setting property value of the specified container.
+    #
+    #   This will set the specified property of the specified setting of the container
+    #   and all containers that share the same base_file (if any). The latter only
+    #   happens for material containers.
+    #
+    #   \param container_id \type{str} The ID of the container to change.
+    #   \param setting_key \type{str} The key of the setting.
+    #   \param property_name \type{str} The name of the property, eg "value".
+    #   \param property_value \type{str} The new value of the property.
+    #
+    #   \return True if successful, False if not.
+    @pyqtSlot(str, str, str, str, result = bool)
+    def setContainerProperty(self, container_id, setting_key, property_name, property_value):
+        containers = self._container_registry.findContainers(None, id = container_id)
+        if not containers:
+            Logger.log("w", "Could not set properties of container %s because it was not found.", container_id)
+            return False
+
+        container = containers[0]
+
+        if container.isReadOnly():
+            Logger.log("w", "Cannot set properties of read-only container %s.", container_id)
+            return False
+
+        container.setProperty(setting_key, property_name, property_value)
+
+        basefile = container.getMetaDataEntry("base_file", container_id)
+        for sibbling_container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
+            if sibbling_container != container:
+                sibbling_container.setProperty(setting_key, property_name, property_value)
+
+        return True
+
     ##  Set the name of the specified container.
     @pyqtSlot(str, str, result = bool)
     def setContainerName(self, container_id, new_name):
@@ -527,7 +561,7 @@ class ContainerManager(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack or not quality_name:
             return ""
-        machine_definition = global_stack.getBottom()
+        machine_definition = QualityManager.getInstance().getParentMachineDefinition(global_stack.getBottom())
 
         for container in QualityManager.getInstance().findQualityChangesByName(quality_name, machine_definition):
             containers_found = True
@@ -712,7 +746,7 @@ class ContainerManager(QObject):
         if not global_stack:
             return ""
 
-        approximate_diameter = round(global_stack.getProperty("material_diameter", "value"))
+        approximate_diameter = str(round(global_stack.getProperty("material_diameter", "value")))
         containers = self._container_registry.findInstanceContainers(id = "generic_pla*", approximate_diameter = approximate_diameter)
         if not containers:
             Logger.log("d", "Unable to create a new material by cloning Generic PLA, because it cannot be found for the material diameter for this machine.")
@@ -737,7 +771,9 @@ class ContainerManager(QObject):
 
         duplicated_container.setMetaDataEntry("GUID", str(uuid.uuid4()))
         duplicated_container.setMetaDataEntry("brand", catalog.i18nc("@label", "Custom"))
-        duplicated_container.setMetaDataEntry("material", catalog.i18nc("@label", "Custom"))
+        # We're defaulting to PLA, as machines with material profiles don't like material types they don't know.
+        # TODO: This is a hack, the only reason this is in now is to bandaid the problem as we're close to a release!
+        duplicated_container.setMetaDataEntry("material", "PLA")
         duplicated_container.setName(catalog.i18nc("@label", "Custom Material"))
 
         self._container_registry.addContainer(duplicated_container)
@@ -929,6 +965,7 @@ class ContainerManager(QObject):
             quality_changes.setDefinition(self._container_registry.findContainers(id = "fdmprinter")[0])
         else:
             quality_changes.setDefinition(QualityManager.getInstance().getParentMachineDefinition(machine_definition))
+
         from cura.CuraApplication import CuraApplication
         quality_changes.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         return quality_changes

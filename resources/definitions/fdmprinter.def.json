@@ -42,7 +42,7 @@
                 },
                 "machine_show_variants":
                 {
-                    "label": "Show machine variants",
+                    "label": "Show Machine Variants",
                     "description": "Whether to show the different variants of this machine, which are described in separate json files.",
                     "default_value": false,
                     "type": "bool",
@@ -80,7 +80,7 @@
                 },
                 "material_bed_temp_wait":
                 {
-                    "label": "Wait for build plate heatup",
+                    "label": "Wait for Build Plate Heatup",
                     "description": "Whether to insert a command to wait until the build plate temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
@@ -90,7 +90,7 @@
                 },
                 "material_print_temp_wait":
                 {
-                    "label": "Wait for nozzle heatup",
+                    "label": "Wait for Nozzle Heatup",
                     "description": "Whether to wait until the nozzle temperature is reached at the start.",
                     "default_value": true,
                     "type": "bool",
@@ -101,7 +101,7 @@
                 },
                 "material_print_temp_prepend":
                 {
-                    "label": "Include material temperatures",
+                    "label": "Include Material Temperatures",
                     "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
@@ -112,7 +112,7 @@
                 },
                 "material_bed_temp_prepend":
                 {
-                    "label": "Include build plate temperature",
+                    "label": "Include Build Plate Temperature",
                     "description": "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "type": "bool",
@@ -122,7 +122,7 @@
                 },
                 "machine_width":
                 {
-                    "label": "Machine width",
+                    "label": "Machine Width",
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
@@ -132,7 +132,7 @@
                 },
                 "machine_depth":
                 {
-                    "label": "Machine depth",
+                    "label": "Machine Depth",
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
@@ -142,7 +142,7 @@
                 },
                 "machine_shape":
                 {
-                    "label": "Build plate shape",
+                    "label": "Build Plate Shape",
                     "description": "The shape of the build plate without taking unprintable areas into account.",
                     "default_value": "rectangular",
                     "type": "enum",
@@ -157,7 +157,7 @@
                 },
                 "machine_height":
                 {
-                    "label": "Machine height",
+                    "label": "Machine Height",
                     "description": "The height (Z-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
@@ -167,7 +167,7 @@
                 },
                 "machine_heated_bed":
                 {
-                    "label": "Has heated build plate",
+                    "label": "Has Heated Build Plate",
                     "description": "Whether the machine has a heated build plate present.",
                     "default_value": false,
                     "type": "bool",
@@ -177,7 +177,7 @@
                 },
                 "machine_center_is_zero":
                 {
-                    "label": "Is center origin",
+                    "label": "Is Center Origin",
                     "description": "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area.",
                     "default_value": false,
                     "type": "bool",
@@ -1978,6 +1978,21 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
+                        "speed_ironing":
+                        {
+                            "label": "Ironing Speed",
+                            "description": "The speed at which to pass over the top surface.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "default_value": 20.0,
+                            "value": "speed_topbottom * 20 / 30",
+                            "minimum_value": "0.001",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "100",
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "speed_support":
                         {
                             "label": "Support Speed",
@@ -2304,6 +2319,21 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
+                        "acceleration_ironing":
+                        {
+                            "label": "Ironing Acceleration",
+                            "description": "The acceleration with which ironing is performed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "default_value": 3000,
+                            "value": "acceleration_topbottom",
+                            "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "acceleration_support":
                         {
                             "label": "Support Acceleration",
@@ -2574,6 +2604,20 @@
                             "default_value": 20,
                             "value": "jerk_print",
                             "enabled": "resolveOrValue('jerk_enabled')",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "jerk_ironing":
+                        {
+                            "label": "Ironing Jerk",
+                            "description": "The maximum instantaneous velocity change while performing ironing.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "50",
+                            "default_value": 20,
+                            "value": "jerk_topbottom",
+                            "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -4312,7 +4356,7 @@
                             "unit": "mm",
                             "type": "float",
                             "default_value": 2,
-                            "value": "round(max(2 * min(extruderValues('prime_tower_line_width')), 0.5 * (resolveOrValue('prime_tower_size') - math.sqrt(max(0, resolveOrValue('prime_tower_size') ** 2 - max(extruderValues('prime_tower_min_volume')) / resolveOrValue('layer_height'))))), 3)",
+                            "value": "round(max(2 * max(extruderValues('prime_tower_line_width')), 0.5 * (resolveOrValue('prime_tower_size') - math.sqrt(max(0, resolveOrValue('prime_tower_size') ** 2 - max(extruderValues('prime_tower_min_volume')) / resolveOrValue('layer_height'))))), 3)",
                             "resolve": "max(extruderValues('prime_tower_wall_thickness'))",
                             "minimum_value": "0.001",
                             "minimum_value_warning": "2 * min(extruderValues('prime_tower_line_width')) - 0.0001",
@@ -5348,6 +5392,70 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "ironing_enabled":
+                {
+                    "label": "Enable Ironing",
+                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
+                    "type": "bool",
+                    "default_value": false,
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_pattern":
+                {
+                    "label": "Ironing Pattern",
+                    "description": "The pattern to use for ironing top surfaces.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "zigzag",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_line_spacing":
+                {
+                    "label": "Ironing Line Spacing",
+                    "description": "The distance between the lines of ironing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "minimum_value": "0.001",
+                    "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_flow":
+                {
+                    "label": "Ironing Flow",
+                    "description": "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
+                    "type": "float",
+                    "unit": "%",
+                    "default_value": 10.0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "50",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_inset":
+                {
+                    "label": "Ironing Inset",
+                    "description": "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.35,
+                    "value": "wall_line_width_0 / 2",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "wall_line_width_0",
+                    "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },

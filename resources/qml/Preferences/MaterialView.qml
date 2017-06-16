@@ -164,7 +164,14 @@ TabView
                     stepSize: 0.01
                     readOnly: !base.editingEnabled
 
-                    onEditingFinished: base.setMetaDataEntry("properties/diameter", properties.diameter, value)
+                    onEditingFinished:
+                    {
+                        // This does not use a SettingPropertyProvider, because we need to make the change to all containers
+                        // which derive from the same base_file
+                        base.setMetaDataEntry("approximate_diameter", properties.approximate_diameter, Math.round(value).toString());
+                        base.setMetaDataEntry("properties/diameter", properties.diameter, value);
+                        Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
+                    }
                     onValueChanged: updateCostPerMeter()
                 }
 

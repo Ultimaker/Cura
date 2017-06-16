@@ -753,11 +753,12 @@ class MachineManager(QObject):
                 candidate_quality = quality_manager.findQualityByQualityType(quality_type,
                                         quality_manager.getWholeMachineDefinition(machine_definition),
                                         [material_container])
+
             if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
+                Logger.log("d", "Attempting to find fallback quality")
                 # Fall back to a quality (which must be compatible with all other extruders)
                 new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
                     self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
-
                 if new_qualities:
                     new_quality_id = new_qualities[0].getId()  # Just pick the first available one
                 else:
@@ -1124,7 +1125,7 @@ class MachineManager(QObject):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
-        approximate_material_diameter = round(stack.getProperty("material_diameter", "value"))
+        approximate_material_diameter = str(round(stack.getProperty("material_diameter", "value")))
         search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
 
         if definition.getMetaDataEntry("has_machine_materials"):

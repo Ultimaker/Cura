@@ -54,9 +54,16 @@ class QualityManager:
     #                               specified then the currently selected machine definition is used..
     #   \return the matching quality changes containers \type{List[InstanceContainer]}
     def findQualityChangesByName(self, quality_changes_name: str, machine_definition: Optional["DefinitionContainerInterface"] = None):
-        criteria = {"type": "quality_changes", "name": quality_changes_name}
-        result = self._getFilteredContainersForStack(machine_definition, [], **criteria)
+        if not machine_definition:
+            global_stack = Application.getGlobalContainerStack()
+            if not global_stack:
+                return [] #No stack, so no current definition could be found, so there are no quality changes either.
+            machine_definition = global_stack.definition
 
+        result = self.findAllQualityChangesForMachine(machine_definition)
+        for extruder in self.findAllExtruderDefinitionsForMachine(machine_definition):
+            result.extend(self.findAllQualityChangesForExtruder(extruder))
+        result = [quality_change for quality_change in result if quality_change.getName() == quality_changes_name]
         return result
 
     ##  Fetch the list of available quality types for this combination of machine definition and materials.
@@ -101,12 +108,11 @@ class QualityManager:
         if quality_type:
             criteria["quality_type"] = quality_type
         result = self._getFilteredContainersForStack(machine_definition, material_containers, **criteria)
-
         # Fall back to using generic materials and qualities if nothing could be found.
         if not result and material_containers and len(material_containers) == 1:
             basic_materials = self._getBasicMaterials(material_containers[0])
-            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
-
+            if basic_materials:
+                result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
         return result[0] if result else None
 
     ##  Find all suitable qualities for a combination of machine and material.
@@ -119,7 +125,8 @@ class QualityManager:
         result = self._getFilteredContainersForStack(machine_definition, [material_container], **criteria)
         if not result:
             basic_materials = self._getBasicMaterials(material_container)
-            result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
+            if basic_materials:
+                result = self._getFilteredContainersForStack(machine_definition, basic_materials, **criteria)
 
         return result
 
@@ -136,6 +143,18 @@ class QualityManager:
         filter_dict = { "type": "quality_changes", "extruder": None, "definition": definition_id }
         quality_changes_list = ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
         return quality_changes_list
+
+    def findAllExtruderDefinitionsForMachine(self, machine_definition: "DefinitionContainerInterface") -> List["DefinitionContainerInterface"]:
+        filter_dict = { "machine": machine_definition.getId() }
+        return ContainerRegistry.getInstance().findDefinitionContainers(**filter_dict)
+
+    ##  Find all quality changes for a given extruder.
+    #
+    #   \param extruder_definition The extruder to find the quality changes for.
+    #   \return The list of quality changes for the given extruder.
+    def findAllQualityChangesForExtruder(self, extruder_definition: "DefinitionContainerInterface") -> List[InstanceContainer]:
+        filter_dict = {"type": "quality_changes", "extruder": extruder_definition.getId()}
+        return ContainerRegistry.getInstance().findInstanceContainers(**filter_dict)
 
     ##  Find all usable qualities for a machine and extruders.
     #
@@ -179,7 +198,6 @@ class QualityManager:
             definition_id = material_container.getDefinition().getMetaDataEntry("quality_definition", material_container.getDefinition().getId())
         else:
             definition_id = "fdmprinter"
-
         if base_material:
             # There is a basic material specified
             criteria = { "type": "material", "name": base_material, "definition": definition_id }
@@ -226,13 +244,13 @@ class QualityManager:
 
         # Stick the material IDs in a set
         material_ids = set()
+
         for material_instance in material_containers:
             if material_instance is not None:
                 # Add the parent material too.
                 for basic_material in self._getBasicMaterials(material_instance):
                     material_ids.add(basic_material.getId())
                 material_ids.add(material_instance.getId())
-
         containers = ContainerRegistry.getInstance().findInstanceContainers(**criteria)
 
         result = []
@@ -241,6 +259,7 @@ class QualityManager:
             if filter_by_material and container.getMetaDataEntry("material") not in material_ids and "global_quality" not in kwargs:
                 continue
             result.append(container)
+
         return result
 
     ##  Get the parent machine definition of a machine definition.
