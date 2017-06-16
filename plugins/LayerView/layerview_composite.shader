@@ -1,5 +1,6 @@
 [shaders]
 vertex =
+    #version 120
     uniform highp mat4 u_modelViewProjectionMatrix;
     attribute highp vec4 a_vertex;
     attribute highp vec2 a_uvs;
@@ -13,6 +14,7 @@ vertex =
     }
 
 fragment =
+    #version 120
     uniform sampler2D u_layer0;
     uniform sampler2D u_layer1;
     uniform sampler2D u_layer2;

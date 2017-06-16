@@ -1,5 +1,6 @@
 [shaders]
 vertex =
+    #version 120
     uniform highp mat4 u_modelMatrix;
     uniform highp mat4 u_viewProjectionMatrix;
     uniform highp mat4 u_normalMatrix;
@@ -23,6 +24,7 @@ vertex =
     }
 
 fragment =
+    #version 120
     uniform mediump vec4 u_ambientColor;
     uniform mediump vec4 u_diffuseColor1;
     uniform mediump vec4 u_diffuseColor2;
