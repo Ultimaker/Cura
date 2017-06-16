@@ -64,8 +64,7 @@
             "default_value": 15
         },
         "infill_pattern": {
-            "default_value": "lines", 
-            "value": "lines"             
+            "value": "'lines'"
         },
         "retraction_amount": {
             "default_value": 1
