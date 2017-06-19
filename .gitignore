@@ -30,9 +30,6 @@ cura.desktop
 .pydevproject
 .settings
 
-# Debian packaging
-debian*
-
 #Externally located plug-ins.
 plugins/Doodle3D-cura-plugin
 plugins/GodMode
