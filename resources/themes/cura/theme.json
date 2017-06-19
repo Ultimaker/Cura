@@ -1,4 +1,7 @@
 {
+    "metadata": {
+        "name": "Ultimaker"
+    },
     "fonts": {
         "large": {
             "size": 1.25,
