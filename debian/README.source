@@ -36,7 +36,7 @@ Packaging instructions:
 4.  Create a release branch and merge the upstream release:
 
   $ git checkout debian
-  $ git checkout -b debian-2.6.0
+  $ git checkout -b debian-2.6
   $ git merge 2.6.0
 
 5.  Update the changelog:
@@ -73,14 +73,14 @@ Packaging instructions:
 
 9.  Build against the upstream tree:
 
-  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream/2.6 --git-debian-branch=debian-2.6.0 -us -uc
+  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream/2.6 --git-debian-branch=debian-2.6 -us -uc
 
 10. Verify that the build succeeds, and add more commits to fix problems.
 
 11. Clean and build again:
 
   $ debian/rules clean; quilt pop -a; rm -rf .pc
-  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream/2.6 --git-debian-branch=debian-2.6.0
+  $ gbp buildpackage --git-upstream-tree=2.6.0 --git-upstream-branch=upstream/2.6 --git-debian-branch=debian-2.6
 
   (this may prompt you for your GPG passphrase)
 
@@ -91,10 +91,10 @@ Packaging instructions:
 13. Merge your changes back into the debian tree, tag and push everything:
 
   $ git tag debian-2.6.0-1
-  $ git push -u origin debian-2.6.0
+  $ git push -u origin debian-2.6
   $ git push --tags
   $ git checkout debian
-  $ git merge debian-2.6.0
+  $ git merge debian-2.6
   $ git push
 
 14. Release the package using dput or whichever method you prefer.
