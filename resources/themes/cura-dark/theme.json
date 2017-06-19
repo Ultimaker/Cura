@@ -176,7 +176,7 @@
 
         "viewport_background": [66, 66, 66, 255],
         "volume_outline": [12, 169, 227, 255],
-        "buildplate": [244, 244, 244, 255],
+        "buildplate": [169, 169, 169, 255],
         "buildplate_alt": [204, 204, 204, 255],
 
         "convex_hull": [35, 35, 35, 127],
