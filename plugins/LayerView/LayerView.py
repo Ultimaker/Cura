@@ -82,6 +82,7 @@ class LayerView(View):
         Preferences.getInstance().addPreference("layerview/show_helpers", True)
         Preferences.getInstance().addPreference("layerview/show_skin", True)
         Preferences.getInstance().addPreference("layerview/show_infill", True)
+        Preferences.getInstance().addPreference("layerview/show_purge", True)
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferencesChanged)
         self._updateWithPreferences()
@@ -100,6 +101,7 @@ class LayerView(View):
         self._show_helpers = 1
         self._show_skin = 1
         self._show_infill = 1
+        self._show_purge = 1
 
     def getActivity(self):
         return self._activity
@@ -236,6 +238,13 @@ class LayerView(View):
 
     def getShowInfill(self):
         return self._show_infill
+
+    def setShowPurge(self, show):
+        self._show_purge = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowPurge(self):
+        return self._show_purge
 
     def getCompatibilityMode(self):
         return self._compatibility_mode
@@ -408,6 +417,7 @@ class LayerView(View):
         self.setShowHelpers(bool(Preferences.getInstance().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Preferences.getInstance().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Preferences.getInstance().getValue("layerview/show_infill")))
+        self.setShowPurge(bool(Preferences.getInstance().getValue("layerview/show_purge")))
 
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
@@ -423,6 +433,7 @@ class LayerView(View):
             "layerview/show_helpers",
             "layerview/show_skin",
             "layerview/show_infill",
+            "layerview/show_purge",
             }:
             return
 

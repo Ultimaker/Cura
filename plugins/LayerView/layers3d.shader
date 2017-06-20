@@ -71,6 +71,7 @@ geometry41core =
     uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
+    uniform int u_show_purge;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 26) out;
@@ -123,6 +124,9 @@ geometry41core =
             return;
         }
         if ((u_show_infill == 0) && (v_line_type[0] == 6)) {
+            return;
+        }
+        if ((u_show_purge == 0) && (v_line_type[0] == 11)) {
             return;
         }
 
@@ -246,6 +250,7 @@ u_show_travel_moves = 0
 u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
+u_show_purge = 1
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix
