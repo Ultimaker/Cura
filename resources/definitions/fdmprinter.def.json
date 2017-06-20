@@ -1166,6 +1166,17 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "z_seam_relative":
+                {
+                    "label": "Z Seam Relative",
+                    "description": "Whether the coordinates of the position near where to start printing each part in a layer are relative to the part's centre. By default, the coordinates define an absolute position on the platform.",
+                    "unit": "mm",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_no_small_gaps_heuristic":
                 {
                     "label": "Ignore Small Z Gaps",
