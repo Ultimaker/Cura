@@ -4,5 +4,5 @@
     "version": "1.0.0",
     "description": "Automatically saves Preferences, Machines and Profiles after changes.",
     "api": 4,
-    "catalog": "cura"
+    "i18n-catalog": "cura"
 }

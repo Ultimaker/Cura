@@ -4,5 +4,5 @@
     "description": "Manages network connections to Ultimaker 3 printers",
     "version": "1.0",
     "api": 4,
-    "catalog": "cura"
+    "i18n-catalog": "cura"
 }
