@@ -256,7 +256,7 @@ UM.PreferencesPage
 
 
 
-	        Label
+            Label
             {
                 id: languageCaption
 
