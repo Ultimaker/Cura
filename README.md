@@ -14,9 +14,11 @@ For crashes and similar issues, please attach the following information:
 
 * (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
 * The Cura GUI log file, located at
-  * $User/AppData/Roaming/cura/`<Cura version>`/cura.log (Windows)
+  * %APPDATA%\cura\\`<Cura version>`\cura.log (Windows), or usually C:\Users\\`<your username>`\AppData\Roaming\cura\\`<Cura version>`\cura.log
   * $User/Library/Application Support/cura/`<Cura version>`/cura.log (OSX)
   * $USER/.local/share/cura/`<Cura version>`/cura.log (Ubuntu/Linux)
+
+If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder
 
 Dependencies
 ------------
