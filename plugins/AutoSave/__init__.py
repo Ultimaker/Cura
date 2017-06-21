@@ -7,15 +7,7 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 def getMetaData():
-    return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Auto Save"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Automatically saves Preferences, Machines and Profiles after changes."),
-            "api": 3
-        },
-    }
+    return {}
 
 def register(app):
     return { "extension": AutoSave.AutoSave() }

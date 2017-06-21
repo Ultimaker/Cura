@@ -14,13 +14,6 @@ upgrader = XmlMaterialUpgrader.XmlMaterialUpgrader()
 
 def getMetaData():
     return {
-        "plugin": {
-            "name": catalog.i18nc("@label", "Material Profiles"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides capabilities to read and write XML-based material profiles."),
-            "api": 3
-        },
         "settings_container": {
             "type": "material",
             "mimetype": "application/x-ultimaker-material-profile"
