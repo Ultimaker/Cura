@@ -407,6 +407,15 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_nozzle_type":
+                {
+                    "label": "Nozzle Type",
+                    "description": "The nozzle type for an extruder train, such as \"AA\" and \"BB\".",
+                    "type": "str",
+                    "default_value": "unknown",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "machine_nozzle_size":
                 {
                     "label": "Nozzle Diameter",
