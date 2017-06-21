@@ -215,7 +215,7 @@ class StartSliceJob(Job):
 
         for key in stack.getAllKeys():
             # Do not send settings that are not settable_per_extruder.
-            if stack.getProperty(key, "settable_per_extruder") == False:
+            if not stack.getProperty(key, "settable_per_extruder"):
                 continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
