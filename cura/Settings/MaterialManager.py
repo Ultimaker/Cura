@@ -23,7 +23,7 @@ class MaterialManager(QObject):
         self._material_diameter_warning_message = Message(catalog.i18nc("@info:status Has a cancel button next to it.",
             "The selected material diameter causes the material to become incompatible with the current printer."))
         self._material_diameter_warning_message.addAction("Undo", catalog.i18nc("@action:button", "Undo"), None, catalog.i18nc("@action", "Undo changing the material diameter."))
-        self._material_diameter_warning_message.actionTriggered = self._materialWarningMessageAction
+        self._material_diameter_warning_message.actionTriggered.connect(self._materialWarningMessageAction)
 
     ##  Creates an instance of the MaterialManager.
     #
@@ -45,12 +45,13 @@ class MaterialManager(QObject):
     #   This executes the undo action, restoring the material diameter.
     #
     #   \param button The identifier of the button that was pressed.
-    def _materialWarningMessageAction(self, button):
+    def _materialWarningMessageAction(self, message, button):
         if button == "Undo":
             container_registry = ContainerRegistry.getInstance()
             matches = container_registry.findInstanceContainers(type = "material", id = self._material_diameter_warning_message.material_id)
             if matches:
                 matches[0].setMetaDataEntry("diameter", self._material_diameter_warning_message.previous_diameter)
             #No matches? Then the material has been deleted in the meanwhile.
+            message.hide()
         else:
             Logger.log("w", "Unknown button action for material diameter warning message: {action}".format(action = button))
