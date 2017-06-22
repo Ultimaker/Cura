@@ -14,6 +14,9 @@
     },
 
     "overrides": {
+        "small_poly_threshold": {
+            "default_value": "50"
+        },
         "machine_name": {
             "default_value": "Moai"
         },
@@ -113,6 +116,12 @@
         },
         "speed_slowdown_layers": {
             "value": "2"
+        },
+        "infill_overlap": {
+            "value": "15"
+        },
+        "adhesion_type": {
+            "value": "\"none\""
         },
 
         "acceleration_enabled": {
