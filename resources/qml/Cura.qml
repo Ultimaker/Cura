@@ -261,29 +261,28 @@ UM.MainWindow
                     if (drop.urls.length > 0)
                     {
                         // As the drop area also supports plugins, first check if it's a plugin that was dropped.
-                        if(drop.urls.length == 1)
+                        if (drop.urls.length == 1)
                         {
-                            if(PluginRegistry.isPluginFile(drop.urls[0]))
+                            if (PluginRegistry.isPluginFile(drop.urls[0]))
                             {
                                 // Try to install plugin & close.
                                 var result = PluginRegistry.installPlugin(drop.urls[0]);
-                                pluginInstallDialog.text = result.message
-                                if(result.status == "ok")
+                                pluginInstallDialog.text = result.message;
+                                if (result.status == "ok")
                                 {
-                                    pluginInstallDialog.icon = StandardIcon.Information
+                                    pluginInstallDialog.icon = StandardIcon.Information;
                                 }
-                                else if(result.status == "duplicate")
+                                else if (result.status == "duplicate")
                                 {
-                                    pluginInstallDialog.icon = StandardIcon.Warning
+                                    pluginInstallDialog.icon = StandardIcon.Warning;
                                 }
                                 else
                                 {
-                                    pluginInstallDialog.icon = StandardIcon.Critical
+                                    pluginInstallDialog.icon = StandardIcon.Critical;
                                 }
                                 pluginInstallDialog.open();
                                 return;
                             }
-
                         }
 
                         openDialog.handleOpenFileUrls(drop.urls);

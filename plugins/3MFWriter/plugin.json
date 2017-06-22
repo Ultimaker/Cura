@@ -1,5 +1,5 @@
 {
-    "name":  "3MF Writer",
+    "name": "3MF Writer",
     "author": "Ultimaker",
     "version": "1.0.0",
     "description": "Provides support for writing 3MF files.",
