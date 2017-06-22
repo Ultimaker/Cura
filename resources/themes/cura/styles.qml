@@ -368,11 +368,11 @@ QtObject {
                     color: {
                         if(!control.enabled) {
                             return Theme.getColor("setting_category_disabled_border");
-                        } else if(control.hovered && control.checkable && control.checked) {
+                        } else if((control.hovered || control.activeFocus) && control.checkable && control.checked) {
                             return Theme.getColor("setting_category_active_hover_border");
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return Theme.getColor("setting_category_active_border");
-                        } else if(control.hovered) {
+                        } else if(control.hovered || control.activeFocus) {
                             return Theme.getColor("setting_category_hover_border");
                         } else {
                             return Theme.getColor("setting_category_border");
@@ -508,7 +508,7 @@ QtObject {
             {
                 color:
                 {
-                    if (!enabled)
+                    if(!enabled)
                     {
                         return UM.Theme.getColor("setting_control_disabled");
                     }

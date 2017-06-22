@@ -17,10 +17,21 @@ SettingItem
         anchors.fill: parent
 
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
+        border.color:
+        {
+            if(!enabled)
+            {
+                return UM.Theme.getColor("setting_control_disabled_border")
+            }
+            if(hovered || input.activeFocus)
+            {
+                return UM.Theme.getColor("setting_control_border_highlight")
+            }
+            return UM.Theme.getColor("setting_control_border")
+        }
 
         color: {
-            if (!enabled)
+            if(!enabled)
             {
                 return UM.Theme.getColor("setting_control_disabled")
             }
