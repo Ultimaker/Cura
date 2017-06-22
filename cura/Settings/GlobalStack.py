@@ -117,10 +117,10 @@ class GlobalStack(CuraContainerStack):
     #   \return The approximate filament diameter for the printer, as a string.
     @pyqtProperty(str)
     def approximateMaterialDiameter(self) -> str:
-        material_diameter = self.definition.getMetaDataEntry("material_diameter")
+        material_diameter = self.definition.getProperty("material_diameter", "value")
         if material_diameter is None:
             return "-1"
-        return str(round(float(self.definition.getMetaDataEntry("material_diameter")))) #Round, then convert back to string.
+        return str(round(float(material_diameter))) #Round, then convert back to string.
 
     # protected:
 

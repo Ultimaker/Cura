@@ -171,7 +171,7 @@ TabView
                         var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
                         base.setMetaDataEntry("approximate_diameter", properties.approximate_diameter, Math.round(value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, value);
-                        if (Cura.MachineManager.filterMaterialsByMachine && properties.approximate_diameter != Math.round(Cura.MachineManager.activeMachine.approximateMaterialDiameter).toString())
+                        if (Cura.MachineManager.filterMaterialsByMachine && properties.approximate_diameter != Cura.MachineManager.activeMachine.approximateMaterialDiameter)
                         {
                             Cura.MaterialManager.showMaterialWarningMessage(base.containerId, old_diameter);
                         }
