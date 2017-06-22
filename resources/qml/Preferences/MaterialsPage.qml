@@ -20,7 +20,7 @@ UM.ManagementPage
         objectList.positionViewAtBeginning();
     }
 
-    model: UM.InstanceContainersModel
+    model: Cura.MaterialsModel
     {
         filter:
         {
