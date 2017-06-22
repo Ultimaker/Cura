@@ -5,18 +5,21 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.PluginRegistry import PluginRegistry
+from UM.Application import Application
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal
+from PyQt5.QtQml import QQmlComponent, QQmlContext
 
 import json
+import os
 
 i18n_catalog = i18nCatalog("cura")
 
 
 class PluginBrowser(QObject, Extension):
     def __init__(self, parent = None):
-        super().__init__()
+        super().__init__(parent)
         self.addMenuItem(i18n_catalog.i18n("Browse plugins"), self.browsePlugins)
         self._api_version = 1
         self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
@@ -27,17 +30,39 @@ class PluginBrowser(QObject, Extension):
         self._plugins_metadata = []
         self._plugins_model = None
 
+        self._qml_component = None
+        self._qml_context = None
+        self._dialog = None
+
     pluginsMetadataChanged = pyqtSignal()
 
     def browsePlugins(self):
         self._createNetworkManager()
         self.requestPluginList()
-        #TODO: Show popup with populated plugin data.
+
+        if not self._dialog:
+            self._createDialog()
+        self._dialog.show()
 
     def requestPluginList(self):
         url = QUrl(self._api_url + "plugins")
         self._plugin_list_request = QNetworkRequest(url)
         self._network_manager.get(self._plugin_list_request)
+
+    def _createDialog(self):
+        Logger.log("d", "PluginBrowser")
+
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "PluginBrowser.qml"))
+        self._qml_component = QQmlComponent(Application.getInstance()._engine, path)
+
+        # We need access to engine (although technically we can't)
+        self._qml_context = QQmlContext(Application.getInstance()._engine.rootContext())
+        self._qml_context.setContextProperty("manager", self)
+        self._dialog = self._qml_component.create(self._qml_context)
+        if self._dialog is None:
+            Logger.log("e", "QQmlComponent status %s", self._qml_component.status())
+            Logger.log("e", "QQmlComponent errorString %s", self._qml_component.errorString())
+
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
