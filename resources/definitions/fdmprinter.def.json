@@ -407,10 +407,10 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_nozzle_type":
+                "machine_nozzle_id":
                 {
-                    "label": "Nozzle Type",
-                    "description": "The nozzle type for an extruder train, such as \"AA\" and \"BB\".",
+                    "label": "Nozzle ID",
+                    "description": "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\".",
                     "type": "str",
                     "default_value": "unknown",
                     "settable_per_mesh": false,
