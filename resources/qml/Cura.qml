@@ -308,10 +308,12 @@ UM.MainWindow
 
                 property bool hugBottom: parent.height < viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height
 
-                anchors.bottom: parent.bottom
+                anchors.bottom: parent.bottom // panel is always anchored to the bottom only, because dynamically switching between bottom and top results in stretching the height
                 anchors.bottomMargin: hugBottom ? 0 : parent.height - (viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height)
                 anchors.left: viewModeButton.left;
                 anchors.leftMargin: hugBottom ? viewModeButton.width + UM.Theme.getSize("default_margin").width : 0
+
+                property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
 
                 height: childrenRect.height;
 
