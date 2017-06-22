@@ -3,10 +3,10 @@
 
 from PyQt5.QtCore import QObject, pyqtSlot #To expose data to QML.
 
+from cura.Settings.ContainerManager import ContainerManager
 from UM.Logger import Logger
 from UM.Message import Message #To create a warning message about material diameter.
 from UM.i18n import i18nCatalog #Translated strings.
-from UM.Settings.ContainerRegistry import ContainerRegistry #To find the material containers we need.
 
 catalog = i18nCatalog("cura")
 
@@ -47,11 +47,8 @@ class MaterialManager(QObject):
     #   \param button The identifier of the button that was pressed.
     def _materialWarningMessageAction(self, message, button):
         if button == "Undo":
-            container_registry = ContainerRegistry.getInstance()
-            matches = container_registry.findInstanceContainers(type = "material", id = self._material_diameter_warning_message.material_id)
-            if matches:
-                matches[0].setMetaDataEntry("diameter", self._material_diameter_warning_message.previous_diameter)
-            #No matches? Then the material has been deleted in the meanwhile.
+            container_manager = ContainerManager.getInstance()
+            container_manager.setContainerMetaDataEntry(self._material_diameter_warning_message.material_id, "properties/diameter", self._material_diameter_warning_message.previous_diameter)
             message.hide()
         else:
             Logger.log("w", "Unknown button action for material diameter warning message: {action}".format(action = button))
