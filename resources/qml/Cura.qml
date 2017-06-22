@@ -306,9 +306,12 @@ UM.MainWindow
             {
                 id: view_panel
 
-                anchors.top: viewModeButton.bottom
-                anchors.topMargin: UM.Theme.getSize("default_margin").height;
+                property bool hugBottom: parent.height < viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height
+
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: hugBottom ? 0 : parent.height - (viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height)
                 anchors.left: viewModeButton.left;
+                anchors.leftMargin: hugBottom ? viewModeButton.width + UM.Theme.getSize("default_margin").width : 0
 
                 height: childrenRect.height;
 
