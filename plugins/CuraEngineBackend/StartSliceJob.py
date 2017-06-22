@@ -149,8 +149,11 @@ class StartSliceJob(Job):
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
-                self._buildExtruderMessage(extruder_stack)
+            # Only add extruder stacks if there are multiple extruders
+            # Single extruder machines only use the global stack to store setting values
+            if stack.getProperty("machine_extruder_count", "value") > 1:
+                for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+                    self._buildExtruderMessage(extruder_stack)
 
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
