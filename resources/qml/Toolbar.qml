@@ -106,22 +106,13 @@ Item
         opacity: panel.item && panel.width > 0 ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
-        color: UM.Theme.getColor("lining");
+        color: UM.Theme.getColor("tool_panel_background")
+        borderColor: UM.Theme.getColor("lining")
+        borderWidth: UM.Theme.getSize("default_lining").width
 
-        UM.PointingRectangle
+        MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
-            id: panelBackground;
-
-            color: UM.Theme.getColor("tool_panel_background");
             anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_lining").width
-
-            target: Qt.point(-UM.Theme.getSize("default_margin").width, UM.Theme.getSize("button").height/2)
-            arrowSize: parent.arrowSize
-            MouseArea //Catch all mouse events (so scene doesnt handle them)
-            {
-                anchors.fill: parent
-            }
         }
 
         Loader
