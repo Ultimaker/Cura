@@ -17,6 +17,7 @@ SettingItem
         id: control
         anchors.fill: parent
         hoverEnabled: true
+        activeFocusOnTab: true
 
         property bool checked:
         {
@@ -47,6 +48,12 @@ SettingItem
                 default:
                     return value;
             }
+        }
+
+        Keys.onSpacePressed:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", !checked);
         }
 
         onClicked:

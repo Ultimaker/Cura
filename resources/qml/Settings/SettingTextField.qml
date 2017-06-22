@@ -82,6 +82,7 @@ SettingItem
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
+            activeFocusOnTab: true
 
             Keys.onReleased:
             {
