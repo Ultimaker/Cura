@@ -1,6 +1,6 @@
 {
     "name": "Removable Drive Output Device Plugin",
-    "author": "Ultimaker B.V.",
+    "author": "Ultimaker",
     "description": "Provides removable drive hotplugging and writing support.",
     "version": "1.0.0",
     "api": 4,
