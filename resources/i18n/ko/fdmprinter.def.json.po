@@ -1325,7 +1325,7 @@ msgstr "이보다 좁은 스킨 영역은 확장되지 않습니다. 이렇게�
 #: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr "재료 "
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material description"
