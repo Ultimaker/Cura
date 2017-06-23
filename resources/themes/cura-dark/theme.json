@@ -114,8 +114,8 @@
         "setting_control_disabled_text": [127, 127, 127, 255],
         "setting_control_disabled_border": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
-        "setting_validation_error": [255, 57, 14, 255],
-        "setting_validation_warning": [255, 186, 15, 255],
+        "setting_validation_error": [204, 37, 0, 255],
+        "setting_validation_warning": [204, 146, 0, 255],
         "setting_validation_ok": [83, 83, 83, 255],
 
         "progressbar_background": [66, 66, 66, 255],
