@@ -43,6 +43,8 @@ class PluginBrowser(QObject, Extension):
 
         self._is_downloading = False
 
+        self._request_header = [b"User-Agent", str.encode("%s - %s" % (Application.getInstance().getApplicationName(), Application.getInstance().getVersion()))]
+
         # Installed plugins are really installed after reboot. In order to prevent the user from downloading the
         # same file over and over again, we keep track of the upgraded plugins.
         self._newly_installed_plugin_ids = []
@@ -67,6 +69,7 @@ class PluginBrowser(QObject, Extension):
     def requestPluginList(self):
         url = QUrl(self._api_url + "plugins")
         self._plugin_list_request = QNetworkRequest(url)
+        self._plugin_list_request.setRawHeader(*self._request_header)
         self._network_manager.get(self._plugin_list_request)
 
     def _createDialog(self):
@@ -119,6 +122,7 @@ class PluginBrowser(QObject, Extension):
         Logger.log("i", "Attempting to download & install plugin from %s", url)
         url = QUrl(url)
         self._download_plugin_request = QNetworkRequest(url)
+        self._download_plugin_request.setRawHeader(*self._request_header)
         self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
         self._download_progress = 0
         self.setIsDownloading(True)
