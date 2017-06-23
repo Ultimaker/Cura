@@ -6,6 +6,7 @@ from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
+from UM.Version import Version
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
@@ -100,18 +101,28 @@ class PluginBrowser(QObject, Extension):
         else:
             self._plugins_model.clear()
         items = []
-        plugin_registry = PluginRegistry.getInstance()
         for metadata in self._plugins_metadata:
             items.append({
                 "name": metadata["label"],
                 "version": metadata["version"],
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
-                "already_installed": plugin_registry.getMetaData(metadata["id"]) != {},
+                "already_installed": self._checkAlreadyInstalled(metadata["id"], metadata["version"]),
                 "file_location": metadata["file_location"]
             })
         self._plugins_model.setItems(items)
         return self._plugins_model
+
+    def _checkAlreadyInstalled(self, id, version):
+        plugin_registry = PluginRegistry.getInstance()
+        metadata = plugin_registry.getMetaData(id)
+        if metadata != {}:
+            current_version = Version(metadata["plugin"]["version"])
+            new_version = Version(version)
+            if new_version > current_version:
+                return False
+        return True
+
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
