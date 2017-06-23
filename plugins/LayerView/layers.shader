@@ -35,7 +35,6 @@ fragment =
     uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
-    uniform int u_show_purge;
 
     void main()
     {
@@ -60,11 +59,6 @@ fragment =
         }
         // infill:
         if ((u_show_infill == 0) && (v_line_type >= 5.5) && (v_line_type <= 6.5)) {
-            // discard movements
-            discard;
-        }
-        // purge:
-        if ((u_show_purge == 0) && (v_line_type >= 10.5) && (v_line_type <= 11.5)) {
             // discard movements
             discard;
         }
@@ -109,7 +103,6 @@ fragment41core =
     uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
-    uniform int u_show_purge;
 
     void main()
     {
@@ -137,11 +130,6 @@ fragment41core =
             // discard movements
             discard;
         }
-        // purge:
-        if ((u_show_purge == 0) && (v_line_type >= 10.5) && (v_line_type <= 11.5)) {
-            // discard movements
-            discard;
-        }
 
         frag_color = v_color;
     }
@@ -156,7 +144,6 @@ u_show_travel_moves = 0
 u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
-u_show_purge = 1
 
 [bindings]
 u_modelViewProjectionMatrix = model_view_projection_matrix

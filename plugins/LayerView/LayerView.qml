@@ -43,7 +43,6 @@ Item
             property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
             property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
             property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
-            property bool show_purge: UM.Preferences.getValue("layerview/show_purge")
             // if we are in compatibility mode, we only show the "line type"
             property bool show_legend: UM.LayerView.compatibilityMode ? 1 : UM.Preferences.getValue("layerview/layer_view_type") == 1
             property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
@@ -158,7 +157,6 @@ Item
                     view_settings.show_helpers = UM.Preferences.getValue("layerview/show_helpers");
                     view_settings.show_skin = UM.Preferences.getValue("layerview/show_skin");
                     view_settings.show_infill = UM.Preferences.getValue("layerview/show_infill");
-                    view_settings.show_purge = UM.Preferences.getValue("layerview/show_purge");
                     view_settings.only_show_top_layers = UM.Preferences.getValue("view/only_show_top_layers");
                     view_settings.top_layer_count = UM.Preferences.getValue("view/top_layer_count");
                 }
@@ -220,12 +218,6 @@ Item
                             initialValue: view_settings.show_infill,
                             preference: "layerview/show_infill",
                             colorId:  "layerview_infill"
-                        });
-                        typesLegenModel.append({
-                            label: catalog.i18nc("@label", "Show Purge"),
-                            initialValue: view_settings.show_purge,
-                            preference: "layerview/show_purge",
-                            colorId:  "layerview_purge"
                         });
                     }
                 }

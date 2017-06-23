@@ -51,7 +51,6 @@ class LayerPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
-            self._layer_shader.setUniformValue("u_show_purge", self._layer_view.getShowPurge())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_layer_view_type", 1)
@@ -60,7 +59,6 @@ class LayerPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
-            self._layer_shader.setUniformValue("u_show_purge", 1)
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
