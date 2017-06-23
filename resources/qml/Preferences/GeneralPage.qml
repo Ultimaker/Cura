@@ -237,6 +237,7 @@ UM.PreferencesPage
                                 return i
                             }
                         }
+                        return 0;
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
 
