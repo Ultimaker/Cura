@@ -43,6 +43,10 @@ class PluginBrowser(QObject, Extension):
 
         self._is_downloading = False
 
+        # Installed plugins are really installed after reboot. In order to prevent the user from downloading the
+        # same file over and over again, we keep track of the upgraded plugins.
+        self._newly_installed_plugin_ids = []
+
 
     pluginsMetadataChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
@@ -97,6 +101,12 @@ class PluginBrowser(QObject, Extension):
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
                 self._temp_plugin_file.write(self._download_plugin_reply.readAll())
                 result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
+                if result["status"] == "ok":
+                    self._newly_installed_plugin_ids.append(result["id"])
+                    self.pluginsMetadataChanged.emit()
+                else:
+                    # TODO; Handle cases where, for some reason, we could not install the plugin
+                    pass
                 self._temp_plugin_file.close()  # Plugin was installed, delete temp file
 
     @pyqtProperty(int, notify = onDownloadProgressChanged)
@@ -134,11 +144,10 @@ class PluginBrowser(QObject, Extension):
                 "version": metadata["version"],
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
-                "already_installed": self._checkAlreadyInstalled(metadata["id"], metadata["version"]),
+                "already_installed": self._checkAlreadyInstalled(metadata["id"]),
                 "file_location": metadata["file_location"],
                 "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
             })
-        print(items)
         self._plugins_model.setItems(items)
         return self._plugins_model
 
@@ -146,18 +155,22 @@ class PluginBrowser(QObject, Extension):
         plugin_registry = PluginRegistry.getInstance()
         metadata = plugin_registry.getMetaData(id)
         if metadata != {}:
+            if id in self._newly_installed_plugin_ids:
+                return False  # We already updated this plugin.
             current_version = Version(metadata["plugin"]["version"])
             new_version = Version(version)
             if new_version > current_version:
                 return True
         return False
 
-    def _checkAlreadyInstalled(self, id, version):
+    def _checkAlreadyInstalled(self, id):
         plugin_registry = PluginRegistry.getInstance()
         metadata = plugin_registry.getMetaData(id)
         if metadata != {}:
             return True
         else:
+            if id in self._newly_installed_plugin_ids:
+                return True  # We already installed this plugin, but the registry just doesn't know it yet.
             return False
 
     def _onRequestFinished(self, reply):
