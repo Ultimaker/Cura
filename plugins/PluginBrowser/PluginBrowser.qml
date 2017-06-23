@@ -8,67 +8,81 @@ UM.Dialog
 {
     id: base
 
-    title: "Find & Update plugins"
+    title: catalog.i18nc("@title:window", "Find & Update plugins")
     width: 450
     height: 450
-    ScrollView
-    {
-        width: parent.width
-        height: parent.height - progressbar.height - UM.Theme.getSize("default_margin").height
-        frameVisible: true
-        ListView
-        {
-            id: pluginList
-            model: manager.pluginsModel
-            anchors.fill: parent
-
-            delegate: pluginDelegate
-        }
-    }
-    ProgressBar
-    {
-        id: progressbar
-        anchors.bottom: parent.bottom
-        style: UM.Theme.styles.progressbar
-        minimumValue: 0;
-        maximumValue: 100
-        width: parent.width
-        height: 20
-        value: manager.downloadProgress
-    }
-
     Item
     {
-        SystemPalette { id: palette }
-        Component
+        anchors.fill: parent
+        Label
         {
-            id: pluginDelegate
-            Rectangle
+            id: introText
+            text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
+            width: parent.width
+            height: 30
+        }
+        ScrollView
+        {
+            width: parent.width
+            anchors.top: introText.bottom
+            anchors.bottom: progressbar.top
+            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+            frameVisible: true
+            ListView
             {
-                width: pluginList.width;
-                height: childrenRect.height;
-                color: index % 2 ? palette.base : palette.alternateBase
-                Row
+                id: pluginList
+                model: manager.pluginsModel
+                anchors.fill: parent
+
+                delegate: pluginDelegate
+            }
+        }
+        ProgressBar
+        {
+            id: progressbar
+            anchors.bottom: parent.bottom
+            style: UM.Theme.styles.progressbar
+            minimumValue: 0;
+            maximumValue: 100
+            width: parent.width
+            height: 20
+            value: manager.downloadProgress
+        }
+
+        Item
+        {
+            SystemPalette { id: palette }
+            Component
+            {
+                id: pluginDelegate
+                Rectangle
                 {
-                    width: childrenRect.width
+                    width: pluginList.width;
                     height: childrenRect.height;
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    Label
+                    color: index % 2 ? palette.base : palette.alternateBase
+                    Row
                     {
-                        text: model.name
-                        width: contentWidth
+                        width: childrenRect.width
+                        height: childrenRect.height;
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        Label
+                        {
+                            text: model.name
+                            width: contentWidth
+                        }
+                    }
+                    Button
+                    {
+                        text: !model.already_installed ? catalog.i18nc("@action:button", "Download") : model.can_upgrade ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
+                        onClicked: manager.downloadAndInstallPlugin(model.file_location)
+                        anchors.right: parent.right
+                        enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
                     }
                 }
-                Button
-                {
-                    text: !model.already_installed ? "Download" : model.can_upgrade ? "Upgrade" : "Download"
-                    onClicked: manager.downloadAndInstallPlugin(model.file_location)
-                    anchors.right: parent.right
-                    enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
-                }
-            }
 
+            }
         }
+    UM.I18nCatalog { id: catalog; name:"cura" }
     }
 }
