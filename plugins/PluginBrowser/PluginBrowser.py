@@ -100,13 +100,14 @@ class PluginBrowser(QObject, Extension):
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
                 self._temp_plugin_file.write(self._download_plugin_reply.readAll())
+
                 result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
-                if result["status"] == "ok":
-                    self._newly_installed_plugin_ids.append(result["id"])
-                    self.pluginsMetadataChanged.emit()
-                else:
-                    # TODO; Handle cases where, for some reason, we could not install the plugin
-                    pass
+
+                self._newly_installed_plugin_ids.append(result["id"])
+                self.pluginsMetadataChanged.emit()
+
+                Application.getInstance().messageBox(i18n_catalog.i18nc("@window:title", "Plugin browser"), result["message"])
+
                 self._temp_plugin_file.close()  # Plugin was installed, delete temp file
 
     @pyqtProperty(int, notify = onDownloadProgressChanged)
