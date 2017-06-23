@@ -39,8 +39,10 @@ class PluginBrowser(QObject, Extension):
         self._qml_component = None
         self._qml_context = None
         self._dialog = None
+        self._download_progress = 0
 
     pluginsMetadataChanged = pyqtSignal()
+    onDownloadProgressChanged = pyqtSignal()
 
     def browsePlugins(self):
         self._createNetworkManager()
@@ -72,7 +74,10 @@ class PluginBrowser(QObject, Extension):
     def _onDownloadPluginProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
-
+            if new_progress > self._download_progress:
+                self._download_progress = new_progress
+                self.onDownloadProgressChanged.emit()
+            self._download_progress = new_progress
             if new_progress == 100.0:
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
@@ -80,12 +85,18 @@ class PluginBrowser(QObject, Extension):
                 result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
                 self._temp_plugin_file.close()  # Plugin was installed, delete temp file
 
+    @pyqtProperty(int, notify = onDownloadProgressChanged)
+    def downloadProgress(self):
+        return self._download_progress
+
     @pyqtSlot(str)
     def downloadAndInstallPlugin(self, url):
         Logger.log("i", "Attempting to download & install plugin from %s", url)
         url = QUrl(url)
         self._download_plugin_request = QNetworkRequest(url)
         self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
+        self._download_progress = 0
+        self.onDownloadProgressChanged.emit()
         self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)

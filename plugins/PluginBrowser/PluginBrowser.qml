@@ -13,7 +13,8 @@ UM.Dialog
     height: 150
     ScrollView
     {
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height - progressbar.height - UM.Theme.getSize("default_margin").height
         frameVisible: true
         ListView
         {
@@ -23,6 +24,17 @@ UM.Dialog
 
             delegate: pluginDelegate
         }
+    }
+    ProgressBar
+    {
+        id: progressbar
+        anchors.bottom: parent.bottom
+        style: UM.Theme.styles.progressbar
+        minimumValue: 0;
+        maximumValue: 100
+        width: parent.width
+        height: 20
+        value: manager.downloadProgress
     }
     Item
     {
@@ -37,23 +49,25 @@ UM.Dialog
                 color: index % 2 ? palette.base : palette.alternateBase
                 Row
                 {
-                    width: parent.width
+                    width: childrenRect.width
                     height: childrenRect.height;
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     Label
                     {
-
                         text: model.name
                         width: contentWidth
                     }
-                    Button
-                    {
-                        text: "Download"
-                        onClicked: manager.downloadAndInstallPlugin(model.file_location)
-                    }
+
+                }
+                Button
+                {
+                    text: "Download"
+                    onClicked: manager.downloadAndInstallPlugin(model.file_location)
+                    anchors.right: parent.right
                 }
             }
+
         }
     }
 }
