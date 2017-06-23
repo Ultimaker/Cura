@@ -36,6 +36,7 @@ UM.Dialog
         height: 20
         value: manager.downloadProgress
     }
+
     Item
     {
         SystemPalette { id: palette }
@@ -62,9 +63,10 @@ UM.Dialog
                 }
                 Button
                 {
-                    text: "Download"
+                    text: enabled ? "Download" : "Already Installed"
                     onClicked: manager.downloadAndInstallPlugin(model.file_location)
                     anchors.right: parent.right
+                    enabled: !model.already_installed
                 }
             }
 
