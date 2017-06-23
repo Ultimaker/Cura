@@ -10,7 +10,7 @@ UM.Dialog
 
     title: "Find & Update plugins"
     width: 450
-    height: 150
+    height: 450
     ScrollView
     {
         width: parent.width

@@ -147,6 +147,8 @@ class PluginBrowser(QObject, Extension):
             new_version = Version(version)
             if new_version > current_version:
                 return False
+        else:
+            return False
         return True
 
     def _onRequestFinished(self, reply):
