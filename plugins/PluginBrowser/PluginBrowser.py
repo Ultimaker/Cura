@@ -41,8 +41,16 @@ class PluginBrowser(QObject, Extension):
         self._dialog = None
         self._download_progress = 0
 
+        self._is_downloading = False
+
+
     pluginsMetadataChanged = pyqtSignal()
     onDownloadProgressChanged = pyqtSignal()
+    onIsDownloadingChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = onIsDownloadingChanged)
+    def isDownloading(self):
+        return self._is_downloading
 
     def browsePlugins(self):
         self._createNetworkManager()
@@ -71,6 +79,11 @@ class PluginBrowser(QObject, Extension):
             Logger.log("e", "QQmlComponent status %s", self._qml_component.status())
             Logger.log("e", "QQmlComponent errorString %s", self._qml_component.errorString())
 
+    def setIsDownloading(self, is_downloading):
+        if self._is_downloading != is_downloading:
+            self._is_downloading = is_downloading
+            self.onIsDownloadingChanged.emit()
+
     def _onDownloadPluginProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
@@ -79,6 +92,7 @@ class PluginBrowser(QObject, Extension):
                 self.onDownloadProgressChanged.emit()
             self._download_progress = new_progress
             if new_progress == 100.0:
+                self.setIsDownloading(False)
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
                 self._temp_plugin_file.write(self._download_plugin_reply.readAll())
@@ -96,6 +110,7 @@ class PluginBrowser(QObject, Extension):
         self._download_plugin_request = QNetworkRequest(url)
         self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
         self._download_progress = 0
+        self.setIsDownloading(True)
         self.onDownloadProgressChanged.emit()
         self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
 
@@ -133,7 +148,6 @@ class PluginBrowser(QObject, Extension):
             if new_version > current_version:
                 return False
         return True
-
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()

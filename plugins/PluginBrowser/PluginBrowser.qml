@@ -8,7 +8,7 @@ UM.Dialog
 {
     id: base
 
-    title: "YAY"
+    title: "Find & Update plugins"
     width: 450
     height: 150
     ScrollView
@@ -63,10 +63,10 @@ UM.Dialog
                 }
                 Button
                 {
-                    text: enabled ? "Download" : "Already Installed"
+                    text: !model.already_installed ? "Download" : "Already Installed"
                     onClicked: manager.downloadAndInstallPlugin(model.file_location)
                     anchors.right: parent.right
-                    enabled: !model.already_installed
+                    enabled: !model.already_installed && !manager.isDownloading
                 }
             }
 
