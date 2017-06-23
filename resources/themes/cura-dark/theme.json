@@ -181,19 +181,6 @@
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 40],
-        "error_area": [255, 0, 0, 127],
-
-        "layerview_ghost": [32, 32, 32, 96],
-        "layerview_none": [255,  255,  255, 255],
-        "layerview_inset_0": [155,  0,  0, 255],
-        "layerview_inset_x": [0,  155,  0, 255],
-        "layerview_skin": [155,  155,  0, 255],
-        "layerview_support": [0,  155,  155, 255],
-        "layerview_skirt": [0,  155,  155, 255],
-        "layerview_infill": [155,  117, 0, 255],
-        "layerview_support_infill": [0,  155,  155, 255],
-        "layerview_move_combing": [0,  0,  155, 255],
-        "layerview_move_retraction": [77,  77,  155, 255],
-        "layerview_support_interface": [39, 117, 155, 255]
+        "error_area": [255, 0, 0, 127]
     }
 }
