@@ -45,7 +45,7 @@ UM.Dialog
             minimumValue: 0;
             maximumValue: 100
             width: parent.width
-            height: 20
+            height: 10
             value: manager.downloadProgress
         }
 
