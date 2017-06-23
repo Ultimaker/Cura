@@ -124,6 +124,7 @@ class PluginBrowser(QObject, Extension):
             self._plugins_model.addRoleName(Qt.UserRole + 4, "author")
             self._plugins_model.addRoleName(Qt.UserRole + 5, "already_installed")
             self._plugins_model.addRoleName(Qt.UserRole + 6, "file_location")
+            self._plugins_model.addRoleName(Qt.UserRole + 7, "can_upgrade")
         else:
             self._plugins_model.clear()
         items = []
@@ -134,22 +135,30 @@ class PluginBrowser(QObject, Extension):
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
                 "already_installed": self._checkAlreadyInstalled(metadata["id"], metadata["version"]),
-                "file_location": metadata["file_location"]
+                "file_location": metadata["file_location"],
+                "can_upgrade": self._checkCanUpgrade(metadata["id"], metadata["version"])
             })
+        print(items)
         self._plugins_model.setItems(items)
         return self._plugins_model
 
-    def _checkAlreadyInstalled(self, id, version):
+    def _checkCanUpgrade(self, id, version):
         plugin_registry = PluginRegistry.getInstance()
         metadata = plugin_registry.getMetaData(id)
         if metadata != {}:
             current_version = Version(metadata["plugin"]["version"])
             new_version = Version(version)
             if new_version > current_version:
-                return False
+                return True
+        return False
+
+    def _checkAlreadyInstalled(self, id, version):
+        plugin_registry = PluginRegistry.getInstance()
+        metadata = plugin_registry.getMetaData(id)
+        if metadata != {}:
+            return True
         else:
             return False
-        return True
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()

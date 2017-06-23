@@ -59,14 +59,13 @@ UM.Dialog
                         text: model.name
                         width: contentWidth
                     }
-
                 }
                 Button
                 {
-                    text: !model.already_installed ? "Download" : "Already Installed"
+                    text: !model.already_installed ? "Download" : model.can_upgrade ? "Upgrade" : "Download"
                     onClicked: manager.downloadAndInstallPlugin(model.file_location)
                     anchors.right: parent.right
-                    enabled: !model.already_installed && !manager.isDownloading
+                    enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
                 }
             }
 
