@@ -9,7 +9,7 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Find & Update plugins")
-    width: 450
+    width: 600
     height: 450
     Item
     {
@@ -60,24 +60,41 @@ UM.Dialog
                     width: pluginList.width;
                     height: childrenRect.height;
                     color: index % 2 ? palette.base : palette.alternateBase
-                    Row
+                    Column
                     {
-                        width: childrenRect.width
-                        height: childrenRect.height;
+                        width: parent.width
+                        height: childrenRect.height
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        anchors.right: downloadButton.left
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         Label
                         {
-                            text: model.name
+                            text: "<b>" + model.name + "</b> - " + model.author
                             width: contentWidth
+                            height: contentHeight +  UM.Theme.getSize("default_margin").height
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Label
+                        {
+                            text: model.short_description
+                            width: parent.width
+                            height: contentHeight +  UM.Theme.getSize("default_margin").height
+                            wrapMode: Text.WordWrap
+                            verticalAlignment: Text.AlignVCenter
                         }
                     }
                     Button
                     {
+                        id: downloadButton
                         text: !model.already_installed ? catalog.i18nc("@action:button", "Download") : model.can_upgrade ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
                         onClicked: manager.downloadAndInstallPlugin(model.file_location)
                         anchors.right: parent.right
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
                         enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
+
                     }
                 }
 
