@@ -8,11 +8,12 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
-from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 
 import json
 import os
+import tempfile
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -25,6 +26,10 @@ class PluginBrowser(QObject, Extension):
         self._api_url = "http://software.ultimaker.com/cura/v%s/" % self._api_version
 
         self._plugin_list_request = None
+        self._download_plugin_request = None
+
+        self._download_plugin_reply = None
+
         self._network_manager = None
 
         self._plugins_metadata = []
@@ -63,6 +68,24 @@ class PluginBrowser(QObject, Extension):
             Logger.log("e", "QQmlComponent status %s", self._qml_component.status())
             Logger.log("e", "QQmlComponent errorString %s", self._qml_component.errorString())
 
+    def _onDownloadPluginProgress(self, bytes_sent, bytes_total):
+        if bytes_total > 0:
+            new_progress = bytes_sent / bytes_total * 100
+
+            if new_progress == 100.0:
+                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
+                self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
+                self._temp_plugin_file.write(self._download_plugin_reply.readAll())
+                result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
+                self._temp_plugin_file.close()  # Plugin was installed, delete temp file
+
+    @pyqtSlot(str)
+    def downloadAndInstallPlugin(self, url):
+        Logger.log("i", "Attempting to download & install plugin from %s", url)
+        url = QUrl(url)
+        self._download_plugin_request = QNetworkRequest(url)
+        self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
+        self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
@@ -73,6 +96,7 @@ class PluginBrowser(QObject, Extension):
             self._plugins_model.addRoleName(Qt.UserRole + 3, "short_description")
             self._plugins_model.addRoleName(Qt.UserRole + 4, "author")
             self._plugins_model.addRoleName(Qt.UserRole + 5, "already_installed")
+            self._plugins_model.addRoleName(Qt.UserRole + 6, "file_location")
         else:
             self._plugins_model.clear()
         items = []
@@ -83,7 +107,8 @@ class PluginBrowser(QObject, Extension):
                 "version": metadata["version"],
                 "short_description": metadata["short_description"],
                 "author": metadata["author"],
-                "already_installed": plugin_registry.getMetaData(metadata["id"]) != {}
+                "already_installed": plugin_registry.getMetaData(metadata["id"]) != {},
+                "file_location": metadata["file_location"]
             })
         self._plugins_model.setItems(items)
         return self._plugins_model

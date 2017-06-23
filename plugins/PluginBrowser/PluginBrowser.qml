@@ -11,25 +11,48 @@ UM.Dialog
     title: "YAY"
     width: 450
     height: 150
-    ListView
+    ScrollView
     {
-        model: manager.pluginsModel
         anchors.fill: parent
-        delegate: Row
+        frameVisible: true
+        ListView
         {
-            width: parent.width
-            Button
-            {
-                text: model.name
-            }
-            Button
-            {
-                text: model.author
-            }
+            id: pluginList
+            model: manager.pluginsModel
+            anchors.fill: parent
 
-            Label
+            delegate: pluginDelegate
+        }
+    }
+    Item
+    {
+        SystemPalette { id: palette }
+        Component
+        {
+            id: pluginDelegate
+            Rectangle
             {
-                text: model.short_description
+                width: pluginList.width;
+                height: childrenRect.height;
+                color: index % 2 ? palette.base : palette.alternateBase
+                Row
+                {
+                    width: parent.width
+                    height: childrenRect.height;
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    Label
+                    {
+
+                        text: model.name
+                        width: contentWidth
+                    }
+                    Button
+                    {
+                        text: "Download"
+                        onClicked: manager.downloadAndInstallPlugin(model.file_location)
+                    }
+                }
             }
         }
     }
