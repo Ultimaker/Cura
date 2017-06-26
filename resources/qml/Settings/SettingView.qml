@@ -298,6 +298,10 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
+                    onFocusReceived:
+                    {
+                        contents.positionViewAtIndex(index, ListView.Contain);
+                    }
                 }
             }
 

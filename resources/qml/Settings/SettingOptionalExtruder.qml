@@ -31,6 +31,14 @@ SettingItem
             propertyProvider.setPropertyValue("value", model.getItem(index).index);
         }
 
+        onActiveFocusChanged:
+        {
+            if(activeFocus)
+            {
+                base.focusReceived();
+            }
+        }
+
         Binding
         {
             target: control

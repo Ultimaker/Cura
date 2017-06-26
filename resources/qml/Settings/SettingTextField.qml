@@ -105,6 +105,14 @@ SettingItem
                 propertyProvider.setPropertyValue("value", text)
             }
 
+            onActiveFocusChanged:
+            {
+                if(activeFocus)
+                {
+                    base.focusReceived();
+                }
+            }
+
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
             font: UM.Theme.getFont("default");
 

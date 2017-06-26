@@ -62,6 +62,14 @@ SettingItem
             propertyProvider.setPropertyValue("value", !checked);
         }
 
+        onActiveFocusChanged:
+        {
+            if(activeFocus)
+            {
+                base.focusReceived();
+            }
+        }
+
         Rectangle
         {
             anchors

@@ -94,7 +94,19 @@ SettingItem
             }
         }
 
-        onActivated: { forceActiveFocus(); propertyProvider.setPropertyValue("value", definition.options[index].key) }
+        onActivated:
+        {
+            forceActiveFocus();
+            propertyProvider.setPropertyValue("value", definition.options[index].key);
+        }
+
+        onActiveFocusChanged:
+        {
+            if(activeFocus)
+            {
+                base.focusReceived();
+            }
+        }
 
         Binding
         {

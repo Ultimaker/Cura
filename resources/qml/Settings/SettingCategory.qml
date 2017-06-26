@@ -14,10 +14,11 @@ Button {
 
     style: UM.Theme.styles.sidebar_category;
 
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal contextMenuRequested()
     signal showAllHiddenInheritedSettings(string category_id)
+    signal focusReceived()
 
     text: definition.label
     iconSource: UM.Theme.getIcon(definition.icon)
@@ -25,7 +26,24 @@ Button {
     checkable: true
     checked: definition.expanded
 
-    onClicked: { forceActiveFocus(); definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandAll(definition.key) }
+    onClicked:
+    {
+        forceActiveFocus();
+        if(definition.expanded)
+        {
+            settingDefinitionsModel.collapse(definition.key);
+        } else {
+            settingDefinitionsModel.expandAll(definition.key);
+        }
+    }
+    onActiveFocusChanged:
+    {
+        if(activeFocus)
+        {
+            base.focusReceived();
+        }
+    }
+
     UM.SimpleButton
     {
         id: settingsButton
