@@ -1,3 +1,7 @@
+[2.6.1]
+*New profiles
+The Polypropylene material is added and supported with the Ultimaker 3. Support for CPE+ and PC with 0.8mm nozzles is added as well.
+
 [2.6.0]
 *Cura versions
 Cura 2.6 has local version folders, which means the new version won’t overwrite the existing configuration and profiles from older versions, but can create a new folder instead. You can now safely check out new beta versions and, if necessary, start up an older version without the danger of losing your profiles.
