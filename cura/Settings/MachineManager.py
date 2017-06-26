@@ -11,6 +11,7 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Decorators import deprecated
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
@@ -1121,6 +1122,7 @@ class MachineManager(QObject):
     def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
+    @deprecated("Use ExtruderStack.material = ... and it won't be necessary", "2.7")
     def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container

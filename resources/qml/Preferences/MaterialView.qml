@@ -1,5 +1,5 @@
-// Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the AGPLv3 or higher.
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.1
 import QtQuick.Controls 1.3
@@ -168,8 +168,13 @@ TabView
                     {
                         // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                         // which derive from the same base_file
+                        var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
                         base.setMetaDataEntry("approximate_diameter", properties.approximate_diameter, Math.round(value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, value);
+                        if (Cura.MachineManager.filterMaterialsByMachine && properties.approximate_diameter != Cura.MachineManager.activeMachine.approximateMaterialDiameter)
+                        {
+                            Cura.MaterialManager.showMaterialWarningMessage(base.containerId, old_diameter);
+                        }
                         Cura.ContainerManager.setContainerProperty(base.containerId, "material_diameter", "value", value);
                     }
                     onValueChanged: updateCostPerMeter()

@@ -1,5 +1,6 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -47,6 +48,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Settings.ProfilesModel import ProfilesModel
+from cura.Settings.MaterialsModel import MaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
@@ -62,6 +64,7 @@ from . import CameraImageProvider
 from . import MachineActionManager
 
 from cura.Settings.MachineManager import MachineManager
+from cura.Settings.MaterialManager import MaterialManager
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
@@ -189,6 +192,7 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._material_manager = None
         self._setting_inheritance_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
@@ -640,6 +644,7 @@ class CuraApplication(QtApplication):
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         ExtruderManager.getInstance()
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
                          self.getSettingInheritanceManager)
 
@@ -664,6 +669,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getMaterialManager(self, *args):
+        if self._material_manager is None:
+            self._material_manager = MaterialManager.createMaterialManager()
+        return self._material_manager
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
@@ -708,6 +718,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
+        qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
         qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
         qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
