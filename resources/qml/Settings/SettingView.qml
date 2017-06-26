@@ -300,12 +300,22 @@ Item
                     }
                     onFocusReceived:
                     {
+                        animateContentY.from = contents.contentY;
                         contents.positionViewAtIndex(index, ListView.Contain);
+                        animateContentY.to = contents.contentY;
+                        animateContentY.running = true;
                     }
                 }
             }
 
             UM.I18nCatalog { id: catalog; name: "cura"; }
+
+            NumberAnimation {
+                id: animateContentY
+                target: contents
+                property: "contentY"
+                duration: 50
+            }
 
             add: Transition {
                 SequentialAnimation {
