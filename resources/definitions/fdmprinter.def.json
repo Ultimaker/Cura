@@ -1136,6 +1136,19 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "xy_offset_layer_0":
+                {
+                    "label": "Initial Layer Horizontal Expansion",
+                    "description": "Amount of offset applied to all polygons in the first layer. A negative value can compensate for elephants foot.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value_warning": "-1",
+                    "maximum_value_warning": "1",
+                    "default_value": 0,
+                    "value": "xy_offset",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
