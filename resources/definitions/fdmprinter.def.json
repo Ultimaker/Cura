@@ -4419,7 +4419,7 @@
                       "label": "Prime Tower Purge Volume",
                       "description": "Amount of filament to be purged when wiping on prime tower. Purging is useful for compensating the filament lost by oozing during the inactivity of the nozzle.",
                       "type": "float",
-                      "enabled": "resolveOrValue('prime_tower_enable')",
+                      "enabled": "resolveOrValue('prime_tower_wipe_enabled')",
                       "unit": "mm³",
                       "default_value": 0,
                       "minimum_value": "0",
