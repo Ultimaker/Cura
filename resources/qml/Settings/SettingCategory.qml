@@ -19,6 +19,9 @@ Button {
     signal contextMenuRequested()
     signal showAllHiddenInheritedSettings(string category_id)
     signal focusReceived()
+    signal setActiveFocusToNextSetting(bool forward)
+
+    property var focusItem: base
 
     text: definition.label
     iconSource: UM.Theme.getIcon(definition.icon)
@@ -42,6 +45,15 @@ Button {
         {
             base.focusReceived();
         }
+    }
+
+    Keys.onTabPressed:
+    {
+        base.setActiveFocusToNextSetting(true)
+    }
+    Keys.onBacktabPressed:
+    {
+        base.setActiveFocusToNextSetting(false)
     }
 
     UM.SimpleButton

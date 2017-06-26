@@ -168,6 +168,8 @@ Item
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
             }
 
+            property var indexWithFocus: -1
+
             delegate: Loader
             {
                 id: delegate
@@ -300,10 +302,38 @@ Item
                     }
                     onFocusReceived:
                     {
+                        contents.indexWithFocus = index;
                         animateContentY.from = contents.contentY;
                         contents.positionViewAtIndex(index, ListView.Contain);
                         animateContentY.to = contents.contentY;
                         animateContentY.running = true;
+                    }
+                    onSetActiveFocusToNextSetting:
+                    {
+                        if(forward == undefined || forward)
+                        {
+                            contents.currentIndex = contents.indexWithFocus + 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex++;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                        else
+                        {
+                            contents.currentIndex = contents.indexWithFocus - 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex--;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
                     }
                 }
             }

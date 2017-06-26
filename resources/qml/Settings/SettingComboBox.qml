@@ -10,6 +10,7 @@ import UM 1.1 as UM
 SettingItem
 {
     id: base
+    property var focusItem: control
 
     contents: ComboBox
     {
@@ -106,6 +107,15 @@ SettingItem
             {
                 base.focusReceived();
             }
+        }
+
+        Keys.onTabPressed:
+        {
+            base.setActiveFocusToNextSetting(true)
+        }
+        Keys.onBacktabPressed:
+        {
+            base.setActiveFocusToNextSetting(false)
         }
 
         Binding

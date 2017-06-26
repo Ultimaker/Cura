@@ -9,6 +9,7 @@ import UM 1.1 as UM
 SettingItem
 {
     id: base
+    property var focusItem: input
 
     contents: Rectangle
     {
@@ -93,7 +94,15 @@ SettingItem
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
-            activeFocusOnTab: true
+
+            Keys.onTabPressed:
+            {
+                base.setActiveFocusToNextSetting(true)
+            }
+            Keys.onBacktabPressed:
+            {
+                base.setActiveFocusToNextSetting(false)
+            }
 
             Keys.onReleased:
             {

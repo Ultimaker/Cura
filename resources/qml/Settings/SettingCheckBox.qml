@@ -11,13 +11,13 @@ import UM 1.2 as UM
 SettingItem
 {
     id: base
+    property var focusItem: control
 
     contents: MouseArea
     {
         id: control
         anchors.fill: parent
         hoverEnabled: true
-        activeFocusOnTab: true
 
         property bool checked:
         {
@@ -60,6 +60,15 @@ SettingItem
         {
             forceActiveFocus();
             propertyProvider.setPropertyValue("value", !checked);
+        }
+
+        Keys.onTabPressed:
+        {
+            base.setActiveFocusToNextSetting(true)
+        }
+        Keys.onBacktabPressed:
+        {
+            base.setActiveFocusToNextSetting(false)
         }
 
         onActiveFocusChanged:

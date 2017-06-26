@@ -33,6 +33,7 @@ Item {
     property var stackLevel: stackLevels[0]
 
     signal focusReceived()
+    signal setActiveFocusToNextSetting(bool forward)
     signal contextMenuRequested()
     signal showTooltip(string text)
     signal hideTooltip()

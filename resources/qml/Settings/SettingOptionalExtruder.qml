@@ -11,6 +11,7 @@ import Cura 1.0 as Cura
 SettingItem
 {
     id: base
+    property var focusItem: control
 
     contents: ComboBox
     {
@@ -37,6 +38,15 @@ SettingItem
             {
                 base.focusReceived();
             }
+        }
+
+        Keys.onTabPressed:
+        {
+            base.setActiveFocusToNextSetting(true)
+        }
+        Keys.onBacktabPressed:
+        {
+            base.setActiveFocusToNextSetting(false)
         }
 
         Binding
