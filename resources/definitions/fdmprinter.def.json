@@ -1325,6 +1325,7 @@
                             "description": "Expand the bottom skin areas (areas with air below) so that they are anchored by the infill layers above and below.",
                             "type": "bool",
                             "default_value": false,
+                            "value": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         }
                     }
