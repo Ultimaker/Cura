@@ -32,9 +32,11 @@ Item {
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
 
+    signal focusReceived()
+    signal setActiveFocusToNextSetting(bool forward)
     signal contextMenuRequested()
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
     property string tooltipText:
     {

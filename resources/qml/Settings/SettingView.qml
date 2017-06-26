@@ -168,6 +168,8 @@ Item
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
             }
 
+            property var indexWithFocus: -1
+
             delegate: Loader
             {
                 id: delegate
@@ -298,10 +300,52 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
+                    onFocusReceived:
+                    {
+                        contents.indexWithFocus = index;
+                        animateContentY.from = contents.contentY;
+                        contents.positionViewAtIndex(index, ListView.Contain);
+                        animateContentY.to = contents.contentY;
+                        animateContentY.running = true;
+                    }
+                    onSetActiveFocusToNextSetting:
+                    {
+                        if(forward == undefined || forward)
+                        {
+                            contents.currentIndex = contents.indexWithFocus + 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex++;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                        else
+                        {
+                            contents.currentIndex = contents.indexWithFocus - 1;
+                            while(contents.currentItem && contents.currentItem.height <= 0)
+                            {
+                                contents.currentIndex--;
+                            }
+                            if(contents.currentItem)
+                            {
+                                contents.currentItem.item.focusItem.forceActiveFocus();
+                            }
+                        }
+                    }
                 }
             }
 
             UM.I18nCatalog { id: catalog; name: "cura"; }
+
+            NumberAnimation {
+                id: animateContentY
+                target: contents
+                property: "contentY"
+                duration: 50
+            }
 
             add: Transition {
                 SequentialAnimation {

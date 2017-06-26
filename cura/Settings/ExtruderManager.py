@@ -78,8 +78,9 @@ class ExtruderManager(QObject):
     def extruderIds(self):
         map = {}
         global_stack_id = Application.getInstance().getGlobalContainerStack().getId()
-        for position in self._extruder_trains[global_stack_id]:
-            map[position] = self._extruder_trains[global_stack_id][position].getId()
+        if global_stack_id in self._extruder_trains:
+            for position in self._extruder_trains[global_stack_id]:
+                map[position] = self._extruder_trains[global_stack_id][position].getId()
         return map
 
     @pyqtSlot(str, result = str)
