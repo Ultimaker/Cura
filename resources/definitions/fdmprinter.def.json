@@ -916,7 +916,7 @@
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
                     "minimum_value": "0",
-                    "maximum_value_warning": "machine_nozzle_size",
+                    "maximum_value_warning": "machine_nozzle_size * 2",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1393,7 +1393,6 @@
                     "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
@@ -1445,6 +1444,7 @@
                             "type": "bool",
                             "default_value": false,
                             "limit_to_extruder": "top_bottom_extruder_nr",
+                            "value": "expand_skins_into_infill",
                             "settable_per_mesh": true
                         }
                     }
@@ -2908,7 +2908,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "minimum_value_warning": "0.75 * machine_nozzle_size",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
