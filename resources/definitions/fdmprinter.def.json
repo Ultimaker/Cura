@@ -2726,7 +2726,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "minimum_value_warning": "0.75 * machine_nozzle_size",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
