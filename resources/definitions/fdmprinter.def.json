@@ -2048,7 +2048,7 @@
                     "default_value": 2,
                     "resolve": "round(sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers')))",
                     "minimum_value": "0",
-                    "maximum_value_warning": "3.0 / resolveOrValue('layer_height')",
+                    "maximum_value_warning": "3.2 / resolveOrValue('layer_height')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
