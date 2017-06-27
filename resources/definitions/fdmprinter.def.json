@@ -2189,9 +2189,9 @@
                     "description": "The first few layers are printed slower than the rest of the model, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers.",
                     "type": "int",
                     "default_value": 2,
-                    "resolve": "sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers'))",
+                    "resolve": "round(sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers')))",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1.0 / resolveOrValue('layer_height')",
+                    "maximum_value_warning": "3.2 / resolveOrValue('layer_height')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },

@@ -92,7 +92,7 @@ class MachineManager(QObject):
         self._printer_output_devices = []
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
-        if active_machine_id != "":
+        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacks(id = active_machine_id):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
             if self._global_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
