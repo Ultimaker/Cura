@@ -24,7 +24,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
  qml-module-qt-labs-settings,
  fonts-open-sans,
  python3-uranium (>=2.5.0), uranium-plugins (>=2.5.0), cura-engine (>=1:2.5.0),
- python3-savitar (>=2.6)
+ python3-savitar (>=2.6.0)
 Recommends: python3-zeroconf, fdm-materials (>=2.5.0)
 Provides: ${python3:Provides}
 XB-Python3-Version: ${python3:Versions}
