@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-06-26 23:52+0800\n"
-"PO-Revision-Date: 2017-06-27 10:22+0800\n"
+"PO-Revision-Date: 2017-06-27 15:37+0800\n"
 "Language-Team: PCDotFan <pc@edu.ax>\n"
 "Lang-Code: xx\n"
 "Country-Code: XX\n"
@@ -50,7 +50,7 @@ msgctxt "machine_show_variants description"
 msgid ""
 "Whether to show the different variants of this machine, which are described "
 "in separate json files."
-msgstr "﻿这台打印机是否显示它在不同的 JSON 文件中描述的不同变化."
+msgstr "这台打印机是否需要显示它在不同的 JSON 文件中所描述的不同变化。"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
@@ -238,7 +238,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle length"
-msgstr ""
+msgstr "喷嘴长度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -250,7 +250,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle angle"
-msgstr ""
+msgstr "喷嘴角度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -298,7 +298,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat up speed"
-msgstr ""
+msgstr "升温速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -310,7 +310,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool down speed"
-msgstr ""
+msgstr "冷却速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -335,52 +335,52 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "Gcode flavour"
-msgstr ""
+msgstr "G-code 代码风格"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
 msgid "The type of gcode to be generated."
-msgstr ""
+msgstr "需要生成的 G-code 代码类型"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "RepRap (Marlin/Sprinter)"
-msgstr ""
+msgstr "RepRap (Marlin/Sprinter)"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Volumatric)"
 msgid "RepRap (Volumetric)"
-msgstr ""
+msgstr "RepRap (Volumetric)"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
-msgstr ""
+msgstr "Ultimaker 2"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
-msgstr ""
+msgstr "Griffin"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option Makerbot"
 msgid "Makerbot"
-msgstr ""
+msgstr "Makerbot"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
-msgstr ""
+msgstr "Bits from Bytes"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option MACH3"
 msgid "Mach3"
-msgstr ""
+msgstr "Mach3"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option Repetier"
 msgid "Repetier"
-msgstr ""
+msgstr "Repetier"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -437,14 +437,14 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
-msgstr ""
+msgstr "喷嘴直径"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size description"
 msgid ""
 "The inner diameter of the nozzle. Change this setting when using a non-"
 "standard nozzle size."
-msgstr ""
+msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
@@ -459,14 +459,14 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr ""
+msgstr "挤出机初始 Z 轴位置"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z description"
 msgid ""
 "The Z coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr ""
+msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -483,7 +483,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_x label"
 msgid "Maximum Speed X"
-msgstr ""
+msgstr "X 轴最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_x description"
@@ -493,7 +493,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_y label"
 msgid "Maximum Speed Y"
-msgstr ""
+msgstr "Y 轴最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_y description"
@@ -503,7 +503,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_z label"
 msgid "Maximum Speed Z"
-msgstr ""
+msgstr "Z 轴最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_z description"
@@ -523,7 +523,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x label"
 msgid "Maximum Acceleration X"
-msgstr ""
+msgstr "X 轴最大加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_x description"
@@ -533,7 +533,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
 msgid "Maximum Acceleration Y"
-msgstr ""
+msgstr " 轴最大加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y description"
@@ -543,7 +543,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
-msgstr ""
+msgstr "Z 轴最大加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_z description"
@@ -553,7 +553,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_e label"
 msgid "Maximum Filament Acceleration"
-msgstr ""
+msgstr "挤出电机最大加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_e description"
@@ -563,7 +563,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_acceleration label"
 msgid "Default Acceleration"
-msgstr ""
+msgstr "默认加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_acceleration description"
@@ -573,7 +573,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_xy label"
 msgid "Default X-Y Jerk"
-msgstr ""
+msgstr "默认 X-Y 平面抖动速度（Jerk）"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_xy description"
@@ -583,7 +583,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_z label"
 msgid "Default Z Jerk"
-msgstr ""
+msgstr "默认 Z 轴抖动速度（Jerk）"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_z description"
@@ -593,7 +593,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e label"
 msgid "Default Filament Jerk"
-msgstr ""
+msgstr "默认挤出电机 Jerk"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_jerk_e description"
@@ -613,7 +613,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "resolution label"
 msgid "Quality"
-msgstr ""
+msgstr "质量"
 
 #: fdmprinter.def.json
 msgctxt "resolution description"
@@ -625,7 +625,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "layer_height label"
 msgid "Layer Height"
-msgstr ""
+msgstr "层高"
 
 #: fdmprinter.def.json
 msgctxt "layer_height description"
@@ -637,7 +637,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "layer_height_0 label"
 msgid "Initial Layer Height"
-msgstr ""
+msgstr "起始层高"
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -649,7 +649,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "line_width label"
 msgid "Line Width"
-msgstr ""
+msgstr "走线宽度"
 
 #: fdmprinter.def.json
 msgctxt "line_width description"
@@ -662,7 +662,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_line_width label"
 msgid "Wall Line Width"
-msgstr ""
+msgstr "走线宽度（壁）"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width description"
@@ -672,7 +672,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 label"
 msgid "Outer Wall Line Width"
-msgstr ""
+msgstr "走线宽度（外壁）"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 description"
@@ -684,7 +684,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
-msgstr ""
+msgstr "走线宽度（内壁）"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x description"
@@ -695,7 +695,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_line_width label"
 msgid "Top/Bottom Line Width"
-msgstr ""
+msgstr "走线宽度（顶层 / 底层）"
 
 #: fdmprinter.def.json
 msgctxt "skin_line_width description"
@@ -705,7 +705,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_line_width label"
 msgid "Infill Line Width"
-msgstr ""
+msgstr "走线宽度（填充）"
 
 #: fdmprinter.def.json
 msgctxt "infill_line_width description"
@@ -715,7 +715,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width label"
 msgid "Skirt/Brim Line Width"
-msgstr ""
+msgstr "走线宽度（Skirt / Brim）"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width description"
@@ -725,7 +725,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_line_width label"
 msgid "Support Line Width"
-msgstr ""
+msgstr "走线宽度（支撑结构）"
 
 #: fdmprinter.def.json
 msgctxt "support_line_width description"
@@ -735,7 +735,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_interface_line_width label"
 msgid "Support Interface Line Width"
-msgstr ""
+msgstr "走线宽度（支撑接触面）"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_line_width description"
@@ -775,17 +775,17 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "shell label"
 msgid "Shell"
-msgstr ""
+msgstr "外壳"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
 msgid "Shell"
-msgstr ""
+msgstr "外壳"
 
 #: fdmprinter.def.json
 msgctxt "wall_thickness label"
 msgid "Wall Thickness"
-msgstr ""
+msgstr "壁厚"
 
 #: fdmprinter.def.json
 msgctxt "wall_thickness description"
@@ -797,7 +797,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_line_count label"
 msgid "Wall Line Count"
-msgstr ""
+msgstr "壁走线次数"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_count description"
@@ -809,7 +809,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
-msgstr ""
+msgstr "外壁擦嘴长度"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
@@ -821,7 +821,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
 msgid "Top/Bottom Thickness"
-msgstr ""
+msgstr "顶层 / 底层厚度"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness description"
@@ -833,7 +833,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_thickness label"
 msgid "Top Thickness"
-msgstr ""
+msgstr "顶层厚度"
 
 #: fdmprinter.def.json
 msgctxt "top_thickness description"
@@ -845,7 +845,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
-msgstr ""
+msgstr "顶部层数"
 
 #: fdmprinter.def.json
 msgctxt "top_layers description"
@@ -857,7 +857,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
-msgstr ""
+msgstr "底层厚度"
 
 #: fdmprinter.def.json
 msgctxt "bottom_thickness description"
@@ -881,7 +881,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
 msgid "Top/Bottom Pattern"
-msgstr ""
+msgstr "顶部 / 底部走线图案"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern description"
@@ -891,17 +891,17 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "直线"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 label"
@@ -916,17 +916,17 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option lines"
 msgid "Lines"
-msgstr ""
+msgstr "直线"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "Zig Zag"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1076,12 +1076,12 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "z_seam_type option shortest"
 msgid "Shortest"
-msgstr ""
+msgstr "最短"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type option random"
 msgid "Random"
-msgstr ""
+msgstr "随机"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1133,7 +1133,7 @@ msgstr "填充"
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
 msgid "Infill Density"
-msgstr ""
+msgstr "填充密度"
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density description"
@@ -1155,7 +1155,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "填充图案"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
@@ -1170,22 +1170,22 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
 msgid "Grid"
-msgstr ""
+msgstr "网格"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "直线"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option triangles"
 msgid "Triangles"
-msgstr ""
+msgstr "三角形"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
 msgid "Cubic"
-msgstr ""
+msgstr "立方体"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubicsubdiv"
@@ -1195,27 +1195,27 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
 msgid "Tetrahedral"
-msgstr ""
+msgstr "正四面体"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric_3d"
 msgid "Concentric 3D"
-msgstr ""
+msgstr "立体同心圆"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "锯齿状"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
 msgid "Infill Line Directions"
-msgstr ""
+msgstr "填充走线方向"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
@@ -1231,7 +1231,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
 msgid "Spaghetti Infill"
-msgstr ""
+msgstr "意面式填充"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled description"
@@ -1244,7 +1244,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle label"
 msgid "Spaghetti Maximum Infill Angle"
-msgstr ""
+msgstr "意面式填充 - 最大填充角度"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_infill_angle description"
@@ -1257,7 +1257,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_height label"
 msgid "Spaghetti Infill Maximum Height"
-msgstr ""
+msgstr "意面式填充 - 最大填充高度"
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_max_height description"
@@ -1834,17 +1834,17 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed label"
 msgid "Speed"
-msgstr ""
+msgstr "速度"
 
 #: fdmprinter.def.json
 msgctxt "speed description"
 msgid "Speed"
-msgstr ""
+msgstr "速度"
 
 #: fdmprinter.def.json
 msgctxt "speed_print label"
 msgid "Print Speed"
-msgstr ""
+msgstr "打印速度"
 
 #: fdmprinter.def.json
 msgctxt "speed_print description"
@@ -1854,7 +1854,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_infill label"
 msgid "Infill Speed"
-msgstr ""
+msgstr "填充速度"
 
 #: fdmprinter.def.json
 msgctxt "speed_infill description"
@@ -1864,7 +1864,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_wall label"
 msgid "Wall Speed"
-msgstr ""
+msgstr "速度（壁）"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall description"
@@ -1874,7 +1874,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
-msgstr ""
+msgstr "速度（外壁）"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 description"
@@ -1888,7 +1888,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_wall_x label"
 msgid "Inner Wall Speed"
-msgstr ""
+msgstr "速度（内壁）"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_x description"
@@ -1901,7 +1901,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_topbottom label"
 msgid "Top/Bottom Speed"
-msgstr ""
+msgstr "速度（顶部 / 底部）"
 
 #: fdmprinter.def.json
 msgctxt "speed_topbottom description"
@@ -1911,7 +1911,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_support label"
 msgid "Support Speed"
-msgstr ""
+msgstr "速度（支撑结构）"
 
 #: fdmprinter.def.json
 msgctxt "speed_support description"
@@ -1924,7 +1924,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
-msgstr ""
+msgstr "速度（支撑填充）"
 
 #: fdmprinter.def.json
 msgctxt "speed_support_infill description"
@@ -2655,17 +2655,17 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cooling label"
 msgid "Cooling"
-msgstr ""
+msgstr "冷却"
 
 #: fdmprinter.def.json
 msgctxt "cooling description"
 msgid "Cooling"
-msgstr ""
+msgstr "冷却"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
-msgstr ""
+msgstr "开启打印冷却"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_enabled description"
@@ -2677,7 +2677,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed label"
 msgid "Fan Speed"
-msgstr ""
+msgstr "风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed description"
@@ -2700,7 +2700,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_max label"
 msgid "Maximum Fan Speed"
-msgstr ""
+msgstr "最大风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_max description"
@@ -2727,7 +2727,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_0 label"
 msgid "Initial Fan Speed"
-msgstr ""
+msgstr "起始风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_0 description"
@@ -2765,7 +2765,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
-msgstr ""
+msgstr "最短单层冷却时间"
 
 #: fdmprinter.def.json
 msgctxt "cool_min_layer_time description"
@@ -2780,7 +2780,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cool_min_speed label"
 msgid "Minimum Speed"
-msgstr ""
+msgstr "最小风扇速度"
 
 #: fdmprinter.def.json
 msgctxt "cool_min_speed description"
@@ -2793,7 +2793,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "cool_lift_head label"
 msgid "Lift Head"
-msgstr ""
+msgstr "打印头提升"
 
 #: fdmprinter.def.json
 msgctxt "cool_lift_head description"
@@ -3345,32 +3345,32 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "直线"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option grid"
 msgid "Grid"
-msgstr ""
+msgstr "网格"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
-msgstr ""
+msgstr "三角形"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "同心圆"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric_3d"
 msgid "Concentric 3D"
-msgstr ""
+msgstr "立体同心圆"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "锯齿状"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern label"
@@ -3467,7 +3467,7 @@ msgstr "打印平台附着"
 #: fdmprinter.def.json
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr ""
+msgstr "附着"
 
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable label"
@@ -3486,26 +3486,26 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr ""
+msgstr "挤出机 X 轴坐标"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x description"
 msgid ""
 "The X coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr ""
+msgstr "打印开始时，喷头在 X 轴上初始位置。"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr ""
+msgstr "挤出机 Y 轴起始位置"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid ""
 "The Y coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr ""
+msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type label"
@@ -4694,7 +4694,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
 msgid "Wire Printing"
-msgstr ""
+msgstr "单线打印（以下简称 WP）"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled description"
@@ -4708,7 +4708,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_height label"
 msgid "WP Connection Height"
-msgstr ""
+msgstr "WP 连接高度"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_height description"
@@ -4733,7 +4733,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed label"
 msgid "WP Speed"
-msgstr ""
+msgstr "WP 速度"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed description"
@@ -4745,7 +4745,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_bottom label"
 msgid "WP Bottom Printing Speed"
-msgstr ""
+msgstr "WP 底部打印速度"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_bottom description"
@@ -4757,7 +4757,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_up label"
 msgid "WP Upward Printing Speed"
-msgstr ""
+msgstr "WP 上升打印速度"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_up description"
@@ -4768,7 +4768,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_down label"
 msgid "WP Downward Printing Speed"
-msgstr ""
+msgstr "WP 下降打印速度"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_down description"
@@ -4779,7 +4779,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_flat label"
 msgid "WP Horizontal Printing Speed"
-msgstr ""
+msgstr "WP 水平打印速度"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_printspeed_flat description"
@@ -4791,7 +4791,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_flow label"
 msgid "WP Flow"
-msgstr ""
+msgstr "WP 打印流量"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flow description"
@@ -4803,7 +4803,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_connection label"
 msgid "WP Connection Flow"
-msgstr ""
+msgstr "WP 连接流量"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flow_connection description"
@@ -4910,7 +4910,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_strategy label"
 msgid "WP Strategy"
-msgstr ""
+msgstr "WP 使用策略"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_strategy description"
@@ -4937,7 +4937,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wireframe_strategy option retract"
 msgid "Retract"
-msgstr ""
+msgstr "回抽"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_straight_before_down label"
