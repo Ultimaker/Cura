@@ -731,9 +731,9 @@ class BuildVolume(SceneNode):
             if offset_y is None:
                 offset_y = 0
             result[extruder_id] = []
-
-            for polygon in machine_disallowed_polygons:
-                result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
+            if not no_nozzle_offsetting_for_disallowed_areas:
+                for polygon in machine_disallowed_polygons:
+                    result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
 
             #Add the border around the edge of the build volume.
             left_unreachable_border = 0
