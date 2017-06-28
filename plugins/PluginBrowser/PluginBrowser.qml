@@ -88,7 +88,7 @@ UM.Dialog
                     Button
                     {
                         id: downloadButton
-                        text: !model.already_installed ? catalog.i18nc("@action:button", "Download") : model.can_upgrade ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
+                        text: (model.already_installed && model.can_upgrade) ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
                         onClicked: manager.downloadAndInstallPlugin(model.file_location)
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
