@@ -260,6 +260,31 @@ UM.MainWindow
                 {
                     if (drop.urls.length > 0)
                     {
+                        // As the drop area also supports plugins, first check if it's a plugin that was dropped.
+                        if (drop.urls.length == 1)
+                        {
+                            if (PluginRegistry.isPluginFile(drop.urls[0]))
+                            {
+                                // Try to install plugin & close.
+                                var result = PluginRegistry.installPlugin(drop.urls[0]);
+                                pluginInstallDialog.text = result.message;
+                                if (result.status == "ok")
+                                {
+                                    pluginInstallDialog.icon = StandardIcon.Information;
+                                }
+                                else if (result.status == "duplicate")
+                                {
+                                    pluginInstallDialog.icon = StandardIcon.Warning;
+                                }
+                                else
+                                {
+                                    pluginInstallDialog.icon = StandardIcon.Critical;
+                                }
+                                pluginInstallDialog.open();
+                                return;
+                            }
+                        }
+
                         openDialog.handleOpenFileUrls(drop.urls);
                     }
                 }
@@ -281,9 +306,14 @@ UM.MainWindow
             {
                 id: view_panel
 
-                anchors.top: viewModeButton.bottom
-                anchors.topMargin: UM.Theme.getSize("default_margin").height;
+                property bool hugBottom: parent.height < viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height
+
+                anchors.bottom: parent.bottom // panel is always anchored to the bottom only, because dynamically switching between bottom and top results in stretching the height
+                anchors.bottomMargin: hugBottom ? 0 : parent.height - (viewModeButton.y + viewModeButton.height + height + UM.Theme.getSize("default_margin").height)
                 anchors.left: viewModeButton.left;
+                anchors.leftMargin: hugBottom ? viewModeButton.width + UM.Theme.getSize("default_margin").width : 0
+
+                property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
 
                 height: childrenRect.height;
 
@@ -400,41 +430,15 @@ UM.MainWindow
                 }
             }
 
-            Image
+            Loader
             {
-                id: cameraImage
-                width: Math.min(viewportOverlay.width, sourceSize.width)
-                height: sourceSize.height * width / sourceSize.width
+                sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
+                visible: base.monitoringPrint
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-                visible: base.monitoringPrint
-                onVisibleChanged:
-                {
-                    if(Cura.MachineManager.printerOutputDevices.length == 0 )
-                    {
-                        return;
-                    }
-                    if(visible)
-                    {
-                        Cura.MachineManager.printerOutputDevices[0].startCamera()
-                    } else
-                    {
-                        Cura.MachineManager.printerOutputDevices[0].stopCamera()
-                    }
-                }
-                source:
-                {
-                    if(!base.monitoringPrint)
-                    {
-                        return "";
-                    }
-                    if(Cura.MachineManager.printerOutputDevices.length > 0 && Cura.MachineManager.printerOutputDevices[0].cameraImage)
-                    {
-                        return Cura.MachineManager.printerOutputDevices[0].cameraImage;
-                    }
-                    return "";
-                }
+
+
             }
 
             UM.MessageStack
@@ -711,6 +715,14 @@ UM.MainWindow
                 openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
             }
         }
+    }
+
+    MessageDialog
+    {
+        id: pluginInstallDialog
+        title: catalog.i18nc("@window:title", "Install Plugin");
+        standardButtons: StandardButton.Ok
+        modality: Qt.ApplicationModal
     }
 
     MessageDialog {

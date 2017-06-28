@@ -320,7 +320,17 @@ Column
         Rectangle //Input field for pre-heat temperature.
         {
             id: preheatTemperatureControl
-            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : UM.Theme.getColor("setting_validation_ok")
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled") : showError ? UM.Theme.getColor("setting_validation_error") : UM.Theme.getColor("setting_validation_ok")
+            property var showError:
+            {
+                if(bedTemperature.properties.maximum_value != "None" && bedTemperature.properties.maximum_value <  parseInt(preheatTemperatureInput.text))
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
             enabled:
             {
                 if (connectedPrinter == null)

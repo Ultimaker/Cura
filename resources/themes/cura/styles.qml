@@ -8,6 +8,37 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.1 as UM
 
 QtObject {
+    property Component info_button: Component {
+        ButtonStyle {
+            label: Text {
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font: UM.Theme.getFont("small")
+                color: UM.Theme.getColor("button_text")
+                text: control.text
+            }
+
+            background: Rectangle {
+                implicitHeight: UM.Theme.getSize("info_button").height
+                implicitWidth: width
+                border.width: 0
+                radius: height * 0.5
+
+                color: {
+                    if (control.pressed) {
+                        return UM.Theme.getColor("button_active");
+                    } else if (control.hovered) {
+                        return UM.Theme.getColor("button_hover");
+                    } else {
+                        return UM.Theme.getColor("button");
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
+    }
+
     property Component mode_switch: Component {
         SwitchStyle {
             groove: Rectangle {
@@ -337,11 +368,11 @@ QtObject {
                     color: {
                         if(!control.enabled) {
                             return Theme.getColor("setting_category_disabled_border");
-                        } else if(control.hovered && control.checkable && control.checked) {
+                        } else if((control.hovered || control.activeFocus) && control.checkable && control.checked) {
                             return Theme.getColor("setting_category_active_hover_border");
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return Theme.getColor("setting_category_active_border");
-                        } else if(control.hovered) {
+                        } else if(control.hovered || control.activeFocus) {
                             return Theme.getColor("setting_category_hover_border");
                         } else {
                             return Theme.getColor("setting_category_border");
@@ -477,7 +508,7 @@ QtObject {
             {
                 color:
                 {
-                    if (!enabled)
+                    if(!enabled)
                     {
                         return UM.Theme.getColor("setting_control_disabled");
                     }

@@ -14,9 +14,14 @@ from cura.CuraApplication import CuraApplication
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+
 
 ##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
+    CurrentFdmMaterialVersion = "1.3"
+    Version = 1
+
     def __init__(self, container_id, *args, **kwargs):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
@@ -51,16 +56,14 @@ class XmlMaterialProfile(InstanceContainer):
     def setMetaDataEntry(self, key, value):
         if self.isReadOnly():
             return
-        if self.getMetaDataEntry(key, None) == value:
-            # Prevent recursion caused by for loop.
-            return
 
         super().setMetaDataEntry(key, value)
 
         basefile = self.getMetaDataEntry("base_file", self._id)  #if basefile is self.id, this is a basefile.
-        # Update all containers that share GUID and basefile
+        # Update all containers that share basefile
         for container in ContainerRegistry.getInstance().findInstanceContainers(base_file = basefile):
-            container.setMetaDataEntry(key, value)
+            if container.getMetaDataEntry(key, None) != value: # Prevent recursion
+                container.setMetaDataEntry(key, value)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
@@ -106,7 +109,7 @@ class XmlMaterialProfile(InstanceContainer):
     #             container.setDirty(True)
 
     ##  Overridden from InstanceContainer
-    # base file: global settings + supported machines
+    # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
     def serialize(self):
         registry = ContainerRegistry.getInstance()
@@ -120,7 +123,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         builder = ET.TreeBuilder()
 
-        root = builder.start("fdmmaterial", { "xmlns": "http://www.ultimaker.com/material"})
+        root = builder.start("fdmmaterial",
+                             {"xmlns": "http://www.ultimaker.com/material",
+                              "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
         builder.start("metadata")
@@ -386,30 +391,31 @@ class XmlMaterialProfile(InstanceContainer):
         self._path = ""
 
     def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
-        return "material"
+        return "materials"
 
     def getVersionFromSerialized(self, serialized: str) -> Optional[int]:
-        version = None
         data = ET.fromstring(serialized)
-        metadata = data.iterfind("./um:metadata/*", self.__namespaces)
-        for entry in metadata:
-            tag_name = _tag_without_namespace(entry)
-            if tag_name == "version":
-                try:
-                    version = int(entry.text)
-                except Exception as e:
-                    raise InvalidInstanceError("Invalid version string '%s': %s" % (entry.text, e))
-                break
-        if version is None:
-            raise InvalidInstanceError("Missing version in metadata")
-        return version
+
+        version = 1
+        # get setting version
+        if "version" in data.attrib:
+            setting_version = self.xmlVersionToSettingVersion(data.attrib["version"])
+        else:
+            setting_version = self.xmlVersionToSettingVersion("1.2")
+
+        return version * 1000000 + setting_version
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized):
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
         serialized = ContainerInterface.deserialize(self, serialized)
-        data = ET.fromstring(serialized)
+
+        try:
+            data = ET.fromstring(serialized)
+        except:
+            Logger.logException("e", "An exception occured while parsing the material profile")
+            return
 
         # Reset previous metadata
         self.clearData() # Ensure any previous data is gone.
@@ -417,6 +423,8 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["type"] = "material"
         meta_data["base_file"] = self.id
         meta_data["status"] = "unknown"  # TODO: Add material verfication
+
+        common_setting_values = {}
 
         inherits = data.find("./um:inherits", self.__namespaces)
         if inherits is not None:
@@ -447,6 +455,9 @@ class XmlMaterialProfile(InstanceContainer):
                 continue
             meta_data[tag_name] = entry.text
 
+            if tag_name in self.__material_metadata_setting_map:
+                common_setting_values[self.__material_metadata_setting_map[tag_name]] = entry.text
+
         if "description" not in meta_data:
             meta_data["description"] = ""
 
@@ -459,45 +470,47 @@ class XmlMaterialProfile(InstanceContainer):
             tag_name = _tag_without_namespace(entry)
             property_values[tag_name] = entry.text
 
-        meta_data["approximate_diameter"] = round(float(property_values.get("diameter", 2.85))) # In mm
+            if tag_name in self.__material_properties_setting_map:
+                common_setting_values[self.__material_properties_setting_map[tag_name]] = entry.text
+
+        meta_data["approximate_diameter"] = str(round(float(property_values.get("diameter", 2.85)))) # In mm
         meta_data["properties"] = property_values
 
         self.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
 
-        global_compatibility = True
-        global_setting_values = {}
+        common_compatibility = True
         settings = data.iterfind("./um:settings/um:setting", self.__namespaces)
         for entry in settings:
             key = entry.get("key")
-            if key in self.__material_property_setting_map:
-                global_setting_values[self.__material_property_setting_map[key]] = entry.text
+            if key in self.__material_settings_setting_map:
+                common_setting_values[self.__material_settings_setting_map[key]] = entry.text
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
-                    global_compatibility = parseBool(entry.text)
+                    common_compatibility = parseBool(entry.text)
             else:
                 Logger.log("d", "Unsupported material setting %s", key)
-        self._cached_values = global_setting_values
+        self._cached_values = common_setting_values # from InstanceContainer ancestor
 
-        meta_data["compatible"] = global_compatibility
+        meta_data["compatible"] = common_compatibility
         self.setMetaData(meta_data)
         self._dirty = False
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
-            machine_compatibility = global_compatibility
+            machine_compatibility = common_compatibility
             machine_setting_values = {}
             settings = machine.iterfind("./um:setting", self.__namespaces)
             for entry in settings:
                 key = entry.get("key")
-                if key in self.__material_property_setting_map:
-                    machine_setting_values[self.__material_property_setting_map[key]] = entry.text
+                if key in self.__material_settings_setting_map:
+                    machine_setting_values[self.__material_settings_setting_map[key]] = entry.text
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
                         machine_compatibility = parseBool(entry.text)
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
 
-            cached_machine_setting_properties = global_setting_values.copy()
+            cached_machine_setting_properties = common_setting_values.copy()
             cached_machine_setting_properties.update(machine_setting_values)
 
             identifiers = machine.iterfind("./um:machine_identifier", self.__namespaces)
@@ -544,7 +557,7 @@ class XmlMaterialProfile(InstanceContainer):
                         variant_containers = ContainerRegistry.getInstance().findInstanceContainers(definition = definition.id, name = hotend_id)
 
                     if not variant_containers:
-                        Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
+                        #Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
                         continue
 
                     hotend_compatibility = machine_compatibility
@@ -552,8 +565,8 @@ class XmlMaterialProfile(InstanceContainer):
                     settings = hotend.iterfind("./um:setting", self.__namespaces)
                     for entry in settings:
                         key = entry.get("key")
-                        if key in self.__material_property_setting_map:
-                            hotend_setting_values[self.__material_property_setting_map[key]] = entry.text
+                        if key in self.__material_settings_setting_map:
+                            hotend_setting_values[self.__material_settings_setting_map[key]] = entry.text
                         elif key in self.__unmapped_settings:
                             if key == "hardware compatible":
                                 hotend_compatibility = parseBool(entry.text)
@@ -583,7 +596,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     def _addSettingElement(self, builder, instance):
         try:
-            key = UM.Dictionary.findKey(self.__material_property_setting_map, instance.definition.key)
+            key = UM.Dictionary.findKey(self.__material_settings_setting_map, instance.definition.key)
         except ValueError:
             return
 
@@ -598,7 +611,7 @@ class XmlMaterialProfile(InstanceContainer):
             return material_name
 
     # Map XML file setting names to internal names
-    __material_property_setting_map = {
+    __material_settings_setting_map = {
         "print temperature": "default_material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
@@ -610,6 +623,12 @@ class XmlMaterialProfile(InstanceContainer):
     __unmapped_settings = [
         "hardware compatible"
     ]
+    __material_properties_setting_map = {
+        "diameter": "material_diameter"
+    }
+    __material_metadata_setting_map = {
+        "GUID": "material_guid"
+    }
 
     # Map XML file product names to internal ids
     # TODO: Move this to definition's metadata

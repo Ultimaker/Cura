@@ -11,6 +11,7 @@ import Cura 1.0 as Cura
 
 Item
 {
+    id: base
     width: {
         if (UM.LayerView.compatibilityMode) {
             return UM.Theme.getSize("layerview_menu_size_compatibility").width;
@@ -25,8 +26,12 @@ Item
             return UM.Theme.getSize("layerview_menu_size").height + UM.LayerView.extruderCount * (UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("layerview_row_spacing").height)
         }
     }
+    property var buttonTarget: {
+        var force_binding = parent.y; // ensure this gets reevaluated when the panel moves
+        return base.mapFromItem(parent.parent, parent.buttonTarget.x, parent.buttonTarget.y);
+    }
 
-    Rectangle {
+    UM.PointingRectangle {
         id: layerViewMenu
         anchors.left: parent.left
         anchors.top: parent.top
@@ -34,6 +39,9 @@ Item
         height: parent.height
         z: slider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
+
+        target: parent.buttonTarget
+        arrowSize: UM.Theme.getSize("default_arrow").width
 
         ColumnLayout {
             id: view_settings

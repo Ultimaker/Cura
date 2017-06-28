@@ -11,12 +11,13 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Decorators import deprecated
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
-from UM.Signal import postponeSignals
+from UM.Signal import postponeSignals, CompressTechnique
 import UM.FlameProfiler
 
 from cura.QualityManager import QualityManager
@@ -91,7 +92,7 @@ class MachineManager(QObject):
         self._printer_output_devices = []
         Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
-        if active_machine_id != "":
+        if active_machine_id != "" and ContainerRegistry.getInstance().findContainerStacks(id = active_machine_id):
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
             if self._global_container_stack and self._global_container_stack.getProperty("machine_extruder_count", "value") > 1:
@@ -220,6 +221,7 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
+        self._auto_materials_changed = {} #Processed all of them now.
 
     def _autoUpdateHotends(self):
         extruder_manager = ExtruderManager.getInstance()
@@ -236,6 +238,7 @@ class MachineManager(QObject):
 
             if old_index is not None:
                 extruder_manager.setActiveExtruderIndex(old_index)
+        self._auto_hotends_changed = {} #Processed all of them now.
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
@@ -468,7 +471,7 @@ class MachineManager(QObject):
 
         return ""
 
-    @pyqtProperty("QObject", notify = globalContainerChanged)
+    @pyqtProperty(QObject, notify = globalContainerChanged)
     def activeMachine(self) -> "GlobalStack":
         return self._global_container_stack
 
@@ -703,7 +706,7 @@ class MachineManager(QObject):
     #  Depending on from/to material+current variant, a quality profile is chosen and set.
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = material_id)
             if not containers or not self._active_container_stack:
                 return
@@ -751,11 +754,12 @@ class MachineManager(QObject):
                 candidate_quality = quality_manager.findQualityByQualityType(quality_type,
                                         quality_manager.getWholeMachineDefinition(machine_definition),
                                         [material_container])
+
             if not candidate_quality or isinstance(candidate_quality, type(self._empty_quality_changes_container)):
+                Logger.log("d", "Attempting to find fallback quality")
                 # Fall back to a quality (which must be compatible with all other extruders)
                 new_qualities = quality_manager.findAllUsableQualitiesForMachineAndExtruders(
                     self._global_container_stack, ExtruderManager.getInstance().getExtruderStacks())
-
                 if new_qualities:
                     new_quality_id = new_qualities[0].getId()  # Just pick the first available one
                 else:
@@ -768,7 +772,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = variant_id)
             if not containers or not self._active_container_stack:
                 return
@@ -779,7 +783,7 @@ class MachineManager(QObject):
                 self.blurSettings.emit()
                 self._active_container_stack.variant = containers[0]
                 Logger.log("d", "Active variant changed to {active_variant_id}".format(active_variant_id = containers[0].getId()))
-                preferred_material = None
+                preferred_material_name = None
                 if old_material:
                     preferred_material_name = old_material.getName()
 
@@ -791,7 +795,7 @@ class MachineManager(QObject):
     #   \param quality_id The quality_id of either a quality or a quality_changes
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id: str):
-        with postponeSignals(*self._getContainerChangedSignals(), compress = True):
+        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.blurSettings.emit()
 
             containers = ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
@@ -1118,11 +1122,12 @@ class MachineManager(QObject):
     def createMachineManager(engine=None, script_engine=None):
         return MachineManager()
 
+    @deprecated("Use ExtruderStack.material = ... and it won't be necessary", "2.7")
     def _updateMaterialContainer(self, definition: "DefinitionContainer", stack: "ContainerStack", variant_container: Optional["InstanceContainer"] = None, preferred_material_name: Optional[str] = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
-        approximate_material_diameter = round(stack.getProperty("material_diameter", "value"))
+        approximate_material_diameter = str(round(stack.getProperty("material_diameter", "value")))
         search_criteria = { "type": "material", "approximate_diameter": approximate_material_diameter }
 
         if definition.getMetaDataEntry("has_machine_materials"):

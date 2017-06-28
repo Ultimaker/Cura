@@ -150,7 +150,7 @@ Menu
 
     function materialFilter()
     {
-        var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value) };
+        var result = { "type": "material", "approximate_diameter": Math.round(materialDiameterProvider.properties.value).toString() };
         if(Cura.MachineManager.filterMaterialsByMachine)
         {
             result.definition = Cura.MachineManager.activeQualityDefinitionId;

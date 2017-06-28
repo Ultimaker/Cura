@@ -104,7 +104,6 @@ class BuildVolume(SceneNode):
         # but it does not update the disallowed areas after material change
         Application.getInstance().getMachineManager().activeStackChanged.connect(self._onStackChanged)
 
-
     def _onSceneChanged(self, source):
         if self._global_container_stack:
             self._change_timer.start()
@@ -637,7 +636,7 @@ class BuildVolume(SceneNode):
             result[extruder.getId()] = []
 
         #Currently, the only normally printed object is the prime tower.
-        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable") == True:
+        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable"):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -678,7 +677,7 @@ class BuildVolume(SceneNode):
         for extruder in used_extruders:
             prime_blob_enabled = extruder.getProperty("prime_blob_enable", "value")
             prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
-            prime_y = - extruder.getProperty("extruder_prime_pos_y", "value")
+            prime_y = -extruder.getProperty("extruder_prime_pos_y", "value")
 
             #Ignore extruder prime position if it is not set or if blob is disabled
             if (prime_x == 0 and prime_y == 0) or not prime_blob_enabled:
@@ -717,13 +716,18 @@ class BuildVolume(SceneNode):
             polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
             machine_disallowed_polygons.append(polygon)
 
+        # For certain machines we don't need to compute disallowed areas for each nozzle.
+        # So we check here and only do the nozzle offsetting if needed.
+        no_nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
+            "no_nozzle_offsetting_for_disallowed_areas", False)
+
         result = {}
         for extruder in used_extruders:
             extruder_id = extruder.getId()
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
             if offset_x is None:
                 offset_x = 0
-            offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
+            offset_y = -extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
             result[extruder_id] = []
@@ -736,14 +740,17 @@ class BuildVolume(SceneNode):
             right_unreachable_border = 0
             top_unreachable_border = 0
             bottom_unreachable_border = 0
-            #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
-            for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
-                other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
-                other_offset_y = other_extruder.getProperty("machine_nozzle_offset_y", "value")
-                left_unreachable_border = min(left_unreachable_border, other_offset_x - offset_x)
-                right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
-                top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
-                bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
+
+            # Only do nozzle offsetting if needed
+            if not no_nozzle_offsetting_for_disallowed_areas:
+                #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
+                for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
+                    other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
+                    other_offset_y = -other_extruder.getProperty("machine_nozzle_offset_y", "value")
+                    left_unreachable_border = min(left_unreachable_border, other_offset_x - offset_x)
+                    right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
+                    top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
+                    bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
 
@@ -871,7 +878,7 @@ class BuildVolume(SceneNode):
         else:
             extruder_index = self._global_container_stack.getProperty(extruder_setting_key, "value")
 
-            if extruder_index == "-1":  # If extruder index is -1 use global instead
+            if str(extruder_index) == "-1":  # If extruder index is -1 use global instead
                 stack = self._global_container_stack
             else:
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds[str(extruder_index)]

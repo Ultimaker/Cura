@@ -4,6 +4,9 @@
 import os
 import os.path
 import re
+
+from typing import Optional
+
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
@@ -199,8 +202,12 @@ class CuraContainerRegistry(ContainerRegistry):
                 new_name = self.uniqueName(name_seed)
                 if type(profile_or_list) is not list:
                     profile = profile_or_list
-                    self._configureProfile(profile, name_seed, new_name)
-                    return { "status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName()) }
+
+                    result = self._configureProfile(profile, name_seed, new_name)
+                    if result is not None:
+                        return {"status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
+
+                    return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile.getName())}
                 else:
                     profile_index = -1
                     global_profile = None
@@ -230,7 +237,9 @@ class CuraContainerRegistry(ContainerRegistry):
                             global_profile = profile
                             profile_id = (global_container_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
 
-                        self._configureProfile(profile, profile_id, new_name)
+                        result = self._configureProfile(profile, profile_id, new_name)
+                        if result is not None:
+                            return {"status": "error", "message": catalog.i18nc("@info:status", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, result)}
 
                         profile_index += 1
 
@@ -244,7 +253,14 @@ class CuraContainerRegistry(ContainerRegistry):
         super().load()
         self._fixupExtruders()
 
-    def _configureProfile(self, profile, id_seed, new_name):
+    ##  Update an imported profile to match the current machine configuration.
+    #
+    #   \param profile The profile to configure.
+    #   \param id_seed The base ID for the profile. May be changed so it does not conflict with existing containers.
+    #   \param new_name The new name for the profile.
+    #
+    #   \return None if configuring was successful or an error message if an error occurred.
+    def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str) -> Optional[str]:
         profile.setReadOnly(False)
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
@@ -257,14 +273,35 @@ class CuraContainerRegistry(ContainerRegistry):
         else:
             profile.addMetaDataEntry("type", "quality_changes")
 
+        quality_type = profile.getMetaDataEntry("quality_type")
+        if not quality_type:
+            return catalog.i18nc("@info:status", "Profile is missing a quality type.")
+
+        quality_type_criteria = {"quality_type": quality_type}
         if self._machineHasOwnQualities():
             profile.setDefinition(self._activeQualityDefinition())
             if self._machineHasOwnMaterials():
-                profile.addMetaDataEntry("material", self._activeMaterialId())
+                active_material_id = self._activeMaterialId()
+                if active_material_id:  # only update if there is an active material
+                    profile.addMetaDataEntry("material", active_material_id)
+                    quality_type_criteria["material"] = active_material_id
+
+            quality_type_criteria["definition"] = profile.getDefinition().getId()
+
         else:
             profile.setDefinition(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0])
+            quality_type_criteria["definition"] = "fdmprinter"
+
+        # Check to make sure the imported profile actually makes sense in context of the current configuration.
+        # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
+        # successfully imported but then fail to show up.
+        qualities = self.findInstanceContainers(**quality_type_criteria)
+        if not qualities:
+            return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
         ContainerRegistry.getInstance().addContainer(profile)
+
+        return None
 
     ##  Gets a list of profile writer plugins
     #   \return List of tuples of (plugin_id, meta_data).

@@ -1,5 +1,6 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
+
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -47,6 +48,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.MachineNameValidator import MachineNameValidator
 from cura.Settings.ProfilesModel import ProfilesModel
+from cura.Settings.MaterialsModel import MaterialsModel
 from cura.Settings.QualityAndUserProfilesModel import QualityAndUserProfilesModel
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.UserProfilesModel import UserProfilesModel
@@ -62,6 +64,7 @@ from . import CameraImageProvider
 from . import MachineActionManager
 
 from cura.Settings.MachineManager import MachineManager
+from cura.Settings.MaterialManager import MaterialManager
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.UserChangesModel import UserChangesModel
 from cura.Settings.ExtrudersModel import ExtrudersModel
@@ -138,13 +141,14 @@ class CuraApplication(QtApplication):
         # From which stack the setting would inherit if not defined per object (handled in the engine)
         # AND for settings which are not settable_per_mesh:
         # which extruder is the only extruder this setting is obtained from
-        SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1")
+        SettingDefinition.addSupportedProperty("limit_to_extruder", DefinitionPropertyType.Function, default = "-1", depends_on = "value")
 
         # For settings which are not settable_per_mesh and not settable_per_extruder:
         # A function which determines the glabel/meshgroup value by looking at the values of the setting in all (used) extruders
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default = None, depends_on = "value")
 
         SettingDefinition.addSettingType("extruder", None, str, Validator)
+        SettingDefinition.addSettingType("optional_extruder", None, str, None)
 
         SettingDefinition.addSettingType("[int]", None, str, None)
 
@@ -178,7 +182,8 @@ class CuraApplication(QtApplication):
                 ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
                 ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
                 ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer")
+                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
@@ -187,6 +192,7 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager()
         self._machine_manager = None    # This is initialized on demand.
+        self._material_manager = None
         self._setting_inheritance_manager = None
 
         self._additional_components = {} # Components to add to certain areas in the interface
@@ -266,7 +272,7 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("cura/jobname_prefix", True)
-        Preferences.getInstance().addPreference("view/center_on_select", False)
+        Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", False)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().addPreference("cura/dialog_on_project_save", True)
@@ -320,7 +326,6 @@ class CuraApplication(QtApplication):
                 support_enable
                 support_extruder_nr
                 support_type
-                support_interface_density
             platform_adhesion
                 adhesion_type
                 adhesion_extruder_nr
@@ -346,6 +351,8 @@ class CuraApplication(QtApplication):
 
         self.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
+
+        self._plugin_registry.addSupportedPluginExtension("curaplugin", "Cura Plugin")
 
     def _onEngineCreated(self):
         self._engine.addImageProvider("camera", CameraImageProvider.CameraImageProvider())
@@ -488,7 +495,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.loadPlugins()
 
-        if self.getBackend() == None:
+        if self.getBackend() is None:
             raise RuntimeError("Could not load the backend plugin!")
 
         self._plugins_loaded = True
@@ -637,6 +644,7 @@ class CuraApplication(QtApplication):
         # Initialise extruder so as to listen to global container stack changes before the first global container stack is set.
         ExtruderManager.getInstance()
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(MaterialManager, "Cura", 1, 0, "MaterialManager", self.getMaterialManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager",
                          self.getSettingInheritanceManager)
 
@@ -661,6 +669,11 @@ class CuraApplication(QtApplication):
         if self._machine_manager is None:
             self._machine_manager = MachineManager.createMachineManager()
         return self._machine_manager
+
+    def getMaterialManager(self, *args):
+        if self._material_manager is None:
+            self._material_manager = MaterialManager.createMaterialManager()
+        return self._material_manager
 
     def getSettingInheritanceManager(self, *args):
         if self._setting_inheritance_manager is None:
@@ -705,6 +718,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(ContainerSettingsModel, "Cura", 1, 0, "ContainerSettingsModel")
         qmlRegisterSingletonType(ProfilesModel, "Cura", 1, 0, "ProfilesModel", ProfilesModel.createProfilesModel)
+        qmlRegisterType(MaterialsModel, "Cura", 1, 0, "MaterialsModel")
         qmlRegisterType(QualityAndUserProfilesModel, "Cura", 1, 0, "QualityAndUserProfilesModel")
         qmlRegisterType(UserProfilesModel, "Cura", 1, 0, "UserProfilesModel")
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
@@ -748,8 +762,7 @@ class CuraApplication(QtApplication):
                     # Default
                     self.getController().setActiveTool("TranslateTool")
 
-            # Hack: QVector bindings are broken on PyQt 5.7.1 on Windows. This disables it being called at all.
-            if Preferences.getInstance().getValue("view/center_on_select") and not Platform.isWindows():
+            if Preferences.getInstance().getValue("view/center_on_select"):
                 self._center_after_select = True
         else:
             if self.getController().getActiveTool():

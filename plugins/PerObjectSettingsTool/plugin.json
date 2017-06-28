@@ -1,0 +1,8 @@
+{
+    "name": "Per Model Settings Tool",
+    "author": "Ultimaker",
+    "version": "1.0.0",
+    "description": "Provides the Per Model Settings.",
+    "api": 4,
+    "i18n-catalog": "cura"
+}

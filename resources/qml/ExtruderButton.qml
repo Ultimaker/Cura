@@ -13,7 +13,7 @@ Button
 
     property var extruder;
 
-    text: catalog.i18ncp("@label", "Print Selected Model with %1", "Print Selected Models With %1", UM.Selection.selectionCount).arg(extruder.name)
+    text: catalog.i18ncp("@label %1 is filled in with the name of an extruder", "Print Selected Model with %1", "Print Selected Models with %1", UM.Selection.selectionCount).arg(extruder.name)
 
     style: UM.Theme.styles.tool_button;
     iconSource: checked ? UM.Theme.getIcon("material_selected") : UM.Theme.getIcon("material_not_selected");
