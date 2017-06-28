@@ -188,8 +188,17 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         else:
             self._updatePrinterType("unknown")
 
+        Application.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
+
     def _onNetworkAccesibleChanged(self, accessible):
         Logger.log("d", "Network accessible state changed to: %s", accessible)
+
+    ##  Triggered when the output device manager changes devices.
+    #
+    #   This is how we can detect that our device is no longer active now.
+    def _onOutputDevicesChanged(self):
+        if self.getId() not in Application.getInstance().getOutputDeviceManager().getOutputDeviceIds():
+            self.stopCamera()
 
     def _onAuthenticationTimer(self):
         self._authentication_counter += 1
