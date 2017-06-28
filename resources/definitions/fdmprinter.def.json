@@ -1139,7 +1139,7 @@
                 "xy_offset_layer_0":
                 {
                     "label": "Initial Layer Horizontal Expansion",
-                    "description": "Amount of offset applied to all polygons in the first layer. A negative value can compensate for elephants foot.",
+                    "description": "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\".",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value_warning": "-1",
