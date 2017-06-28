@@ -1,6 +1,6 @@
 {
     "name": "Material Profiles",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides capabilities to read and write XML-based material profiles.",
     "api": 4,

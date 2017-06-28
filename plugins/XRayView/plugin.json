@@ -1,6 +1,6 @@
 {
     "name": "X-Ray View",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides the X-Ray view.",
     "api": 4,
