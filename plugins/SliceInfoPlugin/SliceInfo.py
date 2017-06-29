@@ -11,6 +11,8 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 
+import time
+
 from UM.Qt.Duration import DurationFormat
 
 from .SliceInfoJob import SliceInfoJob
@@ -50,52 +52,61 @@ class SliceInfo(Extension):
         try:
             if not Preferences.getInstance().getValue("info/send_slice_info"):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
-                return # Do nothing, user does not want to send data
-
-            # Listing all files placed on the buildplate
-            modelhashes = []
-            for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
-                if node.callDecoration("isSliceable"):
-                    modelhashes.append(node.getMeshData().getHash())
-
-            # Creating md5sums and formatting them as discussed on JIRA
-            modelhash_formatted = ",".join(modelhashes)
+                return  # Do nothing, user does not want to send data
 
             global_container_stack = Application.getInstance().getGlobalContainerStack()
 
-            # Get total material used (in mm^3)
+            data = dict()  # The data that we're going to submit.
+            data["time_stamp"] = time.time()
+            data["schema_version"] = 0
+            data["cura_version"] = Application.getInstance().getVersion()
+            data["active_mode"] = "" # TODO
+            data["language"] = Preferences.getInstance().getValue("general/language")
+            data["os"] = {"type": platform.system(), "version": platform.version()}
+
+            data["active_machine_type"] = {"definition_id": global_container_stack.definition.getId()}
+
+            data["extruders"] = [] # TODO
+
+            data["quality_profile"] = global_container_stack.quality.getMetaData().get("quality_type")
+
+            data["models"] = []
+            # Listing all files placed on the build plate
+            for node in DepthFirstIterator(CuraApplication.getInstance().getController().getScene().getRoot()):
+                if node.callDecoration("isSliceable"):
+                    model = dict()
+                    model["hash"] = node.getMeshData().getHash()
+                    bounding_box = node.getBoundingBox()
+                    model["bounding_box"] = {"minimum": {"x": bounding_box.minimum.x,
+                                                         "y": bounding_box.minimum.y,
+                                                         "z": bounding_box.minimum.z},
+                                             "maximum": {"x": bounding_box.maximum.x,
+                                                         "y": bounding_box.maximum.y,
+                                                         "z": bounding_box.maximum.z}}
+                    model["transformation"] = {"data": str(node.getWorldTransformation().getData())}
+
             print_information = Application.getInstance().getPrintInformation()
-            material_radius = 0.5 * global_container_stack.getProperty("material_diameter", "value")
+            print_times= print_information.printTimesPerFeature
+            data["print_times"] = {"travel": print_times["travel"].getDisplayString(DurationFormat.Format.Seconds),
+                                   "support": print_times["support"].getDisplayString(DurationFormat.Format.Seconds),
+                                   "infill": print_times["infill"].getDisplayString(DurationFormat.Format.Seconds),
+                                   "total": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.Seconds)}
 
-            # Send material per extruder
-            material_used = [str(math.pi * material_radius * material_radius * material_length) for material_length in print_information.materialLengths]
-            material_used = ",".join(material_used)
+            print_settings = dict()
+            print_settings["layer_height"] = global_container_stack.getProperty("layer_height", "value")
+            print_settings["support_enabled"] = global_container_stack.getProperty("support_enable", "value")
+            print_settings["infill_density"] = None  # TODO: This can be different per extruder & model
+            print_settings["infill_type"] = None  # TODO: This can be different per extruder & model
+            print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
+            print_settings["platform_adhesion"] = global_container_stack.getProperty("platform_adhesion", "value")
+            print_settings["retraction_enable"] = None #TODO; Can be different per extruder.
+            print_settings["travel_speed"] = None  # TODO; Can be different per extruder
+            print_settings["cool_fan_enabled"] = None  # TODO; Can be different per extruder
+            print_settings["bottom_thickness"] = None  # TODO; Can be different per extruder & per mesh
+            print_settings["bottom_thickness"] = None  # TODO; Can be different per extruder & per mesh
+            data["print_settings"] = print_settings
 
-            containers = { "": global_container_stack.serialize() }
-            for container in global_container_stack.getContainers():
-                container_id = container.getId()
-                try:
-                    container_serialized = container.serialize()
-                except NotImplementedError:
-                    Logger.log("w", "Container %s could not be serialized!", container_id)
-                    continue
-                if container_serialized:
-                    containers[container_id] = container_serialized
-                else:
-                    Logger.log("i", "No data found in %s to be serialized!", container_id)
-
-            # Bundle the collected data
-            submitted_data = {
-                "processor": platform.processor(),
-                "machine": platform.machine(),
-                "platform": platform.platform(),
-                "settings": json.dumps(containers), # bundle of containers with their serialized contents
-                "version": Application.getInstance().getVersion(),
-                "modelhash": modelhash_formatted,
-                "printtime": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601),
-                "filament": material_used,
-                "language": Preferences.getInstance().getValue("general/language"),
-            }
+            '''
 
             # Convert data to bytes
             submitted_data = urllib.parse.urlencode(submitted_data)
@@ -103,7 +114,7 @@ class SliceInfo(Extension):
 
             # Sending slice info non-blocking
             reportJob = SliceInfoJob(self.info_url, binary_data)
-            reportJob.start()
+            reportJob.start()'''
         except Exception as e:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
             # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
