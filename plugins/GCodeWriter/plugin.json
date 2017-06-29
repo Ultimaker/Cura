@@ -1,6 +1,6 @@
 {
     "name": "GCode Writer",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Writes GCode to a file.",
     "api": 4,
