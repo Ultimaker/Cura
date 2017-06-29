@@ -224,7 +224,7 @@ class ContainerManager(QObject):
             root = container.getMetaDataEntry(root_name)
 
             item = root
-            for entry in entries:
+            for _ in range(len(entries)):
                 item = item.get(entries.pop(0), { })
 
             if item[entry_name] != entry_value:
