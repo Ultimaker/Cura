@@ -1537,6 +1537,7 @@
                     "maximum_value_warning": "285",
                     "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_extruder": true,
+                    "settable_per_mesh": false,
                     "minimum_value": "-273.15"
                 },
                 "material_print_temperature":
