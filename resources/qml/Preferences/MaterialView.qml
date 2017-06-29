@@ -169,7 +169,8 @@ TabView
                         // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                         // which derive from the same base_file
                         var old_diameter = Cura.ContainerManager.getContainerProperty(base.containerId, "material_diameter", "value").toString();
-                        base.setMetaDataEntry("approximate_diameter", Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter"), Math.round(value).toString());
+                        var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
+                        base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, Math.round(value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, value);
                         if (Cura.MachineManager.filterMaterialsByMachine && properties.approximate_diameter != Cura.MachineManager.activeMachine.approximateMaterialDiameter)
                         {
