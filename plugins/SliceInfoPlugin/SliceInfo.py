@@ -1,6 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
-from typing import Any
 
 from cura.CuraApplication import CuraApplication
 
@@ -8,56 +7,22 @@ from UM.Extension import Extension
 from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.SceneNode import SceneNode
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.Platform import Platform
+
 from UM.Qt.Duration import DurationFormat
-from UM.Job import Job
+
+from .SliceInfoJob import SliceInfoJob
 
 import platform
 import math
 import urllib.request
 import urllib.parse
-import ssl
-import hashlib
 import json
 
 catalog = i18nCatalog("cura")
 
-class SliceInfoJob(Job):
-    data = None # type: Any
-    url = None  # type: str
-
-    def __init__(self, url, data):
-        super().__init__()
-        self.url = url
-        self.data = data
-
-    def run(self):
-        if not self.url or not self.data:
-            Logger.log("e", "URL or DATA for sending slice info was not set!")
-            return
-
-        # Submit data
-        kwoptions = {"data" : self.data,
-                     "timeout" : 5
-                     }
-
-        if Platform.isOSX():
-            kwoptions["context"] = ssl._create_unverified_context()
-
-        Logger.log("d", "Sending anonymous slice info to [%s]...", self.url)
-
-        try:
-            f = urllib.request.urlopen(self.url, **kwoptions)
-            Logger.log("i", "Sent anonymous slice info.")
-            f.close()
-        except urllib.error.HTTPError as http_exception:
-            Logger.log("e", "An HTTP error occurred while trying to send slice information: %s" % http_exception)
-        except Exception as e: # We don't want any exception to cause problems
-            Logger.log("e", "An exception occurred while trying to send slice information: %s" % e)
 
 ##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
