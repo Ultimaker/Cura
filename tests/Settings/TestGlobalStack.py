@@ -97,7 +97,8 @@ def test_addExtruder(global_stack):
     #Exceptional cases.
     (0, 0),
     (-10.1, -10),
-    (-1, -1)
+    (-1, -1),
+    (9000.1, 9000)
 ])
 def test_approximateMaterialDiameter(diameter, approximate_diameter, global_stack):
     global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
