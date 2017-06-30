@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.CuraApplication import CuraApplication
+from cura.Settings.ExtruderManager import ExtruderManager
 
 from UM.Extension import Extension
 from UM.Application import Application
@@ -55,6 +56,7 @@ class SliceInfo(Extension):
                 return  # Do nothing, user does not want to send data
 
             global_container_stack = Application.getInstance().getGlobalContainerStack()
+            print_information = Application.getInstance().getPrintInformation()
 
             data = dict()  # The data that we're going to submit.
             data["time_stamp"] = time.time()
@@ -66,7 +68,21 @@ class SliceInfo(Extension):
 
             data["active_machine_type"] = {"definition_id": global_container_stack.definition.getId()}
 
-            data["extruders"] = [] # TODO
+            data["extruders"] = []
+            extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
+            extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
+
+            if not extruders:
+                extruders = [global_container_stack]
+
+            for extruder in extruders:
+                extruder_dict = dict()
+                extruder_dict["active"] = ExtruderManager.getInstance().getActiveExtruderStack() == extruder
+                extruder_dict["material"] = extruder.material.getMetaData().get("GUID", "")
+                extruder_dict["material_used"] = print_information.materialLengths[int(extruder.getMetaDataEntry("position", "0"))]
+                extruder_dict["variant"] = extruder.variant.getName()
+                extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")
+                data["extruders"].append(extruder_dict)
 
             data["quality_profile"] = global_container_stack.quality.getMetaData().get("quality_type")
 
@@ -84,8 +100,10 @@ class SliceInfo(Extension):
                                                          "y": bounding_box.maximum.y,
                                                          "z": bounding_box.maximum.z}}
                     model["transformation"] = {"data": str(node.getWorldTransformation().getData())}
+                    extruder_position = node.callDecoration("getActiveExtruderPosition")
+                    model["extruder"] = 0 if extruder_position is None else extruder_position
 
-            print_information = Application.getInstance().getPrintInformation()
+
             print_times= print_information.printTimesPerFeature
             data["print_times"] = {"travel": print_times["travel"].getDisplayString(DurationFormat.Format.Seconds),
                                    "support": print_times["support"].getDisplayString(DurationFormat.Format.Seconds),
@@ -105,7 +123,7 @@ class SliceInfo(Extension):
             print_settings["bottom_thickness"] = None  # TODO; Can be different per extruder & per mesh
             print_settings["bottom_thickness"] = None  # TODO; Can be different per extruder & per mesh
             data["print_settings"] = print_settings
-
+            #print(data)
             '''
 
             # Convert data to bytes
