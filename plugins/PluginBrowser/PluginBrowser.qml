@@ -39,7 +39,7 @@ UM.Dialog
         {
             width: parent.width
             anchors.top: topBar.bottom
-            anchors.bottom: progressbar.top
+            anchors.bottom: bottomBar.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             frameVisible: true
             ListView
@@ -51,16 +51,36 @@ UM.Dialog
                 delegate: pluginDelegate
             }
         }
-        ProgressBar
+        Item
         {
-            id: progressbar
-            anchors.bottom: parent.bottom
-            style: UM.Theme.styles.progressbar
-            minimumValue: 0;
-            maximumValue: 100
+            id: bottomBar
             width: parent.width
-            height: 10
-            value: manager.downloadProgress
+            height: childrenRect.height
+            anchors.bottom:parent.bottom
+            anchors.left: parent.left
+            ProgressBar
+            {
+                id: progressbar
+                anchors.bottom: parent.bottom
+                style: UM.Theme.styles.progressbar
+                minimumValue: 0;
+                maximumValue: 100
+                anchors.left:parent.left
+                anchors.right: closeButton.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                height: 10
+                value: manager.downloadProgress
+            }
+
+            Button
+            {
+                id: closeButton
+                text: catalog.i18nc("@action:button", "Close")
+                iconName: "dialog-close"
+                onClicked: base.close()
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+            }
         }
 
         Item
