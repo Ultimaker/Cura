@@ -4911,6 +4911,16 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "spaghetti_infill_stepped":
+                {
+                    "label": "Spaghetti Infill Stepping",
+                    "description": "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "spaghetti_max_infill_angle":
                 {
                     "label": "Spaghetti Maximum Infill Angle",
@@ -4921,7 +4931,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "maximum_value_warning": "45",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and not spaghetti_infill_stepped",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4934,7 +4944,7 @@
                     "default_value": 2.0,
                     "minimum_value": "layer_height",
                     "maximum_value_warning": "10.0",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and not spaghetti_infill_stepped",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
