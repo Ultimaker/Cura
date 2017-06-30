@@ -102,6 +102,7 @@ class SliceInfo(Extension):
                     model["transformation"] = {"data": str(node.getWorldTransformation().getData())}
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
                     model["extruder"] = 0 if extruder_position is None else extruder_position
+                    data["models"].append(model)
 
 
             print_times= print_information.printTimesPerFeature
