@@ -63,6 +63,7 @@ class SliceInfo(Extension):
             data["schema_version"] = 0
             data["cura_version"] = Application.getInstance().getVersion()
             data["active_mode"] = "" # TODO
+            data["machine_settings_changed_by_user"] = global_container_stack.definitionChanges.getId() != "empty"
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 
