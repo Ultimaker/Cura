@@ -67,7 +67,7 @@ class SliceInfo(Extension):
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 
-            data["active_machine_type"] = {"definition_id": global_container_stack.definition.getId()}
+            data["active_machine"] = {"definition_id": global_container_stack.definition.getId(), "manufacturer": global_container_stack.definition.getMetaData().get("manufacturer","")}
 
             data["extruders"] = []
             extruders = list(ExtruderManager.getInstance().getMachineExtruders(global_container_stack.getId()))
@@ -79,7 +79,10 @@ class SliceInfo(Extension):
             for extruder in extruders:
                 extruder_dict = dict()
                 extruder_dict["active"] = ExtruderManager.getInstance().getActiveExtruderStack() == extruder
-                extruder_dict["material"] = extruder.material.getMetaData().get("GUID", "")
+                extruder_dict["material"] = {"GUID": extruder.material.getMetaData().get("GUID", ""),
+                                             "type": extruder.material.getMetaData().get("material", ""),
+                                             "brand": extruder.material.getMetaData().get("brand", "")
+                                             }
                 extruder_dict["material_used"] = print_information.materialLengths[int(extruder.getMetaDataEntry("position", "0"))]
                 extruder_dict["variant"] = extruder.variant.getName()
                 extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")
