@@ -3430,7 +3430,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "5",
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
-                    "enabled": "support_enable",
+                    "enabled": "support_enable and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
                 },
