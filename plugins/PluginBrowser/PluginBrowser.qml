@@ -14,17 +14,31 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-        Label
+        Item
         {
-            id: introText
-            text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
+            id: topBar
+            height: childrenRect.height;
             width: parent.width
-            height: 30
+            Label
+            {
+                id: introText
+                text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
+                width: parent.width
+                height: 30
+            }
+
+            Button
+            {
+                id: refresh
+                text: catalog.i18nc("@action:button", "Refresh")
+                onClicked: manager.requestPluginList()
+                anchors.right: parent.right
+            }
         }
         ScrollView
         {
             width: parent.width
-            anchors.top: introText.bottom
+            anchors.top: topBar.bottom
             anchors.bottom: progressbar.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             frameVisible: true

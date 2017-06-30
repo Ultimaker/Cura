@@ -66,7 +66,9 @@ class PluginBrowser(QObject, Extension):
             self._createDialog()
         self._dialog.show()
 
+    @pyqtSlot()
     def requestPluginList(self):
+        Logger.log("i", "Requesting plugin list")
         url = QUrl(self._api_url + "plugins")
         self._plugin_list_request = QNetworkRequest(url)
         self._plugin_list_request.setRawHeader(*self._request_header)
@@ -181,7 +183,6 @@ class PluginBrowser(QObject, Extension):
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
-
         if reply.error() == QNetworkReply.TimeoutError:
             Logger.log("w", "Got a timeout.")
             # Reset everything.
@@ -191,6 +192,11 @@ class PluginBrowser(QObject, Extension):
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
                 self._download_plugin_reply.abort()
                 self._download_plugin_reply = None
+            return
+        elif reply.error() == QNetworkReply.HostNotFoundError:
+            Logger.log("w", "Unable to reach server.")
+            return
+
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if reply_url == self._api_url + "plugins":
                 try:
