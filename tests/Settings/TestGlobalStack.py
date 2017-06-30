@@ -12,6 +12,7 @@ from UM.Settings.InstanceContainer import InstanceContainer #To test against the
 from UM.Settings.SettingInstance import InstanceState
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
+import UM.Settings.SettingDefinition #To add settings to the definition.
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -96,11 +97,14 @@ def test_addExtruder(global_stack):
     #Exceptional cases.
     (0, 0),
     (-10.1, -10),
-    (-1, -1)
+    (-1, -1),
+    (9000.1, 9000)
 ])
 def test_approximateMaterialDiameter(diameter, approximate_diameter, global_stack):
     global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
-    global_stack.definition._metadata["material_diameter"] = str(diameter)
+    material_diameter = UM.Settings.SettingDefinition.SettingDefinition(key = "material_diameter", container = global_stack.definition)
+    material_diameter.addSupportedProperty("value", UM.Settings.SettingDefinition.DefinitionPropertyType.Any, default = diameter)
+    global_stack.definition.definitions.append(material_diameter)
     assert float(global_stack.approximateMaterialDiameter) == approximate_diameter
 
 ##  Tests getting the material diameter when there is no material diameter.
