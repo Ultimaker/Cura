@@ -699,6 +699,20 @@
                                 }
                             }
                         },
+                        "topmost_skin_line_width":
+                        {
+                            "label": "Roofing Line Width",
+                            "description": "Width of a single line of the areas at the top of the print.",
+                            "unit": "mm",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "default_value": 0.4,
+                            "type": "float",
+                            "value": "line_width",
+                            "limit_to_extruder": "topmost_skin_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "skin_line_width":
                         {
                             "label": "Top/Bottom Line Width",
@@ -930,6 +944,46 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "topmost_skin_extruder_nr":
+                {
+                    "label": "Roofing Extruder",
+                    "description": "The extruder train used for printing the top most skin. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "-1",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "machine_extruder_count > 1"
+                },
+                "topmost_skin_layer_count":
+                {
+                    "label": "Roofing Layers",
+                    "description": "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces.",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "top_layers - 1",
+                    "type": "int",
+                    "value": "0 if infill_sparse_density == 100 else 1",
+                    "limit_to_extruder": "topmost_skin_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "topmost_skin_pattern":
+                {
+                    "label": "Roofing Pattern",
+                    "description": "The pattern of the top most layers.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "limit_to_extruder": "topmost_skin_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "top_bottom_extruder_nr":
@@ -2010,6 +2064,20 @@
                                 }
                             }
                         },
+                        "speed_topmost_skin":
+                        {
+                            "label": "Roofing Speed",
+                            "description": "The speed at which roofing layers are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "150",
+                            "default_value": 25,
+                            "value": "speed_print / 60 * 25",
+                            "limit_to_extruder": "topmost_skin_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "speed_topbottom":
                         {
                             "label": "Top/Bottom Speed",
@@ -2350,6 +2418,21 @@
                                 }
                             }
                         },
+                        "acceleration_topmost_skin":
+                        {
+                            "label": "Roofing Acceleration",
+                            "description": "The acceleration with which roofing layers are printed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "default_value": 3000,
+                            "value": "acceleration_print",
+                            "enabled": "resolveOrValue('acceleration_enabled')",
+                            "limit_to_extruder": "topmost_skin_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "acceleration_topbottom":
                         {
                             "label": "Top/Bottom Acceleration",
@@ -2638,6 +2721,20 @@
                                     "settable_per_mesh": true
                                 }
                             }
+                        },
+                        "jerk_topmost_skin":
+                        {
+                            "label": "Roofing Jerk",
+                            "description": "The maximum instantaneous velocity change with which roofing layers are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "50",
+                            "default_value": 20,
+                            "value": "jerk_print",
+                            "enabled": "resolveOrValue('jerk_enabled')",
+                            "limit_to_extruder": "topmost_skin_extruder_nr",
+                            "settable_per_mesh": true
                         },
                         "jerk_topbottom":
                         {
