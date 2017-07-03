@@ -86,6 +86,16 @@ class SliceInfo(Extension):
                 extruder_dict["material_used"] = print_information.materialLengths[int(extruder.getMetaDataEntry("position", "0"))]
                 extruder_dict["variant"] = extruder.variant.getName()
                 extruder_dict["nozzle_size"] = extruder.getProperty("machine_nozzle_size", "value")
+
+                extruder_settings = dict()
+                extruder_settings["wall_line_count"] = extruder.getProperty("wall_line_count", "value")
+                extruder_settings["retraction_enable"] = extruder.getProperty("retraction_enable", "value")
+                extruder_settings["infill_sparse_density"] = extruder.getProperty("infill_sparse_density", "value")
+                extruder_settings["infill_pattern"] = extruder.getProperty("infill_pattern", "value")
+                extruder_settings["gradual_infill_steps"] = extruder.getProperty("gradual_infill_steps", "value")
+                extruder_settings["default_material_print_temperature"] = extruder.getProperty("default_material_print_temperature", "value")
+                extruder_settings["material_print_temperature"] = extruder.getProperty("material_print_temperature", "value")
+                extruder_dict["extruder_settings"] = extruder_settings
                 data["extruders"].append(extruder_dict)
 
             data["quality_profile"] = global_container_stack.quality.getMetaData().get("quality_type")
@@ -106,10 +116,34 @@ class SliceInfo(Extension):
                     model["transformation"] = {"data": str(node.getWorldTransformation().getData())}
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
                     model["extruder"] = 0 if extruder_position is None else extruder_position
+
+
+                    model_settings = dict()
+                    model_stack = node.callDecoration("getStack")
+                    if model_stack:
+                        model_settings["support_enabled"] = model_stack.getProperty("support_enable", "value")
+                        model_settings["support_extruder_nr"] = int(model_stack.getProperty("support_extruder_nr", "value"))
+
+                        # Mesh modifiers;
+                        model_settings["infill_mesh"] = model_stack.getProperty("infill_mesh", "value")
+                        model_settings["cutting_mesh"] = model_stack.getProperty("cutting_mesh", "value")
+                        model_settings["support_mesh"] = model_stack.getProperty("support_mesh", "value")
+                        model_settings["anti_overhang_mesh"] = model_stack.getProperty("anti_overhang_mesh", "value")
+
+                        model_settings["wall_line_count"] = model_stack.getProperty("wall_line_count", "value")
+                        model_settings["retraction_enable"] = model_stack.getProperty("retraction_enable", "value")
+
+                        # Infill settings
+                        model_settings["infill_sparse_density"] = model_stack.getProperty("infill_sparse_density", "value")
+                        model_settings["infill_pattern"] = model_stack.getProperty("infill_pattern", "value")
+                        model_settings["gradual_infill_steps"] = model_stack.getProperty("gradual_infill_steps", "value")
+
+
+                    model["model_settings"] = model_settings
+
                     data["models"].append(model)
 
-
-            print_times= print_information.printTimesPerFeature
+            print_times = print_information.printTimesPerFeature
             data["print_times"] = {"travel": print_times["travel"].getDisplayString(DurationFormat.Format.Seconds),
                                    "support": print_times["support"].getDisplayString(DurationFormat.Format.Seconds),
                                    "infill": print_times["infill"].getDisplayString(DurationFormat.Format.Seconds),
@@ -117,18 +151,30 @@ class SliceInfo(Extension):
 
             print_settings = dict()
             print_settings["layer_height"] = global_container_stack.getProperty("layer_height", "value")
+
+            # Support settings
             print_settings["support_enabled"] = global_container_stack.getProperty("support_enable", "value")
-            print_settings["infill_density"] = None  # TODO: This can be different per extruder & model
-            print_settings["infill_type"] = None  # TODO: This can be different per extruder & model
-            print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
+            print_settings["support_extruder_nr"] = int(global_container_stack.getProperty("support_extruder_nr", "value"))
+
+            # Platform adhesion settings
             print_settings["platform_adhesion"] = global_container_stack.getProperty("platform_adhesion", "value")
-            print_settings["retraction_enable"] = None #TODO; Can be different per extruder.
-            print_settings["travel_speed"] = None  # TODO; Can be different per extruder
-            print_settings["cool_fan_enabled"] = None  # TODO; Can be different per extruder
-            print_settings["bottom_thickness"] = None  # TODO; Can be different per extruder & per mesh
-            print_settings["bottom_thickness"] = None  # TODO; Can be different per extruder & per mesh
+
+            # Shell settings
+            print_settings["wall_line_count"] = global_container_stack.getProperty("wall_line_count", "value")
+            print_settings["retraction_enable"] = global_container_stack.getProperty("retraction_enable", "value")
+
+            # Prime tower settings
+            print_settings["prime_tower_enable"] = global_container_stack.getProperty("prime_tower_enable", "value")
+
+            # Infill settings
+            print_settings["infill_sparse_density"] = global_container_stack.getProperty("infill_sparse_density", "value")
+            print_settings["infill_pattern"] = global_container_stack.getProperty("infill_pattern", "value")
+            print_settings["gradual_infill_steps"] = global_container_stack.getProperty("gradual_infill_steps", "value")
+
+            print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
+
             data["print_settings"] = print_settings
-            #print(data)
+            #print(json.dumps(data))
             '''
 
             # Convert data to bytes
