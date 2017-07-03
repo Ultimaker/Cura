@@ -677,7 +677,7 @@
                                     "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if outer_inset_first else 0.1 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "default_value": 0.4,
-                                    "value": "wall_line_width",
+                                    "value": "extruderValue(wall_0_extruder_nr, 'wall_line_width')",
                                     "type": "float",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
