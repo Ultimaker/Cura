@@ -31,7 +31,7 @@ catalog = i18nCatalog("cura")
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
 #       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(Extension):
-    info_url = "https://stats.youmagine.com/curastats/slice"
+    info_url = "http://stats.ultimaker.com/api/cura"
 
     def __init__(self):
         super().__init__()
@@ -174,17 +174,14 @@ class SliceInfo(Extension):
             print_settings["print_sequence"] = global_container_stack.getProperty("print_sequence", "value")
 
             data["print_settings"] = print_settings
-            #print(json.dumps(data))
-            '''
 
             # Convert data to bytes
-            submitted_data = urllib.parse.urlencode(submitted_data)
-            binary_data = submitted_data.encode("utf-8")
+            binary_data = json.dumps(data).encode("utf-8")
 
             # Sending slice info non-blocking
             reportJob = SliceInfoJob(self.info_url, binary_data)
-            reportJob.start()'''
-        except Exception as e:
+            reportJob.start()
+        except Exception:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
             # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.
-            Logger.log("e", "Exception raised while sending slice info: %s" %(repr(e))) # But we should be notified about these problems of course.
+            Logger.logException("e", "Exception raised while sending slice info.") # But we should be notified about these problems of course.
