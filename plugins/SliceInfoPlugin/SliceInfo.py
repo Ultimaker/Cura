@@ -113,7 +113,7 @@ class SliceInfo(Extension):
                                              "maximum": {"x": bounding_box.maximum.x,
                                                          "y": bounding_box.maximum.y,
                                                          "z": bounding_box.maximum.z}}
-                    model["transformation"] = {"data": str(node.getWorldTransformation().getData())}
+                    model["transformation"] = {"data": str(node.getWorldTransformation().getData()).replace("\n", "")}
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
                     model["extruder"] = 0 if extruder_position is None else extruder_position
 
