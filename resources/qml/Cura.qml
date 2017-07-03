@@ -329,7 +329,8 @@ UM.MainWindow
                 tooltip: '';
                 anchors
                 {
-                    top: parent.top;
+                    top: topbar.bottom;
+                    topMargin: UM.Theme.getSize("default_margin").height;
                     left: parent.left;
                 }
                 action: Cura.Actions.open;
@@ -371,13 +372,21 @@ UM.MainWindow
                 }
             }
 
+            Topbar
+            {
+                id: topbar
+                anchors.left:parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+            }
+
             Sidebar
             {
                 id: sidebar;
 
                 anchors
                 {
-                    top: parent.top;
+                    top: topbar.bottom;
                     bottom: parent.bottom;
                     right: parent.right;
                 }
@@ -412,7 +421,7 @@ UM.MainWindow
                 color: UM.Theme.getColor("viewport_overlay")
                 anchors
                 {
-                    top: parent.top
+                    top: topbar.bottom
                     bottom: parent.bottom
                     left:parent.left
                     right: sidebar.left
@@ -437,8 +446,6 @@ UM.MainWindow
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2
-
-
             }
 
             UM.MessageStack
