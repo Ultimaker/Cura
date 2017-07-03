@@ -19,6 +19,16 @@ UM.MainWindow
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
     property bool monitoringPrint: false
+
+    Connections
+    {
+        target: Printer
+        onShowPrintMonitor:
+        {
+            monitoringPrint = show;
+        }
+    }
+
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
@@ -391,7 +401,6 @@ UM.MainWindow
                     right: parent.right;
                 }
                 z: 1
-                onMonitoringPrintChanged: base.monitoringPrint = monitoringPrint
                 width: UM.Theme.getSize("sidebar").width;
             }
 

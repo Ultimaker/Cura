@@ -15,18 +15,7 @@ Rectangle
     id: base;
 
     property int currentModeIndex;
-    property bool monitoringPrint: false;  // When adding more "tabs", one want to replace this bool with a ListModel
     property bool hideSettings: PrintInformation.preSliced
-    Connections
-    {
-        target: Printer
-        onShowPrintMonitor:
-        {
-            base.monitoringPrint = show;
-            showSettings.checked = !show;
-            showMonitor.checked = show;
-        }
-    }
 
     // Is there an output device for this printer?
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
