@@ -62,7 +62,13 @@ class SliceInfo(Extension):
             data["time_stamp"] = time.time()
             data["schema_version"] = 0
             data["cura_version"] = Application.getInstance().getVersion()
-            data["active_mode"] = "" # TODO
+
+            active_mode = Preferences.getInstance().getValue("cura/active_mode")
+            if active_mode == 0:
+                data["active_mode"] = "recommended"
+            else:
+                data["active_mode"] = "custom"
+
             data["machine_settings_changed_by_user"] = global_container_stack.definitionChanges.getId() != "empty"
             data["language"] = Preferences.getInstance().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
@@ -117,7 +123,6 @@ class SliceInfo(Extension):
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
                     model["extruder"] = 0 if extruder_position is None else extruder_position
 
-
                     model_settings = dict()
                     model_stack = node.callDecoration("getStack")
                     if model_stack:
@@ -137,7 +142,6 @@ class SliceInfo(Extension):
                         model_settings["infill_sparse_density"] = model_stack.getProperty("infill_sparse_density", "value")
                         model_settings["infill_pattern"] = model_stack.getProperty("infill_pattern", "value")
                         model_settings["gradual_infill_steps"] = model_stack.getProperty("gradual_infill_steps", "value")
-
 
                     model["model_settings"] = model_settings
 
