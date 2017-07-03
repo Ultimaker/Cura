@@ -33,6 +33,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:button", "Refresh")
                 onClicked: manager.requestPluginList()
                 anchors.right: parent.right
+                anchors.rightMargin: -3
             }
         }
         ScrollView
@@ -68,7 +69,8 @@ UM.Dialog
                 anchors.left:parent.left
                 anchors.right: closeButton.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                height: 10
+                anchors.bottomMargin: 4
+                height: UM.Theme.getSize("default_margin").height
                 value: manager.downloadProgress
             }
 
@@ -80,6 +82,7 @@ UM.Dialog
                 onClicked: base.close()
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
+                anchors.rightMargin: -3
             }
         }
 
