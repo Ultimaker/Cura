@@ -161,7 +161,7 @@ class SliceInfo(Extension):
             print_settings["support_extruder_nr"] = int(global_container_stack.getProperty("support_extruder_nr", "value"))
 
             # Platform adhesion settings
-            print_settings["platform_adhesion"] = global_container_stack.getProperty("platform_adhesion", "value")
+            print_settings["adhesion_type"] = global_container_stack.getProperty("adhesion_type", "value")
 
             # Shell settings
             print_settings["wall_line_count"] = global_container_stack.getProperty("wall_line_count", "value")
