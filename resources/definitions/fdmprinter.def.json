@@ -1169,7 +1169,7 @@
                 "z_seam_relative":
                 {
                     "label": "Z Seam Relative",
-                    "description": "When enabled, the z seam coordinates are relative to each part's centre. By default, the coordinates define an absolute position on the platform.",
+                    "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
                     "unit": "mm",
                     "type": "bool",
                     "default_value": false,
