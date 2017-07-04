@@ -121,7 +121,7 @@ class SliceInfo(Extension):
                                                          "z": bounding_box.maximum.z}}
                     model["transformation"] = {"data": str(node.getWorldTransformation().getData()).replace("\n", "")}
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
-                    model["extruder"] = 0 if extruder_position is None else extruder_position
+                    model["extruder"] = 0 if extruder_position is None else int(extruder_position)
 
                     model_settings = dict()
                     model_stack = node.callDecoration("getStack")
@@ -148,10 +148,10 @@ class SliceInfo(Extension):
                     data["models"].append(model)
 
             print_times = print_information.printTimesPerFeature
-            data["print_times"] = {"travel": print_times["travel"].getDisplayString(DurationFormat.Format.Seconds),
-                                   "support": print_times["support"].getDisplayString(DurationFormat.Format.Seconds),
-                                   "infill": print_times["infill"].getDisplayString(DurationFormat.Format.Seconds),
-                                   "total": print_information.currentPrintTime.getDisplayString(DurationFormat.Format.Seconds)}
+            data["print_times"] = {"travel": int(print_times["travel"].getDisplayString(DurationFormat.Format.Seconds)),
+                                   "support": int(print_times["support"].getDisplayString(DurationFormat.Format.Seconds)),
+                                   "infill": int(print_times["infill"].getDisplayString(DurationFormat.Format.Seconds)),
+                                   "total": int(print_information.currentPrintTime.getDisplayString(DurationFormat.Format.Seconds))}
 
             print_settings = dict()
             print_settings["layer_height"] = global_container_stack.getProperty("layer_height", "value")
