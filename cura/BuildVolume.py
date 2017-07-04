@@ -727,7 +727,7 @@ class BuildVolume(SceneNode):
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
             if offset_x is None:
                 offset_x = 0
-            offset_y = -extruder.getProperty("machine_nozzle_offset_y", "value")
+            offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
             else:
