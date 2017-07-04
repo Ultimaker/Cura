@@ -20,6 +20,9 @@ Rectangle
 
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
+    property bool monitoringPrint: false
+    signal startMonitoringPrint()
+    signal stopMonitoringPrint()
 
     Row
     {
@@ -32,13 +35,13 @@ Rectangle
         {
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: monitoringPrint = false
+            onClicked: base.stopMonitoringPrint()
             iconSource: UM.Theme.getIcon("tab_settings");
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
             text: "Prepare"
             checkable: true
-            checked: !monitoringPrint
+            checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
             style:  UM.Theme.styles.topbar_header_tab
@@ -48,7 +51,7 @@ Rectangle
         {
             id: showMonitor
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: monitoringPrint = true
+            onClicked: base.startMonitoringPrint()
             text: "Print"
             iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
             property color overlayColor:
@@ -122,7 +125,7 @@ Rectangle
             }
 
             checkable: true
-            checked: monitoringPrint
+            checked: base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
 
             style:  UM.Theme.styles.topbar_header_tab

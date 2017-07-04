@@ -18,14 +18,14 @@ UM.MainWindow
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
-    property bool monitoringPrint: false
+    property bool showPrintMonitor: false
 
     Connections
     {
         target: Printer
         onShowPrintMonitor:
         {
-            monitoringPrint = show;
+            base.showPrintMonitor = show;
         }
     }
 
@@ -388,6 +388,9 @@ UM.MainWindow
                 anchors.left:parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
+                monitoringPrint: base.showPrintMonitor
+                onStartMonitoringPrint: base.showPrintMonitor = true
+                onStopMonitoringPrint: base.showPrintMonitor = false
             }
 
             Sidebar
@@ -402,6 +405,7 @@ UM.MainWindow
                 }
                 z: 1
                 width: UM.Theme.getSize("sidebar").width;
+                monitoringPrint: base.showPrintMonitor
             }
 
             Button
@@ -451,7 +455,7 @@ UM.MainWindow
             Loader
             {
                 sourceComponent: Cura.MachineManager.printerOutputDevices.length > 0 ? Cura.MachineManager.printerOutputDevices[0].monitorItem: null
-                visible: base.monitoringPrint
+                visible: base.showPrintMonitor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenterOffset: - UM.Theme.getSize("sidebar").width / 2

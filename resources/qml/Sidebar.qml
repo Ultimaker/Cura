@@ -22,6 +22,8 @@ Rectangle
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property int backendState: UM.Backend.state;
 
+    property bool monitoringPrint: false
+
     color: UM.Theme.getColor("sidebar")
     UM.I18nCatalog { id: catalog; name:"cura"}
 
