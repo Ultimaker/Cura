@@ -4931,7 +4931,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "maximum_value_warning": "45",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and not spaghetti_infill_stepped",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and spaghetti_infill_stepped",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4944,7 +4944,7 @@
                     "default_value": 2.0,
                     "minimum_value": "layer_height",
                     "maximum_value_warning": "10.0",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and not spaghetti_infill_stepped",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and spaghetti_infill_stepped",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
