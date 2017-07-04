@@ -83,8 +83,6 @@ Rectangle
         id: header
         width: parent.width
 
-        anchors.top: sidebarHeaderBar.bottom
-
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }
