@@ -1,5 +1,5 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+#Copyright (c) 2017 Ultimaker B.V.
+#Cura is released under the terms of the AGPLv3 or higher.
 
 import gc
 
@@ -180,9 +180,7 @@ class ProcessSlicedLayersJob(Job):
         else:
             # Single extruder via global stack.
             material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
-            color_code = "#e0e000"
-            if global_container_stack.material.getMetaDataEntry("color_code") is not None:
-                color_code = global_container_stack.material.getMetaDataEntry("color_code")
+            color_code = global_container_stack.material.getMetaDataEntry("color_code", default="#e0e000")
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 
