@@ -364,9 +364,9 @@ UM.PreferencesPage
                 CheckBox
                 {
                     id: zoomToMouseCheckbox
-                    text: catalog.i18nc("@action:button","Zoom toward mouse direction");
+                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction");
                     checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
-                    onClicked: UM.Preferences.setValue("view/zoom_to_mouse",  checked)
+                    onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
                 }
             }
 
