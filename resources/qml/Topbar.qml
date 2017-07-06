@@ -23,6 +23,11 @@ Rectangle
     property bool monitoringPrint: false
     signal startMonitoringPrint()
     signal stopMonitoringPrint()
+    UM.I18nCatalog
+    {
+        id: catalog
+        name:"cura"
+    }
 
     Row
     {
@@ -39,7 +44,7 @@ Rectangle
             iconSource: UM.Theme.getIcon("tab_settings");
             property color overlayColor: "transparent"
             property string overlayIconSource: ""
-            text: "Prepare"
+            text: catalog.i18nc("@title:tab","Prepare")
             checkable: true
             checked: !base.monitoringPrint
             exclusiveGroup: sidebarHeaderBarGroup
@@ -52,7 +57,7 @@ Rectangle
             id: showMonitor
             height: UM.Theme.getSize("sidebar_header").height
             onClicked: base.startMonitoringPrint()
-            text: "Print"
+            text: catalog.i18nc("@title:tab", "Print")
             iconSource: printerConnected ? UM.Theme.getIcon("tab_monitor_with_status") : UM.Theme.getIcon("tab_monitor")
             property color overlayColor:
             {
