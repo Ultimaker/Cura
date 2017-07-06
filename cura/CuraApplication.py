@@ -26,7 +26,6 @@ from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
-from UM.Platform import Platform
 from UM.Decorators import deprecated
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
@@ -267,6 +266,9 @@ class CuraApplication(QtApplication):
 
         with ContainerRegistry.getInstance().lockFile():
             ContainerRegistry.getInstance().load()
+
+        # set the setting version for Preferences
+        Preferences.getInstance().setSettingVersion(CuraApplication.SettingVersion)
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
 
