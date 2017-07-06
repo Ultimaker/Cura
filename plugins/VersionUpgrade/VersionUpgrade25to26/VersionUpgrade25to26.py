@@ -62,8 +62,8 @@ class VersionUpgrade25to26(VersionUpgrade):
             parser["general"]["visible_settings"] = ";".join(new_visible_settings)
 
         #Change the version number in the file.
-        if parser.has_section("general"): #It better have!
-            parser["general"]["version"] = "5"
+        parser.set("general", "version", "4")
+        parser.set("general", "setting_version", "1")
 
         #Re-serialise the file.
         output = io.StringIO()
@@ -91,11 +91,9 @@ class VersionUpgrade25to26(VersionUpgrade):
             if not parser.has_section(each_section):
                 parser.add_section(each_section)
 
-        # Change the version number in the file.
-        parser["metadata"]["setting_version"] = str(CuraApplication.SettingVersion)
-
-        # Update version
+        # Update version numbers
         parser["general"]["version"] = "2"
+        parser["metadata"]["setting_version"] = "1"
 
         #Re-serialise the file.
         output = io.StringIO()
