@@ -12,9 +12,8 @@ from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 
 import UM.Dictionary
-from UM.Settings.InstanceContainer import InstanceContainer, InvalidInstanceError
+from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 
 ##  Handles serializing and deserializing material containers from an XML file
@@ -37,11 +36,7 @@ class XmlMaterialProfile(InstanceContainer):
     #   \return The corresponding setting_version.
     def xmlVersionToSettingVersion(self, xml_version: str) -> int:
         if xml_version == "1.3":
-            return 2  # FIXME & HACK: This is temporary hack. The setting_version has been increased in CuraApplication,
-                      # but we haven't decided on how to determine the versions of an XMLMaterialProfile yet.
-                      # This MUST be fixed after the decision has been made.
-        if xml_version == "1.3":
-            return 1
+            return 2
         return 0 #Older than 1.3.
 
     def getInheritedFiles(self):
