@@ -142,6 +142,7 @@ Item
 
         style: UM.Theme.styles.scrollview;
         flickableItem.flickableDirection: Flickable.VerticalFlick;
+        __wheelAreaScrollSpeed: 75; // Scroll three lines in one scroll event
 
         ListView
         {
