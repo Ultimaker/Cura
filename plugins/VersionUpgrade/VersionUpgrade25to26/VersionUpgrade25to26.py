@@ -5,7 +5,6 @@ import configparser #To parse the files we need to upgrade and write the new fil
 import io #To serialise configparser output to a string.
 
 from UM.VersionUpgrade import VersionUpgrade
-from cura.CuraApplication import CuraApplication
 
 _removed_settings = { #Settings that were removed in 2.5.
     "start_layers_at_same_position",
