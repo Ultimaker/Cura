@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from PyQt5.QtCore import pyqtProperty
 
@@ -41,6 +41,17 @@ class GlobalStack(CuraContainerStack):
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
+
+    def getConfigurationTypeFromSerialized(self, serialized: str) -> Optional[str]:
+        configuration_type = None
+        try:
+            parser = self._readAndValidateSerialized(serialized)
+            configuration_type = parser["metadata"].get("type")
+            if configuration_type == "machine":
+                configuration_type = "machine_stack"
+        except Exception as e:
+            Logger.log("e", "Could not get configuration type: %s", e)
+        return configuration_type
 
     ##  Add an extruder to the list of extruders of this stack.
     #
