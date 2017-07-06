@@ -112,7 +112,7 @@ class VersionUpgrade26to27(VersionUpgrade):
         parser["metadata"]["setting_version"] = str(CuraApplication.SettingVersion)
 
         # Update version
-        parser["general"]["version"] = "4"
+        parser["general"]["version"] = "3"
 
         # Re-serialise the file.
         output = io.StringIO()
