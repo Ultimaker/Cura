@@ -20,6 +20,8 @@ def getMetaData():
         },
         "version_upgrade": {
             ("materials", 1000000): ("materials", 1000001, upgrader.upgradeMaterial),
+            # FIXME: This needs to be changed once we have decided on how to determine the versions
+            ("materials", 1000001): ("materials", 1000002, upgrader.upgradeMaterial),
         },
         "sources": {
             "materials": {
