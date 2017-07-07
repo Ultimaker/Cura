@@ -86,6 +86,8 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
+        UM.Preferences.resetPreference("view/zoom_to_mouse");
+        zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
@@ -351,6 +353,20 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button","Invert the direction of camera zoom.");
                     checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
                     onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
+                }
+            }
+
+            UM.TooltipArea {
+                width: childrenRect.width;
+                height: childrenRect.height;
+                text: catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?")
+
+                CheckBox
+                {
+                    id: zoomToMouseCheckbox
+                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction");
+                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
+                    onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
                 }
             }
 
