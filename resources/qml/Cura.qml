@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -25,7 +25,14 @@ UM.MainWindow
         target: Printer
         onShowPrintMonitor:
         {
-            base.showPrintMonitor = show;
+            if (show)
+            {
+                topbar.startMonitoringPrint()
+            }
+            else
+            {
+                topbar.stopMonitoringPrint()
+            }
         }
     }
 
