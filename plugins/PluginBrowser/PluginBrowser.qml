@@ -55,7 +55,7 @@ UM.Dialog
         {
             id: bottomBar
             width: parent.width
-            height: childrenRect.height
+            height: closeButton.height
             anchors.bottom:parent.bottom
             anchors.left: parent.left
             ProgressBar
@@ -92,10 +92,11 @@ UM.Dialog
                 Rectangle
                 {
                     width: pluginList.width;
-                    height: childrenRect.height;
+                    height: texts.height;
                     color: index % 2 ? palette.base : palette.alternateBase
                     Column
                     {
+                        id: texts
                         width: parent.width
                         height: childrenRect.height
                         anchors.left: parent.left
@@ -128,7 +129,6 @@ UM.Dialog
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
                         enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
-
                     }
                 }
 
