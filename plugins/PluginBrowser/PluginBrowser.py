@@ -141,6 +141,17 @@ class PluginBrowser(QObject, Extension):
         self.setIsDownloading(True)
         self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
 
+    @pyqtSlot()
+    def cancelDownload(self):
+        Logger.log("i", "user cancelled the download of a plugin")
+        self._download_plugin_reply.abort()
+        self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
+        self._download_plugin_reply = None
+        self._download_plugin_request = None
+
+        self.setDownloadProgress(0)
+        self.setIsDownloading(False)
+
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
         if self._plugins_model is None:

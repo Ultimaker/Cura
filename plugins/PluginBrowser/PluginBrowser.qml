@@ -33,6 +33,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:button", "Refresh")
                 onClicked: manager.requestPluginList()
                 anchors.right: parent.right
+                enabled: !manager.isDownloading
             }
         }
         ScrollView
@@ -48,6 +49,7 @@ UM.Dialog
                 model: manager.pluginsModel
                 anchors.fill: parent
 
+                property var activePlugin
                 delegate: pluginDelegate
             }
         }
@@ -75,7 +77,14 @@ UM.Dialog
                 id: closeButton
                 text: catalog.i18nc("@action:button", "Close")
                 iconName: "dialog-close"
-                onClicked: base.close()
+                onClicked:
+                {
+                    if (manager.isDownloading)
+                    {
+                        manager.cancelDownload()
+                    }
+                    base.close();
+                }
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
             }
@@ -123,7 +132,11 @@ UM.Dialog
                         id: downloadButton
                         text:
                         {
-                            if (model.already_installed)
+                            if (manager.isDownloading && pluginList.activePlugin == model)
+                            {
+                                return catalog.i18nc("@action:button", "Cancel");
+                            }
+                            else if (model.already_installed)
                             {
                                 if (model.can_upgrade)
                                 {
@@ -133,11 +146,32 @@ UM.Dialog
                             }
                             return catalog.i18nc("@action:button", "Download");
                         }
-                        onClicked: manager.downloadAndInstallPlugin(model.file_location)
+                        onClicked:
+                        {
+                            if(!manager.isDownloading)
+                            {
+                                pluginList.activePlugin = model;
+                                manager.downloadAndInstallPlugin(model.file_location);
+                            }
+                            else
+                            {
+                                manager.cancelDownload();
+                            }
+                        }
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
-                        enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
+                        enabled:
+                        {
+                            if (manager.isDownloading)
+                            {
+                                return (pluginList.activePlugin == model);
+                            }
+                            else
+                            {
+                                return (!model.already_installed || model.can_upgrade);
+                            }
+                        }
                     }
                 }
 
