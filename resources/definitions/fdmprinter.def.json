@@ -4982,6 +4982,19 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "spaghetti_infill_extra_volume":
+                {
+                    "label": "Spaghetti Infill Extra Volume",
+                    "description": "A correction term to adjust the total volume being extruded each time when filling spaghetti.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "support_conical_enabled":
                 {
                     "label": "Enable Conical Support",
