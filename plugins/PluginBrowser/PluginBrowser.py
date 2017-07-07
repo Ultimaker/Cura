@@ -102,8 +102,10 @@ class PluginBrowser(QObject, Extension):
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
                 self._temp_plugin_file.write(self._download_plugin_reply.readAll())
-
-                result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
+                location = self._temp_plugin_file.name
+                if not location.startswith("/"):
+                    location = "/" + location # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+                result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
                 self._newly_installed_plugin_ids.append(result["id"])
                 self.pluginsMetadataChanged.emit()
