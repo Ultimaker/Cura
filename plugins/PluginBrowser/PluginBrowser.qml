@@ -62,13 +62,11 @@ UM.Dialog
             {
                 id: progressbar
                 anchors.bottom: parent.bottom
-                style: UM.Theme.styles.progressbar
                 minimumValue: 0;
                 maximumValue: 100
                 anchors.left:parent.left
                 anchors.right: closeButton.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                height: 10
                 value: manager.downloadProgress
             }
 
