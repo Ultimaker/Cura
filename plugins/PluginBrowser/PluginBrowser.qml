@@ -67,7 +67,7 @@ UM.Dialog
                 anchors.left:parent.left
                 anchors.right: closeButton.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                value: manager.downloadProgress
+                value: manager.isDownloading ? manager.downloadProgress : 0
             }
 
             Button
@@ -121,7 +121,18 @@ UM.Dialog
                     Button
                     {
                         id: downloadButton
-                        text: (model.already_installed && model.can_upgrade) ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
+                        text:
+                        {
+                            if (model.already_installed)
+                            {
+                                if (model.can_upgrade)
+                                {
+                                    return catalog.i18nc("@action:button", "Upgrade");
+                                }
+                                return catalog.i18nc("@action:button", "Installed");
+                            }
+                            return catalog.i18nc("@action:button", "Download");
+                        }
                         onClicked: manager.downloadAndInstallPlugin(model.file_location)
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
