@@ -718,8 +718,8 @@ class BuildVolume(SceneNode):
 
         # For certain machines we don't need to compute disallowed areas for each nozzle.
         # So we check here and only do the nozzle offsetting if needed.
-        no_nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
-            "no_nozzle_offsetting_for_disallowed_areas", False)
+        nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
+            "nozzle_offsetting_for_disallowed_areas", True)
 
         result = {}
         for extruder in used_extruders:
@@ -727,9 +727,11 @@ class BuildVolume(SceneNode):
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
             if offset_x is None:
                 offset_x = 0
-            offset_y = -extruder.getProperty("machine_nozzle_offset_y", "value")
+            offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
+            else:
+                offset_y = -offset_y
             result[extruder_id] = []
 
             for polygon in machine_disallowed_polygons:
@@ -742,7 +744,7 @@ class BuildVolume(SceneNode):
             bottom_unreachable_border = 0
 
             # Only do nozzle offsetting if needed
-            if not no_nozzle_offsetting_for_disallowed_areas:
+            if nozzle_offsetting_for_disallowed_areas:
                 #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
                 for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")

@@ -625,7 +625,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     #   is ignored.
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
-        if self._printer_state != "idle":
+        if self._printer_state not in ["idle", ""]:
             self._error_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to start a new print job, printer is busy. Current printer status is %s.") % self._printer_state)
             self._error_message.show()

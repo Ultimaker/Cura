@@ -1,6 +1,6 @@
 {
     "name": "Cura Profile Writer",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides support for exporting Cura profiles.",
     "api": 4,

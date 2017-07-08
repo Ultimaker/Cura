@@ -8,7 +8,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 from UM.Version import Version
 
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PyQt5.QtCore import QUrl, QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 
@@ -66,7 +66,9 @@ class PluginBrowser(QObject, Extension):
             self._createDialog()
         self._dialog.show()
 
+    @pyqtSlot()
     def requestPluginList(self):
+        Logger.log("i", "Requesting plugin list")
         url = QUrl(self._api_url + "plugins")
         self._plugin_list_request = QNetworkRequest(url)
         self._plugin_list_request.setRawHeader(*self._request_header)
@@ -94,17 +96,23 @@ class PluginBrowser(QObject, Extension):
     def _onDownloadPluginProgress(self, bytes_sent, bytes_total):
         if bytes_total > 0:
             new_progress = bytes_sent / bytes_total * 100
-            if new_progress > self._download_progress:
-                self._download_progress = new_progress
-                self.onDownloadProgressChanged.emit()
-            self._download_progress = new_progress
+            self.setDownloadProgress(new_progress)
             if new_progress == 100.0:
                 self.setIsDownloading(False)
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
-                self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
-                self._temp_plugin_file.write(self._download_plugin_reply.readAll())
 
-                result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
+                # must not delete the temporary file on Windows
+                self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curaplugin", delete = False)
+                location = self._temp_plugin_file.name
+
+                # write first and close, otherwise on Windows, it cannot read the file
+                self._temp_plugin_file.write(self._download_plugin_reply.readAll())
+                self._temp_plugin_file.close()
+
+                # open as read
+                if not location.startswith("/"):
+                    location = "/" + location # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+                result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
                 self._newly_installed_plugin_ids.append(result["id"])
                 self.pluginsMetadataChanged.emit()
@@ -117,6 +125,11 @@ class PluginBrowser(QObject, Extension):
     def downloadProgress(self):
         return self._download_progress
 
+    def setDownloadProgress(self, progress):
+        if progress != self._download_progress:
+            self._download_progress = progress
+            self.onDownloadProgressChanged.emit()
+
     @pyqtSlot(str)
     def downloadAndInstallPlugin(self, url):
         Logger.log("i", "Attempting to download & install plugin from %s", url)
@@ -124,10 +137,20 @@ class PluginBrowser(QObject, Extension):
         self._download_plugin_request = QNetworkRequest(url)
         self._download_plugin_request.setRawHeader(*self._request_header)
         self._download_plugin_reply = self._network_manager.get(self._download_plugin_request)
-        self._download_progress = 0
+        self.setDownloadProgress(0)
         self.setIsDownloading(True)
-        self.onDownloadProgressChanged.emit()
         self._download_plugin_reply.downloadProgress.connect(self._onDownloadPluginProgress)
+
+    @pyqtSlot()
+    def cancelDownload(self):
+        Logger.log("i", "user cancelled the download of a plugin")
+        self._download_plugin_reply.abort()
+        self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
+        self._download_plugin_reply = None
+        self._download_plugin_request = None
+
+        self.setDownloadProgress(0)
+        self.setIsDownloading(False)
 
     @pyqtProperty(QObject, notify=pluginsMetadataChanged)
     def pluginsModel(self):
@@ -180,6 +203,20 @@ class PluginBrowser(QObject, Extension):
 
     def _onRequestFinished(self, reply):
         reply_url = reply.url().toString()
+        if reply.error() == QNetworkReply.TimeoutError:
+            Logger.log("w", "Got a timeout.")
+            # Reset everything.
+            self.setDownloadProgress(0)
+            self.setIsDownloading(False)
+            if self._download_plugin_reply:
+                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
+                self._download_plugin_reply.abort()
+                self._download_plugin_reply = None
+            return
+        elif reply.error() == QNetworkReply.HostNotFoundError:
+            Logger.log("w", "Unable to reach server.")
+            return
+
         if reply.operation() == QNetworkAccessManager.GetOperation:
             if reply_url == self._api_url + "plugins":
                 try:
@@ -193,9 +230,20 @@ class PluginBrowser(QObject, Extension):
             # Ignore any operation that is not a get operation
             pass
 
+    def _onNetworkAccesibleChanged(self, accessible):
+        if accessible == 0:
+            self.setDownloadProgress(0)
+            self.setIsDownloading(False)
+            if self._download_plugin_reply:
+                self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
+                self._download_plugin_reply.abort()
+                self._download_plugin_reply = None
+
     def _createNetworkManager(self):
         if self._network_manager:
             self._network_manager.finished.disconnect(self._onRequestFinished)
+            self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccesibleChanged)
 
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onRequestFinished)
+        self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccesibleChanged)

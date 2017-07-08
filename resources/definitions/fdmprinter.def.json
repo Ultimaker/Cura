@@ -303,8 +303,9 @@
                     "type": "enum",
                     "options":
                     {
-                        "RepRap (Marlin/Sprinter)": "RepRap (Marlin/Sprinter)",
-                        "RepRap (Volumatric)": "RepRap (Volumetric)",
+                        "RepRap (Marlin/Sprinter)": "Marlin",
+                        "RepRap (Volumatric)": "Marlin (Volumetric)",
+                        "RepRap (RepRap)": "RepRap",
                         "UltiGCode": "Ultimaker 2",
                         "Griffin": "Griffin",
                         "Makerbot": "Makerbot",
@@ -677,7 +678,7 @@
                                     "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if outer_inset_first else 0.1 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "default_value": 0.4,
-                                    "value": "wall_line_width",
+                                    "value": "extruderValue(wall_0_extruder_nr, 'wall_line_width')",
                                     "type": "float",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
@@ -1136,6 +1137,19 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "xy_offset_layer_0":
+                {
+                    "label": "Initial Layer Horizontal Expansion",
+                    "description": "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\".",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value_warning": "-1",
+                    "maximum_value_warning": "1",
+                    "default_value": 0,
+                    "value": "xy_offset",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
@@ -1171,6 +1185,17 @@
                     "type": "float",
                     "default_value": 100.0,
                     "value": "machine_depth * 3",
+                    "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "z_seam_relative":
+                {
+                    "label": "Z Seam Relative",
+                    "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
+                    "unit": "mm",
+                    "type": "bool",
+                    "default_value": false,
                     "enabled": "z_seam_type == 'back'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
@@ -1524,6 +1549,7 @@
                     "maximum_value_warning": "285",
                     "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_extruder": true,
+                    "settable_per_mesh": false,
                     "minimum_value": "-273.15"
                 },
                 "material_print_temperature":
@@ -4357,7 +4383,7 @@
                             "unit": "mm",
                             "type": "float",
                             "default_value": 2,
-                            "value": "round(max(2 * max(extruderValues('prime_tower_line_width')), 0.5 * (resolveOrValue('prime_tower_size') - math.sqrt(max(0, resolveOrValue('prime_tower_size') ** 2 - max(extruderValues('prime_tower_min_volume')) / resolveOrValue('layer_height'))))), 3)",
+                            "value": "round(max(2 * prime_tower_line_width, 0.5 * (prime_tower_size - math.sqrt(max(0, prime_tower_size ** 2 - prime_tower_min_volume / layer_height)))), 3)",
                             "resolve": "max(extruderValues('prime_tower_wall_thickness'))",
                             "minimum_value": "0.001",
                             "minimum_value_warning": "2 * min(extruderValues('prime_tower_line_width')) - 0.0001",
@@ -4376,8 +4402,6 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "minimum_value_warning": "-1000",
-                    "maximum_value_warning": "1000",
                     "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
@@ -4391,8 +4415,6 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "minimum_value_warning": "-1000",
-                    "maximum_value_warning": "1000",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
@@ -4897,6 +4919,16 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "spaghetti_infill_stepped":
+                {
+                    "label": "Spaghetti Infill Stepping",
+                    "description": "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "spaghetti_max_infill_angle":
                 {
                     "label": "Spaghetti Maximum Infill Angle",
@@ -4907,7 +4939,7 @@
                     "minimum_value": "0",
                     "maximum_value": "90",
                     "maximum_value_warning": "45",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and spaghetti_infill_stepped",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4920,7 +4952,7 @@
                     "default_value": 2.0,
                     "minimum_value": "layer_height",
                     "maximum_value_warning": "10.0",
-                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled and spaghetti_infill_stepped",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4945,6 +4977,19 @@
                     "type": "float",
                     "default_value": 20,
                     "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "spaghetti_infill_extra_volume":
+                {
+                    "label": "Spaghetti Infill Extra Volume",
+                    "description": "A correction term to adjust the total volume being extruded each time when filling spaghetti.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
                     "enabled": "infill_sparse_density > 0 and spaghetti_infill_enabled",
                     "limit_to_extruder": "infill_extruder_nr",

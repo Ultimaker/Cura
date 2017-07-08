@@ -13,8 +13,8 @@
             "default_value": 3,
             "maximum_value": "3"
         },
-        "machine_nozzle_offset_x": { "default_value": 24.0 },
-        "machine_nozzle_offset_y": { "default_value": 60.0 },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
         "machine_extruder_start_code": {
           "default_value": "\n;start extruder_3\n\nM117 printing\n"
         },

@@ -49,6 +49,9 @@ class MaterialManager(QObject):
         if button == "Undo":
             container_manager = ContainerManager.getInstance()
             container_manager.setContainerMetaDataEntry(self._material_diameter_warning_message.material_id, "properties/diameter", self._material_diameter_warning_message.previous_diameter)
+            approximate_previous_diameter = str(round(float(self._material_diameter_warning_message.previous_diameter)))
+            container_manager.setContainerMetaDataEntry(self._material_diameter_warning_message.material_id, "approximate_diameter", approximate_previous_diameter)
+            container_manager.setContainerProperty(self._material_diameter_warning_message.material_id, "material_diameter", "value", self._material_diameter_warning_message.previous_diameter);
             message.hide()
         else:
             Logger.log("w", "Unknown button action for material diameter warning message: {action}".format(action = button))

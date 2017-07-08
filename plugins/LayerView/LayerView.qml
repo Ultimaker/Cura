@@ -39,6 +39,8 @@ Item
         height: parent.height
         z: slider.z - 1
         color: UM.Theme.getColor("tool_panel_background")
+        borderWidth: UM.Theme.getSize("default_lining").width
+        borderColor: UM.Theme.getColor("lining")
 
         target: parent.buttonTarget
         arrowSize: UM.Theme.getSize("default_arrow").width
@@ -530,26 +532,19 @@ Item
                 target: Qt.point(0, slider.activeHandle.y + slider.activeHandle.height / 2)
                 arrowSize: UM.Theme.getSize("default_arrow").width
 
-                height: (Math.floor(UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height) / 2) * 2 // Make sure height has an integer middle so drawing a pointy border is easier
+                height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
                 width: valueLabel.width + UM.Theme.getSize("default_margin").width
                 Behavior on height { NumberAnimation { duration: 50; } }
 
-                color: UM.Theme.getColor("lining");
+                color: UM.Theme.getColor("tool_panel_background")
+                borderColor: UM.Theme.getColor("lining")
+                borderWidth: UM.Theme.getSize("default_lining").width
 
                 visible: slider.layersVisible
 
-                UM.PointingRectangle
+                MouseArea //Catch all mouse events (so scene doesnt handle them)
                 {
-                    color: UM.Theme.getColor("tool_panel_background")
-                    target: Qt.point(0, height / 2 + UM.Theme.getSize("default_lining").width)
-                    arrowSize: UM.Theme.getSize("default_arrow").width
                     anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_lining").width
-
-                    MouseArea //Catch all mouse events (so scene doesnt handle them)
-                    {
-                        anchors.fill: parent
-                    }
                 }
 
                 TextField

@@ -1,6 +1,6 @@
 {
     "name": "GCode Profile Reader",
-    "author": "Ultimaker",
+    "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides support for importing profiles from g-code files.",
     "api": 4,

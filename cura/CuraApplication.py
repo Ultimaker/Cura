@@ -26,7 +26,6 @@ from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
-from UM.Platform import Platform
 from UM.Decorators import deprecated
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
@@ -105,7 +104,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 1
+    SettingVersion = 2
 
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -179,9 +178,9 @@ class CuraApplication(QtApplication):
         UM.VersionUpgradeManager.VersionUpgradeManager.getInstance().setCurrentVersions(
             {
                 ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", ContainerStack.Version): (self.ResourceTypes.MachineStack, "application/x-uranium-containerstack"),
-                ("extruder_train", ContainerStack.Version): (self.ResourceTypes.ExtruderStack, "application/x-uranium-extruderstack"),
-                ("preferences", Preferences.Version):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("machine_stack", ContainerStack.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
+                ("extruder_train", ContainerStack.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
+                ("preferences", Preferences.Version * 1000000 + self.SettingVersion):               (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):       (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
             }
@@ -267,6 +266,9 @@ class CuraApplication(QtApplication):
 
         with ContainerRegistry.getInstance().lockFile():
             ContainerRegistry.getInstance().load()
+
+        # set the setting version for Preferences
+        Preferences.getInstance().addPreference("metadata/setting_version", CuraApplication.SettingVersion)
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
 

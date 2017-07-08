@@ -14,18 +14,33 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-        Label
+        Item
         {
-            id: introText
-            text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
+            id: topBar
+            height: childrenRect.height;
             width: parent.width
-            height: 30
+            Label
+            {
+                id: introText
+                text: catalog.i18nc("@label", "Here you can find a list of Third Party plugins.")
+                width: parent.width
+                height: 30
+            }
+
+            Button
+            {
+                id: refresh
+                text: catalog.i18nc("@action:button", "Refresh")
+                onClicked: manager.requestPluginList()
+                anchors.right: parent.right
+                enabled: !manager.isDownloading
+            }
         }
         ScrollView
         {
             width: parent.width
-            anchors.top: introText.bottom
-            anchors.bottom: progressbar.top
+            anchors.top: topBar.bottom
+            anchors.bottom: bottomBar.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             frameVisible: true
             ListView
@@ -34,19 +49,45 @@ UM.Dialog
                 model: manager.pluginsModel
                 anchors.fill: parent
 
+                property var activePlugin
                 delegate: pluginDelegate
             }
         }
-        ProgressBar
+        Item
         {
-            id: progressbar
-            anchors.bottom: parent.bottom
-            style: UM.Theme.styles.progressbar
-            minimumValue: 0;
-            maximumValue: 100
+            id: bottomBar
             width: parent.width
-            height: 10
-            value: manager.downloadProgress
+            height: closeButton.height
+            anchors.bottom:parent.bottom
+            anchors.left: parent.left
+            ProgressBar
+            {
+                id: progressbar
+                anchors.bottom: parent.bottom
+                minimumValue: 0;
+                maximumValue: 100
+                anchors.left:parent.left
+                anchors.right: closeButton.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                value: manager.isDownloading ? manager.downloadProgress : 0
+            }
+
+            Button
+            {
+                id: closeButton
+                text: catalog.i18nc("@action:button", "Close")
+                iconName: "dialog-close"
+                onClicked:
+                {
+                    if (manager.isDownloading)
+                    {
+                        manager.cancelDownload()
+                    }
+                    base.close();
+                }
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+            }
         }
 
         Item
@@ -58,10 +99,11 @@ UM.Dialog
                 Rectangle
                 {
                     width: pluginList.width;
-                    height: childrenRect.height;
+                    height: texts.height;
                     color: index % 2 ? palette.base : palette.alternateBase
                     Column
                     {
+                        id: texts
                         width: parent.width
                         height: childrenRect.height
                         anchors.left: parent.left
@@ -88,13 +130,48 @@ UM.Dialog
                     Button
                     {
                         id: downloadButton
-                        text: !model.already_installed ? catalog.i18nc("@action:button", "Download") : model.can_upgrade ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
-                        onClicked: manager.downloadAndInstallPlugin(model.file_location)
+                        text:
+                        {
+                            if (manager.isDownloading && pluginList.activePlugin == model)
+                            {
+                                return catalog.i18nc("@action:button", "Cancel");
+                            }
+                            else if (model.already_installed)
+                            {
+                                if (model.can_upgrade)
+                                {
+                                    return catalog.i18nc("@action:button", "Upgrade");
+                                }
+                                return catalog.i18nc("@action:button", "Installed");
+                            }
+                            return catalog.i18nc("@action:button", "Download");
+                        }
+                        onClicked:
+                        {
+                            if(!manager.isDownloading)
+                            {
+                                pluginList.activePlugin = model;
+                                manager.downloadAndInstallPlugin(model.file_location);
+                            }
+                            else
+                            {
+                                manager.cancelDownload();
+                            }
+                        }
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
-                        enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
-
+                        enabled:
+                        {
+                            if (manager.isDownloading)
+                            {
+                                return (pluginList.activePlugin == model);
+                            }
+                            else
+                            {
+                                return (!model.already_installed || model.can_upgrade);
+                            }
+                        }
                     }
                 }
 

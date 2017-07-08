@@ -218,20 +218,25 @@ class ContainerManager(QObject):
         entries = entry_name.split("/")
         entry_name = entries.pop()
 
+        sub_item_changed = False
         if entries:
             root_name = entries.pop(0)
             root = container.getMetaDataEntry(root_name)
 
             item = root
-            for entry in entries:
+            for _ in range(len(entries)):
                 item = item.get(entries.pop(0), { })
 
+            if item[entry_name] != entry_value:
+                sub_item_changed = True
             item[entry_name] = entry_value
 
             entry_name = root_name
             entry_value = root
 
         container.setMetaDataEntry(entry_name, entry_value)
+        if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
+            container.metaDataChanged.emit(container)
 
         return True
 

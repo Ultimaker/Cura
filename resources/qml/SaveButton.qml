@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -24,7 +24,7 @@ Item {
     {
         if(!activity)
         {
-            return catalog.i18nc("@label:PrintjobStatus", "Please load a 3d model");
+            return catalog.i18nc("@label:PrintjobStatus", "Please load a 3D model");
         }
 
         switch(base.backendState)
