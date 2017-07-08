@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2017-06-26 09:44+0800\n"
-"PO-Revision-Date: 2017-07-08 19:49+0800\n"
+"PO-Revision-Date: 2017-07-08 19:53+0800\n"
 "Last-Translator: PCDotFan <pcdotfan@aliyun.com>\n"
 "Language-Team: PCDotFan <pc@edu.ax>\n"
 "Lang-Code: zh\n"
@@ -1040,7 +1040,7 @@ msgstr "配置文件缺少「打印质量」类型定义。"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
-msgstr "未找到当前配置的「打印质量类型 {0}「。"
+msgstr "﻿无法为当前配置找到质量类型 {0}。"
 
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:95
 msgctxt "@info:status"
@@ -1069,14 +1069,14 @@ msgid ""
 "issues</a></p>\n"
 "    "
 msgstr ""
-"<p>发生了致命错误，且我们无法恢复！</p>\n"
+"<p>发生了致命错误，我们无法恢复！</p>\n"
 "        <p>请在以下网址中提交错误报告：<a href=“http://github.com/Ultimaker/"
 "Cura/issues”>http://github.com/Ultimaker/Cura/issues</a></p>"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:112
 msgctxt "@action:button"
 msgid "Open Web Page"
-msgstr "打开网页…"
+msgstr "﻿打开网页wab"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:238
 msgctxt "@info:progress"
@@ -1086,12 +1086,12 @@ msgstr "正在载入打印机..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:594
 msgctxt "@info:progress"
 msgid "Setting up scene..."
-msgstr "设置场景..."
+msgstr "正在设置场景..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:636
 msgctxt "@info:progress"
 msgid "Loading interface..."
-msgstr "界面加载中…"
+msgstr "正在载入界面…"
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:793
 #, python-format
