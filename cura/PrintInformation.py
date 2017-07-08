@@ -31,8 +31,8 @@ catalog = i18nCatalog("cura")
 #   - This triggers a new slice with the current settings - this is the "current settings pass".
 #   - When the slice is done, we update the current print time and material amount.
 #   - If the source of the slice was not a Setting change, we start the second slice pass, the "low quality settings pass". Otherwise we stop here.
-#   - When that is done, we update the minimum print time and start the final slice pass, the "high quality settings pass".
-#   - When the high quality pass is done, we update the maximum print time.
+#   - When that is done, we update the minimum print time and start the final slice pass, the "Extra Fine settings pass".
+#   - When the Extra Fine pass is done, we update the maximum print time.
 #
 #   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
 #   This job name is requested by the JobSpecs qml file.
@@ -52,6 +52,19 @@ class PrintInformation(QObject):
         super().__init__(parent)
 
         self._current_print_time = Duration(None, self)
+        self._print_times_per_feature = {
+            "none": Duration(None, self),
+            "inset_0": Duration(None, self),
+            "inset_x": Duration(None, self),
+            "skin": Duration(None, self),
+            "support": Duration(None, self),
+            "skirt": Duration(None, self),
+            "infill": Duration(None, self),
+            "support_infill": Duration(None, self),
+            "travel": Duration(None, self),
+            "retract": Duration(None, self),
+            "support_interface": Duration(None, self)
+        }
 
         self._material_lengths = []
         self._material_weights = []
@@ -93,6 +106,10 @@ class PrintInformation(QObject):
     def currentPrintTime(self):
         return self._current_print_time
 
+    @pyqtProperty("QVariantMap", notify = currentPrintTimeChanged)
+    def printTimesPerFeature(self):
+        return self._print_times_per_feature
+
     materialLengthsChanged = pyqtSignal()
 
     @pyqtProperty("QVariantList", notify = materialLengthsChanged)
@@ -111,12 +128,16 @@ class PrintInformation(QObject):
     def materialCosts(self):
         return self._material_costs
 
-    def _onPrintDurationMessage(self, total_time, material_amounts):
-        if total_time != total_time:  # Check for NaN. Engine can sometimes give us weird values.
-            Logger.log("w", "Received NaN for print duration message")
-            self._current_print_time.setDuration(0)
-        else:
-            self._current_print_time.setDuration(total_time)
+    def _onPrintDurationMessage(self, time_per_feature, material_amounts):
+        total_time = 0
+        for feature, time in time_per_feature.items():
+            if time != time:  # Check for NaN. Engine can sometimes give us weird values.
+                self._print_times_per_feature[feature].setDuration(0)
+                Logger.log("w", "Received NaN for print duration message")
+                continue
+            total_time += time
+            self._print_times_per_feature[feature].setDuration(time)
+        self._current_print_time.setDuration(total_time)
 
         self.currentPrintTimeChanged.emit()
 

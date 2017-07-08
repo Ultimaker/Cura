@@ -1,0 +1,62 @@
+{
+    "id": "3Dator",
+    "version": 2,
+    "name": "3Dator",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "3Dator GmbH",
+        "manufacturer": "3Dator GmbH",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "icon": "icon_ultimaker2",
+        "supports_usb_connection": true,
+        "platform": "3dator_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "fdmextruder"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "3Dator" },
+        "machine_nozzle_size": { "default_value": 0.5 },
+        "speed_travel": { "default_value": 120 },
+        "prime_tower_size": { "default_value": 8.660254037844387 },
+        "infill_sparse_density": { "default_value": 20 },
+        "speed_wall_x": { "default_value": 45 },
+        "speed_wall_0": { "default_value": 40 },
+        "speed_topbottom": { "default_value": 35 },
+        "layer_height": { "default_value": 0.2 },
+        "speed_print": { "default_value": 50 },
+        "speed_infill": { "default_value": 60 },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_height": { "default_value": 260 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_depth": { "default_value": 170 },
+        "machine_width": { "default_value": 180 },
+        "material_diameter": { "default_value": 1.75 },
+        "retraction_speed": {"default_value":100},
+        "cool_fan_speed_min": {"default_value": 20},
+        "cool_fan_speed_max": {"default_value": 70},
+        "adhesion_type": { "default_value": "none" },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-15, -25],
+                [-15, 35],
+                [40, 35],
+                [40, -25]
+            ]
+        },
+        "gantry_height": {
+            "default_value": 30
+        },
+        "machine_start_gcode": {
+            "default_value": ";Sliced at: {day} {date} {time}\nM104 S{material_print_temperature} ;set temperatures\nM140 S{material_bed_temperature}\nM109 S{material_print_temperature} ;wait for temperatures\nM190 S{material_bed_temperature}\nG21  ;metric values\nG90  ;absolute positioning\nM82  ;set extruder to absolute mode\nM107  ;start with the fan off\nG28 Z0  ;move Z to min endstops\nG28 X0 Y0  ;move X/Y to min endstops\nG29  ;Auto Level\nG1 Z0.6 F{travel_speed} ;move the Nozzle near the Bed\nG92 E0\nG1 Y0  ;zero the extruded length\nG1 X10 E30 F500  ;printing a Line from right to left\nG92 E0  ;zero the extruded length again\nG1 Z2\nG1 F{travel_speed}\nM117 Printing...;Put printing message on LCD screen\nM150 R255 U255 B255 P4 ;Change LED Color to white"      },
+        "machine_end_gcode": {
+            "default_value": "M104 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off (if you have it)\nG91                                    ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F{travel_speed} ;move Z up a bit and retract filament even more\nG28                          ;move X/Y to min endstops, so the head is out of the way\nM84                         ;steppers off\nG90                         ;absolute positioning"
+        }
+    }
+}

@@ -12,15 +12,12 @@ UM.Dialog
 {
     title: catalog.i18nc("@title:window", "Open Project")
 
-    width: 550 * Screen.devicePixelRatio
-    minimumWidth: 550 * Screen.devicePixelRatio
-    maximumWidth: minimumWidth
+    width: 500
+    height: 400
 
-    height: 400 * Screen.devicePixelRatio
-    minimumHeight: 400 * Screen.devicePixelRatio
-    maximumHeight: minimumHeight
-    property int comboboxHeight: 15 * Screen.devicePixelRatio
-    property int spacerHeight: 10 * Screen.devicePixelRatio
+    property int comboboxHeight: 15
+    property int spacerHeight: 10
+
     onClosing: manager.notifyClosed()
     onVisibleChanged:
     {
@@ -34,7 +31,7 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-        anchors.margins: 20 * Screen.devicePixelRatio
+        anchors.margins: 20
 
         UM.I18nCatalog
         {
@@ -376,7 +373,6 @@ UM.Dialog
             enabled: true
             anchors.bottom: parent.bottom
             anchors.right: ok_button.left
-            anchors.bottomMargin: - 0.5 * height
             anchors.rightMargin:2
         }
          Button
@@ -384,7 +380,6 @@ UM.Dialog
             id: ok_button
             text: catalog.i18nc("@action:button","Open");
             onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
-            anchors.bottomMargin: - 0.5 * height
             anchors.bottom: parent.bottom
             anchors.right: parent.right
         }

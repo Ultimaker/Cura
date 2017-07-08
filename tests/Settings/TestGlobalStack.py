@@ -12,6 +12,7 @@ from UM.Settings.InstanceContainer import InstanceContainer #To test against the
 from UM.Settings.SettingInstance import InstanceState
 import UM.Settings.ContainerRegistry
 import UM.Settings.ContainerStack
+import UM.Settings.SettingDefinition #To add settings to the definition.
 
 ##  Fake container registry that always provides all containers you ask of.
 @pytest.yield_fixture()
@@ -69,19 +70,47 @@ def test_addExtruder(global_stack):
 
     assert len(global_stack.extruders) == 0
     first_extruder = unittest.mock.MagicMock()
+    first_extruder.getMetaDataEntry = lambda key: 0 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(first_extruder)
     assert len(global_stack.extruders) == 1
     assert global_stack.extruders[0] == first_extruder
     second_extruder = unittest.mock.MagicMock()
+    second_extruder.getMetaDataEntry = lambda key: 1 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(second_extruder)
     assert len(global_stack.extruders) == 2
     assert global_stack.extruders[1] == second_extruder
-    with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
-        with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
-            global_stack.addExtruder(unittest.mock.MagicMock())
+    # Disabled for now for Custom FDM Printer
+    # with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
+    #     with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
+    #         global_stack.addExtruder(unittest.mock.MagicMock())
     assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
+
+##  Tests getting the approximate material diameter.
+@pytest.mark.parametrize("diameter, approximate_diameter", [
+    #Some real-life cases that are common in printers.
+    (2.85, 3),
+    (1.75, 2),
+    (3.0, 3),
+    (2.0, 2),
+    #Exceptional cases.
+    (0, 0),
+    (-10.1, -10),
+    (-1, -1),
+    (9000.1, 9000)
+])
+def test_approximateMaterialDiameter(diameter, approximate_diameter, global_stack):
+    global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
+    material_diameter = UM.Settings.SettingDefinition.SettingDefinition(key = "material_diameter", container = global_stack.definition)
+    material_diameter.addSupportedProperty("value", UM.Settings.SettingDefinition.DefinitionPropertyType.Any, default = diameter)
+    global_stack.definition.definitions.append(material_diameter)
+    assert float(global_stack.approximateMaterialDiameter) == approximate_diameter
+
+##  Tests getting the material diameter when there is no material diameter.
+def test_approximateMaterialDiameterNoDiameter(global_stack):
+    global_stack.definition = DefinitionContainer(container_id = "TestDefinition")
+    assert global_stack.approximateMaterialDiameter == "-1"
 
 #Tests setting user changes profiles to invalid containers.
 @pytest.mark.parametrize("container", [
@@ -349,7 +378,7 @@ def test_getPropertyResolveInInstance(global_stack):
     instance_containers = {}
     for container_type in container_indices.IndexTypeMap:
         instance_containers[container_type] = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
-        instance_containers[container_type].getProperty = lambda key, property: (7.5 if property == "resolve" else (InstanceState.User if property == "state" else 5)) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
+        instance_containers[container_type].getProperty = lambda key, property: (7.5 if property == "resolve" else (InstanceState.User if property == "state" else (5 if property != "limit_to_extruder" else "-1"))) if (key == "material_bed_temperature") else None #7.5 resolve, 5 value.
         instance_containers[container_type].getMetaDataEntry = unittest.mock.MagicMock(return_value = container_indices.IndexTypeMap[container_type]) #Make queries for the type return the desired type.
     instance_containers[container_indices.Definition].getProperty = lambda key, property: 10 if (key == "material_bed_temperature" and property == "value") else None #Definition only has value.
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
@@ -373,7 +402,7 @@ def test_getPropertyResolveInInstance(global_stack):
 #   definitions.
 def test_getPropertyInstancesBeforeResolve(global_stack):
     value = unittest.mock.MagicMock() #Sets just the value.
-    value.getProperty = lambda key, property: (10 if property == "value" else InstanceState.User) if key == "material_bed_temperature" else None
+    value.getProperty = lambda key, property: (10 if property == "value" else (InstanceState.User if property != "limit_to_extruder" else "-1")) if key == "material_bed_temperature" else None
     value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
     resolve = unittest.mock.MagicMock() #Sets just the resolve.
     resolve.getProperty = lambda key, property: 7.5 if (key == "material_bed_temperature" and property == "resolve") else None

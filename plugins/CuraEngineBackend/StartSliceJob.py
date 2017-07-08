@@ -44,6 +44,14 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
+    ##  Meshes that are sent to the engine regardless of being outside of the
+    #   build volume.
+    #
+    #   If these settings are True for any mesh, the build volume is ignored.
+    #   Note that Support Mesh is not in here because it actually generates
+    #   g-code in the volume of the mesh.
+    _not_printed_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+
     def __init__(self, slice_message):
         super().__init__()
 
@@ -132,7 +140,8 @@ class StartSliceJob(Job):
                 temp_list = []
                 for node in DepthFirstIterator(self._scene.getRoot()):
                     if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        if not getattr(node, "_outside_buildarea", False):
+                        if not getattr(node, "_outside_buildarea", False)\
+                                or (node.callDecoration("getStack") and any(node.callDecoration("getStack").getProperty(setting, "value") for setting in self._not_printed_mesh_settings)):
                             temp_list.append(node)
                     Job.yieldThread()
 
@@ -149,8 +158,13 @@ class StartSliceJob(Job):
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
 
-            for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
-                self._buildExtruderMessage(extruder_stack)
+            # Only add extruder stacks if there are multiple extruders
+            # Single extruder machines only use the global stack to store setting values
+            if stack.getProperty("machine_extruder_count", "value") > 1:
+                for extruder_stack in ExtruderManager.getInstance().getMachineExtruders(stack.getId()):
+                    self._buildExtruderMessage(extruder_stack)
+            else:
+                self._buildExtruderMessageFromGlobalStack(stack)
 
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -212,7 +226,7 @@ class StartSliceJob(Job):
 
         for key in stack.getAllKeys():
             # Do not send settings that are not settable_per_extruder.
-            if stack.getProperty(key, "settable_per_extruder") == False:
+            if not stack.getProperty(key, "settable_per_extruder"):
                 continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
@@ -221,6 +235,19 @@ class StartSliceJob(Job):
                 setting.value = str(material_instance_container.getMetaDataEntry("GUID", "")).encode("utf-8")
             else:
                 setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
+            Job.yieldThread()
+
+    ##  Create extruder message from global stack
+    def _buildExtruderMessageFromGlobalStack(self, stack):
+        message = self._slice_message.addRepeatedMessage("extruders")
+
+        for key in stack.getAllKeys():
+            # Do not send settings that are not settable_per_extruder.
+            if not stack.getProperty(key, "settable_per_extruder"):
+                continue
+            setting = message.getMessage("settings").addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(stack.getProperty(key, "value")).encode("utf-8")
             Job.yieldThread()
 
     ##  Sends all global settings to the engine.

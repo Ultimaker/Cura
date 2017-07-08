@@ -11,11 +11,11 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "makeR_pegasus_platform.stl",
-		"platform_offset": [-200,-10,200]
+        "platform_offset": [-200, -10, 200]
     },
 
     "overrides": {
-        "machine_name": { "default_value": " makeR Pegasus" },
+        "machine_name": { "default_value": "makeR Pegasus" },
         "machine_heated_bed": {
             "default_value": true
         },
@@ -54,9 +54,6 @@
         "gantry_height": {
             "default_value": -25
         },
-		"machine_platform_offset":{
-			"default_value":-25
-		},
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },

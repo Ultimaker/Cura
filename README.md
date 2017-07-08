@@ -14,10 +14,11 @@ For crashes and similar issues, please attach the following information:
 
 * (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
 * The Cura GUI log file, located at
-  * $User/AppData/Local/cura/cura.log (Windows)
-  * $User/Library/Application Support/cura (OSX)
-  * $USER/.local/share/cura (Ubuntu/Linux)
-* The Cura Engine log, using Help -> Show Engine Log
+  * %APPDATA%\cura\\`<Cura version>`\cura.log (Windows), or usually C:\Users\\`<your username>`\AppData\Roaming\cura\\`<Cura version>`\cura.log
+  * $User/Library/Application Support/cura/`<Cura version>`/cura.log (OSX)
+  * $USER/.local/share/cura/`<Cura version>`/cura.log (Ubuntu/Linux)
+
+If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder
 
 Dependencies
 ------------
@@ -44,13 +45,13 @@ Please checkout [cura-build](https://github.com/Ultimaker/cura-build)
 
 Third party plugins
 -------------
-* [Print Cost Calculator](https://github.com/nallath/PrintCostCalculator): Calculates weight and monetary cost of your print.
 * [Post Processing Plugin](https://github.com/nallath/PostProcessingPlugin): Allows for post-processing scripts to run on g-code.
 * [Barbarian Plugin](https://github.com/nallath/BarbarianPlugin): Simple scale tool for imperial to metric.
 * [X3G Writer](https://github.com/Ghostkeeper/X3GWriter): Adds support for exporting X3G files.
 * [Auto orientation](https://github.com/nallath/CuraOrientationPlugin): Calculate the optimal orientation for a model.
 * [OctoPrint Plugin](https://github.com/fieldofview/OctoPrintPlugin): Send printjobs directly to OctoPrint and monitor their progress in Cura.
 * [WirelessPrinting Plugin](https://github.com/probonopd/WirelessPrinting): Print wirelessly from Cura to your 3D printer connected to an ESP8266 module.
+* [Electric Print Cost Calculator Plugin](https://github.com/zoff99/ElectricPrintCostCalculator): Calculate the electric costs of a print.
 
 Making profiles for other printers
 ----------------------------------

@@ -16,21 +16,13 @@ from UM.Platform import Platform
 catalog = i18nCatalog("cura")
 
 def getMetaData() -> Dict:
-    # Workarround for osx not supporting double file extensions correclty.
+    # Workarround for osx not supporting double file extensions correctly.
     if Platform.isOSX():
         workspace_extension = "3mf"
     else:
         workspace_extension = "curaproject.3mf"
 
-    metaData = {
-        "plugin": {
-            "name": catalog.i18nc("@label", "3MF Reader"),
-            "author": "Ultimaker",
-            "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides support for reading 3MF files."),
-            "api": 3
-        }
-    }
+    metaData = {}
     if "3MFReader.ThreeMFReader" in sys.modules:
         metaData["mesh_reader"] = [
             {

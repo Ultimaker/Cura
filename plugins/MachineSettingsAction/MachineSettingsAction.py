@@ -14,7 +14,7 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 
-from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 
 import UM.i18n
@@ -69,8 +69,9 @@ class MachineSettingsAction(MachineAction):
             self._container_index = container_index
             self.containerIndexChanged.emit()
 
-        # Disable autoslicing while the machineaction is showing
-        self._backend.disableTimer()
+        # Disable auto-slicing while the MachineAction is showing
+        if self._backend:  # This sometimes triggers before backend is loaded.
+            self._backend.disableTimer()
 
     @pyqtSlot()
     def onFinishAction(self):
@@ -99,6 +100,7 @@ class MachineSettingsAction(MachineAction):
         definition = container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")
+        definition_changes_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
 
         self._container_registry.addContainer(definition_changes_container)
         container_stack.definitionChanges = definition_changes_container
@@ -153,7 +155,7 @@ class MachineSettingsAction(MachineAction):
             if machine_manager.hasMaterials:
                 extruder_material_id = machine_manager.allActiveMaterialIds[extruder_manager.extruderIds["0"]]
             if machine_manager.hasVariants:
-                extruder_variant_id = machine_manager.activeVariantIds[0]
+                extruder_variant_id = machine_manager.allActiveVariantIds[extruder_manager.extruderIds["0"]]
 
             # Copy any settable_per_extruder setting value from the extruders to the global stack
             extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -251,7 +253,7 @@ class MachineSettingsAction(MachineAction):
         if definition.getProperty("machine_gcode_flavor", "value") == "UltiGCode" and not definition.getMetaDataEntry("has_materials", False):
             has_materials = self._global_container_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
-            material_container = self._global_container_stack.findContainer({"type": "material"})
+            material_container = self._global_container_stack.material
             material_index = self._global_container_stack.getContainerIndex(material_container)
 
             if has_materials:
@@ -272,7 +274,6 @@ class MachineSettingsAction(MachineAction):
                 if "has_materials" in self._global_container_stack.getMetaData():
                     self._global_container_stack.removeMetaDataEntry("has_materials")
 
-                empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0]
-                self._global_container_stack.replaceContainer(material_index, empty_material)
+                self._global_container_stack.material = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
             Application.getInstance().globalContainerStackChanged.emit()

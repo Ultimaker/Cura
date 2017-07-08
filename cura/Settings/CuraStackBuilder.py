@@ -9,7 +9,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
-from .CuraContainerStack import CuraContainerStack
 from typing import Optional
 
 
@@ -31,6 +30,11 @@ class CuraStackBuilder:
 
         machine_definition = definitions[0]
         name = registry.createUniqueName("machine", "", name, machine_definition.name)
+        # Make sure the new name does not collide with any definition or (quality) profile
+        # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
+        # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
+        if registry.findContainers(id = name):
+            name = registry.uniqueName(name)
 
         new_global_stack = cls.createGlobalStack(
             new_stack_id = name,
@@ -76,6 +80,8 @@ class CuraStackBuilder:
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("extruder", new_stack_id)
+        from cura.CuraApplication import CuraApplication
+        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(machine_definition)
 
         stack.setUserChanges(user_container)
@@ -124,6 +130,8 @@ class CuraStackBuilder:
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
         user_container.addMetaDataEntry("machine", new_stack_id)
+        from cura.CuraApplication import CuraApplication
+        user_container.addMetaDataEntry("setting_version", CuraApplication.SettingVersion)
         user_container.setDefinition(definition)
 
         stack.setUserChanges(user_container)

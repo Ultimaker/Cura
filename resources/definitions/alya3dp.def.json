@@ -1,0 +1,55 @@
+{
+    "id": "alya3dp",
+    "name": "ALYA",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "ALYA",
+        "manufacturer": "ALYA",
+        "category": "Other",
+        "file_formats": "text/x-gcode"
+    },
+
+    "overrides": {
+        "machine_width": {
+            "default_value": 100
+        },
+        "machine_height": {
+            "default_value": 133
+        },
+        "machine_depth": {
+            "default_value": 100
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.4
+        },
+        "machine_head_shape_min_x": {
+            "default_value": 75
+        },
+        "machine_head_shape_min_y": {
+            "default_value": 18
+        },
+        "machine_head_shape_max_x": {
+            "default_value": 18
+        },
+        "machine_head_shape_max_y": {
+            "default_value": 35
+        },
+        "machine_nozzle_gantry_distance": {
+            "default_value": 55
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap"
+        },
+        "machine_start_gcode": {
+            "default_value": ";Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Filament cost: {filament_cost}\n;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line\n;M109 S{print_temperature} ;Uncomment to add your own temperature line\nG21        ;metric values\nG90        ;absolute positioning\nM82        ;set extruder to absolute mode\nM107       ;start with the fan off\nG28 X0 Y0  ;move X/Y to min endstops\nG28 Z0     ;move Z to max endstops\nG1 Z115.0 F{travel_speed} ;move th e platform up 20mm\nG28 Z0     ;move Z to max endstop\nG1 Z15.0 F{travel_speed} ;move the platform down 15mm\nG92 E0                  ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F{travel_speed}\nM301 H1 P26.38 I2.57 D67.78\n;Put printing message on LCD screen\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": ";End GCode\nM104 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off (if you have it)\nG91                                    ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F{travel_speed} ;move Z up a bit and retract filament even more\nG28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way\nG28 Z0\nM84                         ;steppers off\nG90                         ;absolute positioning\n;{profile_string}"
+        }
+    }
+}
