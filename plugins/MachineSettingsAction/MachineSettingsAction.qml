@@ -221,7 +221,7 @@ Cura.MachineAction
                                     sourceComponent: headPolygonTextField
                                     property string axis: "x"
                                     property string side: "min"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
                                 }
 
                                 Label
@@ -234,7 +234,7 @@ Cura.MachineAction
                                     sourceComponent: headPolygonTextField
                                     property string axis: "y"
                                     property string side: "min"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
                                 }
 
                                 Label
@@ -247,7 +247,7 @@ Cura.MachineAction
                                     sourceComponent: headPolygonTextField
                                     property string axis: "x"
                                     property string side: "max"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
                                 }
 
                                 Label
@@ -260,7 +260,7 @@ Cura.MachineAction
                                     sourceComponent: headPolygonTextField
                                     property string axis: "y"
                                     property string side: "max"
-                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\".")
                                 }
 
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
@@ -276,6 +276,7 @@ Cura.MachineAction
                                     sourceComponent: numericTextFieldWithUnit
                                     property string settingKey: "gantry_height"
                                     property string unit: catalog.i18nc("@label", "mm")
+                                    property string tooltip: catalog.i18nc("@tooltip", "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\".")
                                 }
 
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
@@ -319,6 +320,7 @@ Cura.MachineAction
                                     sourceComponent: numericTextFieldWithUnit
                                     property string settingKey: "material_diameter"
                                     property string unit: catalog.i18nc("@label", "mm")
+                                    property string tooltip: catalog.i18nc("@tooltip", "The nominal diameter of filament supported by the printer.")
                                 }
                                 Label
                                 {
@@ -359,6 +361,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_start_gcode"
+                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very start.")
                             }
                         }
 
@@ -377,6 +380,7 @@ Cura.MachineAction
                                 property int areaWidth: parent.width
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_end_gcode"
+                                property string tooltip: catalog.i18nc("@tooltip", "Gcode commands to be executed at the very end.")
                             }
                         }
                     }
@@ -520,10 +524,11 @@ Cura.MachineAction
         {
             height: checkBox.height
             width: checkBox.width
-            text: propertyProvider.properties.description
+            text: _tooltip
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+            property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
             {
@@ -569,11 +574,12 @@ Cura.MachineAction
         {
             height: textField.height
             width: textField.width
-            text: propertyProvider.properties.description
+            text: _tooltip
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _allowNegative: (typeof(allowNegative) === 'undefined') ? false : allowNegative
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
+            property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
             {
@@ -635,11 +641,12 @@ Cura.MachineAction
         {
             height: comboBox.height
             width: comboBox.width
-            text: propertyProvider.properties.description
+            text: _tooltip
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
             property bool _forceUpdateOnChange: (typeof(forceUpdateOnChange) === 'undefined') ? false: forceUpdateOnChange
             property string _afterOnActivate: (typeof(afterOnActivate) === 'undefined') ? "": afterOnActivate
+            property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
             {
@@ -722,9 +729,10 @@ Cura.MachineAction
         {
             height: gcodeArea.height
             width: gcodeArea.width
-            text: propertyProvider.properties.description
+            text: _tooltip
 
             property bool _isExtruderSetting: (typeof(isExtruderSetting) === 'undefined') ? false: isExtruderSetting
+            property string _tooltip: (typeof(tooltip) === 'undefined') ? propertyProvider.properties.description : tooltip
 
             UM.SettingPropertyProvider
             {
