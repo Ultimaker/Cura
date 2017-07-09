@@ -215,48 +215,52 @@ Cura.MachineAction
                                 {
                                     text: catalog.i18nc("@label", "X min")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: printheadXMinField
-                                    text: getHeadPolygonCoord("x", "min")
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: setHeadPolygon()
+                                    sourceComponent: headPolygonTextField
+                                    property string axis: "x"
+                                    property string side: "min"
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
                                 }
 
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Y min")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: printheadYMinField
-                                    text: getHeadPolygonCoord("y", "min")
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: setHeadPolygon()
+                                    sourceComponent: headPolygonTextField
+                                    property string axis: "y"
+                                    property string side: "min"
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
                                 }
 
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "X max")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: printheadXMaxField
-                                    text: getHeadPolygonCoord("x", "max")
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: setHeadPolygon()
+                                    sourceComponent: headPolygonTextField
+                                    property string axis: "x"
+                                    property string side: "max"
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
                                 }
 
                                 Label
                                 {
                                     text: catalog.i18nc("@label", "Y max")
                                 }
-                                TextField
+                                Loader
                                 {
                                     id: printheadYMaxField
-                                    text: getHeadPolygonCoord("y", "max")
-                                    validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
-                                    onEditingFinished: setHeadPolygon()
+                                    sourceComponent: headPolygonTextField
+                                    property string axis: "y"
+                                    property string side: "max"
+                                    property string tooltip: catalog.i18nc("@tooltip", "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between the print and the printhead.")
                                 }
 
                                 Item { width: UM.Theme.getSize("default_margin").width; height: UM.Theme.getSize("default_margin").height }
@@ -374,36 +378,6 @@ Cura.MachineAction
                                 property int areaHeight: parent.height - y
                                 property string settingKey: "machine_end_gcode"
                             }
-                        }
-                    }
-
-                    function getHeadPolygonCoord(axis, minMax)
-                    {
-                        var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
-                        var item = (axis == "x") ? 0 : 1
-                        var result = polygon[0][item];
-                        for(var i = 1; i < polygon.length; i++) {
-                            if (minMax == "min") {
-                                result = Math.min(result, polygon[i][item]);
-                            } else {
-                                result = Math.max(result, polygon[i][item]);
-                            }
-                        }
-                        return Math.abs(result);
-                    }
-
-                    function setHeadPolygon()
-                    {
-                        var polygon = [];
-                        polygon.push([-parseFloat(printheadXMinField.text), parseFloat(printheadYMaxField.text)]);
-                        polygon.push([-parseFloat(printheadXMinField.text),-parseFloat(printheadYMinField.text)]);
-                        polygon.push([ parseFloat(printheadXMaxField.text), parseFloat(printheadYMaxField.text)]);
-                        polygon.push([ parseFloat(printheadXMaxField.text),-parseFloat(printheadYMinField.text)]);
-                        var polygon_string = JSON.stringify(polygon);
-                        if(polygon != machineHeadPolygonProvider.properties.value)
-                        {
-                            machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
-                            manager.forceUpdate();
                         }
                     }
                 }
@@ -793,6 +767,75 @@ Cura.MachineAction
             }
         }
     }
+
+    Component
+    {
+        id: headPolygonTextField
+        UM.TooltipArea
+        {
+            height: textField.height
+            width: textField.width
+            text: tooltip
+
+            TextField
+            {
+                id: textField
+                text:
+                {
+                    var polygon = JSON.parse(machineHeadPolygonProvider.properties.value);
+                    var item = (axis == "x") ? 0 : 1
+                    var result = polygon[0][item];
+                    for(var i = 1; i < polygon.length; i++) {
+                        if (side == "min") {
+                            result = Math.min(result, polygon[i][item]);
+                        } else {
+                            result = Math.max(result, polygon[i][item]);
+                        }
+                    }
+                    result = Math.abs(result);
+                    printHeadPolygon[axis][side] = result;
+                    return result;
+                }
+                validator: RegExpValidator { regExp: /[0-9\.]{0,6}/ }
+                onEditingFinished:
+                {
+                    printHeadPolygon[axis][side] = parseFloat(textField.text);
+                    var polygon = [];
+                    polygon.push([-printHeadPolygon["x"]["min"], printHeadPolygon["y"]["max"]]);
+                    polygon.push([-printHeadPolygon["x"]["min"],-printHeadPolygon["y"]["min"]]);
+                    polygon.push([ printHeadPolygon["x"]["max"], printHeadPolygon["y"]["max"]]);
+                    polygon.push([ printHeadPolygon["x"]["max"],-printHeadPolygon["y"]["mìn"]]);
+                    var polygon_string = JSON.stringify(polygon);
+                    if(polygon_string != machineHeadPolygonProvider.properties.value)
+                    {
+                        machineHeadPolygonProvider.setPropertyValue("value", polygon_string);
+                        manager.forceUpdate();
+                    }
+                }
+            }
+
+            Label
+            {
+                text: catalog.i18nc("@label", "mm")
+                anchors.right: textField.right
+                anchors.rightMargin: y - textField.y
+                anchors.verticalCenter: textField.verticalCenter
+            }
+        }
+    }
+
+    property var printHeadPolygon:
+    {
+        "x": {
+            "min": 0,
+            "max": 0,
+        },
+        "y": {
+            "min": 0,
+            "max": 0,
+        },
+    }
+
 
     UM.SettingPropertyProvider
     {
